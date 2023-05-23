@@ -1,0 +1,88 @@
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import Icons from "@/public/icons/icon";
+export default function Footer() {
+  return (
+    <footer className="pt-8 pb-10 px-[164px] bg-[#F8F8F8]">
+      <div className="flex">
+        <div className="flex basis-1/6">
+          <div>
+            <h2 className="mb-2 font-bold">
+              <Link href="/brand">About</Link>
+            </h2>
+            <ul>
+              <li className="mb-1 text-dark2">
+                <Link href="/brand">Brand</Link>
+              </li>
+              <li className="mb-1 text-dark2">
+                <Link href="/blog">Blog</Link>
+              </li>
+              <li className="mb-1 text-dark2">
+                <Link href="/whitepaper">Whitepaper</Link>
+              </li>
+              <li className="mb-1 text-dark2">
+                <Link href="/term">Term of Service</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="basis-1/6">
+          <h2 className="mb-2 font-bold ">
+            <Link href="/brand">Help</Link>
+          </h2>
+          <ul>
+            <li className="mb-1 text-dark2">
+              <Link href="/support">Custumer Support</Link>
+            </li>
+            <li className="mb-1 text-dark2">
+              <Link href="/guilders">Guilders</Link>
+            </li>
+          </ul>
+        </div>
+        <div className="basis-1/6">
+          <h2 className="mb-2 font-bold">
+            <Link href="/developers">Developers</Link>
+          </h2>
+          <ul>
+            <li className="mb-1 text-dark2">
+              <Link href="/gihub">Github</Link>
+            </li>
+            <li className="mb-1 text-dark2">
+              <Link href="/blog">Documentation</Link>
+            </li>
+            <li className="mb-1 text-dark2">
+              <Link href="/bug">Bug Bounty</Link>
+            </li>
+            <li className="mb-1 text-dark2">
+              <Link href="/term">Audits</Link>
+            </li>
+            <li className="mb-1 text-dark2">
+              <Link href="/term">Careers</Link>
+            </li>
+          </ul>
+        </div>
+        <div className="basis-2/6"></div>
+        <div className="basis-1/6 pl-[2%]">
+          <div className="mb-2 font-bold">Dark/Light Mode</div>
+          <div className="mt-8 mb-9">
+            <h2 className="text-2xl font-bold">
+              <Link href="/brand">
+                <Image src={Icons.logoDeMask} alt="logoDemask"/>
+              </Link>
+            </h2>
+            <p className="mt-2 text-secondary1">contact@demask.finance</p>
+          </div>
+          <div className="flex gap-[18px]">
+            <Link href='/'>
+              <Image src={Icons.twitterIcon} alt='twitterIcon'/>
+            </Link>
+            <Link href='/'>
+              <Image src={Icons.teleIcon} alt='teleIcon'/>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
