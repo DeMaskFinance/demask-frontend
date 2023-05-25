@@ -39,6 +39,9 @@ module.exports = {
       screens:{
         '3xl': '1600px',
       },
+      fontSize:{
+        'customDate':'15px',
+      },
       keyframes: {
         scrollUpHeader: {
           '0%': { transform: 'translateY(-64px)' },

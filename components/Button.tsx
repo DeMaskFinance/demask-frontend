@@ -32,7 +32,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       rounded-full
       text-sm
       ${secondary ? "bg-dark2" : "bg-base2"}
-      ${secondary ? "text-dark" : "text-secondary4"}
+      ${secondary ? "text-dark" : "text-white"}
       ${outline ? "bg-transparent" : ""}
       ${outline ? "border-white" : ""}
       ${outline ? "text-white" : ""}
