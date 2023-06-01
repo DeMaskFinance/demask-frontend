@@ -417,32 +417,30 @@ export default function Creator() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const data = new FormData(e.target);
-    // const emptyInputFields = [];
+    const emptyInputFields = [];
 
-    // if (data.get("name") === "") {
-    //   emptyInputFields.push("name");
-    // }
+    if (data.get("name") === "") {
+      emptyInputFields.push("name");
+    }
 
-    // if (data.get("symbol") === "") {
-    //   emptyInputFields.push("symbol");
-    // }
+    if (data.get("symbol") === "") {
+      emptyInputFields.push("symbol");
+    }
 
-    // if (data.get("initial") === "") {
-    //   emptyInputFields.push("initial");
-    // }
+    if (data.get("initial") === "") {
+      emptyInputFields.push("initial");
+    }
 
-    // if (data.get("totalSale") === "") {
-    //   emptyInputFields.push("totalSale");
-    // }
-    // if (data.get("tokenPayment") === "") {
-    //   emptyInputFields.push("tokenPayment");
-    // }
-    // setEmptyInputs(emptyInputFields);
-    // if (emptyInputFields.length === 0) {
-      
-    // }
-    const simplifiedAttributes = attributeItems.map(({ trait_type, value }) => ({ trait_type, value }));
-    const metadata = JSON.stringify({
+    if (data.get("totalSale") === "") {
+      emptyInputFields.push("totalSale");
+    }
+    if (data.get("tokenPayment") === "") {
+      emptyInputFields.push("tokenPayment");
+    }
+    setEmptyInputs(emptyInputFields);
+    if (emptyInputFields.length === 0) {
+      const simplifiedAttributes = attributeItems.map(({ trait_type, value }) => ({ trait_type, value }));
+      const metadata = JSON.stringify({
       name: data.get('name'),
       symbol:data.get('symbol'),
       description:data.get('description'),
@@ -450,11 +448,15 @@ export default function Creator() {
       attributes:simplifiedAttributes,
       category:selectedCategory,
     })
-    uploadFileToIPFS(metadata)
-    mintNFT()
+      const urlMetadata = await uploadFileToIPFS(metadata);
+      console.log(urlMetadata);
+      
+      mintNFT({ amount: Number(data.get("totalSupply")), data: '0x', url: urlMetadata })
+    }
+    
   };
-  console.log(fileIPFS);
   
+  console.log(fileIPFS);
   return (
     <div className="flex py-8 px-[250px] 3xl:px-[444px] gap-x-[26px]">
       <Head>
@@ -694,12 +696,9 @@ export default function Creator() {
           <Button type="submit" className="px-4 py-1">
             CREATE
           </Button>
-          <Button type="button" className="px-4 py-1" onClick={() => activateInjectedProvider('MetaMask')}>
+          {/* <Button type="button" className="px-4 py-1" onClick={() => activateInjectedProvider('MetaMask')}>
             Connect
-          </Button>
-          <Button type="button" className="px-4 py-1" onClick={mintNFT}>
-            mint
-          </Button>
+          </Button> */}
         </form>
       </div>
     </div>
