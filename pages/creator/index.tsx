@@ -3,10 +3,14 @@ import Icons from "@/public/icons/icon";
 import { format } from "date-fns";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import Head from "next/head";
 import Image from "next/image";
 import React, { ChangeEvent, DragEvent, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { mintNFT, uploadFileToIPFS } from '../../libs/nftCreatorUtils';
+import Web3 from "web3";
+import { ethers,errors } from "ethers";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
@@ -20,6 +24,7 @@ export default function Creator() {
   const datePickerRef = useRef<any>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [required, setRequired] = useState<string>("");
+  const [providerCreator,setProviderCreator] =useState<any>('')
   const [startDate, setStartDate] = useState<any>(
     setHours(
       setMinutes(new Date(), new Date().getMinutes()),
@@ -28,13 +33,15 @@ export default function Creator() {
   );
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
-  const [selectedFilePDF, setSelectedFilePDF] = useState<any>(null);
+  const [fileIPFS,setFileIPFS] = useState<any>(null);
   const [activeButton, setActiveButton] = useState<string>("MINT");
   const [attributeType, setAttributeType] = useState("");
   const [attributeValue, setAttributeValue] = useState("");
   const [attributeItems, setAttributeItems] = useState([
-    { id: 0, type: "", value: "" },
+    { id: 0, trait_type: "", value: "" },
   ]);
+  const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [launchActive, setLaunchActive] = useState<string>("NOW");
   let file: any;
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -91,7 +98,8 @@ export default function Creator() {
         if (file.size < 1073741824) {
           const fileURL = URL.createObjectURL(file);
           setFileType(fileType);
-          setSelectedFile(fileURL);
+          setSelectedFile(fileURL);    
+          setFileIPFS(uploadFileToIPFS(file));
         } else {
           alert("Vui lòng chọn file nhỏ hơn 1GB");
         }
@@ -110,8 +118,12 @@ export default function Creator() {
     id: number
   ) => {
     const updatedItems = attributeItems.map((item) =>
-      item.id === id ? { ...item, type: e.target.value } : item
+      item.id === id ? { ...item, trait_type: e.target.value } : item
     );
+    const hasEmptyValues = updatedItems.some(
+      (item) => item.trait_type === "" || item.value === ""
+    );
+    setIsValidBtn(!hasEmptyValues);
     setAttributeItems(updatedItems);
   };
   const handleChangeAttributeValue = (
@@ -121,20 +133,43 @@ export default function Creator() {
     const updatedItems = attributeItems.map((item) =>
       item.id === id ? { ...item, value: e.target.value } : item
     );
+    const hasEmptyValues = updatedItems.some(
+      (item) => item.trait_type === "" || item.value === ""
+    );
+    setIsValidBtn(!hasEmptyValues);
     setAttributeItems(updatedItems);
   };
   const handleAddAttribute = () => {
     const newItem = {
       id: attributeItems.length,
-      type: "",
+      trait_type: "",
       value: "",
     };
-    setAttributeItems([...attributeItems, newItem]);
+    if (attributeItems.some((item) => item.trait_type === "" || item.value === "")) {
+      setIsValidBtn(false);
+    } else {
+      setIsValidBtn(true);
+      setAttributeItems([...attributeItems, newItem]);
+    }
   };
+  console.log(attributeItems);
+
   const handleRemoveAttribute = (id: number) => {
     const updatedItems = attributeItems.filter((item) => item.id !== id);
     setAttributeItems(updatedItems);
   };
+  const selectCategory = (value: string) => {
+    const isSelected = selectedCategory.includes(value);
+    if (isSelected) {
+      const updateCategories = selectedCategory.filter((item) => item != value);
+      setSelectedCategory(updateCategories);
+    } else {
+      const updatedCategories = [...selectedCategory, value];
+      setSelectedCategory(updatedCategories);
+    }
+  };
+  console.log(selectedCategory);
+  
   const changeLaunchStart = (option: string) => {
     setLaunchActive(option);
     if (option === "NOW") {
@@ -150,6 +185,73 @@ export default function Creator() {
     setStartDate(date);
     setLaunchActive("CUSTOM");
   };
+  async function activateInjectedProvider(providerName:string) {
+    const { ethereum }:any = window;
+    if (!ethereum?.providers) {
+      alert(`No ${providerName} provider found`);
+      return undefined;
+    }
+  
+    let provider;
+    switch (providerName) {
+      case "CoinBase":
+        provider = ethereum.providers.find(
+          ({ isCoinbaseWallet }:any) => isCoinbaseWallet
+        );
+        break;
+      case "MetaMask":
+        provider = ethereum.providers.find(({ isMetaMask }:any) => isMetaMask);
+        break;
+      default:
+        console.log(errors);
+    }
+  
+    if (provider) {
+      ethereum.setSelectedProvider(provider);
+      setProviderCreator(provider)
+    }
+    if (!provider) {
+      console.log(`No ${providerName} provider found`);
+      return;
+    }
+    try {
+      const account = await provider.request({ method: "eth_requestAccounts" });
+      console.log(account);
+    } catch (error:any) {
+      // console.error(`Failed to activate ${providerName} provider.`, error);
+      // setIsConnected(false)
+      if (error.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert(`Please connect to ${providerName}`);
+        return;
+      } else {
+        console.error(error);
+      }
+    }
+  }
+  const Category = [
+    {
+      id: 1,
+      value: "Art",
+    },
+    {
+      id: 2,
+      value: "Film",
+    },
+    {
+      id: 3,
+      value: "Music",
+    },
+    {
+      id: 4,
+      value: "Gaming",
+    },
+    {
+      id: 5,
+      value: "Memberships",
+    },
+  ];
   const Mint = () => {
     return (
       <div className="w-[220px]">
@@ -162,7 +264,11 @@ export default function Creator() {
           type="number"
           id="totalSupply"
           name="totalSupply"
-          className={emptyInputs.includes("totalSupply")?'w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red':styles.inputItem}
+          className={
+            emptyInputs.includes("totalSupply")
+              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+              : styles.inputItem
+          }
         />
       </div>
     );
@@ -180,9 +286,17 @@ export default function Creator() {
             type="text"
             id="initial"
             name="initial"
-            className={emptyInputs.includes("initial")?'w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red':styles.inputItem}
+            className={
+              emptyInputs.includes("initial")
+                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                : styles.inputItem
+            }
           />
-           {emptyInputs.includes("initial") && <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">Required</p>}
+          {emptyInputs.includes("initial") && (
+            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
+              Required
+            </p>
+          )}
         </div>
         <div>
           <label htmlFor="totalSale" className={styles.title}>
@@ -194,9 +308,17 @@ export default function Creator() {
             type="text"
             id="totalSale"
             name="totalSale"
-            className={emptyInputs.includes("totalSale")?'w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red':styles.inputItem}
+            className={
+              emptyInputs.includes("totalSale")
+                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                : styles.inputItem
+            }
           />
-           {emptyInputs.includes("totalSale") && <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">Required</p>}
+          {emptyInputs.includes("totalSale") && (
+            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+              Required
+            </p>
+          )}
         </div>
         <div>
           <label htmlFor="tokenPayment" className={styles.title}>
@@ -208,9 +330,17 @@ export default function Creator() {
             type="text"
             id="tokenPayment"
             name="tokenPayment"
-            className={emptyInputs.includes("tokenPayment")?'w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red':styles.inputItem}
+            className={
+              emptyInputs.includes("tokenPayment")
+                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                : styles.inputItem
+            }
           />
-          {emptyInputs.includes("totalSale") && <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">Required</p>}
+          {emptyInputs.includes("totalSale") && (
+            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+              Required
+            </p>
+          )}
         </div>
         <div>
           <p className={styles.title}>Price</p>
@@ -283,63 +413,53 @@ export default function Creator() {
       </div>
     );
   };
-  const handleSubmit = (e: any) => {
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const data = new FormData(e.target);
+    // const emptyInputFields = [];
+
     // if (data.get("name") === "") {
-    //   setRequired("Required");
-    //   inputNameRef.current?.classList.add("border-[#F15A59]","border-2")
-    // }else if(data.get("symbol")===""){
-    //   setRequired("Required");
-    //   inputSymbolRef.current?.classList.add("border-[#F15A59]","border-2")
-    // }else if(data.get("initial")===""){
-    //   setRequired("Required");
-    //   inputInitialRef.current?.classList.add("border-[#F15A59]","border-2")
-    // }else if(data.get("totalSale")===""){
-    //   setRequired("Required");
-    //   inputSaleRef.current?.classList.add("border-[#F15A59]","border-2")
+    //   emptyInputFields.push("name");
     // }
-    // else if(data.get("tokenPayment")===""){
-    //   setRequired("Required");
-    //   inputAddressRef.current?.classList.add("border-[#F15A59]","border-2")
+
+    // if (data.get("symbol") === "") {
+    //   emptyInputFields.push("symbol");
     // }
-    // else{
-    //   setRequired("");
-    //   inputNameRef.current?.classList.remove("border-[#F15A59]","border-2")
-    //   inputSymbolRef.current?.classList.remove("border-[#F15A59]","border-2")
-    //   inputInitialRef.current?.classList.remove("border-[#F15A59]","border-2")
-    //   inputSymbolRef.current?.classList.remove("border-[#F15A59]","border-2")
-    //   inputSaleRef.current?.classList.remove("border-[#F15A59]","border-2")
+
+    // if (data.get("initial") === "") {
+    //   emptyInputFields.push("initial");
     // }
-    const emptyInputFields = [];
 
-    if (data.get("name") === "") {
-      emptyInputFields.push("name");
-    }
-
-    if (data.get("symbol") === "") {
-      emptyInputFields.push("symbol");
-    }
-
-    if (data.get("initial") === "") {
-      emptyInputFields.push("initial");
-    }
-
-    if (data.get("totalSale") === "") {
-      emptyInputFields.push("totalSale");
-    }
-    if (data.get("tokenPayment") === "") {
-      emptyInputFields.push("tokenPayment");
-    }
-    setEmptyInputs(emptyInputFields);
-    if (emptyInputFields.length === 0) {
-      console.log("submit");
-    }
+    // if (data.get("totalSale") === "") {
+    //   emptyInputFields.push("totalSale");
+    // }
+    // if (data.get("tokenPayment") === "") {
+    //   emptyInputFields.push("tokenPayment");
+    // }
+    // setEmptyInputs(emptyInputFields);
+    // if (emptyInputFields.length === 0) {
+      
+    // }
+    const simplifiedAttributes = attributeItems.map(({ trait_type, value }) => ({ trait_type, value }));
+    const metadata = JSON.stringify({
+      name: data.get('name'),
+      symbol:data.get('symbol'),
+      description:data.get('description'),
+      image:await fileIPFS,
+      attributes:simplifiedAttributes,
+      category:selectedCategory,
+    })
+    uploadFileToIPFS(metadata)
+    mintNFT()
   };
-
-
+  console.log(fileIPFS);
+  
   return (
     <div className="flex py-8 px-[250px] 3xl:px-[444px] gap-x-[26px]">
+      <Head>
+        <title>Creator | DeMask</title>
+      </Head>
       {/* UpLoad File */}
       <div className="w-[504px] shrink-0">
         <h2 className="text-2xl">Create A New Item</h2>
@@ -450,9 +570,18 @@ export default function Creator() {
               type="text"
               id="name"
               name="name"
-              className={emptyInputs.includes("name")?'w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red':styles.inputItem}
+              className={
+                emptyInputs.includes("name")
+                  ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                  : styles.inputItem
+              }
+              
             />
-            {emptyInputs.includes("name") && <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="name">Required</p>}
+            {emptyInputs.includes("name") && (
+              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="name">
+                Required
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="symbol" className={styles.title}>
@@ -465,9 +594,17 @@ export default function Creator() {
               type="text"
               id="symbol"
               name="symbol"
-              className={emptyInputs.includes("symbol")?'w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red':styles.inputItem}
+              className={
+                emptyInputs.includes("symbol")
+                  ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                  : styles.inputItem
+              }
             />
-            {emptyInputs.includes("symbol") && <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="symbol">Required</p>}
+            {emptyInputs.includes("symbol") && (
+              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="symbol">
+                Required
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="description" className={styles.title}>
@@ -477,6 +614,7 @@ export default function Creator() {
             <textarea
               placeholder="Write a description of your nft ..."
               id="description"
+              name="description"
               className={`${styles.inputItem} h-20 resize-none`}
             />
           </div>
@@ -501,57 +639,37 @@ export default function Creator() {
                   onChange={(e) => handleChangeAttributeValue(e, item.id)}
                 />
                 <Image
-                  src={Icons.noneaCancelRight}
-                  alt="clear"
+                  src={Icons.deleteIcon}
+                  alt="Delete property"
                   className="mb-[14px] ml-2 cursor-pointer"
                   onClick={() => handleRemoveAttribute(item.id)}
                 />
               </div>
             ))}
           </div>
+          {!isValidBtn && (
+            <p className="mb-2 text-red">You need add property</p>
+          )}
           <Button
             type="button"
             className="h-[26px] w-[150px] text-sm mb-4"
             onClick={handleAddAttribute}
+            disabled={!isValidBtn}
           >
             + ADD PROPERTY
           </Button>
           <div>
             <p className={styles.title}>Category</p>
-            <Button
-              type="button"
-              className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-              secondary
-            >
-              Art
-            </Button>
-            <Button
-              type="button"
-              className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-            >
-              Film
-            </Button>
-            <Button
-              type="button"
-              className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-              secondary
-            >
-              Music
-            </Button>
-            <Button
-              type="button"
-              className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-              secondary
-            >
-              Gaming
-            </Button>
-            <Button
-              type="button"
-              className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-              secondary
-            >
-              Memberships
-            </Button>
+            {Category.map((item, index) => (
+              <Button
+                type="button"
+                className={`px-4 py-1 mb-4 mr-4 text-sm font-semibold ${selectedCategory.includes(item.value)?'bg-base2 text-white':'bg-dark2'}`}
+                key={item.id}
+                onClick={() => selectCategory(item.value)}
+              >
+                {item.value}
+              </Button>
+            ))}
           </div>
           <div>
             <p className={styles.title}>Mint Option</p>
@@ -575,6 +693,12 @@ export default function Creator() {
           {activeButton === "MINT" ? <Mint /> : <Launchpad />}
           <Button type="submit" className="px-4 py-1">
             CREATE
+          </Button>
+          <Button type="button" className="px-4 py-1" onClick={() => activateInjectedProvider('MetaMask')}>
+            Connect
+          </Button>
+          <Button type="button" className="px-4 py-1" onClick={mintNFT}>
+            mint
           </Button>
         </form>
       </div>

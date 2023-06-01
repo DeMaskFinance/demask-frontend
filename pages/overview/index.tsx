@@ -1,6 +1,7 @@
 import ChartTVL from "@/components/ChartTVL";
 import ChartVolumn from "@/components/ChartVolume";
 import CollectionItem from "@/components/CollectionItem";
+import TransactionItem from "@/components/TransactionItem";
 import Head from "next/head";
 import React from "react";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
@@ -49,18 +50,18 @@ export default function Overview() {
           <h3 className="pl-6 cursor-pointer text-base2">Top</h3>
           <h3 className="pr-6 cursor-pointer">Trending</h3>
         </div>
-        <table className="w-full border rounded-b-lg rounded-tr-lg border-dark">
+        <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark border-spacing-0">
           <thead className="flex w-full px-8 pt-4 font-semibold text-black24">
             <tr className="flex w-full text-left">
-              <th className="flex basis-3/12 gap-x-6">
+              <th className="flex flex-1 gap-x-6">
                 <p>#</p>
                 <p>Name</p>
               </th>
-              <th className="basis-2/12">Price</th>
-              <th className="basis-2/12">Change</th>
-              <th className="basis-2/12">Volume</th>
-              <th className="basis-2/12">TVL</th>
-              <th className="basis-1/12">Total supply</th>
+              <th className="w-[248px]">Price</th>
+              <th className="w-[280px]">Change</th>
+              <th className="w-[277px]">Volume</th>
+              <th className="w-[277px]">TVL</th>
+              <th className="w-[116px]">Total supply</th>
             </tr>
           </thead>
           {/* Collection */}
@@ -73,6 +74,45 @@ export default function Overview() {
             <CollectionItem />
             <CollectionItem />
             <CollectionItem />
+          </tbody>
+        </table>
+        <div className="flex justify-center my-[27px]">
+          <button className="flex items-center justify-center w-5 h-5 text-xs rounded-full bg-dark2 text-dark">
+            <HiArrowLeft />
+          </button>
+          <div className="mx-[10px]">Page 1 of 5</div>
+          <button className="flex items-center justify-center w-5 h-5 text-xs rounded-full bg-secondary3 text-secondary1">
+            <HiArrowRight />
+          </button>
+        </div>
+      </div>
+      {/* Transaction */}
+      <div className="transactionList">
+      <div className="flex gap-4 text-xl text-dark2 w-[184px] border border-dark rounded-t-lg border-b-0">
+          <h3 className="pl-6 cursor-pointer text-base2">Transaction</h3>
+        </div>
+        <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark border-spacing-0">
+          <thead className="flex w-full font-semibold text-black24">
+            <tr className="flex w-full px-8 pt-4 text-left">
+              <th className="flex flex-1 gap-x-6">
+                <p>#</p>
+                <p>Action</p>
+              </th>
+              <th className="w-[296px]">NFT amount</th>
+              <th className="w-[316px]">Token amount</th>
+              <th className="w-[296px]">Account</th>
+              <th className="w-[125px]">Time</th>
+            </tr>
+          </thead>
+          {/* Transaction Item */}
+          <tbody>
+            <TransactionItem/>
+            <TransactionItem/>
+            <TransactionItem/>
+            <TransactionItem/>
+            <TransactionItem/>
+            <TransactionItem/>
+            <TransactionItem/>
           </tbody>
         </table>
         <div className="flex justify-center my-[27px]">

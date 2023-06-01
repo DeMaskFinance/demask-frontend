@@ -1,3 +1,4 @@
+import React,{useState} from 'react'
 import Icons from "@/public/icons/icon";
 import Image from "next/image";
 import Tippy from "@tippyjs/react/headless";
@@ -9,9 +10,24 @@ const styles = {
   titleSearch:'ml-2 font-medium text-dark2',
 }
 const Search: FunctionComponent<SearchProps> = () => {
+  const [searchShow,setSearchShow] = useState<boolean>(false);
+  const [searchValue,setSearchValue] = useState<string | number | readonly string[] | undefined>();
+  const hiddenSearch = () =>{
+    setSearchShow(false)
+  }
+  const handleChangeSearch = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    setSearchValue(e.target.value)
+  }
+  const clearValueInput = () =>{
+    setSearchValue('')
+  }
+  console.log(searchValue);
+  
   return (
     <Tippy
       interactive
+      visible={searchShow}
+      onClickOutside={hiddenSearch}
       render={(attrs) => (
         <div className="z-50 box" tabIndex={-1} {...attrs}>
           <div className="bg-white w-[24vw] p-2 ml-[9px] rounded-lg shadow-2xl">
@@ -73,17 +89,25 @@ const Search: FunctionComponent<SearchProps> = () => {
         <input
           className="py-2 pl-10 border font-normal w-[20vw] text-sm h-8 rounded-full border-secondary2 text-secondary1 placeholder:text-secondary2 focus:outline-secondary1 3xl:w-[24vw] placeholder:font-normal"
           placeholder="Search items, collections, and accounts"
+          onFocus={()=>setSearchShow(true)}
+          onChange={handleChangeSearch}
+          value={searchValue}
         ></input>
-        <div className="absolute right-4">
-          <Image
+        <div className={searchShow?"w-4 rotate-90 transition-all duration-300 ease-out absolute right-4 flex":"w-4 absolute right-4 flex"} onClick={clearValueInput}>
+          {/* <Image
             className="absolute top-0 hidden w-4"
             src={Icons.noneaCancelBottom}
             alt="bottom search icon"
+          ></Image> */}
+          <Image
+            src={Icons.noneaCancelLeft}
+            alt="left search icon"
+            className='w-2'
           ></Image>
           <Image
-            className="w-4"
             src={Icons.noneaCancelRight}
             alt="right search icon"
+            className={searchShow?"w-2 scroll-ml-0":'w-2 -ml-[1px]'}
           ></Image>
         </div>
       </div>
