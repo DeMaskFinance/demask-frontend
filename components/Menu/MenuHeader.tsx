@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ActiveLink } from "./ActiveLink";
+import { ActiveLink} from '../Link'
 import Link from "next/link";
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";

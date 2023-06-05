@@ -2,14 +2,15 @@ import Link from "next/link";
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css"; // optional
-import { ActiveLink, NavLink } from "./ActiveLink";
+import { ActiveLink} from "@/components/Link";
 import { useRouter } from "next/router";
-import ModalWallet from "./ModalWallet";
+import { ModalWallet } from "../Modal";
 import Image from "next/image";
 import Icons from "@/public/icons/icon";
-import Search from "./Search";
-import Logo from "./Logo";
-import MenuHeader from "./MenuHeader";
+import { SearchHeader } from "../Search";
+import { LogoDemask } from "../Logo";
+import { MenuHeader } from "../Menu";
+import LogoDeMask from "../Logo/LogoDemask";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-base2 text-lg gap-x-4`,
 };
@@ -44,19 +45,17 @@ export default function Header() {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out bg-white h-header px-14 "
     >
       <div className="flex">
-        <Logo />
+        <LogoDeMask/>
         <div className="ml-6 ">
           <MenuHeader />
         </div>
       </div>
       {/* Search */}
-      <Search />
+      <SearchHeader />
       <div className="flex items-center justify-end gap-x-6">
         <ul className={style.itemNav}>
           <li>
-            <ActiveLink href="/docs">
-              <p>Docs</p>
-            </ActiveLink>
+            <a href="https://docs.demask.finance/" target="_blank">Docs</a>
           </li>
           <li>
             <ActiveLink href="/about">

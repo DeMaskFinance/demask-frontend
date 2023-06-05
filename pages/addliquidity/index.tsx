@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Buttons/Button";
 import Icons from "@/public/icons/icon";
 import Head from "next/head";
 import Image from "next/image";

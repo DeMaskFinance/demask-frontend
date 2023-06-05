@@ -1,49 +1,51 @@
-import Button from "@/components/Button";
+import Button from "@/components/Buttons/Button";
 import Icons from "@/public/icons/icon";
 import { format } from "date-fns";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import Head from "next/head";
 import Image from "next/image";
-import React, { ChangeEvent, DragEvent, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
+import React, {
+  ChangeEvent,
+  DragEvent,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
+
 import "react-datepicker/dist/react-datepicker.css";
-import { mintNFT, uploadFileToIPFS } from '../../libs/nftCreatorUtils';
+import { mintNFT, uploadFileToIPFS } from "@/libs/nftCreatorUtils";
 import Web3 from "web3";
-import { ethers,errors } from "ethers";
+import { ethers, errors } from "ethers";
+import { launchPadSubmit } from "@/libs/launchPadSubmit";
+import MintNFT from "@/components/Creator/MintNFT";
+import { LaunchPad } from "@/components/Creator";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
   btnActive: "rounded-full bg-base2",
 };
-const attributeItems = [];
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState<string>("");
+  const [symbol, setSymbol] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [totalSupply, setTotalSupply] = useState<number>();
   const [emptyInputs, setEmptyInputs] = useState<string[]>([]);
-  const datePickerRef = useRef<any>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [required, setRequired] = useState<string>("");
-  const [providerCreator,setProviderCreator] =useState<any>('')
-  const [startDate, setStartDate] = useState<any>(
-    setHours(
-      setMinutes(new Date(), new Date().getMinutes()),
-      new Date().getHours()
-    )
-  );
+  const [providerCreator, setProviderCreator] = useState<any>("");
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
-  const [fileIPFS,setFileIPFS] = useState<any>(null);
+  const [fileIPFS, setFileIPFS] = useState<any>(null);
   const [activeButton, setActiveButton] = useState<string>("MINT");
-  const [attributeType, setAttributeType] = useState("");
-  const [attributeValue, setAttributeValue] = useState("");
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
   ]);
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [launchActive, setLaunchActive] = useState<string>("NOW");
   let file: any;
+  console.log(activeButton);
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     itemRef.current?.classList.add("item-active-drap");
@@ -98,7 +100,7 @@ export default function Creator() {
         if (file.size < 1073741824) {
           const fileURL = URL.createObjectURL(file);
           setFileType(fileType);
-          setSelectedFile(fileURL);    
+          setSelectedFile(fileURL);
           setFileIPFS(uploadFileToIPFS(file));
         } else {
           alert("Vui lòng chọn file nhỏ hơn 1GB");
@@ -145,7 +147,9 @@ export default function Creator() {
       trait_type: "",
       value: "",
     };
-    if (attributeItems.some((item) => item.trait_type === "" || item.value === "")) {
+    if (
+      attributeItems.some((item) => item.trait_type === "" || item.value === "")
+    ) {
       setIsValidBtn(false);
     } else {
       setIsValidBtn(true);
@@ -168,68 +172,7 @@ export default function Creator() {
       setSelectedCategory(updatedCategories);
     }
   };
-  console.log(selectedCategory);
-  
-  const changeLaunchStart = (option: string) => {
-    setLaunchActive(option);
-    if (option === "NOW") {
-      setStartDate(
-        setHours(
-          setMinutes(new Date(), new Date().getMinutes()),
-          new Date().getHours()
-        )
-      );
-    }
-  };
-  const handleDateChange = (date: any) => {
-    setStartDate(date);
-    setLaunchActive("CUSTOM");
-  };
-  async function activateInjectedProvider(providerName:string) {
-    const { ethereum }:any = window;
-    if (!ethereum?.providers) {
-      alert(`No ${providerName} provider found`);
-      return undefined;
-    }
-  
-    let provider;
-    switch (providerName) {
-      case "CoinBase":
-        provider = ethereum.providers.find(
-          ({ isCoinbaseWallet }:any) => isCoinbaseWallet
-        );
-        break;
-      case "MetaMask":
-        provider = ethereum.providers.find(({ isMetaMask }:any) => isMetaMask);
-        break;
-      default:
-        console.log(errors);
-    }
-  
-    if (provider) {
-      ethereum.setSelectedProvider(provider);
-      setProviderCreator(provider)
-    }
-    if (!provider) {
-      console.log(`No ${providerName} provider found`);
-      return;
-    }
-    try {
-      const account = await provider.request({ method: "eth_requestAccounts" });
-      console.log(account);
-    } catch (error:any) {
-      // console.error(`Failed to activate ${providerName} provider.`, error);
-      // setIsConnected(false)
-      if (error.code === 4001) {
-        // EIP-1193 userRejectedRequest error
-        // If this happens, the user rejected the connection request.
-        alert(`Please connect to ${providerName}`);
-        return;
-      } else {
-        console.error(error);
-      }
-    }
-  }
+
   const Category = [
     {
       id: 1,
@@ -252,211 +195,7 @@ export default function Creator() {
       value: "Memberships",
     },
   ];
-  const Mint = () => {
-    return (
-      <div className="w-[220px]">
-        <label htmlFor="totalSupply" className={styles.title}>
-          <span>Total Supply</span>
-        </label>
 
-        <input
-          placeholder="10,000"
-          type="number"
-          id="totalSupply"
-          name="totalSupply"
-          className={
-            emptyInputs.includes("totalSupply")
-              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-              : styles.inputItem
-          }
-        />
-      </div>
-    );
-  };
-  const Launchpad = () => {
-    return (
-      <div>
-        <div>
-          <label htmlFor="initial" className={styles.title}>
-            <span className="">Initial</span>
-            <span className="text-red">*</span>
-          </label>
-          <input
-            placeholder="Initial"
-            type="text"
-            id="initial"
-            name="initial"
-            className={
-              emptyInputs.includes("initial")
-                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                : styles.inputItem
-            }
-          />
-          {emptyInputs.includes("initial") && (
-            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
-              Required
-            </p>
-          )}
-        </div>
-        <div>
-          <label htmlFor="totalSale" className={styles.title}>
-            <span className="">Total Sale</span>
-            <span className="text-red">*</span>
-          </label>
-          <input
-            placeholder="Total Sale"
-            type="text"
-            id="totalSale"
-            name="totalSale"
-            className={
-              emptyInputs.includes("totalSale")
-                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                : styles.inputItem
-            }
-          />
-          {emptyInputs.includes("totalSale") && (
-            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-              Required
-            </p>
-          )}
-        </div>
-        <div>
-          <label htmlFor="tokenPayment" className={styles.title}>
-            <span className="">Token Payment</span>
-            <span className="text-red">*</span>
-          </label>
-          <input
-            placeholder="0x3248"
-            type="text"
-            id="tokenPayment"
-            name="tokenPayment"
-            className={
-              emptyInputs.includes("tokenPayment")
-                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                : styles.inputItem
-            }
-          />
-          {emptyInputs.includes("totalSale") && (
-            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-              Required
-            </p>
-          )}
-        </div>
-        <div>
-          <p className={styles.title}>Price</p>
-          <p className="mb-4 text-3xl text-dark2">1,000</p>
-        </div>
-        <div>
-          <p className={styles.title}>Launchpad start</p>
-          <div className="grid h-[34px] grid-cols-2 rounded-full w-[120px] mb-4 text-sm bg-dark2 text-white">
-            <button
-              type="button"
-              className={`${
-                launchActive === "NOW" ? "rounded-full bg-base2" : ""
-              }`}
-              onClick={() => changeLaunchStart("NOW")}
-            >
-              NOW
-            </button>
-            <button
-              type="button"
-              className={`${
-                launchActive === "CUSTOM" ? "rounded-full bg-base2" : ""
-              }`}
-              onClick={() => changeLaunchStart("CUSTOM")}
-            >
-              CUSTOM
-            </button>
-          </div>
-          <div className="w-full mb-4 border rounded-lg border-dark2">
-            <DatePicker
-              selected={startDate}
-              onChange={handleDateChange}
-              showTimeSelect
-              excludeTimes={[]}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
-              ref={datePickerRef}
-            />
-          </div>
-        </div>
-        <div>
-          <p className={styles.title}>Launchpad duration</p>
-          <Button className="px-4 py-1 mb-4 mr-4 text-sm font-semibold">
-            1 day
-          </Button>
-          <Button
-            className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-            secondary
-          >
-            3 days
-          </Button>
-          <Button
-            className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-            secondary
-          >
-            7 days
-          </Button>
-          <Button
-            className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-            secondary
-          >
-            14 days
-          </Button>
-          <Button
-            className="px-4 py-1 mb-4 mr-4 text-sm font-semibold"
-            secondary
-          >
-            Custom
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const emptyInputFields = [];
-
-    if (data.get("name") === "") {
-      emptyInputFields.push("name");
-    }
-
-    if (data.get("symbol") === "") {
-      emptyInputFields.push("symbol");
-    }
-
-    if (data.get("initial") === "") {
-      emptyInputFields.push("initial");
-    }
-
-    if (data.get("totalSale") === "") {
-      emptyInputFields.push("totalSale");
-    }
-    if (data.get("tokenPayment") === "") {
-      emptyInputFields.push("tokenPayment");
-    }
-    setEmptyInputs(emptyInputFields);
-    if (emptyInputFields.length === 0) {
-      const simplifiedAttributes = attributeItems.map(({ trait_type, value }) => ({ trait_type, value }));
-      const metadata = JSON.stringify({
-      name: data.get('name'),
-      symbol:data.get('symbol'),
-      description:data.get('description'),
-      image:await fileIPFS,
-      attributes:simplifiedAttributes,
-      category:selectedCategory,
-    })
-      const urlMetadata = await uploadFileToIPFS(metadata);
-      console.log(urlMetadata);
-      
-      mintNFT({ amount: Number(data.get("totalSupply")), data: '0x', url: urlMetadata })
-    }
-    
-  };
-  
-  console.log(fileIPFS);
   return (
     <div className="flex py-8 px-[250px] 3xl:px-[444px] gap-x-[26px]">
       <Head>
@@ -561,7 +300,7 @@ export default function Creator() {
         </div>
       </div>
       <div className="w-full">
-        <form onSubmit={handleSubmit}>
+        <form id="creator">
           <div>
             <label htmlFor="name" className={styles.title}>
               <span className="">NFT name</span>
@@ -571,13 +310,13 @@ export default function Creator() {
               placeholder="Name"
               type="text"
               id="name"
-              name="name"
+              value={name}
               className={
                 emptyInputs.includes("name")
                   ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
                   : styles.inputItem
               }
-              
+              onChange={(e) => setName(e.target.value)}
             />
             {emptyInputs.includes("name") && (
               <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="name">
@@ -595,12 +334,13 @@ export default function Creator() {
               placeholder="Symbol"
               type="text"
               id="symbol"
-              name="symbol"
+              value={symbol}
               className={
                 emptyInputs.includes("symbol")
                   ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
                   : styles.inputItem
               }
+              onChange={(e) => setSymbol(e.target.value)}
             />
             {emptyInputs.includes("symbol") && (
               <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="symbol">
@@ -616,8 +356,9 @@ export default function Creator() {
             <textarea
               placeholder="Write a description of your nft ..."
               id="description"
-              name="description"
+              value={description}
               className={`${styles.inputItem} h-20 resize-none`}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div>
@@ -665,7 +406,11 @@ export default function Creator() {
             {Category.map((item, index) => (
               <Button
                 type="button"
-                className={`px-4 py-1 mb-4 mr-4 text-sm font-semibold ${selectedCategory.includes(item.value)?'bg-base2 text-white':'bg-dark2'}`}
+                className={`px-4 py-1 mb-4 mr-4 text-sm font-semibold ${
+                  selectedCategory.includes(item.value)
+                    ? "bg-base2 text-white"
+                    : "bg-dark2"
+                }`}
                 key={item.id}
                 onClick={() => selectCategory(item.value)}
               >
@@ -692,13 +437,30 @@ export default function Creator() {
               </button>
             </div>
           </div>
-          {activeButton === "MINT" ? <Mint /> : <Launchpad />}
-          <Button type="submit" className="px-4 py-1">
-            CREATE
-          </Button>
-          {/* <Button type="button" className="px-4 py-1" onClick={() => activateInjectedProvider('MetaMask')}>
-            Connect
-          </Button> */}
+
+          {activeButton === "MINT" ? (
+            <MintNFT
+              name={name}
+              symbol={symbol}
+              attributeItems={attributeItems}
+              description={description}
+              fileIPFS={fileIPFS}
+              selectedCategory={selectedCategory}
+              setEmptyInputs={setEmptyInputs}
+              emptyInputs={emptyInputs}
+            />
+          ) : (
+            <LaunchPad
+              name={name}
+              symbol={symbol}
+              attributeItems={attributeItems}
+              description={description}
+              fileIPFS={fileIPFS}
+              selectedCategory={selectedCategory}
+              setEmptyInputs={setEmptyInputs}
+              emptyInputs={emptyInputs}
+            />
+          )}
         </form>
       </div>
     </div>

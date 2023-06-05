@@ -1,7 +1,6 @@
-import ChartTVL from "@/components/ChartTVL";
-import ChartVolumn from "@/components/ChartVolume";
-import CollectionItem from "@/components/CollectionItem";
-import TransactionItem from "@/components/TransactionItem";
+import { ChartTVL, ChartVolumn } from '@/components/Charts';
+import {CollectionItem} from '@/components/Overview'
+import {TransactionItem} from "@/components/Overview";
 import Head from "next/head";
 import React from "react";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";

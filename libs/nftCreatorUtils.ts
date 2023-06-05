@@ -38,37 +38,6 @@ export async function uploadFileToIPFS(file:any) {
     alert("Bạn chưa chọn file");
   }
 }
-async function providerWallet(providerName:string) {
-  const { ethereum }:any = window;
-  if (!ethereum?.providers) {
-    alert(`No ${providerName} provider found`);
-    return undefined;
-  }
-
-  let provider;
-  switch (providerName) {
-    case "CoinBase":
-      provider = ethereum.providers.find(
-        ({ isCoinbaseWallet }:any) => isCoinbaseWallet
-      );
-      break;
-    case "MetaMask":
-      provider = ethereum.providers.find(({ isMetaMask }:any) => isMetaMask);
-      break;
-    default:
-      console.log(errors);
-  }
-
-  if (provider) {
-    ethereum.setSelectedProvider(provider);
-  }
-  if (!provider) {
-    console.log(`No ${providerName} provider found`);
-    return;
-  }
-
-  return provider;
-}
 export async function mintNFT({amount,data,url}:mintProps) {
   const ethereum = (window as any).ethereum;
   if (typeof ethereum === "undefined") {
@@ -127,11 +96,13 @@ export async function mintNFT({amount,data,url}:mintProps) {
         alert(`Transaction successful. https://mumbai.polygonscan.com/tx/${transactionHash}`);
         console.log('NFT minted successfully');
         console.log('Token ID:', randomID);
+        localStorage.setItem('resultMint',"successed");
       }
     }
     await checkAndMint();
   } catch (error) {
     console.error("Failed to mint NFT:", error);
+    localStorage.setItem('resultMint',"failed");
   }
 }
 

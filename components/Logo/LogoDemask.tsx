@@ -7,7 +7,7 @@ interface LogoProps {
     
 }
  
-const Logo: FunctionComponent<LogoProps> = () => {
+const LogoDeMask: FunctionComponent<LogoProps> = () => {
     return ( 
         <div className="text-center logo w-[142px] h-[24px]">
           <Link href="/">
@@ -22,4 +22,4 @@ const Logo: FunctionComponent<LogoProps> = () => {
      );
 }
  
-export default Logo;
+export default LogoDeMask;
