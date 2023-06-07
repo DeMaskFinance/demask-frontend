@@ -18,6 +18,7 @@ const checkIsERC20 = async (contractAddress: string) => {
         name: name,
         symbol: symbol,
         totalSupply: totalSupply.toString(),
+        decimals:decimals,
       };
     } else {
       return {

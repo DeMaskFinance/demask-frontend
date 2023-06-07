@@ -104,7 +104,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   let transactionHash = "";
   const launchPadAction = async ({
     initial,
-    price,
+    priceLauchpad,
     startDate,
     endDate,
     url,
@@ -114,7 +114,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     const totalSupply = initial + totalSale;
     console.log(
       initial,
-      price,
+      priceLauchpad,
       totalSale,
       totalSupply,
       startDate.getTime() / 1000,
@@ -157,7 +157,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           const transaction = await contract.launchpad_submit(
             randomID,
             initial,
-            price,
+            priceLauchpad,
             addressAccount,
             totalSupply,
             startTimeTimestamp,
@@ -252,6 +252,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       emptyInputFields.push("wrongtime");
     }
     setEmptyInputs(emptyInputFields);
+    const priceLauchpad = price * Math.pow(10, inforErc20.decimals);
     if (emptyInputFields.length === 0) {
       const urlMetadata = getMetadataUrl({
         attributeItems,
@@ -264,7 +265,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       });
       launchPadAction({
         initial,
-        price,
+        priceLauchpad,
         startDate,
         endDate,
         data: "0x",
@@ -275,6 +276,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       setIsProcess(false);
     }
   };
+  
+  
   return (
     <div>
       <div>
