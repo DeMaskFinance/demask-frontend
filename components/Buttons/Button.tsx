@@ -1,7 +1,7 @@
 import { FunctionComponent,MouseEventHandler } from "react";
 
 interface ButtonProps {
-  children: string;
+  children: any;
   secondary?: boolean;
   fullWidth?: boolean;
   large?: boolean;

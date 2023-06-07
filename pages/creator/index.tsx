@@ -1,23 +1,17 @@
 import Button from "@/components/Buttons/Button";
 import Icons from "@/public/icons/icon";
-import { format } from "date-fns";
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
 import Head from "next/head";
 import Image from "next/image";
 import React, {
   ChangeEvent,
   DragEvent,
+  useEffect,
   useRef,
   useState,
-  useEffect,
 } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { mintNFT, uploadFileToIPFS } from "@/libs/nftCreatorUtils";
-import Web3 from "web3";
-import { ethers, errors } from "ethers";
-import { launchPadSubmit } from "@/libs/launchPadSubmit";
+import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import MintNFT from "@/components/Creator/MintNFT";
 import { LaunchPad } from "@/components/Creator";
 const styles = {
@@ -28,13 +22,11 @@ const styles = {
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const uploadRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState<string>("");
   const [symbol, setSymbol] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [totalSupply, setTotalSupply] = useState<number>();
   const [emptyInputs, setEmptyInputs] = useState<string[]>([]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [providerCreator, setProviderCreator] = useState<any>("");
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<any>(null);
@@ -97,7 +89,7 @@ export default function Creator() {
         "image/tiff",
       ];
       if (validExtensions.includes(fileType)) {
-        if (file.size < 1073741824) {
+        if (file.size < 1073741824) {         
           const fileURL = URL.createObjectURL(file);
           setFileType(fileType);
           setSelectedFile(fileURL);
@@ -195,7 +187,25 @@ export default function Creator() {
       value: "Memberships",
     },
   ];
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 150) {
+        uploadRef.current?.classList.add('fixed','top-[40px]');
+      } else {
+        uploadRef.current?.classList.remove('fixed','top-[40px]');
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
 
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  useEffect(()=>{
+    if(selectedFile===null){
+      itemRef.current?.classList.add("border");
+    }
+  },[selectedFile])
   return (
     <div className="flex py-8 px-[250px] 3xl:px-[444px] gap-x-[26px]">
       <Head>
@@ -205,7 +215,7 @@ export default function Creator() {
       <div className="w-[504px] shrink-0">
         <h2 className="text-2xl">Create A New Item</h2>
         <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
-        <div className="flex flex-col items-center ">
+        <div className="flex flex-col items-center w-[504px]" ref={uploadRef}>
           <div
             className="flex flex-col items-center w-full text-center border border-dashed h-fit border-1 border-dark2 rounded-2xl"
             ref={itemRef}
@@ -371,6 +381,7 @@ export default function Creator() {
                   placeholder="Trait Type"
                   type="text"
                   id={`traitType_${item.id}`}
+                  value={item.trait_type}
                   className={styles.inputItem}
                   onChange={(e) => handleChangeAttributeType(e, item.id)}
                 />
@@ -378,6 +389,7 @@ export default function Creator() {
                   placeholder="Value"
                   type="text"
                   id={`value_${item.id}`}
+                  value={item.value}
                   className={styles.inputItem}
                   onChange={(e) => handleChangeAttributeValue(e, item.id)}
                 />
@@ -448,6 +460,13 @@ export default function Creator() {
               selectedCategory={selectedCategory}
               setEmptyInputs={setEmptyInputs}
               emptyInputs={emptyInputs}
+              setName= {setName}
+              setSymbol = {setSymbol}
+              setDescription = {setDescription}
+              setAttributeItems ={setAttributeItems}
+              setSelectedCategory={setSelectedCategory}
+              setSelectedFile = {setSelectedFile}
+              fileType = {fileType}
             />
           ) : (
             <LaunchPad
@@ -459,6 +478,13 @@ export default function Creator() {
               selectedCategory={selectedCategory}
               setEmptyInputs={setEmptyInputs}
               emptyInputs={emptyInputs}
+              setName= {setName}
+              setSymbol = {setSymbol}
+              setDescription = {setDescription}
+              setAttributeItems ={setAttributeItems}
+              setSelectedCategory={setSelectedCategory}
+              setSelectedFile = {setSelectedFile}
+              fileType = {fileType}
             />
           )}
         </form>

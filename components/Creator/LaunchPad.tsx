@@ -1,14 +1,17 @@
-import { useState, useRef } from "react";
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
+import { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import Button from "../Buttons/Button";
-import { launchPadSubmit } from "@/libs/launchPadSubmit";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { uploadFileToIPFS } from "@/libs/nftCreatorUtils";
-import { startOfMinute } from "date-fns";
-
+import { ethers } from "ethers";
+import abiErc1155 from "@/abi/abiErc1155.json";
+import TransitionURL from "../Toast/TransionURL";
+import { changeNetwork } from "@/libs/utils/network";
+import checkIsERC20 from "@/libs/validation/checkIsERC20";
+import { Processing } from "../Loading";
+import { HiArrowRight } from "react-icons/hi";
+import getMetadataUrl from "@/libs/utils/getMetadata";
+import { BiLoaderAlt } from "react-icons/bi";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -18,6 +21,21 @@ interface LauchPadProps {
   selectedCategory: string[];
   setEmptyInputs: React.Dispatch<React.SetStateAction<string[]>>;
   emptyInputs: string[];
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
+  setAttributeItems: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: number;
+        trait_type: string;
+        value: string;
+      }[]
+    >
+  >;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  setSymbol: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedFile: React.Dispatch<any>;
+  fileType: string | null;
 }
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
@@ -33,35 +51,173 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   selectedCategory,
   setEmptyInputs,
   emptyInputs,
-}: any) => {
+  setName,
+  setSelectedCategory,
+  setAttributeItems,
+  setDescription,
+  setSymbol,
+  setSelectedFile,
+  fileType,
+}) => {
   const currentDate = new Date();
   const utcHours = currentDate.getUTCHours();
   const utcMinutes = currentDate.getUTCMinutes();
-  const datePickerRef = useRef<any>(null);
-  const [initial, setInitial] = useState<number>();
-  const [totalSale, setTotalSale] = useState<number>();
+  const [initial, setInitial] = useState<number | null>();
+  const [totalSale, setTotalSale] = useState<number | null>();
   const [tokenPayment, setTokenPayment] = useState<string>("");
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<number | null>();
   const [launchActive, setLaunchActive] = useState<string>("NOW");
-  const [startDate, setStartDate] = useState<any>(
-    setHours(setMinutes(new Date(), utcMinutes), utcHours)
-  );
-  const changeLaunchStart = (option: string) => {
-    setLaunchActive(option);
-    if (option === "NOW") {
-      setStartDate(
-        setHours(
-          setMinutes(new Date(), new Date().getMinutes()),
-          new Date().getHours()
-        )
-      );
-    }
-  };
-  const handleDateChange = (date: any) => {
+  const [inforErc20, setInforErc20] = useState<any>("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [provide, setProvide] = useState<any>();
+  const [isError, setIsError] = useState(false);
+  const [isProcess, setIsProcess] = useState<boolean>(false);
+  const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
+  // const changeLaunchStart = (option: string) => {
+  //   setLaunchActive(option);
+  //   if (option === "NOW") {
+  //     setStartDate(
+  //       setHours(
+  //         setMinutes(new Date(), new Date().getMinutes()),
+  //         new Date().getHours()
+  //       )
+  //     );
+  //   }
+  // };
+  const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
   };
+  useEffect(() => {
+    if (startDate && endDate && startDate > endDate) {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
+  }, [startDate, endDate]);
+  interface LaunchPadProps {
+    initial: number;
+    price: number;
+    totalSale: number;
+  }
+  let transactionHash = "";
+  const launchPadAction = async ({
+    initial,
+    price,
+    startDate,
+    endDate,
+    url,
+    data,
+    totalSale,
+  }: any) => {
+    const totalSupply = initial + totalSale;
+    console.log(
+      initial,
+      price,
+      totalSale,
+      totalSupply,
+      startDate.getTime() / 1000,
+      url,
+      data,
+      endDate.getTime() / 1000
+    );
+
+    const ethereum = (window as any).ethereum;
+    if (typeof ethereum === "undefined") {
+      alert("Please install MetaMask to launch pad NFTs.");
+      return;
+    }
+
+    try {
+      await ethereum.request({ method: "eth_requestAccounts" });
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const contractAddress = "0x84b14a4078e8c65a91766DD1Fa4ED481BAeac0e9"; // Creator
+      const contract = new ethers.Contract(contractAddress, abiErc1155, signer);
+      const addressAccount = ethereum.selectedAddress;
+      console.log(addressAccount);
+
+      const checkExists = async (id: number): Promise<boolean> => {
+        const isExisting = await contract.exists(id);
+        return isExisting;
+      };
+      const generateRandomNumber = (): number => {
+        return Math.floor(Math.random() * 10000000000);
+      };
+      changeNetwork();
+      const checkAndLauchPadSubmit = async () => {
+        const randomID = generateRandomNumber();
+        const isExisting = await checkExists(randomID);
+        if (isExisting) {
+          checkAndLauchPadSubmit();
+        } else {
+          const startTimeTimestamp = startDate.getTime() / 1000;
+          const endTimeTimestamp = endDate.getTime() / 1000;
+          const transaction = await contract.launchpad_submit(
+            randomID,
+            initial,
+            price,
+            addressAccount,
+            totalSupply,
+            startTimeTimestamp,
+            endTimeTimestamp,
+            url,
+            data
+          );
+          // await transaction.wait();
+          transactionHash = transaction.hash;
+          toast.success(
+            <TransitionURL
+              type={"Launchpad"}
+              transactionHash={transactionHash}
+            />,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+          setName("");
+          setDescription("");
+          setSymbol("");
+          setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
+          setSelectedCategory([]);
+          setSelectedFile(null);
+          setInitial(0);
+          setTotalSale(null);
+          setPrice(null);
+          setTokenPayment("");
+          setStartDate(null);
+          setEndDate(null);
+        }
+      };
+      await checkAndLauchPadSubmit();
+    } catch (error) {
+      console.error("Failed to Launchpad:", error);
+    }
+    setIsProcess(false);
+  };
+  console.log(isProcess);
+
+  const handleTokenPaymentChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setTokenPayment(e.target.value);
+    const value = e.target.value;
+    setIsTokenPayment(true);
+    const informationErc20 = await checkIsERC20(value);
+    setInforErc20(informationErc20);
+    setIsTokenPayment(false);
+  };
+
   const handleLauchpadSubmit = async () => {
+    setIsProcess(true);
     const emptyInputFields = [];
     const requiredFields = [
       "name",
@@ -89,24 +245,34 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         theme: "light",
       });
     }
-
+    if(inforErc20.isERC20 === false){
+      emptyInputFields.push("NotErc20");
+    }
+    if(startDate === null || endDate===null ){
+      emptyInputFields.push("wrongtime");
+    }
     setEmptyInputs(emptyInputFields);
     if (emptyInputFields.length === 0) {
-      const simplifiedAttributes = attributeItems.map(
-        ({ trait_type, value }:any) => ({ trait_type, value })
-      );
-      const metadata = JSON.stringify({
-        name: name,
-        symbol: symbol,
-        description: description,
-        image: await fileIPFS,
-        attributes: simplifiedAttributes,
-        category: selectedCategory,
+      const urlMetadata = getMetadataUrl({
+        attributeItems,
+        fileType,
+        fileIPFS,
+        name,
+        symbol,
+        description,
+        selectedCategory,
       });
-      const urlMetadata = await uploadFileToIPFS(metadata);
-      launchPadSubmit({
-        initial,price,startDate,fileIPFS,data:'0x',totalSale,url:urlMetadata
-      })
+      launchPadAction({
+        initial,
+        price,
+        startDate,
+        endDate,
+        data: "0x",
+        totalSale,
+        url: await urlMetadata,
+      });
+    } else {
+      setIsProcess(false);
     }
   };
   return (
@@ -120,7 +286,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           placeholder="Initial"
           type="number"
           id="initial"
-          value={initial}
+          value={initial || ""}
           className={
             emptyInputs.includes("initial")
               ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
@@ -143,7 +309,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           placeholder="Total Sale"
           type="number"
           id="totalSale"
-          value={totalSale}
+          value={totalSale || ""}
           className={
             emptyInputs.includes("totalSale")
               ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
@@ -157,7 +323,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </p>
         )}
       </div>
-      <div>
+      <div className="relative">
         <label htmlFor="tokenPayment" className={styles.title}>
           <span className="">Token Payment</span>
           <span className="text-red">*</span>
@@ -166,16 +332,32 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           placeholder="0x3248"
           type="text"
           id="tokenPayment"
-          value={tokenPayment}
+          value={tokenPayment || ""}
           className={
             emptyInputs.includes("tokenPayment")
               ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
               : styles.inputItem
           }
-          onChange={(e) => setTokenPayment(e.target.value)}
+          onChange={handleTokenPaymentChange}
         />
+        {isTokenPayment && (
+          <div className="absolute top-[49%] right-2">
+            <BiLoaderAlt className="animate-spin" />
+          </div>
+        )}
+        {inforErc20.isERC20 ? (
+          <div className="mb-2">
+            <p>Name:{inforErc20.name}</p>
+            <p>Symbol:{inforErc20.symbol}</p>
+            <p>Total Supply:{inforErc20.totalSupply}</p>
+          </div>
+        ) : (
+          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalPayment">
+            Your token payment must be an ERC20 token
+          </p>
+        )}
         {emptyInputs.includes("totalSale") && (
-          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalPayment">
             Required
           </p>
         )}
@@ -189,7 +371,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           placeholder="1,000"
           type="number"
           id="price"
-          value={price}
+          value={price || ""}
           className={
             emptyInputs.includes("price")
               ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
@@ -197,10 +379,15 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           }
           onChange={(e) => setPrice(Number(e.target.value))}
         />
+        {emptyInputs.includes("price") && (
+          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
+            Required
+          </p>
+        )}
       </div>
       <div>
-        <p className={styles.title}>Launchpad start</p>
-        <div className="grid h-[34px] grid-cols-2 rounded-full w-[120px] mb-4 text-sm bg-dark2 text-white">
+        <p className={styles.title}>Start & end time</p>
+        {/* <div className="grid h-[34px] grid-cols-2 rounded-full w-[120px] mb-4 text-sm bg-dark2 text-white">
           <button
             type="button"
             className={`${
@@ -219,42 +406,60 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           >
             CUSTOM
           </button>
+        </div> */}
+        <div className="flex justify-between gap-x-4">
+          <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            <DatePicker
+              selected={startDate}
+              onChange={handleDateChange}
+              timeIntervals={15}
+              showTimeSelect
+              dateFormat="MMMM d, yyyy h:mm aa"
+              className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
+              placeholderText="Now"
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </div>
+          <HiArrowRight className="translate-y-[75%]" />
+          <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              timeIntervals={15}
+              showTimeSelect
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={new Date()}
+              dateFormat="MMMM d, yyyy h:mm aa"
+              className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
+              placeholderText="Forever"
+            />
+          </div>
         </div>
-        <div className="w-full mb-4 border rounded-lg border-dark2">
-          <DatePicker
-            selected={startDate}
-            onChange={handleDateChange}
-            minDate={new Date()}
-            timeIntervals={5}
-            showTimeSelect
-            excludeTimes={[]}
-            dateFormat="MMMM d, yyyy h:mm aa"
-            className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
-            ref={datePickerRef}
-          />
-        </div>
+        {isError && (
+          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
+            Start time should be earlier than End time
+          </p>
+        )}
+        {emptyInputs.includes("wrongtime")&&(
+          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="time">
+          You have to enter the time
+        </p>
+        )}
       </div>
-      <div>
-        <p className={styles.title}>Launchpad end</p>
-        <div className="w-full mb-4 border rounded-lg border-dark2">
-          <DatePicker
-            selected={startDate}
-            onChange={handleDateChange}
-            showTimeSelect
-            excludeTimes={[]}
-            dateFormat="MMMM d, yyyy h:mm aa"
-            className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
-            ref={datePickerRef}
-          />
-        </div>
+      <div className="relative">
+        <Button
+          type="button"
+          className="w-[140px] py-2"
+          onClick={handleLauchpadSubmit}
+        >
+          CREATE
+        </Button>
+        {isProcess && <Processing />}
       </div>
-      <Button
-        type="button"
-        className="px-4 py-1"
-        onClick={handleLauchpadSubmit}
-      >
-        CREATE
-      </Button>
       <ToastContainer />
     </div>
   );
