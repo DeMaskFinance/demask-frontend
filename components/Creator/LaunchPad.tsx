@@ -62,10 +62,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const currentDate = new Date();
   const utcHours = currentDate.getUTCHours();
   const utcMinutes = currentDate.getUTCMinutes();
-  const [initial, setInitial] = useState<number | null>();
+  const [initial, setInitial] = useState<any>();
   const [totalSale, setTotalSale] = useState<number | null>();
   const [tokenPayment, setTokenPayment] = useState<string>("");
-  const [price, setPrice] = useState<number | null>();
+  const [price, setPrice] = useState<any>();
   const [launchActive, setLaunchActive] = useState<string>("NOW");
   const [inforErc20, setInforErc20] = useState<any>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -292,7 +292,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
               ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
               : styles.inputItem
           }
-          onChange={(e) => setInitial(+e.target.value)}
+          onChange={(e) => setInitial(e.target.value)}
         />
         {emptyInputs.includes("initial") && (
           <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
@@ -377,7 +377,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
               ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
               : styles.inputItem
           }
-          onChange={(e) => setPrice(Number(e.target.value))}
+          onChange={(e) => setPrice(e.target.value)}
         />
         {emptyInputs.includes("price") && (
           <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
@@ -386,7 +386,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         )}
       </div>
       <div>
-        <p className={styles.title}>Start & end time</p>
+      <label htmlFor="time" className={styles.title}>
+          <span className="">Start & end time</span>
+          <span className="text-red">*</span>
+        </label>
         {/* <div className="grid h-[34px] grid-cols-2 rounded-full w-[120px] mb-4 text-sm bg-dark2 text-white">
           <button
             type="button"

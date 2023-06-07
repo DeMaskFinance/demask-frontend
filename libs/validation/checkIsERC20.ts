@@ -2,9 +2,7 @@ import { ethers } from "ethers";
 import abiErc20 from "@/abi/abiErc20.json";
 const checkIsERC20 = async (contractAddress: string) => {
   const INFURA_ID = "9bab56a381cb440eb809f56e01c59de5";
-  const provider = new ethers.providers.JsonRpcProvider(
-    `https://mainnet.infura.io/v3/${INFURA_ID}`
-  );
+  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
   const contract = new ethers.Contract(contractAddress, abiErc20, provider);
 
   try {
