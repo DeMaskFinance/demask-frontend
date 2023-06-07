@@ -12,6 +12,7 @@ import { Processing } from "../Loading";
 import { HiArrowRight } from "react-icons/hi";
 import getMetadataUrl from "@/libs/utils/getMetadata";
 import { BiLoaderAlt } from "react-icons/bi";
+import BigNumber from "bignumber.js";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -245,14 +246,16 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         theme: "light",
       });
     }
-    if(inforErc20.isERC20 === false){
+    if (inforErc20.isERC20 === false) {
       emptyInputFields.push("NotErc20");
     }
-    if(startDate === null || endDate===null ){
+    if (startDate === null || endDate === null) {
       emptyInputFields.push("wrongtime");
     }
     setEmptyInputs(emptyInputFields);
-    const priceLauchpad = price * Math.pow(10, inforErc20.decimals);
+    const priceLauchpad = new BigNumber(price).times(new BigNumber(10).pow(Number(inforErc20.decimals))).toFixed();
+    console.log(priceLauchpad);
+
     if (emptyInputFields.length === 0) {
       const urlMetadata = getMetadataUrl({
         attributeItems,
@@ -276,8 +279,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       setIsProcess(false);
     }
   };
-  
-  
+
   return (
     <div>
       <div>
@@ -389,7 +391,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         )}
       </div>
       <div>
-      <label htmlFor="time" className={styles.title}>
+        <label htmlFor="time" className={styles.title}>
           <span className="">Start & end time</span>
           <span className="text-red">*</span>
         </label>
@@ -450,10 +452,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             Start time should be earlier than End time
           </p>
         )}
-        {emptyInputs.includes("wrongtime")&&(
+        {emptyInputs.includes("wrongtime") && (
           <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="time">
-          You have to enter the time
-        </p>
+            You have to enter the time
+          </p>
         )}
       </div>
       <div className="relative">

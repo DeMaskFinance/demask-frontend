@@ -29,9 +29,9 @@ const Button: FunctionComponent<ButtonProps> = ({
       onClick={onClick}
       type={type}
       className={`
-      rounded-full
+      rounded-lg
       text-sm
-      ${secondary ? "bg-dark2" : "bg-base2"}
+      ${secondary ? "bg-dark2" : "bg-secondary5"}
       ${secondary ? "text-dark" : "text-white"}
       ${outline ? "bg-transparent" : ""}
       ${outline ? "border-white" : ""}

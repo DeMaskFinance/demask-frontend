@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 import type { Route } from 'next';
 
 const styles = {
-    active:'text-black'
+    active:'text-secondary1'
 }
 interface Props extends LinkProps {
   children: any;
