@@ -11,5 +11,6 @@ const Icons ={
     twitterIcon:require('./Twitter.svg').default,
     backIcon:require('./back.svg').default,
     deleteIcon:require('./noneacancelDelete.svg').default,
+    etherIcon:require('./ether.svg').default,
 }
 export default Icons;

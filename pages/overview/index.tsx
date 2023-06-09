@@ -1,6 +1,6 @@
-import { ChartTVL, ChartVolumn } from '@/components/Charts';
-import {CollectionItem} from '@/components/Overview'
-import {TransactionItem} from "@/components/Overview";
+import { ChartTVL, ChartVolumn } from "@/components/Charts";
+import { CollectionItem } from "@/components/Overview";
+import { TransactionItem } from "@/components/Overview";
 import Head from "next/head";
 import React from "react";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
@@ -11,7 +11,7 @@ export default function Overview() {
       <Head>
         <title>Overview | DeMask</title>
       </Head>
-      <h1 className="mb-6 text-2xl font-normal">Demask Info & Analytics</h1>
+      <h1 className="mb-6 text-2xl font-medium">Demask Info & Analytics</h1>
       <div className="grid grid-cols-2 gap-10">
         {/* Chart */}
         <ChartTVL />
@@ -19,7 +19,7 @@ export default function Overview() {
       </div>
       <div className="flex gap-6 my-6 text-lg">
         <div className="flex">
-          <span className="text-dark">Volume 24H: $8.45M </span>(
+          <span className="mr-2 text-dark2">Volume 24H: $8.45M </span> (
           <span className="flex items-center text-red">
             <BsArrowDown />
             89.95%
@@ -27,7 +27,7 @@ export default function Overview() {
           )
         </div>
         <div className="flex">
-          <span className="text-dark">Fees 24H: $41.25K </span>(
+          <span className="mr-2 text-dark2">Fees 24H: $41.25K </span>(
           <span className="flex items-center text-red">
             <BsArrowDown />
             19.81%
@@ -35,7 +35,7 @@ export default function Overview() {
           )
         </div>
         <div className="flex">
-          <span className="text-dark">TVL: $275.74M </span>(
+          <span className="mr-2 text-dark">TVL: $275.74M </span>(
           <span className="flex items-center text-green">
             <BsArrowUp />
             1.35%
@@ -45,11 +45,15 @@ export default function Overview() {
       </div>
       {/* Top or Trending */}
       <div className="collectionList">
-        <div className="flex gap-4 text-xl text-dark2 w-[184px] border border-dark rounded-t-lg border-b-0">
-          <h3 className="pl-6 cursor-pointer text-base2">Top</h3>
-          <h3 className="pr-6 cursor-pointer">Trending</h3>
+        <div className="flex text-xl text-white w-[184px] border border-dark3 rounded-t-lg border-b-0">
+          <div className="bg-secondary1">
+            <h3 className="pl-6 cursor-pointer">TOP</h3>
+          </div>
+          <div className="bg-dark2">
+            <h3 className="pr-6 cursor-pointer">TRENDING</h3>
+          </div>
         </div>
-        <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark border-spacing-0">
+        <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark3 border-spacing-0">
           <thead className="flex w-full px-8 pt-4 font-semibold text-black24">
             <tr className="flex w-full text-left">
               <th className="flex flex-1 gap-x-6">
@@ -87,10 +91,10 @@ export default function Overview() {
       </div>
       {/* Transaction */}
       <div className="transactionList">
-      <div className="flex gap-4 text-xl text-dark2 w-[184px] border border-dark rounded-t-lg border-b-0">
-          <h3 className="pl-6 cursor-pointer text-base2">Transaction</h3>
+        <div className="flex gap-4 text-xl text-dark2 w-[164px] border bg-secondary1 border-dark3 rounded-t-lg border-b-0">
+          <h3 className="w-full text-center text-white cursor-pointer h-[42px] leading-[42px]">TRANSACTION</h3>
         </div>
-        <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark border-spacing-0">
+        <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark3 border-spacing-0">
           <thead className="flex w-full font-semibold text-black24">
             <tr className="flex w-full px-8 pt-4 text-left">
               <th className="flex flex-1 gap-x-6">
@@ -105,13 +109,13 @@ export default function Overview() {
           </thead>
           {/* Transaction Item */}
           <tbody>
-            <TransactionItem/>
-            <TransactionItem/>
-            <TransactionItem/>
-            <TransactionItem/>
-            <TransactionItem/>
-            <TransactionItem/>
-            <TransactionItem/>
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
           </tbody>
         </table>
         <div className="flex justify-center my-[27px]">

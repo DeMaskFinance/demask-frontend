@@ -185,7 +185,7 @@ export default function MintNFT({
         </p>
       )}
       <div className="relative">
-        <Button className="w-[140px] py-2" onClick={handleSubmit}>
+        <Button className="w-[140px] py-2" onClick={handleSubmit} primary>
           CREATE
         </Button>
         {isProcess && <Processing />}

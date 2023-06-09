@@ -462,6 +462,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         <Button
           type="button"
           className="w-[140px] py-2"
+          primary
           onClick={handleLauchpadSubmit}
         >
           CREATE

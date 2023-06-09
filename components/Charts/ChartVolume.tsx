@@ -13,7 +13,7 @@ import {
 } from "recharts";
 interface ChartVolumnProps {}
 const styles = {
-  btnActive: "rounded-full bg-secondary1",
+  btnActive: "rounded-full bg-secondary5",
 };
 const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeData, setActiveData] = useState<number | null>(8.18);
@@ -30,17 +30,15 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     setActiveButton(button);
   };
   return (
-    <div className="p-6 border rounded-lg border-dark">
+    <div className="p-6 border rounded-lg border-dark3">
       <div className="flex justify-between mb-2">
-        <div>
-          <p className="font-bold text-black">TVL</p>
-          <p className="my-2 text-xl font-bold text-black">
-            ${activeData?.toFixed(2)}M
-          </p>
-          <p className="">
-            {format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
-          </p>
-        </div>
+      <div className="mb-2 text-dark1">
+        <p className="font-medium ">TVL</p>
+        <p className="my-2 text-2xl font-medium text-dark0">
+          ${activeData?.toFixed(2)}M
+        </p>
+        <p className="">{format(parseISO(activeDate), "MMM d, yyyy")} (UTC)</p>
+      </div>
         <div className="grid h-8 grid-cols-3 rounded-full w-28 bg-dark2 gap-[6px] text-white">
           <button
             className={activeButton === "D" ? styles.btnActive : ""}
@@ -97,7 +95,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                 return "";
               }}
             />
-            <Bar dataKey="value" fill="#0EA293" />
+            <Bar dataKey="value" fill="#A398FF" />
           </BarChart>
         </ResponsiveContainer>
       </div>

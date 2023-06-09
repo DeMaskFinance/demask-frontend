@@ -20,6 +20,7 @@ module.exports = {
         'gray-color':'#BFBDBD',
         'black24':'#242424',
         'dark':'#3C4048',
+        'dark0':'#000D34',
         'dark1':'#414754',
         'dark2':'#636977',
         'dark3':'#A3A9B9',
@@ -40,7 +41,7 @@ module.exports = {
         'blue':'#1D85E8',
       },
       fontFamily:{
-        'DMMono':['DM Mono', 'monospace'],
+        DMMono:['DM Mono', 'monospace'],
       },
       screens:{
         '3xl': '1600px',

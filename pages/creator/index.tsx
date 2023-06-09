@@ -17,7 +17,7 @@ import { LaunchPad } from "@/components/Creator";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
-  btnActive: "rounded-full bg-base2",
+  btnActive: "rounded-lg bg-secondary5",
 };
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
@@ -292,7 +292,7 @@ export default function Creator() {
                   hidden
                   onChange={handleChangeFile}
                 />
-                <p className="text-xs w-[239px] text-dark2 mb-6">
+                <p className="text-xs w-[254px] text-dark2 mb-6">
                   Tap here to upload media from your device. Video, audio, gif,
                   pdf, and images supported. Max size: 1GB.
                 </p>
@@ -302,7 +302,8 @@ export default function Creator() {
           {selectedFile && (
             <Button
               onClick={handleClickFile}
-              className="mt-6 w-[160px] h-[26px]"
+              className="mt-6 w-[160px] h-[34px]"
+              primary
             >
               Edit file
             </Button>
@@ -407,7 +408,8 @@ export default function Creator() {
           )}
           <Button
             type="button"
-            className="h-[26px] w-[150px] text-sm mb-4"
+            className="h-[34px] w-[150px] text-sm mb-4"
+            primary
             onClick={handleAddAttribute}
             disabled={!isValidBtn}
           >
@@ -418,11 +420,9 @@ export default function Creator() {
             {Category.map((item, index) => (
               <Button
                 type="button"
-                className={`px-4 py-1 mb-4 mr-4 text-sm font-semibold ${
-                  selectedCategory.includes(item.value)
-                    ? "bg-base2 text-white"
-                    : "bg-dark2"
-                }`}
+                active={selectedCategory.includes(item.value)}
+                outline
+                className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] uppercase text-dark2"
                 key={item.id}
                 onClick={() => selectCategory(item.value)}
               >
@@ -432,7 +432,7 @@ export default function Creator() {
           </div>
           <div>
             <p className={styles.title}>Mint Option</p>
-            <div className="grid h-[34px] grid-cols-2 rounded-full w-[162px] mb-4 text-sm bg-dark2 text-white">
+            <div className="grid h-[34px] grid-cols-2 rounded-lg w-[162px] mb-4 text-sm bg-dark2 text-white">
               <button
                 type="button"
                 className={activeButton === "MINT" ? styles.btnActive : ""}

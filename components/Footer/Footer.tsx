@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="flex">
         <div className="flex basis-1/6">
           <div>
-            <h2 className="mb-2 font-bold">
+            <h2 className="mb-2 text-lg font-medium leading-6">
               <Link href="/brand">About</Link>
             </h2>
             <ul>
@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="basis-1/6">
-          <h2 className="mb-2 font-bold ">
+          <h2 className="mb-2 text-lg font-medium leading-6">
             <Link href="/brand">Help</Link>
           </h2>
           <ul>
@@ -41,7 +41,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="basis-1/6">
-          <h2 className="mb-2 font-bold">
+          <h2 className="mb-2 text-lg font-medium leading-6">
             <Link href="/developers">Developers</Link>
           </h2>
           <ul>
@@ -64,14 +64,14 @@ export default function Footer() {
         </div>
         <div className="basis-2/6"></div>
         <div className="basis-1/6 pl-[2%]">
-          <div className="mb-2 font-bold">Dark/Light Mode</div>
+          <div className="mb-2 text-lg font-medium leading-6">Dark/Light Mode</div>
           <div className="mt-8 mb-9">
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-lg font-medium leading-6">
               <Link href="/brand">
                 <Image src={Icons.logoDeMask} alt="logoDemask"/>
               </Link>
             </h2>
-            <p className="mt-2 text-secondary1">contact@demask.finance</p>
+            <p className="mt-2 text-dark2">contact@demask.finance</p>
           </div>
           <div className="flex gap-[18px]">
             <Link href='/'>

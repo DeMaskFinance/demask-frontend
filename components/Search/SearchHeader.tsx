@@ -21,7 +21,6 @@ const Search: FunctionComponent<SearchProps> = () => {
   const clearValueInput = () =>{
     setSearchValue('')
   }
-  console.log(searchValue);
   
   return (
     <Tippy

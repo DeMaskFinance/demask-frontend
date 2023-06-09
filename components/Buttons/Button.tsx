@@ -7,6 +7,8 @@ interface ButtonProps {
   large?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  primary?:boolean;
+  active?:boolean;
   outline?: boolean;
   className?: string;
   type?:"button" | "submit" | "reset" | undefined;
@@ -19,6 +21,8 @@ const Button: FunctionComponent<ButtonProps> = ({
   onClick,
   large,
   disabled,
+  primary,
+  active,
   outline,
   className,
   type,
@@ -31,11 +35,10 @@ const Button: FunctionComponent<ButtonProps> = ({
       className={`
       rounded-lg
       text-sm
-      ${secondary ? "bg-dark2" : "bg-secondary5"}
-      ${secondary ? "text-dark" : "text-white"}
-      ${outline ? "bg-transparent" : ""}
-      ${outline ? "border-white" : ""}
-      ${outline ? "text-white" : ""}
+      ${primary ? "bg-secondary5 text-white" : ""}
+      ${active ? "bg-dark2 text-white" : ""}
+      ${secondary ? "bg-white text-dark3" : ""}
+      ${outline ? " border border-dark3 " : ""}
       ${className}
       `}
     >

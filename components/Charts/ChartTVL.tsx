@@ -32,10 +32,10 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
     return null;
   };
   return (
-    <div className="p-6 border rounded-lg border-dark">
-      <div className="mb-2">
-        <p className="font-bold text-black">TVL</p>
-        <p className="my-2 text-xl font-bold text-black">
+    <div className="p-6 border rounded-lg border-dark3">
+      <div className="mb-2 text-dark1">
+        <p className="font-medium ">TVL</p>
+        <p className="my-2 text-2xl font-medium text-dark0">
           ${activeData?.toFixed(2)}M
         </p>
         <p className="">{format(parseISO(activeDate), "MMM d, yyyy")} (UTC)</p>
@@ -60,7 +60,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
           >
             <defs>
               <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="30%" stopColor="#27E1C1" stopOpacity={1.0} />
+                <stop offset="30%" stopColor="#A398FF" stopOpacity={1.0} />
                 <stop offset="100%" stopColor="#D9D9D9" stopOpacity={0} />
               </linearGradient>
             </defs>
@@ -91,7 +91,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
             <Area
               type="monotone"
               dataKey="value"
-              stroke="#0EA293"
+              stroke="#A398FF"
               strokeWidth="1.5"
               fill="url(#color)"
             />
