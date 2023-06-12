@@ -13,6 +13,9 @@ import { HiArrowRight } from "react-icons/hi";
 import getMetadataUrl from "@/libs/utils/getMetadata";
 import { BiLoaderAlt } from "react-icons/bi";
 import BigNumber from "bignumber.js";
+import { getProvider } from "@/libs/connection/getProvider";
+import { ModalWallet } from "../Modal";
+import { useAccount } from "@/hooks/useAccount";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -37,6 +40,7 @@ interface LauchPadProps {
   setSymbol: React.Dispatch<React.SetStateAction<string>>;
   setSelectedFile: React.Dispatch<any>;
   fileType: string | null;
+  account: any;
 }
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
@@ -59,10 +63,9 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   setSymbol,
   setSelectedFile,
   fileType,
+  account,
 }) => {
   const currentDate = new Date();
-  const utcHours = currentDate.getUTCHours();
-  const utcMinutes = currentDate.getUTCMinutes();
   const [initial, setInitial] = useState<any>();
   const [totalSale, setTotalSale] = useState<number | null>();
   const [tokenPayment, setTokenPayment] = useState<string>("");
@@ -71,10 +74,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const [inforErc20, setInforErc20] = useState<any>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [provide, setProvide] = useState<any>();
   const [isError, setIsError] = useState(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   // const changeLaunchStart = (option: string) => {
   //   setLaunchActive(option);
   //   if (option === "NOW") {
@@ -86,6 +89,9 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   //     );
   //   }
   // };
+  // const { address } = useAccount();
+  // console.log(address);
+
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
@@ -131,14 +137,13 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     }
 
     try {
-      await ethereum.request({ method: "eth_requestAccounts" });
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const wallet = localStorage.getItem("WALLET_DEMASK");
+      const providerChoice = getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contractAddress = "0x84b14a4078e8c65a91766DD1Fa4ED481BAeac0e9"; // Creator
+      const contractAddress = process.env.NEXT_PUBLIC_CREATOR || ""; // Creator
+      const addressAccount = localStorage.getItem("ACCOUNT");
       const contract = new ethers.Contract(contractAddress, abiErc1155, signer);
-      const addressAccount = ethereum.selectedAddress;
-      console.log(addressAccount);
-
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
         return isExisting;
@@ -205,6 +210,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     setIsProcess(false);
   };
   console.log(isProcess);
+  console.log(account);
 
   const handleTokenPaymentChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -218,67 +224,83 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   };
 
   const handleLauchpadSubmit = async () => {
-    setIsProcess(true);
-    const emptyInputFields = [];
-    const requiredFields = [
-      "name",
-      "symbol",
-      "initial",
-      "tokenPayment",
-      "price",
-      "totalSale",
-    ];
-    requiredFields.forEach((field) => {
-      if (!eval(field)) {
-        emptyInputFields.push(field);
+    let address = null;
+    if (typeof window !== "undefined") {
+      const storedAddress = localStorage.getItem("ACCOUNT");
+      if (storedAddress !== null) {
+        address = storedAddress;
+      }else{
+        address =null;
       }
-    });
-    if (fileIPFS === null) {
-      emptyInputFields.push("fileIPFS");
-      toast.error("File not found.Try again!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+    }
+    if (address) {
+      setIsProcess(true);
+      const emptyInputFields = [];
+      const requiredFields = [
+        "name",
+        "symbol",
+        "initial",
+        "tokenPayment",
+        "price",
+        "totalSale",
+      ];
+      requiredFields.forEach((field) => {
+        if (!eval(field)) {
+          emptyInputFields.push(field);
+        }
       });
-    }
-    if (inforErc20.isERC20 === false) {
-      emptyInputFields.push("NotErc20");
-    }
-    if (startDate === null || endDate === null) {
-      emptyInputFields.push("wrongtime");
-    }
-    setEmptyInputs(emptyInputFields);
-    const priceLauchpad = new BigNumber(price).times(new BigNumber(10).pow(Number(inforErc20.decimals))).toFixed();
-    console.log(priceLauchpad);
+      if (fileIPFS === null) {
+        emptyInputFields.push("fileIPFS");
+        toast.error("File not found.Try again!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      if (inforErc20.isERC20 === false) {
+        emptyInputFields.push("NotErc20");
+      }
+      if (startDate === null || endDate === null) {
+        emptyInputFields.push("wrongtime");
+      }
+      setEmptyInputs(emptyInputFields);
+      const priceLauchpad = new BigNumber(price)
+        .times(new BigNumber(10).pow(Number(inforErc20.decimals)))
+        .toFixed();
+      console.log(priceLauchpad);
 
-    if (emptyInputFields.length === 0) {
-      const urlMetadata = getMetadataUrl({
-        attributeItems,
-        fileType,
-        fileIPFS,
-        name,
-        symbol,
-        description,
-        selectedCategory,
-      });
-      launchPadAction({
-        initial,
-        priceLauchpad,
-        startDate,
-        endDate,
-        data: "0x",
-        totalSale,
-        url: await urlMetadata,
-      });
+      if (emptyInputFields.length === 0) {
+        const urlMetadata = getMetadataUrl({
+          attributeItems,
+          fileType,
+          fileIPFS,
+          name,
+          symbol,
+          description,
+          selectedCategory,
+        });
+        launchPadAction({
+          initial,
+          priceLauchpad,
+          startDate,
+          endDate,
+          data: "0x",
+          totalSale,
+          url: await urlMetadata,
+        });
+      } else {
+        setIsProcess(false);
+      }
     } else {
-      setIsProcess(false);
+      setIsOpen(true);
     }
   };
+  console.log(isOpen);
 
   return (
     <div>
@@ -459,15 +481,18 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         )}
       </div>
       <div className="relative">
-        <Button
-          type="button"
-          className="w-[140px] py-2"
-          primary
-          onClick={handleLauchpadSubmit}
-        >
-          CREATE
-        </Button>
-        {isProcess && <Processing />}
+        <div>
+          <Button
+            type="button"
+            className="w-[140px] py-2"
+            primary
+            onClick={handleLauchpadSubmit}
+          >
+            CREATE
+          </Button>
+          {isProcess && <Processing />}
+        </div>
+        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <ToastContainer />
     </div>

@@ -1,38 +1,48 @@
+import { getProvider } from "@/libs/connection/getProvider";
+import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 export function useAccount() {
-  const [account, setAccount] = useState<string | null>();
-  const disconnect = () => {
-    setAccount(null);
-  };
-  useEffect(() => {
-    const fetchAccount = async () => {
-      if (window.ethereum) {
-        const web3 = new Web3(window.ethereum);
-        try {
-          const accounts = await web3.eth.getAccounts();
-          console.log(accounts);
-          
-          if (accounts.length > 0) {
-            setAccount(accounts[0]);
-          } else {
-            setAccount(null);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.log("Web3 provider not found");
-      }
-      if (window.ethereum && window.ethereum.selectedAddress) {
-        setAccount(window.ethereum.selectedAddress);
-      }
-    };
+  // const [address, setAddress] = useState<string | null>();
+  // const disconnect = () => {
+  //   setAddress(null);
+  // };
+  // useEffect(() => {
+  //   const fetchAccount = async () => {
+  //     const wallet = localStorage.getItem("WALLET_DEMASK");
+  //     if (wallet) {
+  //       const providerChoice = getProvider(wallet);
+  //       const provider = new ethers.providers.Web3Provider(providerChoice);
+  //       const signer = provider.getSigner();
+  //       const address = await signer.getAddress();
+  //       setAddress(address);
+  //     } else{
+  //       setAddress('');
+  //     }
+  //   };
 
-    fetchAccount();
-  }, []);
-  const isLoggedIn = () => {
-    return account !== null;
+  //   fetchAccount();
+  // }, []);
+  // const isLoggedIn = () => {
+  //   return address !== null;
+  // };
+  // return { address, disconnect, isLoggedIn };
+  const [address, setAddress] = useState('');
+
+  useEffect(() => {
+    const value = localStorage.getItem('ACCOUNT');
+    if(value){
+      setAddress(value);
+    }else{
+      setAddress('');
+    }
+  });
+
+  const disconnectWallet = () => {
+    localStorage.removeItem('ACCOUNT');
+    localStorage.removeItem('WALLET_DEMASK');
+    setAddress('');
   };
-  return { account, disconnect,isLoggedIn };
+
+  return { address, disconnectWallet };
 }

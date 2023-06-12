@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Icons from "@/public/icons/icon";
+import { LogoDemask } from "../Logo";
 export default function Footer() {
   return (
-    <footer className="pt-8 pb-10 px-[164px] bg-[#F8F8F8]">
+    <footer className="pt-8 pb-10 px-[164px] bg-dark4">
       <div className="flex">
         <div className="flex basis-1/6">
           <div>
@@ -67,8 +68,8 @@ export default function Footer() {
           <div className="mb-2 text-lg font-medium leading-6">Dark/Light Mode</div>
           <div className="mt-8 mb-9">
             <h2 className="text-lg font-medium leading-6">
-              <Link href="/brand">
-                <Image src={Icons.logoDeMask} alt="logoDemask"/>
+              <Link href="/">
+                <LogoDemask width={212} height={54}/>
               </Link>
             </h2>
             <p className="mt-2 text-dark2">contact@demask.finance</p>

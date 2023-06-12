@@ -1,6 +1,6 @@
 import images from "@/public/images";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import { CgClose } from "react-icons/cg";
 import { getProvider } from "@/libs/connection/getProvider";
 import Web3 from "web3";
@@ -10,20 +10,23 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
-  account?:string|null,
 }
 const styles = {
   walletItem:
     "flex items-center px-6 py-4 gap-x-4 hover:bg-dark4 rounded-lg cursor-pointer",
 };
 
-const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen,account }) => {
+const ModalWallet: React.FC<ModalWalletProps> = ({
+  isOpen,
+  setIsOpen,
+}) => {
   const modalWalletRef = useRef<any>();
-  
-  const handleClose = () => {
+
+  const handleClose = (e:any) => {
+    e.preventDefault();
+    document.body.style.overflowY = "auto";
     setIsOpen(false);
   };
-
   const connectWallet = async (walletName: string) => {
     switch (walletName) {
       case "Binance":
@@ -31,19 +34,20 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen,account }) 
           try {
             const web3 = new Web3(window.BinanceChain);
             const accounts = await web3.eth.getAccounts();
+            localStorage.setItem("ACCOUNT", accounts[0]);
+            document.body.style.overflowY = "auto";
             console.log(accounts);
-            setIsOpen(false)
+            setIsOpen(false);
             if (accounts.length > 0) {
               const balance = await web3.eth.getBalance(accounts[0]);
               console.log(balance);
+
               return true;
             } else {
               console.log("No account found");
-              return false;
             }
           } catch (error) {
             console.error(error);
-            return false;
           }
         } else {
           alert("Binance Wallet not found");
@@ -57,10 +61,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen,account }) 
         break;
       default:
         const provider = getProvider(walletName);
-        const rpcEndpoint = process.env.NEXT_PUBLIC_RPC;
-        const web3 = new Web3(
-          new Web3.providers.HttpProvider(rpcEndpoint as string)
-        );
         const networkSwitched = await checkNetwork(provider);
         if (!networkSwitched) {
           return;
@@ -69,7 +69,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen,account }) 
           const accounts = await provider.request({
             method: "eth_requestAccounts",
           });
-          setIsOpen(false)
+          localStorage.setItem("ACCOUNT", accounts);
+          document.body.style.overflowY = "auto";
+          setIsOpen(false);
           console.log(accounts);
           // Tiếp tục xử lý tài khoản và số dư...
         } catch (error: any) {

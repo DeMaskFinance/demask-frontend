@@ -15,15 +15,15 @@ export default function Liquidity() {
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
         {hasLiquidity ? (
           <div>
-            <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark2 hover:bg-dark">
+            <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark3 hover:bg-secondary3 active:bg-secondary1">
               <p>NFT1/USDT</p>
               <p>REWARD: 200 USDT</p>
             </div>
-            <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark2 hover:bg-dark">
+            <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark3 hover:bg-secondary3 active:bg-secondary1">
               <p>NFT1/USDT</p>
               <p>REWARD: 200 USDT</p>
             </div>
-            <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark2 hover:bg-dark">
+            <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark3 hover:bg-secondary3 active:bg-secondary1">
               <p>NFT1/USDT</p>
               <p>REWARD: 200 USDT</p>
             </div>
@@ -31,8 +31,8 @@ export default function Liquidity() {
         ) : (
           <div></div>
         )}
-        <Link href="/addliquidity">
-          <Button type="button" className="h-[26px] w-[158px] text-sm mb-4">
+        <Link href="/add">
+          <Button type="button" primary className="h-[34px] w-[158px] text-sm mb-4">
             + Add Liquidity
           </Button>
         </Link>

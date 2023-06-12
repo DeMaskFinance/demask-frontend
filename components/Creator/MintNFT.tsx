@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../Buttons/Button";
 import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,6 +13,9 @@ import Image from "next/image";
 import { Processing } from "../Loading";
 import getMatadataUrl from "@/libs/utils/getMetadata";
 import getMetadataUrl from "@/libs/utils/getMetadata";
+import { getProvider } from "@/libs/connection/getProvider";
+import { ModalWallet } from "../Modal";
+import { useAccount } from "@/hooks/useAccount";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
@@ -43,21 +46,37 @@ export default function MintNFT({
 }: any) {
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isProcess, setIsProcess] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const [address, setAddress] = useState<any>('');
+
+  // useEffect(() => {
+  //   const value = localStorage.getItem('ACCOUNT');
+  //   if(value){
+  //     setAddress(value);
+  //   }else{
+  //     setAddress('');
+  //   }
+  // });
+  // console.log(address);
+
   async function mintNFT({ amount, data, url }: mintProps) {
     const ethereum = (window as any).ethereum;
     let transactionHash = "";
     if (typeof ethereum === "undefined") {
-      alert("Please install MetaMask to mint NFTs.");
+      alert("Please install Wallet to mint NFTs.");
       return;
     }
 
     try {
-      await ethereum.request({ method: "eth_requestAccounts" });
-      const provider = new ethers.providers.Web3Provider(ethereum);
+      const wallet = localStorage.getItem("WALLET_DEMASK");
+      const providerChoice = getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contractAddress = "0x84b14a4078e8c65a91766DD1Fa4ED481BAeac0e9"; // Creator
+      const contractAddress = process.env.NEXT_PUBLIC_CREATOR || ""; // Creator
       const contract = new ethers.Contract(contractAddress, abiDemask, signer);
-      const addressAccount = ethereum.selectedAddress;
+      console.log(contract);
+
+      const addressAccount = localStorage.getItem("ACCOUNT");
       console.log(addressAccount);
 
       const checkExists = async (id: number): Promise<boolean> => {
@@ -110,52 +129,67 @@ export default function MintNFT({
     }
     setIsProcess(false);
   }
+
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    setIsProcess(true);
-    const emptyInputFields = [];
-    if (name === "") {
-      emptyInputFields.push("name");
+    let address = null;
+    if (typeof window !== "undefined") {
+      const storedAddress = localStorage.getItem("ACCOUNT");
+      if (storedAddress !== null) {
+        address = storedAddress;
+      }else{
+        address =null;
+      }
     }
+    console.log(address);
+    if (address !== null) {
+      setIsProcess(true);
+      const emptyInputFields = [];
+      if (name === "") {
+        emptyInputFields.push("name");
+      }
 
-    if (symbol === "") {
-      emptyInputFields.push("symbol");
-    }
-    if (totalSupply === undefined) {
-      emptyInputFields.push("totalSupply");
-    }
-    if (fileIPFS === null) {
-      emptyInputFields.push("fileIPFS");
-      toast.error("File not found.Try again!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+      if (symbol === "") {
+        emptyInputFields.push("symbol");
+      }
+      if (totalSupply === undefined) {
+        emptyInputFields.push("totalSupply");
+      }
+      if (fileIPFS === null) {
+        emptyInputFields.push("fileIPFS");
+        toast.error("File not found.Try again!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
 
-    setEmptyInputs(emptyInputFields);
-    if (emptyInputFields.length === 0) {
-      const urlMetadata = getMetadataUrl({
-        attributeItems,
-        fileType,
-        fileIPFS,
-        name,
-        symbol,
-        description,
-        selectedCategory,
-      });
-      mintNFT({
-        amount: Number(totalSupply),
-        data: "0x",
-        url: await urlMetadata,
-      });
-    }else{
-      setIsProcess(false)
+      setEmptyInputs(emptyInputFields);
+      if (emptyInputFields.length === 0) {
+        const urlMetadata = getMetadataUrl({
+          attributeItems,
+          fileType,
+          fileIPFS,
+          name,
+          symbol,
+          description,
+          selectedCategory,
+        });
+        mintNFT({
+          amount: Number(totalSupply),
+          data: "0x",
+          url: await urlMetadata,
+        });
+      } else {
+        setIsProcess(false);
+      }
+    } else {
+      setIsOpen(true);
+      document.body.style.overflowY = "hidden";
     }
   };
   console.log(isProcess);
@@ -185,10 +219,18 @@ export default function MintNFT({
         </p>
       )}
       <div className="relative">
-        <Button className="w-[140px] py-2" onClick={handleSubmit} primary>
-          CREATE
-        </Button>
-        {isProcess && <Processing />}
+        <div>
+          <Button
+            type="button"
+            className="w-[140px] py-2"
+            primary
+            onClick={handleSubmit}
+          >
+            CREATE
+          </Button>
+          {isProcess && <Processing />}
+        </div>
+        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <ToastContainer />
     </div>

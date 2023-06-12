@@ -5,6 +5,10 @@ import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";
 
 interface MenuHeaderProps {}
+const styles = {
+  menuSub:"pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
+  itemSub:"flex items-center justify-between p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
+}
 const data = [
   { id: 1, name: "Overview", url: "/overview" },
   { id: 2, name: "Trade", subTradeMenu: true },
@@ -33,9 +37,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
       tradeRef.current &&
       (router.pathname === "/swap" || router.pathname === "/liquidity")
     ) {
-      tradeRef.current?.classList.add("active");
+      tradeRef.current?.classList.add("text-secondary1");
     } else {
-      tradeRef.current?.classList.remove("active");
+      tradeRef.current?.classList.remove("text-secondary1");
     }
   }, [router.pathname]);
   return (
@@ -48,52 +52,52 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 interactive
                 render={(attrs) => (
                   <div
-                    className="bg-white shadow-xl box w-[150px] p-4"
+                    className={styles.menuSub}
                     tabIndex={-1}
                     {...attrs}
                   >
                     <ul className="flex flex-col gap-y-3">
                       {subMenuTradeData.map((tradeItem) => (
-                        <ActiveLink href={tradeItem.url} key={tradeItem.id}>
-                          <li>{tradeItem.name}</li>
-                        </ActiveLink>
+                        <Link href={tradeItem.url} key={tradeItem.id}>
+                          <li className={styles.itemSub}>{tradeItem.name}</li>
+                        </Link>
                       ))}
                     </ul>
                   </div>
                 )}
               >
-                <button>
+                <button className="hover:text-secondary5 active:text-secondary3">
                   <Link ref={tradeRef} href="/swap">Trade</Link>
                 </button>
               </Tippy>
             </li>
           ) : item.subCateMenu ? (
-            <li>
+            <li >
               <Tippy
                 interactive
                 render={(attrs) => (
                   <div
-                    className="bg-white shadow-xl box w-[150px] p-4"
+                  className={styles.menuSub}
                     tabIndex={-1}
                     {...attrs}
                   >
                     <ul className="flex flex-col gap-y-3">
                       {subMenuCateData.map((cateItem) => (
                         <ActiveLink href={cateItem.url} key={cateItem.id}>
-                          <li>{cateItem.name}</li>
+                          <li className={styles.itemSub}>{cateItem.name}</li>
                         </ActiveLink>
                       ))}
                     </ul>
                   </div>
                 )}
               >
-                <button>
+                <button className="hover:text-secondary5 active:text-secondary3">
                   <Link href="/category">Category</Link>
                 </button>
               </Tippy>
             </li>
           ) : (
-            <li>
+            <li className="relative hover:text-secondary5 active:text-secondary3">
               <ActiveLink href={item?.url as string}>
                 <p>{item.name}</p>
               </ActiveLink>

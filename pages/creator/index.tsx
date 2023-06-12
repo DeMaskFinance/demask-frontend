@@ -37,7 +37,12 @@ export default function Creator() {
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   let file: any;
-  console.log(activeButton);
+  const [account, setAccount] = useState<any>();
+  useEffect(() => {
+    const value = localStorage.getItem("ACCOUNT");
+    setAccount(value);
+  });
+  console.log(account);
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     itemRef.current?.classList.add("item-active-drap");
@@ -467,6 +472,7 @@ export default function Creator() {
               setSelectedCategory={setSelectedCategory}
               setSelectedFile = {setSelectedFile}
               fileType = {fileType}
+              account = {account}
             />
           ) : (
             <LaunchPad
@@ -485,6 +491,7 @@ export default function Creator() {
               setSelectedCategory={setSelectedCategory}
               setSelectedFile = {setSelectedFile}
               fileType = {fileType}
+              account = {account}
             />
           )}
         </form>

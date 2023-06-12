@@ -6,11 +6,9 @@ const Icons ={
     wallet:require('./wallet.svg').default,
     noneaCancelRight:require('./noneaCancelRight.svg').default,
     noneaCancelLeft:require('./noneaCancelLeft.svg').default,
-    logoDeMask:require('./logoDeMask.svg').default,
     teleIcon:require('./Tele.svg').default,
     twitterIcon:require('./Twitter.svg').default,
     backIcon:require('./back.svg').default,
     deleteIcon:require('./noneacancelDelete.svg').default,
-    etherIcon:require('./ether.svg').default,
 }
 export default Icons;
