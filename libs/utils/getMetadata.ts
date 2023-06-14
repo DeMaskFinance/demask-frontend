@@ -21,13 +21,16 @@ const getMetadataUrl = async ({
   const simplifiedAttributes = attributeItems.map(
     ({ trait_type, value }: any) => ({ trait_type, value })
   );
+  const attributesMetadata = simplifiedAttributes.filter((attribute) => {
+      return attribute.trait_type !== "" || attribute.value !== "";
+    });
   const initialMetadata = {
     name: name,
     symbol: symbol,
     description: description,
     image: "",
     animation_url: "",
-    attributes: simplifiedAttributes,
+    attributes: attributesMetadata,
     category: selectedCategory,
   };
   if (fileType.startsWith("video/")) {

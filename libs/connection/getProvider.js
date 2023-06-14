@@ -24,6 +24,5 @@ export const getProvider = (wallet) => {
         }
       else provider = window.coinbaseWalletExtension;
     }
-    localStorage.setItem("WALLET_DEMASK",wallet);
     return provider;
   };

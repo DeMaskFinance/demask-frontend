@@ -56,7 +56,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                     tabIndex={-1}
                     {...attrs}
                   >
-                    <ul className="flex flex-col gap-y-3">
+                    <ul className="flex flex-col">
                       {subMenuTradeData.map((tradeItem) => (
                         <Link href={tradeItem.url} key={tradeItem.id}>
                           <li className={styles.itemSub}>{tradeItem.name}</li>
@@ -81,7 +81,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                     tabIndex={-1}
                     {...attrs}
                   >
-                    <ul className="flex flex-col gap-y-3">
+                    <ul className="flex flex-col">
                       {subMenuCateData.map((cateItem) => (
                         <ActiveLink href={cateItem.url} key={cateItem.id}>
                           <li className={styles.itemSub}>{cateItem.name}</li>

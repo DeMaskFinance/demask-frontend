@@ -37,12 +37,6 @@ export default function Creator() {
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   let file: any;
-  const [account, setAccount] = useState<any>();
-  useEffect(() => {
-    const value = localStorage.getItem("ACCOUNT");
-    setAccount(value);
-  });
-  console.log(account);
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     itemRef.current?.classList.add("item-active-drap");
@@ -50,6 +44,9 @@ export default function Creator() {
   const handleLeave = (e: DragEvent<HTMLDivElement>) => {
     itemRef.current?.classList.remove("item-active-drap");
   };
+  console.log(selectedFile);
+  console.log(fileIPFS);
+  
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     file = e.dataTransfer.files[0];
@@ -153,8 +150,6 @@ export default function Creator() {
       setAttributeItems([...attributeItems, newItem]);
     }
   };
-  console.log(attributeItems);
-
   const handleRemoveAttribute = (id: number) => {
     const updatedItems = attributeItems.filter((item) => item.id !== id);
     setAttributeItems(updatedItems);
@@ -192,6 +187,15 @@ export default function Creator() {
       value: "Memberships",
     },
   ];
+  const handleTextareaResize = (event:any) => {
+    const textarea = event.target;
+    textarea.style.height = "auto"; // reset height
+
+    const { scrollHeight, clientHeight } = textarea;
+    const minHeight = parseInt(window.getComputedStyle(textarea).minHeight);
+
+    textarea.style.height = Math.max(scrollHeight, clientHeight, minHeight) + "px";
+  };
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 150) {
@@ -373,8 +377,12 @@ export default function Creator() {
               placeholder="Write a description of your nft ..."
               id="description"
               value={description}
-              className={`${styles.inputItem} h-20 resize-none`}
-              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              className={`${styles.inputItem} resize-none`}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                handleTextareaResize(e);
+              }}
             />
           </div>
           <div>
@@ -467,12 +475,12 @@ export default function Creator() {
               emptyInputs={emptyInputs}
               setName= {setName}
               setSymbol = {setSymbol}
+              setFileIPFS = {setFileIPFS}
               setDescription = {setDescription}
               setAttributeItems ={setAttributeItems}
               setSelectedCategory={setSelectedCategory}
               setSelectedFile = {setSelectedFile}
               fileType = {fileType}
-              account = {account}
             />
           ) : (
             <LaunchPad
@@ -486,12 +494,12 @@ export default function Creator() {
               emptyInputs={emptyInputs}
               setName= {setName}
               setSymbol = {setSymbol}
+              setFileIPFS = {setFileIPFS}
               setDescription = {setDescription}
               setAttributeItems ={setAttributeItems}
               setSelectedCategory={setSelectedCategory}
               setSelectedFile = {setSelectedFile}
               fileType = {fileType}
-              account = {account}
             />
           )}
         </form>

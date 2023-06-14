@@ -1,10 +1,10 @@
 import Link from "next/link";
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css"; // optional
 import { ActiveLink } from "@/components/Link";
 import { useRouter } from "next/router";
-import { ModalWallet } from "../Modal";
+import { ModalWallet } from "../Modal/ModalWallet";
 import Image from "next/image";
 import Icons from "@/public/icons/icon";
 import { SearchHeader } from "../Search";
@@ -15,6 +15,7 @@ import { BscIcon, EtherIcon, PolygonIcon, ProfileIcon } from "../Icons";
 import { disconnectWalletTest } from "@/libs/connection/disconnectWallet";
 import { MdLogout } from "react-icons/md";
 import { useAccount } from "@/hooks/useAccount";
+import AccountContext from "@/context/AccountContext";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -28,15 +29,8 @@ const style = {
 export default function Header() {
   const headerRef = useRef<any>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [account, setAccount] = useState<any>();
+  const { account, updateAccount } = useContext(AccountContext);
   // const {isLocked,hanldeLock,hanldeAuto} = useBodyScrollLock();
-  useEffect(() => {
-    const value = localStorage.getItem("ACCOUNT");
-    setAccount(value);
-  });
-  const startAddress = account?.slice(0, 2);
-  const endAddress = account?.slice(-4);
-  const formattedAddress = `${startAddress}...${endAddress}`;
   console.log(account);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -46,7 +40,7 @@ export default function Header() {
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT");
     localStorage.removeItem("WALLET_DEMASK");
-    setAccount("");
+    updateAccount("");
   };
 
   //scroll header
@@ -158,11 +152,11 @@ export default function Header() {
               )}
             >
               <button className={style.btnWallet}>
-                <p>ETHEREUM</p>
-                <EtherIcon
+                <p>Polygon</p>
+                <PolygonIcon
                   width={24}
                   height={24}
-                  className="group-hover:fill-white"
+                  className=" fill-secondary5 group-hover:fill-white"
                 />
               </button>
             </Tippy>
@@ -176,8 +170,11 @@ export default function Header() {
                     {...attrs}
                   >
                     <ul>
+                      <li className={`${style.itemSub }`}>
+                        Proflie
+                      </li>
                       <li
-                        className="flex items-center justify-between px-4 py-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3"
+                        className={`${style.itemSub } justify-between`}
                         onClick={disconnectWallet}
                       >
                         <div>Disconnect</div>
@@ -188,7 +185,7 @@ export default function Header() {
                 )}
               >
                 <button className={style.btnWallet}>
-                  {formattedAddress}
+                  {`${account.slice(0, 2)}...${account.slice(-4)}`}
                   <ProfileIcon
                     width={24}
                     height={24}

@@ -1,11 +1,13 @@
 import images from "@/public/images";
 import Image from "next/image";
-import React, { useRef, useState,useEffect } from "react";
+import React, { useRef, useState,useEffect, useContext } from "react";
 import { CgClose } from "react-icons/cg";
 import { getProvider } from "@/libs/connection/getProvider";
 import Web3 from "web3";
 import { checkNetwork } from "@/libs/validation/checkNetwork";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import AccountContext from "@/context/AccountContext";
+import Wrapper from "../Wrapper";
 
 interface ModalWalletProps {
   isOpen?: boolean;
@@ -21,7 +23,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
   setIsOpen,
 }) => {
   const modalWalletRef = useRef<any>();
-
+  const { account, updateAccount,updateWallet } = useContext(AccountContext);
   const handleClose = (e:any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -34,8 +36,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
           try {
             const web3 = new Web3(window.BinanceChain);
             const accounts = await web3.eth.getAccounts();
-            localStorage.setItem("ACCOUNT", accounts[0]);
             document.body.style.overflowY = "auto";
+            updateAccount(accounts)
+            updateWallet(walletName)
             console.log(accounts);
             setIsOpen(false);
             if (accounts.length > 0) {
@@ -69,7 +72,8 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
           const accounts = await provider.request({
             method: "eth_requestAccounts",
           });
-          localStorage.setItem("ACCOUNT", accounts);
+          updateAccount(accounts)
+          updateWallet(walletName)
           document.body.style.overflowY = "auto";
           setIsOpen(false);
           console.log(accounts);
@@ -81,16 +85,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
   };
 
   return (
-    <div
-      ref={modalWalletRef}
-      className={`fixed top-0 bottom-0 left-0 right-0 z-50 justify-center w-screen h-screen ${
-        isOpen ? "flex" : "hidden"
-      }`}
-    >
-      <div
-        className="fixed top-0 bottom-0 left-0 right-0 w-screen h-screen bg-[rgba(0,0,0,0.3)]"
-        onClick={handleClose}
-      ></div>
+    <Wrapper ref={modalWalletRef} isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center mt-[100px] rounded-lg relative pb-4">
         <h2 className="p-6 mb-3 text-xl font-medium">Connect your wallet</h2>
         <p>If you don't have a wallet, you can create one now.</p>
@@ -139,7 +134,8 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
           <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
         </button>
       </div>
-    </div>
+    </Wrapper>
+      
   );
 };
 

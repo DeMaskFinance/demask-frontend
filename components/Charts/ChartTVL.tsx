@@ -92,7 +92,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
               type="monotone"
               dataKey="value"
               stroke="#A398FF"
-              strokeWidth="1.5"
+              strokeWidth="2"
               fill="url(#color)"
             />
           </AreaChart>

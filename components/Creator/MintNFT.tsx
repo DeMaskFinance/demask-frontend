@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "../Buttons/Button";
 import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abiDemask from "@/abi/abiErc1155.json";
 import TransitionURL from "../Toast/TransionURL";
-import { changeNetwork } from "@/libs/utils/network";
 import fs from "fs";
 import images from "@/public/images";
 import Image from "next/image";
@@ -14,8 +13,10 @@ import { Processing } from "../Loading";
 import getMatadataUrl from "@/libs/utils/getMetadata";
 import getMetadataUrl from "@/libs/utils/getMetadata";
 import { getProvider } from "@/libs/connection/getProvider";
-import { ModalWallet } from "../Modal";
+import { ModalWallet } from "../Modal/ModalWallet";
 import { useAccount } from "@/hooks/useAccount";
+import AccountContext from "@/context/AccountContext";
+import { checkNetwork } from "@/libs/validation";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
@@ -38,6 +39,7 @@ export default function MintNFT({
   emptyInputs,
   setName,
   setSelectedCategory,
+  setFileIPFS,
   setAttributeItems,
   setDescription,
   setSymbol,
@@ -47,17 +49,8 @@ export default function MintNFT({
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const [address, setAddress] = useState<any>('');
-
-  // useEffect(() => {
-  //   const value = localStorage.getItem('ACCOUNT');
-  //   if(value){
-  //     setAddress(value);
-  //   }else{
-  //     setAddress('');
-  //   }
-  // });
-  // console.log(address);
+  const { account, updateAccount, wallet } = useContext(AccountContext);
+  console.log(account);
 
   async function mintNFT({ amount, data, url }: mintProps) {
     const ethereum = (window as any).ethereum;
@@ -68,16 +61,12 @@ export default function MintNFT({
     }
 
     try {
-      const wallet = localStorage.getItem("WALLET_DEMASK");
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contractAddress = process.env.NEXT_PUBLIC_CREATOR || ""; // Creator
       const contract = new ethers.Contract(contractAddress, abiDemask, signer);
       console.log(contract);
-
-      const addressAccount = localStorage.getItem("ACCOUNT");
-      console.log(addressAccount);
 
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
@@ -86,20 +75,17 @@ export default function MintNFT({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      changeNetwork();
+      const networkSwitched = await checkNetwork(providerChoice);
+      if (!networkSwitched) {
+        return;
+      }
       const checkAndMint = async () => {
         const randomID = generateRandomNumber();
         const isExisting = await checkExists(randomID);
         if (isExisting) {
           checkAndMint();
         } else {
-          const tx = await contract.mint(
-            addressAccount,
-            randomID,
-            amount,
-            data,
-            url
-          );
+          const tx = await contract.mint(account, randomID, amount, data, url);
           transactionHash = tx.hash;
           toast.success(
             <TransitionURL type={"Mint"} transactionHash={transactionHash} />,
@@ -121,6 +107,7 @@ export default function MintNFT({
           setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
           setSelectedCategory([]);
           setSelectedFile(null);
+          setFileIPFS(null);
         }
       };
       await checkAndMint();
@@ -131,17 +118,7 @@ export default function MintNFT({
   }
 
   const handleSubmit = async (e: any) => {
-    let address = null;
-    if (typeof window !== "undefined") {
-      const storedAddress = localStorage.getItem("ACCOUNT");
-      if (storedAddress !== null) {
-        address = storedAddress;
-      }else{
-        address =null;
-      }
-    }
-    console.log(address);
-    if (address !== null) {
+    if (account) {
       setIsProcess(true);
       const emptyInputFields = [];
       if (name === "") {

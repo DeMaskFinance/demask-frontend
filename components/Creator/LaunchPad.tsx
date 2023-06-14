@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import DatePicker from "react-datepicker";
 import Button from "../Buttons/Button";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import TransitionURL from "../Toast/TransionURL";
-import { changeNetwork } from "@/libs/utils/network";
 import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { Processing } from "../Loading";
 import { HiArrowRight } from "react-icons/hi";
@@ -14,8 +13,10 @@ import getMetadataUrl from "@/libs/utils/getMetadata";
 import { BiLoaderAlt } from "react-icons/bi";
 import BigNumber from "bignumber.js";
 import { getProvider } from "@/libs/connection/getProvider";
-import { ModalWallet } from "../Modal";
+import { ModalWallet } from "../Modal/ModalWallet";
 import { useAccount } from "@/hooks/useAccount";
+import AccountContext from "@/context/AccountContext";
+import { checkNetwork } from "@/libs/validation";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -40,7 +41,7 @@ interface LauchPadProps {
   setSymbol: React.Dispatch<React.SetStateAction<string>>;
   setSelectedFile: React.Dispatch<any>;
   fileType: string | null;
-  account: any;
+  setFileIPFS:React.Dispatch<any>;
 }
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
@@ -61,11 +62,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   setAttributeItems,
   setDescription,
   setSymbol,
+  setFileIPFS,
   setSelectedFile,
   fileType,
-  account,
 }) => {
-  const currentDate = new Date();
   const [initial, setInitial] = useState<any>();
   const [totalSale, setTotalSale] = useState<number | null>();
   const [tokenPayment, setTokenPayment] = useState<string>("");
@@ -78,20 +78,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const changeLaunchStart = (option: string) => {
-  //   setLaunchActive(option);
-  //   if (option === "NOW") {
-  //     setStartDate(
-  //       setHours(
-  //         setMinutes(new Date(), new Date().getMinutes()),
-  //         new Date().getHours()
-  //       )
-  //     );
-  //   }
-  // };
-  // const { address } = useAccount();
-  // console.log(address);
-
+  const { account, updateAccount,wallet } = useContext(AccountContext);
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
@@ -137,12 +124,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     }
 
     try {
-      const wallet = localStorage.getItem("WALLET_DEMASK");
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contractAddress = process.env.NEXT_PUBLIC_CREATOR || ""; // Creator
-      const addressAccount = localStorage.getItem("ACCOUNT");
       const contract = new ethers.Contract(contractAddress, abiErc1155, signer);
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
@@ -151,7 +136,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      changeNetwork();
+      const networkSwitched = await checkNetwork(providerChoice);
+      if (!networkSwitched) {
+        return;
+      }
       const checkAndLauchPadSubmit = async () => {
         const randomID = generateRandomNumber();
         const isExisting = await checkExists(randomID);
@@ -164,7 +152,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             randomID,
             initial,
             priceLauchpad,
-            addressAccount,
+            account,
             totalSupply,
             startTimeTimestamp,
             endTimeTimestamp,
@@ -195,6 +183,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
           setSelectedCategory([]);
           setSelectedFile(null);
+          setFileIPFS(null);
           setInitial(0);
           setTotalSale(null);
           setPrice(null);
@@ -224,16 +213,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   };
 
   const handleLauchpadSubmit = async () => {
-    let address = null;
-    if (typeof window !== "undefined") {
-      const storedAddress = localStorage.getItem("ACCOUNT");
-      if (storedAddress !== null) {
-        address = storedAddress;
-      }else{
-        address =null;
-      }
-    }
-    if (address) {
+    if (account) {
       setIsProcess(true);
       const emptyInputFields = [];
       const requiredFields = [

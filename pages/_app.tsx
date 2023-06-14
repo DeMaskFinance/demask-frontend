@@ -2,9 +2,10 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Layout from "@/components/Layout";
 import Head from "next/head";
+import AccountContext, { AccountProvider } from "@/context/AccountContext";
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <AccountProvider>
       <Head>
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/logo.png" />
@@ -14,6 +15,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </>
+    </AccountProvider>
   );
 }
