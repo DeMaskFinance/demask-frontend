@@ -1,16 +1,18 @@
 import Button from "@/components/Buttons/Button";
+import { BackIcon, DownIcon, NFTIcon, TokenIcon } from "@/components/Icons";
+import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import Icons from "@/public/icons/icon";
+import images from "@/public/images";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 const styles = {
-  title: "block mb-4 text-base font-semibold text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
+  title: "block mb-4 text-base font-medium text-black24",
+  inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
   btnActive: "rounded-full bg-base2",
 };
 export default function AddLiquidity() {
-    const feeValues=[]
   return (
     <div className="px-[436px] py-8 grid grid-cols-2 gap-7">
       <Head>
@@ -19,7 +21,7 @@ export default function AddLiquidity() {
       <div className="">
         <div className="flex items-center mb-6">
           <Link href="/liquidity">
-            <Image src={Icons.backIcon} alt="back" />
+            <BackIcon width={24} height={24} />
           </Link>
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>
@@ -29,17 +31,12 @@ export default function AddLiquidity() {
             <span className="text-red">*</span>
           </p>
           <div className={styles.inputItem}>
-            <div className="flex justify-between pr-4 cursor-pointer">
-              <Image src={Icons.twitterIcon} alt="imgToken" />
-              <svg
-                viewBox="0 0 20 20"
-                color="text"
-                className="sc-231a1e38-0 dPwWVs down-icon"
-                width="20px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M8.71005 11.71L11.3001 14.3C11.6901 14.69 12.3201 14.69 12.7101 14.3L15.3001 11.71C15.9301 11.08 15.4801 10 14.5901 10H9.41005C8.52005 10 8.08005 11.08 8.71005 11.71Z"></path>
-              </svg>
+            <div className="flex justify-between cursor-pointer text-dark3">
+              <div className="flex gap-x-2">
+                <NFTIcon width={24} height={24} />
+                NFT1
+              </div>
+              <DownIcon width={24} height={24} />
             </div>
           </div>
         </div>
@@ -49,25 +46,52 @@ export default function AddLiquidity() {
             <span className="text-red">*</span>
           </p>
           <div className={styles.inputItem}>
-            <div className="flex justify-between pr-4 cursor-pointer">
-              <Image src={Icons.twitterIcon} alt="imgToken" />
-              <svg
-                viewBox="0 0 20 20"
-                color="text"
-                className="sc-231a1e38-0 dPwWVs down-icon"
-                width="20px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M8.71005 11.71L11.3001 14.3C11.6901 14.69 12.3201 14.69 12.7101 14.3L15.3001 11.71C15.9301 11.08 15.4801 10 14.5901 10H9.41005C8.52005 10 8.08005 11.08 8.71005 11.71Z"></path>
-              </svg>
+            <div className="flex justify-between cursor-pointer text-dark3">
+              <div className="flex gap-x-2">
+                <TokenIcon width={24} height={24} />
+                BUSD
+              </div>
+              <DownIcon width={24} height={24} />
             </div>
           </div>
         </div>
         <div>
           <p className={styles.title}>Fee</p>
-          <Button className="" secondary>0.05%</Button>
+          <Button className="p-2 mb-4 text-white bg-secondary5">0.5%</Button>
+        </div>
+        <div>
+          <p className={styles.title}>
+            <span className="">Deposit</span>
+            <span className="text-red">*</span>
+          </p>
+          <div>
+            <div className="flex justify-between mb-4 text-dark1">
+              <p>NFT</p>
+              <p>Balance: 10,000</p>
+            </div>
+            <input className={styles.inputItem} placeholder="10,000" />
+          </div>
+          <div>
+            <div className="flex justify-between mb-4 text-dark1">
+              <p>Token</p>
+              <p>Balance: 10,000</p>
+            </div>
+            <input className={styles.inputItem} placeholder="10,000" />
+          </div>
+        </div>
+        <Button className="p-2" primary>
+          ADD LIQUIDITY
+        </Button>
+      </div>
+      <div>
+        <div className="flex flex-col items-center w-[504px] h-full ">
+          <div className="flex flex-col items-center justify-center w-full h-full text-center border border-dashed border-1 border-dark2 rounded-2xl">
+            <Image src={images.pictureFrame} alt="pictureLiquidity" />
+          </div>
+          <p className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3">Show detail</p>
         </div>
       </div>
+      <ModalSearchNFT/>
     </div>
   );
 }

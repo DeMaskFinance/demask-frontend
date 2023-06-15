@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import Icons from "@/public/icons/icon";
 import { LogoDemask } from "../Logo";
+import { TeleIcon, TwitterIcon } from "../Icons";
 export default function Footer() {
   return (
     <footer className="pt-8 pb-10 px-[164px] bg-dark4">
@@ -76,10 +77,10 @@ export default function Footer() {
           </div>
           <div className="flex gap-[18px]">
             <Link href='/'>
-              <Image src={Icons.twitterIcon} alt='twitterIcon'/>
+              <TwitterIcon width={24} height={24} className="fill-dark3 hover:fill-secondary5"/>
             </Link>
             <Link href='/'>
-              <Image src={Icons.teleIcon} alt='teleIcon'/>
+            <TeleIcon width={24} height={24} className="fill-dark3 hover:fill-secondary5"/>
             </Link>
           </div>
         </div>

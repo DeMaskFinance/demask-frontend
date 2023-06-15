@@ -45,7 +45,7 @@ interface LauchPadProps {
 }
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
+  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
   btnActive: "rounded-full bg-base2",
 };
 const LauchPad: React.FunctionComponent<LauchPadProps> = ({

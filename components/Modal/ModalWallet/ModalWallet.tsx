@@ -85,7 +85,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
   };
 
   return (
-    <Wrapper ref={modalWalletRef} isOpen={isOpen} onClick={handleClose}>
+    <Wrapper isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center mt-[100px] rounded-lg relative pb-4">
         <h2 className="p-6 mb-3 text-xl font-medium">Connect your wallet</h2>
         <p>If you don't have a wallet, you can create one now.</p>

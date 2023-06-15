@@ -14,9 +14,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import MintNFT from "@/components/Creator/MintNFT";
 import { LaunchPad } from "@/components/Creator";
+import images from "@/public/images";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark2",
+  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
   btnActive: "rounded-lg bg-secondary5",
 };
 export default function Creator() {
@@ -288,7 +289,7 @@ export default function Creator() {
             ) : (
               <div onClick={handleClickFile} className="cursor-pointer">
                 <Image
-                  src="/images/pictureframe.png"
+                  src={images.pictureFrame}
                   alt="pictureframe"
                   width={160}
                   height={160}
