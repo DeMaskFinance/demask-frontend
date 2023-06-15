@@ -34,13 +34,11 @@ const Search: FunctionComponent<SearchProps> = () => {
             <div className="">
               <Link href="/">
                 <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <Image src={Icons.twitterIcon} alt="image search" />
                   <p className="ml-2 text-dark">ToCa.wft</p>
                 </div>
               </Link>
               <Link href="/">
                 <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <Image src={Icons.twitterIcon} alt="image search" />
                   <p className="ml-2 text-dark">ToCa.wft</p>
                 </div>
               </Link>
@@ -49,13 +47,11 @@ const Search: FunctionComponent<SearchProps> = () => {
             <div className="">
               <Link href="/">
                 <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <Image src={Icons.twitterIcon} alt="image search" />
                   <p className="ml-2 text-dark">ToCa.wft</p>
                 </div>
               </Link>
               <Link href="/">
                 <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <Image src={Icons.twitterIcon} alt="image search" />
                   <p className="ml-2 text-dark">ToCa.wft</p>
                 </div>
               </Link>
@@ -64,13 +60,11 @@ const Search: FunctionComponent<SearchProps> = () => {
             <div className="">
               <Link href="/">
                 <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <Image src={Icons.twitterIcon} alt="image search" />
                   <p className="ml-2 text-dark">ToCa.wft</p>
                 </div>
               </Link>
               <Link href="/">
                 <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <Image src={Icons.twitterIcon} alt="image search" />
                   <p className="ml-2 text-dark">ToCa.wft</p>
                 </div>
               </Link>
