@@ -1,5 +1,4 @@
 import Web3 from "web3";
-import Web3Modal from 'web3modal';
 export const disconnectWalletTest = async () => {
   if (window.ethereum) {
     try {
