@@ -25,7 +25,6 @@ export const AccountProvider = ({ children }) => {
     setWallet(newWallet);
     localStorage.setItem('WALLET_DEMASK', newWallet);
   };
-  console.log(account);
   return (
     <AccountContext.Provider value={{ account, updateAccount, updateWallet,wallet }}>
       {children}

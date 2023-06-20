@@ -31,7 +31,6 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount } = useContext(AccountContext);
   // const {isLocked,hanldeLock,hanldeAuto} = useBodyScrollLock();
-  console.log(account);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);

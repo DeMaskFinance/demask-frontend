@@ -14,7 +14,6 @@ import { BiLoaderAlt } from "react-icons/bi";
 import BigNumber from "bignumber.js";
 import { getProvider } from "@/libs/connection/getProvider";
 import { ModalWallet } from "../Modal/ModalWallet";
-import { useAccount } from "@/hooks/useAccount";
 import AccountContext from "@/context/AccountContext";
 import { checkNetwork } from "@/libs/validation";
 interface LauchPadProps {
@@ -45,7 +44,7 @@ interface LauchPadProps {
 }
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
+  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
 const LauchPad: React.FunctionComponent<LauchPadProps> = ({
@@ -335,6 +334,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span className="">Token Payment</span>
           <span className="text-red">*</span>
         </label>
+        <div>
         <input
           placeholder="0x3248"
           type="text"
@@ -342,16 +342,17 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           value={tokenPayment || ""}
           className={
             emptyInputs.includes("tokenPayment")
-              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red block"
               : styles.inputItem
           }
           onChange={handleTokenPaymentChange}
         />
         {isTokenPayment && (
-          <div className="absolute top-[49%] right-2">
-            <BiLoaderAlt className="animate-spin" />
+          <div className="absolute top-[50%] right-2 -translate-y-1/2">
+            <BiLoaderAlt className="animate-spin text-secondary5" />
           </div>
         )}
+        </div>
         {inforErc20.isERC20 ? (
           <div className="mb-2">
             <p>Name:{inforErc20.name}</p>

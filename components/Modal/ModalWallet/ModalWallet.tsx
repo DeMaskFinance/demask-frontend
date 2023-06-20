@@ -22,7 +22,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
   isOpen,
   setIsOpen,
 }) => {
-  const modalWalletRef = useRef<any>();
   const { account, updateAccount,updateWallet } = useContext(AccountContext);
   const handleClose = (e:any) => {
     e.preventDefault();

@@ -2,9 +2,16 @@ import Button from "@/components/Buttons/Button";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-
+import { useRouter } from "next/router";
 export default function Liquidity() {
   const hasLiquidity = true;
+  const router = useRouter();
+  const handleAddLiquidity = () => {
+    const nftAddress = "0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70";
+    const tokenAddress = "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096";
+    const idNFT = "3965474371";
+    router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
+  };
   return (
     <div className="px-[436px] py-8">
       <Head>
@@ -31,11 +38,14 @@ export default function Liquidity() {
         ) : (
           <div></div>
         )}
-        <Link href="/add">
-          <Button type="button" primary className="h-[34px] w-[158px] text-sm mb-4">
-            + Add Liquidity
-          </Button>
-        </Link>
+        <Button
+          type="button"
+          primary
+          className="h-[34px] w-[158px] text-sm mb-4"
+          onClick={handleAddLiquidity}
+        >
+          + Add Liquidity
+        </Button>
       </div>
     </div>
   );

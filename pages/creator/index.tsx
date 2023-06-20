@@ -84,6 +84,7 @@ export default function Creator() {
         "audio/flac",
         "audio/x-ms-wma",
         "application/pdf",
+        "image/jpg",
         "image/jpeg",
         "image/png",
         "image/gif",
@@ -284,6 +285,7 @@ export default function Creator() {
                   type="file"
                   hidden
                   onChange={handleChangeFile}
+                  accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, text/html, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf, application/zip"
                 />
               </div>
             ) : (
@@ -299,6 +301,7 @@ export default function Creator() {
                 <input
                   ref={inputRef}
                   type="file"
+                  accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf"
                   hidden
                   onChange={handleChangeFile}
                 />
