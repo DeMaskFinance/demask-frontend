@@ -1,6 +1,6 @@
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-
+import {memo} from 'react'
 interface ModalDetailProps {
   nameNFT: string;
   symbolNFT: string;
@@ -66,4 +66,4 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   );
 };
 
-export default ModalDetail;
+export default memo(ModalDetail);

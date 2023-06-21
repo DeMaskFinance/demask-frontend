@@ -6,7 +6,7 @@ import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { Button } from "@/components/Buttons";
 import { tokenDefault } from "@/libs/constants";
 import { useRouter } from "next/router";
-
+import {memo} from 'react'
 interface ModalSearchTokenProps {
   setIsOpenSearchToken: any;
   isOpenSearchToken: boolean;
@@ -42,6 +42,8 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     setShowError(!isERC20);
     setLoading(false);
   };
+  console.log(tokenAddress);
+  
   const handleChangeRouteToken = () => {
     const { currency } = router.query;
     if (currency) {
@@ -136,4 +138,4 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   );
 };
 
-export default ModalSearchToken;
+export default memo(ModalSearchToken);

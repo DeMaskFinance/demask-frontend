@@ -6,7 +6,7 @@ import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
 export default function Footer() {
   return (
-    <footer className="pt-8 pb-10 px-[164px] bg-dark4">
+    <footer className="pt-8 pb-10 px-primary bg-dark4">
       <div className="flex">
         <div className="flex basis-1/6">
           <div>

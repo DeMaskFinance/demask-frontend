@@ -5,7 +5,7 @@ const handleBignumbertoDec = (value: any, decimals: any) => {
   const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
   const bigNumberValue = ethers.BigNumber.from(value); // Chuyển đổi giá trị thành ethers.BigNumber
   const balance = bigNumberValue.div(divisor);
-  return balance;
+  return balance.toString();
 };
 
 export default handleBignumbertoDec;

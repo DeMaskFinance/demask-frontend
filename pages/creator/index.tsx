@@ -218,7 +218,7 @@ export default function Creator() {
     }
   },[selectedFile])
   return (
-    <div className="flex py-8 px-[250px] 3xl:px-[444px] gap-x-[26px]">
+    <div className="flex py-8 px-[250px] 3xl:px-secondary gap-x-[24px]">
       <Head>
         <title>Creator | DeMask</title>
       </Head>

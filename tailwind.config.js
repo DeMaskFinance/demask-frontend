@@ -16,6 +16,10 @@ module.exports = {
         'header':'64px',
         'chart':'776px',
       },
+      padding: {
+        'primary': '164px',
+        'secondary':'272px',
+      },
       colors:{
         'gray-color':'#BFBDBD',
         'black24':'#242424',

@@ -3,16 +3,12 @@ import Wrapper from "../Wrapper";
 import { useState, useEffect, useContext } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import checkIsERC1155 from "@/libs/validation/checkIsERC1155";
-import { Button } from "@/components/Buttons";
-import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
-import AccountContext from "@/context/AccountContext";
 import Image from "next/image";
-import images from "@/public/images";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useRouter } from "next/router";
-
+import {memo} from 'react'
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -188,4 +184,4 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   );
 };
 
-export default ModalAddressNFT;
+export default memo(ModalAddressNFT);

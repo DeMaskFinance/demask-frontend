@@ -7,7 +7,7 @@ import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 import { HiArrowLeft, HiArrowRight } from "react-icons/hi";
 export default function Overview() {
   return (
-    <section className="overview px-[164px] pt-8">
+    <section className="pt-8 overview">
       <Head>
         <title>Overview | DeMask</title>
       </Head>

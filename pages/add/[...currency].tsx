@@ -174,15 +174,15 @@ export default function AddLiquidity() {
     };
     fetchReservesDML();
   }, [dmlToken, wallet, inputNFT]);
-  // console.log(dmlToken);
-  // console.log(reserves);
+  console.log(dmlToken);
+  console.log(reserves);
   console.log(balanceNFT);
   console.log(balanceToken);
-  // console.log(amountErcDesired);
+  console.log(amountErcDesired);
   // console.log(nftAddress);
   // console.log(tokenAddress);
   // console.log(idNFT);
-
+  
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
     if (Number(e.target.value) > Number(balanceNFT)) {
@@ -233,7 +233,8 @@ export default function AddLiquidity() {
       const signer = provider.getSigner();
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      const value = handleBignumbertoDec(inputToken, 18);
+      // const bigNumberInputToken = ethers.BigNumber.from(inputToken);
+      const value = handleBignumber(Number(inputToken), 18);
 
       try {
         let result;
@@ -361,7 +362,7 @@ export default function AddLiquidity() {
     document.body.style.overflowY = "hidden";
   };
   return (
-    <div className="px-[436px] py-8 grid grid-cols-2 gap-7">
+    <div className="grid grid-cols-2 py-8 px-secondary gap-7">
       <Head>
         <title>Add Liquidity | DeMask</title>
       </Head>

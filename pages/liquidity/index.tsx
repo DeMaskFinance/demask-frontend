@@ -13,7 +13,7 @@ export default function Liquidity() {
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
   return (
-    <div className="px-[436px] py-8">
+    <div className="py-8 px-secondary">
       <Head>
         <title>Liquidity | DeMask</title>
       </Head>
