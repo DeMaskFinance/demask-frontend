@@ -77,12 +77,11 @@ export default function AddLiquidity() {
   } = useMetadata(nftAddress, idNFT);
   useEffect(() => {
     const fetchBalanceNFT = async () => {
-      if (account) {
+      if (account && nftAddress && idNFT) {
         try {
           // console.log(nftAddress);
           // console.log(idNFT);
           // console.log(account);
-          // console.log(wallet);
 
           const balance = await getBalanceNFT(
             account,
@@ -103,7 +102,7 @@ export default function AddLiquidity() {
 
   useEffect(() => {
     const getBalanceToken = async () => {
-      if (account) {
+      if (account && tokenAddress) {
         if (tokenAddress === "MATIC") {
           const provider = new ethers.providers.JsonRpcProvider(
             "https://rpc.ankr.com/polygon_mumbai"
@@ -111,6 +110,8 @@ export default function AddLiquidity() {
           console.log(provider);
 
           try {
+            console.log(account);
+            console.log(wallet);
             const balance = await provider.getBalance(account);
             const balanceInMatic = parseFloat(
               ethers.utils.formatEther(balance)
@@ -209,7 +210,7 @@ export default function AddLiquidity() {
     setAmountErcDesired(amountErcDesired);
     const amountErcDesiredToDec = handleBignumbertoDec(amountErcDesired, 18);
     setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-  }, [inputNFT,inputToken]);
+  }, [inputNFT, inputToken]);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -225,7 +226,7 @@ export default function AddLiquidity() {
       setIsOpen(true);
       return;
     }
-  
+
     if (inputNFT && !isSufficientNFT) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -233,11 +234,11 @@ export default function AddLiquidity() {
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
       const value = handleBignumbertoDec(inputToken, 18);
-  
+
       try {
         let result;
         let transactionHash;
-  
+
         if (tokenAddress === "MATIC") {
           result = await contract.addLiquidityETH(
             nftAddress,
@@ -263,7 +264,7 @@ export default function AddLiquidity() {
           );
           transactionHash = result.hash;
         }
-  
+
         console.log(transactionHash);
         toast.success(
           <TransitionURL
@@ -288,7 +289,7 @@ export default function AddLiquidity() {
       setIsInputNFT(true);
     }
   };
-  
+
   const hanldeApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);

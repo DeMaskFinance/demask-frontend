@@ -42,17 +42,15 @@ export default function Header() {
     localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
+  const provider = getProvider(wallet);
   useEffect(()=>{
     const getAddress = async () =>{
-      const provider = getProvider(wallet);
-      console.log(wallet);
-      console.log(provider);
       if (provider && provider.selectedAddress === null) {
         disconnectWallet();
       }
     }
     getAddress()
-  })
+  },[provider])
   //scroll header
   useEffect(() => {
     let prevScrollPos = window.scrollY;

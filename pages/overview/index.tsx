@@ -17,17 +17,17 @@ export default function Overview() {
         <ChartTVL />
         <ChartVolumn />
       </div>
-      <div className="flex gap-6 my-6 text-lg">
-        <div className="flex">
-          <span className="mr-2 text-dark2">Volume 24H: $8.45M </span> (
+      <div className="flex gap-6 my-6 text-lg font-medium text-dark2">
+        <div className="flex ">
+          <span className="mr-2 ">Volume 24H: $8.45M </span> (
           <span className="flex items-center text-red">
             <BsArrowDown />
             89.95%
           </span>
           )
         </div>
-        <div className="flex">
-          <span className="mr-2 text-dark2">Fees 24H: $41.25K </span>(
+        <div className="flex ">
+          <span className="mr-2 ">Fees 24H: $41.25K </span>(
           <span className="flex items-center text-red">
             <BsArrowDown />
             19.81%
@@ -35,7 +35,7 @@ export default function Overview() {
           )
         </div>
         <div className="flex">
-          <span className="mr-2 text-dark">TVL: $275.74M </span>(
+          <span className="mr-2 ">TVL: $275.74M </span>(
           <span className="flex items-center text-green">
             <BsArrowUp />
             1.35%
@@ -45,12 +45,12 @@ export default function Overview() {
       </div>
       {/* Top or Trending */}
       <div className="collectionList">
-        <div className="flex text-xl text-white w-[184px] border border-dark3 rounded-t-lg border-b-0">
-          <div className="bg-secondary1">
-            <h3 className="pl-6 cursor-pointer">TOP</h3>
+        <div className="flex text-xl text-white w-[184px] h-[42px] items-center text-center">
+          <div className="flex items-center justify-center border rounded-tl-lg bg-secondary1 border-secondary1 w-[68px] h-full cursor-pointer">
+            <span>TOP</span>
           </div>
-          <div className="bg-dark2">
-            <h3 className="pr-6 cursor-pointer">TRENDING</h3>
+          <div className="flex items-center justify-center h-full rounded-tr-lg cursor-pointer grow bg-dark3">
+            <span>TRENDING</span>
           </div>
         </div>
         <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark3 border-spacing-0">
@@ -92,7 +92,9 @@ export default function Overview() {
       {/* Transaction */}
       <div className="transactionList">
         <div className="flex gap-4 text-xl text-dark2 w-[164px] border bg-secondary1 border-dark3 rounded-t-lg border-b-0">
-          <h3 className="w-full text-center text-white cursor-pointer h-[42px] leading-[42px]">TRANSACTION</h3>
+          <h3 className="w-full text-center text-white cursor-pointer h-[42px] leading-[42px]">
+            TRANSACTION
+          </h3>
         </div>
         <table className="flex flex-col w-full pb-4 border border-collapse rounded-b-lg rounded-tr-lg border-dark3 border-spacing-0">
           <thead className="flex w-full font-semibold text-black24">
