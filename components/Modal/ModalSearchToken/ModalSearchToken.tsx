@@ -4,12 +4,13 @@ import { useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { Button } from "@/components/Buttons";
+import { tokenDefault } from "@/libs/constants";
 import { useRouter } from "next/router";
 
 interface ModalSearchTokenProps {
-  setIsOpenSearchToken:any,
-  isOpenSearchToken:boolean,
-  setSymbolToken:any;
+  setIsOpenSearchToken: any;
+  isOpenSearchToken: boolean;
+  setSymbolToken: any;
 }
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
@@ -17,38 +18,51 @@ const styles = {
     "w-full p-2 mb-4 border rounded-lg border-dark3 placeholder:text-sm block",
   btnActive: "rounded-full bg-base2",
 };
-const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({setIsOpenSearchToken,isOpenSearchToken,setSymbolToken}) => {
+const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
+  setIsOpenSearchToken,
+  isOpenSearchToken,
+  setSymbolToken,
+}) => {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isERC20, setIsERC20] = useState<boolean>(false);
   const [showError, setShowError] = useState(false);
-  const [name,setName] = useState<string>('');
-  const [symbol,setSymbol] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [symbol, setSymbol] = useState<string>("");
   const router = useRouter();
   const hanldeAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     setTokenAddress(e.target.value);
-    const { isERC20, name, symbol, decimals } = await checkIsERC20(e.target.value);
+    const { isERC20, name, symbol, decimals } = await checkIsERC20(
+      e.target.value
+    );
     setIsERC20(isERC20);
     setName(name);
     setSymbol(symbol);
     setShowError(!isERC20);
     setLoading(false);
   };
-  const handleChangeRouteToken = ()=>{
-    const {currency} = router.query;
-    if(currency){
+  const handleChangeRouteToken = () => {
+    const { currency } = router.query;
+    if (currency) {
       const currentURL = router.asPath;
-      const newURL = currentURL.replace(
-        currency[1],
-        tokenAddress
-      )
-      router.push(newURL)
-      setSymbolToken(symbol)
+      const newURL = currentURL.replace(currency[1], tokenAddress);
+      router.push(newURL);
+      setSymbolToken(symbol);
       document.body.style.overflowY = "auto";
-      setIsOpenSearchToken(false)
+      setIsOpenSearchToken(false);
     }
-    
+  };
+  const handleChangeRouteDefault = (address:string,symbol:string) =>{
+    const { currency } = router.query;
+    if (currency) {
+      const currentURL = router.asPath;
+      const newURL = currentURL.replace(currency[1], address);
+      router.push(newURL);
+      setSymbolToken(symbol);
+      document.body.style.overflowY = "auto";
+      setIsOpenSearchToken(false);
+    }
   }
   const handleClose = (e: any) => {
     e.preventDefault();
@@ -86,12 +100,29 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({setIs
             )}
           </div>
           {isERC20 && (
-            <div className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 pl-2" onClick={handleChangeRouteToken}>
+            <div
+              className="flex items-center pl-2 rounded-lg cursor-pointer hover:bg-dark4"
+              onClick={handleChangeRouteToken}
+            >
               <div>
                 <h2 className="font-medium">{symbol}</h2>
                 <p className="text-sm text-dark3">{name}</p>
               </div>
             </div>
+          )}
+          {!tokenAddress&&(
+            <>
+            {tokenDefault.map((item, index) => (
+              <div key={index} className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={()=>handleChangeRouteDefault(item.address,item.symbol)}>
+                <div>
+                    <item.logo className="transition-all duration-200 ease-linear logo group-hover:fill-secondary5" width={24} height={24} />
+                </div>
+                <div>
+                  <p className="font-medium">{item.symbol}</p>
+                  <p className="text-sm text-dark3 group-hover:text-secondary5">{item.name}</p>
+                </div>
+              </div>
+            ))}</>
           )}
           <button
             className="absolute top-0 right-0 p-2 text-lg"

@@ -58,7 +58,7 @@ export default function AddLiquidity() {
   const { account, wallet } = useContext(AccountContext);
   const [dmlToken, setDmlToken] = useState<string>();
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
-  const [amountErcDesiredToDec,setAmountErcDesiredToDec] = useState<any>();
+  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>();
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -209,7 +209,7 @@ export default function AddLiquidity() {
     setAmountErcDesired(amountErcDesired);
     const amountErcDesiredToDec = handleBignumbertoDec(amountErcDesired, 18);
     setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-  }, [inputNFT]);
+  }, [inputNFT,inputToken]);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -221,30 +221,36 @@ export default function AddLiquidity() {
     }
   };
   const addLiquidity = async () => {
-    if (account) {
-      if (inputNFT && !isSufficientNFT) {
-        const providerChoice = getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
-        const signer = provider.getSigner();
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
-        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        const value = handleBignumber(Number(inputToken), Number(18));
-        // if(tokenAddress === "MATIC"){
-        //   const result = await contract.addLiquidityETH(
-        //     nftAddress,
-        //     idNFT,
-        //     inputNFT,
-        //     0,
-        //     account,
-        //     Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-        //     { gasLimit: 8000000 ,value:value}
-        //   )
-        //   const transactionHash = result.hash;
-        //   console.log(transactionHash);
-
-        // }else{
-        try {
-          const result = await contract.addLiquidity(
+    if (!account) {
+      setIsOpen(true);
+      return;
+    }
+  
+    if (inputNFT && !isSufficientNFT) {
+      const providerChoice = getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
+      const signer = provider.getSigner();
+      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+      const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+      const value = handleBignumbertoDec(inputToken, 18);
+  
+      try {
+        let result;
+        let transactionHash;
+  
+        if (tokenAddress === "MATIC") {
+          result = await contract.addLiquidityETH(
+            nftAddress,
+            idNFT,
+            inputNFT,
+            0,
+            account,
+            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+            { gasLimit: 8000000, value }
+          );
+          transactionHash = result.hash;
+        } else {
+          result = await contract.addLiquidity(
             tokenAddress,
             nftAddress,
             idNFT,
@@ -255,33 +261,31 @@ export default function AddLiquidity() {
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
             { gasLimit: 8000000 }
           );
-          const transactionHash = result.hash;
-          console.log(transactionHash);
-
-          toast.success(
-            <TransitionURL
-              type={"Add Liquidity"}
-              transactionHash={transactionHash}
-            />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-        } catch (error) {
-          console.error(error);
+          transactionHash = result.hash;
         }
-      } else {
-        setIsInputNFT(true);
+  
+        console.log(transactionHash);
+        toast.success(
+          <TransitionURL
+            type={"Add Liquidity"}
+            transactionHash={transactionHash}
+          />,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      } catch (error) {
+        console.error(error);
       }
     } else {
-      setIsOpen(true);
+      setIsInputNFT(true);
     }
   };
 
@@ -444,9 +448,7 @@ export default function AddLiquidity() {
                 onChange={handleGetToken}
               />
             ) : (
-              <div className={styles.inputItem}>
-                {amountErcDesiredToDec}
-              </div>
+              <div className={styles.inputItem}>{amountErcDesiredToDec}</div>
             )}
             {isSufficientToken &&
               dmlToken === "0x0000000000000000000000000000000000000000" && (
