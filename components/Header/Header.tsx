@@ -16,6 +16,7 @@ import { disconnectWalletTest } from "@/libs/connection/disconnectWallet";
 import { MdLogout } from "react-icons/md";
 import { useAccount } from "@/hooks/useAccount";
 import AccountContext from "@/context/AccountContext";
+import { getProvider } from "@/libs/connection/getProvider";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -29,7 +30,7 @@ const style = {
 export default function Header() {
   const headerRef = useRef<any>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount } = useContext(AccountContext);
+  const { account, updateAccount,wallet } = useContext(AccountContext);
   // const {isLocked,hanldeLock,hanldeAuto} = useBodyScrollLock();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -37,11 +38,21 @@ export default function Header() {
   };
 
   const disconnectWallet = () => {
-    localStorage.removeItem("ACCOUNT");
+    localStorage.removeItem("ACCOUNT_DEMASK");
     localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
-
+  useEffect(()=>{
+    const getAddress = async () =>{
+      const provider = getProvider(wallet);
+      console.log(wallet);
+      console.log(provider);
+      if (provider && provider.selectedAddress === null) {
+        disconnectWallet();
+      }
+    }
+    getAddress()
+  })
   //scroll header
   useEffect(() => {
     let prevScrollPos = window.scrollY;

@@ -175,8 +175,8 @@ export default function AddLiquidity() {
   }, [dmlToken, wallet, inputNFT]);
   // console.log(dmlToken);
   // console.log(reserves);
-  // console.log(balanceNFT);
-  // console.log(balanceToken);
+  console.log(balanceNFT);
+  console.log(balanceToken);
   // console.log(amountErcDesired);
   // console.log(nftAddress);
   // console.log(tokenAddress);
@@ -288,7 +288,7 @@ export default function AddLiquidity() {
       setIsInputNFT(true);
     }
   };
-
+  
   const hanldeApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);

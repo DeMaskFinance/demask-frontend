@@ -76,7 +76,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
           document.body.style.overflowY = "auto";
           setIsOpen(false);
           console.log(accounts);
-          // Tiếp tục xử lý tài khoản và số dư...
         } catch (error: any) {
           console.log(error);
         }
