@@ -21,14 +21,14 @@ const Swap: React.FC = () => {
         <p className="text-sm font-medium text-dark1">ToCa.ETH</p>
       </div>
       <div className="flex gap-x-10">
-        <div>
+        <div className="w-[50%]">
           <Image
             src={images.testImg}
             alt="test"
-            className="w-[776px] h-[776px] "
+            className=""
           />
         </div>
-        <div className="grow">
+        <div className="w-[50%]">
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex justify-between mb-6 text-dark1">
               <div>

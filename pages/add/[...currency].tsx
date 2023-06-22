@@ -180,9 +180,9 @@ export default function AddLiquidity() {
   console.log(balanceToken);
   console.log(amountErcDesired);
   // console.log(nftAddress);
-  // console.log(tokenAddress);
+  console.log(tokenAddress);
   // console.log(idNFT);
-  
+
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
     if (Number(e.target.value) > Number(balanceNFT)) {
@@ -193,23 +193,28 @@ export default function AddLiquidity() {
     }
   };
   useEffect(() => {
-    let amountErcDesired;
-    if (
-      dmlToken !== "0x0000000000000000000000000000000000000000" &&
-      reserves &&
-      inputNFT
-    ) {
-      amountErcDesired = ethers.BigNumber.from(inputNFT)
-        .mul(reserves[0])
-        .div(reserves[1])
-        .mul(105)
-        .div(100);
-    } else {
-      amountErcDesired = handleBignumber(Number(inputToken), Number(decimals));
+    if (tokenAddress !== "MATIC") {
+      let amountErcDesired;
+      if (
+        dmlToken !== "0x0000000000000000000000000000000000000000" &&
+        reserves &&
+        inputNFT
+      ) {
+        amountErcDesired = ethers.BigNumber.from(inputNFT)
+          .mul(reserves[0])
+          .div(reserves[1])
+          .mul(105)
+          .div(100);
+      } else {
+        amountErcDesired = handleBignumber(
+          Number(inputToken),
+          Number(decimals)
+        );
+      }
+      setAmountErcDesired(amountErcDesired);
+      const amountErcDesiredToDec = handleBignumbertoDec(amountErcDesired, 18);
+      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
     }
-    setAmountErcDesired(amountErcDesired);
-    const amountErcDesiredToDec = handleBignumbertoDec(amountErcDesired, 18);
-    setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
   }, [inputNFT, inputToken]);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,14 +232,13 @@ export default function AddLiquidity() {
       return;
     }
 
-    if (inputNFT && !isSufficientNFT) {
+    if (inputNFT && !isSufficientNFT && !isSufficientToken) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      // const bigNumberInputToken = ethers.BigNumber.from(inputToken);
-      const value = handleBignumber(Number(inputToken), 18);
+      const value = handleBignumber(Number(inputToken),18);
 
       try {
         let result;
@@ -324,7 +328,7 @@ export default function AddLiquidity() {
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress]);
+  }, [account, wallet, tokenAddress,inputToken]);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -452,12 +456,11 @@ export default function AddLiquidity() {
             ) : (
               <div className={styles.inputItem}>{amountErcDesiredToDec}</div>
             )}
-            {isSufficientToken &&
-              dmlToken === "0x0000000000000000000000000000000000000000" && (
-                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
-                  Insufficient Token balance
-                </p>
-              )}
+            {isSufficientToken && (
+              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                Insufficient Token balance
+              </p>
+            )}
           </div>
         </div>
         {!isApprovedNFT && (
