@@ -1,14 +1,38 @@
+import { useState,useContext } from "react";
 import { Button } from "@/components/Buttons";
-import { PoolIcon } from "@/components/Icons";
+import { DownIcon, NFTIcon, PoolIcon } from "@/components/Icons";
+import { TwoTab } from "@/components/NavChoice";
 import images from "@/public/images";
 import Head from "next/head";
 import Image from "next/image";
+import AccountContext from "@/context/AccountContext";
+import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
+import useMetadata from "@/hooks/useMetadata";
 const styles = {
-  title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
 const Swap: React.FC = () => {
+  const [nftAddress, setNftAddress] = useState<string>("");
+  const [tokenAddress, setTokenAddress] = useState<string>("");
+  const [idNFT, setIdNFT] = useState("");
+  const [inputNFT, setInputNFT] = useState<string>("");
+  const [inputToken, setInputToken] = useState<string>("");
+  const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
+  const {account} = useContext(AccountContext);
+  const {
+    nameNFT,
+    imageNFT,
+    symbolNFT,
+    category,
+    attributes,
+    animationUrl,
+    description,
+  } = useMetadata(nftAddress, idNFT);
+  const handleSearchNFT = () => {
+    setIsOpenSearchNFT(true);
+    document.body.style.overflowY = "hidden";
+  };
   return (
     <div className="py-8 swap">
       <Head>
@@ -21,23 +45,55 @@ const Swap: React.FC = () => {
         <p className="text-sm font-medium text-dark1">ToCa.ETH</p>
       </div>
       <div className="flex gap-x-10">
-        <div className="w-[50%]">
-          <Image
-            src={images.testImg}
-            alt="test"
-            className=""
-          />
+        <div className="w-[50%] flex flex-col items-center">
+          <Image src={images.testImg} alt="test" className="" />
+          <p className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3">See detail</p>
         </div>
         <div className="w-[50%]">
           <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex justify-between mb-6 text-dark1">
-              <div>
-                <div>1231</div>
-                <p>Balance: 10,000</p>
+            <div className="flex mb-6 text-dark1">
+              <div className="basis-1/3">
+                <div className="flex gap-x-3">
+                  <div
+                    className="px-3 py-2 rounded-lg bg-secondary5"
+                    onClick={handleSearchNFT}
+                  >
+                    <div className="flex items-center justify-between text-white cursor-pointer">
+                      <div className="flex items-center gap-x-3">
+                        {/* <NFTIcon
+                          width={24}
+                          height={24}
+                          className="fill-white"
+                        /> */}
+                        {/* {nameNFT} */}ABCD
+                      </div>
+                      <DownIcon width={20} height={20} className="fill-white" />
+                    </div>
+                  </div>
+                  <div
+                    className="px-3 py-2 rounded-lg bg-secondary5"
+                    onClick={handleSearchNFT}
+                  >
+                    <div className="flex items-center justify-between text-white cursor-pointer">
+                      <div className="flex items-center gap-x-3">
+                        {/* <NFTIcon
+                          width={24}
+                          height={24}
+                          className="fill-white"
+                        /> */}
+                        {/* {nameNFT} */}ABCD
+                      </div>
+                      <DownIcon width={20} height={20} className="fill-white" />
+                    </div>
+                  </div>
+                </div>
+                {account&&(<p className="mt-2">Balance: 10,000</p>)}
               </div>
-              <div>BUY</div>
-              <div className="flex text-dark2">
-                <PoolIcon width={26} height={26} />
+              <div className="flex justify-center basis-1/3">
+                <TwoTab firstChoice="BUY" secondChoice="SELL" />
+              </div>
+              <div className="flex justify-end font-medium text-dark2 basis-1/3">
+                <PoolIcon width={24} height={24} />
                 <p>Pool</p>
               </div>
             </div>
@@ -75,6 +131,10 @@ const Swap: React.FC = () => {
           </div>
         </div>
       </div>
+      <ModalSearchNFT
+        setIsOpenSearchNFT={setIsOpenSearchNFT}
+        isOpenSearchNFT={isOpenSearchNFT}
+      />
     </div>
   );
 };
