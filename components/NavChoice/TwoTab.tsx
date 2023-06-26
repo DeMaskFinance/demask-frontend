@@ -1,29 +1,35 @@
-import {useState} from 'react'
+import { useState } from "react";
 interface TwoTabProps {
-    firstChoice:string,
-    secondChoice:string,
+  firstChoice: string;
+  secondChoice: string;
+  activeChoice: string;
+  onChoiceChange: (choice: string) => void;
 }
 const styles = {
-    btnActive: "rounded-lg bg-secondary5",
+  btnActive: "rounded-lg bg-secondary5",
+};
+
+const TwoTab: React.FunctionComponent<TwoTabProps> = ({
+  firstChoice,
+  secondChoice,
+  activeChoice,
+  onChoiceChange,
+}) => {
+  const handleButtonClick = (choice: string) => {
+    onChoiceChange(choice);
   };
-  
-const TwoTab: React.FunctionComponent<TwoTabProps> = ({firstChoice,secondChoice}) => {
-    const [activeButton, setActiveButton] = useState<string>(firstChoice);
-    const handleButtonClick = (choice: string) => {
-        setActiveButton(choice);
-      };
   return (
     <div className="grid h-[34px] grid-cols-2 rounded-lg w-[142px] mb-4 text-sm bg-dark2 text-white">
       <button
         type="button"
-        className={activeButton === firstChoice ? styles.btnActive : ""}
+        className={activeChoice === firstChoice ? styles.btnActive : ""}
         onClick={() => handleButtonClick(firstChoice)}
       >
         {firstChoice}
       </button>
       <button
         type="button"
-        className={activeButton === secondChoice ? styles.btnActive : ""}
+        className={activeChoice === secondChoice ? styles.btnActive : ""}
         onClick={() => handleButtonClick(secondChoice)}
       >
         {secondChoice}

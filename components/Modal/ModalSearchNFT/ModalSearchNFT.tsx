@@ -8,16 +8,14 @@ import abiErc1155 from "@/abi/abiErc1155.json";
 import Image from "next/image";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useRouter } from "next/router";
-import {memo} from 'react'
+import { memo } from "react";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
 }
 const styles = {
-  title: "block mb-4 text-base font-medium text-black24",
   inputItem:
     "w-full p-2 mb-4 border rounded-lg border-dark3 placeholder:text-sm block",
-  btnActive: "rounded-full bg-base2",
 };
 const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   isOpenSearchNFT,
@@ -42,6 +40,10 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     setShowError(!ERC1155);
     setLoading(false);
   };
+  console.log(isERC1155);
+  
+  console.log(showError);
+  
   useEffect(() => {
     if (debouncedNFT) {
       hanldeAddressNFT(debouncedNFT);
@@ -98,25 +100,29 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
-  const handleChangeRouteNFT = ()=>{
-    const {currency} = router.query;
-    if(currency){
+  const handleChangeRouteNFT = () => {
+    const { currency } = router.query;
+    const { slug } = router.query;
+    let newURL = "";
+    if (currency) {
       const currentURL = router.asPath;
-      const newURL = currentURL.replace(
-        currency[0],
-        nftAddress
-      ).replace(currency[2],idNFT)
-      router.push(newURL)
-      document.body.style.overflowY = "auto";
-      setIsOpenSearchNFT(false)
-      // setIsERC1155(false)
-      // setMetadata(null);
-      // setNftAddress('');
+      newURL = currentURL
+        .replace(currency[0], nftAddress)
+        .replace(currency[2], idNFT);
+    } else if (slug) {
+      console.log(slug);
+      const currentURL = router.asPath;
+      newURL = currentURL.replace(slug[0], nftAddress).replace(slug[2], idNFT);
+      router.push(newURL);
     }
-  }
-  console.log(metadata);
-  console.log(idNFT);
-  
+    router.push(newURL);
+    document.body.style.overflowY = "auto";
+    setIsOpenSearchNFT(false);
+    // setIsERC1155(false)
+    // setMetadata(null);
+    // setNftAddress('');
+  };
+
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -156,7 +162,10 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
             )}
           </div>
           {metadata && (
-            <div className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group" onClick={handleChangeRouteNFT}>
+            <div
+              className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group"
+              onClick={handleChangeRouteNFT}
+            >
               <Image
                 src={imageNFT}
                 alt=""
@@ -166,7 +175,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 unoptimized
               />
               <div>
-                <h2 className="font-medium group-hover:text-secondary5">{symbolNFT}</h2>
+                <h2 className="font-medium group-hover:text-secondary5">
+                  {symbolNFT}
+                </h2>
                 <p className="text-sm text-dark3">{nameNFT}</p>
               </div>
             </div>

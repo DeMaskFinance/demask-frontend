@@ -26,7 +26,6 @@ import getReserves from "@/libs/utils/getReserves";
 import BigNumberJS from "bignumber.js";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import TransitionURL from "@/components/Toast/TransionURL";
-import Web3 from "web3";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
@@ -79,10 +78,6 @@ export default function AddLiquidity() {
     const fetchBalanceNFT = async () => {
       if (account && nftAddress && idNFT) {
         try {
-          // console.log(nftAddress);
-          // console.log(idNFT);
-          // console.log(account);
-
           const balance = await getBalanceNFT(
             account,
             wallet,
@@ -175,12 +170,12 @@ export default function AddLiquidity() {
     fetchReservesDML();
   }, [dmlToken, wallet, inputNFT]);
   console.log(dmlToken);
-  console.log(reserves);
-  console.log(balanceNFT);
-  console.log(balanceToken);
-  console.log(amountErcDesired);
+  // console.log(reserves[1].toString());
+  // console.log(balanceNFT);
+  // console.log(balanceToken);
+  // console.log(amountErcDesired);
   // console.log(nftAddress);
-  console.log(tokenAddress);
+  // console.log(tokenAddress);
   // console.log(idNFT);
 
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -269,8 +264,6 @@ export default function AddLiquidity() {
           );
           transactionHash = result.hash;
         }
-
-        console.log(transactionHash);
         toast.success(
           <TransitionURL
             type={"Add Liquidity"}

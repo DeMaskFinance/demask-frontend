@@ -6,7 +6,7 @@ import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { Button } from "@/components/Buttons";
 import { tokenDefault } from "@/libs/constants";
 import { useRouter } from "next/router";
-import {memo} from 'react'
+import { memo } from "react";
 interface ModalSearchTokenProps {
   setIsOpenSearchToken: any;
   isOpenSearchToken: boolean;
@@ -43,29 +43,41 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     setLoading(false);
   };
   console.log(tokenAddress);
-  
+
   const handleChangeRouteToken = () => {
     const { currency } = router.query;
+    const { slug } = router.query;
+    let newURL = "";
     if (currency) {
       const currentURL = router.asPath;
-      const newURL = currentURL.replace(currency[1], tokenAddress);
+      newURL = currentURL.replace(currency[1], tokenAddress);
       router.push(newURL);
-      setSymbolToken(symbol);
-      document.body.style.overflowY = "auto";
-      setIsOpenSearchToken(false);
+    } else if (slug) {
+      const currentURL = router.asPath;
+      newURL = currentURL.replace(slug[1], tokenAddress);
+      router.push(newURL);
     }
+    setSymbolToken(symbol);
+    document.body.style.overflowY = "auto";
+    setIsOpenSearchToken(false);
   };
-  const handleChangeRouteDefault = (address:string,symbol:string) =>{
+  const handleChangeRouteDefault = (address: string, symbol: string) => {
     const { currency } = router.query;
+    const { slug } = router.query;
+    let newURL = "";
     if (currency) {
       const currentURL = router.asPath;
       const newURL = currentURL.replace(currency[1], address);
       router.push(newURL);
-      setSymbolToken(symbol);
-      document.body.style.overflowY = "auto";
-      setIsOpenSearchToken(false);
+    } else if (slug) {
+      const currentURL = router.asPath;
+      newURL = currentURL.replace(slug[1], address);
+      router.push(newURL);
     }
-  }
+    setSymbolToken(symbol);
+    document.body.style.overflowY = "auto";
+    setIsOpenSearchToken(false);
+  };
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -112,19 +124,32 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
               </div>
             </div>
           )}
-          {!tokenAddress&&(
+          {!tokenAddress && (
             <>
-            {tokenDefault.map((item, index) => (
-              <div key={index} className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={()=>handleChangeRouteDefault(item.address,item.symbol)}>
-                <div>
-                    <item.logo className="transition-all duration-200 ease-linear logo group-hover:fill-secondary5" width={24} height={24} />
+              {tokenDefault.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3"
+                  onClick={() =>
+                    handleChangeRouteDefault(item.address, item.symbol)
+                  }
+                >
+                  <div>
+                    <item.logo
+                      className="transition-all duration-200 ease-linear logo group-hover:fill-secondary5"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-medium">{item.symbol}</p>
+                    <p className="text-sm text-dark3 group-hover:text-secondary5">
+                      {item.name}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium">{item.symbol}</p>
-                  <p className="text-sm text-dark3 group-hover:text-secondary5">{item.name}</p>
-                </div>
-              </div>
-            ))}</>
+              ))}
+            </>
           )}
           <button
             className="absolute top-0 right-0 p-2 text-lg"

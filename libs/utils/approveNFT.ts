@@ -18,6 +18,8 @@ const approveNFT = async (
         account,
         routerAddress
       );
+      console.log(isApprovedNFT);
+      
       return isApprovedNFT;
     } catch (error) {
       console.error(error);

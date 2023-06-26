@@ -12,7 +12,7 @@ const checkIsERC1155 = async (contractAddress: string) => {
     await contract.supportsInterface('0xd9b67a26');
     return true;
   } catch (error) {
-    console.error("Lỗi kiểm tra ERC20:", error);
+    console.error("Error check ERC1155:", error);
     return false
   }
 };
