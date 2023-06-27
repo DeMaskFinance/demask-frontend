@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
-import { DownIcon, NFTIcon, PoolIcon } from "@/components/Icons";
+import { PoolIcon } from "@/components/Icons";
 import { TwoTab } from "@/components/NavChoice";
 import abiErc20 from "@/abi/abiErc20.json";
 import abiErc1155 from "@/abi/abiErc1155.json";
@@ -15,23 +15,20 @@ import { useRouter } from "next/router";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import { ethers } from "ethers";
 import { getProvider } from "@/libs/connection/getProvider";
-import getAmountBuy from "@/libs/utils/getAmountBuy";
 import approveToken from "@/libs/utils/approveToken";
-import getDMLToken from "@/libs/utils/getDMLToken";
-import getReserves from "@/libs/utils/getReserves";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import TransitionURL from "@/components/Toast/TransionURL";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import approveNFT from "@/libs/utils/approveNFT";
-import getAmountSell from "@/libs/utils/getAmountSell";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useBalanceToken from "@/hooks/useBalanceToken";
 import useDMLToken from "@/hooks/useDMLToken";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
+import BigNumber from "bignumber.js";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -130,10 +127,14 @@ const Swap: React.FC = () => {
     wallet,
     activeChoice
   );
-  console.log(dmlToken);
-  console.log(reserves);
-  console.log(amountTokenSell);
-
+  console.log(amountTokenBuy);
+  const amountBuy= new BigNumber(amountTokenBuy);
+  const test =amountBuy.toFixed();
+  // console.log(amountTokenBuy);
+  // console.log(isSufficientToken);
+  // console.log(dmlToken);
+  // console.log(reserves);
+  
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -181,7 +182,23 @@ const Swap: React.FC = () => {
     checkApproveToken();
   }, [account, wallet, tokenAddress, inputNFT]);
   console.log(balanceToken);
-
+  const handleApproveToken = async () => {
+    if (account) {
+      const providerChoice = getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
+      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+      try {
+        await contract.approve(routerAddress, amountBuy.toFixed());
+        setIsApprovedToken(true);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -198,8 +215,8 @@ const Swap: React.FC = () => {
         const signer = provider.getSigner();
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        console.log(amountTokenBuy);
-
+        console.log(amountBuy.toFixed());
+        
         try {
           let result;
           if (tokenAddress === "MATIC") {
@@ -209,7 +226,7 @@ const Swap: React.FC = () => {
               inputNFT,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { value: Math.floor(Number(amountTokenBuy)).toString() }
+              {gasLimit: 8000000, value: amountBuy.toFixed() }
             );
           } else {
             result = await contract.buy(
@@ -217,9 +234,10 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              Math.floor(Number(amountTokenBuy)).toString(),
+              amountBuy.toFixed(),
               account,
-              Math.floor((new Date().getTime() + 20 * 60000) / 1000)
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000 }
             );
           }
           toast.success(
@@ -486,7 +504,7 @@ const Swap: React.FC = () => {
                   <Button
                     className="w-[126px] py-2"
                     primary
-                    // onClick={hanldeApproveToken}
+                    onClick={handleApproveToken}
                   >
                     APPROVE TOKEN
                   </Button>
