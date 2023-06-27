@@ -73,6 +73,8 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
+  console.log(tokenAddress);
+  
   const { balanceToken, decimals, bigNumberBalance } = useBalanceToken(
     account,
     tokenAddress,
@@ -128,8 +130,13 @@ const Swap: React.FC = () => {
     activeChoice
   );
   console.log(amountTokenBuy);
+  console.log(amountTokenSell);
+  
   const amountBuy= new BigNumber(amountTokenBuy);
-  const test =amountBuy.toFixed();
+  const amountSell = new BigNumber(amountTokenSell);
+  console.log(bigNumberBalance);
+  console.log(amountSell.toFixed());
+  
   // console.log(amountTokenBuy);
   // console.log(isSufficientToken);
   // console.log(dmlToken);
@@ -152,7 +159,7 @@ const Swap: React.FC = () => {
       }
     };
     checkReservesNFT();
-    if (amountTokenBuy > bigNumberBalance) {
+    if (Number(amountBuy.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientToken(false);
     } else {
       setIsSufficientToken(true);
@@ -163,7 +170,8 @@ const Swap: React.FC = () => {
       setIsSufficientNFT(true);
     }
   }, []);
-
+  console.log(Number(amountTokenBuy));
+  
   useEffect(() => {
     const checkApproveToken = async () => {
       const currentAllowance = await approveToken(
@@ -284,7 +292,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              Math.floor(Number(amountTokenSell)).toString(),
+              amountSell.toFixed(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -295,7 +303,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              Math.floor(Number(amountTokenSell)).toString(),
+              amountSell.toFixed(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }

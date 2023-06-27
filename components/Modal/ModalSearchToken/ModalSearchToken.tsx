@@ -58,8 +58,14 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
       router.push(newURL);
     }
     setSymbolToken(symbol);
+    setTokenAddress('');
+    setIsERC20(false);
     document.body.style.overflowY = "auto";
+    // setTokenAddress('')
+    // setName('');
+    // setSymbol('');
     setIsOpenSearchToken(false);
+    
   };
   const handleChangeRouteDefault = (address: string, symbol: string) => {
     const { currency } = router.query;
@@ -104,7 +110,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
                 </div>
               )}
             </div>
-            {showError && (
+            {showError &&tokenAddress && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
                 key="token address"

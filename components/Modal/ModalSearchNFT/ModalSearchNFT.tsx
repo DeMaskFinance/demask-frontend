@@ -23,7 +23,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
 }) => {
   const [nftAddress, setNftAddress] = useState<string>("");
   const [isERC1155, setIsERC1155] = useState<boolean>(false);
-  const [showError, setShowError] = useState(false);
   const [metadata, setMetadata] = useState(null);
   const [uri, setUri] = useState("");
   const [idNFT, setIdNFT] = useState("");
@@ -33,26 +32,20 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const [imageNFT, setImageNFT] = useState("");
   const [symbolNFT, setSymbolNFT] = useState("");
   const router = useRouter();
-  const hanldeAddressNFT = async (value: string) => {
+  const handleAddressNFT = async (value: string) => {
     setLoading(true);
     const ERC1155 = await checkIsERC1155(value);
+    console.log(ERC1155);
+    
     setIsERC1155(ERC1155);
-    setShowError(!ERC1155);
     setLoading(false);
   };
   console.log(isERC1155);
-  
-  console.log(showError);
+  console.log(debouncedNFT);
   
   useEffect(() => {
     if (debouncedNFT) {
-      hanldeAddressNFT(debouncedNFT);
-    }
-    if (isERC1155) {
-      setShowError(true);
-    }
-    if (debouncedNFT.trim() === "") {
-      setShowError(false);
+      handleAddressNFT(debouncedNFT);
     }
 
     const handleSearch = async () => {
@@ -62,25 +55,31 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
       const contract = new ethers.Contract(debouncedNFT, abiErc1155, provider);
       try {
         const uri = await contract.uri(idNFT);
-        setUri(uri);
-        const res = await fetch(uri);
-        const metadata = await res.json();
-        setMetadata(metadata);
+        console.log(uri);
 
-        if (metadata !== null) {
-          const { name, symbol, image } = metadata;
-          setNameNFT(name);
-          setSymbolNFT(symbol);
-          setImageNFT(image);
+        if (uri) {
+          setUri(uri);
+          const res = await fetch(uri);
+          const metadata = await res.json();
+          setMetadata(metadata);
+
+          if (metadata !== null) {
+            const { name, symbol, image } = metadata;
+            setNameNFT(name);
+            setSymbolNFT(symbol);
+            setImageNFT(image);
+          } else {
+            console.log("Metadata is null");
+          }
         } else {
-          console.log("Metadata is null");
+          setMetadata(null);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (idNFT && debouncedNFT) {
+    if (isERC1155 && idNFT && debouncedNFT) {
       handleSearch();
     }
   }, [debouncedNFT, idNFT]);
@@ -115,13 +114,17 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
       newURL = currentURL.replace(slug[0], nftAddress).replace(slug[2], idNFT);
       router.push(newURL);
     }
+    setNftAddress('')
+    setIdNFT('');
+    setMetadata(null);
+    setUri('');
     router.push(newURL);
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
-    // setIsERC1155(false)
-    // setMetadata(null);
-    // setNftAddress('');
   };
+  console.log(isERC1155);
+
+  console.log(metadata);
 
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
@@ -152,7 +155,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 onChange={(e) => setIdNFT(e.target.value)}
               />
             )}
-            {showError && (
+            {!isERC1155 && nftAddress && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
                 key="totalPayment"
