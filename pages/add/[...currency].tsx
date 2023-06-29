@@ -144,8 +144,7 @@ export default function AddLiquidity() {
         const dmlToken = await getDMLToken(
           nftAddress,
           idNFT,
-          tokenAddress,
-          wallet
+          tokenAddress
         );
         console.log(dmlToken);
 
@@ -160,7 +159,7 @@ export default function AddLiquidity() {
     const fetchReservesDML = async () => {
       try {
         if (dmlToken) {
-          const reserves = await getReserves(dmlToken, wallet);
+          const reserves = await getReserves(dmlToken);
           setReserves(reserves);
         }
       } catch (error) {
