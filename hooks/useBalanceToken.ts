@@ -6,7 +6,7 @@ import { getProvider } from '@/libs/connection/getProvider';
 const useBalanceToken = (account:string, tokenAddress:string, wallet:string) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState('0');
-  const [decimals, setDecimals] = useState(null);
+  const [decimals, setDecimals] = useState('18');
 
   useEffect(() => {
     const getBalanceToken = async () => {

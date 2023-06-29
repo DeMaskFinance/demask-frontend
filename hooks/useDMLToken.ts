@@ -1,6 +1,6 @@
 import getDMLToken from '@/libs/utils/getDMLToken';
 import { useEffect, useState } from 'react';
-const useDMLToken = (nftAddress:string, idNFT:string, tokenAddress:string, wallet:string) => {
+const useDMLToken = (account:string,nftAddress:string, idNFT:string, tokenAddress:string, wallet:string) => {
     const [dmlToken, setDmlToken] = useState<string>('');
   
     useEffect(() => {
@@ -14,7 +14,7 @@ const useDMLToken = (nftAddress:string, idNFT:string, tokenAddress:string, walle
       };
   
       fetchDataDML();
-    }, [nftAddress, idNFT, tokenAddress, wallet]);
+    }, [account,nftAddress, idNFT, tokenAddress, wallet]);
   
     return dmlToken;
   };

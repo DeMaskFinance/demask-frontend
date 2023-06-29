@@ -29,6 +29,9 @@ import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
 import BigNumber from "bignumber.js";
+import formatNumber from "@/libs/utils/formatNumer";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ChartSwap from "@/components/Charts/ChartSwap";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -73,8 +76,7 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
-  console.log(tokenAddress);
-  
+
   const { balanceToken, decimals, bigNumberBalance } = useBalanceToken(
     account,
     tokenAddress,
@@ -90,8 +92,6 @@ const Swap: React.FC = () => {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet]);
-  console.log(isApprovedNFT);
-
   const hanldeApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -109,8 +109,19 @@ const Swap: React.FC = () => {
     }
   };
 
-  const dmlToken = useDMLToken(nftAddress, idNFT, tokenAddress, wallet);
-  const reserves = useFetchReservesDML(dmlToken, wallet, inputNFT);
+  const dmlToken = useDMLToken(
+    account,
+    nftAddress,
+    idNFT,
+    tokenAddress,
+    wallet
+  );
+  const reserves: any[] = useFetchReservesDML(
+    account,
+    dmlToken,
+    wallet,
+    inputNFT
+  );
   const amountTokenSell = useAmountOutMin(
     inputNFT,
     dmlToken,
@@ -129,19 +140,16 @@ const Swap: React.FC = () => {
     wallet,
     activeChoice
   );
-  console.log(amountTokenBuy);
-  console.log(amountTokenSell);
-  
-  const amountBuy= new BigNumber(amountTokenBuy);
+  const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
-  console.log(bigNumberBalance);
-  console.log(amountSell.toFixed());
-  
+  // console.log(bigNumberBalance);
+  // console.log(amountSell.toFixed());
+
   // console.log(amountTokenBuy);
   // console.log(isSufficientToken);
   // console.log(dmlToken);
   // console.log(reserves);
-  
+
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -164,14 +172,20 @@ const Swap: React.FC = () => {
     } else {
       setIsSufficientToken(true);
     }
+    if (Number(amountSell.toFixed()) > Number(bigNumberBalance)) {
+      setIsSufficientToken(false);
+    } else {
+      setIsSufficientToken(true);
+    }
   }, [inputNFT]);
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
     }
   }, []);
-  console.log(Number(amountTokenBuy));
-  
+
+  console.log(amountBuy.toFixed());
+
   useEffect(() => {
     const checkApproveToken = async () => {
       const currentAllowance = await approveToken(
@@ -179,8 +193,8 @@ const Swap: React.FC = () => {
         wallet,
         tokenAddress
       );
-      console.log(currentAllowance);
-
+      // console.log(Number(currentAllowance));
+      // console.log(amountBuy.toFixed());
       if (Number(currentAllowance) < Number(amountTokenBuy)) {
         setIsApprovedToken(false);
       } else {
@@ -188,9 +202,10 @@ const Swap: React.FC = () => {
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress, inputNFT]);
-  console.log(balanceToken);
-  const handleApproveToken = async () => {
+  }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy]);
+
+  const handleApproveToken = async (e: any) => {
+    e.preventDefault();
     if (account) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -199,7 +214,7 @@ const Swap: React.FC = () => {
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         await contract.approve(routerAddress, amountBuy.toFixed());
-        setIsApprovedToken(true);
+        setInputNFT("");
       } catch (error) {
         console.error(error);
       }
@@ -224,7 +239,7 @@ const Swap: React.FC = () => {
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         console.log(amountBuy.toFixed());
-        
+
         try {
           let result;
           if (tokenAddress === "MATIC") {
@@ -234,7 +249,7 @@ const Swap: React.FC = () => {
               inputNFT,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              {gasLimit: 8000000, value: amountBuy.toFixed() }
+              { gasLimit: 8000000, value: amountBuy.toFixed() }
             );
           } else {
             result = await contract.buy(
@@ -329,6 +344,10 @@ const Swap: React.FC = () => {
       }
     }
   };
+  const priceBuy = Number(amountBuy) / Number(inputNFT);
+  const priceSell = Number(amountSell) / Number(inputNFT);
+  console.log(priceBuy);
+
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";
@@ -352,14 +371,34 @@ const Swap: React.FC = () => {
       </div>
       <div className="flex gap-x-10">
         <div className="w-[50%] flex flex-col items-center">
-          <Image
-            src={imageNFT}
-            alt="test"
-            width={776}
-            height={776}
-            className="w-full h-full rounded-lg"
-            unoptimized
-          />
+          {imageNFT && (
+            <Image
+              src={imageNFT}
+              alt="test"
+              width={576}
+              height={576}
+              className="rounded-lg "
+              unoptimized
+            />
+          )}
+          {!imageNFT && animationUrl && (
+            <video
+              src={animationUrl}
+              autoPlay
+              loop
+              muted
+              controls
+              width={504}
+              height={288}
+              className="rounded-2xl"
+            />
+          )}
+          {imageNFT && animationUrl && (
+            <audio autoPlay loop muted controls src={animationUrl} className="mt-4 mb-2">
+              Your browser does not support the
+              <code>audio</code> element.
+            </audio>
+          )}
           <p
             className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
             onClick={handleShowDetail}
@@ -377,15 +416,15 @@ const Swap: React.FC = () => {
                 </div>
                 {account && activeChoice === "BUY" && (
                   <p className="">
-                    Balance:{balanceToken} {symbolToken}
+                    Balance:{formatNumber(balanceToken)} {symbolToken}
                   </p>
                 )}
                 {account && activeChoice === "SELL" && (
-                  <p className="">Balance:{balanceNFT} NFT</p>
+                  <p className="">Balance:{formatNumber(balanceNFT)} NFT</p>
                 )}
                 {reserves && (
                   <p className="text-dark3 mt-[60px]">
-                    Reverse NFT:{Number(reserves[1])}
+                    Reverse NFT:{formatNumber(reserves[1])}
                   </p>
                 )}
               </div>
@@ -396,19 +435,57 @@ const Swap: React.FC = () => {
                   activeChoice={activeChoice}
                   onChoiceChange={handleChoiceChange}
                 />
-                <p className="text-4xl text-secondary3">100 ETH</p>
+                {activeChoice === "BUY" && account && (
+                  <div className="text-4xl text-secondary3">
+                    {inputNFT ? (
+                      <span>
+                        {Number(
+                          divideByDecimal(priceBuy.toString(), decimals)
+                        ).toFixed(2)}
+                      </span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                    <span className="ml-2">{symbolToken}</span>
+                  </div>
+                )}
+                {activeChoice === "SELL" && account && (
+                  <div className="text-4xl text-secondary3">
+                    {inputNFT ? (
+                      <span>
+                        {Number(
+                          divideByDecimal(priceSell.toString(), decimals)
+                        ).toFixed(2)}
+                      </span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                    <span className="ml-2">{symbolToken}</span>
+                  </div>
+                )}
               </div>
               <div className=" basis-1/3">
                 <a
                   href={`https://mumbai.polygonscan.com/address/${dmlToken}`}
                   target="_blank"
-                  className="flex justify-end font-medium text-dark2 "
+                  className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
                 >
-                  <PoolIcon width={24} height={24} />
-                  <p>Pool</p>
+                  <PoolIcon
+                    width={24}
+                    height={24}
+                    className="group-hover:fill-secondary3"
+                  />
+                  <p className="group-hover:text-secondary3">Pool</p>
                 </a>
                 {reserves && (
-                  <p className="text-dark3 mt-[80px] text-end">Reverse Token:{handleBignumbertoDec(reserves[0],decimals)}</p> 
+                  <p className="text-dark3 mt-[80px] text-end">
+                    Reverse Token:
+                    {formatNumber(
+                      Number(
+                        divideByDecimal(reserves[0].toString(), decimals)
+                      ).toFixed(2)
+                    )}
+                  </p>
                 )}
               </div>
             </div>
@@ -463,9 +540,17 @@ const Swap: React.FC = () => {
               )}
               <div className="relative">
                 {activeChoice === "BUY" ? (
-                  <div className={styles.inputItem}>{amountTokenBuy}</div>
+                  <div className={styles.inputItem}>
+                    {formatNumber(
+                      divideByDecimal(amountBuy.toFixed(), decimals)
+                    )}
+                  </div>
                 ) : (
-                  <div className={styles.inputItem}>{amountTokenSell}</div>
+                  <div className={styles.inputItem}>
+                    {formatNumber(
+                      divideByDecimal(amountSell.toFixed(), decimals)
+                    )}
+                  </div>
                 )}
                 <div
                   className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
@@ -508,27 +593,23 @@ const Swap: React.FC = () => {
                     APPROVE NFT
                   </Button>
                 )}
-                {!isApprovedToken && activeChoice === "BUY" && (
-                  <Button
-                    className="w-[126px] py-2"
-                    primary
-                    onClick={handleApproveToken}
-                  >
-                    APPROVE TOKEN
-                  </Button>
-                )}
+                {!isApprovedToken &&
+                  tokenAddress !== "MATIC" &&
+                  activeChoice === "BUY" && (
+                    <Button
+                      className="w-[126px] py-2"
+                      type="button"
+                      primary
+                      onClick={handleApproveToken}
+                    >
+                      APPROVE TOKEN
+                    </Button>
+                  )}
               </div>
             </form>
           </div>
           <div className="px-4 py-6 mt-6 border rounded-lg border-dark3">
-            <div className="mb-12">
-              <ul>
-                <li className="text-dark3">Volume and Price</li>
-                <li className="text-dark1">1.2997 ETH</li>
-                <li className="text-dark2">Avg.Price: 0.0762 ETH</li>
-                <li className="text-dark3">7:00 Am, May 17, 2023 (UTC)</li>
-              </ul>
-            </div>
+            <ChartSwap />
           </div>
         </div>
       </div>
