@@ -33,7 +33,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     <div className="p-6 border rounded-lg border-dark3">
       <div className="flex justify-between mb-2">
       <div className="mb-2 text-dark1">
-        <p className="font-medium ">TVL</p>
+        <p className="font-medium ">Volume</p>
         <p className="my-2 text-2xl font-medium text-dark0">
           ${activeData?.toFixed(2)}M
         </p>

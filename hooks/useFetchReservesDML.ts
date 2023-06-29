@@ -8,7 +8,7 @@ const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:st
     const fetchReservesDML = async () => {
       try {
         if (dmlToken) {
-          const reserves = await getReserves(dmlToken, wallet);
+          const reserves = await getReserves(dmlToken);
           setReserves(reserves);
         }
       } catch (error) {

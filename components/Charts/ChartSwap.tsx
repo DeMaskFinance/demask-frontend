@@ -77,6 +77,7 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = () => {
       zooming: {
         mouseWheel: false,
       },
+      height:300,
     },
     credits: {
       enabled: false,
@@ -100,13 +101,13 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = () => {
           format: "{value}K",
         },
         title: {
-          text: "Volume",
+          text: "",
         },
       },
       {
         // Secondary yAxis
         title: {
-          text: "Average price",
+          text: "",
         },
         labels: {
           format: "{value} B",
@@ -190,12 +191,12 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = () => {
     <div>
       <ul>
         <li className="text-dark3">Volume and Price</li>
-        <li className="text-dark1">{volumeValue} ETH</li>
+        <li className="text-xl text-dark1">{volumeValue} ETH</li>
         <li className="text-dark2">Avg.Price: {avgPrice} ETH</li>
         <li className="text-dark3">7:00 Am, May 17, 2023 (UTC)</li>
       </ul>
       <div className="mt-12">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        <HighchartsReact highcharts={Highcharts} options={options}/>
       </div>
     </div>
   );

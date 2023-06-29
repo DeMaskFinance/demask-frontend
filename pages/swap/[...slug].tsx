@@ -113,8 +113,7 @@ const Swap: React.FC = () => {
     account,
     nftAddress,
     idNFT,
-    tokenAddress,
-    wallet
+    tokenAddress
   );
   const reserves: any[] = useFetchReservesDML(
     account,
@@ -147,8 +146,8 @@ const Swap: React.FC = () => {
 
   // console.log(amountTokenBuy);
   // console.log(isSufficientToken);
-  // console.log(dmlToken);
-  // console.log(reserves);
+  console.log(dmlToken);
+  console.log(reserves);
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -183,8 +182,6 @@ const Swap: React.FC = () => {
       setIsSufficientNFT(true);
     }
   }, []);
-
-  console.log(amountBuy.toFixed());
 
   useEffect(() => {
     const checkApproveToken = async () => {
@@ -375,9 +372,10 @@ const Swap: React.FC = () => {
             <Image
               src={imageNFT}
               alt="test"
-              width={576}
+              width={680}
               height={576}
-              className="rounded-lg "
+              sizes="(max-width: 772px) 100vw"
+              className="rounded-lg max-h-[772px] max-w-[772px]"
               unoptimized
             />
           )}
@@ -388,13 +386,18 @@ const Swap: React.FC = () => {
               loop
               muted
               controls
-              width={504}
-              height={288}
-              className="rounded-2xl"
+              className="max-h-[772px] max-w-[772px] rounded-2xl"
             />
           )}
           {imageNFT && animationUrl && (
-            <audio autoPlay loop muted controls src={animationUrl} className="mt-4 mb-2">
+            <audio
+              autoPlay
+              loop
+              muted
+              controls
+              src={animationUrl}
+              className="mt-4 mb-2"
+            >
               Your browser does not support the
               <code>audio</code> element.
             </audio>
@@ -421,11 +424,6 @@ const Swap: React.FC = () => {
                 )}
                 {account && activeChoice === "SELL" && (
                   <p className="">Balance:{formatNumber(balanceNFT)} NFT</p>
-                )}
-                {reserves && (
-                  <p className="text-dark3 mt-[60px]">
-                    Reverse NFT:{formatNumber(reserves[1])}
-                  </p>
                 )}
               </div>
               <div className="flex flex-col items-center basis-1/3">
@@ -477,49 +475,40 @@ const Swap: React.FC = () => {
                   />
                   <p className="group-hover:text-secondary3">Pool</p>
                 </a>
-                {reserves && (
-                  <p className="text-dark3 mt-[80px] text-end">
-                    Reverse Token:
-                    {formatNumber(
-                      Number(
-                        divideByDecimal(reserves[0].toString(), decimals)
-                      ).toFixed(2)
-                    )}
-                  </p>
-                )}
               </div>
             </div>
-            <form>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="amountNFT"
-                  id="amountNFT"
-                  placeholder="Input amount NFT"
-                  className={
-                    showRequiredMessage
-                      ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                      : styles.inputItem
-                  }
-                  value={inputNFT}
-                  onChange={(e) => {
-                    setInputNFT(e.target.value);
-                    setShowRequiredMessage(false);
-                  }}
-                />
-                <div
-                  className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
-                  onClick={handleSearchNFT}
-                >
-                  {/* <NFTIcon
-                          width={24}
-                          height={24}
-                          className="fill-white"
-                        /> */}
-                  {symbolNFT}
+            <form className="grid grid-cols-2 gap-x-4">
+              <div>
+                {reserves && (
+                  <p className="mb-4 text-dark3">
+                    Reverse NFT:{formatNumber(reserves[1])}
+                  </p>
+                )}
+                <div className="relative">
+                  <input
+                    type="number"
+                    name="amountNFT"
+                    id="amountNFT"
+                    placeholder="Input amount NFT"
+                    className={
+                      showRequiredMessage
+                        ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                        : styles.inputItem
+                    }
+                    value={inputNFT}
+                    onChange={(e) => {
+                      setInputNFT(e.target.value);
+                      setShowRequiredMessage(false);
+                    }}
+                  />
+                  <div
+                    className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
+                    onClick={handleSearchNFT}
+                  >
+                    {symbolNFT}
+                  </div>
                 </div>
-              </div>
-              {dmlToken !== "0x0000000000000000000000000000000000000000" &&
+                {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                 !isSufficientNFT && (
                   <p
                     className="mb-2 ml-3 -mt-3 text-xs text-red"
@@ -538,75 +527,83 @@ const Swap: React.FC = () => {
                   Required
                 </p>
               )}
-              <div className="relative">
-                {activeChoice === "BUY" ? (
-                  <div className={styles.inputItem}>
+              </div>
+              
+              <div>
+                {reserves && (
+                  <p className="mb-4 text-dark3 text-end">
+                    Reverse Token:
                     {formatNumber(
-                      divideByDecimal(amountBuy.toFixed(), decimals)
+                      Number(
+                        divideByDecimal(reserves[0].toString(), decimals)
+                      ).toFixed(2)
                     )}
-                  </div>
-                ) : (
-                  <div className={styles.inputItem}>
-                    {formatNumber(
-                      divideByDecimal(amountSell.toFixed(), decimals)
-                    )}
-                  </div>
+                  </p>
                 )}
-                <div
-                  className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
-                  onClick={handleSearchToken}
-                >
-                  {/* <NFTIcon
-                          width={24}
-                          height={24}
-                          className="fill-white"
-                        /> */}
-                  {symbolToken}
+                <div className="relative">
+                  {activeChoice === "BUY" ? (
+                    <div className={styles.inputItem}>
+                      {formatNumber(
+                        divideByDecimal(amountBuy.toFixed(), decimals)
+                      )}
+                    </div>
+                  ) : (
+                    <div className={styles.inputItem}>
+                      {formatNumber(
+                        divideByDecimal(amountSell.toFixed(), decimals)
+                      )}
+                    </div>
+                  )}
+                  <div
+                    className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
+                    onClick={handleSearchToken}
+                  >
+                    {symbolToken}
+                  </div>
                 </div>
               </div>
-
-              <div className="flex justify-center w-full">
-                {isApprovedToken && activeChoice === "BUY" && (
-                  <button
-                    type="button"
-                    className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
-                    onClick={handleBuyNFT}
-                  >
-                    BUY NFT
-                  </button>
-                )}
-                {isApprovedNFT && activeChoice === "SELL" && (
-                  <button
-                    type="button"
-                    className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
-                    onClick={handleSellNFT}
-                  >
-                    SELL NFT
-                  </button>
-                )}
-                {!isApprovedNFT && activeChoice === "SELL" && (
+            </form>
+            <div className="flex justify-center w-full">
+              {isApprovedToken && activeChoice === "BUY" && (
+                <button
+                  type="button"
+                  className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
+                  onClick={handleBuyNFT}
+                >
+                  BUY NFT
+                </button>
+              )}
+              {isApprovedNFT && activeChoice === "SELL" && (
+                <button
+                  type="button"
+                  className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
+                  onClick={handleSellNFT}
+                >
+                  SELL NFT
+                </button>
+              )}
+              {!isApprovedNFT && activeChoice  === "SELL" && (
+                <Button
+                  className="w-[126px] py-2"
+                  primary
+                  onClick={hanldeApproveNFT}
+                >
+                  APPROVE NFT
+                </Button>
+              )}
+              {!isApprovedToken &&
+                tokenAddress !== "MATIC" &&
+                activeChoice === "BUY" && (
                   <Button
                     className="w-[126px] py-2"
+                    type="button"
                     primary
-                    onClick={hanldeApproveNFT}
+                    onClick={handleApproveToken}
                   >
-                    APPROVE NFT
+                    APPROVE TOKEN
                   </Button>
                 )}
-                {!isApprovedToken &&
-                  tokenAddress !== "MATIC" &&
-                  activeChoice === "BUY" && (
-                    <Button
-                      className="w-[126px] py-2"
-                      type="button"
-                      primary
-                      onClick={handleApproveToken}
-                    >
-                      APPROVE TOKEN
-                    </Button>
-                  )}
-              </div>
-            </form>
+            </div>
           </div>
           <div className="px-4 py-6 mt-6 border rounded-lg border-dark3">
             <ChartSwap />
