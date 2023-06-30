@@ -259,7 +259,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              amountBuy.toFixed(),
+              amountBuy.toFixed(0),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
