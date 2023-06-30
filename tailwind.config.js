@@ -16,6 +16,9 @@ module.exports = {
         'header':'64px',
         'chart':'776px',
       },
+      lineHeight: {
+        'normal':'18px',
+      },
       padding: {
         'primary': '164px',
         'secondary':'272px',
@@ -52,6 +55,9 @@ module.exports = {
       },
       fontSize:{
         'customDate':'15px',
+      },
+      boxShadow: {
+        'home': '0px 4px 12px 0px rgba(0, 0, 0, 0.08)',
       },
       keyframes: {
         scrollUpHeader: {

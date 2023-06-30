@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
-import { PoolIcon } from "@/components/Icons";
+import { ActiveIcon, PoolIcon } from "@/components/Icons";
 import { TwoTab } from "@/components/NavChoice";
 import abiErc20 from "@/abi/abiErc20.json";
 import abiErc1155 from "@/abi/abiErc1155.json";
@@ -32,6 +32,7 @@ import BigNumber from "bignumber.js";
 import formatNumber from "@/libs/utils/formatNumer";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ChartSwap from "@/components/Charts/ChartSwap";
+import checkIsERC20 from "@/libs/validation/checkIsERC20";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -43,7 +44,6 @@ const Swap: React.FC = () => {
   const [idNFT, setIdNFT] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
-  const [symbolToken, setSymbolToken] = useState<string>("USDT");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
@@ -63,6 +63,7 @@ const Swap: React.FC = () => {
     animationUrl,
     description,
   } = useMetadata(nftAddress, idNFT);
+  
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -77,7 +78,7 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
 
-  const { balanceToken, decimals, bigNumberBalance } = useBalanceToken(
+  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
     account,
     tokenAddress,
     wallet
@@ -109,12 +110,7 @@ const Swap: React.FC = () => {
     }
   };
 
-  const dmlToken = useDMLToken(
-    account,
-    nftAddress,
-    idNFT,
-    tokenAddress
-  );
+  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
   const reserves: any[] = useFetchReservesDML(
     account,
     dmlToken,
@@ -141,7 +137,10 @@ const Swap: React.FC = () => {
   );
   const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
-  // console.log(bigNumberBalance);
+  console.log(bigNumberBalance);
+  console.log(Number(amountBuy.toFixed()));
+  console.log(isApprovedToken);
+    
   // console.log(amountSell.toFixed());
 
   // console.log(amountTokenBuy);
@@ -177,6 +176,8 @@ const Swap: React.FC = () => {
       setIsSufficientToken(true);
     }
   }, [inputNFT]);
+  console.log(isSufficientToken);
+  
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -185,16 +186,20 @@ const Swap: React.FC = () => {
 
   useEffect(() => {
     const checkApproveToken = async () => {
-      const currentAllowance = await approveToken(
-        account,
-        wallet,
-        tokenAddress
-      );
-      // console.log(Number(currentAllowance));
-      // console.log(amountBuy.toFixed());
-      if (Number(currentAllowance) < Number(amountTokenBuy)) {
-        setIsApprovedToken(false);
-      } else {
+      if(tokenAddress!=="MATIC"){
+        const currentAllowance = await approveToken(
+          account,
+          wallet,
+          tokenAddress
+        );
+        // console.log(Number(currentAllowance));
+        // console.log(amountBuy.toFixed());
+        if (Number(currentAllowance) < Number(amountTokenBuy)) {
+          setIsApprovedToken(false);
+        } else {
+          setIsApprovedToken(true);
+        }
+      }else{
         setIsApprovedToken(true);
       }
     };
@@ -246,7 +251,7 @@ const Swap: React.FC = () => {
               inputNFT,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: amountBuy.toFixed() }
+              { gasLimit: 8000000, value: amountBuy.toFixed(0) }
             );
           } else {
             result = await contract.buy(
@@ -304,7 +309,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              amountSell.toFixed(),
+              amountSell.toFixed(0),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -315,7 +320,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              amountSell.toFixed(),
+              amountSell.toFixed(0),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -413,17 +418,31 @@ const Swap: React.FC = () => {
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex mb-6 text-dark1">
               <div className="basis-1/3">
-                <div className="">
+                <div className="flex text-xl font-medium text-dark1">
                   <span>{nameNFT}/</span>
                   <span>{symbolToken}</span>
+                  <span className="ml-1">
+                    <ActiveIcon
+                      width={24}
+                      height={24}
+                      className={
+                        dmlToken ===
+                        "0x0000000000000000000000000000000000000000"
+                          ? "fill-red"
+                          : ""
+                      }
+                    />
+                  </span>
                 </div>
                 {account && activeChoice === "BUY" && (
-                  <p className="">
+                  <p className="text-secondary3">
                     Balance:{formatNumber(balanceToken)} {symbolToken}
                   </p>
                 )}
                 {account && activeChoice === "SELL" && (
-                  <p className="">Balance:{formatNumber(balanceNFT)} NFT</p>
+                  <p className="text-secondary3">
+                    Balance:{formatNumber(balanceNFT)} NFT
+                  </p>
                 )}
               </div>
               <div className="flex flex-col items-center basis-1/3">
@@ -509,26 +528,38 @@ const Swap: React.FC = () => {
                   </div>
                 </div>
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
-                !isSufficientNFT && (
-                  <p
-                    className="mb-2 ml-3 -mt-3 text-xs text-red"
-                    key="NFTbalance"
-                  >
-                    Insufficient NFT balance
+                  !isSufficientNFT && (
+                    <p
+                      className="mb-2 ml-3 -mt-3 text-xs text-red"
+                      key="NFTbalance"
+                    >
+                      Insufficient NFT balance
+                    </p>
+                  )}
+                  {dmlToken !== "0x0000000000000000000000000000000000000000" &&
+                  !isSufficientToken && (
+                    <p
+                      className="mb-2 ml-3 -mt-3 text-xs text-red"
+                      key="Tokenbalance"
+                    >
+                      Insufficient Token balance
+                    </p>
+                  )}
+                {dmlToken === "0x0000000000000000000000000000000000000000" && (
+                  <p className="mb-2 ml-3 -mt-3 text-xs text-red">
+                    DML Token doesn't exist yet
                   </p>
                 )}
-              {dmlToken === "0x0000000000000000000000000000000000000000" && (
-                <p className="mb-2 ml-3 -mt-3 text-xs text-red">
-                  DML Token doesn't exist yet
-                </p>
-              )}
-              {showRequiredMessage && (
-                <p className="mb-2 ml-3 -mt-3 text-xs text-red" key="emptyNFT">
-                  Required
-                </p>
-              )}
+                {showRequiredMessage && (
+                  <p
+                    className="mb-2 ml-3 -mt-3 text-xs text-red"
+                    key="emptyNFT"
+                  >
+                    Required
+                  </p>
+                )}
               </div>
-              
+
               <div>
                 {reserves && (
                   <p className="mb-4 text-dark3 text-end">
@@ -582,7 +613,7 @@ const Swap: React.FC = () => {
                   SELL NFT
                 </button>
               )}
-              {!isApprovedNFT && activeChoice  === "SELL" && (
+              {!isApprovedNFT && activeChoice === "SELL" && (
                 <Button
                   className="w-[126px] py-2"
                   primary
@@ -627,7 +658,6 @@ const Swap: React.FC = () => {
       <ModalSearchToken
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
-        setSymbolToken={setSymbolToken}
       />
       <ToastContainer />
     </div>

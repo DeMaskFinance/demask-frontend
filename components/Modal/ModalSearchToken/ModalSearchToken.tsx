@@ -10,7 +10,6 @@ import { memo } from "react";
 interface ModalSearchTokenProps {
   setIsOpenSearchToken: any;
   isOpenSearchToken: boolean;
-  setSymbolToken: any;
 }
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
@@ -20,8 +19,7 @@ const styles = {
 };
 const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   setIsOpenSearchToken,
-  isOpenSearchToken,
-  setSymbolToken,
+  isOpenSearchToken
 }) => {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,7 +55,6 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
       newURL = currentURL.replace(slug[1], tokenAddress);
       router.push(newURL);
     }
-    setSymbolToken(symbol);
     setTokenAddress('');
     setIsERC20(false);
     document.body.style.overflowY = "auto";
@@ -80,7 +77,6 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
       newURL = currentURL.replace(slug[1], address);
       router.push(newURL);
     }
-    setSymbolToken(symbol);
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
   };

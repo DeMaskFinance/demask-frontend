@@ -6,7 +6,13 @@ const useDMLToken = (account:string,nftAddress:string, idNFT:string, tokenAddres
     useEffect(() => {
       const fetchDataDML = async () => {
         try {
-          const dmlToken = await getDMLToken(nftAddress, idNFT, tokenAddress);
+          let dmlToken ;
+          if(tokenAddress === 'MATIC'){
+            const tokenWETH = process.env.NEXT_PUBLIC_WETH as string;
+            dmlToken = await getDMLToken(nftAddress, idNFT, tokenWETH);
+          }else{
+            dmlToken = await getDMLToken(nftAddress, idNFT, tokenAddress);
+          }
           setDmlToken(dmlToken);
         } catch (error) {
           console.error(error);

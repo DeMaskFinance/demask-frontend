@@ -1,36 +1,85 @@
-import { ethers } from 'ethers';
-import  abiFactory  from '@/abi/abiFactory.json';
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import { getProvider } from '@/libs/connection/getProvider';
-
-
-export default function Home() {
-  const getDMLToken = async (nftAddress:string,idNFT:string,tokenAddress:string,wallet:string) => {
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
-    const factoryAddress = process.env.NEXT_PUBLIC_FACTORY || "";
-    const contract = new ethers.Contract(factoryAddress, abiFactory, provider);
-    console.log(contract);
-    
-    try {
-      const result = await contract.getDmlToken(nftAddress,tokenAddress,idNFT);
-      console.log(result);
-      
-      
-    } catch (error) {
-      console.error(error);
+import { Button } from "@/components/Buttons";
+import * as homeService from "@/libs/service/homeService";
+import Head from "next/head";
+import {useState} from 'react'
+import Image from "next/image";
+import Link from "next/link";
+import NFTItems from "@/components/Home/NFTItems";
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import { useInfiniteQuery } from "react-query";
+ 
+export const getServerSideProps: GetServerSideProps = async () =>{
+  const homeData = await homeService.home(undefined);
+  return {
+    props: {
+      homeData
     }
+  }
+}
+
+export default function Home({homeData}:any) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const fetchDataPage = async ({ pageParam = 1 }) => {
+    const response = await fetch(`http://161.97.172.213:5050/homepage?page=${pageParam}`);
+    const data = await response.json();
+    
+    console.log(data);
+    return data;
+    
   };
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    "homepage",
+    ({ pageParam }) => fetchDataPage({ pageParam }),
+    {
+      getNextPageParam: (page) => (page.page === page.total_pages ? undefined : page.page + 1)
+    }
+  );
+  console.log(homeData);
+  console.log(data);
+  console.log(hasNextPage);
+  
+  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  
+  const Category = [
+    {
+      id: 1,
+      value: "ALL",
+    },
+    {
+      id: 2,
+      value: "TRENDING",
+    },
+    {
+      id: 3,
+      value: "LASTEST",
+    },
+  ];
   return (
-    <div>
+    <div className="py-8">
       <Head>
         <title>Home | DeMask</title>
       </Head>
-      <div onClick={()=>getDMLToken('0x4A90D5aE01F03B650cdc8D3A94358F364D98d096','3965474371','0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70',"MetaMask")}>
-        HOME
+      <div onClick={()=>fetchDataPage}>Home</div>
+      <div className="mb-6">
+        <div className="flex flex-col items-center">
+          <h1 className="text-3xl font-medium text-dark1 w-[45%] text-center">6,746 curated NFT resources to buy and hodl creative workflow.</h1>
+          <h2 className="text-xl font-medium text-dark2">Join a growing family of 666,687 designers and makers from around the world.</h2>
+          <div className="my-6">
+            {Category.map((item,index)=>(
+              <Button className="p-2 ml-6 text-sm font-medium leading-normal text-dark3" type="button" outline active={selectedCategory.includes(item.value)} onClick={() => setSelectedCategory(item.value)}>
+                {item.value}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div className="px-[270px]">
+          <NFTItems/>
+          <NFTItems/>
+          <NFTItems/>
+        </div>
       </div>
-
     </div>
-  )
+  );
 }
