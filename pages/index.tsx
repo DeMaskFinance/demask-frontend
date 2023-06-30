@@ -61,7 +61,7 @@ export default function Home({homeData}:any) {
       <Head>
         <title>Home | DeMask</title>
       </Head>
-      <div onClick={()=>fetchDataPage}>Home</div>
+      {/* <div onClick={()=>fetchDataPage}>Home</div> */}
       <div className="mb-6">
         <div className="flex flex-col items-center">
           <h1 className="text-3xl font-medium text-dark1 w-[45%] text-center">6,746 curated NFT resources to buy and hodl creative workflow.</h1>

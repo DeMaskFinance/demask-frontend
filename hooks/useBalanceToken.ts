@@ -11,7 +11,7 @@ const useBalanceToken = (
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
   const [decimals, setDecimals] = useState("18");
-  const [symbolToken,setSymbolToken] = useState("");
+  const [symbolToken,setSymbolToken] = useState("USDT");
   const [nameTokenERC20,setNameTokenERC20]  = useState('');
   const provider = new ethers.providers.JsonRpcProvider(
     "https://rpc.ankr.com/polygon_mumbai"
