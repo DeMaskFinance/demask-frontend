@@ -27,6 +27,7 @@ import BigNumberJS from "bignumber.js";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import TransitionURL from "@/components/Toast/TransionURL";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
+import useBalanceToken from "@/hooks/useBalanceToken";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -37,8 +38,6 @@ export default function AddLiquidity() {
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [balanceNFT, setBalanceNFT] = useState("0");
-  const [balanceToken, setBalanceToken] = useState("0");
-  const [decimals, setDecimals] = useState("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [inputToken, setInputToken] = useState<string>("");
   const [idNFT, setIdNFT] = useState("");
@@ -52,7 +51,6 @@ export default function AddLiquidity() {
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [reserves, setReserves] = useState();
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
-  const [symbolToken, setSymbolToken] = useState<string>("USDT");
   const { currency } = router.query;
   const { account, wallet } = useContext(AccountContext);
   const [dmlToken, setDmlToken] = useState<string>();
@@ -95,49 +93,11 @@ export default function AddLiquidity() {
     fetchBalanceNFT();
   }, [account, idNFT, nftAddress, wallet]);
 
-  useEffect(() => {
-    const getBalanceToken = async () => {
-      if (account && tokenAddress) {
-        if (tokenAddress === "MATIC") {
-          const provider = new ethers.providers.JsonRpcProvider(
-            "https://rpc.ankr.com/polygon_mumbai"
-          );
-          console.log(provider);
-
-          try {
-            console.log(account);
-            console.log(wallet);
-            const balance = await provider.getBalance(account);
-            const balanceInMatic = parseFloat(
-              ethers.utils.formatEther(balance)
-            ).toFixed(4);
-            setBalanceToken(balanceInMatic);
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          const providerChoice = getProvider(wallet);
-          const provider = new ethers.providers.Web3Provider(providerChoice);
-          const signer = provider.getSigner();
-          const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
-          try {
-            const bigNumberBalance = await contract.balanceOf(account);
-            const decimals = await contract.decimals();
-            const decimalsInt = Number(decimals);
-            const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
-            const balance = bigNumberBalance.div(divisor);
-            setBalanceToken(balance.toString());
-            setDecimals(decimals);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-      } else {
-        setBalanceToken("0"); //No Account
-      }
-    };
-    getBalanceToken();
-  }, [account, tokenAddress, wallet]);
+  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
+    account,
+    tokenAddress,
+    wallet
+  );
   useEffect(() => {
     const fetchDataDML = async () => {
       try {
@@ -516,7 +476,6 @@ export default function AddLiquidity() {
       <ModalSearchToken
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
-        setSymbolToken={setSymbolToken}
       />
       <ToastContainer />
     </div>
