@@ -18,6 +18,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "libs/connection/provider.js", "components/Icons/Icons.js", "context/AccountContext.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "libs/connection/provider.js", "components/Icons/Icons.js", "context/AccountContext.js", "components/Skeleton"],
   "exclude": ["node_modules"]
 }

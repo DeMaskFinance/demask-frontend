@@ -434,10 +434,6 @@ export default function AddLiquidity() {
             ADD LIQUIDITY
           </Button>
         )}
-        {/* <Button primary className="p-2" onClick={getBalanceNative}>
-   
-          Check
-        </Button> */}
       </div>
       <div>
         <div className="flex flex-col items-center w-[504px] h-full ">
