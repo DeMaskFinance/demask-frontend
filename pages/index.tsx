@@ -23,7 +23,7 @@ export default function Home({ homeData }: any) {
   const { ref, inView } = useInView();
   const fetchDataPage = async ({ pageParam = 1 }) => {
     const response = await fetch(
-      `http://161.97.172.213:5050/homepage?page=${pageParam}`
+      `https://api.demask.finance/homepage?page=${pageParam}`
     );
     const data = await response.json();
 
