@@ -58,6 +58,7 @@ module.exports = {
       },
       boxShadow: {
         'home': '0px 4px 12px 0px rgba(0, 0, 0, 0.08)',
+        'swiper':'rgba(0, 0, 0, 0.15) 0px 4px 10px',
       },
       keyframes: {
         scrollUpHeader: {
