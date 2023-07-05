@@ -23,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
           sizes="32x32"
           href="/favicon-32x32.png"
         ></link>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet"></link>
       </Head>
       <Layout>
         <QueryClientProvider client={queryClient}>

@@ -9,11 +9,9 @@ const getAmountSell = async (
   idNFT: string,
   amountNFT: string
 ) => {
-  const providerChoice = getProvider(wallet);
-  const provider = new ethers.providers.Web3Provider(providerChoice);
-  const signer = provider.getSigner();
+  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
   const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
-  const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+  const contract = new ethers.Contract(routerAddress, abiRouter, provider);
   try {
     const amountAFee = await contract.getAmountSell(tokenAddress,nftAddress,idNFT,amountNFT);
     return amountAFee[0].toString()

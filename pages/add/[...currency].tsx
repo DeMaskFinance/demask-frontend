@@ -22,12 +22,12 @@ import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import handleBignumber from "@/libs/utils/handleBignumber";
-import getReserves from "@/libs/utils/getReserves";
+import getReserves from "@/libs/utils/getInforDML";
 import BigNumberJS from "bignumber.js";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import TransitionURL from "@/components/Toast/TransionURL";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
-import useBalanceToken from "@/hooks/useBalanceToken";
+import useBalanceToken from "@/hooks/useInformationToken";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",

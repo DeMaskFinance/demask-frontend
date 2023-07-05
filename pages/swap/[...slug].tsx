@@ -23,7 +23,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import approveNFT from "@/libs/utils/approveNFT";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import useBalanceToken from "@/hooks/useBalanceToken";
+import useBalanceToken from "@/hooks/useInformationToken";
 import useDMLToken from "@/hooks/useDMLToken";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useAmountInMax from "@/hooks/useAmountInMax";
@@ -67,7 +67,11 @@ const Swap: React.FC = () => {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-
+  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
+    account,
+    tokenAddress,
+    wallet
+  );
   const { slug } = router.query;
   useEffect(() => {
     if (slug) {
@@ -78,11 +82,11 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
 
-  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
-    account,
-    tokenAddress,
-    wallet
-  );
+  console.log(tokenAddress);
+  
+  console.log(symbolToken);
+  console.log(balanceToken);
+  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   useEffect(() => {
     // console.log(nftAddress);
@@ -137,16 +141,17 @@ const Swap: React.FC = () => {
   );
   const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
-  console.log(bigNumberBalance);
-  console.log(Number(amountBuy.toFixed()));
-  console.log(isApprovedToken);
+  // console.log(bigNumberBalance);
+  // console.log(Number(amountBuy.toFixed()));
+  // console.log(isApprovedToken);
+    
     
   // console.log(amountSell.toFixed());
 
   // console.log(amountTokenBuy);
   // console.log(isSufficientToken);
-  console.log(dmlToken);
-  console.log(reserves);
+  // console.log(dmlToken);
+  // console.log(reserves);
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -176,7 +181,7 @@ const Swap: React.FC = () => {
       setIsSufficientToken(true);
     }
   }, [inputNFT]);
-  console.log(isSufficientToken);
+  
   
   useEffect(() => {
     if (inputNFT === "") {
@@ -348,7 +353,7 @@ const Swap: React.FC = () => {
   };
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
-  console.log(priceBuy);
+  
 
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);

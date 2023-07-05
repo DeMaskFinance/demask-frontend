@@ -1,4 +1,4 @@
-import getReserves from '@/libs/utils/getReserves';
+import getReserves from '@/libs/utils/getInforDML';
 import { useEffect, useState } from 'react';
 
 const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:string, inputNFT:string) => {
@@ -8,7 +8,7 @@ const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:st
     const fetchReservesDML = async () => {
       try {
         if (dmlToken) {
-          const reserves = await getReserves(dmlToken);
+          const {reserves}:any = await getReserves(dmlToken);
           setReserves(reserves);
         }
       } catch (error) {

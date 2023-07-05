@@ -1,5 +1,6 @@
 import { Button } from "@/components/Buttons";
 import * as homeService from "@/libs/service/homeService";
+import abiErc20 from "@/abi/abiErc20.json";
 import Head from "next/head";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,10 +13,11 @@ import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
 import { Skeleton } from "@/components/Skeleton";
 import { NFTTop } from "@/components/Home";
-import { GoChevronLeft,GoChevronRight } from "react-icons/go";
-import { BsChevronRight,BsChevronLeft } from "react-icons/bs";
+import { GoChevronLeft, GoChevronRight } from "react-icons/go";
+import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import "swiper/css";
 import "swiper/css/navigation";
+import { ethers } from "ethers";
 export const getServerSideProps: GetServerSideProps = async () => {
   const homeData = await homeService.home(undefined);
   return {
@@ -27,18 +29,56 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 export default function Home({ homeData }: any) {
   const swiperRef = useRef<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [reserve,setReserve] = useState();
+  const [idNFT,setIdNFT] = useState();
+  const [nftAddress,setNftAddress] = useState();
+  const [tokenAddress,setTokenAddress] = useState();
   const { ref, inView } = useInView();
   const fetchDataPage = async ({ pageParam = 1 }) => {
     const response = await fetch(
       `https://api.demask.finance/homepage?page=${pageParam}`
     );
     const data = await response.json();
-
-    console.log(data);
     return data;
   };
+  useEffect(() => {
+    const getInforDML = async (dmlToken: string) => {
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://rpc.ankr.com/polygon_mumbai"
+      );
+      const contract = new ethers.Contract(dmlToken, abiErc20, provider);
+      try {
+        const reserves = await contract.getReserves();
+        const decimals = await contract.decimals();
+        const idNFT = await contract.id();
+        console.log(decimals);
+        console.log(idNFT);
+        setReserve(reserves)
+        setIdNFT(idNFT);
+        const nftAddress = await contract.nft();
+        const reserveNFT = await contract.reservenft();
+        const reserveToken = await contract.reservetoken();
+        setNftAddress(nftAddress)
+        console.log(nftAddress);
+        console.log(reserveNFT);
+        console.log(reserveToken);
 
+        const tokenAddress = await contract.token();
+        setTokenAddress(tokenAddress)
+        console.log(tokenAddress);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    data?.pages.map((items)=>{
+      items.records.map((item:any)=>{
+        getInforDML(item.dmlAddress);
+      })
+      
+    })
+  }, []);
+  console.log(reserve);
+  console.log(idNFT);
   const {
     data,
     fetchNextPage,
@@ -55,9 +95,9 @@ export default function Home({ homeData }: any) {
     }
   );
   // console.log(homeData);
-  console.log(data);
   // console.log(hasNextPage);
-
+    
+  console.log(data?.pages);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
   const Category = [
@@ -74,8 +114,7 @@ export default function Home({ homeData }: any) {
       value: "LASTEST",
     },
   ];
-  console.log(swiperRef.current);
-  
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -100,8 +139,12 @@ export default function Home({ homeData }: any) {
       {/* <div onClick={()=>fetchDataPage}>Home</div> */}
       <div className="mb-6 leading-7">
         <div className="relative swiper-custom">
-          <button type="button" className="flex items-center justify-center text-3xl text-dark1 swiper-button-prev-custom" onClick={goPrev}>
-            <GoChevronLeft/>
+          <button
+            type="button"
+            className="flex items-center justify-center text-3xl text-dark1 swiper-button-prev-custom"
+            onClick={goPrev}
+          >
+            <GoChevronLeft />
           </button>
           <Swiper
             navigation={true}
@@ -147,8 +190,12 @@ export default function Home({ homeData }: any) {
               <NFTTop />
             </SwiperSlide>
           </Swiper>
-          <button type="button" className="flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom" onClick={goNext}>
-            <GoChevronRight/>
+          <button
+            type="button"
+            className="flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom"
+            onClick={goNext}
+          >
+            <GoChevronRight />
           </button>
         </div>
         <div className="flex flex-col items-center mt-8">
@@ -179,8 +226,8 @@ export default function Home({ homeData }: any) {
           {isSuccess &&
             data?.pages.map((page, index) => (
               <Fragment key={index}>
-                {page.records.map((nftItem: any) => (
-                  <NFTItems nftItem={nftItem} />
+                {page.records.map((nftItem: any, index: number) => (
+                  <NFTItems nftItem={nftItem} key={index} idNFT={1}/>
                 ))}
               </Fragment>
             ))}
