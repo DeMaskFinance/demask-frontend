@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
 
 const getInforDML = async (dmlToken: string) => {
-  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
+  const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
   const contract = new ethers.Contract(dmlToken, abiErc20, provider);
   try {
     const reserves = await contract.getReserves();

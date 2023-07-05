@@ -9,7 +9,7 @@ const getAmountBuy = async (
   idNFT: string,
   amountNFT: string
 ) => {
-  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
+  const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
   const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
   const contract = new ethers.Contract(routerAddress, abiRouter, provider);
   try {

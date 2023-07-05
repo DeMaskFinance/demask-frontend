@@ -9,7 +9,7 @@ export default function Skeleton() {
         </div>
       <div className="flex items-center mb-2 text-dark2">
         <div className="w-6 h-6 mr-2 rounded-full bg-slate-200"></div>
-        <div className="h-4 rounded bg-slate-200"></div>
+        <div className="w-32 h-4 rounded-full bg-slate-200"></div>
       </div>
       <div className="h-8 mb-2 rounded-2xl bg-slate-200">
       </div>

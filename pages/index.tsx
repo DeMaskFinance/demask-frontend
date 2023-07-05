@@ -200,7 +200,7 @@ export default function Home({ homeData }: any) {
         </div>
         <div className="flex flex-col items-center mt-8">
           <h1 className="text-3xl font-medium text-dark1 w-[45%] text-center">
-            6,746 curated NFT resources to buy and hodl creative workflow.
+            6,746 curated NFT resources to buy and hold creative workflow.
           </h1>
           <h2 className="mt-2 text-xl font-medium text-dark2">
             Join a growing family of 666,687 designers and makers from around
@@ -227,7 +227,7 @@ export default function Home({ homeData }: any) {
             data?.pages.map((page, index) => (
               <Fragment key={index}>
                 {page.records.map((nftItem: any, index: number) => (
-                  <NFTItems nftItem={nftItem} key={index} idNFT={1}/>
+                  <NFTItems nftItem={nftItem} key={index}/>
                 ))}
               </Fragment>
             ))}

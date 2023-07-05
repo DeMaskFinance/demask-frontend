@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import abiErc20 from "@/abi/abiErc20.json";
 const checkIsERC20 = async (contractAddress: string) => {
-  const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
+  const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
   const contract = new ethers.Contract(contractAddress, abiErc20, provider);
 
   try {
