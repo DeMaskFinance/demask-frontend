@@ -119,7 +119,7 @@ export default function AddLiquidity() {
     const fetchReservesDML = async () => {
       try {
         if (dmlToken) {
-          const reserves = await getReserves(dmlToken);
+          const {reserves}:any = await getReserves(dmlToken);
           setReserves(reserves);
         }
       } catch (error) {
