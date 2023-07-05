@@ -82,7 +82,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem,idNFT }) => 
         <div className="text-[34px] font-medium text-secondary3 leading-[14px]">
           100 ETH
         </div>
-        <p>{idNFT}</p>
+        {/* <p>{idNFT}</p> */}
       </div>
       <div className="flex items-center mb-2 text-dark2">
         <div className="w-6 h-6 mr-2 bg-black rounded-full"></div>
