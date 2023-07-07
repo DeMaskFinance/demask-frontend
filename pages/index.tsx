@@ -18,6 +18,7 @@ import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import "swiper/css";
 import "swiper/css/navigation";
 import { ethers } from "ethers";
+import { LayoutSecondary } from "@/components/Layouts";
 export const getServerSideProps: GetServerSideProps = async () => {
   const homeData = await homeService.home(undefined);
   return {
@@ -27,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default function Home({ homeData }: any) {
+const Home = ({ homeData }: any) => {
   const swiperRef = useRef<any>(null);
   const [reserve,setReserve] = useState();
   const [idNFT,setIdNFT] = useState();
@@ -251,3 +252,5 @@ export default function Home({ homeData }: any) {
     </div>
   );
 }
+Home.PageLayout = LayoutSecondary;
+export default Home;

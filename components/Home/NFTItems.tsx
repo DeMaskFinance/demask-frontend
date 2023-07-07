@@ -57,10 +57,10 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     "Metamask",
     "BUY"
   );
-  let tokenAddressSwap ='';
-  if(tokenAddress==='0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6'){
-    tokenAddressSwap = 'MATIC'
-  }else{
+  let tokenAddressSwap = "";
+  if (tokenAddress === "0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6") {
+    tokenAddressSwap = "MATIC";
+  } else {
     tokenAddressSwap = tokenAddress;
   }
   const amountBuy = new BigNumber(amountTokenBuy);
@@ -74,12 +74,14 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     };
     handleToken();
   }, [tokenAddress]);
-  let symbolTokenSwap ='';
-  if(symbolToken==='WETH'){
-    symbolTokenSwap = 'MATIC'
-  }else{
+  let symbolTokenSwap = "";
+  if (symbolToken === "WETH") {
+    symbolTokenSwap = "MATIC";
+  } else {
     symbolTokenSwap = symbolToken;
   }
+  console.log(nftItem.metadata.attributes);
+
   return (
     <div className="px-4 py-6 mt-6 rounded-lg shadow-home">
       <div className="flex items-center justify-between">
@@ -97,28 +99,34 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             </div>
           ))}
         </div>
-        {symbolToken && tokenAddress && nftAddress ? (
-          <div className="text-[24px] font-medium text-secondary3 leading-[14px] flex gap-x-2 items-end">
-            <span>
-              {formatPrice} {symbolTokenSwap}
-            </span>
+        <div className="flex gap-x-2">
+          {symbolToken && tokenAddress && nftAddress ? (
+            <div className="text-[24px] font-medium text-secondary3 leading-[14px] flex gap-x-2 items-end">
+              <span>
+                {formatPrice} {symbolTokenSwap}
+              </span>
+            </div>
+          ) : (
+            <div className="flex animate-pulse gap-x-4">
+              <div className="w-24 h-6 rounded-full bg-slate-200"></div>
+            </div>
+          )}
+          {tokenAddress && nftAddress && idNFT ? (
             <Link href={`/swap/${nftAddress}/${tokenAddressSwap}/${idNFT}`}>
               <SwapIcon width={24} height={24} />
             </Link>
-          </div>
-        ) : (
-          <div className="flex animate-pulse gap-x-4">
-            <div className="w-24 h-6 rounded-full bg-slate-200"></div>
-            <div className="w-10 h-6 rounded-full bg-slate-200"></div>
-          </div>
-        )}
+          ) : (
+            <div className="flex animate-pulse gap-x-4">
+              <div className="w-10 h-6 rounded-full bg-slate-200"></div>
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex items-center mb-2 text-dark2">
         <div className="w-6 h-6 mr-2 bg-black rounded-full"></div>
         <p className="font-medium text-dark2">TOCA</p>
         <p className="-translate-y-[4px] mx-1">.</p>
         <p className="text-xs">19 Mins</p>
-        
       </div>
       <p
         className={`font-light text-dark2 ${
@@ -143,17 +151,19 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               dynamicBullets: true,
             }}
             modules={[Pagination]}
-            slidesPerView={5}
-            className="flex mySwiper gap-x-3"
+            slidesPerView={7}
+            className="flex mySwiper "
           >
             {nftItem.metadata.attributes.map((item: any, index: number) => (
               <SwiperSlide key={index}>
-                <ul className="px-2 py-1 mr-4 border rounded-lg border-dark3">
-                  <li className="text-lg font-medium text-dark2">
-                    {item.trait_type}
-                  </li>
-                  <li className="text-sm text-dark3">{item.value}</li>
-                </ul>
+                {item.value && item.trait_type && (
+                  <ul className="px-2 py-1 mr-4 border rounded-lg border-dark3 min-w-[120px] w-max">
+                    <li className="text-lg font-medium text-dark2">
+                      {item.trait_type}
+                    </li>
+                    <li className="text-sm text-dark3">{item.value}</li>
+                  </ul>
+                )}
               </SwiperSlide>
             ))}
           </Swiper>

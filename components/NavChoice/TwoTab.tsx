@@ -6,7 +6,7 @@ interface TwoTabProps {
   onChoiceChange: (choice: string) => void;
 }
 const styles = {
-  btnActive: "rounded-lg bg-secondary5",
+  btnActive: "rounded-lg bg-secondary5 px-2",
 };
 
 const TwoTab: React.FunctionComponent<TwoTabProps> = ({
@@ -19,17 +19,17 @@ const TwoTab: React.FunctionComponent<TwoTabProps> = ({
     onChoiceChange(choice);
   };
   return (
-    <div className="grid h-[34px] grid-cols-2 rounded-lg w-[142px] mb-4 text-sm bg-dark2 text-white">
+    <div className="flex h-[34px] rounded-lg w-auto text-sm bg-dark1 text-white">
       <button
         type="button"
-        className={activeChoice === firstChoice ? styles.btnActive : ""}
+        className={activeChoice === firstChoice ? styles.btnActive : "px-2"}
         onClick={() => handleButtonClick(firstChoice)}
       >
         {firstChoice}
       </button>
       <button
         type="button"
-        className={activeChoice === secondChoice ? styles.btnActive : ""}
+        className={activeChoice === secondChoice ? styles.btnActive : "px-2"}
         onClick={() => handleButtonClick(secondChoice)}
       >
         {secondChoice}
