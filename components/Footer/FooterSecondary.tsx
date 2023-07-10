@@ -9,6 +9,11 @@ export default function FooterSecondary() {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
+  console.log(activeChoice);
+  
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("MODE_DEMASK", activeChoice);
+  }
   return (
     <footer className="flex items-center gap-x-8 h-[66px] px-primary bg-dark4 fixed bottom-0 left-0 right-0 z-[100]">
       <div className="mr-2">

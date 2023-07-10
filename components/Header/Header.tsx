@@ -1,5 +1,11 @@
 import Link from "next/link";
-import React, { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css"; // optional
 import { ActiveLink } from "@/components/Link";
@@ -30,7 +36,7 @@ const style = {
 export default function Header() {
   const headerRef = useRef<any>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount,wallet } = useContext(AccountContext);
+  const { account, updateAccount, wallet } = useContext(AccountContext);
   // const {isLocked,hanldeLock,hanldeAuto} = useBodyScrollLock();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -43,14 +49,14 @@ export default function Header() {
     updateAccount("");
   };
   const provider = getProvider(wallet);
-  useEffect(()=>{
-    const getAddress = async () =>{
+  useEffect(() => {
+    const getAddress = async () => {
       if (provider && provider.selectedAddress === null) {
         disconnectWallet();
       }
-    }
-    getAddress()
-  },[provider])
+    };
+    getAddress();
+  }, [provider]);
   //scroll header
   useEffect(() => {
     let prevScrollPos = window.scrollY;
@@ -81,6 +87,8 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  console.log(Number(0).toExponential(4));
+  
   return (
     <>
       <header
@@ -125,36 +133,30 @@ export default function Header() {
                     Select a network
                   </p>
                   <ul className="flex flex-col font-normal gap-y-3">
-                    <Link href="/swap">
-                      <li className={`${style.itemSub} gap-x-2 group`}>
-                        <EtherIcon
-                          width={24}
-                          height={24}
-                          className="fill-dark2 group-hover:fill-secondary4"
-                        />
-                        <p>Ethereum</p>
-                      </li>
-                    </Link>
-                    <Link href="/liquidity">
-                      <li className={`${style.itemSub} gap-x-2 group`}>
-                        <PolygonIcon
-                          width={24}
-                          height={24}
-                          className="group-hover:fill-secondary4"
-                        />
-                        <p>Polygon</p>
-                      </li>
-                    </Link>
-                    <Link href="/liquidity">
-                      <li className={`${style.itemSub} gap-x-2 group`}>
-                        <BscIcon
-                          width={24}
-                          height={24}
-                          className=" group-hover:fill-secondary4"
-                        />
-                        <p>BNB Smart Chain</p>
-                      </li>
-                    </Link>
+                    <li className={`${style.itemSub} gap-x-2 group`}>
+                      <EtherIcon
+                        width={24}
+                        height={24}
+                        className="fill-dark2 group-hover:fill-secondary4"
+                      />
+                      <p>Ethereum</p>
+                    </li>
+                    <li className={`${style.itemSub} gap-x-2 group text-secondary3`}>
+                      <PolygonIcon
+                        width={24}
+                        height={24}
+                        className="fill-secondary4"
+                      />
+                      <p>Polygon</p>
+                    </li>
+                    <li className={`${style.itemSub} gap-x-2 group`}>
+                      <BscIcon
+                        width={24}
+                        height={24}
+                        className=" group-hover:fill-secondary4"
+                      />
+                      <p>BNB Smart Chain</p>
+                    </li>
                   </ul>
                 </div>
               )}
@@ -178,11 +180,9 @@ export default function Header() {
                     {...attrs}
                   >
                     <ul>
-                      <li className={`${style.itemSub }`}>
-                        Proflie
-                      </li>
+                      <li className={`${style.itemSub}`}>Proflie</li>
                       <li
-                        className={`${style.itemSub } justify-between`}
+                        className={`${style.itemSub} justify-between`}
                         onClick={disconnectWallet}
                       >
                         <div>Disconnect</div>
@@ -220,7 +220,7 @@ export default function Header() {
         </div>
       </header>
       <div>
-        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen}/>
+        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
     </>
   );

@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import React from 'react'
 
-export default function About() {
+export default function Category() {
   return (
-    <section className="launchpad">
+    <section className="category">
       <Head>
-        <title>About | DeMask</title>
+        <title>Category | DeMask</title>
       </Head>
       <div className='w-full h-[60vh] m-auto flex items-center justify-center text-4xl text-dark1 font-medium'>
         <p>Under construction</p>

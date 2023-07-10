@@ -6,12 +6,12 @@ import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
 export default function Footer() {
   return (
-    <footer className="pt-8 pb-10 px-primary bg-dark4">
+    <footer className="pt-8 pb-10 px-primary bg-dark4 ">
       <div className="flex">
         <div className="flex basis-1/6">
           <div>
             <h2 className="mb-2 text-lg font-medium leading-6">
-              <Link href="/brand">About</Link>
+              <Link href="/about">About</Link>
             </h2>
             <ul>
               <li className="mb-1 text-dark2">
@@ -44,14 +44,14 @@ export default function Footer() {
         </div>
         <div className="basis-1/6">
           <h2 className="mb-2 text-lg font-medium leading-6">
-            <Link href="/developers">Developers</Link>
+            <Link href="/term">Developers</Link>
           </h2>
           <ul>
             <li className="mb-1 text-dark2">
-              <Link href="/gihub">Github</Link>
+              <Link href="/term">Github</Link>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/blog">Documentation</Link>
+              <Link href="/term">Documentation</Link>
             </li>
             <li className="mb-1 text-dark2">
               <Link href="/bug">Bug Bounty</Link>

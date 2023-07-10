@@ -18,15 +18,15 @@ const data = [
 ];
 
 const subMenuTradeData = [
-  { id: 1, name: "Swap", url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/0x4A90D5aE01F03B650cdc8D3A94358F364D98d096/3965474371" },
+  { id: 1, name: "Swap", url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815" },
   { id: 2, name: "Liquidity", url: "/liquidity" },
 ];
 const subMenuCateData = [
-  { id: 1, name: "Art", url: "/art" },
-  { id: 2, name: "Gaming", url: "/gaming" },
-  { id: 3, name: "Memberships", url: "/memberships" },
-  { id: 4, name: "Music", url: "/music" },
-  { id: 5, name: "Film", url: "/film" },
+  { id: 1, name: "Art", url: "/category/art" },
+  { id: 2, name: "Gaming", url: "/category/gaming" },
+  { id: 3, name: "Memberships", url: "/category/memberships" },
+  { id: 4, name: "Music", url: "/category/music" },
+  { id: 5, name: "Film", url: "/category/film" },
 ];
 const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const tradeRef = useRef<HTMLAnchorElement | null>(null);

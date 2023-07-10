@@ -132,6 +132,9 @@ const Home = ({ homeData }: any) => {
       swiperRef.current.swiper.slidePrev();
     }
   };
+  // const mode = localStorage.getItem('MODE_DEMASK');
+  // console.log(mode);
+  
   return (
     <div className="py-8">
       <Head>
