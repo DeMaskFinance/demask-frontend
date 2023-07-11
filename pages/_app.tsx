@@ -6,6 +6,7 @@ import { Layout} from "@/components/Layouts";
 import type { ReactElement,ReactNode } from 'react'
 import type { AppProps } from "next/app";
 import type { NextPage } from 'next'
+import { getModeFromLocalStorage } from "@/libs/utils/getModeFromLocalStorage";
 
 const queryClient = new QueryClient();
 type NextPageWithLayout<P = any> = NextPage<P> & {

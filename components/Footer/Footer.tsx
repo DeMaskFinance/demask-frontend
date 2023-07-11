@@ -48,7 +48,7 @@ export default function Footer() {
           </h2>
           <ul>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Github</Link>
+              <a href="https://github.com/DeMaskFinance" rel="noreferrer noopener" target="_blank">Github</a>
             </li>
             <li className="mb-1 text-dark2">
               <Link href="/term">Documentation</Link>

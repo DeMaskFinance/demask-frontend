@@ -87,7 +87,6 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  console.log(Number(0).toExponential(4));
   
   return (
     <>

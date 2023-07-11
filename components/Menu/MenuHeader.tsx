@@ -67,7 +67,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 )}
               >
                 <button className="hover:text-secondary5 active:text-secondary3">
-                  <Link ref={tradeRef} href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/0x4A90D5aE01F03B650cdc8D3A94358F364D98d096/3965474371">Trade</Link>
+                  <Link ref={tradeRef} href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815">Trade</Link>
                 </button>
               </Tippy>
             </li>

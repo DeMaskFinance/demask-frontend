@@ -80,7 +80,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   } else {
     symbolTokenSwap = symbolToken;
   }
-  console.log(nftItem.metadata.attributes);
 
   return (
     <div className="px-4 py-6 mt-6 rounded-lg shadow-home">
@@ -124,9 +123,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       </div>
       <div className="flex items-center mb-2 text-dark2">
         <div className="w-6 h-6 mr-2 bg-black rounded-full"></div>
-        <p className="font-medium text-dark2">TOCA</p>
+        <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(0,4)}...${nftItem.creatorAddress.slice(-5)}`}</p>
         <p className="-translate-y-[4px] mx-1">.</p>
-        <p className="text-xs">19 Mins</p>
+        <p className="text-xs first-letter:uppercase">{nftItem.blockTimestamp}</p>
       </div>
       <p
         className={`font-light text-dark2 ${
@@ -169,7 +168,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           </Swiper>
         </div>
       )}
-      {/* <Link href={`/swap/${nftAddress}/${tokenAddress}/${idNFT}`}> */}
       <div className="relative mt-6">
         {nftItem.metadata.image && (
           <Image

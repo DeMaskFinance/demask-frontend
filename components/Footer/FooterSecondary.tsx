@@ -1,19 +1,24 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
 import { TwoTab } from "../NavChoice";
 
 export default function FooterSecondary() {
-  const [activeChoice, setActiveChoice] = useState<string>("NEWFEEDS");
+  const [mode,setMode] = useState<string>('');
+  const [activeChoice, setActiveChoice] = useState<string>(mode);
+  useEffect(() => {
+    setMode(localStorage.getItem('MODE_DEMASK')||'');
+  }, [activeChoice]);
+  console.log(mode);
   const handleChoiceChange = (choice: string) => {
+    localStorage.setItem("MODE_DEMASK", choice);
+    window.dispatchEvent(new Event("storage"));
     setActiveChoice(choice);
   };
   console.log(activeChoice);
   
-  if (typeof window !== 'undefined') {
-    localStorage.setItem("MODE_DEMASK", activeChoice);
-  }
+  
   return (
     <footer className="flex items-center gap-x-8 h-[66px] px-primary bg-dark4 fixed bottom-0 left-0 right-0 z-[100]">
       <div className="mr-2">
@@ -47,6 +52,7 @@ export default function FooterSecondary() {
           secondChoice="REELS"
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}
+          mode ={mode}
         />
       </div>
     </footer>

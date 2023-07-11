@@ -8,8 +8,8 @@ export default function Liquidity() {
   const router = useRouter();
   const handleAddLiquidity = () => {
     const nftAddress = "0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70";
-    const tokenAddress = "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096";
-    const idNFT = "3965474371";
+    const tokenAddress = "MATIC";
+    const idNFT = "4544751815";
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
   return (
