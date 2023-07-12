@@ -16,7 +16,6 @@ const useInformationToken = (
   const provider = new ethers.providers.JsonRpcProvider(
     "https://rpc.ankr.com/polygon_mumbai"
   );
-  console.log(tokenAddress);
   useEffect(() => {
     const getBalanceToken = async () => {
       if (tokenAddress) {
@@ -63,8 +62,6 @@ const useInformationToken = (
     };
 
     getBalanceToken();
-    console.log(symbolToken);
-    console.log(tokenAddress);
   }, [tokenAddress]);
 
   return {

@@ -23,7 +23,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import approveNFT from "@/libs/utils/approveNFT";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import useBalanceToken from "@/hooks/useInformationToken";
+import useInformationToken from "@/hooks/useInformationToken";
 import useDMLToken from "@/hooks/useDMLToken";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useAmountInMax from "@/hooks/useAmountInMax";
@@ -67,7 +67,7 @@ const Swap: React.FC = () => {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
+  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useInformationToken(
     account,
     tokenAddress,
     wallet
@@ -83,8 +83,6 @@ const Swap: React.FC = () => {
   }, [slug]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   useEffect(() => {
-    // console.log(nftAddress);
-
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
       setIsApprovedNFT(result);

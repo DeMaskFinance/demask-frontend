@@ -22,7 +22,13 @@ import { GetServerSideProps } from "next";
 import * as homeService from "@/libs/service/homeService";
 import useInformationDML from "@/hooks/useInformationDML";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import useBalanceToken from "@/hooks/useInformationToken";
+import useInformationToken from "@/hooks/useInformationToken";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { ModalWallet } from "../Modal/ModalWallet";
+import { amountNFT } from "@/libs/constants";
+import useAmountOutMin from "@/hooks/useAmountOutMin";
+import useAmountInMax from "@/hooks/useAmountInMax";
+import BigNumber from "bignumber.js";
 interface ReelsProps {
   data: any;
   isSuccess: boolean;
@@ -30,6 +36,11 @@ interface ReelsProps {
   isFetchingNextPage: boolean;
   fetchNextPage: any;
 }
+const styles = {
+  inputItem:
+    "w-[40%] mt-4 py-2 pl-2 mb-6 border rounded-lg mx-auto border-dark3 block",
+  btnActive: "rounded-full bg-base2",
+};
 export const getServerSideProps: GetServerSideProps = async () => {
   const response = await fetch("https://api.demask.finance/homepage?page=1");
   const homeData = await response.json();
@@ -45,6 +56,9 @@ const Reels = ({ homeData }: any) => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [filter, setFilter] = useState<any>("");
   const { account, wallet } = useContext(AccountContext);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [inputNFT, setInputNFT] = useState<string>("0");
+  const [amountNFTSubmit, setAmountNFTSubmit] = useState("");
   const fetchDataPage = async ({ pageParam = 1 }) => {
     const response = await fetch(
       `https://api.demask.finance/homepage?page=${pageParam}`
@@ -91,72 +105,66 @@ const Reels = ({ homeData }: any) => {
   }, [data]);
   useEffect(() => {
     data?.pages.map((page: any, index: number) => {
-      page.records.map((item: any, index: number) => {
-        if (item.index === activeSlideIndex+1) {
+      page.records.map((item: any) => {
+        if (item.index === activeSlideIndex + 1) {
           setFilter(item);
-          console.log(activeSlideIndex);
-          console.log(item.index);
-          console.log(item);
-          
+          setInputNFT("");
+          setSelectedCategory("1");
         }
       });
     });
   }, [activeSlideIndex]);
-  // console.log(activeSlideIndex);
-  // console.log(filter);
-  // console.log(data);
+  useEffect(()=>{
+    if(selectedCategory === "CUSTOM"){
+      setAmountNFTSubmit(inputNFT)
+    }else{
+      setAmountNFTSubmit(selectedCategory)
+    }
+  },[inputNFT,selectedCategory,activeSlideIndex,activeChoice])
+  console.log(amountNFTSubmit);
+  console.log(inputNFT);
+  
   const {
     reserves,
-    decimals,
     idNFT,
     nftAddress,
     reserveNFT,
     reserveToken,
     tokenAddress,
   } = useInformationDML(filter.dmlAddress);
-  // console.log(idNFT);
-  // console.log(tokenAddress);
-  // const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
-  // console.log(balanceNFT);
+
+  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  const { balanceToken, decimals, bigNumberBalance, symbolToken } =
+    useInformationToken(account, tokenAddress, wallet);
+  const amountTokenSell = useAmountOutMin(
+    amountNFTSubmit,
+    filter.dmlAddress,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    activeChoice
+  );
+  const amountTokenBuy = useAmountInMax(
+    amountNFTSubmit,
+    filter.dmlAddress,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    activeChoice
+  );
+  const amountBuy = new BigNumber(amountTokenBuy);
+  const amountSell = new BigNumber(amountTokenSell);
+  console.log(amountTokenBuy);
+  console.log(amountBuy);
+  console.log(amountSell);
   
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView]);
-  // console.log(isFetchingNextPage);
-  // console.log(inView);
-  // const formattedDescription = filter.metadata.description
-  //   .split("\\n")
-  //   .map((line: any, index: any) => (
-  //     <React.Fragment key={index}>
-  //       {line}
-  //       <br />
-  //     </React.Fragment>
-  //   ));
-
-  const amountNFT = [
-    {
-      id: 1,
-      value: "1",
-    },
-    {
-      id: 2,
-      value: "2",
-    },
-    {
-      id: 3,
-      value: "5",
-    },
-    {
-      id: 4,
-      value: "10",
-    },
-    {
-      id: 5,
-      value: "CUSTOM",
-    },
-  ];
   return (
     <div>
       <div className=" h-[790px]">
@@ -221,46 +229,18 @@ const Reels = ({ homeData }: any) => {
       </div>
 
       {filter && (
-        <div className="fixed flex flex-col justify-center w-[800px] right-[164px] top-[34%] z-10">
+        <div className="fixed flex flex-col justify-center w-[800px] right-[164px] top-[30%] z-10">
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex mb-3 text-dark1">
-              <div className="flex basis-1/3">
+              <div className="flex basis-1/6">
                 <TwoTab
                   firstChoice="BUY"
                   secondChoice="SELL"
                   activeChoice={activeChoice}
                   onChoiceChange={handleChoiceChange}
                 />
-                {/* {activeChoice === "BUY" && account && (
-                  <div className="text-4xl text-secondary3">
-                    {inputNFT ? (
-                      <span>
-                        {Number(
-                          divideByDecimal(priceBuy.toString(), decimals)
-                        ).toFixed(2)}
-                      </span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="ml-2">{symbolToken}</span>
-                  </div>
-                )}
-                {activeChoice === "SELL" && account && (
-                  <div className="text-4xl text-secondary3">
-                    {inputNFT ? (
-                      <span>
-                        {Number(
-                          divideByDecimal(priceSell.toString(), decimals)
-                        ).toFixed(2)}
-                      </span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="ml-2">{symbolToken}</span>
-                  </div>
-                )} */}
               </div>
-              <div className="basis-1/3">
+              <div className="basis-4/6">
                 <div className="flex justify-center text-xl font-medium text-dark1">
                   <span className="mr-4">{filter.metadata.name}</span>
                   {filter.metadata.category.map((item: any, index: number) => (
@@ -272,15 +252,8 @@ const Reels = ({ homeData }: any) => {
                     </div>
                   ))}
                 </div>
-                {/* {account && activeChoice === "BUY" && (
-                  <p className="text-secondary3">100 ETH</p>
-                )}
-                {account && activeChoice === "SELL" && (
-                  <p className="text-secondary3">200 ETH</p>
-                )} */}
               </div>
-
-              <div className=" basis-1/3">
+              <div className="basis-1/6">
                 <a
                   href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
                   target="_blank"
@@ -309,22 +282,62 @@ const Reels = ({ homeData }: any) => {
             <div className="mb-4 font-light text-center text-dark2 line-clamp-3">
               {filter.metadata.description}
             </div>
+            {filter.metadata.attributes && (
+              <div className="my-4">
+                <Swiper
+                  pagination={{
+                    dynamicBullets: true,
+                  }}
+                  modules={[Pagination]}
+                  slidesPerView={5}
+                  className="flex mySwiper "
+                >
+                  {filter.metadata.attributes.map(
+                    (item: any, index: number) => (
+                      <SwiperSlide key={index}>
+                        {item.value && item.trait_type && (
+                          <ul className="px-2 py-1 mr-4 border rounded-lg border-dark3 min-w-[120px] w-max">
+                            <li className="text-lg font-medium text-dark2">
+                              {item.trait_type}
+                            </li>
+                            <li className="text-sm text-dark3">{item.value}</li>
+                          </ul>
+                        )}
+                      </SwiperSlide>
+                    )
+                  )}
+                </Swiper>
+              </div>
+            )}
             <div className="flex flex-col items-center">
               <h3 className="text-4xl text-secondary3">100 ETH</h3>
               <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
-                <p>Reverse nft:1000</p>
-                <p>Reverse token:1000</p>
-              </div>
-              {/* {account && activeChoice === "BUY" && (
-                  <p className="text-secondary3">
-                    Balance:{formatNumber(balanceToken)} {symbolToken}
+                {reserves && (
+                  <p className="mb-4 text-secondary4">
+                    Reverse NFT:{formatNumber(reserves[1])}
                   </p>
                 )}
-                {account && activeChoice === "SELL" && (
-                  <p className="text-secondary3">
-                    Balance:{formatNumber(balanceNFT)} NFT
+                {reserves && (
+                  <p className="mb-4 text-secondary4 text-end">
+                    Reverse Token:
+                    {formatNumber(
+                      Number(
+                        divideByDecimal(reserves[0].toString(), decimals)
+                      ).toFixed(2)
+                    )}
                   </p>
-                )} */}
+                )}
+              </div>
+              {account && activeChoice === "BUY" && (
+                <p className="text-secondary3 mb-4 -mt-4">
+                  Balance:{formatNumber(balanceToken)} {symbolToken}
+                </p>
+              )}
+              {account && activeChoice === "SELL" && (
+                <p className="text-secondary3 mb-4 -mt-4">
+                  Balance:{formatNumber(balanceNFT)} NFT
+                </p>
+              )}
             </div>
             <div className="flex justify-center">
               {amountNFT.map((item, index) => (
@@ -333,16 +346,30 @@ const Reels = ({ homeData }: any) => {
                   className="p-2 ml-4 text-sm font-medium leading-normal text-dark3"
                   type="button"
                   outline
-                  active={selectedCategory.includes(item.value)}
+                  active={selectedCategory === item.value}
                   onClick={() => setSelectedCategory(item.value)}
                 >
                   {item.value}
                 </Button>
               ))}
             </div>
+            {selectedCategory === "CUSTOM" && (
+              <input
+                type="number"
+                name="amountNFT"
+                id="amountNFT"
+                placeholder="Input amount NFT"
+                className={styles.inputItem}
+                value={inputNFT}
+                onChange={(e) => {
+                  setInputNFT(e.target.value);
+                }}
+              />
+            )}
           </div>
         </div>
       )}
+      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

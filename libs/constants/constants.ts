@@ -20,4 +20,27 @@ const tokenDefault = [
     },
     
 ]
-export {tokenDefault}
+
+const amountNFT = [
+    {
+      id: 1,
+      value: "1",
+    },
+    {
+      id: 2,
+      value: "2",
+    },
+    {
+      id: 3,
+      value: "5",
+    },
+    {
+      id: 4,
+      value: "10",
+    },
+    {
+      id: 5,
+      value: "CUSTOM",
+    },
+  ];
+export {tokenDefault,amountNFT}
