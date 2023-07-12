@@ -81,12 +81,6 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
-
-  console.log(tokenAddress);
-  
-  console.log(symbolToken);
-  console.log(balanceToken);
-  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   useEffect(() => {
     // console.log(nftAddress);
@@ -180,7 +174,7 @@ const Swap: React.FC = () => {
     } else {
       setIsSufficientToken(true);
     }
-  }, [inputNFT]);
+  }, [inputNFT,activeChoice]);
   
   
   useEffect(() => {
@@ -353,6 +347,12 @@ const Swap: React.FC = () => {
   };
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
+  console.log(priceBuy);
+  
+  console.log(formatNumber(divideByDecimal(priceBuy.toFixed(), decimals)));
+  // console.log(divideByDecimal(amountBuy.toFixed(), decimals));
+  
+  // console.log(formatNumber(divideByDecimal(amountBuy.toFixed(), decimals)));
   
 
   const handleSearchNFT = () => {
@@ -421,7 +421,7 @@ const Swap: React.FC = () => {
         </div>
         <div className="w-[50%]">
           <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex mb-6 text-dark1">
+            <div className="flex mb-4 text-dark1">
               <div className="basis-1/3">
                 <div className="flex text-xl font-medium text-dark1">
                   <span>{nameNFT}/</span>
@@ -457,34 +457,7 @@ const Swap: React.FC = () => {
                   activeChoice={activeChoice}
                   onChoiceChange={handleChoiceChange}
                 />
-                {activeChoice === "BUY" && account && (
-                  <div className="text-4xl text-secondary3">
-                    {inputNFT ? (
-                      <span>
-                        {Number(
-                          divideByDecimal(priceBuy.toString(), decimals)
-                        ).toFixed(2)}
-                      </span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="ml-2">{symbolToken}</span>
-                  </div>
-                )}
-                {activeChoice === "SELL" && account && (
-                  <div className="text-4xl text-secondary3">
-                    {inputNFT ? (
-                      <span>
-                        {Number(
-                          divideByDecimal(priceSell.toString(), decimals)
-                        ).toFixed(2)}
-                      </span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="ml-2">{symbolToken}</span>
-                  </div>
-                )}
+               
               </div>
               <div className=" basis-1/3">
                 <a
@@ -500,6 +473,32 @@ const Swap: React.FC = () => {
                   <p className="group-hover:text-secondary3">Pool</p>
                 </a>
               </div>
+            </div>
+            <div className="text-center">
+            {activeChoice === "BUY" && account && (
+                  <div className="text-4xl text-secondary3">
+                    {inputNFT ? (
+                      <span>
+                        {formatNumber(divideByDecimal(priceBuy.toFixed(), decimals))}
+                      </span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                    <span className="ml-2">{symbolToken}</span>
+                  </div>
+                )}
+                {activeChoice === "SELL" && account && (
+                  <div className="text-4xl text-secondary3">
+                    {inputNFT ? (
+                      <span>
+                        {formatNumber(divideByDecimal(priceSell.toFixed(), decimals))}
+                      </span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                    <span className="ml-2">{symbolToken}</span>
+                  </div>
+                )}
             </div>
             <form className="grid grid-cols-2 gap-x-4">
               <div>

@@ -183,7 +183,7 @@ const Home = ({ homeData }: any) => {
               hold creative workflow.
             </h1>
             <h2 className="mt-2 text-xl font-medium text-dark2">
-              Join a growing family of 666,687 designers and makers from around
+              Join a growing family of {data?.pages[0].totalCreators} designers and makers from around
               the world.
             </h2>
             <div className="my-6">
