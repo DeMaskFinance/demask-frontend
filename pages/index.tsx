@@ -20,7 +20,7 @@ import "swiper/css/navigation";
 import { ethers } from "ethers";
 import { LayoutSecondary } from "@/components/Layouts";
 export const getServerSideProps: GetServerSideProps = async () => {
-  const homeData = await homeService.home('1');
+  const homeData = await homeService.home("1");
   return {
     props: {
       homeData,
@@ -44,7 +44,7 @@ const Home = ({ homeData }: any) => {
     const data = await response.json();
     return data;
   };
-  
+
   const {
     data,
     fetchNextPage,
@@ -62,7 +62,7 @@ const Home = ({ homeData }: any) => {
   );
   console.log(isFetchingNextPage);
   console.log(inView);
-    
+
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const Category = [
     {
@@ -113,7 +113,9 @@ const Home = ({ homeData }: any) => {
       <Head>
         <title>Home | DeMask</title>
       </Head>
-      {modeInitial === "NEWFEEDS" ? (
+      {modeInitial === "REELS" ? (
+        <Reels />
+      ) : (
         <div className="mb-6 leading-7">
           <div className="relative swiper-custom">
             <button
@@ -177,7 +179,8 @@ const Home = ({ homeData }: any) => {
           </div>
           <div className="flex flex-col items-center mt-8">
             <h1 className="text-3xl font-medium text-dark1 w-[45%] text-center">
-              6,746 curated NFT resources to buy and hold creative workflow.
+              {data?.pages[0].totalRecords} curated NFT resources to buy and
+              hold creative workflow.
             </h1>
             <h2 className="mt-2 text-xl font-medium text-dark2">
               Join a growing family of 666,687 designers and makers from around
@@ -224,8 +227,6 @@ const Home = ({ homeData }: any) => {
             )}
           </div>
         </div>
-      ) : (
-        <Reels />
       )}
     </div>
   );

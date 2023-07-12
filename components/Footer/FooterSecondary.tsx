@@ -10,7 +10,7 @@ export default function FooterSecondary() {
   const [mode, setMode] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>(mode);
   useEffect(() => {
-    setMode(localStorage.getItem("MODE_DEMASK") || "");
+    setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
   }, [activeChoice]);
   console.log(mode);
   const handleChoiceChange = (choice: string) => {

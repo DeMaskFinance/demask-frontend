@@ -128,7 +128,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         <p className="text-xs first-letter:uppercase">{nftItem.blockTimestamp}</p>
       </div>
       <p
-        className={`font-light text-dark2 ${
+        className={`text-dark2 ${
           isMore ? "line-clamp-0" : "line-clamp-3"
         }`}
         ref={descriptionRef}
