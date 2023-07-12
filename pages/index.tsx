@@ -20,7 +20,7 @@ import "swiper/css/navigation";
 import { ethers } from "ethers";
 import { LayoutSecondary } from "@/components/Layouts";
 export const getServerSideProps: GetServerSideProps = async () => {
-  const homeData = await homeService.home(undefined);
+  const homeData = await homeService.home('1');
   return {
     props: {
       homeData,
@@ -44,7 +44,7 @@ const Home = ({ homeData }: any) => {
     const data = await response.json();
     return data;
   };
-
+  
   const {
     data,
     fetchNextPage,
@@ -60,9 +60,10 @@ const Home = ({ homeData }: any) => {
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
     }
   );
-
+  console.log(isFetchingNextPage);
+  console.log(inView);
+    
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
-
   const Category = [
     {
       id: 1,
@@ -107,8 +108,6 @@ const Home = ({ homeData }: any) => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
-  // console.log(mode);
   return (
     <div className="py-8">
       <Head>
@@ -200,7 +199,6 @@ const Home = ({ homeData }: any) => {
             </div>
           </div>
           <div className="px-[270px]">
-            {/* <Skeleton/> */}
             {isSuccess &&
               data?.pages.map((page, index) => (
                 <Fragment key={index}>
@@ -227,7 +225,7 @@ const Home = ({ homeData }: any) => {
           </div>
         </div>
       ) : (
-        <Reels data={data}/>
+        <Reels />
       )}
     </div>
   );

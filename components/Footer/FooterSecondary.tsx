@@ -1,14 +1,16 @@
 import Link from "next/link";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
 import { TwoTab } from "../NavChoice";
-
+const styles = {
+  btnActive: "rounded-lg bg-secondary5 px-2",
+};
 export default function FooterSecondary() {
-  const [mode,setMode] = useState<string>('');
+  const [mode, setMode] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>(mode);
   useEffect(() => {
-    setMode(localStorage.getItem('MODE_DEMASK')||'');
+    setMode(localStorage.getItem("MODE_DEMASK") || "");
   }, [activeChoice]);
   console.log(mode);
   const handleChoiceChange = (choice: string) => {
@@ -16,9 +18,7 @@ export default function FooterSecondary() {
     window.dispatchEvent(new Event("storage"));
     setActiveChoice(choice);
   };
-  console.log(activeChoice);
-  
-  
+
   return (
     <footer className="flex items-center gap-x-8 h-[66px] px-primary bg-dark4 fixed bottom-0 left-0 right-0 z-[100]">
       <div className="mr-2">
@@ -47,13 +47,22 @@ export default function FooterSecondary() {
       </div>
       <div className="font-medium text-dark2">Light/Dark</div>
       <div>
-        <TwoTab
-          firstChoice="NEWFEEDS"
-          secondChoice="REELS"
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-          mode ={mode}
-        />
+        <div className="flex h-[34px] rounded-lg w-auto text-sm bg-dark1 text-white">
+          <button
+            type="button"
+            className={mode === "NEWFEEDS" ? styles.btnActive : "px-2"}
+            onClick={() => handleChoiceChange("NEWFEEDS")}
+          >
+            NEWFEEDS
+          </button>
+          <button
+            type="button"
+            className={mode === "REELS" ? styles.btnActive : "px-2"}
+            onClick={() => handleChoiceChange("REELS")}
+          >
+            REELS
+          </button>
+        </div>
       </div>
     </footer>
   );
