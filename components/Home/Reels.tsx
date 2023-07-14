@@ -113,7 +113,7 @@ const Reels = ({ homeData }: any) => {
         }
       });
     });
-  }, [activeSlideIndex]);
+  }, [activeSlideIndex,data]);
   useEffect(()=>{
     if(selectedCategory === "CUSTOM"){
       setAmountNFTSubmit(inputNFT)
@@ -329,12 +329,12 @@ const Reels = ({ homeData }: any) => {
                 )}
               </div>
               {account && activeChoice === "BUY" && (
-                <p className="text-secondary3 mb-4 -mt-4">
+                <p className="mb-4 -mt-4 text-secondary3">
                   Balance:{formatNumber(balanceToken)} {symbolToken}
                 </p>
               )}
               {account && activeChoice === "SELL" && (
-                <p className="text-secondary3 mb-4 -mt-4">
+                <p className="mb-4 -mt-4 text-secondary3">
                   Balance:{formatNumber(balanceNFT)} NFT
                 </p>
               )}

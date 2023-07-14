@@ -63,15 +63,12 @@ const Swap: React.FC = () => {
     animationUrl,
     description,
   } = useMetadata(nftAddress, idNFT);
-  
+
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useInformationToken(
-    account,
-    tokenAddress,
-    wallet
-  );
+  const { balanceToken, decimals, bigNumberBalance, symbolToken } =
+    useInformationToken(account, tokenAddress, wallet);
   const { slug } = router.query;
   useEffect(() => {
     if (slug) {
@@ -136,8 +133,7 @@ const Swap: React.FC = () => {
   // console.log(bigNumberBalance);
   // console.log(Number(amountBuy.toFixed()));
   // console.log(isApprovedToken);
-    
-    
+
   // console.log(amountSell.toFixed());
 
   // console.log(amountTokenBuy);
@@ -172,9 +168,8 @@ const Swap: React.FC = () => {
     } else {
       setIsSufficientToken(true);
     }
-  }, [inputNFT,activeChoice]);
-  
-  
+  }, [inputNFT, activeChoice]);
+
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -183,7 +178,7 @@ const Swap: React.FC = () => {
 
   useEffect(() => {
     const checkApproveToken = async () => {
-      if(tokenAddress!=="MATIC"){
+      if (tokenAddress !== "MATIC") {
         const currentAllowance = await approveToken(
           account,
           wallet,
@@ -196,7 +191,7 @@ const Swap: React.FC = () => {
         } else {
           setIsApprovedToken(true);
         }
-      }else{
+      } else {
         setIsApprovedToken(true);
       }
     };
@@ -346,12 +341,11 @@ const Swap: React.FC = () => {
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
   console.log(priceBuy);
-  
+
   console.log(formatNumber(divideByDecimal(priceBuy.toFixed(), decimals)));
   // console.log(divideByDecimal(amountBuy.toFixed(), decimals));
-  
+
   // console.log(formatNumber(divideByDecimal(amountBuy.toFixed(), decimals)));
-  
 
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
@@ -422,8 +416,14 @@ const Swap: React.FC = () => {
             <div className="flex mb-4 text-dark1">
               <div className="basis-1/3">
                 <div className="flex text-xl font-medium text-dark1">
-                  <span>{nameNFT}/</span>
-                  <span>{symbolToken}</span>
+                  {nameNFT && symbolToken ? (
+                    <div>
+                      <span>{nameNFT}/</span>
+                      <span>{symbolToken}</span>
+                    </div>
+                  ) : (
+                    <div className="w-20 h-5 rounded-full animate-pulse bg-slate-200"></div>
+                  )}
                   <span className="ml-1">
                     <ActiveIcon
                       width={24}
@@ -455,10 +455,10 @@ const Swap: React.FC = () => {
                   activeChoice={activeChoice}
                   onChoiceChange={handleChoiceChange}
                 />
-               
               </div>
-              <div className=" basis-1/3">
-                <a
+              <div className="flex flex-col basis-1/3">
+                {dmlToken?(
+                  <a
                   href={`https://mumbai.polygonscan.com/address/${dmlToken}`}
                   target="_blank"
                   className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
@@ -470,40 +470,49 @@ const Swap: React.FC = () => {
                   />
                   <p className="group-hover:text-secondary3">Pool</p>
                 </a>
+                ):(
+                  <div className="self-end w-10 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
+                )}
               </div>
             </div>
             <div className="text-center">
-            {activeChoice === "BUY" && account && (
-                  <div className="text-4xl text-secondary3">
-                    {inputNFT ? (
-                      <span>
-                        {formatNumber(divideByDecimal(priceBuy.toFixed(), decimals))}
-                      </span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="ml-2">{symbolToken}</span>
-                  </div>
-                )}
-                {activeChoice === "SELL" && account && (
-                  <div className="text-4xl text-secondary3">
-                    {inputNFT ? (
-                      <span>
-                        {formatNumber(divideByDecimal(priceSell.toFixed(), decimals))}
-                      </span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="ml-2">{symbolToken}</span>
-                  </div>
-                )}
+              {activeChoice === "BUY" && account && (
+                <div className="text-4xl text-secondary3">
+                  {inputNFT ? (
+                    <span>
+                      {formatNumber(
+                        divideByDecimal(priceBuy.toFixed(), decimals)
+                      )}
+                    </span>
+                  ) : (
+                    <span>0</span>
+                  )}
+                  <span className="ml-2">{symbolToken}</span>
+                </div>
+              )}
+              {activeChoice === "SELL" && account && (
+                <div className="text-4xl text-secondary3">
+                  {inputNFT ? (
+                    <span>
+                      {formatNumber(
+                        divideByDecimal(priceSell.toFixed(), decimals)
+                      )}
+                    </span>
+                  ) : (
+                    <span>0</span>
+                  )}
+                  <span className="ml-2">{symbolToken}</span>
+                </div>
+              )}
             </div>
             <form className="grid grid-cols-2 gap-x-4">
               <div>
-                {reserves && (
+                {reserves[1] ? (
                   <p className="mb-4 text-dark3">
                     Reverse NFT:{formatNumber(reserves[1])}
                   </p>
+                ):(
+                  <div className="w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                 )}
                 <div className="relative">
                   <input
@@ -538,7 +547,7 @@ const Swap: React.FC = () => {
                       Insufficient NFT balance
                     </p>
                   )}
-                  {dmlToken !== "0x0000000000000000000000000000000000000000" &&
+                {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                   !isSufficientToken && (
                     <p
                       className="mb-2 ml-3 -mt-3 text-xs text-red"
@@ -562,8 +571,8 @@ const Swap: React.FC = () => {
                 )}
               </div>
 
-              <div>
-                {reserves && (
+              <div className="flex flex-col">
+                {reserves[0] ? (
                   <p className="mb-4 text-dark3 text-end">
                     Reverse Token:
                     {formatNumber(
@@ -572,6 +581,8 @@ const Swap: React.FC = () => {
                       ).toFixed(2)
                     )}
                   </p>
+                ):(
+                  <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                 )}
                 <div className="relative">
                   {activeChoice === "BUY" ? (

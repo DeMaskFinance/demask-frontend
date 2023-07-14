@@ -48,7 +48,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     reserveToken,
     tokenAddress,
   } = useInformationDML(nftItem.dmlAddress);
-  
+
   const amountTokenBuy = useAmountInMax(
     "1",
     nftItem.dmlAddress,
@@ -102,9 +102,15 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         <div className="flex gap-x-2">
           {symbolToken && tokenAddress && nftAddress ? (
             <div className="text-[24px] font-medium text-secondary3 leading-[14px] flex gap-x-2 items-end">
-              <span>
-                {formatPrice} {symbolTokenSwap}
-              </span>
+              {reserveToken.toString() === "0" ||
+              reserveNFT.toString() === "0" ||
+              reserveNFT.toString() === "1" ? (
+                <div>Unable to buy</div>
+              ) : (
+                <span>
+                  {formatPrice} {symbolTokenSwap}
+                </span>
+              )}
             </div>
           ) : (
             <div className="flex animate-pulse gap-x-4">
@@ -124,14 +130,17 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       </div>
       <div className="flex items-center mb-2 text-dark2">
         <div className="w-6 h-6 mr-2 bg-black rounded-full"></div>
-        <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(0,4)}...${nftItem.creatorAddress.slice(-5)}`}</p>
+        <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
+          0,
+          4
+        )}...${nftItem.creatorAddress.slice(-5)}`}</p>
         <p className="-translate-y-[4px] mx-1">.</p>
-        <p className="text-xs first-letter:uppercase">{nftItem.blockTimestamp}</p>
+        <p className="text-xs first-letter:uppercase">
+          {nftItem.blockTimestamp}
+        </p>
       </div>
       <p
-        className={`text-dark2 ${
-          isMore ? "line-clamp-0" : "line-clamp-3"
-        }`}
+        className={`text-dark2 ${isMore ? "line-clamp-0" : "line-clamp-3"}`}
         ref={descriptionRef}
       >
         {formattedDescription}
