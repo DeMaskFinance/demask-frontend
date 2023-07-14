@@ -133,13 +133,11 @@ const Swap: React.FC = () => {
   // console.log(bigNumberBalance);
   // console.log(Number(amountBuy.toFixed()));
   // console.log(isApprovedToken);
-
   // console.log(amountSell.toFixed());
-
   // console.log(amountTokenBuy);
   // console.log(isSufficientToken);
   // console.log(dmlToken);
-  // console.log(reserves);
+  // console.log(reserves[0].toString());
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -232,8 +230,6 @@ const Swap: React.FC = () => {
         const signer = provider.getSigner();
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        console.log(amountBuy.toFixed());
-
         try {
           let result;
           if (tokenAddress === "MATIC") {
@@ -342,7 +338,7 @@ const Swap: React.FC = () => {
   const priceSell = Number(amountSell) / Number(inputNFT);
   console.log(priceBuy);
 
-  console.log(formatNumber(divideByDecimal(priceBuy.toFixed(), decimals)));
+  // console.log(formatNumber(divideByDecimal(priceBuy.toFixed(), decimals)));
   // console.log(divideByDecimal(amountBuy.toFixed(), decimals));
 
   // console.log(formatNumber(divideByDecimal(amountBuy.toFixed(), decimals)));
@@ -576,10 +572,8 @@ const Swap: React.FC = () => {
                   <p className="mb-4 text-dark3 text-end">
                     Reverse Token:
                     {formatNumber(
-                      Number(
                         divideByDecimal(reserves[0].toString(), decimals)
-                      ).toFixed(2)
-                    )}
+                      )}
                   </p>
                 ):(
                   <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>

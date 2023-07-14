@@ -60,8 +60,6 @@ const Home = ({ homeData }: any) => {
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
     }
   );
-  console.log(isFetchingNextPage);
-  console.log(inView);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const Category = [

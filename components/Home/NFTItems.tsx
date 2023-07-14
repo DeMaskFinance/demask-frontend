@@ -2,8 +2,6 @@ import Image from "next/image";
 import { ActiveIcon, SwapIcon } from "../Icons";
 import React, { useState, useRef, useEffect } from "react";
 import useInformationDML from "@/hooks/useInformationDML";
-import useFetchReservesDML from "@/hooks/useFetchReservesDML";
-import { ethers } from "ethers";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import formatNumber from "@/libs/utils/formatNumer";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
@@ -14,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
+import { AvatarUser } from "../Avatars";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -22,7 +21,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   const [heightDescription, setHeightDescription] = useState(0);
   const [isMore, setIsMore] = useState<boolean>(false);
   const [symbolToken, setSymbolToken] = useState<string>("");
-  const [reserve, setReserve] = useState();
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (descriptionRef.current) {
@@ -129,7 +127,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         </div>
       </div>
       <div className="flex items-center mb-2 text-dark2">
-        <div className="w-6 h-6 mr-2 bg-black rounded-full"></div>
+        <AvatarUser/>
         <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
           0,
           4
@@ -213,7 +211,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           </audio>
         )}
       </div>
-      {/* </Link> */}
     </div>
   );
 };

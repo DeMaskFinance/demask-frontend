@@ -29,6 +29,15 @@ import { amountNFT } from "@/libs/constants";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import BigNumber from "bignumber.js";
+import { getProvider } from "@/libs/connection/getProvider";
+import { ethers } from "ethers";
+import abiErc20 from "@/abi/abiErc20.json";
+import abiErc1155 from "@/abi/abiErc1155.json";
+import abiRouter from "@/abi/abiRouter.json";
+import TransitionURL from "../Toast/TransionURL";
+import { toast } from "react-toastify";
+import approveToken from "@/libs/utils/approveToken";
+import { AvatarUser } from "../Avatars";
 interface ReelsProps {
   data: any;
   isSuccess: boolean;
@@ -56,9 +65,14 @@ const Reels = ({ homeData }: any) => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [filter, setFilter] = useState<any>("");
   const { account, wallet } = useContext(AccountContext);
+  const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputNFT, setInputNFT] = useState<string>("0");
   const [amountNFTSubmit, setAmountNFTSubmit] = useState("");
+  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
+  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
+  const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
+  const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const fetchDataPage = async ({ pageParam = 1 }) => {
     const response = await fetch(
       `https://api.demask.finance/homepage?page=${pageParam}`
@@ -76,6 +90,7 @@ const Reels = ({ homeData }: any) => {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
+  
   const { ref, inView } = useInView();
   const {
     data,
@@ -113,17 +128,15 @@ const Reels = ({ homeData }: any) => {
         }
       });
     });
-  }, [activeSlideIndex,data]);
-  useEffect(()=>{
-    if(selectedCategory === "CUSTOM"){
-      setAmountNFTSubmit(inputNFT)
-    }else{
-      setAmountNFTSubmit(selectedCategory)
+  }, [activeSlideIndex, data]);
+  useEffect(() => {
+    if (selectedCategory === "CUSTOM") {
+      setAmountNFTSubmit(inputNFT);
+    } else {
+      setAmountNFTSubmit(selectedCategory);
     }
-  },[inputNFT,selectedCategory,activeSlideIndex,activeChoice])
-  console.log(amountNFTSubmit);
-  console.log(inputNFT);
-  
+  }, [inputNFT, selectedCategory, activeSlideIndex, activeChoice]);
+
   const {
     reserves,
     idNFT,
@@ -134,6 +147,8 @@ const Reels = ({ homeData }: any) => {
   } = useInformationDML(filter.dmlAddress);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  console.log(balanceNFT);
+  
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
     useInformationToken(account, tokenAddress, wallet);
   const amountTokenSell = useAmountOutMin(
@@ -156,15 +171,235 @@ const Reels = ({ homeData }: any) => {
   );
   const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
+  const priceBuy = Number(amountBuy) / Number(amountNFTSubmit);
+  const priceSell = Number(amountSell) / Number(amountNFTSubmit);
+  console.log(priceBuy);
   console.log(amountTokenBuy);
-  console.log(amountBuy);
-  console.log(amountSell);
-  
+  // console.log(amountBuy);
+  // console.log(amountSell);
+  // console.log(amountNFTSubmit);
+  // console.log(inputNFT);
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView]);
+  let symbolTokenSwap = "";
+  if (symbolToken === "WETH") {
+    symbolTokenSwap = "MATIC";
+  } else {
+    symbolTokenSwap = symbolToken;
+  }
+  useEffect(() => {
+    const checkReservesNFT = () => {
+      if (activeChoice === "BUY") {
+        if (reserves && Number(amountNFTSubmit) < Number(reserves[1])) {
+          setIsSufficientNFT(true);
+        } else {
+          setIsSufficientNFT(false);
+        }
+      } else {
+        if (Number(amountNFTSubmit) <= Number(balanceNFT)) {
+          setIsSufficientNFT(true);
+        } else {
+          setIsSufficientNFT(false);
+        }
+      }
+    };
+    checkReservesNFT();
+    if (Number(amountBuy.toFixed()) > Number(bigNumberBalance)) {
+      setIsSufficientToken(false);
+    } else {
+      setIsSufficientToken(true);
+    }
+    if (Number(amountSell.toFixed()) > Number(bigNumberBalance)) {
+      setIsSufficientToken(false);
+    } else {
+      setIsSufficientToken(true);
+    }
+  }, [inputNFT, activeChoice]);
+
+  useEffect(() => {
+    if (amountNFTSubmit === "") {
+      setIsSufficientNFT(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const checkApproveToken = async () => {
+      if (tokenAddress !== "MATIC") {
+        const currentAllowance = await approveToken(
+          account,
+          wallet,
+          tokenAddress
+        );
+        // console.log(Number(currentAllowance));
+        // console.log(amountBuy.toFixed());
+        if (Number(currentAllowance) < Number(amountTokenBuy)) {
+          setIsApprovedToken(false);
+        } else {
+          setIsApprovedToken(true);
+        }
+      } else {
+        setIsApprovedToken(true);
+      }
+    };
+    checkApproveToken();
+  }, [account, wallet, tokenAddress, amountNFTSubmit, amountTokenBuy]);
+  const hanldeApproveNFT = async () => {
+    if (account) {
+      const providerChoice = getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
+      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+      try {
+        await contract.setApprovalForAll(routerAddress, true);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
+  const handleApproveToken = async (e: any) => {
+    e.preventDefault();
+    if (account) {
+      const providerChoice = getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
+      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+      try {
+        await contract.approve(routerAddress, amountBuy.toFixed());
+        setInputNFT("");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
+  const handleBuyNFT = async (e: any) => {
+    e.preventDefault();
+    if (!account) {
+      setIsOpen(true);
+      return;
+    }
+    if (amountNFTSubmit === "") {
+      setShowRequiredMessage(true);
+    } else {
+      setShowRequiredMessage(false);
+      if (isSufficientNFT && isSufficientToken) {
+        const providerChoice = getProvider(wallet);
+        const provider = new ethers.providers.Web3Provider(providerChoice);
+        const signer = provider.getSigner();
+        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+        try {
+          let result;
+          if (tokenAddress === "MATIC") {
+            result = await contract.buyETH(
+              nftAddress,
+              idNFT,
+              amountNFTSubmit,
+              account,
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000, value: amountBuy.toFixed(0) }
+            );
+          } else {
+            result = await contract.buy(
+              tokenAddress,
+              nftAddress,
+              idNFT,
+              amountNFTSubmit,
+              amountBuy.toFixed(0),
+              account,
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000 }
+            );
+          }
+          toast.success(
+            <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+          setInputNFT("");
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
+  const handleSellNFT = async (e: any) => {
+    e.preventDefault();
+    if (!account) {
+      setIsOpen(true);
+      return;
+    }
+    if (amountNFTSubmit === "") {
+      setShowRequiredMessage(true);
+    } else {
+      setShowRequiredMessage(false);
+      if (isSufficientNFT && isSufficientToken) {
+        const providerChoice = getProvider(wallet);
+        const provider = new ethers.providers.Web3Provider(providerChoice);
+        const signer = provider.getSigner();
+        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+
+        try {
+          let result;
+          if (tokenAddress === "MATIC") {
+            result = await contract.sellETH(
+              nftAddress,
+              idNFT,
+              amountNFTSubmit,
+              amountSell.toFixed(0),
+              account,
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000 }
+            );
+          } else {
+            result = await contract.sell(
+              tokenAddress,
+              nftAddress,
+              idNFT,
+              amountNFTSubmit,
+              amountSell.toFixed(0),
+              account,
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000 }
+            );
+          }
+          toast.success(
+            <TransitionURL type={"Sell NFT"} transactionHash={result.hash} />,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+          setInputNFT("");
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
   return (
     <div>
       <div className=" h-[790px]">
@@ -229,7 +464,7 @@ const Reels = ({ homeData }: any) => {
       </div>
 
       {filter && (
-        <div className="fixed flex flex-col justify-center w-[800px] right-[164px] top-[30%] z-10">
+        <div className="fixed flex flex-col justify-center w-[800px] right-[164px] top-[23%] z-10">
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex mb-3 text-dark1">
               <div className="flex basis-1/6">
@@ -269,7 +504,7 @@ const Reels = ({ homeData }: any) => {
               </div>
             </div>
             <div className="flex items-center justify-center mb-2 text-dark2">
-              <div className="w-6 h-6 mr-2 bg-black rounded-full"></div>
+              <AvatarUser activeSlideIndex={activeSlideIndex}/>
               <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
                 0,
                 4
@@ -310,7 +545,42 @@ const Reels = ({ homeData }: any) => {
               </div>
             )}
             <div className="flex flex-col items-center">
-              <h3 className="text-4xl text-secondary3">100 ETH</h3>
+              {amountNFTSubmit ? (
+                <div className="text-center">
+                  {activeChoice === "BUY" && account && (
+                    <div className="text-4xl text-secondary3">
+                      {amountNFTSubmit ? (
+                        <span>
+                          {formatNumber(
+                            divideByDecimal(priceBuy.toFixed(), decimals)
+                          )}
+                        </span>
+                      ) : (
+                        <span>0</span>
+                      )}
+                      <span className="ml-2">{symbolTokenSwap}</span>
+                    </div>
+                  )}
+                  {activeChoice === "SELL" && account && (
+                    <div className="text-4xl text-secondary3">
+                      {amountNFTSubmit ? (
+                        <span>
+                          {formatNumber(
+                            divideByDecimal(priceSell.toFixed(), decimals)
+                          )}
+                        </span>
+                      ) : (
+                        <span>0</span>
+                      )}
+                      <span className="ml-2">{symbolTokenSwap}</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <h3 className="text-4xl text-secondary3">
+                  0 {symbolTokenSwap}
+                </h3>
+              )}
               <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
                 {reserves && (
                   <p className="mb-4 text-secondary4">
@@ -321,16 +591,14 @@ const Reels = ({ homeData }: any) => {
                   <p className="mb-4 text-secondary4 text-end">
                     Reverse Token:
                     {formatNumber(
-                      Number(
                         divideByDecimal(reserves[0].toString(), decimals)
-                      ).toFixed(2)
-                    )}
+                      )}
                   </p>
                 )}
               </div>
               {account && activeChoice === "BUY" && (
                 <p className="mb-4 -mt-4 text-secondary3">
-                  Balance:{formatNumber(balanceToken)} {symbolToken}
+                  Balance:{formatNumber(balanceToken)} {symbolTokenSwap}
                 </p>
               )}
               {account && activeChoice === "SELL" && (
@@ -359,13 +627,59 @@ const Reels = ({ homeData }: any) => {
                 name="amountNFT"
                 id="amountNFT"
                 placeholder="Input amount NFT"
-                className={styles.inputItem}
+                className={
+                  showRequiredMessage
+                    ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                    : styles.inputItem
+                }
                 value={inputNFT}
                 onChange={(e) => {
                   setInputNFT(e.target.value);
+                  setShowRequiredMessage(false);
                 }}
               />
             )}
+            <div className="flex justify-center w-full mt-6">
+              {isApprovedToken && activeChoice === "BUY" && (
+                <button
+                  type="button"
+                  className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
+                  onClick={handleBuyNFT}
+                >
+                  BUY NFT
+                </button>
+              )}
+              {isApprovedNFT && activeChoice === "SELL" && (
+                <button
+                  type="button"
+                  className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
+                  onClick={handleSellNFT}
+                >
+                  SELL NFT
+                </button>
+              )}
+              {!isApprovedNFT && activeChoice === "SELL" && (
+                <Button
+                  className="w-[126px] py-2"
+                  primary
+                  onClick={hanldeApproveNFT}
+                >
+                  APPROVE NFT
+                </Button>
+              )}
+              {!isApprovedToken &&
+                tokenAddress !== "MATIC" &&
+                activeChoice === "BUY" && (
+                  <Button
+                    className="w-[126px] py-2"
+                    type="button"
+                    primary
+                    onClick={handleApproveToken}
+                  >
+                    APPROVE TOKEN
+                  </Button>
+                )}
+            </div>
           </div>
         </div>
       )}
