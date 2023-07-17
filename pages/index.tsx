@@ -11,7 +11,7 @@ import NFTItems from "@/components/Home/NFTItems";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
-import { Skeleton } from "@/components/Skeleton";
+import { SkeletonNewFeeds } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
@@ -214,16 +214,16 @@ const Home = ({ homeData }: any) => {
             <div ref={ref} style={{ height: "1px" }} />
             {isLoading && (
               <>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
               </>
             )}
             {isFetchingNextPage && (
               <>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
               </>
             )}
           </div>

@@ -1,1 +1,2 @@
-export {default as Skeleton} from './Skeleton'
+export {default as SkeletonNewFeeds} from './SkeletonNewFeeds'
+export {default as SkeletonReels} from './SkeletonReels'

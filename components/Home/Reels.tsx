@@ -39,6 +39,7 @@ import { toast } from "react-toastify";
 import approveToken from "@/libs/utils/approveToken";
 import { AvatarUser } from "../Avatars";
 import Link from "next/link";
+import { SkeletonReels } from "../Skeleton";
 interface ReelsProps {
   data: any;
   isSuccess: boolean;
@@ -52,17 +53,19 @@ const styles = {
   btnActive: "rounded-full bg-base2",
 };
 export async function getServerSideProps() {
-  const response = await fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3");
+  const response = await fetch(
+    "https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3"
+  );
   const homeData = await response.json();
   return {
     props: {
       homeData,
     },
   };
-};
+}
 const Reels = ({ homeData }: any) => {
   console.log(homeData);
-  
+
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [selectedCategory, setSelectedCategory] = useState<string>("1");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -148,7 +151,7 @@ const Reels = ({ homeData }: any) => {
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   // console.log(account);
-  
+
   // console.log(balanceNFT);
   // console.log(nftAddress);
   // console.log(idNFT.toString());
@@ -159,7 +162,7 @@ const Reels = ({ homeData }: any) => {
     tokenAddressSwap = tokenAddress;
   }
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-    useInformationToken(account, tokenAddress, wallet,tokenAddressSwap);
+    useInformationToken(account, tokenAddress, wallet, tokenAddressSwap);
   const amountTokenSell = useAmountOutMin(
     amountNFTSubmit,
     filter.dmlAddress,
@@ -199,7 +202,7 @@ const Reels = ({ homeData }: any) => {
   } else {
     symbolTokenSwap = symbolToken;
   }
-  
+
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -288,7 +291,7 @@ const Reels = ({ homeData }: any) => {
       setIsOpen(true);
     }
   };
-  
+
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -411,68 +414,69 @@ const Reels = ({ homeData }: any) => {
   };
   return (
     <div>
-      <div className=" h-[790px]">
-        <>
-          <Swiper
-            direction={"vertical"}
-            slidesPerView={1}
-            mousewheel={true}
-            modules={[Mousewheel, Pagination]}
-            className="h-full mySwiper"
-            onSlideChange={handleSlideChange}
-          >
-            {isSuccess &&
-              data?.pages.map((page: any, index: any) => (
-                <div key={index}>
-                  {page.records.map((nftItem: any, index: number) => (
-                    <SwiperSlide key={`${nftItem._id}-${index}`}>
-                      <div className="relative flex items-center h-full w-fit">
-                        {nftItem.metadata.image && (
-                          <Image
-                            width={760}
-                            height={760}
-                            src={nftItem.metadata.image}
-                            alt="NFT Image"
-                            unoptimized
-                            className="rounded-2xl max-w-[760px] max-h-[760px]"
-                          />
-                        )}
-                        {nftItem.metadata.animation_url &&
-                          !nftItem.metadata.image && (
-                            <video
-                              src={nftItem.metadata.animation_url}
-                              autoPlay
-                              loop
-                              muted
-                              controls
-                              className=" rounded-2xl max-w-[760px] max-h-[760px]"
+      {isSuccess && (
+        <div className="h-[790px]">
+          <>
+            <Swiper
+              direction={"vertical"}
+              slidesPerView={1}
+              mousewheel={true}
+              modules={[Mousewheel, Pagination]}
+              className="h-full mySwiper"
+              onSlideChange={handleSlideChange}
+            >
+              {isSuccess &&
+                data?.pages.map((page: any, index: any) => (
+                  <div key={index}>
+                    {page.records.map((nftItem: any, index: number) => (
+                      <SwiperSlide key={`${nftItem._id}-${index}`}>
+                        <div className="relative flex items-center h-full w-fit">
+                          {nftItem.metadata.image && (
+                            <Image
+                              width={760}
+                              height={760}
+                              src={nftItem.metadata.image}
+                              alt="NFT Image"
+                              unoptimized
+                              className="rounded-2xl max-w-[760px] max-h-[760px]"
                             />
                           )}
-                        {nftItem.metadata.image &&
-                          nftItem.metadata.animation_url && (
-                            <audio
-                              autoPlay
-                              loop
-                              muted
-                              controls
-                              src={nftItem.metadata.animation_url}
-                              className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%]"
-                            >
-                              Your browser does not support the
-                              <code>audio</code> element.
-                            </audio>
-                          )}
-                      </div>
-                      <div ref={ref} style={{ height: "1px" }} />
-                    </SwiperSlide>
-                  ))}
-                </div>
-              ))}
-          </Swiper>
-        </>
-      </div>
-
-      {filter && (
+                          {nftItem.metadata.animation_url &&
+                            !nftItem.metadata.image && (
+                              <video
+                                src={nftItem.metadata.animation_url}
+                                autoPlay
+                                loop
+                                muted
+                                controls
+                                className=" rounded-2xl max-w-[760px] max-h-[760px]"
+                              />
+                            )}
+                          {nftItem.metadata.image &&
+                            nftItem.metadata.animation_url && (
+                              <audio
+                                autoPlay
+                                loop
+                                muted
+                                controls
+                                src={nftItem.metadata.animation_url}
+                                className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%]"
+                              >
+                                Your browser does not support the
+                                <code>audio</code> element.
+                              </audio>
+                            )}
+                        </div>
+                        <div ref={ref} style={{ height: "1px" }} />
+                      </SwiperSlide>
+                    ))}
+                  </div>
+                ))}
+            </Swiper>
+          </>
+        </div>
+      )}
+      {isSuccess && filter && (
         <div className="fixed flex flex-col justify-center w-[800px] right-[164px] top-[23%] z-10">
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex mb-3 text-dark1">
@@ -693,6 +697,8 @@ const Reels = ({ homeData }: any) => {
           </div>
         </div>
       )}
+      {isLoading && <SkeletonReels />}
+      {isFetchingNextPage && <SkeletonReels />}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
