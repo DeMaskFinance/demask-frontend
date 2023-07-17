@@ -84,26 +84,31 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     <div className="px-4 py-6 mt-6 rounded-lg shadow-home">
       <div className="flex items-center justify-between">
         <div className="flex justify-between mb-2">
-          <h2 className="text-2xl font-medium text-dark1">
+          <h2 className="mr-4 text-2xl font-medium text-dark1">
             {nftItem.metadata.name}{" "}
           </h2>
-          <ActiveIcon width={24} height={24} className="mr-4" />
+          {reserveToken.toString() === "0" ||
+            reserveNFT.toString() === "0" ||
+            (reserveNFT.toString() === "1" && (
+              <ActiveIcon width={24} height={24} className="mr-4 fill-red" />
+            ))}
           {nftItem.metadata.category.map((item: any, index: number) => (
-            <div
+            <Link
+              href={`/category/${item.toLowerCase()}`}
               key={index}
               className="h-[30px] flex items-center px-2 mr-4 text-xs font-medium text-center border rounded-lg border-secondary5 text-dark1"
             >
               <p>{item}</p>
-            </div>
+            </Link>
           ))}
         </div>
         <div className="flex gap-x-2">
           {symbolToken && tokenAddress && nftAddress ? (
-            <div className="text-[24px] font-medium text-secondary3 leading-[14px] flex gap-x-2 items-end">
+            <div className="text-[24px] font-medium text-secondary3 flex gap-x-2 items-end leading-5">
               {reserveToken.toString() === "0" ||
               reserveNFT.toString() === "0" ||
               reserveNFT.toString() === "1" ? (
-                <div>Unable to buy</div>
+                <div className="text-red">Unable to buy</div>
               ) : (
                 <span>
                   {formatPrice} {symbolTokenSwap}
@@ -127,7 +132,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         </div>
       </div>
       <div className="flex items-center mb-2 text-dark2">
-        <AvatarUser/>
+        <AvatarUser />
         <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
           0,
           4

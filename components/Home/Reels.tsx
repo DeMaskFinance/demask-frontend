@@ -38,6 +38,7 @@ import TransitionURL from "../Toast/TransionURL";
 import { toast } from "react-toastify";
 import approveToken from "@/libs/utils/approveToken";
 import { AvatarUser } from "../Avatars";
+import Link from "next/link";
 interface ReelsProps {
   data: any;
   isSuccess: boolean;
@@ -50,8 +51,8 @@ const styles = {
     "w-[40%] mt-4 py-2 pl-2 mb-6 border rounded-lg mx-auto border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await fetch("https://api.demask.finance/homepage?page=1");
+export async function getServerSideProps() {
+  const response = await fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3");
   const homeData = await response.json();
   return {
     props: {
@@ -60,6 +61,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 const Reels = ({ homeData }: any) => {
+  console.log(homeData);
+  
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [selectedCategory, setSelectedCategory] = useState<string>("1");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -84,13 +87,10 @@ const Reels = ({ homeData }: any) => {
   const handleSlideChange = (swiper: any) => {
     setActiveSlideIndex(swiper.activeIndex);
   };
-  // console.log(activeSlideIndex);
-  // console.log(filter);
-
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  
+
   const { ref, inView } = useInView();
   const {
     data,
@@ -147,10 +147,19 @@ const Reels = ({ homeData }: any) => {
   } = useInformationDML(filter.dmlAddress);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
-  console.log(balanceNFT);
+  // console.log(account);
   
+  // console.log(balanceNFT);
+  // console.log(nftAddress);
+  // console.log(idNFT.toString());
+  let tokenAddressSwap = "";
+  if (tokenAddress === "0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6") {
+    tokenAddressSwap = "MATIC";
+  } else {
+    tokenAddressSwap = tokenAddress;
+  }
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-    useInformationToken(account, tokenAddress, wallet);
+    useInformationToken(account, tokenAddress, wallet,tokenAddressSwap);
   const amountTokenSell = useAmountOutMin(
     amountNFTSubmit,
     filter.dmlAddress,
@@ -173,8 +182,8 @@ const Reels = ({ homeData }: any) => {
   const amountSell = new BigNumber(amountTokenSell);
   const priceBuy = Number(amountBuy) / Number(amountNFTSubmit);
   const priceSell = Number(amountSell) / Number(amountNFTSubmit);
-  console.log(priceBuy);
-  console.log(amountTokenBuy);
+  // console.log(priceBuy);
+  // console.log(amountTokenBuy);
   // console.log(amountBuy);
   // console.log(amountSell);
   // console.log(amountNFTSubmit);
@@ -190,6 +199,7 @@ const Reels = ({ homeData }: any) => {
   } else {
     symbolTokenSwap = symbolToken;
   }
+  
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -227,14 +237,12 @@ const Reels = ({ homeData }: any) => {
 
   useEffect(() => {
     const checkApproveToken = async () => {
-      if (tokenAddress !== "MATIC") {
+      if (tokenAddressSwap !== "MATIC") {
         const currentAllowance = await approveToken(
           account,
           wallet,
           tokenAddress
         );
-        // console.log(Number(currentAllowance));
-        // console.log(amountBuy.toFixed());
         if (Number(currentAllowance) < Number(amountTokenBuy)) {
           setIsApprovedToken(false);
         } else {
@@ -280,6 +288,7 @@ const Reels = ({ homeData }: any) => {
       setIsOpen(true);
     }
   };
+  
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -298,7 +307,7 @@ const Reels = ({ homeData }: any) => {
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         try {
           let result;
-          if (tokenAddress === "MATIC") {
+          if (tokenAddressSwap === "MATIC") {
             result = await contract.buyETH(
               nftAddress,
               idNFT,
@@ -358,7 +367,7 @@ const Reels = ({ homeData }: any) => {
 
         try {
           let result;
-          if (tokenAddress === "MATIC") {
+          if (tokenAddressSwap === "MATIC") {
             result = await contract.sellETH(
               nftAddress,
               idNFT,
@@ -479,12 +488,13 @@ const Reels = ({ homeData }: any) => {
                 <div className="flex justify-center text-xl font-medium text-dark1">
                   <span className="mr-4">{filter.metadata.name}</span>
                   {filter.metadata.category.map((item: any, index: number) => (
-                    <div
+                    <Link
+                      href={`/category/${item.toLowerCase()}`}
                       key={index}
                       className="h-[30px] flex items-center px-2 mr-2 text-xs font-medium text-center border rounded-lg border-secondary5 text-dark1"
                     >
                       <p>{item}</p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -504,7 +514,7 @@ const Reels = ({ homeData }: any) => {
               </div>
             </div>
             <div className="flex items-center justify-center mb-2 text-dark2">
-              <AvatarUser activeSlideIndex={activeSlideIndex}/>
+              <AvatarUser activeSlideIndex={activeSlideIndex} />
               <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
                 0,
                 4
@@ -591,8 +601,8 @@ const Reels = ({ homeData }: any) => {
                   <p className="mb-4 text-secondary4 text-end">
                     Reverse Token:
                     {formatNumber(
-                        divideByDecimal(reserves[0].toString(), decimals)
-                      )}
+                      divideByDecimal(reserves[0].toString(), decimals)
+                    )}
                   </p>
                 )}
               </div>
@@ -668,7 +678,7 @@ const Reels = ({ homeData }: any) => {
                 </Button>
               )}
               {!isApprovedToken &&
-                tokenAddress !== "MATIC" &&
+                tokenAddressSwap !== "MATIC" &&
                 activeChoice === "BUY" && (
                   <Button
                     className="w-[126px] py-2"

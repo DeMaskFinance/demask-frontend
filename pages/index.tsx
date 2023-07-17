@@ -20,15 +20,18 @@ import "swiper/css/navigation";
 import { ethers } from "ethers";
 import { LayoutSecondary } from "@/components/Layouts";
 export const getServerSideProps: GetServerSideProps = async () => {
-  const homeData = await homeService.home("1");
-  return {
-    props: {
-      homeData,
-    },
-  };
+  const response = await fetch("https://api.demask.finance/homepage?page=1");
+    const homeData = await response.json();
+    return {
+      props: {
+        homeData,
+      },
+    };
 };
 
 const Home = ({ homeData }: any) => {
+  console.log(homeData);
+  
   const swiperRef = useRef<any>(null);
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
@@ -58,7 +61,7 @@ const Home = ({ homeData }: any) => {
     {
       getNextPageParam: (page) =>
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
-    }
+    },
   );
 
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
