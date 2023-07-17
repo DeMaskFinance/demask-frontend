@@ -78,7 +78,6 @@ export default function AddLiquidity() {
         try {
           const balance = await getBalanceNFT(
             account,
-            wallet,
             nftAddress,
             idNFT
           );
