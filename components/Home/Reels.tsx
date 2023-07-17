@@ -102,6 +102,7 @@ const Reels = ({ homeData }: any) => {
     isFetchingNextPage,
     isSuccess,
     isLoading,
+    isFetching
   } = useInfiniteQuery(
     "reelspage",
     ({ pageParam }) => fetchDataPage({ pageParam }),
@@ -110,6 +111,8 @@ const Reels = ({ homeData }: any) => {
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
     }
   );
+  console.log("123");
+  
   useEffect(() => {
     if (
       data &&
@@ -598,12 +601,12 @@ const Reels = ({ homeData }: any) => {
               <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
                 {reserves && (
                   <p className="mb-4 text-secondary4">
-                    Reverse NFT:{formatNumber(reserves[1])}
+                    Reserve NFT:{formatNumber(reserves[1])}
                   </p>
                 )}
                 {reserves && (
                   <p className="mb-4 text-secondary4 text-end">
-                    Reverse Token:
+                    Reserve Token:
                     {formatNumber(
                       divideByDecimal(reserves[0].toString(), decimals)
                     )}

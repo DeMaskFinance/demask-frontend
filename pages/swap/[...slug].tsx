@@ -79,6 +79,8 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  console.log(balanceToken);
+  
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
@@ -104,7 +106,7 @@ const Swap: React.FC = () => {
   };
 
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
-  const reserves: any[] = useFetchReservesDML(
+  const {reserves}: any = useFetchReservesDML(
     account,
     dmlToken,
     wallet,

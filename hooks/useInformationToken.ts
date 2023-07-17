@@ -7,7 +7,7 @@ const useInformationToken = (
   account: string,
   tokenAddress: string,
   wallet: string,
-  tokenAddressSwap?:string,
+  tokenAddressSwap?: string
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
@@ -16,17 +16,17 @@ const useInformationToken = (
   const [nameTokenERC20, setNameTokenERC20] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(
     "https://rpc.ankr.com/polygon_mumbai"
-  ); 
-  let tokenAddressContract ='';
-  if(tokenAddressSwap){
-    tokenAddressContract=tokenAddressSwap;
-  }else{
-    tokenAddressContract=tokenAddress;
+  );
+  let tokenAddressContract = "";
+  if (tokenAddressSwap) {
+    tokenAddressContract = tokenAddressSwap;
+  } else {
+    tokenAddressContract = tokenAddress;
   }
   useEffect(() => {
     const getBalanceToken = async () => {
       if (tokenAddress) {
-        if (tokenAddressContract === "MATIC"||tokenAddress === "MATIC") {
+        if (tokenAddressContract === "MATIC" || tokenAddress === "MATIC") {
           setDecimals("18");
           setSymbolToken("MATIC");
           try {

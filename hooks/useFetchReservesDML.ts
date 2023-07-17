@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 
 const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:string, inputNFT:string) => {
   const [reserves, setReserves] = useState<any[]>([0]);
-
+  const [isLoadingReserves,setIsLoadingReserves] = useState<boolean>(false);
   useEffect(() => {
     const fetchReservesDML = async () => {
       try {
         if (dmlToken) {
+          setIsLoadingReserves(true);
           const {reserves}:any = await getReserves(dmlToken);
           setReserves(reserves);
+          setIsLoadingReserves(false)
         }
       } catch (error) {
         console.error(error);
@@ -19,7 +21,7 @@ const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:st
     fetchReservesDML();
   }, [account,dmlToken, wallet, inputNFT]);
 
-  return reserves;
+  return {reserves,isLoadingReserves};
 };
 
 export default useFetchReservesDML;

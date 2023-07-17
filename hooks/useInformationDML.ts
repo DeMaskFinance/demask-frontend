@@ -9,8 +9,10 @@ const useInformationDML = (dmlToken:string|undefined) => {
   const [reserveNFT,setReserveNFT] = useState<string>("");
   const [reserveToken,setReserveToken] = useState<string>("");
   const [tokenAddress,setTokenAddress] = useState<string>("");
+  const [isLoadingInforDML,setIsLoadingInforDML] = useState<boolean>(false);
   useEffect(() => {
     const fetchInforDML = async () => {
+      setIsLoadingInforDML(true)
       try {
         if (dmlToken) {
           const {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress}:any = await getInfor(dmlToken);
@@ -25,12 +27,13 @@ const useInformationDML = (dmlToken:string|undefined) => {
       } catch (error) {
         console.error(error);
       }
+      setIsLoadingInforDML(false)
     };
 
     fetchInforDML();
   }, [dmlToken]);
 
-  return {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress};
+  return {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress,isLoadingInforDML};
 };
 
 export default useInformationDML;

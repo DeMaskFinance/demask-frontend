@@ -55,6 +55,7 @@ const Home = ({ homeData }: any) => {
     isFetchingNextPage,
     isSuccess,
     isLoading,
+    isFetching
   } = useInfiniteQuery(
     "homepage",
     ({ pageParam }) => fetchDataPage({ pageParam }),
@@ -63,7 +64,9 @@ const Home = ({ homeData }: any) => {
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
     },
   );
-
+  console.log(isFetching);
+  console.log(isFetchingNextPage);
+  console.log(isSuccess);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const Category = [
     {
@@ -212,14 +215,7 @@ const Home = ({ homeData }: any) => {
                 </Fragment>
               ))}
             <div ref={ref} style={{ height: "1px" }} />
-            {isLoading && (
-              <>
-                <SkeletonNewFeeds />
-                <SkeletonNewFeeds />
-                <SkeletonNewFeeds />
-              </>
-            )}
-            {isFetchingNextPage && (
+            {(isLoading || isFetchingNextPage || isFetching) && (
               <>
                 <SkeletonNewFeeds />
                 <SkeletonNewFeeds />
