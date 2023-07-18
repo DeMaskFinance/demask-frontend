@@ -47,7 +47,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     tokenAddress,
   } = useInformationDML(nftItem.dmlAddress);
 
-  const amountTokenBuy = useAmountInMax(
+  const {amountTokenBuy} = useAmountInMax(
     "1",
     nftItem.dmlAddress,
     tokenAddress,
