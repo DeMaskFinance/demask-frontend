@@ -9,18 +9,14 @@ import React, {
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css"; // optional
 import { ActiveLink } from "@/components/Link";
-import { useRouter } from "next/router";
 import { ModalWallet } from "../Modal/ModalWallet";
 import Image from "next/image";
 import Icons from "@/public/icons/icon";
 import { SearchHeader } from "../Search";
 import { LogoDemask } from "../Logo";
 import { MenuHeader } from "../Menu";
-import LogoDeMask from "../Logo/LogoDemask";
-import { BscIcon, EtherIcon, PolygonIcon, ProfileIcon } from "../Icons";
-import { disconnectWalletTest } from "@/libs/connection/disconnectWallet";
+import { BscIcon, EtherIcon, PolygonIcon, ProfileIcon, SearchIcon } from "../Icons";
 import { MdLogout } from "react-icons/md";
-import { useAccount } from "@/hooks/useAccount";
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
 const style = {
@@ -37,7 +33,6 @@ export default function Header() {
   const headerRef = useRef<any>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount, wallet } = useContext(AccountContext);
-  // const {isLocked,hanldeLock,hanldeAuto} = useBodyScrollLock();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -87,25 +82,29 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
+
   return (
     <>
       <header
         ref={headerRef}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out bg-white h-header px-14 "
       >
-        <div className="flex">
-          <div className="text-center logo w-[142px] h-[24px]">
+        <div className="flex items-center">
+          <div className="text-center logo  h-[24px]">
             <Link href="/">
               <LogoDemask width={94} height={24} />
             </Link>
           </div>
-          <div className="ml-6 ">
+          <div className="ml-8">
             <MenuHeader />
           </div>
+          <div className="ml-8">
+            {/* Search */}
+            {/* <SearchHeader /> */}
+            <SearchIcon width={32} height={32} className="cursor-pointer active:fill-secondary3"/>
+          </div>
         </div>
-        {/* Search */}
-        <SearchHeader />
+
         <div className="flex items-center justify-end gap-x-6">
           <ul className={style.itemNav}>
             <li className="hover:text-secondary5 active:text-secondary3">
@@ -140,7 +139,9 @@ export default function Header() {
                       />
                       <p>Ethereum</p>
                     </li>
-                    <li className={`${style.itemSub} gap-x-2 group text-secondary3`}>
+                    <li
+                      className={`${style.itemSub} gap-x-2 group text-secondary3`}
+                    >
                       <PolygonIcon
                         width={24}
                         height={24}

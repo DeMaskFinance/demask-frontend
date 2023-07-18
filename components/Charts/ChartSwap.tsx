@@ -1,53 +1,12 @@
-import React, { PureComponent, useState } from "react";
+import React, { PureComponent, useState ,useEffect} from "react";
 
 import Highcharts, { Point } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";
-interface ChartSwapProps {}
-const data1 = [
-  {
-    name: "May 11",
-    uv: 590,
-    pv: 800,
-    amt: 1400,
-    cnt: 490,
-  },
-  {
-    name: "May 12",
-    uv: 868,
-    pv: 967,
-    amt: 1506,
-    cnt: 590,
-  },
-  {
-    name: "May 13",
-    uv: 1397,
-    pv: 1098,
-    amt: 989,
-    cnt: 350,
-  },
-  {
-    name: "May 14",
-    uv: 680,
-    pv: 1200,
-    amt: 1228,
-    cnt: 480,
-  },
-  {
-    name: "May 15",
-    uv: 1520,
-    pv: 1108,
-    amt: 1100,
-    cnt: 460,
-  },
-  {
-    name: "May 16",
-    uv: 1400,
-    pv: 680,
-    amt: 1700,
-    cnt: 380,
-  },
-];
+import { GetServerSideProps } from "next";
+interface ChartSwapProps {
+  dmlToken:string,
+}
 const data = [
   { name: "May 11", uv: 59.78, pv: 18.12 },
   { name: "May 12", uv: 86.02, pv: 79.32 },
@@ -62,7 +21,19 @@ if (typeof Highcharts === "object") {
   HighchartsStock(Highcharts);
 }
 
-const ChartSwap: React.FunctionComponent<ChartSwapProps> = () => {
+const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
+  console.log(dmlToken);
+  const [dataChart,setDataChart] = useState('');
+  // useEffect(()=>{
+  //   const fetchDataChartSwap = async () =>{
+  //     const res =  await fetch(`https://api.demask.finance/dml-chart?address=${dmlToken}`)
+  //     const data = await res.json();
+  //     setDataChart(data);
+  //   }
+  //   fetchDataChartSwap();
+  // },[dmlToken])
+  // console.log(dataChart);
+  
   const [volumeValue, setVolumeValue] = useState(12.85);
   const [avgPrice, setAvgPrice] = useState(42.15);
 

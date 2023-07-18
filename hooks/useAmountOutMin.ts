@@ -2,9 +2,10 @@ import getAmountSell from '@/libs/utils/getAmountSell';
 import { useEffect, useState } from 'react';
 const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string, activeChoice:string) => {
     const [amountTokenSell, setAmountTokenSell] = useState('0');
-  
+    const [isLoadingSell,setIsLoadingSell] = useState<boolean>(false);
     useEffect(() => {
       const getAmountOutMin = async () => {
+        setIsLoadingSell(true);
         if (inputNFT && dmlToken !== '0x0000000000000000000000000000000000000000') {
           let amountAFee;
           if (tokenAddress === 'MATIC') {
@@ -19,12 +20,13 @@ const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, 
         } else {
           setAmountTokenSell('0');
         }
+        setIsLoadingSell(false);
       };
-  
+      
       getAmountOutMin();
     }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, activeChoice]);
   
-    return amountTokenSell;
+  return {amountTokenSell,isLoadingSell};
   };
   
   export default useAmountOutMin;

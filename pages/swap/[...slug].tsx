@@ -27,17 +27,29 @@ import useInformationToken from "@/hooks/useInformationToken";
 import useDMLToken from "@/hooks/useDMLToken";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useAmountInMax from "@/hooks/useAmountInMax";
-import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
 import BigNumber from "bignumber.js";
 import formatNumber from "@/libs/utils/formatNumer";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ChartSwap from "@/components/Charts/ChartSwap";
-import checkIsERC20 from "@/libs/validation/checkIsERC20";
+import { GetServerSideProps } from "next";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-const Swap: React.FC = () => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const response = await fetch(
+    "https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3"
+  );
+  const homeData = await response.json();
+  return {
+    props: {
+      homeData,
+    },
+  };
+};
+const Swap: React.FC = ({ homeData }: any) => {
+  // console.log(homeData);
+
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -79,7 +91,6 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
-  console.log(balanceToken);
   
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -106,13 +117,14 @@ const Swap: React.FC = () => {
   };
 
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
-  const {reserves,isLoadingReserves}: any = useFetchReservesDML(
+  
+  const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
     wallet,
     inputNFT
   );
-  const amountTokenSell = useAmountOutMin(
+  const { amountTokenSell } = useAmountOutMin(
     inputNFT,
     dmlToken,
     tokenAddress,
@@ -121,7 +133,7 @@ const Swap: React.FC = () => {
     wallet,
     activeChoice
   );
-  const {amountTokenBuy} = useAmountInMax(
+  const { amountTokenBuy } = useAmountInMax(
     inputNFT,
     dmlToken,
     tokenAddress,
@@ -455,20 +467,20 @@ const Swap: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col basis-1/3">
-                {dmlToken?(
+                {dmlToken ? (
                   <a
-                  href={`https://mumbai.polygonscan.com/address/${dmlToken}`}
-                  target="_blank"
-                  className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
-                >
-                  <PoolIcon
-                    width={24}
-                    height={24}
-                    className="group-hover:fill-secondary3"
-                  />
-                  <p className="group-hover:text-secondary3">Pool</p>
-                </a>
-                ):(
+                    href={`https://mumbai.polygonscan.com/address/${dmlToken}`}
+                    target="_blank"
+                    className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
+                  >
+                    <PoolIcon
+                      width={24}
+                      height={24}
+                      className="group-hover:fill-secondary3"
+                    />
+                    <p className="group-hover:text-secondary3">Pool</p>
+                  </a>
+                ) : (
                   <div className="self-end w-10 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                 )}
               </div>
@@ -509,7 +521,7 @@ const Swap: React.FC = () => {
                   <p className="mb-4 text-dark3">
                     Reverse NFT:{formatNumber(reserves[1])}
                   </p>
-                ):(
+                ) : (
                   <div className="w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                 )}
                 <div className="relative">
@@ -574,10 +586,10 @@ const Swap: React.FC = () => {
                   <p className="mb-4 text-dark3 text-end">
                     Reverse Token:
                     {formatNumber(
-                        divideByDecimal(reserves[0].toString(), decimals)
-                      )}
+                      divideByDecimal(reserves[0].toString(), decimals)
+                    )}
                   </p>
-                ):(
+                ) : (
                   <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                 )}
                 <div className="relative">
@@ -646,7 +658,7 @@ const Swap: React.FC = () => {
             </div>
           </div>
           <div className="px-4 py-6 mt-6 border rounded-lg border-dark3">
-            <ChartSwap />
+            <ChartSwap dmlToken={dmlToken}/>
           </div>
         </div>
       </div>

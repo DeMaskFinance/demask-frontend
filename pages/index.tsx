@@ -2,17 +2,12 @@ import { Button } from "@/components/Buttons";
 import * as homeService from "@/libs/service/homeService";
 import Head from "next/head";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
 import NFTItems from "@/components/Home/NFTItems";
 import type { GetServerSideProps } from "next";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { SkeletonNewFeeds } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
-import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import "swiper/css";
-import "swiper/css/navigation";
 import { LayoutSecondary } from "@/components/Layouts";
 export const getServerSideProps: GetServerSideProps = async () => {
   const response = await fetch("https://api.demask.finance/homepage?page=1");
@@ -26,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const Home = ({ homeData }: any) => {
   console.log(homeData);
-  const swiperRef = useRef<any>(null);
+
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
@@ -58,7 +53,7 @@ const Home = ({ homeData }: any) => {
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
     }
   );
-  
+
   const Category = [
     {
       id: 1,
@@ -80,17 +75,6 @@ const Home = ({ homeData }: any) => {
     }
   }, [inView]);
 
-  const goNext = () => {
-    if (swiperRef && swiperRef.current) {
-      swiperRef.current.swiper.slideNext();
-    }
-  };
-
-  const goPrev = () => {
-    if (swiperRef && swiperRef.current) {
-      swiperRef.current.swiper.slidePrev();
-    }
-  };
   useEffect(() => {
     const handleStorageChange = () => {
       if (localStorage.getItem("MODE_DEMASK") === null) {
@@ -120,75 +104,25 @@ const Home = ({ homeData }: any) => {
         />
       ) : (
         <div className="mb-6 leading-7">
-          <div className="relative swiper-custom">
-            <button
-              type="button"
-              className="flex items-center justify-center text-3xl text-dark1 swiper-button-prev-custom"
-              onClick={goPrev}
-            >
-              <GoChevronLeft />
-            </button>
-            <Swiper
-              navigation={true}
-              modules={[Navigation]}
-              className="mySwiper"
-              slidesPerView={6}
-              ref={swiperRef}
-            >
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-              <SwiperSlide>
-                <NFTTop />
-              </SwiperSlide>
-            </Swiper>
-            <button
-              type="button"
-              className="flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom"
-              onClick={goNext}
-            >
-              <GoChevronRight />
-            </button>
-          </div>
+          <NFTTop />
           <div className="flex flex-col items-center mt-8">
-            <h1 className="text-3xl font-medium text-dark1 w-[45%] text-center">
-              {data?.pages[0].totalRecords} curated NFT resources to buy and
-              hold creative workflow.
-            </h1>
-            <h2 className="mt-2 text-xl font-medium text-dark2">
-              Join a growing family of {data?.pages[0].totalCreators} designers
-              and makers from around the world.
-            </h2>
+            {data ? (
+              <div className="flex flex-col items-center mx-auto">
+                <h1 className="text-3xl font-medium text-center text-dark1 w-[65%]">
+                  {data?.pages[0].totalRecords} curated NFT resources to buy and
+                  hold creative workflow.
+                </h1>
+                <h2 className="mt-2 text-xl font-medium text-dark2">
+                  Join a growing family of {data?.pages[0].totalCreators}{" "}
+                  designers and makers from around the world.
+                </h2>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center w-full">
+                <p className="w-[65%] h-6 rounded-full animate-pulse bg-slate-200"></p>
+                <p className="h-6 mt-4 rounded-full w-60 animate-pulse bg-slate-200"></p>
+              </div>
+            )}
             <div className="my-6">
               {Category.map((item, index) => (
                 <Button

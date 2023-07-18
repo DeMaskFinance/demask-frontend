@@ -80,7 +80,7 @@ const Search: FunctionComponent<SearchProps> = () => {
           className="absolute mx-2"
         />
         <input
-          className="py-2 pl-10 border font-normal w-[20vw] text-sm h-8 rounded-full border-secondary2 text-secondary1 placeholder:text-secondary2 focus:outline-secondary1 3xl:w-[24vw] placeholder:font-normal"
+          className="py-2 pl-10 border font-normal w-[20vw] text-sm h-8 rounded-lg border-secondary2 text-secondary1 placeholder:text-secondary2 focus:outline-secondary1 3xl:w-[24vw] placeholder:font-normal"
           placeholder="Search items, collections, and accounts"
           onFocus={()=>setSearchShow(true)}
           onChange={handleChangeSearch}
