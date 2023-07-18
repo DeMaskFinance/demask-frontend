@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 
 const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string, activeChoice:string) => {
   const [amountTokenBuy, setAmountTokenBuy] = useState('0');
-
+  const [isLoadingBuy,setIsLoadingBuy] = useState<boolean>(false);
   useEffect(() => {
     const getAmountInMax = async () => {
+      setIsLoadingBuy(true);
       if (inputNFT && dmlToken !== '0x0000000000000000000000000000000000000000') {
         let amountAFee;
         if (tokenAddress === 'MATIC') {
@@ -20,12 +21,13 @@ const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, n
       } else {
         setAmountTokenBuy('0');
       }
+      setIsLoadingBuy(false);
     };
 
     getAmountInMax();
   }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, activeChoice]);
 
-  return amountTokenBuy;
+  return {amountTokenBuy,isLoadingBuy};
 };
 
 export default useAmountInMax;

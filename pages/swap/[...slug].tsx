@@ -106,7 +106,7 @@ const Swap: React.FC = () => {
   };
 
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
-  const {reserves}: any = useFetchReservesDML(
+  const {reserves,isLoadingReserves}: any = useFetchReservesDML(
     account,
     dmlToken,
     wallet,
@@ -121,7 +121,7 @@ const Swap: React.FC = () => {
     wallet,
     activeChoice
   );
-  const amountTokenBuy = useAmountInMax(
+  const {amountTokenBuy} = useAmountInMax(
     inputNFT,
     dmlToken,
     tokenAddress,
@@ -474,7 +474,7 @@ const Swap: React.FC = () => {
               </div>
             </div>
             <div className="text-center">
-              {activeChoice === "BUY" && account && (
+              {activeChoice === "BUY" && (
                 <div className="text-4xl text-secondary3">
                   {inputNFT ? (
                     <span>
@@ -488,7 +488,7 @@ const Swap: React.FC = () => {
                   <span className="ml-2">{symbolToken}</span>
                 </div>
               )}
-              {activeChoice === "SELL" && account && (
+              {activeChoice === "SELL" && (
                 <div className="text-4xl text-secondary3">
                   {inputNFT ? (
                     <span>

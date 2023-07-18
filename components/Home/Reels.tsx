@@ -17,7 +17,6 @@ import { Mousewheel, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "react-query";
 import { GetServerSideProps } from "next";
 import * as homeService from "@/libs/service/homeService";
 import useInformationDML from "@/hooks/useInformationDML";
@@ -46,6 +45,7 @@ interface ReelsProps {
   isLoading: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: any;
+  isFetching: boolean;
 }
 const styles = {
   inputItem:
@@ -63,9 +63,14 @@ export async function getServerSideProps() {
     },
   };
 }
-const Reels = ({ homeData }: any) => {
-  console.log(homeData);
-
+const Reels: React.FC<ReelsProps> = ({
+  data,
+  isSuccess,
+  isLoading,
+  isFetchingNextPage,
+  fetchNextPage,
+  isFetching,
+}) => {
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [selectedCategory, setSelectedCategory] = useState<string>("1");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -79,13 +84,6 @@ const Reels = ({ homeData }: any) => {
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const fetchDataPage = async ({ pageParam = 1 }) => {
-    const response = await fetch(
-      `https://api.demask.finance/homepage?page=${pageParam}`
-    );
-    const data = await response.json();
-    return data;
-  };
 
   const handleSlideChange = (swiper: any) => {
     setActiveSlideIndex(swiper.activeIndex);
@@ -95,24 +93,7 @@ const Reels = ({ homeData }: any) => {
   };
 
   const { ref, inView } = useInView();
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching
-  } = useInfiniteQuery(
-    "reelspage",
-    ({ pageParam }) => fetchDataPage({ pageParam }),
-    {
-      getNextPageParam: (page) =>
-        page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
-    }
-  );
-  console.log("123");
-  
+
   useEffect(() => {
     if (
       data &&
@@ -150,14 +131,12 @@ const Reels = ({ homeData }: any) => {
     reserveNFT,
     reserveToken,
     tokenAddress,
+    isLoadingInforDML,
   } = useInformationDML(filter.dmlAddress);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
-  // console.log(account);
+  // console.log(isLoadingInforDML);
 
-  // console.log(balanceNFT);
-  // console.log(nftAddress);
-  // console.log(idNFT.toString());
   let tokenAddressSwap = "";
   if (tokenAddress === "0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6") {
     tokenAddressSwap = "MATIC";
@@ -175,7 +154,7 @@ const Reels = ({ homeData }: any) => {
     wallet,
     activeChoice
   );
-  const amountTokenBuy = useAmountInMax(
+  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     amountNFTSubmit,
     filter.dmlAddress,
     tokenAddress,
@@ -188,12 +167,8 @@ const Reels = ({ homeData }: any) => {
   const amountSell = new BigNumber(amountTokenSell);
   const priceBuy = Number(amountBuy) / Number(amountNFTSubmit);
   const priceSell = Number(amountSell) / Number(amountNFTSubmit);
-  // console.log(priceBuy);
-  // console.log(amountTokenBuy);
-  // console.log(amountBuy);
-  // console.log(amountSell);
-  // console.log(amountNFTSubmit);
-  // console.log(inputNFT);
+  console.log(isLoadingBuy);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -564,21 +539,25 @@ const Reels = ({ homeData }: any) => {
             <div className="flex flex-col items-center">
               {amountNFTSubmit ? (
                 <div className="text-center">
-                  {activeChoice === "BUY" && account && (
-                    <div className="text-4xl text-secondary3">
-                      {amountNFTSubmit ? (
-                        <span>
-                          {formatNumber(
-                            divideByDecimal(priceBuy.toFixed(), decimals)
-                          )}
-                        </span>
-                      ) : (
-                        <span>0</span>
-                      )}
-                      <span className="ml-2">{symbolTokenSwap}</span>
-                    </div>
+                  {isLoadingBuy ? (
+                    <div>Loading</div>
+                  ) : (
+                    activeChoice === "BUY" && (
+                      <div className="text-4xl text-secondary3">
+                        {amountNFTSubmit ? (
+                          <span>
+                            {formatNumber(
+                              divideByDecimal(priceBuy.toFixed(), decimals)
+                            )}
+                          </span>
+                        ) : (
+                          <span>0</span>
+                        )}
+                        <span className="ml-2">{symbolTokenSwap}</span>
+                      </div>
+                    )
                   )}
-                  {activeChoice === "SELL" && account && (
+                  {activeChoice === "SELL" && (
                     <div className="text-4xl text-secondary3">
                       {amountNFTSubmit ? (
                         <span>
@@ -599,12 +578,16 @@ const Reels = ({ homeData }: any) => {
                 </h3>
               )}
               <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
-                {reserves && (
+                {isLoadingInforDML ? (
+                  <p className="w-32 h-4 rounded-full animate-pulse bg-slate-200"></p>
+                ) : (
                   <p className="mb-4 text-secondary4">
                     Reserve NFT:{formatNumber(reserves[1])}
                   </p>
                 )}
-                {reserves && (
+                {isLoadingInforDML ? (
+                  <p className="w-32 h-4 rounded-full animate-pulse bg-slate-200"></p>
+                ) : (
                   <p className="mb-4 text-secondary4 text-end">
                     Reserve Token:
                     {formatNumber(
@@ -702,6 +685,7 @@ const Reels = ({ homeData }: any) => {
       )}
       {isLoading && <SkeletonReels />}
       {isFetchingNextPage && <SkeletonReels />}
+      {isFetching && <SkeletonReels />}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );

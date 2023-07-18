@@ -1,17 +1,20 @@
-import getReserves from '@/libs/utils/getInforDML';
-import { useEffect, useState } from 'react';
+import getReserves from "@/libs/utils/getInforDML";
+import { useEffect, useState } from "react";
 
-const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:string, inputNFT:string) => {
+const useFetchReservesDML = (
+  account: string,
+  dmlToken: string | undefined,
+  wallet: string,
+  inputNFT: string
+) => {
   const [reserves, setReserves] = useState<any[]>([0]);
-  const [isLoadingReserves,setIsLoadingReserves] = useState<boolean>(false);
+  const [isLoadingReserves, setIsLoadingReserves] = useState<boolean>(false);
   useEffect(() => {
     const fetchReservesDML = async () => {
       try {
         if (dmlToken) {
-          setIsLoadingReserves(true);
-          const {reserves}:any = await getReserves(dmlToken);
+          const { reserves }: any = await getReserves(dmlToken);
           setReserves(reserves);
-          setIsLoadingReserves(false)
         }
       } catch (error) {
         console.error(error);
@@ -19,9 +22,9 @@ const useFetchReservesDML = (account:string,dmlToken:string|undefined, wallet:st
     };
 
     fetchReservesDML();
-  }, [account,dmlToken, wallet, inputNFT]);
+  }, [account, dmlToken, wallet, inputNFT]);
 
-  return {reserves,isLoadingReserves};
+  return { reserves, isLoadingReserves };
 };
 
 export default useFetchReservesDML;

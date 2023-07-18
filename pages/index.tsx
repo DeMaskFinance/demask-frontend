@@ -1,46 +1,41 @@
 import { Button } from "@/components/Buttons";
 import * as homeService from "@/libs/service/homeService";
-import abiErc20 from "@/abi/abiErc20.json";
 import Head from "next/head";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import Image from "next/image";
-import Link from "next/link";
 import NFTItems from "@/components/Home/NFTItems";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import { useInfiniteQuery } from "react-query";
+import type { GetServerSideProps } from "next";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { SkeletonNewFeeds } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import "swiper/css";
 import "swiper/css/navigation";
-import { ethers } from "ethers";
 import { LayoutSecondary } from "@/components/Layouts";
 export const getServerSideProps: GetServerSideProps = async () => {
   const response = await fetch("https://api.demask.finance/homepage?page=1");
-    const homeData = await response.json();
-    return {
-      props: {
-        homeData,
-      },
-    };
+  const homeData = await response.json();
+  return {
+    props: {
+      homeData,
+    },
+  };
 };
 
 const Home = ({ homeData }: any) => {
   console.log(homeData);
-  
   const swiperRef = useRef<any>(null);
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
+  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   useEffect(() => {
     setModeInitial(localStorage.getItem("MODE_DEMASK") || "");
   }, [mode]);
 
   const { ref, inView } = useInView();
-  const fetchDataPage = async ({ pageParam = 1 }) => {
+  const fetchDataPage = async (pageParam = 1) => {
     const response = await fetch(
       `https://api.demask.finance/homepage?page=${pageParam}`
     );
@@ -51,23 +46,19 @@ const Home = ({ homeData }: any) => {
   const {
     data,
     fetchNextPage,
-    hasNextPage,
     isFetchingNextPage,
     isSuccess,
     isLoading,
-    isFetching
+    isFetching,
   } = useInfiniteQuery(
-    "homepage",
-    ({ pageParam }) => fetchDataPage({ pageParam }),
+    ["Homepage"],
+    ({ pageParam = 1 }) => fetchDataPage(pageParam),
     {
       getNextPageParam: (page) =>
         page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
-    },
+    }
   );
-  console.log(isFetching);
-  console.log(isFetchingNextPage);
-  console.log(isSuccess);
-  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  
   const Category = [
     {
       id: 1,
@@ -88,6 +79,7 @@ const Home = ({ homeData }: any) => {
       fetchNextPage();
     }
   }, [inView]);
+
   const goNext = () => {
     if (swiperRef && swiperRef.current) {
       swiperRef.current.swiper.slideNext();
@@ -118,7 +110,14 @@ const Home = ({ homeData }: any) => {
         <title>Home | DeMask</title>
       </Head>
       {modeInitial === "REELS" ? (
-        <Reels />
+        <Reels
+          data={data}
+          isFetching={isFetching}
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          fetchNextPage={fetchNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       ) : (
         <div className="mb-6 leading-7">
           <div className="relative swiper-custom">
@@ -187,8 +186,8 @@ const Home = ({ homeData }: any) => {
               hold creative workflow.
             </h1>
             <h2 className="mt-2 text-xl font-medium text-dark2">
-              Join a growing family of {data?.pages[0].totalCreators} designers and makers from around
-              the world.
+              Join a growing family of {data?.pages[0].totalCreators} designers
+              and makers from around the world.
             </h2>
             <div className="my-6">
               {Category.map((item, index) => (
