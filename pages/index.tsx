@@ -31,10 +31,7 @@ const Home = ({ homeData }: any) => {
 
   const { ref, inView } = useInView();
   const fetchDataPage = async (pageParam = 1) => {
-    const response = await fetch(
-      `https://api.demask.finance/homepage?page=${pageParam}`
-    );
-    const data = await response.json();
+    const data = await homeService.home(pageParam);
     return data;
   };
 

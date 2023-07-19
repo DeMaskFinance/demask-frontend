@@ -1,6 +1,6 @@
 import images from "@/public/images";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 
 interface IStateAvt {
     id:number,
@@ -8,8 +8,11 @@ interface IStateAvt {
 }
 interface AvatarProps {
     activeSlideIndex?:number,
+    width:number,
+    height:number,
 }
-export default function AvatarUser(props: AvatarProps) {
+
+const AvatarUser: FunctionComponent<AvatarProps> = ({ activeSlideIndex,width,height }) => {
   const [avatarUser, setAvatarUser] = useState<IStateAvt>({
     id: 1,
     avt: images.avtUser1,
@@ -35,11 +38,12 @@ export default function AvatarUser(props: AvatarProps) {
   useEffect(() => {
     const randomAvatar = avatars[(Math.random() * avatars.length) | 0];
     setAvatarUser(randomAvatar);
-  }, [props.activeSlideIndex]);
+  }, [activeSlideIndex]);
 
   return (
     <div className="w-8 h-8 mr-2 rounded-full">
-      <Image src={avatarUser.avt} alt="avatar" width={32} height={32} />
+      <Image src={avatarUser.avt} alt="avatar" width={width} height={height} />
     </div>
   );
 }
+export default AvatarUser;

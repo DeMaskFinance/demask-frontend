@@ -1,4 +1,3 @@
-import images from "@/public/images";
 import Image from "next/image";
 import { ActiveIcon } from "../Icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -12,6 +11,7 @@ import "swiper/css/navigation";
 import { SkeletonNFTTop } from "../Skeleton";
 import { NFTTopService } from "@/libs/service";
 import Link from "next/link";
+import { AvatarUser } from "../Avatars";
 interface NFTTopProps {}
 
 const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
@@ -78,7 +78,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                     <>
                       <SwiperSlide key={index}>
                         <Link
-                          href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}`}
+                          href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}?dmlAddress=${nftItem.dml}`}
                         >
                           <div className="w-[208px] h-[208px] relative overflow-hidden group cursor-pointer">
                             {nftItem.metadata.image && (
@@ -93,18 +93,21 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                             )}
                             {nftItem.metadata.animation_url &&
                               !nftItem.metadata.image && (
-                                <video
-                                  src={nftItem.metadata.animation_url}
-                                  loop
-                                  muted
-                                  autoPlay
-                                  className="w-full h-full rounded-lg"
-                                />
+                                <div className="w-full h-full bg-gray-300 rounded-lg bg-opacity-80">
+                                  <video
+                                    src={nftItem.metadata.animation_url}
+                                    loop
+                                    muted
+                                    autoPlay
+                                    poster="https://demask.infura-ipfs.io/ipfs/QmZhEv2DwgQAcgTyhxdZsL4DxCEVoUxdETVkudTYajnshg"
+                                    className="w-full h-full rounded-lg"
+                                  />
+                                </div>
                               )}
                             <div className="absolute bg-[rgba(0,0,0,0.2)] w-full rounded-lg h-full  opacity-0 group-hover:opacity-100 top-0 transition-all duration-300 ease-linear"></div>
                             <div className="absolute top-0 z-10 flex flex-col items-center justify-end w-full h-full p-1 duration-300 ease-linear translate-y-full rounded-lg group-hover:translate-y-0">
                               <p className="text-3xl text-white">
-                                {nftItem.price.toFixed(3)}
+                                {nftItem.price.toFixed(3)} USD
                               </p>
                               <div className="flex mt-4 mb-1 text-xl text-dark4">
                                 <p>{nftItem.metadata.name}</p>
@@ -117,7 +120,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                                 </i>
                               </div>
                               <div className="flex items-center text-white">
-                                <div className="w-6 h-6 mr-2 rounded-full bg-dark2"></div>
+                                <AvatarUser width={28} height={28}/>
                                 <p className="font-medium ">ToCa</p>
                                 <p className="-translate-y-[4px] mx-1">.</p>
                                 <p className="text-xs">

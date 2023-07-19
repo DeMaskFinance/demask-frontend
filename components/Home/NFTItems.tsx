@@ -121,7 +121,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             </div>
           )}
           {tokenAddress && nftAddress && idNFT ? (
-            <Link href={`/swap/${nftAddress}/${tokenAddressSwap}/${idNFT}`}>
+            <Link href={`/swap/${nftAddress}/${tokenAddressSwap}/${idNFT}?dmlAddress=${nftItem.dmlAddress}`}>
               <SwapIcon width={24} height={24} />
             </Link>
           ) : (
@@ -132,7 +132,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         </div>
       </div>
       <div className="flex items-center mb-2 text-dark2">
-        <AvatarUser />
+        <AvatarUser width={32} height={32}/>
         <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
           0,
           4

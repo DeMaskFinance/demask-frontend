@@ -504,7 +504,7 @@ const Reels: React.FC<ReelsProps> = ({
               </div>
             </div>
             <div className="flex items-center justify-center mb-2 text-dark2">
-              <AvatarUser activeSlideIndex={activeSlideIndex} />
+              <AvatarUser activeSlideIndex={activeSlideIndex} width={32} height={32}/>
               <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
                 0,
                 4

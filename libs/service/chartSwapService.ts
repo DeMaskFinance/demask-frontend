@@ -7,6 +7,5 @@ export const swapAPI = async (dmlAddress:any) =>{
         return res.data;
     } catch (error) {
         console.error(error);
-        
     }
 }

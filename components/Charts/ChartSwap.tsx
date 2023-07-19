@@ -3,7 +3,6 @@ import React, { PureComponent, useState ,useEffect} from "react";
 import Highcharts, { Point } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";
-import { GetServerSideProps } from "next";
 interface ChartSwapProps {
   dmlToken:string,
 }

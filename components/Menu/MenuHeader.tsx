@@ -18,7 +18,7 @@ const data = [
 ];
 
 const subMenuTradeData = [
-  { id: 1, name: "Swap", url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815" },
+  { id: 1, name: "Swap", url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC" },
   { id: 2, name: "Liquidity", url: "/liquidity" },
 ];
 const subMenuCateData = [
@@ -67,7 +67,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 )}
               >
                 <button className="hover:text-secondary5 active:text-secondary3">
-                  <Link ref={tradeRef} href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815">Trade</Link>
+                  <Link ref={tradeRef} href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC">Trade</Link>
                 </button>
               </Tippy>
             </li>

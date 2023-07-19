@@ -32,23 +32,21 @@ import formatNumber from "@/libs/utils/formatNumer";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ChartSwap from "@/components/Charts/ChartSwap";
 import { GetServerSideProps } from "next";
+import { swapAPI } from "@/libs/service";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const response = await fetch(
-    "https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3"
-  );
-  const homeData = await response.json();
+  const dataChart = await swapAPI("0xef29f693daff0dddeb28b1dec36eb37de7cc42eb");
   return {
     props: {
-      homeData,
+      dataChart,
     },
   };
 };
-const Swap: React.FC = ({ homeData }: any) => {
-  // console.log(homeData);
+const Swap: React.FC = ({ dataChart }: any) => {
+  console.log(dataChart);
 
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -91,7 +89,9 @@ const Swap: React.FC = ({ homeData }: any) => {
     }
   }, [slug]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
-  
+  useEffect(()=>{
+    
+  },[nftAddress,tokenAddress,idNFT])
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
@@ -117,7 +117,7 @@ const Swap: React.FC = ({ homeData }: any) => {
   };
 
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
-  
+
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -658,7 +658,7 @@ const Swap: React.FC = ({ homeData }: any) => {
             </div>
           </div>
           <div className="px-4 py-6 mt-6 border rounded-lg border-dark3">
-            <ChartSwap dmlToken={dmlToken}/>
+            <ChartSwap dmlToken={dmlToken} />
           </div>
         </div>
       </div>
