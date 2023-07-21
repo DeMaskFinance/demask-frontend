@@ -37,8 +37,9 @@ const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const dataChart = await swapAPI("0xef29f693daff0dddeb28b1dec36eb37de7cc42eb");
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {dmlAddress} = context.query;
+  const dataChart = await swapAPI('0xef29f693daff0dddeb28b1dec36eb37de7cc42eb');
   return {
     props: {
       dataChart,
@@ -46,8 +47,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 const Swap: React.FC = ({ dataChart }: any) => {
-  console.log(dataChart);
-
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -350,7 +349,7 @@ const Swap: React.FC = ({ dataChart }: any) => {
   };
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
-  console.log(priceBuy);
+  // console.log(priceBuy);
 
   // console.log(formatNumber(divideByDecimal(priceBuy.toFixed(), decimals)));
   // console.log(divideByDecimal(amountBuy.toFixed(), decimals));
@@ -657,8 +656,8 @@ const Swap: React.FC = ({ dataChart }: any) => {
                 )}
             </div>
           </div>
-          <div className="px-4 py-6 mt-6 border rounded-lg border-dark3">
-            <ChartSwap dmlToken={dmlToken} />
+          <div className="px-4 py-2 mt-6 border rounded-lg border-dark3">
+            <ChartSwap dataChart={dataChart}/>
           </div>
         </div>
       </div>

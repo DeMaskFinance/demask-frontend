@@ -1,40 +1,35 @@
-import React, { PureComponent, useState ,useEffect} from "react";
-
+import React, { PureComponent, useState, useEffect } from "react";
 import Highcharts, { Point } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";
+import Image from "next/image";
 interface ChartSwapProps {
-  dmlToken:string,
+  dataChart: [{}];
 }
-const data = [
-  { name: "May 11", uv: 59.78, pv: 18.12 },
-  { name: "May 12", uv: 86.02, pv: 79.32 },
-  { name: "May 13", uv: 53.41, pv: 10.45 },
-  { name: "May 14", uv: 76.05, pv: 42.55 },
-  { name: "May 15", uv: 65.12, pv: 51.50 },
-  { name: "May 16", uv: 34.87, pv: 76.00 },
-  { name: "May 17", uv: 90.7, pv: 41.12 },
-  { name: "May 18", uv: 48.00, pv: 46.01 },
-];
 if (typeof Highcharts === "object") {
   HighchartsStock(Highcharts);
 }
 
-const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
-  console.log(dmlToken);
-  const [dataChart,setDataChart] = useState('');
-  // useEffect(()=>{
-  //   const fetchDataChartSwap = async () =>{
-  //     const res =  await fetch(`https://api.demask.finance/dml-chart?address=${dmlToken}`)
-  //     const data = await res.json();
-  //     setDataChart(data);
-  //   }
-  //   fetchDataChartSwap();
-  // },[dmlToken])
-  // console.log(dataChart);
-  
+const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
   const [volumeValue, setVolumeValue] = useState(12.85);
   const [avgPrice, setAvgPrice] = useState(42.15);
+  const averagePrice = [],
+    volume = [];
+  const dataChartSwap = dataChart.map((item) => Object.values(item));
+
+  for (let i = 0; i < dataChartSwap.length; i += 1) {
+    const dateTimestamp = new Date(dataChartSwap[i][0] as any).getTime();
+    averagePrice.push([
+      dateTimestamp,
+      dataChartSwap[i][2], // averagePrice
+    ]);
+
+    volume.push([
+      dateTimestamp,
+      dataChartSwap[i][1], // the volume
+    ]);
+  }
+  console.log(volume);
 
   const options = {
     title: {
@@ -47,14 +42,24 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
       zooming: {
         mouseWheel: false,
       },
-      height:300,
+      height: 500,
+    },
+    navigator: {
+      enabled:true,
+      handles: {
+        symbols: ['HandlesHightChart.svg','HandlesHightChart.svg'],
+        backgroundColor:'#D5D0FF',
+        border:'none',
+      },
+      maskFill:"rgba(128,128,128,0.3)",
+      outlineColor:'#D5D0FF',
     },
     credits: {
       enabled: false,
     },
     xAxis: [
       {
-        categories: data.map((item) => item.name),
+        type: "datetime",
         crosshair: {
           className: "highcharts-crosshair-thin",
           zIndex: 2,
@@ -62,27 +67,30 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
           width: 1,
         },
         lineWidth: 0,
+        tickInterval: 10,
+        tickLenght: 0,
       },
     ],
     yAxis: [
       {
         // Primary yAxis
         labels: {
-          format: "{value}K",
+          format: "{value}",
+          align: "left",
         },
-        title: {
-          text: "",
+        height: "80%",
+        resize: {
+          enabled: true,
         },
       },
       {
         // Secondary yAxis
-        title: {
-          text: "",
-        },
         labels: {
-          format: "{value} B",
+          enable: false,
         },
-        opposite: true,
+        top: "80%",
+        height: "20%",
+        offset: 0,
       },
     ],
     legend: {
@@ -92,27 +100,17 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
       shared: true,
       crosshairs: [{ width: 1, color: "red", dashStyle: "dash" }],
     },
+    scrollbar: {
+      enabled: false,
+    },
     series: [
       {
         name: "Volume",
         type: "column",
         yAxis: 1,
-        data: data.map((item) => ({
-          y:item.uv,
-          events: {
-            mouseOver: function () {
-              setAvgPrice(item.pv)
-              setVolumeValue(item.uv)
-            },
-            mouseOut: function () {
-              console.log(123);
-            },
-          },
-        })
-        
-        ),
+        data: volume,
         tooltip: {
-          valueSuffix: " K",
+          valueSuffix: "USD",
         },
         color: "#D5D0FF",
         states: {
@@ -123,23 +121,19 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
       },
       {
         name: "Average price",
-        type: "line",
-        data: data.map((item) => ({
-            y: item.pv,
-            events: {
-              mouseOver: function () {
-                setVolumeValue(item.uv)
-                setAvgPrice(item.pv)
-              },
-              mouseOut: function () {
-                console.log(123);
-              },
-            },
-          })),
+        type: "area",
+        data: averagePrice,
         tooltip: {
-          valueSuffix: "B",
+          valueSuffix: "USD",
         },
-        color: "#636977",
+        color: {
+          linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+          stops: [
+            [0, "#A398FF"],
+            [1, "#FFFFFF"],
+          ],
+        },
+
         lineWidth: 2,
         marker: {
           enabled: false,
@@ -152,21 +146,23 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({dmlToken}) => {
           },
         },
       },
-      
     ],
-    
   };
-  
+
   return (
     <div>
-      <ul>
+      {/* <ul>
         <li className="text-dark3">Volume and Price</li>
-        <li className="text-xl text-dark1">{volumeValue} ETH</li>
-        <li className="text-dark2">Avg.Price: {avgPrice} ETH</li>
+        <li className="my-2 text-xl text-dark1">{volumeValue} ETH</li>
+        <li className="mb-2 text-dark2">Avg.Price: {avgPrice} ETH</li>
         <li className="text-dark3">7:00 Am, May 17, 2023 (UTC)</li>
-      </ul>
-      <div className="mt-12">
-        <HighchartsReact highcharts={Highcharts} options={options}/>
+      </ul> */}
+      <div className="">
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options}
+          constructorType={"stockChart"}
+        />
       </div>
     </div>
   );
