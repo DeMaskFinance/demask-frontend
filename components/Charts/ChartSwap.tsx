@@ -4,7 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";
 import Image from "next/image";
 interface ChartSwapProps {
-  dataChart: [{}];
+  dataChart: [];
 }
 if (typeof Highcharts === "object") {
   HighchartsStock(Highcharts);
@@ -29,7 +29,6 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
       dataChartSwap[i][1], // the volume
     ]);
   }
-  console.log(volume);
 
   const options = {
     title: {
@@ -45,14 +44,14 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
       height: 500,
     },
     navigator: {
-      enabled:true,
+      enabled: true,
       handles: {
-        symbols: ['HandlesHightChart.svg','HandlesHightChart.svg'],
-        backgroundColor:'#D5D0FF',
-        border:'none',
+        symbols: ["HandlesHightChart.svg", "HandlesHightChart.svg"],
+        backgroundColor: "#D5D0FF",
+        border: "none",
       },
-      maskFill:"rgba(128,128,128,0.3)",
-      outlineColor:'#D5D0FF',
+      maskFill: "rgba(128,128,128,0.3)",
+      outlineColor: "#D5D0FF",
     },
     credits: {
       enabled: false,
@@ -67,7 +66,7 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
           width: 1,
         },
         lineWidth: 0,
-        tickInterval: 10,
+        tickInterval: 1000,
         tickLenght: 0,
       },
     ],
@@ -99,6 +98,22 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
     tooltip: {
       shared: true,
       crosshairs: [{ width: 1, color: "red", dashStyle: "dash" }],
+      formatter: function (
+        this: Highcharts.TooltipFormatterContextObject
+      ): string {
+        const timestamp = this.x as number;
+        const date: any = new Date(timestamp);
+        const formattedDate = Highcharts.dateFormat("%Y-%m-%d", date);
+
+        let tooltipContent = `<b>${formattedDate}</b><br>`;
+        this.points?.forEach((point) => {
+          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>${point.y}</b><br>`;
+        });
+        return tooltipContent;
+      },
+      followPointer:true,
+      followTouchMove:true,
+      yAxis: 0,
     },
     scrollbar: {
       enabled: false,
@@ -109,9 +124,9 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         type: "column",
         yAxis: 1,
         data: volume,
-        tooltip: {
-          valueSuffix: "USD",
-        },
+        // tooltip: {
+        //   valueSuffix: "USD",
+        // },
         color: "#D5D0FF",
         states: {
           hover: {
@@ -123,9 +138,9 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         name: "Average price",
         type: "area",
         data: averagePrice,
-        tooltip: {
-          valueSuffix: "USD",
-        },
+        // tooltip: {
+        //   valueSuffix: "USD",
+        // },
         color: {
           linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
           stops: [

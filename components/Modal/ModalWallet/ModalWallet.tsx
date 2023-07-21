@@ -1,6 +1,6 @@
 import images from "@/public/images";
 import Image from "next/image";
-import React, { useRef, useState,useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { CgClose } from "react-icons/cg";
 import { getProvider } from "@/libs/connection/getProvider";
 import Web3 from "web3";
@@ -18,12 +18,10 @@ const styles = {
     "flex items-center px-6 py-4 gap-x-4 hover:bg-dark4 rounded-lg cursor-pointer",
 };
 
-const ModalWallet: React.FC<ModalWalletProps> = ({
-  isOpen,
-  setIsOpen,
-}) => {
-  const { account, updateAccount,updateWallet } = useContext(AccountContext);
-  const handleClose = (e:any) => {
+const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
+  const { account, updateAccount, updateWallet } = useContext(AccountContext);
+  const [walletWeb3, setWalletWeb3] = useState("");
+  const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);
@@ -36,8 +34,8 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
             const web3 = new Web3(window.BinanceChain);
             const accounts = await web3.eth.getAccounts();
             document.body.style.overflowY = "auto";
-            updateAccount(accounts)
-            updateWallet(walletName)
+            updateAccount(accounts);
+            updateWallet(walletName);
             console.log(accounts);
             setIsOpen(false);
             if (accounts.length > 0) {
@@ -71,8 +69,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
           const accounts = await provider.request({
             method: "eth_requestAccounts",
           });
-          updateAccount(accounts)
-          updateWallet(walletName)
+          updateAccount(accounts[0]);
+          updateWallet(walletName);
+          setWalletWeb3(walletName);
           document.body.style.overflowY = "auto";
           setIsOpen(false);
           console.log(accounts);
@@ -81,7 +80,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
         }
     }
   };
-
+  
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center mt-[100px] rounded-lg relative pb-4">
@@ -133,7 +132,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
         </button>
       </div>
     </Wrapper>
-      
   );
 };
 

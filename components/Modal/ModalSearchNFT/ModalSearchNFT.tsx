@@ -109,7 +109,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         .replace(currency[0], nftAddress)
         .replace(currency[2], idNFT);
     } else if (slug) {
-      console.log(slug);
       const currentURL = router.asPath;
       newURL = currentURL.replace(slug[0], nftAddress).replace(slug[2], idNFT);
       router.push(newURL);

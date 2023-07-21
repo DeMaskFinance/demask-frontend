@@ -33,20 +33,22 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ChartSwap from "@/components/Charts/ChartSwap";
 import { GetServerSideProps } from "next";
 import { swapAPI } from "@/libs/service";
+import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
+import { ChartLoading } from "@/components/Charts";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const {dmlAddress} = context.query;
-  const dataChart = await swapAPI('0xef29f693daff0dddeb28b1dec36eb37de7cc42eb');
-  return {
-    props: {
-      dataChart,
-    },
-  };
-};
-const Swap: React.FC = ({ dataChart }: any) => {
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const { dmlAddress } = context.query;
+//   const dataChart = await swapAPI(dmlAddress);
+//   return {
+//     props: {
+//       dataChart,
+//     },
+//   };
+// };
+const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -63,6 +65,8 @@ const Swap: React.FC = ({ dataChart }: any) => {
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet } = useContext(AccountContext);
+  const [dataChart, setDataChart] = useState<[]>([]);
+  const [isLoadingDataChart, setIsLoadingDataChart] = useState<boolean>(false);
   const {
     nameNFT,
     imageNFT,
@@ -88,9 +92,7 @@ const Swap: React.FC = ({ dataChart }: any) => {
     }
   }, [slug]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
-  useEffect(()=>{
-    
-  },[nftAddress,tokenAddress,idNFT])
+
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
@@ -116,6 +118,36 @@ const Swap: React.FC = ({ dataChart }: any) => {
   };
 
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
+  // useEffect(() => {
+  //   if (router.query.slug && dmlToken) {
+  //     const { slug } = router.query;
+  //     const newQuery = {
+  //       dmlAddress: tokenAddress,
+  //     };
+
+  //     // Get the target URL using router.asPath
+  //     const targetURL = `/swap/${slug[0]}/${slug[1]}/${slug[2]}?dmlAddress=${dmlToken}`;
+
+  //     // Compare the current URL with the target URL
+  //     if (router.asPath !== targetURL) {
+  //       router.push({
+  //         pathname: `/swap/${slug[0]}/${slug[1]}/${slug[2]}`,
+  //         query: newQuery,
+  //       });
+  //     }
+  //   }
+  // }, [router.query.slug, dmlToken]);
+  useEffect(() => {
+    const fetchDataChart = async () => {
+      if (dmlToken) {
+        setIsLoadingDataChart(true);
+        const res = await swapAPI(dmlToken.toLocaleLowerCase());
+        setDataChart(res);
+        setIsLoadingDataChart(false);
+      }
+    };
+    fetchDataChart();
+  }, [nftAddress, idNFT, tokenAddress, dmlToken]);
 
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
@@ -349,12 +381,6 @@ const Swap: React.FC = ({ dataChart }: any) => {
   };
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
-  // console.log(priceBuy);
-
-  // console.log(formatNumber(divideByDecimal(priceBuy.toFixed(), decimals)));
-  // console.log(divideByDecimal(amountBuy.toFixed(), decimals));
-
-  // console.log(formatNumber(divideByDecimal(amountBuy.toFixed(), decimals)));
 
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
@@ -657,7 +683,17 @@ const Swap: React.FC = ({ dataChart }: any) => {
             </div>
           </div>
           <div className="px-4 py-2 mt-6 border rounded-lg border-dark3">
-            <ChartSwap dataChart={dataChart}/>
+            {isLoadingDataChart ? (
+              <div className="h-[355px]">
+                <ChartLoading />
+              </div>
+            ) : dataChart && dataChart.length > 0 ? (
+              <ChartSwap dataChart={dataChart} />
+            ) : (
+              <div className="h-[355px]">
+                <ChartNoTransfers />
+              </div>
+            )}
           </div>
         </div>
       </div>

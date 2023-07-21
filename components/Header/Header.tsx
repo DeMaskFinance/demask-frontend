@@ -15,7 +15,13 @@ import Icons from "@/public/icons/icon";
 import { SearchHeader } from "../Search";
 import { LogoDemask } from "../Logo";
 import { MenuHeader } from "../Menu";
-import { BscIcon, EtherIcon, PolygonIcon, ProfileIcon, SearchIcon } from "../Icons";
+import {
+  BscIcon,
+  EtherIcon,
+  PolygonIcon,
+  ProfileIcon,
+  SearchIcon,
+} from "../Icons";
 import { MdLogout } from "react-icons/md";
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
@@ -53,6 +59,19 @@ export default function Header() {
     getAddress();
   }, [provider]);
   //scroll header
+  // useEffect(() => {
+  //   if (window.ethereum) {
+  //     const handleAccountsChanged = () => {
+  //       disconnectWallet();
+  //     };
+  
+  //     window.ethereum.on("accountsChanged", handleAccountsChanged);
+  
+  //     return () => {
+  //       window.ethereum.removeListener("accountsChanged", handleAccountsChanged)
+  //     };
+  //   }
+  // });
   useEffect(() => {
     let prevScrollPos = window.scrollY;
 
@@ -101,7 +120,11 @@ export default function Header() {
           <div className="ml-8">
             {/* Search */}
             {/* <SearchHeader /> */}
-            <SearchIcon width={32} height={32} className="cursor-pointer active:fill-secondary3"/>
+            <SearchIcon
+              width={32}
+              height={32}
+              className="cursor-pointer active:fill-secondary3"
+            />
           </div>
         </div>
 
