@@ -451,9 +451,13 @@ const Swap: React.FC = () => {
             <div className="flex mb-4 text-dark1">
               <div className="basis-1/3">
                 <div className="flex text-xl font-medium text-dark1">
-                  {nameNFT && symbolToken ? (
+                  {symbolToken && (symbolNFT || idNFT) ? (
                     <div>
-                      <span>{nameNFT}/</span>
+                      {symbolNFT ? (
+                        <span>{symbolNFT}/</span>
+                      ) : (
+                        <span>{idNFT}/</span>
+                      )}
                       <span>{symbolToken}</span>
                     </div>
                   ) : (
