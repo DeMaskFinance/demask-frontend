@@ -34,6 +34,26 @@ const AvatarUser: FunctionComponent<AvatarProps> = ({ activeSlideIndex,width,hei
       id: 4,
       avt: images.avtUser4,
     },
+    {
+      id: 5,
+      avt: images.avtUser5,
+    },
+    {
+      id: 6,
+      avt: images.avtUser6,
+    },
+    {
+      id: 7,
+      avt: images.avtUser7,
+    },
+    {
+      id: 8,
+      avt: images.avtUser8,
+    },
+    {
+      id: 9,
+      avt: images.avtUser9,
+    },
   ];
   useEffect(() => {
     const randomAvatar = avatars[(Math.random() * avatars.length) | 0];
