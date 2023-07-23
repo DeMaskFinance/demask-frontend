@@ -26,9 +26,9 @@ export const AccountProvider = ({ children }) => {
     setWallet(newWallet);
     localStorage.setItem("WALLET_DEMASK", newWallet);
   };
+  const provider = getProvider(wallet);
   useEffect(() => {
     console.log(wallet);
-    const provider = getProvider(wallet);
     console.log(provider);
     if (window.ethereum) {
       const handleAccountsChanged = (accounts) => {
@@ -45,7 +45,7 @@ export const AccountProvider = ({ children }) => {
         provider?.removeAllListeners("accountsChanged", handleAccountsChanged);
       };
     }
-  });
+  },[provider]);
   return (
     <AccountContext.Provider
       value={{ account, updateAccount, updateWallet, wallet }}

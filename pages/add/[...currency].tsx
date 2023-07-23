@@ -28,6 +28,9 @@ import abiErc1155 from "@/abi/abiErc1155.json";
 import TransitionURL from "@/components/Toast/TransionURL";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
 import useBalanceToken from "@/hooks/useInformationToken";
+import useNFTBalance from "@/hooks/useBalanceNFT";
+import useDMLToken from "@/hooks/useDMLToken";
+import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -37,7 +40,6 @@ export default function AddLiquidity() {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const [balanceNFT, setBalanceNFT] = useState("0");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [inputToken, setInputToken] = useState<string>("");
   const [idNFT, setIdNFT] = useState("");
@@ -49,11 +51,9 @@ export default function AddLiquidity() {
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
-  const [reserves, setReserves] = useState();
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
   const { account, wallet } = useContext(AccountContext);
-  const [dmlToken, setDmlToken] = useState<string>();
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>();
   useEffect(() => {
@@ -72,70 +72,20 @@ export default function AddLiquidity() {
     animationUrl,
     description,
   } = useMetadata(nftAddress, idNFT);
-  useEffect(() => {
-    const fetchBalanceNFT = async () => {
-      if (account && nftAddress && idNFT) {
-        try {
-          const balance = await getBalanceNFT(
-            account,
-            nftAddress,
-            idNFT
-          );
-          setBalanceNFT(balance);
-        } catch (error) {
-          return error;
-        }
-      } else {
-        setBalanceNFT("0"); //No Account
-      }
-    };
-    fetchBalanceNFT();
-  }, [account, idNFT, nftAddress, wallet]);
+  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
 
   const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
     account,
     tokenAddress,
     wallet
   );
-  useEffect(() => {
-    const fetchDataDML = async () => {
-      try {
-        const dmlToken = await getDMLToken(
-          nftAddress,
-          idNFT,
-          tokenAddress
-        );
-        console.log(dmlToken);
-
-        setDmlToken(dmlToken);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDataDML();
-  }, [nftAddress, idNFT, tokenAddress]);
-  useEffect(() => {
-    const fetchReservesDML = async () => {
-      try {
-        if (dmlToken) {
-          const {reserves}:any = await getReserves(dmlToken);
-          setReserves(reserves);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchReservesDML();
-  }, [dmlToken, wallet, inputNFT]);
-  console.log(dmlToken);
-  // console.log(reserves[1].toString());
-  // console.log(balanceNFT);
-  // console.log(balanceToken);
-  // console.log(amountErcDesired);
-  // console.log(nftAddress);
-  // console.log(tokenAddress);
-  // console.log(idNFT);
-
+  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
+  const { reserves, isLoadingReserves }: any = useFetchReservesDML(
+    account,
+    dmlToken,
+    wallet,
+    inputNFT
+  );
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
     if (Number(e.target.value) > Number(balanceNFT)) {
@@ -280,7 +230,6 @@ export default function AddLiquidity() {
     };
     checkApproveToken();
   }, [account, wallet, tokenAddress,inputToken]);
-
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);

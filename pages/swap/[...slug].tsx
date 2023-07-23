@@ -60,7 +60,10 @@ const Swap: React.FC = () => {
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
-  const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
+  const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
+    useState<boolean>(false);
+  const [isSufficientTokenSell, setIsSufficientTokenSell] =
+    useState<boolean>(false);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -175,15 +178,6 @@ const Swap: React.FC = () => {
   );
   const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
-  // console.log(bigNumberBalance);
-  // console.log(Number(amountBuy.toFixed()));
-  // console.log(isApprovedToken);
-  // console.log(amountSell.toFixed());
-  // console.log(amountTokenBuy);
-  // console.log(isSufficientToken);
-  // console.log(dmlToken);
-  // console.log(reserves[0].toString());
-
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -202,17 +196,16 @@ const Swap: React.FC = () => {
     };
     checkReservesNFT();
     if (Number(amountBuy.toFixed()) > Number(bigNumberBalance)) {
-      setIsSufficientToken(false);
+      setIsSufficientTokenBuy(false);
     } else {
-      setIsSufficientToken(true);
+      setIsSufficientTokenBuy(true);
     }
     if (Number(amountSell.toFixed()) > Number(bigNumberBalance)) {
-      setIsSufficientToken(false);
+      setIsSufficientTokenSell(false);
     } else {
-      setIsSufficientToken(true);
+      setIsSufficientTokenSell(true);
     }
-  }, [inputNFT, activeChoice]);
-
+  }, [inputNFT, activeChoice, account, amountBuy,amountSell]);
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -269,7 +262,7 @@ const Swap: React.FC = () => {
       setShowRequiredMessage(true);
     } else {
       setShowRequiredMessage(false);
-      if (isSufficientNFT && isSufficientToken) {
+      if (isSufficientNFT && isSufficientTokenBuy) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -328,7 +321,7 @@ const Swap: React.FC = () => {
       setShowRequiredMessage(true);
     } else {
       setShowRequiredMessage(false);
-      if (isSufficientNFT && isSufficientToken) {
+      if (isSufficientNFT && isSufficientTokenSell) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -587,7 +580,8 @@ const Swap: React.FC = () => {
                     </p>
                   )}
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
-                  !isSufficientToken && (
+                  ((!isSufficientTokenBuy && activeChoice === "BUY") ||
+                    (!isSufficientTokenSell && activeChoice === "SELL")) && (
                     <p
                       className="mb-2 ml-3 -mt-3 text-xs text-red"
                       key="Tokenbalance"

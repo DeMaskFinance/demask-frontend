@@ -9,6 +9,7 @@ import Image from "next/image";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { memo } from "react";
+import images from "@/public/images";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -146,7 +147,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </div>
               )}
             </div>
-            {isERC1155 && (
+            <ul className={`${nftAddress?'hidden':'block'}`}>
+              <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={()=>setNftAddress(process.env.NEXT_PUBLIC_CREATOR as string)}>
+                <span><Image src='/logo.png' alt="logo" width={24} height={24}/></span>
+                <span>DEMASK CREATOR</span>
+              </li>
+            </ul>
+            {isERC1155 && nftAddress && (
               <input
                 className={styles.inputItem}
                 placeholder="Address id or paste id"

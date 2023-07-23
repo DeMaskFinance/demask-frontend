@@ -5,8 +5,6 @@ import React, {
   useContext,
   useEffect,
   useState,
-  forwardRef,
-  useImperativeHandle,
 } from "react";
 import AccountContext from "@/context/AccountContext";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -18,7 +16,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
 import { GetServerSideProps } from "next";
-import * as homeService from "@/libs/service/homeService";
 import useInformationDML from "@/hooks/useInformationDML";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformationToken from "@/hooks/useInformationToken";
@@ -34,11 +31,13 @@ import abiErc20 from "@/abi/abiErc20.json";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiRouter from "@/abi/abiRouter.json";
 import TransitionURL from "../Toast/TransionURL";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import approveToken from "@/libs/utils/approveToken";
 import { AvatarUser } from "../Avatars";
 import Link from "next/link";
 import { SkeletonReels } from "../Skeleton";
+import approveNFT from "@/libs/utils/approveNFT";
 interface ReelsProps {
   data: any;
   isSuccess: boolean;
@@ -83,7 +82,10 @@ const Reels: React.FC<ReelsProps> = ({
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
-  const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
+  const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
+    useState<boolean>(false);
+  const [isSufficientTokenSell, setIsSufficientTokenSell] =
+    useState<boolean>(false);
   const [priceBuy, setPriceBuy] = useState<number>(0);
   const [priceSell, setPriceSell] = useState<number>(0);
   const handleOpen = () => {
@@ -96,7 +98,7 @@ const Reels: React.FC<ReelsProps> = ({
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-
+  
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -138,7 +140,13 @@ const Reels: React.FC<ReelsProps> = ({
     tokenAddress,
     isLoadingInforDML,
   } = useInformationDML(filter.dmlAddress);
-
+  useEffect(() => {
+    const checkApproveNFT = async () => {
+      const result = await approveNFT(account, wallet, nftAddress);
+      setIsApprovedNFT(result);
+    };
+    checkApproveNFT();
+  }, [account, nftAddress, wallet]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   // console.log(isLoadingInforDML);
 
@@ -192,13 +200,13 @@ const Reels: React.FC<ReelsProps> = ({
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
-        if (reserves && Number(amountNFTSubmit) < Number(reserves[1])) {
+        if (reserves && Number(inputNFT) < Number(reserves[1])) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
         }
       } else {
-        if (Number(amountNFTSubmit) <= Number(balanceNFT)) {
+        if (Number(inputNFT) <= Number(balanceNFT)) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
@@ -207,16 +215,16 @@ const Reels: React.FC<ReelsProps> = ({
     };
     checkReservesNFT();
     if (Number(amountBuy.toFixed()) > Number(bigNumberBalance)) {
-      setIsSufficientToken(false);
+      setIsSufficientTokenBuy(false);
     } else {
-      setIsSufficientToken(true);
+      setIsSufficientTokenBuy(true);
     }
     if (Number(amountSell.toFixed()) > Number(bigNumberBalance)) {
-      setIsSufficientToken(false);
+      setIsSufficientTokenSell(false);
     } else {
-      setIsSufficientToken(true);
+      setIsSufficientTokenSell(true);
     }
-  }, [inputNFT, activeChoice]);
+  }, [inputNFT, activeChoice, account, amountBuy, amountSell]);
 
   useEffect(() => {
     if (amountNFTSubmit === "") {
@@ -243,6 +251,8 @@ const Reels: React.FC<ReelsProps> = ({
     };
     checkApproveToken();
   }, [account, wallet, tokenAddress, amountNFTSubmit, amountTokenBuy]);
+  
+  
   const hanldeApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -288,7 +298,7 @@ const Reels: React.FC<ReelsProps> = ({
       setShowRequiredMessage(true);
     } else {
       setShowRequiredMessage(false);
-      if (isSufficientNFT && isSufficientToken) {
+      if (isSufficientNFT && isSufficientTokenBuy) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -347,7 +357,7 @@ const Reels: React.FC<ReelsProps> = ({
       setShowRequiredMessage(true);
     } else {
       setShowRequiredMessage(false);
-      if (isSufficientNFT && isSufficientToken) {
+      if (isSufficientNFT && isSufficientTokenSell) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -504,7 +514,11 @@ const Reels: React.FC<ReelsProps> = ({
               </div>
             </div>
             <div className="flex items-center justify-center mb-2 text-dark2">
-              <AvatarUser activeSlideIndex={activeSlideIndex} width={32} height={32}/>
+              <AvatarUser
+                activeSlideIndex={activeSlideIndex}
+                width={32}
+                height={32}
+              />
               <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
                 0,
                 4
@@ -649,6 +663,20 @@ const Reels: React.FC<ReelsProps> = ({
                 }}
               />
             )}
+            {(!isSufficientNFT && isLoadingBuy) && (
+              <p className="mb-2 ml-3 -mt-3 text-xs text-center text-red" key="NFTbalance">
+                Insufficient NFT balance
+              </p>
+            )}
+            {((!isSufficientTokenBuy && activeChoice === "BUY") ||
+              (!isSufficientTokenSell && activeChoice === "SELL")) && (
+              <p
+                className="mb-2 ml-3 -mt-3 text-xs text-center text-red"
+                key="Tokenbalance"
+              >
+                Insufficient Token balance
+              </p>
+            )}
             <div className="flex justify-center w-full mt-6">
               {isApprovedToken && account && activeChoice === "BUY" && (
                 <button
@@ -703,6 +731,7 @@ const Reels: React.FC<ReelsProps> = ({
       {isFetchingNextPage && <SkeletonReels />}
       {isFetching && <SkeletonReels />}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ToastContainer />
     </div>
   );
 };
