@@ -66,9 +66,18 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           return;
         }
         try {
-          const accounts = await provider.request({
-            method: "eth_requestAccounts",
-          });
+          const accounts = await provider
+            .request({
+              method: "eth_requestAccounts",
+            })
+            .catch((error: any) => {
+              if (error.code === 4001) {
+                // EIP-1193 userRejectedRequest error
+                console.log("Please connect to MetaMask.");
+              } else {
+                console.error(error);
+              }
+            });
           updateAccount(accounts[0]);
           updateWallet(walletName);
           setWalletWeb3(walletName);
@@ -80,7 +89,18 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         }
     }
   };
-  
+  // useEffect(() => {
+  //   if (window.ethereum) {
+  //     window.ethereum.on("accountsChanged", (accounts: string) => {
+  //       if (accounts.length > 0) {
+  //         updateAccount(accounts[0]);
+  //       } else {
+  //         // setWallet("");
+  //         // setStatus("🦊 Connect to Metamask using the top right button.");
+  //       }
+  //     });
+  //   }
+  // }, []);
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center mt-[100px] rounded-lg relative pb-4">

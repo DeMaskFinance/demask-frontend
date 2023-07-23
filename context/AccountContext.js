@@ -1,3 +1,4 @@
+import { getProvider } from "@/libs/connection/getProvider";
 import React, { createContext, useEffect, useState } from "react";
 
 const AccountContext = createContext();
@@ -26,16 +27,22 @@ export const AccountProvider = ({ children }) => {
     localStorage.setItem("WALLET_DEMASK", newWallet);
   };
   useEffect(() => {
+    console.log(wallet);
+    const provider = getProvider(wallet);
+    console.log(provider);
     if (window.ethereum) {
-      const handleAccountsChanged = () => {
-        console.log("1234");
+      const handleAccountsChanged = (accounts) => {
+        if (accounts.length > 0) {
+          updateAccount(accounts[0]);
+        } else if (accounts.length === 0) {
+          localStorage.removeItem("ACCOUNT_DEMASK");
+          localStorage.removeItem("WALLET_DEMASK");
+          updateAccount("");
+        }
       };
-      window.ethereum?.on("accountsChanged", handleAccountsChanged);
+      provider?.on("accountsChanged", handleAccountsChanged);
       return () => {
-        window.ethereum?.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
+        provider?.removeAllListeners("accountsChanged", handleAccountsChanged);
       };
     }
   });

@@ -9,7 +9,8 @@ import { Layout } from "@/components/Layouts";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import { Poppins } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getProvider } from "@/libs/connection/getProvider";
 
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
@@ -31,6 +32,7 @@ export default function App({
   Component,
   pageProps,
 }: AppProps & { Component: NextPageWithLayout }) {
+  
   return (
     <AccountProvider>
       <Head>
