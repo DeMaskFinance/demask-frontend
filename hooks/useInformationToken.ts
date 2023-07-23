@@ -69,7 +69,7 @@ const useInformationToken = (
     };
 
     getBalanceToken();
-  }, [tokenAddress]);
+  }, [tokenAddress,account,wallet]);
 
   return {
     balanceToken,
