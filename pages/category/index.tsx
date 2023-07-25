@@ -1,17 +1,23 @@
-import { SkeletonReels } from '@/components/Skeleton'
-import Head from 'next/head'
-import React from 'react'
+import Head from "next/head";
+import Image from "next/image";
+import CategoryType from "@/components/Categories/CategoryType";
 
-export default function Category() {
+export default function Categories() {
   return (
-    <section className="category">
+    <>
       <Head>
         <title>Category | DeMask</title>
       </Head>
-      <div className='w-full h-[60vh] text-4xl text-dark1 font-medium'>
-        {/* <p>Under construction</p> */}
-        <SkeletonReels/>
+      {/* 123o */}
+
+      <div className="pb-16">
+        <CategoryType label={"Art"} />
+        <CategoryType label={"Gaming"} />
+        <CategoryType label={"Film"} />
+        <CategoryType label={"Music"} />
+        <CategoryType label={"Memberships"} />
+        <CategoryType label={"Others"} />
       </div>
-    </section>
-  )
+    </>
+  );
 }
