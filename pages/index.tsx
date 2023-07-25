@@ -9,19 +9,8 @@ import { useInView } from "react-intersection-observer";
 import { SkeletonNewFeeds } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
 import { LayoutSecondary } from "@/components/Layouts";
-export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await fetch("https://api.demask.finance/homepage?page=1");
-  const homeData = await response.json();
-  return {
-    props: {
-      homeData,
-    },
-  };
-};
 
-const Home = ({ homeData }: any) => {
-  console.log(homeData);
-
+const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
@@ -135,7 +124,7 @@ const Home = ({ homeData }: any) => {
               ))}
             </div>
           </div>
-          <div className="px-[270px]">
+          <div className="px-[440px]">
             {isSuccess &&
               data?.pages.map((page, index) => (
                 <Fragment key={index}>

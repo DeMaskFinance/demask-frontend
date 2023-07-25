@@ -1,11 +1,7 @@
 import images from "@/public/images";
 import Image from "next/image";
 import { TwoTab } from "../NavChoice";
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AccountContext from "@/context/AccountContext";
 import formatNumber from "@/libs/utils/formatNumer";
 import { PoolIcon } from "../Icons";
@@ -48,20 +44,20 @@ interface ReelsProps {
 }
 const styles = {
   inputItem:
-    "w-[40%] mt-4 py-2 pl-2 mb-6 border rounded-lg mx-auto border-dark3 block",
+    "w-full mt-4 py-2 pl-2 mb-6 border rounded-lg mx-auto border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-export async function getServerSideProps() {
-  const response = await fetch(
-    "https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3"
-  );
-  const homeData = await response.json();
-  return {
-    props: {
-      homeData,
-    },
-  };
-}
+// export async function getServerSideProps() {
+//   const response = await fetch(
+//     "https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3"
+//   );
+//   const homeData = await response.json();
+//   return {
+//     props: {
+//       homeData,
+//     },
+//   };
+// }
 const Reels: React.FC<ReelsProps> = ({
   data,
   isSuccess,
@@ -98,7 +94,7 @@ const Reels: React.FC<ReelsProps> = ({
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  
+
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -200,13 +196,13 @@ const Reels: React.FC<ReelsProps> = ({
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
-        if (reserves && Number(inputNFT) < Number(reserves[1])) {
+        if (reserves && Number(amountNFTSubmit) < Number(reserves[1])) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
         }
       } else {
-        if (Number(inputNFT) <= Number(balanceNFT)) {
+        if (Number(amountNFTSubmit) <= Number(balanceNFT)) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
@@ -224,7 +220,7 @@ const Reels: React.FC<ReelsProps> = ({
     } else {
       setIsSufficientTokenSell(true);
     }
-  }, [inputNFT, activeChoice, account, amountBuy, amountSell]);
+  }, [amountNFTSubmit, activeChoice, account, amountBuy, amountSell]);
 
   useEffect(() => {
     if (amountNFTSubmit === "") {
@@ -251,8 +247,7 @@ const Reels: React.FC<ReelsProps> = ({
     };
     checkApproveToken();
   }, [account, wallet, tokenAddress, amountNFTSubmit, amountTokenBuy]);
-  
-  
+
   const hanldeApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -298,7 +293,12 @@ const Reels: React.FC<ReelsProps> = ({
       setShowRequiredMessage(true);
     } else {
       setShowRequiredMessage(false);
-      if (isSufficientNFT && isSufficientTokenBuy) {
+      if (
+        isSufficientNFT &&
+        isSufficientTokenBuy &&
+        Number(reserves[1].toString()) > 1 &&
+        Number(reserves[0].toString()) > 0
+      ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -357,7 +357,12 @@ const Reels: React.FC<ReelsProps> = ({
       setShowRequiredMessage(true);
     } else {
       setShowRequiredMessage(false);
-      if (isSufficientNFT && isSufficientTokenSell) {
+      if (
+        isSufficientNFT &&
+        isSufficientTokenSell &&
+        Number(reserves[1].toString()) > 0 &&
+        Number(reserves[0].toString()) > 0
+      ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -433,6 +438,9 @@ const Reels: React.FC<ReelsProps> = ({
                               height={760}
                               src={nftItem.metadata.image}
                               alt="NFT Image"
+                              style={{
+                                objectFit: "contain",
+                              }}
                               unoptimized
                               className="rounded-2xl max-w-[760px] max-h-[760px]"
                             />
@@ -532,30 +540,19 @@ const Reels: React.FC<ReelsProps> = ({
               {filter.metadata.description}
             </div>
             {filter.metadata.attributes && (
-              <div className="my-4">
-                <Swiper
-                  pagination={{
-                    dynamicBullets: true,
-                  }}
-                  modules={[Pagination]}
-                  slidesPerView={5}
-                  className="flex mySwiper "
-                >
-                  {filter.metadata.attributes.map(
-                    (item: any, index: number) => (
-                      <SwiperSlide key={index}>
-                        {item.value && item.trait_type && (
-                          <ul className="px-2 py-1 mr-4 border rounded-lg border-dark3 min-w-[120px] w-max">
-                            <li className="text-lg font-medium text-dark2">
-                              {item.trait_type}
-                            </li>
-                            <li className="text-sm text-dark3">{item.value}</li>
-                          </ul>
-                        )}
-                      </SwiperSlide>
-                    )
-                  )}
-                </Swiper>
+              <div className="flex flex-wrap justify-center w-full my-4 gap-x-4">
+                {filter.metadata.attributes.map((item: any, index: number) => (
+                  <div key={index} className="">
+                    {item.value && item.trait_type && (
+                      <ul className="px-2 py-1 border rounded-lg border-dark3 w-max min-h-[46px] min-w-[120px]">
+                        <li className="text-lg font-medium text-dark2">
+                          {item.trait_type}
+                        </li>
+                        <li className="text-sm text-dark3">{item.value}</li>
+                      </ul>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
             <div className="flex flex-col items-center">
@@ -645,33 +642,50 @@ const Reels: React.FC<ReelsProps> = ({
                 </Button>
               ))}
             </div>
+
             {selectedCategory === "CUSTOM" && (
-              <input
-                type="number"
-                name="amountNFT"
-                id="amountNFT"
-                placeholder="Input amount NFT"
-                className={
-                  showRequiredMessage
-                    ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                    : styles.inputItem
-                }
-                value={inputNFT}
-                onChange={(e) => {
-                  setInputNFT(e.target.value);
-                  setShowRequiredMessage(false);
-                }}
-              />
+              <div className="w-[40%] mx-auto">
+                <input
+                  type="number"
+                  name="amountNFT"
+                  id="amountNFT"
+                  placeholder="Input amount NFT"
+                  className={
+                    showRequiredMessage
+                      ? " mt-4 py-2 pl-2 mb-6 w-full rounded-lg border-2 border-red mx-auto block"
+                      : styles.inputItem
+                  }
+                  value={inputNFT}
+                  onChange={(e) => {
+                    setInputNFT(e.target.value);
+                    setShowRequiredMessage(false);
+                  }}
+                />
+                {showRequiredMessage && (
+                  <p
+                    className="mx-auto ml-3 -mt-3 text-xs text-red"
+                    key="emptyNFT"
+                  >
+                    Required
+                  </p>
+                )}
+              </div>
             )}
-            {(!isSufficientNFT && isLoadingBuy) && (
-              <p className="mb-2 ml-3 -mt-3 text-xs text-center text-red" key="NFTbalance">
+
+            {!isSufficientNFT && isLoadingBuy && balanceNFT && (
+              <p
+                className="mt-4 mb-2 ml-3 text-xs text-center text-red"
+                key="NFTbalance"
+              >
                 Insufficient NFT balance
               </p>
             )}
-            {((!isSufficientTokenBuy && activeChoice === "BUY") ||
-              (!isSufficientTokenSell && activeChoice === "SELL")) && (
+            {((!isSufficientTokenBuy && activeChoice === "BUY" && account) ||
+              (!isSufficientTokenSell &&
+                activeChoice === "SELL" &&
+                account)) && (
               <p
-                className="mb-2 ml-3 -mt-3 text-xs text-center text-red"
+                className="mt-4 ml-3 text-xs text-center text-red"
                 key="Tokenbalance"
               >
                 Insufficient Token balance
@@ -696,17 +710,21 @@ const Reels: React.FC<ReelsProps> = ({
                   SELL NFT
                 </button>
               )}
-              {!isApprovedNFT && account && activeChoice === "SELL" && (
-                <Button
-                  className="w-[126px] py-2"
-                  primary
-                  onClick={hanldeApproveNFT}
-                >
-                  APPROVE NFT
-                </Button>
-              )}
+              {!isApprovedNFT &&
+                account &&
+                isSufficientTokenSell &&
+                activeChoice === "SELL" && (
+                  <Button
+                    className="w-[126px] py-2"
+                    primary
+                    onClick={hanldeApproveNFT}
+                  >
+                    APPROVE NFT
+                  </Button>
+                )}
               {!isApprovedToken &&
                 account &&
+                isSufficientTokenBuy &&
                 tokenAddressSwap !== "MATIC" &&
                 activeChoice === "BUY" && (
                   <Button

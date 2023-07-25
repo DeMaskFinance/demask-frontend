@@ -121,7 +121,7 @@ export default function Header() {
                 Docs
               </a>
             </li>
-            <li className="hover:text-secondary5 active:text-secondary3">
+            <li className="relative hover:text-secondary5 active:text-secondary3">
               <ActiveLink href="/about">
                 <p>About</p>
               </ActiveLink>

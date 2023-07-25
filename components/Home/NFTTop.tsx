@@ -120,7 +120,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                                 </i>
                               </div>
                               <div className="flex items-center text-white">
-                                <AvatarUser width={28} height={28}/>
+                                <AvatarUser width={28} height={28} />
                                 <p className="font-medium ">ToCa</p>
                                 <p className="-translate-y-[4px] mx-1">.</p>
                                 <p className="text-xs">
