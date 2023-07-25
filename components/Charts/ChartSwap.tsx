@@ -11,8 +11,6 @@ if (typeof Highcharts === "object") {
 }
 
 const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
-  const [volumeValue, setVolumeValue] = useState(12.85);
-  const [avgPrice, setAvgPrice] = useState(42.15);
   const averagePrice = [],
     volume = [];
   const dataChartSwap = dataChart.map((item) => Object.values(item));
@@ -29,6 +27,8 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
       dataChartSwap[i][1], // the volume
     ]);
   }
+  console.log(averagePrice);
+  console.log(volume);
 
   const options = {
     title: {
@@ -58,16 +58,12 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
     },
     xAxis: [
       {
-        type: "datetime",
         crosshair: {
           className: "highcharts-crosshair-thin",
           zIndex: 2,
           color: "#cccccc",
           width: 1,
         },
-        lineWidth: 0,
-        tickInterval: 1000,
-        tickLenght: 0,
       },
     ],
     yAxis: [
@@ -111,8 +107,8 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         });
         return tooltipContent;
       },
-      followPointer:true,
-      followTouchMove:true,
+      followPointer: true,
+      followTouchMove: true,
       yAxis: 0,
     },
     scrollbar: {
@@ -162,6 +158,7 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         },
       },
     ],
+    
   };
 
   return (

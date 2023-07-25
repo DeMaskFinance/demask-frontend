@@ -49,15 +49,15 @@ export default function Header() {
     localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
-  // const provider = getProvider(wallet);
-  // useEffect(() => {
-  //   const getAddress = async () => {
-  //     if (provider && provider.selectedAddress === null) {
-  //       disconnectWallet();
-  //     }
-  //   };
-  //   getAddress();
-  // }, [provider]);
+  const provider = getProvider(wallet);
+  useEffect(() => {
+    const getAddress = async () => {
+      if (provider && provider.selectedAddress === null) {
+        disconnectWallet();
+      }
+    };
+    getAddress();
+  }, [provider]);
   useEffect(() => {
     let prevScrollPos = window.scrollY;
 
