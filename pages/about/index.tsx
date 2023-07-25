@@ -8,7 +8,7 @@ export default function About() {
         <title>About | DeMask</title>
       </Head>
       <div className='w-full h-[60vh] m-auto flex items-center justify-center text-4xl text-dark1 font-medium'>
-        <p>Under construction</p>
+        <p>Under s construction</p>
       </div>
     </section>
   )
