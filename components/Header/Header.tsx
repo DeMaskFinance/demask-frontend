@@ -49,15 +49,15 @@ export default function Header() {
     localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
-  // const provider = getProvider(wallet);
-  // useEffect(() => {
-  //   const getAddress = async () => {
-  //     if (provider && provider.selectedAddress === null) {
-  //       disconnectWallet();
-  //     }
-  //   };
-  //   getAddress();
-  // }, [provider]);
+  const provider = getProvider(wallet);
+  useEffect(() => {
+    const getAddress = async () => {
+      if (provider && provider.selectedAddress === null) {
+        disconnectWallet();
+      }
+    };
+    getAddress();
+  }, [provider]);
   useEffect(() => {
     let prevScrollPos = window.scrollY;
 
@@ -121,7 +121,7 @@ export default function Header() {
                 Docs
               </a>
             </li>
-            <li className="hover:text-secondary5 active:text-secondary3">
+            <li className="relative hover:text-secondary5 active:text-secondary3">
               <ActiveLink href="/about">
                 <p>About</p>
               </ActiveLink>

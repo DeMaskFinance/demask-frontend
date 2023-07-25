@@ -10,5 +10,6 @@ declare global {
         opera: any;
         bitkeep: any;
         starzwallet: any;
+        coinbaseWalletExtension: any;
     }
   }

@@ -24,7 +24,9 @@ html{
 .swiper-button-prev {
   display: none;
 }
-
+.slide-nft-item{
+  width:fit-content !important;
+}
 .swiper-button-next::after,
 .swiper-button-prev::after {
   content: "" !important;

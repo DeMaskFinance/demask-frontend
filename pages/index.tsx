@@ -9,19 +9,8 @@ import { useInView } from "react-intersection-observer";
 import { SkeletonNewFeeds } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
 import { LayoutSecondary } from "@/components/Layouts";
-export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await fetch("https://api.demask.finance/homepage?page=1");
-  const homeData = await response.json();
-  return {
-    props: {
-      homeData,
-    },
-  };
-};
 
-const Home = ({ homeData }: any) => {
-  console.log(homeData);
-
+const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
@@ -42,14 +31,18 @@ const Home = ({ homeData }: any) => {
     isSuccess,
     isLoading,
     isFetching,
+    isError,
   } = useInfiniteQuery(
     ["Homepage"],
     ({ pageParam = 1 }) => fetchDataPage(pageParam),
     {
       getNextPageParam: (page) =>
-        page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
+        page?.currentPage === page?.totalPage
+          ? undefined
+          : page?.currentPage + 1,
     }
   );
+  console.log(isError);
 
   const Category = [
     {
@@ -85,6 +78,9 @@ const Home = ({ homeData }: any) => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+  console.log(data);
+  console.log(isSuccess);
+
   return (
     <div className="py-8">
       <Head>
@@ -103,7 +99,7 @@ const Home = ({ homeData }: any) => {
         <div className="mb-6 leading-7">
           <NFTTop />
           <div className="flex flex-col items-center mt-8">
-            {data ? (
+            {data?.pages[0] ? (
               <div className="flex flex-col items-center mx-auto">
                 <h1 className="text-3xl font-medium text-center text-dark1 w-[65%]">
                   {data?.pages[0].totalRecords} curated NFT resources to buy and
@@ -135,15 +131,22 @@ const Home = ({ homeData }: any) => {
               ))}
             </div>
           </div>
-          <div className="px-[270px]">
-            {isSuccess &&
+          <div className="px-[440px]">
+            {isSuccess && data?.pages[0] ? (
               data?.pages.map((page, index) => (
                 <Fragment key={index}>
                   {page.records.map((nftItem: any, index: number) => (
                     <NFTItems nftItem={nftItem} key={index} />
                   ))}
                 </Fragment>
-              ))}
+              ))
+            ) : (
+              <>
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+              </>
+            )}
             <div ref={ref} style={{ height: "1px" }} />
             {(isLoading || isFetchingNextPage || isFetching) && (
               <>

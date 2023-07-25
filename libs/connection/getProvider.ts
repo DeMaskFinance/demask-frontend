@@ -1,4 +1,4 @@
-export const getProvider = (wallet) => {
+export const getProvider = (wallet:string) => {
     let provider = null;
     if (wallet === "Metamask") {
       if (window.ethereum?.providers) {

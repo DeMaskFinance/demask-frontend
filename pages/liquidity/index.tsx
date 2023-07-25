@@ -1,9 +1,15 @@
+import { useState, useRef, useEffect, useContext } from "react";
 import Button from "@/components/Buttons/Button";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/router";
+import { useInView } from "react-intersection-observer";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { liquidityListAPI } from "@/libs/service/liquidityService";
+import AccountContext from "@/context/AccountContext";
 export default function Liquidity() {
+  const { account, wallet } = useContext(AccountContext);
   const hasLiquidity = true;
   const router = useRouter();
   const handleAddLiquidity = () => {
@@ -12,6 +18,30 @@ export default function Liquidity() {
     const idNFT = "4544751815";
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
+  const { ref, inView } = useInView();
+  const fetchDataListLiquidity= async (account:string,pageParam = 1) => {
+    const data = await liquidityListAPI(account,pageParam);
+    return data;
+  };
+  console.log(fetchDataListLiquidity(account,1));
+  
+  // const {
+  //   data,
+  //   fetchNextPage,
+  //   isFetchingNextPage,
+  //   isSuccess,
+  //   isLoading,
+  //   isFetching,
+  // } = useInfiniteQuery(
+  //   ["LiquidityList"],
+  //   ({ pageParam = 1 }) => fetchDataListLiquidity(pageParam),
+  //   {
+  //     getNextPageParam: (page) =>
+  //       page?.currentPage === page?.totalPage
+  //         ? undefined
+  //         : page?.currentPage + 1,
+  //   }
+  // );
   return (
     <div className="py-8 px-secondary">
       <Head>

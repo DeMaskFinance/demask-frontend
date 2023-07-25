@@ -391,6 +391,9 @@ export default function AddLiquidity() {
               width={504}
               height={100}
               alt="pictureLiquidity"
+              style={{
+                objectFit: "contain",
+              }}
               className="w-[504px] h-full rounded-2xl"
               unoptimized
             />

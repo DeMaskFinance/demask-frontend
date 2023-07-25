@@ -30,7 +30,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
 
   const formattedDescription = nftItem.metadata.description
     .split("\\n")
-    .map((line: any, index: any) => (
+    .map((line: any, index: number) => (
       <React.Fragment key={index}>
         {line}
         <br />
@@ -47,7 +47,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     tokenAddress,
   } = useInformationDML(nftItem.dmlAddress);
 
-  const {amountTokenBuy} = useAmountInMax(
+  const { amountTokenBuy } = useAmountInMax(
     "1",
     nftItem.dmlAddress,
     tokenAddress,
@@ -120,8 +120,10 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               <div className="w-24 h-6 rounded-full bg-slate-200"></div>
             </div>
           )}
-          {tokenAddress && nftAddress && idNFT ? (
-            <Link href={`/swap/${nftAddress}/${tokenAddressSwap}/${idNFT}?dmlAddress=${nftItem.dmlAddress}`}>
+          {nftItem.tokenAddress && nftItem.nft && nftItem.tokenId ? (
+            <Link
+              href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}?dmlAddress=${nftItem.dmlAddress}`}
+            >
               <SwapIcon width={24} height={24} />
             </Link>
           ) : (
@@ -132,7 +134,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         </div>
       </div>
       <div className="flex items-center mb-2 text-dark2">
-        <AvatarUser width={32} height={32}/>
+        <AvatarUser width={32} height={32} />
         <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
           0,
           4
@@ -163,11 +165,11 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               dynamicBullets: true,
             }}
             modules={[Pagination]}
-            slidesPerView={7}
+            slidesPerView={5}
             className="flex mySwiper "
           >
             {nftItem.metadata.attributes.map((item: any, index: number) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={index} className="slide-nft-item">
                 {item.value && item.trait_type && (
                   <ul className="px-2 py-1 mr-4 border rounded-lg border-dark3 min-w-[120px] w-max">
                     <li className="text-lg font-medium text-dark2">
@@ -181,16 +183,28 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           </Swiper>
         </div>
       )}
-      <div className="relative mt-6">
+      <div className="relative mx-auto mt-6">
         {nftItem.metadata.image && (
-          <Image
-            width={1031}
-            height={1049}
-            src={nftItem.metadata.image}
-            alt="NFT Image"
-            unoptimized
-            className="rounded-2xl"
-          />
+          <div className="h-full overflow-hidden rounded-2xl">
+            <div
+              style={{ backgroundImage: `url(${nftItem.metadata.image})` }}
+              className="w-full max-h-[650px] bg-center bg-cover rounded-2xl blur-3xl z-0 h-[639px] absolute]"
+            >
+            </div>
+            <div className="absolute top-0 flex items-center justify-center w-full h-full overflow-hidden">
+                <Image
+                  width={1031}
+                  height={1049}
+                  src={nftItem.metadata.image}
+                  alt="NFT Image"
+                  unoptimized
+                  className="min-w-[500px] w-auto max-h-[650px] z-100"
+                  style={{
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+          </div>
         )}
         {nftItem.metadata.animation_url && !nftItem.metadata.image && (
           <video
