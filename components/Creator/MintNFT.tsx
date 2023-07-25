@@ -117,7 +117,8 @@ export default function MintNFT({
     setIsProcess(false);
   }
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     if (account) {
       setIsProcess(true);
       const emptyInputFields = [];

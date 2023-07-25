@@ -30,7 +30,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
 
   const formattedDescription = nftItem.metadata.description
     .split("\\n")
-    .map((line: any, index: any) => (
+    .map((line: any, index: number) => (
       <React.Fragment key={index}>
         {line}
         <br />
@@ -169,7 +169,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             className="flex mySwiper "
           >
             {nftItem.metadata.attributes.map((item: any, index: number) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={index} className="slide-nft-item">
                 {item.value && item.trait_type && (
                   <ul className="px-2 py-1 mr-4 border rounded-lg border-dark3 min-w-[120px] w-max">
                     <li className="text-lg font-medium text-dark2">

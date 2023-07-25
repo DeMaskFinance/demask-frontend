@@ -140,18 +140,25 @@ const Swap: React.FC = () => {
   //     }
   //   }
   // }, [router.query.slug, dmlToken]);
+  // console.log(dmlToken.toLocaleLowerCase());
+  
   useEffect(() => {
     const fetchDataChart = async () => {
+      
       if (dmlToken) {
+        console.log(dmlToken.toLocaleLowerCase());
         setIsLoadingDataChart(true);
         const res = await swapAPI(dmlToken.toLocaleLowerCase());
+        console.log(res);
+        
         setDataChart(res);
         setIsLoadingDataChart(false);
       }
     };
     fetchDataChart();
-  }, [nftAddress, idNFT, tokenAddress, dmlToken]);
-
+  }, [dmlToken]);
+  console.log(dataChart);
+  
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -232,7 +239,7 @@ const Swap: React.FC = () => {
     checkApproveToken();
   }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy]);
 
-  const handleApproveToken = async (e: any) => {
+  const handleApproveToken = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -584,7 +591,7 @@ const Swap: React.FC = () => {
                 </div>
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                   !isSufficientNFT &&
-                  balanceNFT && (
+                  balanceNFT && account && (
                     <p
                       className="mb-2 ml-3 -mt-3 text-xs text-red"
                       key="NFTbalance"

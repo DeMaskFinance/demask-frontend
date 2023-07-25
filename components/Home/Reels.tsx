@@ -264,7 +264,7 @@ const Reels: React.FC<ReelsProps> = ({
       setIsOpen(true);
     }
   };
-  const handleApproveToken = async (e: any) => {
+  const handleApproveToken = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -283,7 +283,7 @@ const Reels: React.FC<ReelsProps> = ({
     }
   };
 
-  const handleBuyNFT = async (e: any) => {
+  const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!account) {
       setIsOpen(true);
@@ -347,7 +347,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     }
   };
-  const handleSellNFT = async (e: any) => {
+  const handleSellNFT = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!account) {
       setIsOpen(true);

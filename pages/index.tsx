@@ -31,14 +31,18 @@ const Home = () => {
     isSuccess,
     isLoading,
     isFetching,
+    isError,
   } = useInfiniteQuery(
     ["Homepage"],
     ({ pageParam = 1 }) => fetchDataPage(pageParam),
     {
       getNextPageParam: (page) =>
-        page.currentPage === page.totalPage ? undefined : page.currentPage + 1,
+        page?.currentPage === page?.totalPage
+          ? undefined
+          : page?.currentPage + 1,
     }
   );
+  console.log(isError);
 
   const Category = [
     {
@@ -74,6 +78,9 @@ const Home = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+  console.log(data);
+  console.log(isSuccess);
+
   return (
     <div className="py-8">
       <Head>
@@ -92,7 +99,7 @@ const Home = () => {
         <div className="mb-6 leading-7">
           <NFTTop />
           <div className="flex flex-col items-center mt-8">
-            {data ? (
+            {data?.pages[0] ? (
               <div className="flex flex-col items-center mx-auto">
                 <h1 className="text-3xl font-medium text-center text-dark1 w-[65%]">
                   {data?.pages[0].totalRecords} curated NFT resources to buy and
@@ -125,14 +132,21 @@ const Home = () => {
             </div>
           </div>
           <div className="px-[440px]">
-            {isSuccess &&
+            {isSuccess && data?.pages[0] ? (
               data?.pages.map((page, index) => (
                 <Fragment key={index}>
                   {page.records.map((nftItem: any, index: number) => (
                     <NFTItems nftItem={nftItem} key={index} />
                   ))}
                 </Fragment>
-              ))}
+              ))
+            ) : (
+              <>
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+              </>
+            )}
             <div ref={ref} style={{ height: "1px" }} />
             {(isLoading || isFetchingNextPage || isFetching) && (
               <>
