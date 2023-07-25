@@ -1,3 +1,5 @@
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { useQuery } from "@tanstack/react-query";
 import { format, parseISO, subDays } from "date-fns";
 import React, { PureComponent, useState } from "react";
 import {
@@ -19,26 +21,37 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeData, setActiveData] = useState<number | null>(8.18);
   const [activeDate, setActiveDate] = useState<any>("2019-01-16");
   const [activeButton, setActiveButton] = useState<string>("D");
-  const data: any[] = [];
-  for (let num = 28; num >= 0; num--) {
-    data.push({
-      date: subDays(new Date(), num).toISOString().substring(0, 10),
-      value: 1.2 + Math.random(),
-    });
-  }
+
+  const { data: ChartColumn, isLoading: LoadingColumn } = useQuery({
+    queryKey: ["ChartColumn"],
+    queryFn: async () => {
+      const res = await categoryAPI(
+        "/dml-chart?address=0xef29f693daff0dddeb28b1dec36eb37de7cc42eb"
+      );
+      return res;
+    },
+  });
+  const chartColumn = ChartColumn?.map((dataPoint: any) => ({
+    date: dataPoint.date,
+    value: dataPoint.volume,
+  }));
+
+  console.log(chartColumn);
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
   };
   return (
     <div className="p-6 border rounded-lg border-dark3">
       <div className="flex justify-between mb-2">
-      <div className="mb-2 text-dark1">
-        <p className="font-medium ">Volume</p>
-        <p className="my-2 text-2xl font-medium text-dark0">
-          ${activeData?.toFixed(2)}M
-        </p>
-        <p className="">{format(parseISO(activeDate), "MMM d, yyyy")} (UTC)</p>
-      </div>
+        <div className="mb-2 text-dark1">
+          <p className="font-medium ">Volume</p>
+          <p className="my-2 text-2xl font-medium text-dark0">
+            ${activeData?.toFixed(2)}M
+          </p>
+          <p className="">
+            {format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
+          </p>
+        </div>
         <div className="grid h-8 grid-cols-3 rounded-full w-28 bg-dark2 gap-[6px] text-white">
           <button
             className={activeButton === "D" ? styles.btnActive : ""}
@@ -47,7 +60,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
             D
           </button>
           <button
-            className={activeButton === "W" ? styles.btnActive: ""}
+            className={activeButton === "W" ? styles.btnActive : ""}
             onClick={() => handleButtonClick("W")}
           >
             W
@@ -65,7 +78,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
           <BarChart
             width={500}
             height={300}
-            data={data}
+            data={chartColumn}
             margin={{
               top: 10,
               right: 0,

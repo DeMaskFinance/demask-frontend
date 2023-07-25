@@ -1,28 +1,26 @@
-import { subDays, parseISO, format } from "date-fns";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { useQuery } from "@tanstack/react-query";
+import { format, parseISO, subDays } from "date-fns";
 import React, { useState } from "react";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Line,
-  CartesianGridProps,
-} from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 
 interface ChartTVLProps {}
-const data: any[] = [];
-for (let num = 28; num >= 0; num--) {
-  data.push({
-    date: subDays(new Date(), num).toISOString().substring(0, 10),
-    value: 1.2 + Math.random(),
-  });
-}
 
 const ChartTVL: React.FC<ChartTVLProps> = () => {
-  const [activeData, setActiveData] = useState<number | null>(112.20);
+  const { data: Chart, isLoading } = useQuery({
+    queryKey: ["chart"],
+    queryFn: async () => {
+      const res = await categoryAPI("/tvlChart?intervalDate=30");
+      return res;
+    },
+  });
+
+  const chartData = Chart?.map((dataPoint: any) => ({
+    date: dataPoint.date,
+    value: dataPoint.tvlInDay,
+  }));
+
+  const [activeData, setActiveData] = useState<number | null>(112.2);
   const [activeDate, setActiveDate] = useState<any>("2019-01-16");
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -43,7 +41,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
       <div className="h-[212px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={data}
+            data={chartData}
             margin={{
               top: 10,
               right: 0,
