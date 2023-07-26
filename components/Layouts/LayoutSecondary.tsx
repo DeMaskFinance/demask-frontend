@@ -6,7 +6,7 @@ export default function LayoutSecondary({ children }:PropsWithChildren) {
   return (
     <div className="box-border w-full ">
       <Header />
-      <main className="mt-[64px] px-primary">{children}</main>
+      <main className="mt-[64px]">{children}</main>
       <FooterSecondary/>
     </div>
   )

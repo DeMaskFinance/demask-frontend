@@ -463,13 +463,13 @@ const Swap: React.FC = () => {
               <div className="basis-1/3">
                 <div className="flex text-xl font-medium text-dark1">
                   {symbolToken && (symbolNFT || idNFT) ? (
-                    <div>
+                    <div className="flex items-center">
                       {symbolNFT ? (
                         <span>{symbolNFT}</span>
                       ) : (
                         <span>{idNFT}</span>
                       )}
-                      <span className="h-4">/</span>
+                      <span className="block overflow-hidden leading-4">/</span>
                       <span>{symbolToken}</span>
                     </div>
                   ) : (
