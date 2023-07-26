@@ -20,7 +20,7 @@ export default function FooterSecondary() {
   };
 
   return (
-    <footer className="flex items-center gap-x-8 h-[66px] px-primary bg-dark4 fixed bottom-0 left-0 right-0 z-[100]">
+    <footer className="flex items-center gap-x-8 h-[66px] lg:px-primary md:px-14 px-4 bg-dark4 fixed bottom-0 left-0 right-0 z-[100] overflow-hidden">
       <div className="mr-2">
         <Link href="/">
           <LogoDemask width={94} height={24} />
@@ -42,10 +42,12 @@ export default function FooterSecondary() {
           />
         </Link>
       </div>
-      <div>
-        <p className="font-medium text-dark2">Gas price: $0.001</p>
+      <div className="gap-4 lg:flex md:flex hidden">
+        <div>
+          <p className="font-medium text-dark2">Gas price: $0.001</p>
+        </div>
+        <div className="font-medium text-dark2">Light/Dark</div>
       </div>
-      <div className="font-medium text-dark2">Light/Dark</div>
       <div>
         <div className="flex h-[34px] rounded-lg w-auto text-sm bg-dark1 text-white">
           <button
