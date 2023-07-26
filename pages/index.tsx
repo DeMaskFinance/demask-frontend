@@ -6,7 +6,7 @@ import NFTItems from "@/components/Home/NFTItems";
 import type { GetServerSideProps } from "next";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import { SkeletonNewFeeds } from "@/components/Skeleton";
+import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
 import { LayoutSecondary } from "@/components/Layouts";
 
@@ -87,16 +87,22 @@ const Home = () => {
         <title>Home | DeMask</title>
       </Head>
       {modeInitial === "REELS" ? (
-        <Reels
-          data={data}
-          isFetching={isFetching}
-          isLoading={isLoading}
-          isSuccess={isSuccess}
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
+        <>
+          {data?.pages[0] ? (
+            <Reels
+              data={data}
+              isFetching={isFetching}
+              isLoading={isLoading}
+              isSuccess={isSuccess}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+            />
+          ) : (
+            <SkeletonReels/>
+          )}
+        </>
       ) : (
-        <div className="mb-6 leading-7">
+        <div className="mb-6 leading-7 px-primary">
           <NFTTop />
           <div className="flex flex-col items-center mt-8">
             {data?.pages[0] ? (
