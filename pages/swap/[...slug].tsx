@@ -141,16 +141,15 @@ const Swap: React.FC = () => {
   //   }
   // }, [router.query.slug, dmlToken]);
   // console.log(dmlToken.toLocaleLowerCase());
-  
+
   useEffect(() => {
     const fetchDataChart = async () => {
-      
       if (dmlToken) {
         console.log(dmlToken.toLocaleLowerCase());
         setIsLoadingDataChart(true);
         const res = await swapAPI(dmlToken.toLocaleLowerCase());
         console.log(res);
-        
+
         setDataChart(res);
         setIsLoadingDataChart(false);
       }
@@ -158,7 +157,7 @@ const Swap: React.FC = () => {
     fetchDataChart();
   }, [dmlToken]);
   console.log(dataChart);
-  
+
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -239,7 +238,9 @@ const Swap: React.FC = () => {
     checkApproveToken();
   }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy]);
 
-  const handleApproveToken = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleApproveToken = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -411,8 +412,8 @@ const Swap: React.FC = () => {
         <h3 className="mb-2 text-xl font-medium text-dark0">{nameNFT}</h3>
         <p className="text-sm font-medium text-dark1">{symbolNFT}</p>
       </div>
-      <div className="flex gap-x-10">
-        <div className="w-[50%] flex flex-col items-center">
+      <div className="flex lg:flex-row md:flex-row flex-col gap-10">
+        <div className="lg:w-[50%] md:w-2/4 w-full overflow-hidden flex flex-col max-w-[772px] max-h-[772px] items-center">
           {imageNFT && (
             <Image
               src={imageNFT}
@@ -420,7 +421,7 @@ const Swap: React.FC = () => {
               width={680}
               height={576}
               sizes="(max-width: 772px) 100vw"
-              className="rounded-lg max-h-[772px] max-w-[772px]"
+              className="rounded-lg  w-full "
               style={{
                 objectFit: "contain",
               }}
@@ -457,9 +458,9 @@ const Swap: React.FC = () => {
             See detail
           </p>
         </div>
-        <div className="w-[50%]">
+        <div className="lg:w-[50%] md:w-2/4 w-full">
           <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex mb-4 text-dark1">
+            <div className="flex gap-4 mb-4 text-dark1">
               <div className="basis-1/3">
                 <div className="flex text-xl font-medium text-dark1">
                   {symbolToken && (symbolNFT || idNFT) ? (
@@ -591,7 +592,8 @@ const Swap: React.FC = () => {
                 </div>
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                   !isSufficientNFT &&
-                  balanceNFT && account && (
+                  balanceNFT &&
+                  account && (
                     <p
                       className="mb-2 ml-3 -mt-3 text-xs text-red"
                       key="NFTbalance"

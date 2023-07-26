@@ -25,25 +25,29 @@ function ListTracsaction() {
         TRANSACTION
       </h3>
 
-      <div className="p-6 border rounded-lg overflow-hidden">
+      <div className="p-6 border rounded-lg overflow-hidden  overflow-x-scroll">
         <table className="w-full text-left">
-          <colgroup>
-            <col style={{ width: "25%" }} /> <col style={{ width: "10%" }} />
-            <col style={{ width: "20%" }} /> <col style={{ width: "10%" }} />
-            <col style={{ width: "25%" }} /> <col style={{ width: "10%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th># Action</th>
-              <th>NFT amount</th>
-              <th className="text-center">Token amount</th>
-              <th className="text-right">Account</th>
-              <th className="text-center">Time</th>
-              <th className="text-right">Total supply</th>
+          <thead className="">
+            <tr className="flex lg:text-base md:text-base text-sm">
+              <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                # Action
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                NFT amount
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Token amount
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Account
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Time
+              </th>
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="flex flex-col">
             <TransactionItem
               data={data}
               isLoading={isLoading}

@@ -35,25 +35,32 @@ function TopNft() {
           <span>TRENDING</span>
         </div>
       </div>
-
-      <div className="p-6 border rounded-lg overflow-hidden">
+      <div className="p-6 border rounded-lg overflow-hidden  overflow-x-scroll">
         <table className="w-full text-left">
-          <colgroup>
-            <col style={{ width: "30%" }} /> <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} /> <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} /> <col style={{ width: "18%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th># Name</th>
-              <th>Price</th>
-              <th>Change</th>
-              <th>Volume</th>
-              <th className="text-center">TVL</th>
-              <th className="text-right">Total supply</th>
+          <thead className="">
+            <tr className="flex lg:text-base md:text-base text-sm">
+              <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                # Name
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Price
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Change
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Volume
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                TVL
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Total supply
+              </th>
             </tr>
           </thead>
-          <tbody>
+
+          <tbody className="flex flex-col">
             <CollectionItem
               isLoading={isLoading}
               data={data}
