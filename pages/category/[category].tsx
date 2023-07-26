@@ -48,6 +48,7 @@ export default function Art() {
                       <div className="relative pb-[100%] h-0">
                         {item.metadata.image && (
                           <Image
+                            loading="lazy"
                             unoptimized
                             width={760}
                             height={760}

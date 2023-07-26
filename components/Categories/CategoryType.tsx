@@ -20,7 +20,6 @@ const Category = ({ label }: { label: string }) => {
     },
   });
 
-  console.log(data);
   const getDate = (timeStamp: any) => {
     const date = timeStamp * 1000;
     const currentDateMillis = Date.now();
@@ -77,6 +76,7 @@ const Category = ({ label }: { label: string }) => {
                           <div className="relative pb-[100%] h-0">
                             {item.metadata.image && (
                               <Image
+                                loading="lazy"
                                 unoptimized
                                 width={760}
                                 height={760}
