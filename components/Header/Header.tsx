@@ -15,6 +15,7 @@ import Icons from "@/public/icons/icon";
 import { SearchHeader } from "../Search";
 import { LogoDemask } from "../Logo";
 import { MenuHeader } from "../Menu";
+import { FaBars } from "react-icons/fa";
 import {
   BscIcon,
   EtherIcon,
@@ -25,6 +26,7 @@ import {
 import { MdLogout } from "react-icons/md";
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
+import MenuMobile from "../Menu/MenuMobile";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -32,7 +34,7 @@ const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
   btnWallet:
-    "flex items-center justify-center h-10 pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
+    "flex items-center justify-center lg:py-2 md:py-2 py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
 };
 
 export default function Header() {
@@ -44,6 +46,7 @@ export default function Header() {
     setIsOpen(true);
   };
 
+  const [openMenu, setOpenMenu] = useState(true);
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
     localStorage.removeItem("WALLET_DEMASK");
@@ -90,32 +93,38 @@ export default function Header() {
 
   return (
     <>
+      <MenuMobile
+        openMenu={openMenu}
+        account={account}
+        handleOpen={handleOpen}
+        style={style}
+        disconnectWallet={disconnectWallet}
+        setOpenMenu={setOpenMenu}
+      />
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out bg-white h-header px-14 "
+        className="fixed top-0 left-0 gap-2 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14 px-4"
       >
-        <div className="flex items-center">
-          <div className="text-center logo  h-[24px]">
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <div
+            onClick={() => {
+              setOpenMenu(!openMenu);
+            }}
+          >
+            <FaBars className="text-dark1" />
+          </div>
+          <div className="text-center">
             <Link href="/">
               <LogoDemask width={94} height={24} />
             </Link>
           </div>
-          <div className="ml-8">
+          <div className="ml-8 lg:block  hidden">
             <MenuHeader />
-          </div>
-          <div className="ml-8">
-            {/* Search */}
-            {/* <SearchHeader /> */}
-            <SearchIcon
-              width={32}
-              height={32}
-              className="cursor-pointer active:fill-secondary3"
-            />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-x-6">
-          <ul className={style.itemNav}>
+        <div className="flex items-center justify-end gap-x-6 flex-shrink-0">
+          <ul className={`${style.itemNav} lg:flex hidden`}>
             <li className="hover:text-secondary5 active:text-secondary3">
               <a href="https://docs.demask.finance/" target="_blank">
                 Docs
@@ -127,8 +136,16 @@ export default function Header() {
               </ActiveLink>
             </li>
           </ul>
-          <div className="flex gap-x-6 ">
+          <div className="flex lg:gap-x-6 md:gap-x-4 gap-2">
+            <div className="">
+              <SearchIcon
+                width={32}
+                height={32}
+                className="cursor-pointer h-full w-full active:fill-secondary3"
+              />
+            </div>
             <Tippy
+              className=""
               interactive
               render={(attrs) => (
                 <div
@@ -170,7 +187,7 @@ export default function Header() {
                 </div>
               )}
             >
-              <button className={style.btnWallet}>
+              <button className={`${style.btnWallet} lg:flex md:flex hidden`}>
                 <p>Polygon</p>
                 <PolygonIcon
                   width={24}
@@ -212,7 +229,12 @@ export default function Header() {
               </Tippy>
             ) : (
               <button className={style.btnWallet} onClick={handleOpen}>
-                <p>CONNECT WALLET</p>
+                <p>
+                  CONNECT{" "}
+                  <span className="lg:inline-block md:inline-block hidden">
+                    WALLET
+                  </span>
+                </p>
                 <Image
                   className="group-hover:hidden"
                   src={Icons.wallet}
@@ -228,7 +250,7 @@ export default function Header() {
           </div>
         </div>
       </header>
-      <div>
+      <div className="absolute z-[200]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
     </>
