@@ -12,7 +12,6 @@ export default function FooterSecondary() {
   useEffect(() => {
     setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
   }, [activeChoice]);
-  console.log(mode);
   const handleChoiceChange = (choice: string) => {
     localStorage.setItem("MODE_DEMASK", choice);
     window.dispatchEvent(new Event("storage"));

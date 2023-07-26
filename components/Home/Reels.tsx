@@ -47,17 +47,7 @@ const styles = {
     "w-full mt-4 py-2 pl-2 mb-6 border rounded-lg mx-auto border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-// export async function getServerSideProps() {
-//   const response = await fetch(
-//     "https://api.themoviedb.org/3/movie/now_playing?api_key=8006a3f95cb3c9fac668f63ef9d5cb63&page=3"
-//   );
-//   const homeData = await response.json();
-//   return {
-//     props: {
-//       homeData,
-//     },
-//   };
-// }
+
 const Reels: React.FC<ReelsProps> = ({
   data,
   isSuccess,
@@ -84,6 +74,7 @@ const Reels: React.FC<ReelsProps> = ({
     useState<boolean>(false);
   const [priceBuy, setPriceBuy] = useState<number>(0);
   const [priceSell, setPriceSell] = useState<number>(0);
+  const [tokenAddressSwap,setTokenAddressSwap] = useState<string>('');
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -97,17 +88,19 @@ const Reels: React.FC<ReelsProps> = ({
 
   const { ref, inView } = useInView();
 
-  useEffect(() => {
-    if (
-      data &&
-      data.pages &&
-      data.pages.length > 0 &&
-      data.pages[0].records &&
-      data.pages[0].records.length > 0
-    ) {
-      setFilter(data.pages[0].records[0]);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (
+  //     data &&
+  //     data.pages &&
+  //     data.pages.length > 0 &&
+  //     data.pages[0].records &&
+  //     data.pages[0].records.length > 0
+  //   ) {
+  //     setFilter(data.pages[0].records[0]);
+  //   }
+  // }, [data]);
+  // console.log(data.pages[0]);
+  
   useEffect(() => {
     data?.pages.map((page: any, index: number) => {
       page.records.map((item: any) => {
@@ -118,7 +111,10 @@ const Reels: React.FC<ReelsProps> = ({
         }
       });
     });
-  }, [activeSlideIndex, data]);
+  }, [activeSlideIndex]);
+  console.log(activeSlideIndex);
+  console.log(filter);
+  
   useEffect(() => {
     if (selectedCategory === "CUSTOM") {
       setAmountNFTSubmit(inputNFT);
@@ -129,57 +125,58 @@ const Reels: React.FC<ReelsProps> = ({
 
   const {
     reserves,
-    idNFT,
-    nftAddress,
-    reserveNFT,
-    reserveToken,
-    tokenAddress,
     isLoadingInforDML,
   } = useInformationDML(filter.dmlAddress);
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, nftAddress);
+      const result = await approveNFT(account, wallet, filter.nft);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, nftAddress, wallet]);
-  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  }, [account, filter, wallet]);
+  const balanceNFT = useNFTBalance(account, filter.nft, filter.tokenId, wallet);
   // console.log(isLoadingInforDML);
-
-  let tokenAddressSwap = "";
-  if (tokenAddress === "0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6") {
-    tokenAddressSwap = "MATIC";
-  } else {
-    tokenAddressSwap = tokenAddress;
-  }
+  // console.log(filter.nft);
+  
+  useEffect(()=>{
+    if (filter.tokenAddress === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
+      setTokenAddressSwap("MATIC");
+    } else {
+      setTokenAddressSwap(filter.tokenAddress);
+    }
+  },[filter.tokenAddress])
+  
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-    useInformationToken(account, tokenAddress, wallet, tokenAddressSwap);
+    useInformationToken(account, tokenAddressSwap, wallet);
+    
   const { amountTokenSell, isLoadingSell } = useAmountOutMin(
     amountNFTSubmit,
     filter.dmlAddress,
-    tokenAddress,
-    nftAddress,
-    idNFT,
+    filter.tokenAddress,
+    filter.nft,
+    filter.tokenId,
     wallet,
     activeChoice
   );
+  
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     amountNFTSubmit,
     filter.dmlAddress,
-    tokenAddress,
-    nftAddress,
-    idNFT,
+    filter.tokenAddress,
+    filter.nft,
+    filter.tokenId,
     wallet,
     activeChoice
   );
+  console.log(amountTokenBuy);
+  console.log(isLoadingBuy);
+  
   const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
-  console.log(isLoadingBuy);
   useEffect(() => {
     setPriceBuy(Number(amountBuy) / Number(amountNFTSubmit));
     setPriceSell(Number(amountSell) / Number(amountNFTSubmit));
   }, [activeSlideIndex, amountNFTSubmit, amountBuy]);
-  console.log(priceBuy);
 
   useEffect(() => {
     if (inView) {
@@ -202,6 +199,8 @@ const Reels: React.FC<ReelsProps> = ({
           setIsSufficientNFT(false);
         }
       } else {
+        console.log(amountNFTSubmit);
+        console.log(balanceNFT);
         if (Number(amountNFTSubmit) <= Number(balanceNFT)) {
           setIsSufficientNFT(true);
         } else {
@@ -221,7 +220,6 @@ const Reels: React.FC<ReelsProps> = ({
       setIsSufficientTokenSell(true);
     }
   }, [amountNFTSubmit, activeChoice, account, amountBuy, amountSell]);
-
   useEffect(() => {
     if (amountNFTSubmit === "") {
       setIsSufficientNFT(true);
@@ -234,7 +232,7 @@ const Reels: React.FC<ReelsProps> = ({
         const currentAllowance = await approveToken(
           account,
           wallet,
-          tokenAddress
+          filter.tokenAddress
         );
         if (Number(currentAllowance) < Number(amountTokenBuy)) {
           setIsApprovedToken(false);
@@ -246,14 +244,14 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress, amountNFTSubmit, amountTokenBuy]);
+  }, [account, wallet, filter.tokenAddress, amountNFTSubmit, amountTokenBuy]);
 
   const hanldeApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
+      const contract = new ethers.Contract(filter.nft, abiErc1155, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         await contract.setApprovalForAll(routerAddress, true);
@@ -272,7 +270,7 @@ const Reels: React.FC<ReelsProps> = ({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
+      const contract = new ethers.Contract(filter.tokenAddress, abiErc20, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         await contract.approve(routerAddress, amountBuy.toFixed());
@@ -312,8 +310,8 @@ const Reels: React.FC<ReelsProps> = ({
           let result;
           if (tokenAddressSwap === "MATIC") {
             result = await contract.buyETH(
-              nftAddress,
-              idNFT,
+              filter.nft,
+              filter.tokenId,
               amountNFTSubmit,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
@@ -321,9 +319,9 @@ const Reels: React.FC<ReelsProps> = ({
             );
           } else {
             result = await contract.buy(
-              tokenAddress,
-              nftAddress,
-              idNFT,
+              filter.tokenAddress,
+              filter.nft,
+              filter.tokenId,
               amountNFTSubmit,
               amountBuy.toFixed(0),
               account,
@@ -379,8 +377,8 @@ const Reels: React.FC<ReelsProps> = ({
           let result;
           if (tokenAddressSwap === "MATIC") {
             result = await contract.sellETH(
-              nftAddress,
-              idNFT,
+              filter.nft,
+              filter.tokenId,
               amountNFTSubmit,
               amountSell.toFixed(0),
               account,
@@ -389,9 +387,9 @@ const Reels: React.FC<ReelsProps> = ({
             );
           } else {
             result = await contract.sell(
-              tokenAddress,
-              nftAddress,
-              idNFT,
+              filter.tokenAddress,
+              filter.nft,
+              filter.tokenId,
               amountNFTSubmit,
               amountSell.toFixed(0),
               account,
@@ -429,11 +427,11 @@ const Reels: React.FC<ReelsProps> = ({
               slidesPerView={1}
               mousewheel={true}
               modules={[Mousewheel, Pagination]}
-              className="h-full mySwiper"
+              className="h-full mySwiper swipper-swap"
               onSlideChange={handleSlideChange}
             >
               {isSuccess &&
-                data?.pages.map((page: any, index: any) => (
+                data?.pages.map((page: any, index: number) => (
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
                       <SwiperSlide key={`${nftItem._id}-${index}`}>
@@ -678,7 +676,7 @@ const Reels: React.FC<ReelsProps> = ({
               </div>
             )}
 
-            {!isSufficientNFT && isLoadingBuy && balanceNFT && (
+            {!isSufficientNFT &&  balanceNFT && (
               <p
                 className="mt-4 mb-2 ml-3 text-xs text-center text-red"
                 key="NFTbalance"
@@ -751,9 +749,7 @@ const Reels: React.FC<ReelsProps> = ({
           </div>
         </div>
       )}
-      {isLoading && <SkeletonReels />}
-      {isFetchingNextPage && <SkeletonReels />}
-      {isFetching && <SkeletonReels />}
+      {(isLoading || isFetchingNextPage || isFetching) && <SkeletonReels />}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ToastContainer />
     </div>

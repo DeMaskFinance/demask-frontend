@@ -3,7 +3,7 @@ import React from "react";
 
 export default function SkeletonReels() {
   return (
-    <div className="flex items-center animate-pulse gap-x-10">
+    <div className="flex items-center animate-pulse gap-x-10 px-primary">
       <div className="bg-slate-200 h-[640px] w-[640px] border rounded-2xl"></div>
       <div className="px-4 py-6 border rounded-lg border-dark3 grow h-fit">
         <div className="flex justify-between">
