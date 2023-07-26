@@ -1,6 +1,4 @@
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React from "react";
 interface CollectionItemProps {
   data: any;
   isFetching: boolean;
@@ -29,25 +27,27 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
       ) : (
         <>
           {data?.nftDataList.map((item: any) => (
-            <tr className="text-dark2">
-              <td className="py-6">
-                {isFetching ? skeleton : item.metadata.name}
+            <tr className="lg:text-base md:text-base text-sm flex text-dark2">
+              <td className="py-6 flex justify-start lg:w-full md:w-full w-[200px]">
+                <span className="line-clamp-1">
+                  {isFetching ? skeleton : item.metadata.name}
+                </span>
               </td>
-              <td className="py-1">
+              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">{isFetching ? skeleton : item.price}</span>
               </td>
-              <td className="py-1">
+              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">
                   {isFetching ? skeleton : item.changePrice}
                 </span>
               </td>
-              <td className="py-1">
+              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">{isFetching ? skeleton : item.volume}</span>
               </td>
-              <td className="py-6 text-center">
+              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
                 {isFetching ? skeleton : item.tvl}
               </td>
-              <td className="text-right">
+              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
                 {isFetching ? skeleton : item.totalSupply}
               </td>
             </tr>

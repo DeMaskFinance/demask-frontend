@@ -1,13 +1,13 @@
-import React from 'react'
-import Header from '../Header/Header'
+import React from "react";
+import Header from "../Header/Header";
 import { PropsWithChildren } from "react";
-import { FooterSecondary } from '../Footer';
-export default function LayoutSecondary({ children }:PropsWithChildren) {
+import { FooterSecondary } from "../Footer";
+export default function LayoutSecondary({ children }: PropsWithChildren) {
   return (
     <div className="box-border w-full ">
       <Header />
-      <main className="mt-[64px] px-primary">{children}</main>
-      <FooterSecondary/>
+      <main className="mt-[64px] lg:px-primary md:px-14 px-4">{children}</main>
+      <FooterSecondary />
     </div>
-  )
+  );
 }

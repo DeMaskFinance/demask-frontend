@@ -82,9 +82,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
 
   return (
     <div className="px-4 py-6 mt-6 rounded-lg shadow-home">
-      <div className="flex items-center justify-between">
-        <div className="flex justify-between mb-2">
-          <h2 className="mr-4 text-2xl font-medium text-dark1">
+      <div className="flex items-center justify-between flex-wrap">
+        <div className="flex justify-between mb-2 items-center">
+          <h2 className="mr-4 text-2xl line-clamp-1 font-medium text-dark1">
             {nftItem.metadata.name}{" "}
           </h2>
           {reserveToken.toString() === "0" ||
@@ -102,15 +102,15 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             </Link>
           ))}
         </div>
-        <div className="flex gap-x-2">
+        <div className="flex gap-x-2 items-center ">
           {symbolToken && tokenAddress && nftAddress ? (
-            <div className="text-[24px] font-medium text-secondary3 flex gap-x-2 items-end leading-5">
+            <div className="lg:text-[24px] md:text-lg text-base font-medium text-secondary3 flex gap-x-2 items-end leading-5">
               {reserveToken.toString() === "0" ||
               reserveNFT.toString() === "0" ||
               reserveNFT.toString() === "1" ? (
                 <div className="text-red">Unable to buy</div>
               ) : (
-                <span>
+                <span className="whitespace-pre">
                   {formatPrice} {symbolTokenSwap}
                 </span>
               )}
@@ -133,7 +133,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           )}
         </div>
       </div>
-      <div className="flex items-center mb-2 text-dark2">
+      <div className="flex items-center my-2 text-dark2">
         <AvatarUser width={32} height={32} />
         <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
           0,
@@ -189,21 +189,20 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             <div
               style={{ backgroundImage: `url(${nftItem.metadata.image})` }}
               className="w-full max-h-[650px] bg-center bg-cover rounded-2xl blur-3xl z-0 h-[639px] absolute]"
-            >
+            ></div>
+            <div className="absolute top-0 flex items-center justify-center   p-4 w-full h-full overflow-hidden">
+              <Image
+                width={1031}
+                height={1049}
+                src={nftItem.metadata.image}
+                alt="NFT Image"
+                unoptimized
+                className="min-w-[500px] w-auto max-h-[650px] z-100 rounded-xl"
+                style={{
+                  objectFit: "contain",
+                }}
+              />
             </div>
-            <div className="absolute top-0 flex items-center justify-center w-full h-full overflow-hidden">
-                <Image
-                  width={1031}
-                  height={1049}
-                  src={nftItem.metadata.image}
-                  alt="NFT Image"
-                  unoptimized
-                  className="min-w-[500px] w-auto max-h-[650px] z-100"
-                  style={{
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
           </div>
         )}
         {nftItem.metadata.animation_url && !nftItem.metadata.image && (

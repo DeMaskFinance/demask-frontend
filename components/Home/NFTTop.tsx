@@ -70,9 +70,27 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
             <Swiper
               navigation={true}
               modules={[Navigation]}
-              className="mySwiper"
+              className="mySwiper lg:block md:block hidden"
               slidesPerView={6}
               ref={swiperRef}
+              breakpoints={{
+                0: {
+                  slidesPerView: 2,
+                  spaceBetween: 30,
+                },
+                480: {
+                  slidesPerView: 2,
+                  spaceBetween: 30,
+                },
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 30,
+                },
+                1024: {
+                  slidesPerView: 6,
+                  spaceBetween: 30,
+                },
+              }}
             >
               {isSuccess &&
                 data?.pages.map((page, index) => (
@@ -83,7 +101,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                           <Link
                             href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}?dmlAddress=${nftItem.dml}`}
                           >
-                            <div className="w-[208px] h-[208px] relative overflow-hidden group cursor-pointer">
+                            <div className="w-[208px] h-[208px] relative overflow-hidden group cursor-pointer flex gap-20">
                               {nftItem.metadata.image && (
                                 <Image
                                   src={nftItem.metadata.image}

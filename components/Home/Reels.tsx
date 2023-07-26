@@ -264,7 +264,9 @@ const Reels: React.FC<ReelsProps> = ({
       setIsOpen(true);
     }
   };
-  const handleApproveToken = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleApproveToken = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -283,7 +285,9 @@ const Reels: React.FC<ReelsProps> = ({
     }
   };
 
-  const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleBuyNFT = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (!account) {
       setIsOpen(true);
@@ -347,7 +351,9 @@ const Reels: React.FC<ReelsProps> = ({
       }
     }
   };
-  const handleSellNFT = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSellNFT = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (!account) {
       setIsOpen(true);
@@ -414,9 +420,9 @@ const Reels: React.FC<ReelsProps> = ({
     }
   };
   return (
-    <div>
+    <div className="flex gap-4">
       {isSuccess && (
-        <div className="h-[790px]">
+        <div className="h-[790px] lg:w-2/4 md:w/24 w-full sticky top-8">
           <>
             <Swiper
               direction={"vertical"}
@@ -481,7 +487,7 @@ const Reels: React.FC<ReelsProps> = ({
         </div>
       )}
       {isSuccess && filter && (
-        <div className="fixed flex flex-col justify-center w-[800px] right-[164px] top-[23%] z-10">
+        <div className="flex flex-col sticky top-8 h-full justify-start lg:w-2/4 md:w-2/4 w-full mx-auto right-[164px] pt-4 z-10">
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex mb-3 text-dark1">
               <div className="flex basis-1/6">

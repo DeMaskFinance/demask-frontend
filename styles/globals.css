@@ -84,3 +84,13 @@ html *::-webkit-scrollbar-track {
   border-radius: 0;
   background-color: rgba(0, 0, 0, 0);
 }
+
+
+.submenu {
+  overflow: hidden;
+  transition: max-height .5s linear;
+}
+
+.submenu.visible {
+  max-height: 500px; 
+}
