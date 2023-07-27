@@ -26,51 +26,54 @@ function TopNft() {
 
   return (
     <div className="collectionList">
-      <div className="flex text-xl text-white w-max items-center text-center">
-        <div className="flex items-center justify-center  rounded-tl-lg bg-secondary1  px-4 py-2 h-full cursor-pointer">
-          <span>TOP</span>
-        </div>
+      <div className="p-2 border rounded-lg overflow-hidden  overflow-x-scroll">
+        <div className="flex text-base text-white bg-dark3 gap-2 p-1 rounded-lg w-max items-center text-center">
+          <button className="bg-secondary4 py-2 px-6 rounded-lg">Top</button>
 
-        <div className="flex items-center justify-center px-4 py-2 rounded-tr-lg cursor-pointer  bg-dark3">
-          <span>TRENDING</span>
+          <button className="py-2 px-6 hover:bg-secondary4 rounded-lg">
+            Trending
+          </button>
+        </div>
+        <div className="p-6">
+          <table className="w-full text-left">
+            <thead className="">
+              <tr className="flex lg:text-base md:text-base text-sm">
+                <th className="flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
+                  #
+                </th>
+                <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                  Name
+                </th>
+                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                  Price
+                </th>
+                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                  Change
+                </th>
+                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                  Volume
+                </th>
+                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                  TVL
+                </th>
+                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                  Total supply
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="flex flex-col">
+              <CollectionItem
+                isLoading={isLoading}
+                data={data}
+                isFetching={isFetching}
+              />
+            </tbody>
+          </table>
         </div>
       </div>
-      <div className="p-6 border rounded-lg overflow-hidden  overflow-x-scroll">
-        <table className="w-full text-left">
-          <thead className="">
-            <tr className="flex lg:text-base md:text-base text-sm">
-              <th className="flex justify-start lg:w-full md:w-full w-[200px]">
-                # Name
-              </th>
-              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                Price
-              </th>
-              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                Change
-              </th>
-              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                Volume
-              </th>
-              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                TVL
-              </th>
-              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                Total supply
-              </th>
-            </tr>
-          </thead>
 
-          <tbody className="flex flex-col">
-            <CollectionItem
-              isLoading={isLoading}
-              data={data}
-              isFetching={isFetching}
-            />
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex gap-10 py-8 justify-center">
+      <div className="flex gap-10 py-8 justify-center  text-dark2">
         <button
           onClick={prevPage}
           disabled={isPreviousData || page === 1 || isFetching}

@@ -30,7 +30,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
     return null;
   };
   return (
-    <div className="p-6 border rounded-lg border-dark3">
+    <div className="p-6 shadow-chart rounded-lg">
       <div className="mb-2 text-dark1">
         <p className="font-medium ">TVL</p>
         <p className="my-2 text-2xl font-medium text-dark0">

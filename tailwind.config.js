@@ -20,7 +20,7 @@ module.exports = {
         normal: "18px",
       },
       padding: {
-        primary: "164px",
+        primary: "56px",
         secondary: "272px",
       },
       colors: {
@@ -59,6 +59,7 @@ module.exports = {
       boxShadow: {
         home: "0px 4px 12px 0px rgba(0, 0, 0, 0.08)",
         swiper: "rgba(0, 0, 0, 0.15) 0px 4px 10px",
+        chart: "0px 8px 24px 0px rgba(0, 0, 0, 0.15);",
       },
       keyframes: {
         scrollUpHeader: {
