@@ -46,7 +46,7 @@ export default function Header() {
     setIsOpen(true);
   };
 
-  const [openMenu, setOpenMenu] = useState(true);
+  const [openMenu, setOpenMenu] = useState(false);
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
     localStorage.removeItem("WALLET_DEMASK");
@@ -107,6 +107,7 @@ export default function Header() {
       >
         <div className="flex items-center gap-2 flex-shrink-0">
           <div
+            className="lg:hidden md:block block"
             onClick={() => {
               setOpenMenu(!openMenu);
             }}
