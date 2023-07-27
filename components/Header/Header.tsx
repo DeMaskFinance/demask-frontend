@@ -34,7 +34,7 @@ const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
   btnWallet:
-    "flex items-center justify-center lg:py-2 md:py-2 py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
+    "flex items-center justify-center py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
 };
 
 export default function Header() {
@@ -94,11 +94,11 @@ export default function Header() {
   return (
     <>
       <MenuMobile
-        openMenu={openMenu}
         account={account}
-        handleOpen={handleOpen}
         style={style}
         disconnectWallet={disconnectWallet}
+        handleOpen={handleOpen}
+        openMenu={openMenu}
         setOpenMenu={setOpenMenu}
       />
       <header
@@ -116,7 +116,13 @@ export default function Header() {
           </div>
           <div className="text-center">
             <Link href="/">
-              <LogoDemask width={94} height={24} />
+              {/* <LogoDemask width={94} height={24} /> */}
+              <Image
+                src={"/logoHeader.svg"}
+                alt=""
+                width={94}
+                height={24}
+              ></Image>
             </Link>
           </div>
           <div className="ml-8 lg:block  hidden">
@@ -126,25 +132,29 @@ export default function Header() {
 
         <div className="flex items-center justify-end gap-x-6 flex-shrink-0">
           <ul className={`${style.itemNav} lg:flex hidden`}>
-            <li className="hover:text-secondary5 active:text-secondary3">
-              <a href="https://docs.demask.finance/" target="_blank">
+            <li className="hover:text-secondary5 flex active:text-secondary3">
+              <a
+                href="https://docs.demask.finance/"
+                target="_blank"
+                className="text-base"
+              >
                 Docs
               </a>
             </li>
             <li className="relative hover:text-secondary5 active:text-secondary3">
               <ActiveLink href="/about">
-                <p>About</p>
+                <p className="text-base">About</p>
               </ActiveLink>
             </li>
           </ul>
           <div className="flex lg:gap-x-6 md:gap-x-4 gap-2">
-            <div className="">
+            {/* <div className="">
               <SearchIcon
                 width={32}
                 height={32}
                 className="cursor-pointer h-full w-full active:fill-secondary3"
               />
-            </div>
+            </div> */}
             <Tippy
               className=""
               interactive

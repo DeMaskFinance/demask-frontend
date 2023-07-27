@@ -102,7 +102,13 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
           <div className="text-center  flex justify-between w-full items-center">
             <div className="gap-2">
               <Link href="/">
-                <LogoDeMask width={94} height={34} />
+                {/* <LogoDemask width={94} height={24} /> */}
+                <Image
+                  src={"/logoHeader.svg"}
+                  alt=""
+                  width={94}
+                  height={24}
+                ></Image>
               </Link>
             </div>
             <div className="flex gap-2">

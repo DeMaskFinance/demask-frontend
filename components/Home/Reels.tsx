@@ -421,7 +421,7 @@ const Reels: React.FC<ReelsProps> = ({
   return (
     <div className="flex gap-4">
       {isSuccess && (
-        <div className="h-[790px] lg:w-2/4 md:w/24 w-full sticky top-8">
+        <div className="h-[790px] lg:w-2/4 bg-slate-100 rounded-xl md:w/24 w-full sticky  top-8">
           <>
             <Swiper
               direction={"vertical"}
@@ -436,7 +436,7 @@ const Reels: React.FC<ReelsProps> = ({
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
                       <SwiperSlide key={`${nftItem._id}-${index}`}>
-                        <div className="relative flex items-center h-full w-fit">
+                        <div className="relative flex items-center h-full w-full">
                           {nftItem.metadata.image && (
                             <Image
                               width={760}
@@ -486,7 +486,7 @@ const Reels: React.FC<ReelsProps> = ({
         </div>
       )}
       {isSuccess && filter && (
-        <div className="flex flex-col sticky top-8 h-full justify-start lg:w-2/4 md:w-2/4 w-full mx-auto right-[164px] pt-4 z-10">
+        <div className="flex flex-col sticky top-8 h-full right-0 justify-start lg:w-2/4 md:w-2/4 w-full mx-auto  pt-4 z-10">
           <div className="px-4 py-6 border rounded-lg border-dark3">
             <div className="flex mb-3 text-dark1">
               <div className="flex basis-1/6">

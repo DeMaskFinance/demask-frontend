@@ -9,7 +9,7 @@ import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 import { HiArrowLeft, HiArrowRight } from "react-icons/hi";
 export default function Overview() {
   return (
-    <section className="pt-8 overview">
+    <section className="pt-8 overview max-w-screen-xl mx-auto">
       <Head>
         <title>Overview | DeMask</title>
       </Head>
@@ -19,7 +19,7 @@ export default function Overview() {
         <ChartTVL />
         <ChartVolumn />
       </div>
-      <div className="flex lg:flex-row md:flex-row flex-col gap-6 my-6 text-lg font-medium text-dark2">
+      <div className="flex lg:flex-row md:flex-row flex-col gap-6 my-6 text-base font-medium text-dark2">
         <div className="flex">
           <span className="mr-2 ">Volume 24H: $8.45M </span> (
           <span className="flex items-center text-red">

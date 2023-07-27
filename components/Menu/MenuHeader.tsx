@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from "react";
-import { ActiveLink} from '../Link'
+import { ActiveLink } from "../Link";
 import Link from "next/link";
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";
+import { SearchIcon } from "../Icons";
 
 interface MenuHeaderProps {}
 const styles = {
-  menuSub:"pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
-  itemSub:"flex items-center justify-between p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
-}
+  menuSub:
+    "pt-1 pb-1 bg-white border text-base rounded-lg shadow-xl box border-dark4 font-medium",
+  itemSub:
+    "flex items-center justify-between text-base p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
+};
 const data = [
   { id: 1, name: "Overview", url: "/overview" },
   { id: 2, name: "Trade", subTradeMenu: true },
@@ -18,7 +21,11 @@ const data = [
 ];
 
 const subMenuTradeData = [
-  { id: 1, name: "Swap", url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC" },
+  {
+    id: 1,
+    name: "Swap",
+    url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC",
+  },
   { id: 2, name: "Liquidity", url: "/liquidity" },
 ];
 const subMenuCateData = [
@@ -43,7 +50,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
     }
   }, [router.pathname]);
   return (
-    <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-4">
+    <ul className="flex items-center text-lg font-medium 3xl:gap-x-12 text-dark2 gap-x-8">
       {data.map((item) => (
         <React.Fragment key={item.id}>
           {item.subTradeMenu ? (
@@ -51,11 +58,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
               <Tippy
                 interactive
                 render={(attrs) => (
-                  <div
-                    className={styles.menuSub}
-                    tabIndex={-1}
-                    {...attrs}
-                  >
+                  <div className={styles.menuSub} tabIndex={-1} {...attrs}>
                     <ul className="flex flex-col">
                       {subMenuTradeData.map((tradeItem) => (
                         <Link href={tradeItem.url} key={tradeItem.id}>
@@ -66,22 +69,24 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   </div>
                 )}
               >
-                <button className="hover:text-secondary5 active:text-secondary3">
-                  <Link ref={tradeRef} href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC">Trade</Link>
+                <button className="hover:text-secondary5 flex active:text-secondary3">
+                  <Link
+                    className=" text-base"
+                    ref={tradeRef}
+                    href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC"
+                  >
+                    Trade
+                  </Link>
                 </button>
               </Tippy>
             </li>
           ) : item.subCateMenu ? (
-            <li >
+            <li>
               <Tippy
                 interactive
                 render={(attrs) => (
-                  <div
-                  className={styles.menuSub}
-                    tabIndex={-1}
-                    {...attrs}
-                  >
-                    <ul className="flex flex-col">
+                  <div className={styles.menuSub} tabIndex={-1} {...attrs}>
+                    <ul className="flex flex-col text-base">
                       {subMenuCateData.map((cateItem) => (
                         <ActiveLink href={cateItem.url} key={cateItem.id}>
                           <li className={styles.itemSub}>{cateItem.name}</li>
@@ -91,13 +96,13 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   </div>
                 )}
               >
-                <button className="hover:text-secondary5 active:text-secondary3">
+                <button className="hover:text-secondary5 flex active:text-secondary3 text-base">
                   <Link href="/category">Category</Link>
                 </button>
               </Tippy>
             </li>
           ) : (
-            <li className="relative hover:text-secondary5 active:text-secondary3">
+            <li className="relative hover:text-secondary5 active:text-secondary3 text-base">
               <ActiveLink href={item?.url as string}>
                 <p>{item.name}</p>
               </ActiveLink>
@@ -105,6 +110,14 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           )}
         </React.Fragment>
       ))}
+
+      <li>
+        <SearchIcon
+          width={32}
+          height={32}
+          className="cursor-pointer active:fill-secondary3"
+        />
+      </li>
     </ul>
   );
 };
