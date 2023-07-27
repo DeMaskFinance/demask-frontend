@@ -96,11 +96,11 @@ const Home = () => {
               isFetchingNextPage={isFetchingNextPage}
             />
           ) : (
-            <SkeletonReels/>
+            <SkeletonReels />
           )}
         </>
       ) : (
-        <div className="mb-6 leading-7 px-primary">
+        <div className="mb-6 leading-7">
           <NFTTop />
           <div className="flex flex-col items-center mt-8">
             {data?.pages[0] ? (

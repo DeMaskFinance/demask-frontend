@@ -74,7 +74,7 @@ const Reels: React.FC<ReelsProps> = ({
     useState<boolean>(false);
   const [priceBuy, setPriceBuy] = useState<number>(0);
   const [priceSell, setPriceSell] = useState<number>(0);
-  const [tokenAddressSwap,setTokenAddressSwap] = useState<string>('');
+  const [tokenAddressSwap, setTokenAddressSwap] = useState<string>("");
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -100,7 +100,7 @@ const Reels: React.FC<ReelsProps> = ({
   //   }
   // }, [data]);
   // console.log(data.pages[0]);
-  
+
   useEffect(() => {
     data?.pages.map((page: any, index: number) => {
       page.records.map((item: any) => {
@@ -114,7 +114,7 @@ const Reels: React.FC<ReelsProps> = ({
   }, [activeSlideIndex]);
   console.log(activeSlideIndex);
   console.log(filter);
-  
+
   useEffect(() => {
     if (selectedCategory === "CUSTOM") {
       setAmountNFTSubmit(inputNFT);
@@ -123,10 +123,7 @@ const Reels: React.FC<ReelsProps> = ({
     }
   }, [inputNFT, selectedCategory, activeSlideIndex, activeChoice]);
 
-  const {
-    reserves,
-    isLoadingInforDML,
-  } = useInformationDML(filter.dmlAddress);
+  const { reserves, isLoadingInforDML } = useInformationDML(filter.dmlAddress);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, filter.nft);
@@ -137,18 +134,18 @@ const Reels: React.FC<ReelsProps> = ({
   const balanceNFT = useNFTBalance(account, filter.nft, filter.tokenId, wallet);
   // console.log(isLoadingInforDML);
   // console.log(filter.nft);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     if (filter.tokenAddress === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
       setTokenAddressSwap("MATIC");
     } else {
       setTokenAddressSwap(filter.tokenAddress);
     }
-  },[filter.tokenAddress])
-  
+  }, [filter.tokenAddress]);
+
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
     useInformationToken(account, tokenAddressSwap, wallet);
-    
+
   const { amountTokenSell, isLoadingSell } = useAmountOutMin(
     amountNFTSubmit,
     filter.dmlAddress,
@@ -158,7 +155,7 @@ const Reels: React.FC<ReelsProps> = ({
     wallet,
     activeChoice
   );
-  
+
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     amountNFTSubmit,
     filter.dmlAddress,
@@ -170,7 +167,7 @@ const Reels: React.FC<ReelsProps> = ({
   );
   console.log(amountTokenBuy);
   console.log(isLoadingBuy);
-  
+
   const amountBuy = new BigNumber(amountTokenBuy);
   const amountSell = new BigNumber(amountTokenSell);
   useEffect(() => {
@@ -270,7 +267,11 @@ const Reels: React.FC<ReelsProps> = ({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(filter.tokenAddress, abiErc20, signer);
+      const contract = new ethers.Contract(
+        filter.tokenAddress,
+        abiErc20,
+        signer
+      );
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         await contract.approve(routerAddress, amountBuy.toFixed());
@@ -427,7 +428,7 @@ const Reels: React.FC<ReelsProps> = ({
               slidesPerView={1}
               mousewheel={true}
               modules={[Mousewheel, Pagination]}
-              className="h-full mySwiper swipper-swap"
+              className="h-full mySwiper !p-0"
               onSlideChange={handleSlideChange}
             >
               {isSuccess &&
@@ -446,7 +447,7 @@ const Reels: React.FC<ReelsProps> = ({
                                 objectFit: "contain",
                               }}
                               unoptimized
-                              className="rounded-2xl max-w-[760px] max-h-[760px]"
+                              className="rounded-2xl max-w-[760px] max-h-[760px] w-full"
                             />
                           )}
                           {nftItem.metadata.animation_url &&
@@ -457,7 +458,7 @@ const Reels: React.FC<ReelsProps> = ({
                                 loop
                                 muted
                                 controls
-                                className=" rounded-2xl max-w-[760px] max-h-[760px]"
+                                className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
                               />
                             )}
                           {nftItem.metadata.image &&
@@ -468,7 +469,7 @@ const Reels: React.FC<ReelsProps> = ({
                                 muted
                                 controls
                                 src={nftItem.metadata.animation_url}
-                                className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%]"
+                                className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%] "
                               >
                                 Your browser does not support the
                                 <code>audio</code> element.
@@ -676,7 +677,7 @@ const Reels: React.FC<ReelsProps> = ({
               </div>
             )}
 
-            {!isSufficientNFT &&  balanceNFT && (
+            {!isSufficientNFT && balanceNFT && (
               <p
                 className="mt-4 mb-2 ml-3 text-xs text-center text-red"
                 key="NFTbalance"

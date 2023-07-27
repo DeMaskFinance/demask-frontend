@@ -88,7 +88,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
         openMenu
           ? "translate-x-0 transition-all"
           : "-translate-x-[100%] transition-all"
-      } bg-white flex flex-col fixed justify-between h-full top-0 right-0 z-[100] left-0 p-4 bottom-0 w-full`}
+      } bg-white lg:hidden md:flex flex flex-col fixed justify-between h-full top-0 right-0 z-[100] left-0 p-4 bottom-0 w-full`}
     >
       <div>
         <div className="flex items-center gap-2 flex-shrink-0">
