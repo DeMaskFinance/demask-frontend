@@ -27,6 +27,9 @@ html{
 .slide-nft-item{
   width:fit-content !important;
 }
+.swipper-swap{
+  padding:0 164px !important;
+}
 .swiper-button-next::after,
 .swiper-button-prev::after {
   content: "" !important;
