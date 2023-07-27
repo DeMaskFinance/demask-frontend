@@ -9,7 +9,6 @@ export default function LayoutSecondary({ children }: PropsWithChildren) {
 
       <main className="mt-[64px] lg:px-primary md:px-14 px-4">{children}</main>
       <FooterSecondary />
-
     </div>
   );
 }
