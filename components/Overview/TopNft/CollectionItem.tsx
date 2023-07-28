@@ -1,4 +1,6 @@
 import { AvatarUser } from "@/components/Avatars";
+import formatNumber from "@/libs/utils/formatNumer";
+import Link from "next/link";
 import React, { useState } from "react";
 interface CollectionItemProps {
   data: any;
@@ -11,7 +13,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   isLoading,
 }) => {
   const skeleton = (
-    <div className="w-full h-6 bg-slate-200 animate-pulse rounded-xl" />
+    <div className="w-full h-8 bg-slate-200 animate-pulse rounded-xl" />
   );
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -20,66 +22,69 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
       {isLoading || isFetching ? (
         Array.from({ length: 10 }, (item, index) => (
           <tr className="lg:text-base md:text-base text-sm flex text-dark2">
-            <td className="py-6 flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
+            <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
               {skeleton}
             </td>
-            <td className="py-6 flex justify-start lg:w-full md:w-full w-[200px]">
+            <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
               {skeleton}
             </td>
-            <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
-            <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
-            <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
-            <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
-            <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
           </tr>
         ))
       ) : (
         <>
-          {data?.nftDataList.map((item: any, idx: number) => (
-            <tr className="lg:text-base md:text-base text-sm flex text-dark2">
-              <td className="py-6 flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
+          {data?.nftDataList?.map((item: any, idx: number) => (
+            <tr className="lg:text-base md:text-base border-b text-sm flex text-dark2">
+              <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                 {idx + 1}
               </td>
-              <td className="py-6 flex justify-start lg:w-full md:w-full w-[200px]">
+              <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
                 <span className="flex items-center">
                   <span className="flex-shrink-0 block">
                     <AvatarUser width={32} height={32} />
                   </span>
-                  <span className="line-clamp-1">
+                  <Link
+                    href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}?dmlAddress=${item.dml}`}
+                    className="line-clamp-1 hover:text-secondary4"
+                  >
                     {isFetching ? skeleton : item.metadata.name}
-                  </span>
+                  </Link>
                 </span>
               </td>
-              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+              <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">
-                  {isFetching ? skeleton : item.price.toFixed(2)}
+                  ${isFetching ? skeleton : formatNumber(item.price)}
                 </span>
               </td>
-              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+              <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">
-                  {isFetching ? skeleton : item.changePrice.toFixed(2)}
+                  ${isFetching ? skeleton : formatNumber(item.changePrice)}
                 </span>
               </td>
-              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
+              <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">
-                  {isFetching ? skeleton : item.volume.toFixed(2)}
+                  ${isFetching ? skeleton : formatNumber(item.volume)}
                 </span>
               </td>
-              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
-                {isFetching ? skeleton : item.tvl.toFixed(2)}
+              <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                ${isFetching ? skeleton : formatNumber(item.tvl)}
               </td>
-              <td className="py-6 flex justify-end lg:w-full md:w-full w-[140px]">
-                {isFetching ? skeleton : item.totalSupply.toFixed(2)}
+              <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                ${isFetching ? skeleton : formatNumber(item.totalSupply)}
               </td>
             </tr>
           ))}
