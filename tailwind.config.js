@@ -70,7 +70,9 @@ module.exports = {
       animation: {
         scrollUpHeader: "scrollUpHeader 0.3s ease-in-out",
       },
-
+      container: {
+        main: "1048px",
+      },
       flex: {
         20: "1 1 20%",
         15: "1 1 15%",
