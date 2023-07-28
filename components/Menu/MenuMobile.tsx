@@ -3,11 +3,12 @@ import LogoDeMask from "../Logo/LogoDemask";
 import { ProfileIcon, SearchIcon } from "../Icons";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Tippy from "@tippyjs/react";
 import { MdLogout } from "react-icons/md";
 import Icons from "@/public/icons/icon";
 import { AiOutlineClose } from "react-icons/ai";
+import { useRouter } from "next/router";
 interface MenuMobileProps {
   account: string;
   handleOpen: any;
@@ -82,6 +83,23 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
       )}
     </div>
   );
+
+  const router = useRouter();
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setOpenMenu(false);
+    };
+
+    if (window.innerWidth <= 768) {
+      router.events.on("routeChangeStart", handleRouteChange);
+    }
+
+    return () => {
+      if (window.innerWidth <= 768) {
+        router.events.off("routeChangeStart", handleRouteChange);
+      }
+    };
+  }, [router, setOpenMenu]);
   return (
     <div
       className={`${
@@ -91,13 +109,15 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
       } bg-white lg:hidden md:flex flex flex-col fixed justify-between h-full top-0 right-0 z-[100] left-0 p-4 bottom-0 w-full`}
     >
       <div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <AiOutlineClose
+        <div className="flex  items-center gap-2 flex-shrink-0">
+          <div
             onClick={() => {
               setOpenMenu(false);
             }}
-            className="mr-4"
-          />
+            className="pr-3 text-xl text-dark1"
+          >
+            <AiOutlineClose />
+          </div>
 
           <div className="text-center  flex justify-between w-full items-center">
             <div className="gap-2">
@@ -147,7 +167,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                 }}
                 className="flex items-center justify-between mb-4"
               >
-                <Link href="/" className="flex items-center gap-2">
+                <span className="flex items-center gap-2">
                   <Image
                     src={"/images/mobiles/trade.svg"}
                     width={24}
@@ -155,7 +175,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                     alt=""
                   />
                   Trade
-                </Link>
+                </span>
                 <IoIosArrowForward
                   className={`${
                     activeTrade ? "rotate-0" : "rotate-90"
@@ -166,25 +186,35 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
               <ul
                 className={`submenu ${
                   activeTrade ? "max-h-0" : "visible"
-                } flex flex-col gap-4 pl-8`}
+                } flex flex-col gap-4`}
               >
-                <li>Swap</li>
-                <li>
-                  <Link href={"/liquidity"}>Liquidity</Link>
-                </li>
+                <div className="flex pl-8 rounded-md flex-col gap-4 border p-2">
+                  <li>
+                    <Link
+                      href={
+                        "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC"
+                      }
+                    >
+                      Swap
+                    </Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link href={"/liquidity"}>Liquidity</Link>
+                  </li>
+                </div>
               </ul>
             </div>
 
             <div>
               <li className="flex items-center justify-between mb-4">
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/launchpad" className="flex items-center gap-2">
                   <Image
                     src={"/images/mobiles/laudpad.svg"}
                     width={24}
                     height={24}
                     alt=""
                   />
-                  Overview
+                  Launchpad
                 </Link>
               </li>
             </div>
@@ -215,35 +245,37 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
               <ul
                 className={`submenu ${
                   activeCat ? "max-h-0" : "visible"
-                } flex flex-col gap-4 pl-8`}
+                } flex flex-col gap-4`}
               >
-                <li>
-                  <Link href={"/category/art"}>Art</Link>
-                </li>
-                <li>
-                  <Link href={"/category/Gaming"}>Gaming</Link>
-                </li>
-                <li>
-                  <Link href={"/category/Memberships"}>Memberships</Link>
-                </li>
-                <li>
-                  <Link href={"/category/Music"}>Music</Link>
-                </li>
-                <li>
-                  <Link href={"/category/Others"}>Others</Link>
-                </li>
+                <div className="flex pl-8 rounded-md flex-col gap-4 border p-2">
+                  <li>
+                    <Link href={"/category/art"}>Art</Link>
+                  </li>
+                  <li>
+                    <Link href={"/category/gaming"}>Gaming</Link>
+                  </li>
+                  <li>
+                    <Link href={"/category/memberships"}>Memberships</Link>
+                  </li>
+                  <li>
+                    <Link href={"/category/music"}>Music</Link>
+                  </li>
+                  <li>
+                    <Link href={"/category/others"}>Others</Link>
+                  </li>
+                </div>
               </ul>
             </div>
             <div>
               <li className="flex items-center justify-between mb-4">
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/create" className="flex items-center gap-2">
                   <Image
                     src={"/images/mobiles/creator.svg"}
                     width={24}
                     height={24}
                     alt=""
                   />
-                  Creator
+                  Create
                 </Link>
               </li>
             </div>
@@ -251,21 +283,30 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
         </div>
       </div>
 
-      <div className="flex gap-4 mb-20 items-end text-xl">
-        <div>
-          <li className="flex items-center justify-between mb-4">
-            <Link href="/" className="flex items-center gap-2">
-              Docs
-            </Link>
-          </li>
+      <div className="flex justify-between flex-row-reverse">
+        <div className="flex gap-4 items-end text-xl">
+          <div>
+            <li className="flex items-center justify-between mb-4">
+              <Link
+                href="https://docs.demask.finance/"
+                className="flex items-center gap-2"
+              >
+                Docs
+              </Link>
+            </li>
+          </div>
+          <div>
+            <li className="flex items-center justify-between mb-4">
+              <Link href="/about" className="flex items-center gap-2">
+                About
+              </Link>
+            </li>
+          </div>
         </div>
-        <div>
-          <li className="flex items-center justify-between mb-4">
-            <Link href="/" className="flex items-center gap-2">
-              About
-            </Link>
-          </li>
-        </div>
+        <Link href="/">
+          {/* <LogoDemask width={94} height={24} /> */}
+          <Image src={"/logoHeader.svg"} alt="" width={94} height={24}></Image>
+        </Link>
       </div>
     </div>
   );

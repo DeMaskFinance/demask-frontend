@@ -62,7 +62,10 @@ html{
 }
 .highcharts-navigator-mask-inside{
   rx:10
+}
 
+.container-main{
+  max-width: 1048px;
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -91,9 +94,10 @@ html *::-webkit-scrollbar-track {
 
 .submenu {
   overflow: hidden;
-  transition: max-height .5s linear;
+  transition: all .2s linear;
 }
 
 .submenu.visible {
-  max-height: 500px; 
+  max-height: 500px;
+   
 }

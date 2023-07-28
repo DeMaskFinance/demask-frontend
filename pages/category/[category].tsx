@@ -27,19 +27,21 @@ export default function Art() {
     },
   });
   return (
-    <section className="pt-4 pb-32">
+    <section className="pt-6 pb-32 container-main mx-auto">
       <Head>
         <title>Category| DeMask</title>
       </Head>
       <div className="">
-        <h2 className="text-2xl font-medium pb-6 capitalize">{slug}</h2>
-        <ul className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 text-dark2 gap-8">
+        <h2 className="text-2xl bg-dark4 w-max px-4 py-1 rounded-md uppercase text-dark1 mx-auto font-medium mb-2">
+          {slug}
+        </h2>
+        <ul className="grid mt-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-1 text-dark2 gap-6">
           {data &&
             data?.items?.map((item: any, idx: number) => (
               <>
                 <li
                   title={item.metadata.name}
-                  className="p-2  hover:-translate-y-2 transition-all cursor-pointer shadow-home border-1 rounded-md overflow-hidden items-center "
+                  className="p-3  hover:-translate-y-1 transition-all hover:shadow-home cursor-pointer border rounded-md overflow-hidden items-center "
                 >
                   <Link
                     href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
@@ -121,14 +123,14 @@ export default function Art() {
                           </div>
 
                           <div className="flex flex-col">
-                            <p>Total sale</p>
+                            <p>Reverse NFT</p>
                             <p className="block">xxx ETH</p>
                           </div>
                         </div>
 
                         <div className="flex justify-between items-end">
                           <div className="flex flex-col">
-                            <p>Initial</p>
+                            <p>Reverse Token</p>
                             <p className="block">xxx ETH</p>
                           </div>
 

@@ -17,7 +17,7 @@ const data = [
   { id: 2, name: "Trade", subTradeMenu: true },
   { id: 3, name: "Launchpad", url: "/launchpad" },
   { id: 4, name: "Category", subCateMenu: true },
-  { id: 5, name: "Creator", url: "/creator" },
+  { id: 5, name: "Create", url: "/create" },
 ];
 
 const subMenuTradeData = [
@@ -34,6 +34,7 @@ const subMenuCateData = [
   { id: 3, name: "Memberships", url: "/category/memberships" },
   { id: 4, name: "Music", url: "/category/music" },
   { id: 5, name: "Film", url: "/category/film" },
+  { id: 6, name: "Others", url: "/category/others" },
 ];
 const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const tradeRef = useRef<HTMLAnchorElement | null>(null);

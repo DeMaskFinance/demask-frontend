@@ -2,7 +2,8 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
-import { TwoTab } from "../NavChoice";
+import { TabGroups } from "../NavChoice";
+import Image from "next/image";
 const styles = {
   btnActive: "rounded-lg bg-secondary5 px-2",
 };
@@ -22,7 +23,7 @@ export default function FooterSecondary() {
     <footer className="flex items-center gap-x-8 h-[66px] lg:px-primary md:px-14 px-4 bg-dark4 fixed bottom-0 left-0 right-0 z-[100] overflow-hidden">
       <div className="mr-2">
         <Link href="/">
-          <LogoDemask width={94} height={24} />
+          <Image src={"/logoHeader.svg"} alt="" width={94} height={24}></Image>
         </Link>
       </div>
       <div className="flex gap-x-4">

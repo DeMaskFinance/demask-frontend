@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper";
 import { SkeletonNFTTop } from "../Skeleton";
 import SkeletonCategory from "../Skeleton/SkeletonCategory";
+import { AvatarUser } from "../Avatars";
 
 const Category = ({ label }: { label: string }) => {
   const { data, isLoading } = useQuery({
@@ -29,9 +30,11 @@ const Category = ({ label }: { label: string }) => {
   };
 
   return (
-    <section className="pt-4">
+    <section className="mt-8 pt-6">
       <div>
-        <h2 className="text-2xl font-medium pb-6">{label}</h2>
+        <h2 className="text-2xl bg-dark4 w-max px-4 py-1 rounded-md uppercase text-dark1 mx-auto font-medium">
+          {label}
+        </h2>
         <Swiper
           slidesPerView={5}
           spaceBetween={30}
@@ -51,15 +54,15 @@ const Category = ({ label }: { label: string }) => {
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4,
               spaceBetween: 30,
             },
           }}
           loop={true}
           modules={[Autoplay, Navigation]}
-          className="mySwiper"
+          className="mySwiper !py-4"
         >
-          <ul className="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 text-dark2 gap-8">
+          <ul className="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 text-dark2 gap-6">
             {data &&
               data?.items?.map((item: any, idx: number) => (
                 <>
@@ -67,7 +70,7 @@ const Category = ({ label }: { label: string }) => {
                     <li
                       title={item.metadata.name}
                       key={idx}
-                      className="p-2  hover:-translate-y-2 transition-all cursor-pointer shadow-home border-1 rounded-md overflow-hidden items-center "
+                      className="p-3  hover:-translate-y-1 transition-all hover:shadow-home cursor-pointer border rounded-md overflow-hidden items-center "
                     >
                       <Link
                         href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
@@ -139,10 +142,15 @@ const Category = ({ label }: { label: string }) => {
                                 />
                               </svg>
                             </h6>
-                            <span className="pb-1 block">
-                              {item.creatorAddress.slice(0, 4)}...
-                              {item.creatorAddress.slice(-4)}
-                            </span>
+                            <div className="flex">
+                              <span className="shrink-0">
+                                <AvatarUser width={24} height={24} />
+                              </span>
+                              <span className="pb-1 -ml-2.5 block">
+                                {item.creatorAddress.slice(0, 4)}...
+                                {item.creatorAddress.slice(-4)}
+                              </span>
+                            </div>
                             <div className="flex justify-between pb-1">
                               <div className="flex flex-col">
                                 <p>Price</p>
@@ -150,14 +158,14 @@ const Category = ({ label }: { label: string }) => {
                               </div>
 
                               <div className="flex flex-col">
-                                <p>Total sale</p>
+                                <p>Reverse NFT</p>
                                 <p className="block">xxx ETH</p>
                               </div>
                             </div>
 
                             <div className="flex justify-between items-end">
                               <div className="flex flex-col">
-                                <p>Initial</p>
+                                <p>Reverse Token</p>
                                 <p className="block">xxx ETH</p>
                               </div>
 

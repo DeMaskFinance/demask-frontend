@@ -76,19 +76,19 @@ function ListTracsaction() {
   }, [page, refetch]);
   return (
     <div className="transactionList">
-      <div className="p-2 border rounded-lg overflow-hidden  overflow-x-scroll">
+      <div className="px-2 pt-2 shadow-home rounded-lg overflow-hidden  overflow-x-scroll">
         <button className="bg-secondary4 text-white py-2 px-6 rounded-lg">
           Transaction
         </button>
-        <div className="p-6">
+        <div className="px-6 pt-6 pb-0">
           <table className="w-full text-left">
             <thead className="">
-              <tr className="flex lg:text-base md:text-base text-sm">
+              <tr className="flex lg:text-base md:text-base text-sm border-b pb-2">
                 <th className="flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                   #
                 </th>
                 <th className="flex justify-start lg:w-full md:w-full w-[200px]">
-                  # Action
+                  Action
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   NFT amount
@@ -153,8 +153,8 @@ function ListTracsaction() {
         </button>
       </div> */}
       <div className="mx-auto w-full flex justify-center text-sm">
-        <div className="flex lg:flex-row md:flex-row flex-col lg:gap-10 md:gap-8 gap-4 py-20">
-          <div className="flex lg:gap-10 md:gap-8 gap-4">
+        <div className="flex lg:flex-row md:flex-row flex-col lg:gap-10 md:gap-8 gap-4 py-8">
+          <div className="flex lg:gap-10 md:gap-8 gap-1">
             <button
               onClick={prevPage}
               disabled={isPreviousData || page === 1}
