@@ -412,8 +412,9 @@ const Swap: React.FC = () => {
         <h3 className="mb-2 text-xl font-medium text-dark0">{nameNFT}</h3>
         <p className="text-sm font-medium text-dark1">{symbolNFT}</p>
       </div>
-      <div className="flex lg:flex-row md:flex-row flex-col gap-10">
-        <div className="lg:w-[50%] md:w-2/4 w-full overflow-hidden flex flex-col max-w-[772px] max-h-[772px] items-center">
+      <div className="flex flex-col gap-10 lg:flex-row md:flex-row">
+        <div className="lg:w-[50%] md:w-2/4 w-full flex flex-col max-w-[772px] max-h-[772px] items-center">
+          <div className="">
           {imageNFT && (
             <Image
               src={imageNFT}
@@ -421,7 +422,7 @@ const Swap: React.FC = () => {
               width={680}
               height={576}
               sizes="(max-width: 772px) 100vw"
-              className="rounded-lg  w-full "
+              className="w-full rounded-lg "
               style={{
                 objectFit: "contain",
               }}
@@ -451,6 +452,7 @@ const Swap: React.FC = () => {
               <code>audio</code> element.
             </audio>
           )}
+          </div>
           <p
             className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
             onClick={handleShowDetail}

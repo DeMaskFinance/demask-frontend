@@ -70,7 +70,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
             <Swiper
               navigation={true}
               modules={[Navigation]}
-              className="mySwiper lg:block md:block hidden"
+              className="hidden mySwiper lg:block md:block"
               slidesPerView={6}
               ref={swiperRef}
               breakpoints={{

@@ -29,7 +29,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   }, []);
 
   return (
-    <Link href="/details/123/123">
+    <Link href={`/details/${liquidity.dmlToken}`}>
       <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark3 hover:bg-secondary3 active:bg-secondary1">
         <p className="flex items-center leading-[13px]">
           <span>{liquidity.metadata.symbol}</span>

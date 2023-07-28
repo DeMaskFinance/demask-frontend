@@ -8,4 +8,13 @@ const liquidityListAPI = async (accountUser:string,page:number) =>{
         console.error(error);
     }
 }
-export {liquidityListAPI}
+const liquidityHistory = async (accountUser:string,dmlToken:string,page:number) =>{
+    try {
+        const res = await request.get(`/liquidity-history?userAddress=${accountUser.toLocaleLowerCase()}&dmlAddress=${dmlToken.toLocaleLowerCase()}&page=${page}`);
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+
+}
+export {liquidityListAPI,liquidityHistory};

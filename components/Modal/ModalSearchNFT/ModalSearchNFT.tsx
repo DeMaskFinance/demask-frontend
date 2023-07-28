@@ -122,9 +122,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
-  console.log(isERC1155);
-
-  console.log(metadata);
 
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>

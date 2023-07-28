@@ -1,11 +1,10 @@
 import abiRouter from "@/abi/abiRouter.json";
-import BuyNFT from "@/components/Swap/BuyNFT";
-import { getProvider } from "../connection/getProvider";
-import { ethers } from "ethers";
 import TransitionURL from "@/components/Toast/TransionURL";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import BigNumber from "bignumber.js";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getProvider } from "../connection/getProvider";
 interface BuyNFTProps {
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>;
   account: string | null;

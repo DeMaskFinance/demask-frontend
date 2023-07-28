@@ -20,6 +20,11 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   setIsOpenDetail,
   isOpenDetail,
 }) => {
+  console.log(nameNFT);
+  console.log(category);
+  console.log(category);
+  console.log(attributes);
+
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -39,39 +44,49 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
           <div className="bg-white h-fit w-[432px] rounded-lg px-4 pb-4 relative overflow-y-scroll">
             <p className="py-2 text-xl font-medium">Show Details</p>
             <ul>
-              <li className="mb-4">
-                <p>NFT Name</p>
-                <p className="text-dark3">{nameNFT}</p>
-              </li>
-              <li className="mb-4">
-                <p>Symbol</p>
-                <p className="text-dark3">{symbolNFT}</p>
-              </li>
-              <li className="mb-4">
-                <p>Description</p>
-                <p className="text-dark3">{formattedDescription}</p>
-              </li>
-              <li className="mb-4">
-                <p>Attributes</p>
-                <div className="text-dark3">
-                  {attributes.map((item: any, index) => (
-                    <ul className="flex gap-x-4" key={index}>
-                      <li>{item.trait_type}</li>
-                      <li>{item.value}</li>
-                    </ul>
-                  ))}
-                </div>
-              </li>
-              <li>
-                <p>Category</p>
-                <div className="flex gap-x-4">
-                  {category.map((item, index) => (
-                    <p className="text-dark3" key={index}>
-                      {item}
-                    </p>
-                  ))}
-                </div>
-              </li>
+              {nameNFT && (
+                <li className="mb-4">
+                  <p>NFT Name</p>
+                  <p className="text-dark3">{nameNFT}</p>
+                </li>
+              )}
+              {symbolNFT && (
+                <li className="mb-4">
+                  <p>Symbol</p>
+                  <p className="text-dark3">{symbolNFT}</p>
+                </li>
+              )}
+              {description && (
+                <li className="mb-4">
+                  <p>Description</p>
+                  <p className="text-dark3">{formattedDescription}</p>
+                </li>
+              )}
+              {attributes && (
+                <li className="mb-4">
+                  <p>Attributes</p>
+                  <div className="text-dark3">
+                    {attributes.map((item: any, index) => (
+                      <ul className="flex gap-x-4" key={index}>
+                        <li>{item.trait_type}</li>
+                        <li>{item.value}</li>
+                      </ul>
+                    ))}
+                  </div>
+                </li>
+              )}
+              {category && (
+                <li>
+                  <p>Category</p>
+                  <div className="flex gap-x-4">
+                    {category.map((item, index) => (
+                      <p className="text-dark3" key={index}>
+                        {item}
+                      </p>
+                    ))}
+                  </div>
+                </li>
+              )}
             </ul>
 
             <button

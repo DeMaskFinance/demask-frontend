@@ -36,11 +36,7 @@ export default function Liquidity() {
     hasNextPage,
   } = useInfiniteQuery(
     ["LiquidityList", account],
-    ({ pageParam = 1 }) =>
-      fetchDataListLiquidity(
-        account,
-        pageParam
-      ),
+    ({ pageParam = 1 }) => fetchDataListLiquidity(account, pageParam),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -48,8 +44,6 @@ export default function Liquidity() {
           : page?.currentPage + 1,
     }
   );
-  console.log(data?.pages[0]);
-  console.log(isSuccess, account.toLowerCase());
   return (
     <div className="py-8 px-secondary min-h-[calc(100vh-338px)]">
       <Head>
@@ -63,14 +57,14 @@ export default function Liquidity() {
             <div>
               {isSuccess &&
                 data.pages.map((page: any, index: number) => (
-                  <>
-                    <div key={index}>
-                      {page.combinedRecords.map(
-                        (liquidity: any, index: number) => (
-                          <LiquidytiesItem key={index} liquidity={liquidity}/>
-                        )
-                      )}
-                    </div>
+                  <div key={index}>
+                    {page.combinedRecords.map(
+                      (liquidity: any, index: number) => (
+                        <div key={index}>
+                          <LiquidytiesItem liquidity={liquidity} />
+                        </div>
+                      )
+                    )}
                     {hasNextPage && (
                       <p
                         onClick={() => fetchNextPage()}
@@ -79,10 +73,14 @@ export default function Liquidity() {
                         See more
                       </p>
                     )}
-                  </>
+                  </div>
                 ))}
             </div>
-            {(isFetchingNextPage|| isFetching) && <div><BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" /></div>}
+            {(isFetchingNextPage || isFetching) && (
+              <div>
+                <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
+              </div>
+            )}
           </div>
         ) : isLoading ? (
           <div>

@@ -35,7 +35,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       className={`
       rounded-lg
       text-sm
-      ${primary ? "bg-secondary5 text-white" : ""}
+      ${primary ? "bg-secondary2 text-white font-medium" : ""}
       ${active ? "bg-dark2 text-white" : ""}
       ${secondary ? "bg-white text-dark3" : ""}
       ${outline ? " border border-dark3 " : ""}
