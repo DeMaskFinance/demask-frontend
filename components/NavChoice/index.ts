@@ -1,1 +1,1 @@
-export {default as TwoTab} from './TwoTab'
+export {default as TabGroups} from './TabGroups'
