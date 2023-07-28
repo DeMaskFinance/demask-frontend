@@ -107,7 +107,7 @@ export default function Header() {
       >
         <div className="flex items-center gap-2 flex-shrink-0">
           <div
-            className="lg:hidden md:block block"
+            className="lg:hidden md:block block pr-2"
             onClick={() => {
               setOpenMenu(!openMenu);
             }}
