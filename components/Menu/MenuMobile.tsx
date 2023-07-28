@@ -136,7 +136,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                 <SearchIcon
                   width={32}
                   height={32}
-                  className="cursor-pointer h-full w-full active:fill-secondary3"
+                  className="cursor-pointer active:fill-secondary3"
                 />
               </div>
               {buttonConnect}
