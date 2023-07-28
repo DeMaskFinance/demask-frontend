@@ -47,7 +47,7 @@ export default function Creator() {
   };
   console.log(selectedFile);
   console.log(fileIPFS);
-  
+
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     file = e.dataTransfer.files[0];
@@ -93,7 +93,7 @@ export default function Creator() {
         "image/tiff",
       ];
       if (validExtensions.includes(fileType)) {
-        if (file.size < 1073741824) {         
+        if (file.size < 1073741824) {
           const fileURL = URL.createObjectURL(file);
           setFileType(fileType);
           setSelectedFile(fileURL);
@@ -189,141 +189,131 @@ export default function Creator() {
       value: "Memberships",
     },
   ];
-  const handleTextareaResize = (event:any) => {
+  const handleTextareaResize = (event: any) => {
     const textarea = event.target;
     textarea.style.height = "auto"; // reset height
 
     const { scrollHeight, clientHeight } = textarea;
     const minHeight = parseInt(window.getComputedStyle(textarea).minHeight);
 
-    textarea.style.height = Math.max(scrollHeight, clientHeight, minHeight) + "px";
+    textarea.style.height =
+      Math.max(scrollHeight, clientHeight, minHeight) + "px";
   };
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 150) {
-        uploadRef.current?.classList.add('fixed','top-[40px]');
-      } else {
-        uploadRef.current?.classList.remove('fixed','top-[40px]');
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  useEffect(()=>{
-    if(selectedFile===null){
+  useEffect(() => {
+    if (selectedFile === null) {
       itemRef.current?.classList.add("border");
     }
-  },[selectedFile])
+  }, [selectedFile]);
   return (
-    <div className="flex py-8 px-[250px] 3xl:px-secondary gap-x-[24px]">
+    <div className="flex lg:flex-row md:flex-row flex-col py-8 gap-6 container-main mx-auto">
       <Head>
         <title>Creator | DeMask</title>
       </Head>
       {/* UpLoad File */}
-      <div className="w-[504px] shrink-0">
-        <h2 className="text-2xl">Create A New Item</h2>
-        <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
-        <div className="flex flex-col items-center w-[504px]" ref={uploadRef}>
-          <div
-            className="flex flex-col items-center w-full text-center border border-dashed h-fit border-1 border-dark2 rounded-2xl"
-            ref={itemRef}
-            onDragOver={handleDragOver}
-            onDragLeave={handleLeave}
-            onDrop={handleDrop}
-          >
-            {selectedFile ? (
-              <div>
-                {fileType?.startsWith("image/") && (
-                  <Image
-                    src={selectedFile}
-                    alt="pictureframe"
-                    width={504}
-                    height={160}
-                    className="object-cover max-w-[504px] max-h-[590px] rounded-2xl"
-                  />
-                )}
-                {fileType?.startsWith("audio/") && (
-                  <div className="flex flex-col items-center">
+      <div className="lg:w-2/4 md:w-2/4 w-full shrink-0">
+        <div className="sticky top-16">
+          <h2 className="text-2xl">Create A New Item</h2>
+          <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
+          <div className="flex flex-col items-center w-full" ref={uploadRef}>
+            <div
+              className="flex flex-col items-center w-full text-center border border-dashed h-fit border-1 border-dark2 rounded-2xl"
+              ref={itemRef}
+              onDragOver={handleDragOver}
+              onDragLeave={handleLeave}
+              onDrop={handleDrop}
+            >
+              {selectedFile ? (
+                <div>
+                  {fileType?.startsWith("image/") && (
                     <Image
-                      src="/images/audio.svg"
-                      alt="audioImage"
-                      width={360}
-                      height={360}
-                      className="object-cover mt-6 mb-4 w-[540px] h-[360px] rounded-[2rem] mx-auto"
+                      src={selectedFile}
+                      alt="pictureframe"
+                      width={504}
+                      height={160}
+                      className="object-cover max-w-[504px] max-h-[590px] rounded-2xl"
                     />
-                    <audio autoPlay loop muted controls src={selectedFile}>
-                      Your browser does not support the
-                      <code>audio</code> element.
-                    </audio>
-                  </div>
-                )}
-                {fileType?.startsWith("video/") && (
-                  <video
-                    src={selectedFile}
-                    autoPlay
-                    loop
-                    muted
-                    controls
-                    width={504}
-                    height={288}
-                    className="rounded-2xl"
+                  )}
+                  {fileType?.startsWith("audio/") && (
+                    <div className="flex flex-col items-center">
+                      <Image
+                        src="/images/audio.svg"
+                        alt="audioImage"
+                        width={360}
+                        height={360}
+                        className="object-cover mt-6 mb-4 w-[540px] h-[360px] rounded-[2rem] mx-auto"
+                      />
+                      <audio autoPlay loop muted controls src={selectedFile}>
+                        Your browser does not support the
+                        <code>audio</code> element.
+                      </audio>
+                    </div>
+                  )}
+                  {fileType?.startsWith("video/") && (
+                    <video
+                      src={selectedFile}
+                      autoPlay
+                      loop
+                      muted
+                      controls
+                      width={504}
+                      height={288}
+                      className="rounded-2xl"
+                    />
+                  )}
+                  {fileType === "application/pdf" && (
+                    <embed
+                      src={selectedFile}
+                      width={504}
+                      height={500}
+                      type="application/pdf"
+                    />
+                  )}
+                  <input
+                    ref={inputRef}
+                    type="file"
+                    hidden
+                    onChange={handleChangeFile}
+                    accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, text/html, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf, application/zip"
                   />
-                )}
-                {fileType === "application/pdf" && (
-                  <embed
-                    src={selectedFile}
-                    width={504}
-                    height={500}
-                    type="application/pdf"
+                </div>
+              ) : (
+                <div onClick={handleClickFile} className="cursor-pointer">
+                  <Image
+                    src={images.pictureFrame}
+                    alt="pictureframe"
+                    width={160}
+                    height={160}
+                    className="object-cover mt-6 mb-4 w-[160px] h-40 rounded-[2rem] mx-auto"
                   />
-                )}
-                <input
-                  ref={inputRef}
-                  type="file"
-                  hidden
-                  onChange={handleChangeFile}
-                  accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, text/html, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf, application/zip"
-                />
-              </div>
-            ) : (
-              <div onClick={handleClickFile} className="cursor-pointer">
-                <Image
-                  src={images.pictureFrame}
-                  alt="pictureframe"
-                  width={160}
-                  height={160}
-                  className="object-cover mt-6 mb-4 w-[160px] h-40 rounded-[2rem] mx-auto"
-                />
-                <p>Upload media</p>
-                <input
-                  ref={inputRef}
-                  type="file"
-                  accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf"
-                  hidden
-                  onChange={handleChangeFile}
-                />
-                <p className="text-xs w-[254px] text-dark2 mb-6">
-                  Tap here to upload media from your device. Video, audio, gif,
-                  pdf, and images supported. Max size: 1GB.
-                </p>
-              </div>
+                  <p>Upload media</p>
+                  <input
+                    ref={inputRef}
+                    type="file"
+                    accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf"
+                    hidden
+                    onChange={handleChangeFile}
+                  />
+                  <p className="text-xs w-[254px] text-dark2 mb-6">
+                    Tap here to upload media from your device. Video, audio,
+                    gif, pdf, and images supported. Max size: 1GB.
+                  </p>
+                </div>
+              )}
+            </div>
+            {selectedFile && (
+              <Button
+                onClick={handleClickFile}
+                className="mt-6 w-[160px] h-[34px]"
+                primary
+              >
+                Edit file
+              </Button>
             )}
           </div>
-          {selectedFile && (
-            <Button
-              onClick={handleClickFile}
-              className="mt-6 w-[160px] h-[34px]"
-              primary
-            >
-              Edit file
-            </Button>
-          )}
         </div>
       </div>
-      <div className="w-full">
+      <div className="lg:w-2/4 md:w-2/4 w-full">
         <form id="creator">
           <div>
             <label htmlFor="name" className={styles.title}>
@@ -477,14 +467,14 @@ export default function Creator() {
               selectedCategory={selectedCategory}
               setEmptyInputs={setEmptyInputs}
               emptyInputs={emptyInputs}
-              setName= {setName}
-              setSymbol = {setSymbol}
-              setFileIPFS = {setFileIPFS}
-              setDescription = {setDescription}
-              setAttributeItems ={setAttributeItems}
+              setName={setName}
+              setSymbol={setSymbol}
+              setFileIPFS={setFileIPFS}
+              setDescription={setDescription}
+              setAttributeItems={setAttributeItems}
               setSelectedCategory={setSelectedCategory}
-              setSelectedFile = {setSelectedFile}
-              fileType = {fileType}
+              setSelectedFile={setSelectedFile}
+              fileType={fileType}
             />
           ) : (
             <LaunchPad
@@ -496,14 +486,14 @@ export default function Creator() {
               selectedCategory={selectedCategory}
               setEmptyInputs={setEmptyInputs}
               emptyInputs={emptyInputs}
-              setName= {setName}
-              setSymbol = {setSymbol}
-              setFileIPFS = {setFileIPFS}
-              setDescription = {setDescription}
-              setAttributeItems ={setAttributeItems}
+              setName={setName}
+              setSymbol={setSymbol}
+              setFileIPFS={setFileIPFS}
+              setDescription={setDescription}
+              setAttributeItems={setAttributeItems}
               setSelectedCategory={setSelectedCategory}
-              setSelectedFile = {setSelectedFile}
-              fileType = {fileType}
+              setSelectedFile={setSelectedFile}
+              fileType={fileType}
             />
           )}
         </form>

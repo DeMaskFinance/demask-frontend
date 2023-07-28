@@ -13,11 +13,14 @@ import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { AvatarUser } from "../Avatars";
+import { Picture } from "../Picture";
+import useSvgComponents from "../Picture/Picture";
 interface NFTItemsProps {
   nftItem: any;
 }
-
 const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
+  const svgComponents = useSvgComponents();
+
   const [heightDescription, setHeightDescription] = useState(0);
   const [isMore, setIsMore] = useState<boolean>(false);
   const [symbolToken, setSymbolToken] = useState<string>("");
@@ -81,38 +84,35 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   }
 
   return (
-    <div className="px-4 py-6 mt-6 rounded-lg shadow-home">
+    <div className="px-4 py-6 mb-6 rounded-lg shadow-chart">
       <div className="flex items-center justify-between flex-wrap">
         <div className="flex justify-between mb-2 items-center">
-          <h2 className="mr-4 text-2xl line-clamp-1 font-medium text-dark1">
-            {nftItem.metadata.name}{" "}
+          <h2 className="mr-4 text-2xl line-clamp-1 flex gap-1 font-medium text-dark1">
+            {nftItem.metadata.name} <svgComponents.buttonFlag />
           </h2>
           {reserveToken.toString() === "0" ||
             reserveNFT.toString() === "0" ||
             (reserveNFT.toString() === "1" && (
               <ActiveIcon width={24} height={24} className="mr-4 fill-red" />
             ))}
-          {nftItem.metadata.category.map((item: any, index: number) => (
-            <Link
-              href={`/category/${item.toLowerCase()}`}
-              key={index}
-              className="h-[30px] flex items-center px-2 mr-4 text-xs font-medium text-center border rounded-lg border-secondary5 text-dark1"
-            >
-              <p>{item}</p>
-            </Link>
-          ))}
         </div>
         <div className="flex gap-x-2 items-center ">
           {symbolToken && tokenAddress && nftAddress ? (
-            <div className="lg:text-[24px] md:text-lg text-base font-medium text-secondary3 flex gap-x-2 items-end leading-5">
+            <div className="bg-secondary5 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
               {reserveToken.toString() === "0" ||
               reserveNFT.toString() === "0" ||
               reserveNFT.toString() === "1" ? (
                 <div className="text-red">Unable to buy</div>
               ) : (
-                <span className="whitespace-pre">
-                  {formatPrice} {symbolTokenSwap}
-                </span>
+                <Link
+                  href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}?dmlAddress=${nftItem.dmlAddress}`}
+                  className="whitespace-pre font-semibold flex gap-2 items-center lg:text-lg md:text-md text-sm"
+                >
+                  <span>
+                    {formatPrice} {symbolTokenSwap}
+                  </span>
+                  <svgComponents.buttonSwap />
+                </Link>
               )}
             </div>
           ) : (
@@ -120,29 +120,32 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               <div className="w-24 h-6 rounded-full bg-slate-200"></div>
             </div>
           )}
-          {nftItem.tokenAddress && nftItem.nft && nftItem.tokenId ? (
-            <Link
-              href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}?dmlAddress=${nftItem.dmlAddress}`}
-            >
-              <SwapIcon width={24} height={24} />
-            </Link>
-          ) : (
-            <div className="flex animate-pulse gap-x-4">
-              <div className="w-10 h-6 rounded-full bg-slate-200"></div>
-            </div>
-          )}
         </div>
       </div>
-      <div className="flex items-center my-2 text-dark2">
-        <AvatarUser width={32} height={32} />
-        <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
-          0,
-          4
-        )}...${nftItem.creatorAddress.slice(-5)}`}</p>
-        <p className="-translate-y-[4px] mx-1">.</p>
-        <p className="text-xs first-letter:uppercase">
-          {nftItem.blockTimestamp}
-        </p>
+      <div className="flex items-center gap-4 my-2 text-dark2 flex-wrap">
+        <div className="flex items-center pr-6">
+          <AvatarUser width={32} height={32} />
+          <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
+            0,
+            4
+          )}...${nftItem.creatorAddress.slice(-5)}`}</p>
+          <p className="-translate-y-[4px] mx-1">.</p>
+          <p className="text-xs first-letter:uppercase whitespace-pre">
+            {nftItem.blockTimestamp}
+          </p>
+        </div>
+
+        <div className="flex gap-2 items-center flex-wrap">
+          {nftItem.metadata.category.map((item: any, index: number) => (
+            <Link
+              href={`/category/${item.toLowerCase()}`}
+              key={index}
+              className="rounded-lg bg-dark4 px-2"
+            >
+              <p>{item}</p>
+            </Link>
+          ))}
+        </div>
       </div>
       <p
         className={`text-dark2 ${isMore ? "line-clamp-0" : "line-clamp-3"}`}

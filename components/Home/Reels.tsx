@@ -1,6 +1,6 @@
 import images from "@/public/images";
 import Image from "next/image";
-import { TwoTab } from "../NavChoice";
+import { TabGroups } from "../NavChoice";
 import React, { useContext, useEffect, useState } from "react";
 import AccountContext from "@/context/AccountContext";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -488,15 +488,15 @@ const Reels: React.FC<ReelsProps> = ({
       {isSuccess && filter && (
         <div className="flex flex-col sticky top-8 h-full right-0 justify-start lg:w-2/4 md:w-2/4 w-full mx-auto  pt-4 z-10">
           <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex mb-3 text-dark1">
-              <div className="flex basis-1/6">
-                <TwoTab
-                  firstChoice="BUY"
-                  secondChoice="SELL"
+            <div className="flex mb-3 text-dark1 gap-4">
+              <div>
+                <TabGroups
+                  choices={["BUY", "SELL"]}
                   activeChoice={activeChoice}
                   onChoiceChange={handleChoiceChange}
                 />
               </div>
+
               <div className="basis-4/6">
                 <div className="flex justify-center text-xl font-medium text-dark1">
                   <span className="mr-4">{filter.metadata.name}</span>

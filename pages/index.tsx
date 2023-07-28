@@ -9,11 +9,18 @@ import { useInView } from "react-intersection-observer";
 import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
 import { NFTTop, Reels } from "@/components/Home";
 import { LayoutSecondary } from "@/components/Layouts";
+import { TabGroups } from "@/components/NavChoice";
+import Image from "next/image";
+import Link from "next/link";
+import SocialBar from "@/components/Home/SocialBar";
 
 const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
-  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
+  };
+  const [activeChoice, setActiveChoice] = useState<string>("Trending");
   useEffect(() => {
     setModeInitial(localStorage.getItem("MODE_DEMASK") || "");
   }, [mode]);
@@ -80,7 +87,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="py-8">
+    <div className="py-8 container-main mx-auto">
       <Head>
         <title>Home | DeMask</title>
       </Head>
@@ -101,16 +108,27 @@ const Home = () => {
         </>
       ) : (
         <div className="mb-6 leading-7">
-          <NFTTop />
-          <div className="flex flex-col items-center mt-8">
+          {/* <NFTTop /> */}
+          <div className="flex flex-col items-center lg:mt-8">
             {data?.pages[0] ? (
               <div className="flex flex-col items-center mx-auto">
-                <h1 className="text-3xl font-medium text-center  text-dark1 lg:w-[65%]">
-                  {data?.pages[0].totalRecords} curated NFT resources to buy and
-                  hold creative workflow.
+                <h1 className="lg:text-3xl font-medium text-center text-2xl text-dark1 lg:px-10 md:px-8 px-0">
+                  Discover{" "}
+                  <span className="text-secondary4">
+                    {data?.pages[0].totalRecords}
+                  </span>{" "}
+                  curated crypto collectibles to buy and hold, enriching your
+                  creative workflow.
                 </h1>
-                <h2 className="mt-2 text-xl text-center font-medium text-dark2">
-                  Join a growing family of {data?.pages[0].totalCreators}{" "}
+                <h2 className="mt-2 lg:text-xl text-md text-center font-medium text-dark2">
+                  Embrace the role of a{" "}
+                  <Link href={"/create"} className="text-secondary4">
+                    Creator
+                  </Link>{" "}
+                  now and join a growing community of{" "}
+                  <span className="text-secondary4">
+                    {data?.pages[0].totalCreators}
+                  </span>{" "}
                   designers and makers from around the world.
                 </h2>
               </div>
@@ -120,8 +138,8 @@ const Home = () => {
                 <p className="h-6 mt-4 rounded-full w-60 animate-pulse bg-slate-200"></p>
               </div>
             )}
-            <div className="mt-6 lg:my-6 my-0 bg-red-200">
-              {Category.map((item, index) => (
+            <div className="lg:my-8 my-6">
+              {/* {Category.map((item, index) => (
                 <Button
                   key={index}
                   className="p-2 ml-6 text-sm font-medium leading-normal text-dark3"
@@ -132,33 +150,43 @@ const Home = () => {
                 >
                   {item.value}
                 </Button>
-              ))}
+              ))} */}
+
+              <TabGroups
+                choices={["Trending", "Membership", "Lastest"]}
+                activeChoice={activeChoice}
+                onChoiceChange={handleChoiceChange}
+              />
             </div>
           </div>
-          <div className="lg:w-2/4 md:w-4/5 w-full mx-auto">
-            {isSuccess && data?.pages[0] ? (
-              data?.pages.map((page, index) => (
-                <Fragment key={index}>
-                  {page.records.map((nftItem: any, index: number) => (
-                    <NFTItems nftItem={nftItem} key={index} />
-                  ))}
-                </Fragment>
-              ))
-            ) : (
-              <>
-                <SkeletonNewFeeds />
-                <SkeletonNewFeeds />
-                <SkeletonNewFeeds />
-              </>
-            )}
-            <div ref={ref} style={{ height: "1px" }} />
-            {(isLoading || isFetchingNextPage || isFetching) && (
-              <>
-                <SkeletonNewFeeds />
-                <SkeletonNewFeeds />
-                <SkeletonNewFeeds />
-              </>
-            )}
+          <div className="w-full mx-auto flex lg:flex-row md:flex-row flex-col gap-6">
+            <div className="lg:w-[60%] md:w-[60%] w-full">
+              {isSuccess && data?.pages[0] ? (
+                data?.pages.map((page, index) => (
+                  <Fragment key={index}>
+                    {page.records.map((nftItem: any, index: number) => (
+                      <NFTItems nftItem={nftItem} key={index} />
+                    ))}
+                  </Fragment>
+                ))
+              ) : (
+                <>
+                  <SkeletonNewFeeds />
+                  <SkeletonNewFeeds />
+                  <SkeletonNewFeeds />
+                </>
+              )}
+              <div ref={ref} style={{ height: "1px" }} />
+              {(isLoading || isFetchingNextPage || isFetching) && (
+                <>
+                  <SkeletonNewFeeds />
+                  <SkeletonNewFeeds />
+                  <SkeletonNewFeeds />
+                </>
+              )}
+            </div>
+
+            <SocialBar />
           </div>
         </div>
       )}

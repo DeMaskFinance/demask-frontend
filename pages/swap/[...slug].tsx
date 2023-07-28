@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import { ActiveIcon, PoolIcon } from "@/components/Icons";
-import { TwoTab } from "@/components/NavChoice";
+import { TabGroups } from "@/components/NavChoice";
 import abiErc20 from "@/abi/abiErc20.json";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import Head from "next/head";
@@ -404,7 +404,7 @@ const Swap: React.FC = () => {
     document.body.style.overflowY = "hidden";
   };
   return (
-    <div className="py-8 swap">
+    <div className="py-8 swap container-main mx-auto">
       <Head>
         <title>Swap | DeMask</title>
       </Head>
@@ -501,9 +501,8 @@ const Swap: React.FC = () => {
                 )}
               </div>
               <div className="flex flex-col items-center basis-1/3">
-                <TwoTab
-                  firstChoice="BUY"
-                  secondChoice="SELL"
+                <TabGroups
+                  choices={["BUY", "SELL"]}
                   activeChoice={activeChoice}
                   onChoiceChange={handleChoiceChange}
                 />
