@@ -14,7 +14,10 @@ function ListTracsaction() {
       const res = await categoryAPI(`/transaction-list?page=${page}`);
       return res;
     },
+
+    refetchInterval: 60000,
   });
+  
   const goToPage = (pageNum: any) => {
     const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
     setPage(newPageNumber);
