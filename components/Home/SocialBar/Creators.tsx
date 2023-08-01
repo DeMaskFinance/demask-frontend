@@ -4,7 +4,7 @@ import React from "react";
 
 function Creators() {
   return (
-    <div className="px-2 mt-4 border rounded-lg border-dark4">
+    <div className="px-2 mt-4 border rounded-lg border-dark4 max-h-[200px] overflow-auto">
       <h4 className="px-2 pt-4 pb-2 text-xl font-semibold">
         Creators to follow
       </h4>
@@ -103,9 +103,6 @@ function Creators() {
           </div>
         </div>
       </div>
-      <button className="px-2 pt-2 pb-2 font-semibold text-secondary2">
-        See more
-      </button>
     </div>
   );
 }
