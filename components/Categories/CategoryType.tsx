@@ -11,6 +11,7 @@ import { Autoplay, Navigation } from "swiper";
 import { SkeletonNFTTop } from "../Skeleton";
 import SkeletonCategory from "../Skeleton/SkeletonCategory";
 import { AvatarUser } from "../Avatars";
+import images from "@/public/images";
 
 const Category = ({ label }: { label: string }) => {
   const { data, isLoading } = useQuery({
@@ -85,6 +86,8 @@ const Category = ({ label }: { label: string }) => {
                                 height={760}
                                 src={item.metadata.image}
                                 alt="NFT Image"
+                                placeholder="blur"
+                                blurDataURL={`${images.blur}`}
                                 className="max-w-full min-w-full h-0 w-0 min-h-full rounded-lg max-h-full absolute object-cover"
                               />
                             )}

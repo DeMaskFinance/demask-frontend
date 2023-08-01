@@ -1,7 +1,7 @@
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO, subDays } from "date-fns";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 
 interface ChartTVLProps {}
@@ -20,8 +20,29 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
     value: dataPoint.tvlInDay,
   }));
 
-  const [activeData, setActiveData] = useState<number | null>(112.2);
-  const [activeDate, setActiveDate] = useState<any>("2019-01-16");
+  const lastData = chartData && chartData[chartData.length - 1];
+  const [activeData, setActiveData] = useState<number | null>(null);
+
+  const [hasInitialSetting, setHasInitialSetting] = useState(false);
+  const [activeDate, setActiveDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (lastData && !hasInitialSetting) {
+      setActiveData(lastData.value);
+      setHasInitialSetting(true);
+      setActiveDate(lastData.date);
+    }
+  }, [lastData, hasInitialSetting]);
+
+  const handleMouseMove = (event: any) => {
+    if (event && event.activePayload && event.activePayload.length) {
+      const { value } = event.activePayload[0].payload;
+      const { date } = event.activePayload[0].payload;
+      setActiveData(value);
+      setActiveDate(date);
+    }
+  };
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return <div className="hidden custom-tooltip"></div>;
@@ -29,6 +50,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
 
     return null;
   };
+
   return (
     <div className="p-6 shadow-chart rounded-lg">
       <div className="mb-2 text-dark1">
@@ -36,7 +58,9 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
         <p className="my-2 text-2xl font-medium text-dark0">
           ${activeData?.toFixed(2)}M
         </p>
-        <p className="">{format(parseISO(activeDate), "MMM d, yyyy")} (UTC)</p>
+        <p className="">
+          {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
+        </p>
       </div>
       <div className="h-[212px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -48,13 +72,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
               left: 0,
               bottom: 0,
             }}
-            onMouseMove={(event) => {
-              if (event && event.activeLabel && event.activePayload) {
-                const { value } = event.activePayload[0];
-                setActiveData(value);
-                setActiveDate(event.activeLabel);
-              }
-            }}
+            onMouseMove={handleMouseMove}
           >
             <defs>
               <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">

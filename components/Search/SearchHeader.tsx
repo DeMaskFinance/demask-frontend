@@ -1,110 +1,142 @@
-import React,{useState} from 'react'
+import React, { useState, useRef, useEffect } from "react";
 import Icons from "@/public/icons/icon";
 import Image from "next/image";
 import Tippy from "@tippyjs/react/headless";
 import { FunctionComponent } from "react";
 import Link from "next/link";
+import { SearchIcon } from "../Icons";
+import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { AvatarUser } from "../Avatars";
 
-interface SearchProps {}
-const styles = {
-  titleSearch:'ml-2 font-medium text-dark2',
+interface SearchProps {
+  isFocused: any;
+  handleFocus: any;
 }
-const Search: FunctionComponent<SearchProps> = () => {
-  const [searchShow,setSearchShow] = useState<boolean>(false);
-  const [searchValue,setSearchValue] = useState<string | number | readonly string[] | undefined>();
-  const hiddenSearch = () =>{
-    setSearchShow(false)
-  }
-  const handleChangeSearch = (e:React.ChangeEvent<HTMLInputElement>) =>{
-    setSearchValue(e.target.value)
-  }
-  const clearValueInput = () =>{
-    setSearchValue('')
-  }
-  
+
+const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value);
+  };
+  const { isLoading, data, isFetching } = useQuery({
+    queryKey: ["categories", searchTerm],
+    queryFn: async () => {
+      const res = await categoryAPI(`/search?search=${searchTerm}`);
+      return res;
+    },
+  });
+  const [active, setActive] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setActive(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleActive = () => {
+    setActive(true);
+  };
+
   return (
-    <Tippy
-      interactive
-      visible={searchShow}
-      onClickOutside={hiddenSearch}
-      render={(attrs) => (
-        <div className="z-50 box" tabIndex={-1} {...attrs}>
-          <div className="bg-white w-[24vw] p-2 ml-[9px] rounded-lg shadow-2xl">
-            <h2 className={styles.titleSearch}>COLLECTIONS</h2>
-            <div className="">
-              <Link href="/">
-                <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <p className="ml-2 text-dark">ToCa.wft</p>
-                </div>
-              </Link>
-              <Link href="/">
-                <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <p className="ml-2 text-dark">ToCa.wft</p>
-                </div>
-              </Link>
-            </div>
-            <h2 className={styles.titleSearch}>ACCOUNTS</h2>
-            <div className="">
-              <Link href="/">
-                <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <p className="ml-2 text-dark">ToCa.wft</p>
-                </div>
-              </Link>
-              <Link href="/">
-                <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <p className="ml-2 text-dark">ToCa.wft</p>
-                </div>
-              </Link>
-            </div>
-            <h2 className={styles.titleSearch}>ITEMS</h2>
-            <div className="">
-              <Link href="/">
-                <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <p className="ml-2 text-dark">ToCa.wft</p>
-                </div>
-              </Link>
-              <Link href="/">
-                <div className="flex items-center h-10 pl-1 rounded-md hover:bg-dark2">
-                  <p className="ml-2 text-dark">ToCa.wft</p>
-                </div>
-              </Link>
+    <>
+      <li className="">
+        <div className="relative">
+          <div
+            ref={inputRef}
+            className={`flex ${isFocused} text-secondary5  rounded-lg`}
+          >
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Search NFT"
+              className={`border rounded-lg relative placeholder:text-dark2 transition-all ${
+                active
+                  ? "w-64 h-[32px]  border-secondary5 pl-10"
+                  : "w-[32px] h-[32px] placeholder:text-transparent bg-transparent transition-all"
+              } outline-none text-sm cursor-pointer text-dark2`}
+              onFocus={handleActive}
+            />
+            <div onClick={handleActive}>
+              <SearchIcon
+                width={32}
+                height={32}
+                className={`${
+                  active ? "" : ""
+                } cursor-pointer absolute top-0 right-0 left-0 bottom-0`}
+              />
             </div>
           </div>
+
+          <ul
+            className={`border max-h-72 overflow-y-auto ${
+              searchTerm !== "" && active ? "block" : "hidden"
+            }  bg-white w-64 rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
+          >
+            <p className="pb-2 text-base">Collections</p>
+            {data && data.length > 0 ? (
+              <>
+                <span className="text-xs flex item-center">
+                  <span className="font-semibold mr-1 block pb-2">
+                    {data.length}
+                  </span>{" "}
+                  items
+                </span>
+                <div className="flex gap-4 flex-col">
+                  {data.map((item: any) => (
+                    <>
+                      <Link
+                        href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
+                      >
+                        <div className="flex gap-2 justify-between w-full hover:bg-secondary5 p-1 items-center rounded-lg hover:text-white cursor-pointer">
+                          <h2 className="flex items-center gap-2">
+                            <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
+                              <AvatarUser width={32} height={32} />
+                            </div>
+                            <div className="flex flex-col items-baseline">
+                              <span className="text-sm font-semibold block">
+                                <span className="line-clamp-1">
+                                  {item.metadata.name}
+                                </span>
+                              </span>
+                              <span className="text-xs flex item-center">
+                                <span className="font-semibold mr-1 block pb-2">
+                                  {item.dmlAddress.slice(0, 8)}...
+                                  {item.dmlAddress.slice(-8)}
+                                </span>
+                              </span>
+                            </div>
+                          </h2>
+                        </div>
+                      </Link>
+                    </>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {isFetching ? (
+                  <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                ) : (
+                  <span className="text-base text-secondary3">No Result</span>
+                )}
+              </>
+            )}
+          </ul>
         </div>
-      )}
-    >
-      <div className="relative flex items-center pl-3 search">
-        <Image
-          src={Icons.searchIcon}
-          alt="search icon"
-          className="absolute mx-2"
-        />
-        <input
-          className="py-2 pl-10 border font-normal w-[20vw] text-sm h-8 rounded-lg border-secondary2 text-secondary1 placeholder:text-secondary2 focus:outline-secondary1 3xl:w-[24vw] placeholder:font-normal"
-          placeholder="Search items, collections, and accounts"
-          onFocus={()=>setSearchShow(true)}
-          onChange={handleChangeSearch}
-          value={searchValue}
-        ></input>
-        <div className={searchShow?"w-4 rotate-90 transition-all duration-300 ease-out absolute right-4 flex":"w-4 absolute right-4 flex"} onClick={clearValueInput}>
-          {/* <Image
-            className="absolute top-0 hidden w-4"
-            src={Icons.noneaCancelBottom}
-            alt="bottom search icon"
-          ></Image> */}
-          <Image
-            src={Icons.noneaCancelLeft}
-            alt="left search icon"
-            className='w-2'
-          ></Image>
-          <Image
-            src={Icons.noneaCancelRight}
-            alt="right search icon"
-            className={searchShow?"w-2 scroll-ml-0":'w-2 -ml-[1px]'}
-          ></Image>
-        </div>
-      </div>
-    </Tippy>
+      </li>
+    </>
   );
 };
 

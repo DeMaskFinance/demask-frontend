@@ -12,7 +12,7 @@ export default function About() {
         <title>About | DeMask</title>
       </Head>
 
-      <section className="pb-32">
+      <section className="pb-32 max-w-screen-xl mx-auto">
         <Introduction />
         <Market />
         <Features />
