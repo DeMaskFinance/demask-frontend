@@ -15,7 +15,7 @@ export default function Footer() {
     setActiveChoice(choice);
   };
   return (
-    <footer className="pt-8 pb-10 lg:px-primary md:px-14 px-4 bg-dark4 overflow-hidden">
+    <footer className="pt-8 lg:block md:hidden hidden pb-10 lg:px-primary md:px-14 px-4 bg-dark4 overflow-hidden">
       <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
         <div className="lg:order-none md:order-none order-1">
           <h2 className="mb-2 text-lg font-medium leading-6">
