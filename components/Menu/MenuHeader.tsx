@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { ActiveLink } from "../Link";
-import Link from "next/link";
 import Tippy from "@tippyjs/react/headless";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { SearchIcon } from "../Icons";
+import React, { useEffect, useRef, useState } from "react";
+import { ActiveLink } from "../Link";
+import Search from "../Search/SearchHeader";
 
 interface MenuHeaderProps {}
 const styles = {
@@ -39,7 +39,12 @@ const subMenuCateData = [
 const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const tradeRef = useRef<HTMLAnchorElement | null>(null);
   const router = useRouter();
-  //change css when switch nav header
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
   useEffect(() => {
     if (
       tradeRef.current &&
@@ -112,13 +117,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
         </React.Fragment>
       ))}
 
-      <li>
-        <SearchIcon
-          width={32}
-          height={32}
-          className="cursor-pointer active:fill-secondary3"
-        />
-      </li>
+      <Search isFocused={isFocused} handleFocus={handleFocus} />
     </ul>
   );
 };

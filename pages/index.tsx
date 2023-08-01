@@ -1,18 +1,15 @@
-import { Button } from "@/components/Buttons";
-import * as homeService from "@/libs/service/homeService";
-import Head from "next/head";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Reels } from "@/components/Home";
 import NFTItems from "@/components/Home/NFTItems";
-import type { GetServerSideProps } from "next";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
-import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
-import { NFTTop, Reels } from "@/components/Home";
+import SocialBar from "@/components/Home/SocialBar";
 import { LayoutSecondary } from "@/components/Layouts";
 import { TabGroups } from "@/components/NavChoice";
-import Image from "next/image";
+import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
+import * as homeService from "@/libs/service/homeService";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import Head from "next/head";
 import Link from "next/link";
-import SocialBar from "@/components/Home/SocialBar";
+import { Fragment, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
@@ -20,7 +17,7 @@ const Home = () => {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  const [activeChoice, setActiveChoice] = useState<string>("Trending");
+  const [activeChoice, setActiveChoice] = useState<string>("All");
   useEffect(() => {
     setModeInitial(localStorage.getItem("MODE_DEMASK") || "");
   }, [mode]);
@@ -49,22 +46,6 @@ const Home = () => {
           : page?.currentPage + 1,
     }
   );
-  console.log(isError);
-
-  const Category = [
-    {
-      id: 1,
-      value: "ALL",
-    },
-    {
-      id: 2,
-      value: "TRENDING",
-    },
-    {
-      id: 3,
-      value: "LASTEST",
-    },
-  ];
 
   useEffect(() => {
     if (inView) {
@@ -153,7 +134,7 @@ const Home = () => {
               ))} */}
 
               <TabGroups
-                choices={["Trending", "Membership", "Lastest"]}
+                choices={["All", "Category", "Lastest"]}
                 activeChoice={activeChoice}
                 onChoiceChange={handleChoiceChange}
               />

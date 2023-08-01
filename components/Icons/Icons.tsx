@@ -139,7 +139,7 @@ export const SearchIcon: React.FunctionComponent<IconProps> = ({
       width={width}
       height={height}
       viewBox="0 0 32 32"
-      fill="#9075FE"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect width="32" height="32" rx="8" />

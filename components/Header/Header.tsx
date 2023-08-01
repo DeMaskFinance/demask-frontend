@@ -93,27 +93,27 @@ export default function Header() {
 
   return (
     <>
-      <MenuMobile
+      {/* <MenuMobile
         account={account}
         style={style}
         disconnectWallet={disconnectWallet}
         handleOpen={handleOpen}
         openMenu={openMenu}
         setOpenMenu={setOpenMenu}
-      />
+      /> */}
       <header
         ref={headerRef}
         className="fixed top-0 left-0 gap-2 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14 px-4"
       >
         <div className="flex items-center gap-2 flex-shrink-0">
-          <div
+          {/* <div
             className="lg:hidden md:block block pr-2"
             onClick={() => {
               setOpenMenu(!openMenu);
             }}
           >
             <FaBars className="text-dark1" />
-          </div>
+          </div> */}
           <div className="text-center">
             <Link href="/">
               {/* <LogoDemask width={94} height={24} /> */}
