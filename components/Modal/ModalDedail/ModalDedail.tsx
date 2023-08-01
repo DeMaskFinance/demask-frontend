@@ -30,7 +30,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenDetail(false);
   };
-  const formattedDescription = description.split("\n").map((line, index) => (
+  const formattedDescription = description?.split("\n")?.map((line, index) => (
     <React.Fragment key={index}>
       {line}
       <br />

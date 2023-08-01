@@ -31,6 +31,7 @@ import useBalanceToken from "@/hooks/useInformationToken";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useDMLToken from "@/hooks/useDMLToken";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
+import { BiLoaderAlt } from "react-icons/bi";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -55,7 +56,7 @@ export default function AddLiquidity() {
   const { currency } = router.query;
   const { account, wallet } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
-  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>();
+  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -74,7 +75,7 @@ export default function AddLiquidity() {
   } = useMetadata(nftAddress, idNFT);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
 
-  const { balanceToken, decimals, bigNumberBalance,symbolToken } = useBalanceToken(
+  const { balanceToken, decimals, bigNumberBalance, symbolToken } = useBalanceToken(
     account,
     tokenAddress,
     wallet
@@ -103,20 +104,27 @@ export default function AddLiquidity() {
         reserves &&
         inputNFT
       ) {
-        amountErcDesired = ethers.BigNumber.from(inputNFT)
-          .mul(reserves[0])
-          .div(reserves[1])
-          .mul(105)
-          .div(100);
+        if (reserves[0] && reserves[1]) {
+          amountErcDesired = ethers.BigNumber.from(inputNFT)
+            .mul(reserves[0])
+            .div(reserves[1])
+            .mul(105)
+            .div(100);
+        }
       } else {
         amountErcDesired = handleBignumber(
           Number(inputToken),
           Number(decimals)
         );
       }
-      setAmountErcDesired(amountErcDesired);
-      const amountErcDesiredToDec = handleBignumbertoDec(amountErcDesired, 18);
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+      if (reserves[0] && reserves[1]) {
+        setAmountErcDesired(amountErcDesired);
+        const amountErcDesiredToDec = handleBignumbertoDec(
+          amountErcDesired,
+          18
+        );
+        setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+      }
     }
   }, [inputNFT, inputToken]);
 
@@ -141,7 +149,7 @@ export default function AddLiquidity() {
       const signer = provider.getSigner();
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      const value = handleBignumber(Number(inputToken),18);
+      const value = handleBignumber(Number(inputToken), 18);
 
       try {
         let result;
@@ -196,7 +204,7 @@ export default function AddLiquidity() {
     }
   };
 
-  const hanldeApproveToken = async () => {
+  const handleApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -229,7 +237,7 @@ export default function AddLiquidity() {
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress,inputToken]);
+  }, [account, wallet, tokenAddress, inputToken]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
@@ -237,7 +245,7 @@ export default function AddLiquidity() {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet]);
-  const hanldeApproveNFT = async () => {
+  const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -344,8 +352,8 @@ export default function AddLiquidity() {
               <p>Token</p>
               <p>Balance: {balanceToken}</p>
             </div>
-            {tokenAddress === "MATIC" ||
-            dmlToken === "0x0000000000000000000000000000000000000000" ? (
+            {(tokenAddress === "MATIC" ||
+              dmlToken === "0x0000000000000000000000000000000000000000") ? (
               <input
                 className={styles.inputItem}
                 type="number"
@@ -354,7 +362,17 @@ export default function AddLiquidity() {
                 onChange={handleGetToken}
               />
             ) : (
-              <div className={styles.inputItem}>{amountErcDesiredToDec}</div>
+              <div>
+                {reserves[0] && reserves[1] ? (
+                  <div className={styles.inputItem}>
+                    {amountErcDesiredToDec}
+                  </div>
+                ) : (
+                  <div className={styles.inputItem}>
+                    <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                  </div>
+                )}
+              </div>
             )}
             {isSufficientToken && (
               <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
@@ -364,7 +382,7 @@ export default function AddLiquidity() {
           </div>
         </div>
         {!isApprovedNFT && (
-          <Button className="w-[126px] py-2" primary onClick={hanldeApproveNFT}>
+          <Button className="w-[126px] py-2" primary onClick={handleApproveNFT}>
             APPROVE NFT
           </Button>
         )}
@@ -372,7 +390,7 @@ export default function AddLiquidity() {
           <Button
             className="w-[126px] py-2"
             primary
-            onClick={hanldeApproveToken}
+            onClick={handleApproveToken}
           >
             APPROVE TOKEN
           </Button>

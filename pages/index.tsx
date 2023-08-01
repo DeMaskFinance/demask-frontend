@@ -87,7 +87,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="py-8 container-main mx-auto">
+    <div className="py-8 mx-auto container-main">
       <Head>
         <title>Home | DeMask</title>
       </Head>
@@ -112,7 +112,7 @@ const Home = () => {
           <div className="flex flex-col items-center lg:mt-8">
             {data?.pages[0] ? (
               <div className="flex flex-col items-center mx-auto">
-                <h1 className="lg:text-3xl font-medium text-center text-2xl text-dark1 lg:px-10 md:px-8 px-0">
+                <h1 className="px-0 text-2xl font-medium text-center lg:text-3xl text-dark1 lg:px-10 md:px-8">
                   Discover{" "}
                   <span className="text-secondary4">
                     {data?.pages[0].totalRecords}
@@ -120,7 +120,7 @@ const Home = () => {
                   curated crypto collectibles to buy and hold, enriching your
                   creative workflow.
                 </h1>
-                <h2 className="mt-2 lg:text-xl text-md text-center font-medium text-dark2">
+                <h2 className="mt-2 font-medium text-center lg:text-xl text-md text-dark2">
                   Embrace the role of a{" "}
                   <Link href={"/create"} className="text-secondary4">
                     Creator
@@ -138,7 +138,7 @@ const Home = () => {
                 <p className="h-6 mt-4 rounded-full w-60 animate-pulse bg-slate-200"></p>
               </div>
             )}
-            <div className="lg:my-8 my-6">
+            <div className="my-6 lg:my-8">
               {/* {Category.map((item, index) => (
                 <Button
                   key={index}
@@ -159,8 +159,8 @@ const Home = () => {
               />
             </div>
           </div>
-          <div className="w-full mx-auto flex lg:flex-row md:flex-row flex-col gap-6">
-            <div className="lg:w-[60%] md:w-[60%] w-full">
+          <div className="flex flex-col w-full gap-6 mx-auto lg:flex-row md:flex-row">
+            <div className="lg:w-[70%] md:w-[70%] w-full">
               {isSuccess && data?.pages[0] ? (
                 data?.pages.map((page, index) => (
                   <Fragment key={index}>

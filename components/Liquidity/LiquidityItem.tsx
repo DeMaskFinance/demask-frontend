@@ -17,6 +17,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   const { account, wallet } = useContext(AccountContext);
   const [reward, setReward] = useState("");
   const { decimals } = useInformationDML(liquidity.dmlToken);
+  const [tokenSymbol, setTokenSymbol] = useState("");
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account) {
@@ -27,18 +28,28 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     };
     fetchDataReward();
   }, []);
-
+  useEffect(() => {
+    if (account) {
+      if (liquidity.erc === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
+        setTokenSymbol("MATIC");
+      } else {
+        setTokenSymbol(liquidity.tokenName);
+      }
+    }
+  }, []);
   return (
     <Link href={`/details/${liquidity.dmlToken}`}>
-      <div className="flex justify-between p-2 mb-6 text-white transition-all duration-200 ease-in-out rounded cursor-pointer bg-dark3 hover:bg-secondary3 active:bg-secondary1">
+      <div className="box-border flex justify-between p-2 mb-6 rounded cursor-pointer text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
         <p className="flex items-center leading-[13px]">
           <span>{liquidity.metadata.symbol}</span>
           <span className="overflow-hidden">/</span>
-          <span>{liquidity.tokenName}</span>
+          <span>{tokenSymbol}</span>
         </p>
-        <p>
-          REWARD: {formatNumber(reward)} {liquidity.tokenName}
-        </p>
+        <div className="flex items-center">
+          REWARD: 
+          {reward?(<span>{formatNumber(reward)}</span>):(<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)} 
+          <span>{tokenSymbol}</span>
+        </div>
       </div>
     </Link>
   );

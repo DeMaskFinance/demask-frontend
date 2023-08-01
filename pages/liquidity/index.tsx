@@ -45,14 +45,19 @@ export default function Liquidity() {
     }
   );
   return (
-    <div className="py-8 px-secondary min-h-[calc(100vh-338px)]">
+    <div className="py-8 px-secondary min-h-[calc(100vh-300px)]">
       <Head>
         <title>Liquidity | DeMask</title>
       </Head>
       <div className="w-full">
         <h2 className="text-2xl text-black24">Your Liquidity</h2>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
-        {account && data?.pages[0] ? (
+        {(!account || !data?.pages[0] && !isLoading) && (
+          <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
+            No liquidity found.
+          </div>
+        )}
+        {account && data?.pages[0] && (
           <div>
             <div>
               {isSuccess &&
@@ -81,17 +86,15 @@ export default function Liquidity() {
                 <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
               </div>
             )}
-          </div>
-        ) : isLoading ? (
-          <div>
-            <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
-          </div>
-        ) : (
-          <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
-            No liquidity found.
-          </div>
-        )}
-
+          </div>)
+        }
+        {
+          isLoading && account && (
+            <div>
+              <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
+            </div>
+          )
+        }
         <Button
           type="button"
           primary

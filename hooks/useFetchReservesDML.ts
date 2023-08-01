@@ -5,7 +5,7 @@ const useFetchReservesDML = (
   account: string,
   dmlToken: string | undefined,
   wallet: string,
-  inputNFT: string
+  inputNFT?: string
 ) => {
   const [reserves, setReserves] = useState<any[]>([0]);
   const [isLoadingReserves, setIsLoadingReserves] = useState<boolean>(false);

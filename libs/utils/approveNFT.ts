@@ -7,7 +7,7 @@ const approveNFT = async (
   wallet: string,
   nftAddress: string
 ) => {
-  if (account && nftAddress) {
+  if (account && nftAddress && wallet) {
     console.log(nftAddress);
     
     const providerChoice = getProvider(wallet);

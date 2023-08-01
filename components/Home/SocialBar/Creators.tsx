@@ -4,14 +4,14 @@ import React from "react";
 
 function Creators() {
   return (
-    <div className="border border-dark4 rounded-lg px-2 mt-4">
-      <h4 className="text-2xl font-semibold px-2 pt-4 pb-2">
+    <div className="px-2 mt-4 border rounded-lg border-dark4">
+      <h4 className="px-2 pt-4 pb-2 text-xl font-semibold">
         Creators to follow
       </h4>
 
-      <div className="w-full border rounded-lg p-2 mt-2">
+      <div className="w-full p-2 mt-2 border rounded-lg">
         <div className="flex flex-col">
-          <div className="flex gap-2 justify-between w-full">
+          <div className="flex justify-between w-full gap-2">
             <h2 className="flex">
               <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
                 <Image
@@ -22,10 +22,10 @@ function Creators() {
                   className="w-full"
                 />
               </div>
-              <div className="flex gap-2 items-baseline">
-                <span className="text-base font-semibold block">Johhny</span>
+              <div className="flex items-baseline gap-2">
+                <span className="block text-base font-semibold">Johhny</span>
 
-                <span className="text-xs flex item-center"> 3 Collections</span>
+                <span className="flex text-xs item-center"> 3 Collections</span>
               </div>
 
               <svg
@@ -48,7 +48,7 @@ function Creators() {
             </h2>
 
             <Link
-              className="bg-dark4 text-sm py-1 px-2 flex items-center rounded-lg"
+              className="flex items-center px-2 py-1 text-sm rounded-lg bg-dark4"
               href="/"
             >
               ART
@@ -56,9 +56,9 @@ function Creators() {
           </div>
         </div>
       </div>
-      <div className="w-full border rounded-lg p-2 mt-2">
+      <div className="w-full p-2 mt-2 border rounded-lg">
         <div className="flex flex-col">
-          <div className="flex gap-2 justify-between w-full">
+          <div className="flex justify-between w-full gap-2">
             <h2 className="flex">
               <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
                 <Image
@@ -69,10 +69,10 @@ function Creators() {
                   className="w-full"
                 />
               </div>
-              <div className="flex gap-2 items-baseline">
-                <span className="text-base font-semibold block">Johhny</span>
+              <div className="flex items-baseline gap-2">
+                <span className="block text-base font-semibold">Johhny</span>
 
-                <span className="text-xs flex item-center"> 3 Collections</span>
+                <span className="flex text-xs item-center"> 3 Collections</span>
               </div>
 
               <svg
@@ -95,7 +95,7 @@ function Creators() {
             </h2>
 
             <Link
-              className="bg-dark4 text-sm py-1 px-2 flex items-center rounded-lg"
+              className="flex items-center px-2 py-1 text-sm rounded-lg bg-dark4"
               href="/"
             >
               ART
@@ -103,7 +103,7 @@ function Creators() {
           </div>
         </div>
       </div>
-      <button className="text-secondary2 font-semibold px-2 pt-2 pb-2">
+      <button className="px-2 pt-2 pb-2 font-semibold text-secondary2">
         See more
       </button>
     </div>

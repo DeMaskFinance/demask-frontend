@@ -28,7 +28,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   const [name, setName] = useState<string>("");
   const [symbol, setSymbol] = useState<string>("");
   const router = useRouter();
-  const hanldeAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     setTokenAddress(e.target.value);
     const { isERC20, name, symbol, decimals } = await checkIsERC20(
@@ -98,7 +98,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
                 className={styles.inputItem}
                 placeholder="Search Token Address"
                 value={tokenAddress}
-                onChange={hanldeAddressToken}
+                onChange={handleAddressToken}
               />
               {loading && (
                 <div className="absolute top-[50%] right-2 -translate-y-1/2">

@@ -4,10 +4,10 @@ import React from "react";
 
 function InterestItem() {
   return (
-    <div className="border border-dark4 rounded-lg px-2">
-      <h4 className="text-2xl font-semibold px-2 pt-4">You maybe interested</h4>
+    <div className="px-2 border rounded-lg border-dark4">
+      <h4 className="px-2 pt-4 text-xl font-semibold">You may be interested</h4>
 
-      <div className="flex cursor-pointer gap-4 border rounded-lg p-2 items-center mt-4 transition-all group overflow-hidden hover:text-secondary3 hover:border-secondary3">
+      <div className="flex items-center gap-4 p-2 mt-4 overflow-hidden transition-all border rounded-lg cursor-pointer group hover:text-secondary3 hover:border-secondary3">
         <div className="w-[88px] group-hover:w-[35%]  group-hover:h-[100%] transition-all flex-shrink-0 h-[88px] overflow-hidden rounded-lg">
           <Image
             src={"images/about/features.svg"}
@@ -18,9 +18,9 @@ function InterestItem() {
           />
         </div>
         <div className="flex flex-col justify-between">
-          <div className="flex  justify-between w-full gap-2 pb-2 flex-wrap">
+          <div className="flex flex-wrap justify-between w-full gap-2 pb-2">
             <h2 className="flex">
-              <span className="text-2xl font-semibold block">Johhny</span>
+              <span className="block text-xl font-semibold">Johhny</span>
               <svg
                 width="25"
                 height="24"
@@ -41,23 +41,23 @@ function InterestItem() {
             </h2>
 
             <Link
-              className="bg-dark4 text-sm py-1 px-2 flex items-center rounded-lg"
+              className="flex items-center px-2 py-1 text-sm rounded-lg bg-dark4"
               href="/"
             >
               ART
             </Link>
           </div>
-          <p className="line-clamp-2 text-sm">
+          <p className="text-sm line-clamp-2">
             On May 2nd 2023, artist Jeremy Cowart created his historic AURAS
             project ...
           </p>
 
-          <span className="border mt-1 group-hover:border-secondary3 w-max px-6 group-hover:block hidden py-2 rounded-lg ">
+          <span className="hidden px-6 py-2 mt-1 border rounded-lg group-hover:border-secondary3 w-max group-hover:block ">
             1,000.125 USD
           </span>
         </div>
       </div>
-      <div className="flex cursor-pointer gap-4 border rounded-lg p-2 items-center mt-4 transition-all group overflow-hidden hover:text-secondary3 hover:border-secondary3">
+      <div className="flex items-center gap-4 p-2 mt-4 overflow-hidden transition-all border rounded-lg cursor-pointer group hover:text-secondary3 hover:border-secondary3">
         <div className="w-[88px] group-hover:w-[35%]  group-hover:h-[100%] transition-all flex-shrink-0 h-[88px] overflow-hidden rounded-lg">
           <Image
             src={"images/about/features.svg"}
@@ -68,9 +68,9 @@ function InterestItem() {
           />
         </div>
         <div className="flex flex-col justify-between">
-          <div className="flex  justify-between w-full gap-2 pb-2 flex-wrap">
+          <div className="flex flex-wrap justify-between w-full gap-2 pb-2">
             <h2 className="flex">
-              <span className="text-2xl font-semibold block">Johhny</span>
+              <span className="block text-xl font-semibold">Johhny</span>
               <svg
                 width="25"
                 height="24"
@@ -91,23 +91,23 @@ function InterestItem() {
             </h2>
 
             <Link
-              className="bg-dark4 text-sm py-1 px-2 flex items-center rounded-lg"
+              className="flex items-center px-2 py-1 text-sm rounded-lg bg-dark4"
               href="/"
             >
               ART
             </Link>
           </div>
-          <p className="line-clamp-2 text-sm">
+          <p className="text-sm line-clamp-2">
             On May 2nd 2023, artist Jeremy Cowart created his historic AURAS
             project ...
           </p>
 
-          <span className="border mt-1 group-hover:border-secondary3 w-max px-6 group-hover:block hidden py-2 rounded-lg ">
+          <span className="hidden px-6 py-2 mt-1 border rounded-lg group-hover:border-secondary3 w-max group-hover:block ">
             1,000.125 USD
           </span>
         </div>
       </div>
-      <button className="text-secondary2 font-semibold px-2 py-2">
+      <button className="px-2 py-2 font-semibold text-secondary2">
         See more
       </button>
     </div>

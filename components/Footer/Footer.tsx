@@ -15,9 +15,9 @@ export default function Footer() {
     setActiveChoice(choice);
   };
   return (
-    <footer className="pt-8 pb-10 lg:px-primary md:px-14 px-4 bg-dark4 overflow-hidden">
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
-        <div className="lg:order-none md:order-none order-1">
+    <footer className="px-4 pt-8 pb-10 overflow-hidden lg:px-primary md:px-14 bg-dark4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 md:grid-cols-3">
+        <div className="order-1 lg:order-none md:order-none">
           <h2 className="mb-2 text-lg font-medium leading-6">
             <Link href="/about">About</Link>
           </h2>
@@ -36,7 +36,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="lg:order-none md:order-none order-3">
+        <div className="order-3 lg:order-none md:order-none">
           <h2 className="mb-2 text-lg font-medium leading-6">
             <Link href="/brand">Help</Link>
           </h2>
@@ -49,7 +49,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="lg:order-none md:order-none order-4">
+        <div className="order-4 lg:order-none md:order-none">
           <h2 className="mb-2 text-lg font-medium leading-6">
             <Link href="/term">Developers</Link>
           </h2>
@@ -78,7 +78,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="lg:order-none md:order-none order-2 pl-[2%]">
-          <div className="flex text-base text-white bg-dark3 p-1 rounded-lg w-max items-center text-center">
+          <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
             <div
               className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex gap-2 items-center ${
                 activeChoice === "Light" ? "bg-secondary5" : ""
@@ -100,7 +100,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="py-4">
-            <h2 className="text-lg font-medium flex leading-6">
+            <h2 className="flex text-lg font-medium leading-6">
               <Link href="/">
                 {/* <LogoDemask width={94} height={24} /> */}
                 <Image
@@ -114,20 +114,28 @@ export default function Footer() {
             <p className="mt-2 text-dark2">contact@demask.finance</p>
           </div>
           <div className="flex gap-[18px]">
-            <Link href="/">
+            <a
+              href="https://twitter.com/DemaskFinance"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
               <TwitterIcon
                 width={24}
                 height={24}
                 className="fill-dark3 hover:fill-secondary5"
               />
-            </Link>
-            <Link href="/">
+            </a>
+            <a
+              href="https://web.telegram.org/k/#@DemaskFinance"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
               <TeleIcon
                 width={24}
                 height={24}
                 className="fill-dark3 hover:fill-secondary5"
               />
-            </Link>
+            </a>
           </div>
         </div>
       </div>

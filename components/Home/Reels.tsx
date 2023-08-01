@@ -243,7 +243,7 @@ const Reels: React.FC<ReelsProps> = ({
     checkApproveToken();
   }, [account, wallet, filter.tokenAddress, amountNFTSubmit, amountTokenBuy]);
 
-  const hanldeApproveNFT = async () => {
+  const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -436,7 +436,7 @@ const Reels: React.FC<ReelsProps> = ({
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
                       <SwiperSlide key={`${nftItem._id}-${index}`}>
-                        <div className="relative flex items-center h-full w-full">
+                        <div className="relative flex items-center w-full h-full">
                           {nftItem.metadata.image && (
                             <Image
                               width={760}
@@ -486,9 +486,9 @@ const Reels: React.FC<ReelsProps> = ({
         </div>
       )}
       {isSuccess && filter && (
-        <div className="flex flex-col sticky top-8 h-full right-0 justify-start lg:w-2/4 md:w-2/4 w-full mx-auto  pt-4 z-10">
+        <div className="sticky right-0 z-10 flex flex-col justify-start w-full h-full pt-4 mx-auto top-8 lg:w-2/4 md:w-2/4">
           <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex mb-3 text-dark1 gap-4">
+            <div className="flex gap-4 mb-3 text-dark1">
               <div>
                 <TabGroups
                   choices={["BUY", "SELL"]}
@@ -677,7 +677,7 @@ const Reels: React.FC<ReelsProps> = ({
               </div>
             )}
 
-            {!isSufficientNFT && balanceNFT && (
+            {!isSufficientNFT && balanceNFT && account && (
               <p
                 className="mt-4 mb-2 ml-3 text-xs text-center text-red"
                 key="NFTbalance"
@@ -722,7 +722,7 @@ const Reels: React.FC<ReelsProps> = ({
                   <Button
                     className="w-[126px] py-2"
                     primary
-                    onClick={hanldeApproveNFT}
+                    onClick={handleApproveNFT}
                   >
                     APPROVE NFT
                   </Button>

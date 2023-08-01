@@ -103,7 +103,7 @@ const Swap: React.FC = () => {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet]);
-  const hanldeApproveNFT = async () => {
+  const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -404,7 +404,7 @@ const Swap: React.FC = () => {
     document.body.style.overflowY = "hidden";
   };
   return (
-    <div className="py-8 swap container-main mx-auto">
+    <div className="py-8 mx-auto swap container-main">
       <Head>
         <title>Swap | DeMask</title>
       </Head>
@@ -688,7 +688,7 @@ const Swap: React.FC = () => {
                 <Button
                   className="w-[126px] py-2"
                   primary
-                  onClick={hanldeApproveNFT}
+                  onClick={handleApproveNFT}
                 >
                   APPROVE NFT
                 </Button>

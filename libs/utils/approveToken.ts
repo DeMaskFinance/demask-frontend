@@ -7,7 +7,7 @@ const approveToken = async (
   wallet: string,
   tokenAddress: string
 ) => {
-  if (account && tokenAddress) {
+  if (account && tokenAddress && wallet) {
     const providerChoice = getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
 

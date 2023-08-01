@@ -2,10 +2,13 @@ import { Button } from "@/components/Buttons";
 import { BackIcon } from "@/components/Icons";
 import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
+import { ModalDetail } from "@/components/Modal/ModalDedail";
+import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useInformationDML from "@/hooks/useInformationDML";
+import useMetadata from "@/hooks/useMetadata";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -36,12 +39,17 @@ export default function DetailLiquidity() {
   const [reward, setReward] = useState("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
+  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
+  const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
+    useState<boolean>(false);
   const [page, setPage] = useState(1);
+  const [tokenSymbol, setTokenSymbol] = useState("");
   useEffect(() => {
     if (liquidity) {
       setDmlTokenLiquidity(liquidity[0]);
     }
   }, [liquidity]);
+
   const { decimals } = useInformationDML(dmlTokenLiquidity);
   useEffect(() => {
     const fetchDataReward = async () => {
@@ -72,19 +80,36 @@ export default function DetailLiquidity() {
   };
 
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["LiquidityHistory"],
+    queryKey: ["liquidityHistory", account, dmlTokenLiquidity],
     queryFn: async () => {
-      const res = await liquidityHistory(
-        "0x28c6fc863b28c795975fce54cf1f1a1771b5ef2b",
-        "0xd7e292b1fe46b0647b94b0b30a6af1e7fac061c0",
-        page
-      );
-      return res;
+      if (account && dmlTokenLiquidity) {
+        const res = await liquidityHistory(account, dmlTokenLiquidity, page);
+        return res;
+      }
     },
-
     keepPreviousData: true,
   });
-
+  useEffect(() => {
+    if (account && data) {
+      if (
+        data.fullInfoMetadata.tokenAddress ===
+        "0x734aef51d427b2f745210ec4bf1062abd48eceb6"
+      ) {
+        setTokenSymbol("MATIC");
+      } else {
+        setTokenSymbol(data.tokenName);
+      }
+    }
+  }, [data, account]);
+  // const {
+  //   nameNFT,
+  //   imageNFT,
+  //   symbolNFT,
+  //   category,
+  //   attributes,
+  //   animationUrl,
+  //   description,
+  // } = useMetadata(nftAddress, idNFT);
   const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
     setPage((next) => Math.min(next + 1, data?.totalPages));
@@ -95,9 +120,17 @@ export default function DetailLiquidity() {
     setIsOpenAddLiquidity(true);
     document.body.style.overflowY = "hidden";
   };
+  const handleRemoveLiquidity = () => {
+    setIsOpenRemoveLiquidity(true);
+    document.body.style.overflowY = "hidden";
+  };
+  const handleShowDetail = () => {
+    setIsOpenDetail(true);
+    document.body.style.overflowY = "hidden";
+  };
 
   return (
-    <div className="py-8">
+    <div className="py-8 min-h-[calc(100vh-330px)]">
       <Head>
         <title>Detail Liquidity | DeMask</title>
       </Head>
@@ -106,17 +139,24 @@ export default function DetailLiquidity() {
           <Link href="/liquidity">
             <BackIcon width={24} height={24} />
           </Link>
-          <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
-            <span>NFT</span>
-            <span className="block overflow-hidden leading-[18px]">/</span>
-            <span>USDT</span>
-          </div>
+          {account && data && (
+            <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
+              <span>{data.fullInfoMetadata.metadata.symbol}</span>
+              <span className="block overflow-hidden leading-[18px]">/</span>
+              <span>{tokenSymbol}</span>
+            </div>
+          )}
+          {isLoading && (
+            <p className="w-[110px] h-6 rounded-full animate-pulse bg-slate-200"></p>
+          )}
         </div>
         <div className="flex justify-end mb-8 gap-x-4">
           <button className={style.btnWallet} onClick={handleAddLiquidity}>
             ADD
           </button>
-          <button className={style.btnWallet}>REMOVE</button>
+          <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
+            REMOVE
+          </button>
         </div>
       </div>
       <div className="flex gap-x-20">
@@ -214,33 +254,85 @@ export default function DetailLiquidity() {
             )}
           </div>
         </div>
-        <div className="justify-end w-[504px]">
-          <Image
-            src={images.testImg}
-            alt="test"
-            className=" rounded-xl"
-            width={504}
-            height={504}
-          />
-        </div>
+        {account && data && (
+          <div className="justify-end w-[504px]">
+            {data.fullInfoMetadata.metadata.image && (
+              <Image
+                width={760}
+                height={760}
+                src={data.fullInfoMetadata.metadata.image}
+                alt="NFT Image"
+                unoptimized
+                style={{
+                  objectFit: "contain",
+                }}
+                className="rounded-2xl max-w-[760px] max-h-[760px] w-full"
+              />
+            )}
+            {data.fullInfoMetadata.metadata.animation_url &&
+              !data.fullInfoMetadata.metadata.image && (
+                <video
+                  src={data.fullInfoMetadata.metadata.animation_url}
+                  autoPlay
+                  loop
+                  muted
+                  controls
+                  className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
+                />
+              )}
+            {data.fullInfoMetadata.metadata.image &&
+              data.fullInfoMetadata.metadata.animation_url && (
+                <audio
+                  autoPlay
+                  loop
+                  muted
+                  controls
+                  src={data.fullInfoMetadata.metadata.animation_url}
+                  className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%] "
+                >
+                  Your browser does not support the
+                  <code>audio</code> element.
+                </audio>
+              )}
+            <div className="w-full">
+              <p
+                className="block mx-auto mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
+                onClick={handleShowDetail}
+              >
+                Show detail
+              </p>
+            </div>
+          </div>
+        )}
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {/* <ModalDetail
-        nameNFT={nameNFT}
-        symbolNFT={symbolNFT}
-        category={category}
-        attributes={attributes}
-        description={description}
-        setIsOpenDetail={setIsOpenDetail}
-        isOpenDetail={isOpenDetail}
-      /> */}
-      {data && (
+      {data  && (
+        <ModalDetail
+          nameNFT={data.fullInfoMetadata.metadata.name}
+          symbolNFT={data.fullInfoMetadata.metadata.symbol}
+          category={data.fullInfoMetadata.metadata.category}
+          attributes={data.fullInfoMetadata.metadata.attributes}
+          description={data.fullInfoMetadata.metadata.description}
+          setIsOpenDetail={setIsOpenDetail}
+          isOpenDetail={isOpenDetail}
+        />
+      )}
+      {data && account && (
         <ModalAddLiquidity
           data={data}
           account={account}
           wallet={wallet}
           isOpenAddLiquidity={isOpenAddLiquidity}
           setIsOpenLiquidity={setIsOpenAddLiquidity}
+        />
+      )}
+      {data && account && (
+        <ModalRemmoveLiquidity
+          data={data}
+          account={account}
+          wallet={wallet}
+          isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+          setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         />
       )}
       <ToastContainer />
