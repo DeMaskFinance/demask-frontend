@@ -63,7 +63,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         setTokenSymbol("MATIC");
         setTokenAddress("MATIC");
       } else {
-        setTokenSymbol(data.tokenName);
+        setTokenSymbol(data.tokenSymbol);
         setTokenAddress(data.fullInfoMetadata.tokenAddress);
       }
     }

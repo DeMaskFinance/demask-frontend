@@ -38,7 +38,7 @@ const style = {
 };
 
 export default function Header() {
-  const headerRef = useRef<any>(null);
+  const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount, wallet } = useContext(AccountContext);
   const handleOpen = () => {
@@ -103,11 +103,11 @@ export default function Header() {
       /> */}
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 gap-2 right-0 z-50 flex items-center justify-between transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14 px-4"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 px-4 transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14"
       >
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center flex-shrink-0 gap-2">
           {/* <div
-            className="lg:hidden md:block block pr-2"
+            className="block pr-2 lg:hidden md:block"
             onClick={() => {
               setOpenMenu(!openMenu);
             }}
@@ -125,14 +125,14 @@ export default function Header() {
               ></Image>
             </Link>
           </div>
-          <div className="ml-8 lg:block  hidden">
+          <div className="hidden ml-8 lg:block">
             <MenuHeader />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-x-6 flex-shrink-0">
+        <div className="flex items-center justify-end flex-shrink-0 gap-x-6">
           <ul className={`${style.itemNav} lg:flex hidden`}>
-            <li className="hover:text-secondary5 flex active:text-secondary3">
+            <li className="flex hover:text-secondary5 active:text-secondary3">
               <a
                 href="https://docs.demask.finance/"
                 target="_blank"
@@ -147,12 +147,12 @@ export default function Header() {
               </ActiveLink>
             </li>
           </ul>
-          <div className="flex lg:gap-x-6 md:gap-x-4 gap-2">
+          <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
             {/* <div className="">
               <SearchIcon
                 width={32}
                 height={32}
-                className="cursor-pointer h-full w-full active:fill-secondary3"
+                className="w-full h-full cursor-pointer active:fill-secondary3"
               />
             </div> */}
             <Tippy
@@ -242,7 +242,7 @@ export default function Header() {
               <button className={style.btnWallet} onClick={handleOpen}>
                 <p>
                   CONNECT{" "}
-                  <span className="lg:inline-block md:inline-block hidden">
+                  <span className="hidden lg:inline-block md:inline-block">
                     WALLET
                   </span>
                 </p>

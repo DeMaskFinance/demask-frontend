@@ -97,7 +97,7 @@ export default function DetailLiquidity() {
       ) {
         setTokenSymbol("MATIC");
       } else {
-        setTokenSymbol(data.tokenName);
+        setTokenSymbol(data.tokenSymbol);
       }
     }
   }, [data, account]);

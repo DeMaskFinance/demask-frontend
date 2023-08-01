@@ -33,7 +33,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
       if (liquidity.erc === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
         setTokenSymbol("MATIC");
       } else {
-        setTokenSymbol(liquidity.tokenName);
+        setTokenSymbol(liquidity.tokenSymbol);
       }
     }
   }, []);

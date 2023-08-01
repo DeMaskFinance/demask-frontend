@@ -17,6 +17,7 @@ interface SearchProps {
 
 const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
   const router = useRouter();
+  const inputRef = useRef<HTMLParagraphElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
@@ -29,7 +30,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
     },
   });
   const [active, setActive] = useState(false);
-  const inputRef = useRef(null);
+  
 
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -87,31 +88,31 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
             <p className="pb-2 text-base">Collections</p>
             {data && data.length > 0 ? (
               <>
-                <span className="text-xs flex item-center">
-                  <span className="font-semibold mr-1 block pb-2">
+                <span className="flex text-xs item-center">
+                  <span className="block pb-2 mr-1 font-semibold">
                     {data.length}
                   </span>{" "}
                   items
                 </span>
-                <div className="flex gap-4 flex-col">
+                <div className="flex flex-col gap-4">
                   {data.map((item: any) => (
                     <>
                       <Link
                         href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
                       >
-                        <div className="flex gap-2 justify-between w-full hover:bg-secondary5 p-1 items-center rounded-lg hover:text-white cursor-pointer">
+                        <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
                           <h2 className="flex items-center gap-2">
                             <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
                               <AvatarUser width={32} height={32} />
                             </div>
                             <div className="flex flex-col items-baseline">
-                              <span className="text-sm font-semibold block">
+                              <span className="block text-sm font-semibold">
                                 <span className="line-clamp-1">
                                   {item.metadata.name}
                                 </span>
                               </span>
-                              <span className="text-xs flex item-center">
-                                <span className="font-semibold mr-1 block pb-2">
+                              <span className="flex text-xs item-center">
+                                <span className="block pb-2 mr-1 font-semibold">
                                   {item.dmlAddress.slice(0, 8)}...
                                   {item.dmlAddress.slice(-8)}
                                 </span>

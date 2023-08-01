@@ -13,6 +13,8 @@ import abiDML from "@/abi/abiDML.json";
 import BigNumber from "bignumber.js";
 import useInformationToken from "@/hooks/useInformationToken";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
+import useFetchReservesDML from "@/hooks/useFetchReservesDML";
+import useTotalSupply from "@/hooks/useTotalSupply";
 interface ModalRemmoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -39,6 +41,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [isApprovedLiquidity, setIsApprovedLiquidity] = useState<boolean>(false);
     const [isApprovedDML, setIsApprovedDML] = useState<boolean>(false);
     const [showRequiredMessage, setShowRequiredMessage] = useState(false);
+    const [amountNFT, setAmountNFT] = useState('');
+    const [amountToken, setAmountToken] = useState('');
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -73,6 +77,18 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setIsSufficientLiquidity(false);
       }
     }, [activeChoice])
+    const totalSupply = useTotalSupply(account,wallet,data.fullInfoMetadata.dmlAddress,isApprovedDML);
+    console.log(totalSupply);
+    // useEffect(() => {
+    //   if(reserves[0] && reserves[1]){
+    //     const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
+    //     const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * ();
+    //     setAmountNFT(resAmountNFT.toString());
+    //   }
+    // }, [inputLiquidity])
+    console.log(amountNFT);
+    
+    
     const currentAllowance = useAllowanceDML(
       account,
       data.fullInfoMetadata.dmlAddress,
@@ -92,7 +108,14 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         }
       };
       checkApproveToken();
-    }, [account, wallet, inputLiquidity, isApprovedDML,currentAllowance]);
+    }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance]);
+    const { reserves, isLoadingReserves }: any = useFetchReservesDML(
+      account,
+      data.fullInfoMetadata.dmlAddress,
+      wallet,
+    );
+    console.log(reserves);
+
     const { balanceToken, decimals, bigNumberBalance, symbolToken } =
       useInformationToken(account, data.fullInfoMetadata.tokenAddress, wallet);
     console.log(isApprovedDML);
@@ -128,7 +151,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                 <div className="flex items-center leading-[16px] ml-1">
                   <span> {data.fullInfoMetadata.metadata.symbol}</span>
                   <span className="overflow-hidden">/</span>
-                  <span>{data.tokenName}</span>
+                  <span>{data.tokenSymbol}</span>
                 </div>
               )}
             </p>
@@ -175,8 +198,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                     <div className="flex justify-between my-4 text-dark2">
                       <p className="font-semibold">You will recieve</p>
                     </div>
-                    <div className={styles.inputItem}>
+                    <div className={styles.inputItem} >
+                      <div className="flex justify-between">
+                      <p>{amountNFT}</p>
                       <p className="text-dark3">NFT</p>
+                      </div>
                     </div>
                     <div className={styles.inputItem}>
                       <p className="text-dark3">Tokens</p>

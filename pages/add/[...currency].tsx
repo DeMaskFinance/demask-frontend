@@ -117,17 +117,17 @@ export default function AddLiquidity() {
           Number(decimals)
         );
       }
-      if (reserves[0] && reserves[1]) {
-        setAmountErcDesired(amountErcDesired);
-        const amountErcDesiredToDec = handleBignumbertoDec(
-          amountErcDesired,
-          18
-        );
-        setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-      }
+      setAmountErcDesired(amountErcDesired);
+      const amountErcDesiredToDec = handleBignumbertoDec(
+        amountErcDesired,
+        18
+      );
+      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
     }
   }, [inputNFT, inputToken]);
-
+  console.log(dmlToken);
+  
+  console.log(amountErcDesired);
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
@@ -137,6 +137,8 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   };
+  
+  
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
