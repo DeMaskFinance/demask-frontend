@@ -30,6 +30,7 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
+
   const { data: volume } = useQuery({
     queryKey: ["volumne"],
     queryFn: async () => {
@@ -45,32 +46,55 @@ function StatisticChart() {
     <div className="flex lg:flex-row md:flex-row flex-col gap-6 my-6 text-base font-medium text-dark2">
       <div className="flex">
         <span className="mr-2 ">
-          Volume 24H: {volume && formatNumber(volume.volumeInDay)}{" "}
+          Volume 24H:{" "}
+          {volume && volume !== null ? formatNumber(volume.volumeInDay) : 0}
         </span>{" "}
         (
-        <span className="flex items-center text-red">
-          <BsArrowDown />
-          89.95%
+        <span
+          className={`flex items-center ${
+            volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
+          } `}
+        >
+          {volume && volume.volumePercent >= 0 ? (
+            <BsArrowUp />
+          ) : (
+            <BsArrowDown />
+          )}
+          {volume && volume !== null ? volume.volumePercent.toFixed(2) : 0}%
         </span>
         )
       </div>
       <div className="flex ">
         <span className="mr-2 ">
-          Fees 24H: {volume && volume.volumeInDay * 0.5}
+          Fees 24H: {volume && volume !== null ? volume.volumeInDay * 0.5 : 0}
         </span>
         (
-        <span className="flex items-center text-red">
-          <BsArrowDown />
-          19.81%
+        <span
+          className={`flex items-center ${
+            volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
+          } `}
+        >
+          {volume && volume.volumePercent >= 0 ? (
+            <BsArrowUp />
+          ) : (
+            <BsArrowDown />
+          )}
+          {volume && volume !== null ? volume.volumePercent.toFixed(2) : 0}%
         </span>
         )
       </div>
       <div className="flex">
-        <span className="mr-2 ">TVL: {formatNumber(TVL && TVL.tvlInDay)} </span>
+        <span className="mr-2 ">
+          TVL: {TVL && TVL !== null ? formatNumber(TVL && TVL.tvlInDay) : 0}{" "}
+        </span>
         (
-        <span className="flex items-center text-green">
-          <BsArrowUp />
-          1.35%
+        <span
+          className={`flex items-center ${
+            TVL && TVL.tvlPercent >= 0 ? "text-green" : "text-red"
+          } `}
+        >
+          {TVL && TVL.tvlPercent >= 0 ? <BsArrowUp /> : <BsArrowDown />}
+          {TVL && TVL !== null ? TVL.tvlPercent.toFixed(2) : 0}%
         </span>
         )
       </div>

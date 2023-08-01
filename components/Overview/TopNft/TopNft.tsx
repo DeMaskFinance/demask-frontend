@@ -48,19 +48,19 @@ function TopNft() {
                   Name
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  Price
+                  $ Price
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  Change
+                  $ Change
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  Volume
+                  $ Volume
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  TVL
+                  $ TVL
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  Total supply
+                  $ Total supply
                 </th>
               </tr>
             </thead>
