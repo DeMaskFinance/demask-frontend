@@ -68,7 +68,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="py-8 mx-auto container-main">
+    <div className="">
       <Head>
         <title>Home | DeMask</title>
       </Head>
@@ -88,7 +88,7 @@ const Home = () => {
           )}
         </>
       ) : (
-        <div className="mb-6 leading-7">
+        <div className="py-4 mx-auto container-main leading-7">
           {/* <NFTTop /> */}
           <div className="flex flex-col items-center lg:mt-8">
             {data?.pages[0] ? (

@@ -7,15 +7,22 @@ const styles = {
 };
 export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);
+  const [menu, setMenu] = useState<string>("");
   const [mode, setMode] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>(mode);
   useEffect(() => {
     setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
   }, [activeChoice]);
+
   const handleChoiceChange = (choice: string) => {
     localStorage.setItem("MODE_DEMASK", choice);
     window.dispatchEvent(new Event("storage"));
     setActiveChoice(choice);
+  };
+
+  const handleActiveMenu = (menuActive: string) => {
+    setMenu(menuActive);
+    setActive(!active);
   };
 
   return (
@@ -51,7 +58,7 @@ export default function NavFooter() {
             <div
               className="group"
               onClick={() => {
-                setActive(true);
+                handleActiveMenu("trade");
               }}
             >
               <li className="flex items-center justify-between mb-4">
@@ -66,8 +73,10 @@ export default function NavFooter() {
                 </span>
               </li>
 
-              <ul className="">
-                <div className="pl-8 rounded-t-lg top-0 text-base group-hover:flex hidden group-hover:-translate-y-[98px] transition-all py-4 bg-white border-t w-full right-0 flex-col absolute gap-4 border p-2">
+              <ul
+                className={`${menu === "trade" && active ? "block" : "hidden"}`}
+              >
+                <div className="pl-8 rounded-t-lg top-0 text-base flex -translate-y-[98px] transition-all py-4 bg-white border-t w-full right-0 flex-col absolute gap-4 border p-2">
                   <li>
                     <Link
                       href={
@@ -104,7 +113,7 @@ export default function NavFooter() {
             <div
               className="group"
               onClick={() => {
-                setActive(true);
+                handleActiveMenu("category");
               }}
             >
               <li className="flex items-center  justify-between mb-4">
@@ -121,8 +130,12 @@ export default function NavFooter() {
                   Category
                 </Link>
               </li>
-              <ul className="">
-                <div className="pl-8 rounded-t-lg top-0 text-base group-hover:flex hidden -translate-y-[210px] py-4 bg-white border-t w-full right-0 flex-col absolute gap-4 border p-2">
+              <ul
+                className={`${
+                  menu === "category" && active ? "block" : "hidden"
+                }`}
+              >
+                <div className="pl-8 rounded-t-lg top-0 text-base flex -translate-y-[210px] py-4 bg-white border-t w-full right-0 flex-col absolute gap-4 border p-2">
                   <li>
                     <Link href={"/category/art"}>Art</Link>
                   </li>
@@ -161,7 +174,7 @@ export default function NavFooter() {
             <div
               className="group"
               onClick={() => {
-                setActive(true);
+                handleActiveMenu("options");
               }}
             >
               <li className="flex items-center justify-between mb-4">
@@ -175,7 +188,7 @@ export default function NavFooter() {
                 </span>
               </li>
 
-              <MenuOptions />
+              <MenuOptions active={active} menu={menu} />
             </div>
           </ul>
         </div>

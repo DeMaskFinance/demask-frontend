@@ -42,7 +42,7 @@ function InterestItem() {
                   autoPlay
                   loop
                   muted
-                  className=""
+                  className="w-full h-full object-cover"
                 />
               )}
               {item.metadata?.image && item.metadata?.animation_url && (
@@ -61,7 +61,7 @@ function InterestItem() {
             </div>
             <div className="flex flex-col justify-between">
               <div className="flex flex-wrap justify-between w-full gap-2 pb-2">
-                <h2 className="flex">
+                <h2 className="flex ">
                   <span className="text-lg font-semibold">
                     <span className="line-clamp-1 w-fit">
                       {item.metadata?.name}
@@ -71,6 +71,7 @@ function InterestItem() {
                     width="25"
                     height="24"
                     viewBox="0 0 25 24"
+                    className=" flex-shrink-0"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >

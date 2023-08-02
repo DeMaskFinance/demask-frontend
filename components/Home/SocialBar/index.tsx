@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function SocialBar() {
   return (
-    <div className="lg:w-[30%] md:w-[30%] w-full">
+    <div className="lg:w-[30%] md:w-[30%] w-full lg:block md:block hidden">
       <div className="sticky transition-all top-5">
         <InterestItem />
         <Creators />
