@@ -200,7 +200,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                 src={nftItem.metadata.image}
                 alt="NFT Image"
                 unoptimized
-                className="min-w-[500px] w-auto max-h-[650px] z-100 rounded-xl"
+                className="min-w-[500px] relative imageNFT w-auto max-h-[650px] z-100 rounded-xl"
                 style={{
                   objectFit: "contain",
                 }}

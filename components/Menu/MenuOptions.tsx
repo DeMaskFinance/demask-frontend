@@ -53,42 +53,24 @@ const MenuOptions: React.FC<MenuOptionsProps> = ({ active, menu }) => {
           </li>
         </div>
 
-        <div className="flex text-base text-white bg-dark3 p-1 rounded-lg w-max items-center text-center">
-          <div
-            className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${
-              activeMode === "Light" ? "bg-secondary5" : ""
-            }`}
-            onClick={() => handleModeChange("Light")}
-          >
-            Light
-            <svgComponents.buttonLight />
-          </div>
+        <div className="flex flex-col text-base text-white  p-1 rounded-lg w-max items-center text-center">
+          <div className="flex bg-dark3 rounded-lg w-max items-center text-center">
+            <div
+              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${
+                mode === "NEWFEEDS" ? "bg-secondary5" : ""
+              }`}
+              onClick={() => handleChoiceChange("NEWFEEDS")}
+            >
+              NEWFEEDS
+            </div>
 
-          <div
-            className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex items-center gap-2 ${
-              activeChoice === "Dark" ? "bg-dark0" : ""
-            }`}
-            onClick={() => handleChoiceChange("Dark")}
-          >
-            Dark
-            <svgComponents.buttonDark />
-          </div>
-          <div className="w-fit border-l pl-8">
-            <div className="flex h-[34px] rounded-lg w-auto text-sm bg-dark1 text-white">
-              <button
-                type="button"
-                className={mode === "NEWFEEDS" ? styles.btnActive : "px-2"}
-                onClick={() => handleChoiceChange("NEWFEEDS")}
-              >
-                NEWFEEDS
-              </button>
-              <button
-                type="button"
-                className={mode === "REELS" ? styles.btnActive : "px-2"}
-                onClick={() => handleChoiceChange("REELS")}
-              >
-                REELS
-              </button>
+            <div
+              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex items-center gap-2 ${
+                mode === "REELS" ? "bg-secondary5" : ""
+              }`}
+              onClick={() => handleChoiceChange("REELS")}
+            >
+              REELS
             </div>
           </div>
         </div>
