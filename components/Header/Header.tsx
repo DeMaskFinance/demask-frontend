@@ -13,7 +13,6 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import Image from "next/image";
 import Icons from "@/public/icons/icon";
 import { SearchHeader } from "../Search";
-import { LogoDemask } from "../Logo";
 import { MenuHeader } from "../Menu";
 import { FaBars } from "react-icons/fa";
 import {
@@ -27,6 +26,8 @@ import { MdLogout } from "react-icons/md";
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
 import MenuMobile from "../Menu/MenuMobile";
+import useSvgComponents from "../Picture/Picture";
+import { LogoDeMaskBeta } from "../Logo/Logo";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -41,6 +42,7 @@ export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount, wallet } = useContext(AccountContext);
+  const svgComponents = useSvgComponents();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -116,13 +118,7 @@ export default function Header() {
           </div> */}
           <div className="text-center">
             <Link href="/">
-              {/* <LogoDemask width={94} height={24} /> */}
-              <Image
-                src={"/logoHeader.svg"}
-                alt=""
-                width={94}
-                height={24}
-              ></Image>
+              <LogoDeMaskBeta width={94} height={24} />
             </Link>
           </div>
           <div className="hidden ml-8 lg:block">

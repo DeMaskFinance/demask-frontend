@@ -24,7 +24,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
     <>
       {isLoading || isFetching ? (
         Array.from({ length: 10 }, (item, index) => (
-          <tr className="lg:text-base md:text-base text-sm flex text-dark2 ">
+          <tr className="flex text-sm lg:text-base md:text-base text-dark2 ">
             <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
               {skeleton}
             </td>
@@ -52,17 +52,17 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
         <>
           {data &&
             data?.nftDataList?.map((item: any, idx: number) => (
-              <tr className="lg:text-base md:text-base border-b text-sm flex text-dark2 hover:bg-slate-100  rounded-lg px-2">
+              <tr className="flex px-2 text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100">
                 <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                   {idx + 1}
                 </td>
                 <td className="py-2 lg:w-full md:w-full w-[200px]">
                   <Link
                     href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}?dmlAddress=${item.dml}`}
-                    className="flex items-center justify-start hover:text-secondary4 hover:font-medium transition-all"
+                    className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
                   >
-                    <span className="flex items-center gap-2">
-                      <span className="flex-shrink-0 block rounded-md overflow-hidden w-[32px] h-[32px]">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
                         {item.metadata?.image && (
                           <Image
                             loading="lazy"
@@ -71,17 +71,17 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                             height={32}
                             src={item.metadata?.image}
                             alt="NFT Image"
-                            className="w-full h-full"
+                            className="object-cover w-full h-full"
                           />
                         )}
                         {item.metadata?.animation_url &&
                           !item.metadata?.image && (
                             <video
                               src={item.metadata?.animation_url}
-                              autoPlay
+                              autoPlay={false}
                               loop
                               muted
-                              className=""
+                              className="object-cover h-full"
                             />
                           )}
                         {item.metadata?.image &&
@@ -98,12 +98,12 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                               <code>audio</code> element.
                             </audio>
                           )}
-                      </span>
+                      </div>
 
                       <span className="line-clamp-1">
                         {isFetching ? skeleton : item.metadata?.name}
                       </span>
-                    </span>
+                    </div>
                   </Link>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">

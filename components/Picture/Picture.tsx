@@ -17,7 +17,6 @@ const useSvgComponents = () => {
       />
     </svg>
   );
-
   const buttonFlag = () => (
     <svg
       width="25"
