@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
-interface ChartVolumnProps {}
+import { TabGroups } from "../NavChoice";
+interface ChartVolumnProps { }
 const styles = {
   btnActive: "rounded-full bg-secondary5",
 };
 const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
-  const [activeButton, setActiveButton] = useState<string>("D");
+  const [activeChoice, setActiveChoice] = useState<string>("D");
 
   const { data: ChartColumn, isLoading: LoadingColumn } = useQuery({
     queryKey: ["ChartColumn"],
@@ -38,12 +39,12 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     }
   }, [lastData, hasInitialSetting]);
 
-  const handleButtonClick = (button: string) => {
-    setActiveButton(button);
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
   };
 
   return (
-    <div className="p-6 shadow-chart rounded-lg">
+    <div className="p-6 rounded-lg shadow-chart">
       <div className="flex justify-between mb-2">
         <div className="mb-2 text-dark1">
           <p className="font-medium ">Volume</p>
@@ -54,25 +55,12 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
             {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
           </p>
         </div>
-        <div className="grid h-8 grid-cols-3 rounded-full w-28 bg-dark2 gap-[6px] text-white">
-          <button
-            className={activeButton === "D" ? styles.btnActive : ""}
-            onClick={() => handleButtonClick("D")}
-          >
-            D
-          </button>
-          <button
-            className={activeButton === "W" ? styles.btnActive : ""}
-            onClick={() => handleButtonClick("W")}
-          >
-            W
-          </button>
-          <button
-            className={activeButton === "M" ? styles.btnActive : ""}
-            onClick={() => handleButtonClick("M")}
-          >
-            M
-          </button>
+        <div className="h-fit">
+        <TabGroups
+          choices={["D", "W", "M"]}
+          activeChoice={activeChoice}
+          onChoiceChange={handleChoiceChange}
+        />
         </div>
       </div>
       <div className="h-[212px]">
