@@ -1,5 +1,4 @@
 import Link from "next/link";
-import LogoDeMask from "../Logo/LogoDemask";
 import { ProfileIcon, SearchIcon } from "../Icons";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
@@ -65,7 +64,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
         <button className={style.btnWallet} onClick={handleOpen}>
           <p>
             CONNECT{" "}
-            <span className="lg:inline-block md:inline-block hidden">
+            <span className="hidden lg:inline-block md:inline-block">
               WALLET
             </span>
           </p>
@@ -109,7 +108,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
       } bg-white lg:hidden md:flex flex flex-col fixed justify-between h-full top-0 right-0 z-[100] left-0 p-4 bottom-0 w-full`}
     >
       <div>
-        <div className="flex  items-center gap-2 flex-shrink-0">
+        <div className="flex items-center flex-shrink-0 gap-2">
           <div
             onClick={() => {
               setOpenMenu(false);
@@ -119,7 +118,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
             <AiOutlineClose />
           </div>
 
-          <div className="text-center  flex justify-between w-full items-center">
+          <div className="flex items-center justify-between w-full text-center">
             <div className="gap-2">
               <Link href="/">
                 {/* <LogoDemask width={94} height={24} /> */}
@@ -145,7 +144,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
         </div>
 
         <div>
-          <ul className="pt-16 flex flex-col gap-4 text-xl">
+          <ul className="flex flex-col gap-4 pt-16 text-xl">
             <div>
               <li className="flex items-center justify-between mb-4">
                 <Link href="/overview" className="flex items-center gap-2">
@@ -188,7 +187,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                   activeTrade ? "max-h-0" : "visible"
                 } flex flex-col gap-4`}
               >
-                <div className="flex pl-8 rounded-md flex-col gap-4 border p-2">
+                <div className="flex flex-col gap-4 p-2 pl-8 border rounded-md">
                   <li>
                     <Link
                       href={
@@ -247,7 +246,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                   activeCat ? "max-h-0" : "visible"
                 } flex flex-col gap-4`}
               >
-                <div className="flex pl-8 rounded-md flex-col gap-4 border p-2">
+                <div className="flex flex-col gap-4 p-2 pl-8 border rounded-md">
                   <li>
                     <Link href={"/category/art"}>Art</Link>
                   </li>
@@ -283,8 +282,8 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-between flex-row-reverse">
-        <div className="flex gap-4 items-end text-xl">
+      <div className="flex flex-row-reverse justify-between">
+        <div className="flex items-end gap-4 text-xl">
           <div>
             <li className="flex items-center justify-between mb-4">
               <Link

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "git pull origin && npm run build && pm2 restart demask-frontend"
   },
   "dependencies": {
     "@next/font": "^13.4.8",
