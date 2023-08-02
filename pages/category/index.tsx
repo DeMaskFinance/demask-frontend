@@ -10,7 +10,7 @@ export default function Categories() {
       </Head>
       {/* 123o */}
 
-      <div className="pb-16  container-main mx-auto">
+      <div className="pt-2 pb-16 mx-auto container-main">
         <CategoryType label={"Art"} />
         <CategoryType label={"Gaming"} />
         <CategoryType label={"Film"} />
