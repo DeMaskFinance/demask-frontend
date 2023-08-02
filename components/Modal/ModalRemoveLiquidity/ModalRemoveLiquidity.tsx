@@ -15,6 +15,8 @@ import useInformationToken from "@/hooks/useInformationToken";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
+import TransitionURL from "@/components/Toast/TransionURL";
+import { toast } from "react-toastify";
 interface ModalRemmoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -43,6 +45,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [showRequiredMessage, setShowRequiredMessage] = useState(false);
     const [amountNFT, setAmountNFT] = useState('');
     const [amountToken, setAmountToken] = useState('');
+    const [tokenAddress, setTokenAddress] = useState("");
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -77,18 +80,20 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setIsSufficientLiquidity(false);
       }
     }, [activeChoice])
-    const totalSupply = useTotalSupply(account,wallet,data.fullInfoMetadata.dmlAddress,isApprovedDML);
+    const totalSupply = useTotalSupply(account, wallet, data.fullInfoMetadata.dmlAddress, isApprovedDML);
     console.log(totalSupply);
-    // useEffect(() => {
-    //   if(reserves[0] && reserves[1]){
-    //     const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
-    //     const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * ();
-    //     setAmountNFT(resAmountNFT.toString());
-    //   }
-    // }, [inputLiquidity])
+    useEffect(() => {
+      if (reserves[0] && reserves[1]) {
+        const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
+        const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(inputLiquidity)) / ((Number(reserves[1].toString()) - Number(inputLiquidity)) * Number(totalSupply));
+        setAmountNFT(resAmountNFT.toString());
+        setAmountToken(resAmountToken.toString());
+      }
+    }, [inputLiquidity])
     console.log(amountNFT);
-    
-    
+    console.log(amountToken);
+
+
     const currentAllowance = useAllowanceDML(
       account,
       data.fullInfoMetadata.dmlAddress,
@@ -117,7 +122,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     console.log(reserves);
 
     const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-      useInformationToken(account, data.fullInfoMetadata.tokenAddress, wallet);
+      useInformationToken(account, tokenAddress, wallet);
     console.log(isApprovedDML);
     console.log(isApprovedLiquidity);
     const handleApproveLiquidity = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
@@ -141,6 +146,79 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setShowRequiredMessage(true);
       }
     };
+    useEffect(() => {
+      if (account && data) {
+        if (
+          data.fullInfoMetadata.tokenAddress ===
+          "0x734aef51d427b2f745210ec4bf1062abd48eceb6"
+        ) {
+          setTokenAddress("MATIC");
+        } else {
+          setTokenAddress(data.fullInfoMetadata.tokenAddress);
+        }
+      }
+    }, [data, account]);
+    const removeLiquidity = () =>{
+      // if (inputLiquidity && !isSufficientLiquidity && ) {
+      //   const providerChoice = getProvider(wallet);
+      //   const provider = new ethers.providers.Web3Provider(providerChoice);
+      //   const signer = provider.getSigner();
+      //   const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+      //   const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+      //   const value = handleBignumber(Number(inputToken), 18);
+  
+      //   try {
+      //     let result;
+      //     let transactionHash;
+  
+      //     if (tokenAddress === "MATIC") {
+      //       result = await contract.removeLiquidityETH(
+      //         data.fullInfoMetadata.nft,
+      //         data.fullInfoMetadata.tokenId,
+      //         inputLiquidity,
+      //         0,
+      //         account,
+      //         Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+      //         { gasLimit: 8000000, value }
+      //       );
+      //       transactionHash = result.hash;
+      //     } else {
+      //       result = await contract.addLiquidity(
+      //         tokenAddress,
+      //         data.fullInfoMetadata.nft,
+      //         data.fullInfoMetadata.tokenId,
+      //         amountErcDesired,
+      //         inputNFT,
+      //         0,
+      //         account,
+      //         Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+      //         { gasLimit: 8000000 }
+      //       );
+      //       transactionHash = result.hash;
+      //     }
+      //     toast.success(
+      //       <TransitionURL
+      //         type={"Add Liquidity"}
+      //         transactionHash={transactionHash}
+      //       />,
+      //       {
+      //         position: "top-right",
+      //         autoClose: 5000,
+      //         hideProgressBar: false,
+      //         closeOnClick: false,
+      //         pauseOnHover: true,
+      //         draggable: true,
+      //         progress: undefined,
+      //         theme: "light",
+      //       }
+      //     );
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // } else {
+      //   setShowRequiredMessage(true);
+      // }
+    }
     return (
       <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
         <div className="z-50 flex flex-col justify-center cursor-default h-fit">
@@ -200,12 +278,15 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                     </div>
                     <div className={styles.inputItem} >
                       <div className="flex justify-between">
-                      <p>{amountNFT}</p>
-                      <p className="text-dark3">NFT</p>
+                        <p>{amountNFT}</p>
+                        <p className="text-dark3">NFT</p>
                       </div>
                     </div>
                     <div className={styles.inputItem}>
-                      <p className="text-dark3">Tokens</p>
+                      <div className="flex justify-between">
+                        <p>{amountToken}</p>
+                        <p className="text-dark3">{data.tokenSymbol}</p>
+                      </div>
                     </div>
                     <div className="flex justify-center">
                       {!isApprovedLiquidity && account && (
@@ -225,15 +306,15 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                           APPROVE DML
                         </Button>
                       )}
-                      {/* {isApprovedLiquidity && (
+                      {isApprovedLiquidity && (
                         <Button
-                          className="w-[126px] py-2 mx-auto"
+                          className="p-2 mx-auto"
                           primary
-                          onClick={addLiquidity}
+                          onClick={removeLiquidity}
                         >
-                          Remove LIQUIDITY
+                          Remove Liquidity
                         </Button>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </div>

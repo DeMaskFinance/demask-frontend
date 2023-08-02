@@ -49,7 +49,7 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
-    localStorage.removeItem("WALLET_DEMASK");
+    // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
   const provider = getProvider(wallet);

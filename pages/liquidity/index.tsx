@@ -39,11 +39,14 @@ export default function Liquidity() {
     ({ pageParam = 1 }) => fetchDataListLiquidity(account, pageParam),
     {
       getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
+        page?.currentPage < page?.totalPages
+          ? page?.currentPage + 1
+          : undefined,
     }
   );
+  console.log(data?.pages[0]);
+  console.log(hasNextPage);
+  
   return (
     <div className="py-8 px-secondary min-h-[calc(100vh-300px)]">
       <Head>
@@ -52,12 +55,17 @@ export default function Liquidity() {
       <div className="w-full">
         <h2 className="text-2xl text-black24">Your Liquidity</h2>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
-        {(!account || !data?.pages[0] && !isLoading) && (
+        {(!account || data?.pages[0].combinedRecords.length === 0 && !isLoading) && (
           <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
             No liquidity found.
           </div>
         )}
-        {account && data?.pages[0] && (
+        {account && data?.pages[0].combinedRecords.length === 0 && (
+          <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
+            No liquidity found.
+          </div>
+        )}
+        {account && data?.pages[0].combinedRecords.length !== 0 && (
           <div>
             <div>
               {isSuccess &&
@@ -81,7 +89,7 @@ export default function Liquidity() {
                   </div>
                 ))}
             </div>
-            {(isFetchingNextPage || isFetching) && (
+            {(isFetchingNextPage) && (
               <div>
                 <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
               </div>

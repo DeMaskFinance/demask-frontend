@@ -37,6 +37,7 @@ export default function DetailLiquidity() {
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
   const [reward, setReward] = useState("");
+  const [isRewarded,setIsRewarded] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
@@ -62,7 +63,9 @@ export default function DetailLiquidity() {
       }
     };
     fetchDataReward();
-  }, [dmlTokenLiquidity, account]);
+  }, [dmlTokenLiquidity, account,isRewarded]);
+  console.log(isRewarded);
+  
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -73,7 +76,7 @@ export default function DetailLiquidity() {
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({ wallet, dmlTokenLiquidity });
+      getRewardDML({ wallet, dmlTokenLiquidity ,setIsRewarded});
     } else {
       console.log("No account and DML");
     }
