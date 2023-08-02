@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
 import { TabGroups } from "../NavChoice";
 import Image from "next/image";
 import useSvgComponents from "../Picture/Picture";
+import { LogoDeMask } from "../Logo/Logo";
 const styles = {
   btnActive: "rounded-lg bg-secondary5 px-2",
 };
@@ -28,7 +28,7 @@ export default function FooterSecondary() {
     <footer className="lg:flex hidden items-center gap-x-8 h-[66px] lg:px-primary md:px-14 px-4 bg-dark4 fixed bottom-0 left-0 right-0 z-[100] overflow-hidden">
       <div className="mr-2">
         <Link href="/">
-          <Image src={"/logoHeader.svg"} alt="" width={94} height={24}></Image>
+          <LogoDeMask width={94} height={24}/>
         </Link>
       </div>
       <div className="flex gap-x-4">
@@ -47,11 +47,11 @@ export default function FooterSecondary() {
           />
         </Link>
       </div>
-      <div className="gap-4 items-center lg:flex md:flex hidden">
+      <div className="items-center hidden gap-4 lg:flex md:flex">
         <div>
           <p className="font-medium text-dark2">Gas price: $0.001</p>
         </div>
-        <div className="flex text-base text-white bg-dark2 p-1 rounded-lg w-max items-center text-center">
+        <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark2 w-max">
           <div
             className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${
               activeMode === "Light" ? "bg-secondary5" : ""
@@ -74,7 +74,7 @@ export default function FooterSecondary() {
         </div>
       </div>
       <div>
-        <div className="flex text-base text-white bg-dark3 p-1 rounded-lg w-max items-center text-center">
+        <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
           <button
             type="button"
             className={`${

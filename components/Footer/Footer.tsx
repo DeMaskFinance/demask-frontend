@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import Icons from "@/public/icons/icon";
-import { LogoDemask } from "../Logo";
 import { TeleIcon, TwitterIcon } from "../Icons";
 import { TabGroups } from "../NavChoice";
 import useSvgComponents from "../Picture/Picture";
+import { LogoDeMaskFooter } from "../Logo/Logo";
 export default function Footer() {
   const svgComponents = useSvgComponents();
 
@@ -80,9 +80,8 @@ export default function Footer() {
         <div className="lg:order-none md:order-none order-2 pl-[2%]">
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
             <div
-              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex gap-2 items-center ${
-                activeChoice === "Light" ? "bg-secondary5" : ""
-              }`}
+              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex gap-2 items-center ${activeChoice === "Light" ? "bg-secondary5" : ""
+                }`}
               onClick={() => handleChoiceChange("Light")}
             >
               Light
@@ -90,9 +89,8 @@ export default function Footer() {
             </div>
 
             <div
-              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex items-center gap-2 ${
-                activeChoice === "Dark" ? "bg-dark0" : ""
-              }`}
+              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex items-center gap-2 ${activeChoice === "Dark" ? "bg-dark0" : ""
+                }`}
               onClick={() => handleChoiceChange("Dark")}
             >
               Dark
@@ -102,13 +100,8 @@ export default function Footer() {
           <div className="py-4">
             <h2 className="flex text-lg font-medium leading-6">
               <Link href="/">
-                {/* <LogoDemask width={94} height={24} /> */}
-                <Image
-                  src={"/logoHeader.svg"}
-                  alt=""
-                  width={212}
-                  height={54}
-                ></Image>
+                <LogoDeMaskFooter width={212}
+                  height={54} />
               </Link>
             </h2>
             <p className="mt-2 text-dark2">contact@demask.finance</p>
