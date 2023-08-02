@@ -140,7 +140,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col w-full gap-6 mx-auto lg:flex-row md:flex-row">
+          <div className="flex w-full gap-10 mx-auto lg:flex-row md:flex-row">
             <div className="lg:w-[70%] md:w-[70%] w-full">
               {isSuccess && data?.pages[0] ? (
                 data?.pages.map((page, index) => (

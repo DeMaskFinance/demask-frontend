@@ -71,37 +71,33 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                             height={32}
                             src={item.metadata?.image}
                             alt="NFT Image"
-                            placeholder="blur"
-                            blurDataURL={`${images.blur}`}
-                            className=""
+                            className="w-full h-full"
                           />
                         )}
-                        {!item.metadata?.image && (
-                          <Image
-                            loading="lazy"
-                            unoptimized
-                            width={32}
-                            height={32}
-                            src={"/images/video.svg"}
-                            alt="NFT Image"
-                            placeholder="blur"
-                            blurDataURL={`${images.blur}`}
-                            className=""
-                          />
-                        )}
-                        {item.metadata?.image && item.metadata?.image && (
-                          <Image
-                            loading="lazy"
-                            unoptimized
-                            width={32}
-                            height={32}
-                            src={item.metadata?.image}
-                            alt="NFT Image"
-                            placeholder="blur"
-                            blurDataURL={`${images.blur}`}
-                            className=""
-                          />
-                        )}
+                        {item.metadata?.animation_url &&
+                          !item.metadata?.image && (
+                            <video
+                              src={item.metadata?.animation_url}
+                              autoPlay
+                              loop
+                              muted
+                              className=""
+                            />
+                          )}
+                        {item.metadata?.image &&
+                          item.metadata?.animation_url && (
+                            <audio
+                              autoPlay
+                              loop
+                              muted
+                              controls
+                              src={item.metadata?.animation_url}
+                              className=""
+                            >
+                              Your browser does not support the
+                              <code>audio</code> element.
+                            </audio>
+                          )}
                       </span>
 
                       <span className="line-clamp-1">

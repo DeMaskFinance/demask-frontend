@@ -158,7 +158,6 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         },
       },
     ],
-    
   };
 
   return (

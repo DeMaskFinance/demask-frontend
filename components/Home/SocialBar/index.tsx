@@ -42,7 +42,6 @@ function SocialBar() {
             <li className="mb-1 text-dark2">
               <Link href="/support">Custumer Support</Link>
             </li>
-            
           </ul>
         </div>
       </div>

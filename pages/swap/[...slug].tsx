@@ -415,43 +415,43 @@ const Swap: React.FC = () => {
       <div className="flex flex-col gap-10 lg:flex-row md:flex-row">
         <div className="lg:w-[50%] md:w-2/4 w-full flex flex-col max-w-[772px] max-h-[772px] items-center">
           <div className="">
-          {imageNFT && (
-            <Image
-              src={imageNFT}
-              alt="test"
-              width={680}
-              height={576}
-              sizes="(max-width: 772px) 100vw"
-              className="w-full rounded-lg "
-              style={{
-                objectFit: "contain",
-              }}
-              unoptimized
-            />
-          )}
-          {!imageNFT && animationUrl && (
-            <video
-              src={animationUrl}
-              autoPlay
-              loop
-              muted
-              controls
-              className="max-h-[772px] max-w-[772px] rounded-2xl"
-            />
-          )}
-          {imageNFT && animationUrl && (
-            <audio
-              autoPlay
-              loop
-              muted
-              controls
-              src={animationUrl}
-              className="mt-4 mb-2"
-            >
-              Your browser does not support the
-              <code>audio</code> element.
-            </audio>
-          )}
+            {imageNFT && (
+              <Image
+                src={imageNFT}
+                alt="test"
+                width={680}
+                height={576}
+                sizes="(max-width: 772px) 100vw"
+                className="w-full rounded-lg "
+                style={{
+                  objectFit: "contain",
+                }}
+                unoptimized
+              />
+            )}
+            {!imageNFT && animationUrl && (
+              <video
+                src={animationUrl}
+                autoPlay
+                loop
+                muted
+                controls
+                className="max-h-[772px] max-w-[772px] rounded-2xl"
+              />
+            )}
+            {imageNFT && animationUrl && (
+              <audio
+                autoPlay
+                loop
+                muted
+                controls
+                src={animationUrl}
+                className="mt-4 mb-2"
+              >
+                Your browser does not support the
+                <code>audio</code> element.
+              </audio>
+            )}
           </div>
           <p
             className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
@@ -713,7 +713,9 @@ const Swap: React.FC = () => {
                 <ChartLoading />
               </div>
             ) : dataChart && dataChart.length > 0 ? (
-              <ChartSwap dataChart={dataChart} />
+              <div className="">
+                <ChartSwap dataChart={dataChart} />
+              </div>
             ) : (
               <div className="h-[355px]">
                 <ChartNoTransfers />
