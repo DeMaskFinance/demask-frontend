@@ -421,7 +421,7 @@ const Reels: React.FC<ReelsProps> = ({
   return (
     <div className="flex gap-4">
       {isSuccess && (
-        <div className="h-[790px] lg:w-2/4 bg-slate-100 rounded-xl md:w/24 w-full sticky  top-8">
+        <div className="h-[90vh] bg-slate-100 rounded-xl w-full sticky  top-8">
           <>
             <Swiper
               direction={"vertical"}
@@ -436,44 +436,50 @@ const Reels: React.FC<ReelsProps> = ({
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
                       <SwiperSlide key={`${nftItem._id}-${index}`}>
-                        <div className="relative flex items-center w-full h-full">
+                        <div className="relative flex items-center w-2/4 h-auto ml-14">
                           {nftItem.metadata.image && (
-                            <Image
-                              width={760}
-                              height={760}
-                              src={nftItem.metadata.image}
-                              alt="NFT Image"
-                              style={{
-                                objectFit: "contain",
-                              }}
-                              unoptimized
-                              className="rounded-2xl max-w-[760px] max-h-[760px] w-full"
-                            />
+                            <div className="max-w-[560px] max-h-[560px]">
+                              <Image
+                                width={760}
+                                height={760}
+                                src={nftItem.metadata.image}
+                                alt="NFT Image"
+                                style={{
+                                  objectFit: "contain",
+                                }}
+                                unoptimized
+                                className="rounded-2xl  w-full h-full"
+                              />
+                            </div>
                           )}
                           {nftItem.metadata.animation_url &&
                             !nftItem.metadata.image && (
-                              <video
-                                src={nftItem.metadata.animation_url}
-                                autoPlay
-                                loop
-                                muted
-                                controls
-                                className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
-                              />
+                              <div className="max-w-[560px] max-h-[560px]">
+                                <video
+                                  src={nftItem.metadata.animation_url}
+                                  autoPlay
+                                  loop
+                                  muted
+                                  controls
+                                  className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
+                                />
+                              </div>
                             )}
                           {nftItem.metadata.image &&
                             nftItem.metadata.animation_url && (
-                              <audio
-                                autoPlay
-                                loop
-                                muted
-                                controls
-                                src={nftItem.metadata.animation_url}
-                                className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%] "
-                              >
-                                Your browser does not support the
-                                <code>audio</code> element.
-                              </audio>
+                              <div className="max-w-[560px] max-h-[560px]">
+                                <audio
+                                  autoPlay
+                                  loop
+                                  muted
+                                  controls
+                                  src={nftItem.metadata.animation_url}
+                                  className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%] "
+                                >
+                                  Your browser does not support the
+                                  <code>audio</code> element.
+                                </audio>
+                              </div>
                             )}
                         </div>
                         <div ref={ref} style={{ height: "1px" }} />
@@ -483,271 +489,290 @@ const Reels: React.FC<ReelsProps> = ({
                 ))}
             </Swiper>
           </>
-        </div>
-      )}
-      {isSuccess && filter && (
-        <div className="sticky right-0 z-10 flex flex-col justify-start w-full h-full pt-4 mx-auto top-8 lg:w-2/4 md:w-2/4">
-          <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex gap-4 mb-3 text-dark1">
-              <div>
-                <TabGroups
-                  choices={["BUY", "SELL"]}
-                  activeChoice={activeChoice}
-                  onChoiceChange={handleChoiceChange}
-                />
-              </div>
+          {isSuccess && filter && (
+            <div className="h-fit right-0 z-10 absolute mr-14 justify-start w-full  pt-4 mx-auto top-8 lg:w-2/4 md:w-2/4">
+              <div className="px-6 py-6 border rounded-lg border-dark3">
+                <div className="flex gap-4 mb-3 justify-between text-dark1">
+                  <div>
+                    <TabGroups
+                      choices={["BUY", "SELL"]}
+                      activeChoice={activeChoice}
+                      onChoiceChange={handleChoiceChange}
+                    />
+                  </div>
 
-              <div className="basis-4/6">
-                <div className="flex justify-center text-xl font-medium text-dark1">
-                  <span className="mr-4">{filter.metadata.name}</span>
-                  {filter.metadata.category.map((item: any, index: number) => (
-                    <Link
-                      href={`/category/${item.toLowerCase()}`}
-                      key={index}
-                      className="h-[30px] flex items-center px-2 mr-2 text-xs font-medium text-center border rounded-lg border-secondary5 text-dark1"
+                  <div className="">
+                    <a
+                      href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
+                      target="_blank"
+                      className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
                     >
-                      <p>{item}</p>
-                    </Link>
-                  ))}
+                      <PoolIcon
+                        width={24}
+                        height={24}
+                        className="group-hover:fill-secondary3"
+                      />
+                      <p className="group-hover:text-secondary3">Pool</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div className="basis-1/6">
-                <a
-                  href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
-                  target="_blank"
-                  className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
-                >
-                  <PoolIcon
-                    width={24}
-                    height={24}
-                    className="group-hover:fill-secondary3"
+                <div className="flex items-center justify-center mb-2 text-dark2">
+                  <div className="">
+                    <div className="flex justify-center text-xl font-medium text-dark1">
+                      <span className="mr-4 line-clamp-1">
+                        {filter.metadata.name}
+                      </span>
+                    </div>
+                  </div>
+                  <AvatarUser
+                    activeSlideIndex={activeSlideIndex}
+                    width={32}
+                    height={32}
                   />
-                  <p className="group-hover:text-secondary3">Pool</p>
-                </a>
-              </div>
-            </div>
-            <div className="flex items-center justify-center mb-2 text-dark2">
-              <AvatarUser
-                activeSlideIndex={activeSlideIndex}
-                width={32}
-                height={32}
-              />
-              <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
-                0,
-                4
-              )}...${filter.creatorAddress.slice(-5)}`}</p>
-              <p className="-translate-y-[4px] mx-1">.</p>
-              <p className="text-xs first-letter:uppercase">
-                {filter.blockTimestamp}
-              </p>
-            </div>
-            <div className="mb-4 font-light text-center text-dark2 line-clamp-3">
-              {filter.metadata.description}
-            </div>
-            {filter.metadata.attributes && (
-              <div className="flex flex-wrap justify-center w-full my-4 gap-x-4">
-                {filter.metadata.attributes.map((item: any, index: number) => (
-                  <div key={index} className="">
-                    {item.value && item.trait_type && (
-                      <ul className="px-2 py-1 border rounded-lg border-dark3 w-max min-h-[46px] min-w-[120px]">
-                        <li className="text-lg font-medium text-dark2">
-                          {item.trait_type}
-                        </li>
-                        <li className="text-sm text-dark3">{item.value}</li>
-                      </ul>
+                  <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
+                    0,
+                    4
+                  )}...${filter.creatorAddress.slice(-5)}`}</p>
+                  <p className="-translate-y-[4px] mx-1">.</p>
+                  <p className="text-xs first-letter:uppercase">
+                    {filter.blockTimestamp}
+                  </p>
+                </div>
+                {filter.metadata.category.map((item: any, index: number) => (
+                  <Link
+                    href={`/category/${item.toLowerCase()}`}
+                    key={index}
+                    className="w-fit p-2 py-1 border bg-dark3 rounded-lg"
+                  >
+                    {item}
+                  </Link>
+                ))}
+
+                <div className="mb-4 font-light text-center text-dark2 line-clamp-3">
+                  {filter.metadata.description}
+                </div>
+                {filter.metadata.attributes && (
+                  <div className="flex flex-wrap justify-center w-full my-4 gap-x-4">
+                    {filter.metadata.attributes.map(
+                      (item: any, index: number) => (
+                        <div key={index} className="">
+                          {item.value && item.trait_type && (
+                            <ul className="px-2 py-1 border rounded-lg border-dark3 w-max min-h-[46px] min-w-[120px]">
+                              <li className="text-lg font-medium text-dark2">
+                                {item.trait_type}
+                              </li>
+                              <li className="text-sm text-dark3">
+                                {item.value}
+                              </li>
+                            </ul>
+                          )}
+                        </div>
+                      )
                     )}
                   </div>
-                ))}
-              </div>
-            )}
-            <div className="flex flex-col items-center">
-              {amountNFTSubmit ? (
-                <div className="text-center">
-                  {activeChoice === "BUY" &&
-                    (!priceBuy || isLoadingBuy ? (
-                      <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
-                    ) : (
-                      <div className="text-4xl text-secondary3">
-                        {amountNFTSubmit ? (
-                          <span>
-                            {formatNumber(
-                              divideByDecimal(priceBuy.toFixed(), decimals)
-                            )}
-                          </span>
+                )}
+                <div className="flex flex-col items-center">
+                  {amountNFTSubmit ? (
+                    <div className="text-center">
+                      {activeChoice === "BUY" &&
+                        (!priceBuy || isLoadingBuy ? (
+                          <p className="w-40 h-8 rounded-full animate-pulse bg-slate-200"></p>
                         ) : (
-                          <span>0</span>
-                        )}
-                        <span className="ml-2">{symbolTokenSwap}</span>
-                      </div>
-                    ))}
-                  {activeChoice === "SELL" &&
-                    (!priceSell || isLoadingSell ? (
-                      <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
-                    ) : (
-                      <div className="text-4xl text-secondary3">
-                        {amountNFTSubmit ? (
-                          <span>
-                            {formatNumber(
-                              divideByDecimal(priceSell.toFixed(), decimals)
+                          <div className="text-4xl text-secondary3">
+                            {amountNFTSubmit ? (
+                              <span>
+                                {formatNumber(
+                                  divideByDecimal(priceBuy.toFixed(), decimals)
+                                )}
+                              </span>
+                            ) : (
+                              <span>0</span>
                             )}
-                          </span>
+                            <span className="ml-2">{symbolTokenSwap}</span>
+                          </div>
+                        ))}
+                      {activeChoice === "SELL" &&
+                        (!priceSell || isLoadingSell ? (
+                          <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
                         ) : (
-                          <span>0</span>
-                        )}
-                        <span className="ml-2">{symbolTokenSwap}</span>
-                      </div>
-                    ))}
+                          <div className="text-4xl text-secondary3">
+                            {amountNFTSubmit ? (
+                              <span>
+                                {formatNumber(
+                                  divideByDecimal(priceSell.toFixed(), decimals)
+                                )}
+                              </span>
+                            ) : (
+                              <span>0</span>
+                            )}
+                            <span className="ml-2">{symbolTokenSwap}</span>
+                          </div>
+                        ))}
+                    </div>
+                  ) : (
+                    <h3 className="text-4xl text-secondary3">
+                      0 {symbolTokenSwap}
+                    </h3>
+                  )}
+                  <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
+                    <p className="mb-4 text-secondary4 flex gap-4 items-center">
+                      Reserve NFT:
+                      {/* {!isLoadingInforDML ? (
+                        <span className="w-16 block h-4 rounded-xl animate-pulse bg-slate-200"></span>
+                      ) : (
+                        <span className="block">
+                          {formatNumber(reserves[1])}
+                        </span>
+                      )} */}
+                    </p>
+
+                    <p className="mb-4 text-secondary4 flex items-center">
+                      Reserve Token:
+                      {/* {!isLoadingInforDML ? (
+                        <span className="w-16 block h-4 rounded-xl animate-pulse bg-slate-200"></span>
+                      ) : (
+                        <span>
+                          {formatNumber(
+                            divideByDecimal(reserves[0].toString(), decimals)
+                          )}
+                        </span>
+                      )} */}
+                    </p>
+                  </div>
+                  {/* {account && activeChoice === "BUY" && (
+                    <p className="mb-4 -mt-4 text-secondary3">
+                      Balance:{formatNumber(balanceToken)} {symbolTokenSwap}
+                    </p>
+                  )}
+                  {account && activeChoice === "SELL" && (
+                    <p className="mb-4 -mt-4 text-secondary3">
+                      Balance:{formatNumber(balanceNFT)} NFT
+                    </p>
+                  )} */}
                 </div>
-              ) : (
-                <h3 className="text-4xl text-secondary3">
-                  0 {symbolTokenSwap}
-                </h3>
-              )}
-              <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
-                {isLoadingInforDML ? (
-                  <p className="w-32 h-4 rounded-full animate-pulse bg-slate-200"></p>
-                ) : (
-                  <p className="mb-4 text-secondary4">
-                    Reserve NFT:{formatNumber(reserves[1])}
-                  </p>
-                )}
-                {isLoadingInforDML ? (
-                  <p className="w-32 h-4 rounded-full animate-pulse bg-slate-200"></p>
-                ) : (
-                  <p className="mb-4 text-secondary4 text-end">
-                    Reserve Token:
-                    {formatNumber(
-                      divideByDecimal(reserves[0].toString(), decimals)
+                <div className="flex justify-center">
+                  {amountNFT.map((item, index) => (
+                    <Button
+                      key={index}
+                      className="p-2 ml-4 text-sm font-medium leading-normal text-dark3"
+                      type="button"
+                      outline
+                      active={selectedCategory === item.value}
+                      onClick={() => setSelectedCategory(item.value)}
+                    >
+                      {item.value}
+                    </Button>
+                  ))}
+                </div>
+
+                {selectedCategory === "CUSTOM" && (
+                  <div className="w-[40%] mx-auto">
+                    <input
+                      type="number"
+                      name="amountNFT"
+                      id="amountNFT"
+                      placeholder="Input amount NFT"
+                      className={
+                        showRequiredMessage
+                          ? " mt-4 py-2 pl-2 mb-6 w-full rounded-lg border-2 border-red mx-auto block"
+                          : styles.inputItem
+                      }
+                      value={inputNFT}
+                      onChange={(e) => {
+                        setInputNFT(e.target.value);
+                        setShowRequiredMessage(false);
+                      }}
+                    />
+                    {showRequiredMessage && (
+                      <p
+                        className="mx-auto ml-3 -mt-3 text-xs text-red"
+                        key="emptyNFT"
+                      >
+                        Required
+                      </p>
                     )}
-                  </p>
+                  </div>
                 )}
-              </div>
-              {account && activeChoice === "BUY" && (
-                <p className="mb-4 -mt-4 text-secondary3">
-                  Balance:{formatNumber(balanceToken)} {symbolTokenSwap}
-                </p>
-              )}
-              {account && activeChoice === "SELL" && (
-                <p className="mb-4 -mt-4 text-secondary3">
-                  Balance:{formatNumber(balanceNFT)} NFT
-                </p>
-              )}
-            </div>
-            <div className="flex justify-center">
-              {amountNFT.map((item, index) => (
-                <Button
-                  key={index}
-                  className="p-2 ml-4 text-sm font-medium leading-normal text-dark3"
-                  type="button"
-                  outline
-                  active={selectedCategory === item.value}
-                  onClick={() => setSelectedCategory(item.value)}
-                >
-                  {item.value}
-                </Button>
-              ))}
-            </div>
 
-            {selectedCategory === "CUSTOM" && (
-              <div className="w-[40%] mx-auto">
-                <input
-                  type="number"
-                  name="amountNFT"
-                  id="amountNFT"
-                  placeholder="Input amount NFT"
-                  className={
-                    showRequiredMessage
-                      ? " mt-4 py-2 pl-2 mb-6 w-full rounded-lg border-2 border-red mx-auto block"
-                      : styles.inputItem
-                  }
-                  value={inputNFT}
-                  onChange={(e) => {
-                    setInputNFT(e.target.value);
-                    setShowRequiredMessage(false);
-                  }}
-                />
-                {showRequiredMessage && (
+                {!isSufficientNFT && balanceNFT && account && (
                   <p
-                    className="mx-auto ml-3 -mt-3 text-xs text-red"
-                    key="emptyNFT"
+                    className="mt-4 mb-2 ml-3 text-xs text-center text-red"
+                    key="NFTbalance"
                   >
-                    Required
+                    Insufficient NFT balance
                   </p>
                 )}
+                {((!isSufficientTokenBuy &&
+                  activeChoice === "BUY" &&
+                  account) ||
+                  (!isSufficientTokenSell &&
+                    activeChoice === "SELL" &&
+                    account)) && (
+                  <p
+                    className="mt-4 ml-3 text-xs text-center text-red"
+                    key="Tokenbalance"
+                  >
+                    Insufficient Token balance
+                  </p>
+                )}
+                <div className="flex justify-center w-full mt-6">
+                  {isApprovedToken && account && activeChoice === "BUY" && (
+                    <button
+                      type="button"
+                      className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
+                      onClick={handleBuyNFT}
+                    >
+                      BUY NFT
+                    </button>
+                  )}
+                  {isApprovedNFT && account && activeChoice === "SELL" && (
+                    <button
+                      type="button"
+                      className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
+                      onClick={handleSellNFT}
+                    >
+                      SELL NFT
+                    </button>
+                  )}
+                  {!isApprovedNFT &&
+                    account &&
+                    isSufficientTokenSell &&
+                    activeChoice === "SELL" && (
+                      <Button
+                        className="w-[126px] py-2"
+                        primary
+                        onClick={handleApproveNFT}
+                      >
+                        APPROVE NFT
+                      </Button>
+                    )}
+                  {!isApprovedToken &&
+                    account &&
+                    isSufficientTokenBuy &&
+                    tokenAddressSwap !== "MATIC" &&
+                    activeChoice === "BUY" && (
+                      <Button
+                        className="w-[126px] py-2"
+                        type="button"
+                        primary
+                        onClick={handleApproveToken}
+                      >
+                        APPROVE TOKEN
+                      </Button>
+                    )}
+                  {!account && (
+                    <Button
+                      className="w-[140px] py-2"
+                      primary
+                      onClick={handleOpen}
+                    >
+                      CONNECT WALLET
+                    </Button>
+                  )}
+                </div>
               </div>
-            )}
-
-            {!isSufficientNFT && balanceNFT && account && (
-              <p
-                className="mt-4 mb-2 ml-3 text-xs text-center text-red"
-                key="NFTbalance"
-              >
-                Insufficient NFT balance
-              </p>
-            )}
-            {((!isSufficientTokenBuy && activeChoice === "BUY" && account) ||
-              (!isSufficientTokenSell &&
-                activeChoice === "SELL" &&
-                account)) && (
-              <p
-                className="mt-4 ml-3 text-xs text-center text-red"
-                key="Tokenbalance"
-              >
-                Insufficient Token balance
-              </p>
-            )}
-            <div className="flex justify-center w-full mt-6">
-              {isApprovedToken && account && activeChoice === "BUY" && (
-                <button
-                  type="button"
-                  className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
-                  onClick={handleBuyNFT}
-                >
-                  BUY NFT
-                </button>
-              )}
-              {isApprovedNFT && account && activeChoice === "SELL" && (
-                <button
-                  type="button"
-                  className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
-                  onClick={handleSellNFT}
-                >
-                  SELL NFT
-                </button>
-              )}
-              {!isApprovedNFT &&
-                account &&
-                isSufficientTokenSell &&
-                activeChoice === "SELL" && (
-                  <Button
-                    className="w-[126px] py-2"
-                    primary
-                    onClick={handleApproveNFT}
-                  >
-                    APPROVE NFT
-                  </Button>
-                )}
-              {!isApprovedToken &&
-                account &&
-                isSufficientTokenBuy &&
-                tokenAddressSwap !== "MATIC" &&
-                activeChoice === "BUY" && (
-                  <Button
-                    className="w-[126px] py-2"
-                    type="button"
-                    primary
-                    onClick={handleApproveToken}
-                  >
-                    APPROVE TOKEN
-                  </Button>
-                )}
-              {!account && (
-                <Button className="w-[140px] py-2" primary onClick={handleOpen}>
-                  CONNECT WALLET
-                </Button>
-              )}
             </div>
-          </div>
+          )}
         </div>
       )}
       {(isLoading || isFetchingNextPage || isFetching) && <SkeletonReels />}

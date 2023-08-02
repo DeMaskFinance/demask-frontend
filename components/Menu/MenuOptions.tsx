@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 const styles = {
   btnActive: "rounded-lg bg-secondary5 px-2",
 };
-function MenuOptions() {
+
+interface MenuOptionsProps {
+  active: boolean;
+  menu: string;
+}
+
+const MenuOptions: React.FC<MenuOptionsProps> = ({ active, menu }) => {
   const svgComponents = useSvgComponents();
   const [activeMode, setActiveMode] = useState<string>("Light");
 
@@ -27,8 +33,8 @@ function MenuOptions() {
     btnActive: "rounded-lg bg-secondary5 px-2",
   };
   return (
-    <ul className="">
-      <div className="pl-8 rounded-t-lg -top-[185px] text-base hidden group-hover:flex lg:hidden py-4 bg-white border-t w-full right-0 flex-col absolute gap-4 border p-2">
+    <ul className={`${menu === "options" && active ? "block" : "hidden"}`}>
+      <div className="pl-8 rounded-t-lg -top-[185px] text-base flex lg:hidden py-4 bg-white border-t w-full right-0 flex-col absolute gap-4 border p-2">
         <div className="flex gap-4 items-end text-base">
           <li className="flex items-center justify-between mb-4">
             <Link
@@ -89,6 +95,6 @@ function MenuOptions() {
       </div>
     </ul>
   );
-}
+};
 
 export default MenuOptions;
