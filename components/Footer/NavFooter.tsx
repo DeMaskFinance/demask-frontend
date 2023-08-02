@@ -22,7 +22,7 @@ export default function NavFooter() {
 
   const handleActiveMenu = (menuActive: string) => {
     setMenu(menuActive);
-    setActive(!active);
+    setActive(true);
   };
 
   return (
@@ -37,7 +37,7 @@ export default function NavFooter() {
       ></div>
       <footer className="bg-white lg:hidden sticky bottom-0 z-20">
         <div>
-          <ul className="border-t flex justify-between py-4 px-6 gap-4 text-[10px] items-center">
+          <ul className="border-t flex justify-between pt-4 pb-2 px-6 gap-4 text-[10px] items-center">
             <div>
               <li className="flex items-center justify-between mb-4">
                 <Link
@@ -180,7 +180,7 @@ export default function NavFooter() {
               <li className="flex items-center justify-between mb-4">
                 <span className="flex items-center gap-2 flex-col">
                   <Image
-                    src={"/images/footer/solar.svg"}
+                    src={"/images/mobiles/solar.svg"}
                     width={24}
                     height={24}
                     alt=""

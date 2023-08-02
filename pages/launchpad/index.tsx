@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from "next/head";
 import React from "react";
 
 export default function Launchpad() {
@@ -7,7 +7,7 @@ export default function Launchpad() {
       <Head>
         <title>Launchpad | DeMask</title>
       </Head>
-      <div className='w-full h-[60vh] m-auto flex items-center justify-center text-4xl text-dark1 font-medium'>
+      <div className="w-full h-[100vh] m-auto flex items-center justify-center text-4xl text-dark1 font-medium">
         <p>Under construction</p>
       </div>
     </section>
