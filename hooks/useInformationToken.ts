@@ -14,7 +14,7 @@ const useInformationToken = (
   const [symbolToken, setSymbolToken] = useState("USDT");
   const [nameTokenERC20, setNameTokenERC20] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://rpc.ankr.com/polygon_mumbai"
+    "https://polygon-mumbai-bor.publicnode.com"
   );
   
   // let tokenAddressContract = "";

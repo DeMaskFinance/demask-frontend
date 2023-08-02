@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
 
 const getDMLToken = async (nftAddress:string,idNFT:string,tokenAddress:string) => {
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
+    const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
     const factoryAddress = process.env.NEXT_PUBLIC_FACTORY || "";
     const contract = new ethers.Contract(factoryAddress, abiFactory, provider);
     try {
