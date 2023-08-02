@@ -8,15 +8,17 @@ import formatNumber from "@/libs/utils/formatNumer";
 import allowanceDML from "@/libs/utils/allowanceDML";
 import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
-import { ModalWallet } from "../ModalWallet";
 import abiDML from "@/abi/abiDML.json";
+import abiRouter from "@/abi/abiRouter.json";
 import BigNumber from "bignumber.js";
 import useInformationToken from "@/hooks/useInformationToken";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
 import TransitionURL from "@/components/Toast/TransionURL";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import handleBignumber from "@/libs/utils/handleBignumber";
 interface ModalRemmoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -46,6 +48,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [amountNFT, setAmountNFT] = useState('');
     const [amountToken, setAmountToken] = useState('');
     const [tokenAddress, setTokenAddress] = useState("");
+    const [amountTokenMin, setAmountTokenMin] = useState("");
+    const [amountNFTMin, setAmountNFTMin] = useState("");
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -86,12 +90,18 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       if (reserves[0] && reserves[1]) {
         const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
         const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(inputLiquidity)) / ((Number(reserves[1].toString()) - Number(inputLiquidity)) * Number(totalSupply));
+        const resAmountNFTMin = new BigNumber(resAmountNFT).times(0.95)
+          .times(new BigNumber(10).pow(Number(decimals)))
+          .toFixed(0);
+        const resAmountTokenMin = resAmountToken * 0.95;
         setAmountNFT(resAmountNFT.toString());
         setAmountToken(resAmountToken.toString());
+        setAmountNFTMin(resAmountNFTMin);
+        setAmountTokenMin(resAmountTokenMin.toFixed(0));
       }
     }, [inputLiquidity])
-    // console.log(amountNFT);
-    // console.log(amountToken);
+    console.log(amountNFTMin);
+    console.log(amountTokenMin);
 
 
     const currentAllowance = useAllowanceDML(
@@ -100,13 +110,15 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       wallet,
       isApprovedDML
     );
-    console.log(currentAllowance);
+    // console.log(currentAllowance);
+    // console.log(inputLiquidity);
+    // console.log(Number(handleBignumber(Number(inputLiquidity), 18)));
 
     useEffect(() => {
       const checkApproveToken = async () => {
         console.log('123kkhihi');
         console.log(currentAllowance);
-        if (Number(currentAllowance) < Number(inputLiquidity)) {
+        if (currentAllowance && Number(currentAllowance) < Number(handleBignumber(Number(inputLiquidity), Number(decimals)))) {
           setIsApprovedLiquidity(false);
         } else {
           setIsApprovedLiquidity(true);
@@ -119,7 +131,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       data.fullInfoMetadata.dmlAddress,
       wallet,
     );
-    console.log(reserves);
+    // console.log(reserves);
 
     const { balanceToken, decimals, bigNumberBalance, symbolToken } =
       useInformationToken(account, tokenAddress, wallet);
@@ -128,8 +140,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const handleApproveDML = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
       if (inputLiquidity) {
         setShowRequiredMessage(false);
-        console.log(wallet,dmlAddress,inputLiquidity);
-        
+        console.log(wallet, dmlAddress, inputLiquidity);
+
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -138,11 +150,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const inputLiquidityBN = new BigNumber(inputLiquidity)
           .times(new BigNumber(10).pow(Number(decimals)))
           .toFixed(0);
-          console.log(inputLiquidityBN);
-          
+        console.log(inputLiquidityBN);
+
         try {
           console.log("abc");
-          
+
           await contract.approve(routerAddress, inputLiquidityBN);
           setIsApprovedDML(true);
         } catch (error) {
@@ -164,66 +176,67 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         }
       }
     }, [data, account]);
-    const removeLiquidity = () =>{
-      // if (inputLiquidity && !isSufficientLiquidity && ) {
-      //   const providerChoice = getProvider(wallet);
-      //   const provider = new ethers.providers.Web3Provider(providerChoice);
-      //   const signer = provider.getSigner();
-      //   const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
-      //   const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      //   const value = handleBignumber(Number(inputToken), 18);
-  
-      //   try {
-      //     let result;
-      //     let transactionHash;
-  
-      //     if (tokenAddress === "MATIC") {
-      //       result = await contract.removeLiquidityETH(
-      //         data.fullInfoMetadata.nft,
-      //         data.fullInfoMetadata.tokenId,
-      //         inputLiquidity,
-      //         0,
-      //         account,
-      //         Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-      //         { gasLimit: 8000000, value }
-      //       );
-      //       transactionHash = result.hash;
-      //     } else {
-      //       result = await contract.addLiquidity(
-      //         tokenAddress,
-      //         data.fullInfoMetadata.nft,
-      //         data.fullInfoMetadata.tokenId,
-      //         amountErcDesired,
-      //         inputNFT,
-      //         0,
-      //         account,
-      //         Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-      //         { gasLimit: 8000000 }
-      //       );
-      //       transactionHash = result.hash;
-      //     }
-      //     toast.success(
-      //       <TransitionURL
-      //         type={"Add Liquidity"}
-      //         transactionHash={transactionHash}
-      //       />,
-      //       {
-      //         position: "top-right",
-      //         autoClose: 5000,
-      //         hideProgressBar: false,
-      //         closeOnClick: false,
-      //         pauseOnHover: true,
-      //         draggable: true,
-      //         progress: undefined,
-      //         theme: "light",
-      //       }
-      //     );
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // } else {
-      //   setShowRequiredMessage(true);
-      // }
+    const removeLiquidity = async () => {
+      if (inputLiquidity && !isSufficientLiquidity ) {
+        const providerChoice = getProvider(wallet);
+        const provider = new ethers.providers.Web3Provider(providerChoice);
+        const signer = provider.getSigner();
+        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+        const liquidity = handleBignumber(Number(inputLiquidity), Number(decimals));
+
+        try {
+          let result;
+          let transactionHash;
+
+          if (tokenAddress === "MATIC") {
+            result = await contract.removeLiquidityETH(
+              data.fullInfoMetadata.nft,
+              data.fullInfoMetadata.tokenId,
+              liquidity,
+              amountTokenMin,
+              amountNFTMin,
+              account,
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000}
+            );
+            transactionHash = result.hash;
+          } else {
+            result = await contract.removeLiquidity(
+              data.fullInfoMetadata.tokenAddress,
+              data.fullInfoMetadata.nft,
+              data.fullInfoMetadata.tokenId,
+              liquidity,
+              amountTokenMin,
+              amountNFTMin,
+              account,
+              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+              { gasLimit: 8000000}
+            );
+            transactionHash = result.hash;
+          }
+          toast.success(
+            <TransitionURL
+              type={"Remove Liquidity"}
+              transactionHash={transactionHash}
+            />,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        setShowRequiredMessage(true);
+      }
     }
     return (
       <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
@@ -312,7 +325,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                           APPROVE DML
                         </Button>
                       )}
-                      {isApprovedLiquidity && (
+                      {(isApprovedLiquidity) && (
                         <Button
                           className="p-2 mx-auto"
                           primary
@@ -334,6 +347,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
+        <ToastContainer />
       </Wrapper>
     );
   };

@@ -7,7 +7,7 @@ const useAllowanceDML = (account: string, dmlAddress: string, wallet: string,isA
   console.log(account,dmlAddress,wallet,isApprovedDML);
   useEffect(() => {
     const getAllowance = async () => {
-      if (account && dmlAddress && wallet) {
+      if (account && dmlAddress && wallet && isApprovedDML) {
         console.log(account,dmlAddress,wallet,isApprovedDML);
         
         const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');

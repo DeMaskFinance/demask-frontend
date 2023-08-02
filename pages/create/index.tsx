@@ -15,6 +15,7 @@ import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import MintNFT from "@/components/Creator/MintNFT";
 import { LaunchPad } from "@/components/Creator";
 import images from "@/public/images";
+import { TabGroups } from "@/components/NavChoice";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -31,7 +32,7 @@ export default function Creator() {
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<any>(null);
-  const [activeButton, setActiveButton] = useState<string>("MINT");
+  const [activeButton, setActiveButton] = useState<string>("Mint");
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
   ]);
@@ -108,9 +109,6 @@ export default function Creator() {
       alert("Bạn chưa chọn file");
     }
   }
-  const handleButtonClick = (button: string) => {
-    setActiveButton(button);
-  };
   const handleChangeAttributeType = (
     e: ChangeEvent<HTMLInputElement>,
     id: number
@@ -205,13 +203,16 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
+  const handleChoiceChange = (choice: string) => {
+    setActiveButton(choice);
+  };
   return (
-    <div className="flex lg:flex-row md:flex-row flex-col py-8 gap-6 container-main mx-auto">
+    <div className="flex flex-col gap-6 py-8 mx-auto lg:flex-row md:flex-row container-main">
       <Head>
         <title>Creator | DeMask</title>
       </Head>
       {/* UpLoad File */}
-      <div className="lg:w-2/4 md:w-2/4 w-full shrink-0">
+      <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">
         <div className="sticky top-16">
           <h2 className="text-2xl">Create A New Item</h2>
           <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
@@ -313,11 +314,11 @@ export default function Creator() {
           </div>
         </div>
       </div>
-      <div className="lg:w-2/4 md:w-2/4 w-full">
+      <div className="w-full lg:w-2/4 md:w-2/4">
         <form id="creator">
           <div>
             <label htmlFor="name" className={styles.title}>
-              <span className="">NFT name</span>
+              <span className="">Name</span>
               <span className="text-red">*</span>
             </label>
             <input
@@ -420,7 +421,7 @@ export default function Creator() {
             onClick={handleAddAttribute}
             disabled={!isValidBtn}
           >
-            + ADD PROPERTY
+            + Add Property
           </Button>
           <div>
             <p className={styles.title}>Category</p>
@@ -429,7 +430,7 @@ export default function Creator() {
                 type="button"
                 active={selectedCategory.includes(item.value)}
                 outline
-                className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] uppercase text-dark2"
+                className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
                 key={item.id}
                 onClick={() => selectCategory(item.value)}
               >
@@ -437,27 +438,16 @@ export default function Creator() {
               </Button>
             ))}
           </div>
-          <div>
+          <div className="mb-4">
             <p className={styles.title}>Mint Option</p>
-            <div className="grid h-[34px] grid-cols-2 rounded-lg w-[162px] mb-4 text-sm bg-dark2 text-white">
-              <button
-                type="button"
-                className={activeButton === "MINT" ? styles.btnActive : ""}
-                onClick={() => handleButtonClick("MINT")}
-              >
-                MINT
-              </button>
-              <button
-                type="button"
-                className={activeButton === "LAUNCHPAD" ? styles.btnActive : ""}
-                onClick={() => handleButtonClick("LAUNCHPAD")}
-              >
-                LAUNCHPAD
-              </button>
-            </div>
+            <TabGroups
+            choices={["Mint", "Launchpad"]}
+            activeChoice={activeButton}
+            onChoiceChange={handleChoiceChange}
+            />
           </div>
 
-          {activeButton === "MINT" ? (
+          {activeButton === "Mint" ? (
             <MintNFT
               name={name}
               symbol={symbol}
