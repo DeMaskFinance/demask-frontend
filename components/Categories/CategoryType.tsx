@@ -118,8 +118,12 @@ const Category = ({ label }: { label: string }) => {
                                     loop
                                     muted
                                     controls={false}
-                                    onMouseOver={event => (event.target as any).play()}
-                                    onMouseOut={event => (event.target as any).pause()}
+                                    onMouseOver={(event) =>
+                                      (event.target as any).play()
+                                    }
+                                    onMouseOut={(event) =>
+                                      (event.target as any).pause()
+                                    }
                                     className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
                                   />
                                 )}
@@ -216,13 +220,11 @@ const Category = ({ label }: { label: string }) => {
         </div>
         {data && (
           <button className="mt-[28px] self-end text-secondary2 text-sm font-semibold border  hover:border-secondary2 border-white rounded-lg px-4 py-2 transition-all ease-in duration-150">
-            <Link href={`category/${label}`}>
-              See more
-            </Link>
+            <Link href={`category/${label}`}>See more</Link>
           </button>
         )}
-        {isLoading && <SkeletonCategory />}
       </div>
+      {isLoading && <SkeletonCategory />}
     </section>
   );
 };
