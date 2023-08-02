@@ -43,4 +43,10 @@ const amountNFT = [
       value: "CUSTOM",
     },
   ];
-export {tokenDefault,amountNFT}
+const rpcMumbai = [
+  {
+    id:1,
+    url:'https://polygon-mumbai-bor.publicnode.com',
+  }
+]
+export {tokenDefault,amountNFT,rpcMumbai}

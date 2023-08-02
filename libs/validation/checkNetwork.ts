@@ -24,7 +24,7 @@ export const checkNetwork = async (provider:any) => {
                       decimals: 18,
                       symbol: "MATIC",
                     },
-                    rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+                    rpcUrls: ["https://polygon-mumbai-bor.publicnode.com"],
                   },
                 ],
               });

@@ -14,7 +14,7 @@ const useMetadata = (nftAddress: string, idNFT: string) => {
   useEffect(() => {
     const handleSearch = async () => {
       const provider = new ethers.providers.JsonRpcProvider(
-        "https://rpc.ankr.com/polygon_mumbai"
+        "https://polygon-mumbai-bor.publicnode.com"
       );
       const contract = new ethers.Contract(nftAddress, abiErc1155, provider);
       try {

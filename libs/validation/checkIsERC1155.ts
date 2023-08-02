@@ -5,7 +5,7 @@ const checkIsERC1155 = async (contractAddress: string) => {
   console.log(contractAddress);
   
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://rpc.ankr.com/polygon_mumbai"
+    "https://polygon-mumbai-bor.publicnode.com"
   );
   const contract = new ethers.Contract(contractAddress, abiErc1155, provider);
   try {

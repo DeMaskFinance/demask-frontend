@@ -81,7 +81,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       }
     }, [activeChoice])
     const totalSupply = useTotalSupply(account, wallet, data.fullInfoMetadata.dmlAddress, isApprovedDML);
-    console.log(totalSupply);
+    // console.log(totalSupply);
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
         const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
@@ -90,8 +90,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setAmountToken(resAmountToken.toString());
       }
     }, [inputLiquidity])
-    console.log(amountNFT);
-    console.log(amountToken);
+    // console.log(amountNFT);
+    // console.log(amountToken);
 
 
     const currentAllowance = useAllowanceDML(
@@ -104,7 +104,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
 
     useEffect(() => {
       const checkApproveToken = async () => {
-        console.log('123hihi');
+        console.log('123kkhihi');
         console.log(currentAllowance);
         if (Number(currentAllowance) < Number(inputLiquidity)) {
           setIsApprovedLiquidity(false);
@@ -125,9 +125,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       useInformationToken(account, tokenAddress, wallet);
     console.log(isApprovedDML);
     console.log(isApprovedLiquidity);
-    const handleApproveLiquidity = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
+    const handleApproveDML = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
       if (inputLiquidity) {
         setShowRequiredMessage(false);
+        console.log(wallet,dmlAddress,inputLiquidity);
+        
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -135,8 +137,12 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const inputLiquidityBN = new BigNumber(inputLiquidity)
           .times(new BigNumber(10).pow(Number(decimals)))
-          .toFixed();
+          .toFixed(0);
+          console.log(inputLiquidityBN);
+          
         try {
+          console.log("abc");
+          
           await contract.approve(routerAddress, inputLiquidityBN);
           setIsApprovedDML(true);
         } catch (error) {
@@ -294,7 +300,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                           className="w-[126px] py-2 mx-auto"
                           primary
                           onClick={() =>
-                            handleApproveLiquidity(
+                            handleApproveDML(
                               account,
                               wallet,
                               data.fullInfoMetadata.dmlAddress,

@@ -10,7 +10,7 @@ const useAllowanceDML = (account: string, dmlAddress: string, wallet: string,isA
       if (account && dmlAddress && wallet) {
         console.log(account,dmlAddress,wallet,isApprovedDML);
         
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/polygon_mumbai');
+        const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
         const contract = new ethers.Contract(dmlAddress, abiDML, provider);
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         try {
