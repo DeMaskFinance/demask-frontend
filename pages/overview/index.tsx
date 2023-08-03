@@ -5,12 +5,12 @@ import ListTracsaction from "@/components/Overview/Transaction/ListTracsaction";
 import Head from "next/head";
 export default function Overview() {
   return (
-    <section className="pt-8 overview max-w-screen-xl lg:px-8 mx-auto">
+    <section className="max-w-screen-xl pt-8 mx-auto overview lg:px-8">
       <Head>
         <title>Overview | DeMask</title>
       </Head>
       <h1 className="mb-6 text-2xl font-medium">Demask Info & Analytics</h1>
-      <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-10">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 md:grid-cols-2 h-[372px]">
         {/* Chart */}
         <ChartTVL />
         <ChartVolumn />
