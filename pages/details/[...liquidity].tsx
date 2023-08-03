@@ -139,7 +139,7 @@ export default function DetailLiquidity() {
       </Head>
       <div className="flex justify-between ">
         <div className="flex items-center mb-6">
-          <Link href="/liquidity">
+          <Link href="/liquidity" className="p-1 rounded-lg hover:bg-secondary2 group">
             <BackIcon width={24} height={24} />
           </Link>
           {account && data && (

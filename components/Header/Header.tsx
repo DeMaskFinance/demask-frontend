@@ -33,7 +33,7 @@ const style = {
   menuSub:
     "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
   itemSub:
-    "flex items-center p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
+    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
   btnWallet:
     "flex items-center justify-center py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
 };
@@ -156,14 +156,14 @@ export default function Header() {
               interactive
               render={(attrs) => (
                 <div
-                  className="w-[240px] pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
+                  className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
                   tabIndex={-1}
                   {...attrs}
                 >
                   <p className="p-2 text-base border-b-[1px] border-dark3">
                     Select a network
                   </p>
-                  <ul className="flex flex-col font-normal gap-y-3">
+                  <ul className="flex flex-col mt-2 font-normal gap-y-3">
                     <li className={`${style.itemSub} gap-x-2 group`}>
                       <EtherIcon
                         width={24}
@@ -208,14 +208,14 @@ export default function Header() {
                 interactive
                 render={(attrs) => (
                   <div
-                    className="w-[200px] h-[100px] border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1"
+                    className="w-[200px] px-2 h-[100px] border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1"
                     tabIndex={-1}
                     {...attrs}
                   >
-                    <ul>
+                    <ul className="pb-2 mt-2">
                       <li className={`${style.itemSub}`}>Proflie</li>
                       <li
-                        className={`${style.itemSub} justify-between`}
+                        className={`${style.itemSub} justify-between mb-2`}
                         onClick={disconnectWallet}
                       >
                         <div>Disconnect</div>

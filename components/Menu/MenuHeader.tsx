@@ -10,7 +10,7 @@ const styles = {
   menuSub:
     "pt-1 pb-1 bg-white border text-base rounded-lg shadow-xl box border-dark4 font-medium",
   itemSub:
-    "flex items-center justify-between text-base p-2 transition-all duration-100 ease-in rounded-lg cursor-pointer hover:bg-dark4 hover:text-secondary5 active:text-secondary3",
+    "flex items-center justify-between text-base p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
 };
 const data = [
   { id: 1, name: "Overview", url: "/overview" },
@@ -65,7 +65,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 interactive
                 render={(attrs) => (
                   <div className={styles.menuSub} tabIndex={-1} {...attrs}>
-                    <ul className="flex flex-col">
+                    <ul className="flex flex-col px-2 w-[136px]">
                       {subMenuTradeData.map((tradeItem) => (
                         <Link href={tradeItem.url} key={tradeItem.id}>
                           <li className={styles.itemSub}>{tradeItem.name}</li>
@@ -75,9 +75,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   </div>
                 )}
               >
-                <button className="hover:text-secondary5 flex active:text-secondary3">
+                <button className="flex hover:text-secondary5 active:text-secondary3">
                   <Link
-                    className=" text-base"
+                    className="text-base "
                     ref={tradeRef}
                     href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC"
                   >
@@ -92,7 +92,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 interactive
                 render={(attrs) => (
                   <div className={styles.menuSub} tabIndex={-1} {...attrs}>
-                    <ul className="flex flex-col text-base">
+                    <ul className="flex flex-col text-base px-2 w-[150px]">
                       {subMenuCateData.map((cateItem) => (
                         <ActiveLink href={cateItem.url} key={cateItem.id}>
                           <li className={styles.itemSub}>{cateItem.name}</li>
@@ -102,13 +102,13 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   </div>
                 )}
               >
-                <button className="hover:text-secondary5 flex active:text-secondary3 text-base">
+                <button className="flex text-base hover:text-secondary5 active:text-secondary3">
                   <Link href="/category">Category</Link>
                 </button>
               </Tippy>
             </li>
           ) : (
-            <li className="relative hover:text-secondary5 active:text-secondary3 text-base">
+            <li className="relative text-base hover:text-secondary5 active:text-secondary3">
               <ActiveLink href={item?.url as string}>
                 <p>{item.name}</p>
               </ActiveLink>
