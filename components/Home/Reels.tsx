@@ -422,9 +422,9 @@ const Reels: React.FC<ReelsProps> = ({
 
   const [activeMobile, setActiveMobile] = useState(false);
   return (
-    <div className="flex gap-4">
+    <div className="gap-4">
       {isSuccess && (
-        <div className="lg:h-[90vh] h-[82.5vh] rounded-xl w-full sticky px top-8">
+        <div className="lg:h-[90vh] overflow-hidden h-[82.5vh] rounded-xl w-full sticky px top-8">
           <>
             <Swiper
               direction={"vertical"}
