@@ -4,6 +4,7 @@ import { format, parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
+import ChartLoading from "./ChartLoading";
 interface ChartVolumnProps { }
 const styles = {
   btnActive: "rounded-full bg-secondary5",
@@ -45,63 +46,71 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
 
   return (
     <div className="p-6 rounded-lg shadow-chart">
-      <div className="flex justify-between mb-2">
-        <div className="mb-2 text-dark1">
-          <p className="font-medium ">Volume</p>
-          <p className="my-2 text-2xl font-medium text-dark0">
-            ${activeData?.toFixed(2)}M
-          </p>
-          <p className="">
-            {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
-          </p>
+      {chartColumn && (
+        <div>
+          <div className="flex justify-between mb-2">
+            <div className="mb-2 text-dark1">
+              <p className="font-medium ">Volume</p>
+              <p className="my-2 text-2xl font-medium text-dark0">
+                ${activeData?.toFixed(2)}M
+              </p>
+              <p className="">
+                {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
+              </p>
+            </div>
+            <div className="h-fit">
+              <TabGroups
+                choices={["D", "W", "M"]}
+                activeChoice={activeChoice}
+                onChoiceChange={handleChoiceChange}
+              />
+            </div>
+          </div>
+          <div className="h-[212px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                width={500}
+                height={300}
+                data={chartColumn}
+                margin={{
+                  top: 10,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+                onMouseMove={(event) => {
+                  if (event && event.activeLabel && event.activePayload) {
+                    const { value } = event.activePayload[0];
+                    setActiveData(value);
+                    if (activeDate !== event.activeLabel) {
+                      setActiveDate(event.activeLabel);
+                    }
+                  }
+                }}
+              >
+                <XAxis
+                  dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#B2B2B2" }}
+                  tickFormatter={(str) => {
+                    const date = parseISO(str);
+                    if (date.getDate() % 3 === 0) {
+                      return format(date, "d");
+                    }
+                    return "";
+                  }}
+                />
+                <Bar dataKey="value" fill="#A398FF" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-        <div className="h-fit">
-        <TabGroups
-          choices={["D", "W", "M"]}
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-        />
-        </div>
-      </div>
-      <div className="h-[212px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            width={500}
-            height={300}
-            data={chartColumn}
-            margin={{
-              top: 10,
-              right: 0,
-              left: 0,
-              bottom: 0,
-            }}
-            onMouseMove={(event) => {
-              if (event && event.activeLabel && event.activePayload) {
-                const { value } = event.activePayload[0];
-                setActiveData(value);
-                if (activeDate !== event.activeLabel) {
-                  setActiveDate(event.activeLabel);
-                }
-              }
-            }}
-          >
-            <XAxis
-              dataKey="date"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#B2B2B2" }}
-              tickFormatter={(str) => {
-                const date = parseISO(str);
-                if (date.getDate() % 3 === 0) {
-                  return format(date, "d");
-                }
-                return "";
-              }}
-            />
-            <Bar dataKey="value" fill="#A398FF" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      )}
+      {LoadingColumn && (
+        <ChartLoading />
+      )}
+      
     </div>
   );
 };
