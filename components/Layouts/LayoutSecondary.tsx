@@ -9,7 +9,7 @@ export default function LayoutSecondary({ children }: PropsWithChildren) {
       <Header />
       <main className="mt-[64px] ">{children}</main>
       <FooterSecondary />
-      <NavFooter />
+      <NavFooter reels={true} />
     </div>
   );
 }

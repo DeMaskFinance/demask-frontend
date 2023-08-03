@@ -5,7 +5,7 @@ import MenuOptions from "../Menu/MenuOptions";
 const styles = {
   btnActive: "rounded-lg bg-secondary5 px-2",
 };
-export default function NavFooter() {
+export default function NavFooter({ reels }: any) {
   const [active, setActive] = useState<boolean>(false);
   const [menu, setMenu] = useState<string>("");
   const [mode, setMode] = useState<string>("");
@@ -188,7 +188,7 @@ export default function NavFooter() {
                 </span>
               </li>
 
-              <MenuOptions active={active} menu={menu} />
+              <MenuOptions active={active} menu={menu} reels={reels} />
             </div>
           </ul>
         </div>

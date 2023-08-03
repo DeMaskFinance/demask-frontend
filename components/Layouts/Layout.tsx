@@ -9,7 +9,7 @@ export default function Layout({ children }: PropsWithChildren) {
       <Header />
       <main className="mt-[64px] lg:px-primary md:px-14 px-4">{children}</main>
       <Footer />
-      <NavFooter />
+      <NavFooter reels={false} />
     </div>
   );
 }
