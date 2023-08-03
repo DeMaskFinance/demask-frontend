@@ -17,7 +17,7 @@ function ListTracsaction() {
 
     refetchInterval: 60000,
   });
-  
+
   const goToPage = (pageNum: any) => {
     const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
     setPage(newPageNumber);
@@ -93,6 +93,7 @@ function ListTracsaction() {
                 <th className="flex justify-start lg:w-full md:w-full w-[200px]">
                   Action
                 </th>
+                {/* <th className="flex justify-start lg:w-full md:w-full w-[50px]"></th> */}
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   NFT amount
                 </th>

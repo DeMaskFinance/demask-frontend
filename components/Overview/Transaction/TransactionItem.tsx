@@ -40,9 +40,6 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
             <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
           </tr>
         ))
       ) : (
@@ -52,7 +49,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
               <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                 {idx + 1}
               </td>
-              <td className="py-2 hover:text-secondary3 hover:font-medium flex items-center justify-start lg:w-full md:w-full w-[200px]">
+              <td className="py-2 hover:text-secondary3 relative hover:font-medium flex items-center justify-start lg:w-full md:w-full w-[200px]">
                 <Link
                   target="_blank"
                   href={`https://mumbai.polygonscan.com/tx/${item.transactionHash}`}
@@ -62,11 +59,33 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                       <AvatarUser width={32} height={32} />
                     </span>
                     <span className="line-clamp-1">
+                      {isFetching ? skeleton : item.actionName}
+                      {/* {item.actionName.length > 10 ? "..." : ""} */}
+                    </span>
+                    <span
+                      className={`ml-2 absolute top-2 left-52 bg-transparent border text-sm ${
+                        item.action === "Buy" || item.action === "Sell"
+                          ? "border-green text-green"
+                          : "border-red text-red"
+                      } p-1 rounded-lg`}
+                    >
                       {isFetching ? skeleton : item.action}
                     </span>
                   </span>
                 </Link>
               </td>
+
+              {/* <td className="py-2 flex items-center  justify-start lg:w-full w-[50px]">
+                <span
+                  className={`bg-transparent border text-sm ${
+                    item.action === "Buy" || item.action === "Sell"
+                      ? "border-green text-green"
+                      : "border-red text-red"
+                  } p-1 rounded-lg`}
+                >
+                  {isFetching ? skeleton : item.action}
+                </span>
+              </td> */}
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">
                 <span className="">
                   {isFetching ? skeleton : item.amountnft}

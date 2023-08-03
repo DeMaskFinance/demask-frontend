@@ -1,16 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-import Icons from "@/public/icons/icon";
-import Image from "next/image";
-import Tippy from "@tippyjs/react/headless";
-import { FunctionComponent } from "react";
-import Link from "next/link";
-import { SearchIcon } from "../Icons";
-import { useRouter } from "next/router";
-import { useQuery } from "@tanstack/react-query";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { AvatarUser } from "../Avatars";
 import { getCookie, setCookie } from "@/libs/utils/cookieUtils";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { AvatarUser } from "../Avatars";
+import { SearchIcon } from "../Icons";
 
 interface SearchProps {
   isFocused: any;
@@ -28,11 +24,22 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
+
   const { isLoading, data, isFetching } = useQuery({
     queryKey: ["categories", searchTerm],
     queryFn: async () => {
-      const res = await categoryAPI(`/search?search=${searchTerm}`);
-      return res;
+      if (searchTerm.includes("/")) {
+        const [param1, param2] = searchTerm.split(":");
+        const id = param1.includes("x") ? param2 : param1;
+        const nftAddress = param1.includes("x") ? param1 : param2;
+        const res = await categoryAPI(
+          `/search?nftAddress=${nftAddress}&id=${id}`
+        );
+        return res;
+      } else {
+        const res = await categoryAPI(`/search?search=${searchTerm}`);
+        return res;
+      }
     },
   });
   const [active, setActive] = useState(false);
@@ -87,7 +94,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
     setSearchHistory(searchsHistory);
   }, []);
 
-  console.log(searchHistory);
   return (
     <>
       <li className="">
@@ -100,13 +106,13 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
               type="search"
               value={searchTerm}
               onChange={handleSearch}
-              placeholder="Search NFT"
+              placeholder="Search name / liquidity pairs / crypto collectibles : id"
               onClick={() => {
                 setClick(true);
               }}
               className={`border hide-clear rounded-lg relative pr-1 placeholder:text-dark2 transition-all ${
                 active
-                  ? "w-64 h-[32px]  border-secondary5 pl-10"
+                  ? "w-72 h-[32px]  border-secondary5 pl-10"
                   : "w-[32px] h-[32px] placeholder:text-transparent bg-transparent transition-all"
               } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
@@ -125,7 +131,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
           <ul
             className={`border max-h-72 overflow-y-auto ${
               click ? "block" : "hidden"
-            }  bg-white w-64 rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
+            }  bg-white w-72 rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
           >
             <div className={`${searchTerm === "" ? "block" : "hidden"}`}>
               <span className="mb-2 block">
@@ -193,7 +199,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                     {data.map((item: any, index: number) => (
                       <>
                         <Link
-                          key={item.metadata.name}
+                          key={item?.metadata?.name}
                           onClick={() => handleResultItemClick(item)}
                           href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
                           //
@@ -206,7 +212,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">
                                   <span className="line-clamp-1">
-                                    {item.metadata.name}
+                                    {item?.metadata?.name}
                                   </span>
                                 </span>
                                 <span className="flex text-xs item-center">

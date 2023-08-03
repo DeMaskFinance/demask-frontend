@@ -97,29 +97,29 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             ))}
         </div>
         <div className="flex gap-x-2 items-center ">
-          {symbolToken && tokenAddress && nftAddress ? (
-            <div className="bg-secondary5 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
-              {reserveToken.toString() === "0" ||
-              reserveNFT.toString() === "0" ||
-              reserveNFT.toString() === "1" ? (
-                <div className="text-red">Unable to buy</div>
-              ) : (
-                <Link
-                  href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}?dmlAddress=${nftItem.dmlAddress}`}
-                  className="whitespace-pre font-semibold flex gap-2 items-center lg:text-lg md:text-md text-sm"
-                >
+          <div className="bg-secondary5 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
+            {reserveToken.toString() === "0" ||
+            reserveNFT.toString() === "0" ||
+            reserveNFT.toString() === "1" ? (
+              <div className="text-red">Unable to buy</div>
+            ) : (
+              <Link
+                href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}?dmlAddress=${nftItem.dmlAddress}`}
+                className="whitespace-pre font-semibold flex gap-2 items-center lg:text-lg md:text-md text-sm"
+              >
+                {symbolToken && tokenAddress && nftAddress ? (
                   <span>
                     {formatPrice} {symbolTokenSwap}
                   </span>
-                  <svgComponents.buttonSwap />
-                </Link>
-              )}
-            </div>
-          ) : (
-            <div className="flex animate-pulse gap-x-4">
-              <div className="w-24 h-6 rounded-full bg-slate-200"></div>
-            </div>
-          )}
+                ) : (
+                  <div className="flex animate-pulse gap-x-4">
+                    <div className="w-24 h-6 rounded-lg bg-slate-200"></div>
+                  </div>
+                )}
+                <svgComponents.buttonSwap />
+              </Link>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-4 my-2 text-dark2 flex-wrap">

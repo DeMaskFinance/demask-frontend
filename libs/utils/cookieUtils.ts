@@ -1,4 +1,3 @@
-// utils/cookieUtils.ts
 export const getCookie = (name: string): string | undefined => {
     if (typeof window === "undefined") return undefined;
     const cookieStr = document.cookie;

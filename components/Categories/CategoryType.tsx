@@ -26,7 +26,6 @@ const Category = ({ label }: { label: string }) => {
     },
   });
 
-
   const goNext = () => {
     if (swiperRef && swiperRef.current) {
       swiperRef.current.swiper.slideNext();
@@ -38,7 +37,6 @@ const Category = ({ label }: { label: string }) => {
       swiperRef.current.swiper.slidePrev();
     }
   };
-
 
   return (
     <section className="mt-6">
@@ -63,15 +61,15 @@ const Category = ({ label }: { label: string }) => {
             ref={swiperRef}
             breakpoints={{
               0: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 30,
               },
               480: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 30,
               },
               768: {
-                slidesPerView: 3,
+                slidesPerView: 2,
                 spaceBetween: 30,
               },
               1024: {
@@ -92,7 +90,6 @@ const Category = ({ label }: { label: string }) => {
                       >
                         <NFTCategory item={item} />
                       </li>
-
                     </SwiperSlide>
                   </>
                 ))}

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
-interface ChartVolumnProps { }
+interface ChartVolumnProps {}
 const styles = {
   btnActive: "rounded-full bg-secondary5",
 };
@@ -45,7 +45,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   };
 
   return (
-    <div className="p-6 rounded-lg shadow-chart">
+    <div className="p-6 rounded-lg shadow-chart lg:block hidden">
       {chartColumn && (
         <div>
           <div className="flex justify-between mb-2">
@@ -55,7 +55,8 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                 ${activeData?.toFixed(2)}M
               </p>
               <p className="">
-                {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
+                {activeDate && format(parseISO(activeDate), "MMM d, yyyy")}{" "}
+                (UTC)
               </p>
             </div>
             <div className="h-fit">
@@ -107,10 +108,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
           </div>
         </div>
       )}
-      {LoadingColumn && (
-        <ChartLoading />
-      )}
-      
+      {LoadingColumn && <ChartLoading />}
     </div>
   );
 };

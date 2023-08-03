@@ -35,7 +35,6 @@ const Home = () => {
     isSuccess,
     isLoading,
     isFetching,
-    isError,
   } = useInfiniteQuery(
     ["Homepage"],
     ({ pageParam = 1 }) => fetchDataPage(pageParam),

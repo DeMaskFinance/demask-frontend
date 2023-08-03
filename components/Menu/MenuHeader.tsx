@@ -56,7 +56,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
     }
   }, [router.pathname]);
   return (
-    <ul className="flex items-center text-lg font-medium 3xl:gap-x-12 text-dark2 gap-x-8">
+    <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">
       {data.map((item) => (
         <React.Fragment key={item.id}>
           {item.subTradeMenu ? (
