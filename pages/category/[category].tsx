@@ -44,11 +44,7 @@ export default function Art() {
                   title={item.metadata.name}
                   className="items-center p-3 overflow-hidden transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
                 >
-                  <Link
-                    href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
-                  >
-                    <NFTCategory item={item}/>
-                  </Link>
+                  <NFTCategory item={item}/>
                 </li>
               </>
             ))}

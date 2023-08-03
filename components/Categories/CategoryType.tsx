@@ -26,7 +26,7 @@ const Category = ({ label }: { label: string }) => {
     },
   });
 
-  
+
   const goNext = () => {
     if (swiperRef && swiperRef.current) {
       swiperRef.current.swiper.slideNext();
@@ -38,8 +38,8 @@ const Category = ({ label }: { label: string }) => {
       swiperRef.current.swiper.slidePrev();
     }
   };
-  
-  
+
+
   return (
     <section className="mt-6">
       <div className="flex flex-col">
@@ -90,12 +90,9 @@ const Category = ({ label }: { label: string }) => {
                         key={idx}
                         className="items-center p-3 overflow-hidden transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
                       >
-                        <Link
-                          href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
-                        >
-                          <NFTCategory item={item}/>
-                        </Link>
+                        <NFTCategory item={item} />
                       </li>
+
                     </SwiperSlide>
                   </>
                 ))}
