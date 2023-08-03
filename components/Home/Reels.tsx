@@ -35,6 +35,7 @@ import Link from "next/link";
 import { SkeletonReels } from "../Skeleton";
 import approveNFT from "@/libs/utils/approveNFT";
 import { AiOutlineClose, AiOutlineDoubleLeft } from "react-icons/ai";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 interface ReelsProps {
   data: any;
   isSuccess: boolean;
@@ -80,8 +81,12 @@ const Reels: React.FC<ReelsProps> = ({
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
+  const [activeMobile, setActiveMobile] = useState(false);
+  const [activeDetail, setActiveDetail] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const handleSlideChange = (swiper: any) => {
     setActiveSlideIndex(swiper.activeIndex);
+    setShowMore(true);
   };
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -420,11 +425,10 @@ const Reels: React.FC<ReelsProps> = ({
     }
   };
 
-  const [activeMobile, setActiveMobile] = useState(false);
   return (
     <div className="gap-4">
       {isSuccess && (
-        <div className="lg:h-[90vh] overflow-hidden h-[82.5vh] rounded-xl w-full sticky px top-8">
+        <div className="lg:h-[90vh] overflow-hidden h-[78.5vh] rounded-xl w-full sticky px top-8">
           <>
             <Swiper
               direction={"vertical"}
@@ -439,15 +443,15 @@ const Reels: React.FC<ReelsProps> = ({
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
                       <SwiperSlide key={`${nftItem._id}-${index}`}>
-                        <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-auto h-[83.2vh] lg:ml-14 lg:px-4 md:px-4">
+                        <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-auto h-[78.5vh] lg:ml-14 lg:px-4 md:px-4">
                           {nftItem.metadata.image && (
-                            <div className="relative ml-auto mr-auto lg:mt-12 rounded-2xl overflow-hidden">
+                            <div className="relative ml-auto mr-auto lg:mt-12 lg:rounded-2xl overflow-hidden">
                               <div
                                 style={{
                                   backgroundImage: `url(${nftItem.metadata.image})`,
                                   backgroundSize: "cover",
                                 }}
-                                className={`w-[530px] bg-black max-[678px]:!bg-none lg:bg-nft(${nftItem.metadata.image}) lg:blur-[12px] rounded-xl lg:h-[530px] h-[90vh]`}
+                                className={`lg:w-[530px] md:w-[1768px] w-[678px] bg-black max-[968px]:!bg-none max-[678px]:!bg-none lg:bg-nft(${nftItem.metadata.image}) lg:blur-[12px] lg:rounded-xl lg:h-[530px] h-[90vh]`}
                               ></div>
                               <div className="absolute w-full  top-[50%] -translate-y-2/4 lg:w-[530px] mx-auto lg:p-4 p-2 rounded-xl lg:h-[530px] ">
                                 <Image
@@ -487,7 +491,7 @@ const Reels: React.FC<ReelsProps> = ({
                             )}
                           {nftItem.metadata.image &&
                             nftItem.metadata.animation_url && (
-                              <div className="absolute lg:top-[75%] top-[50%] lg:right-[70%] right-[85%] mx-auto mt-12 rounded-xl ">
+                              <div className="absolute lg:top-[75%] top-[50%] lg:right-[70%] right-[90%] mx-auto mt-12 rounded-xl ">
                                 <audio
                                   autoPlay
                                   loop
@@ -502,14 +506,57 @@ const Reels: React.FC<ReelsProps> = ({
                               </div>
                             )}
 
-                          <div className="absolute w-full bottom-0 bg-transparent lg:hidden pr-8 pl-2 text-left">
+                          <div className="absolute w-full bottom-0 bg-transparent  z-[21] lg:hidden pr-8 pl-2 text-left">
                             <div className="flex justify-start text-xl mb-4 font-medium text-white">
+                              <span className="line-clamp-1 w-[85%]  pl-2">
+                                {filter?.metadata?.name}
+                              </span>
+                            </div>
+                            <div className="mb-4 font-light min-h-[72px] max-h-[400px] overflow-auto text-sm pl-2 text-white">
+                              <span
+                                className={`${
+                                  showMore ? "line-clamp-3" : ""
+                                } transition-all`}
+                              >
+                                {filter?.metadata?.description}
+                              </span>
+                              {filter?.metadata?.description.length > 100 && (
+                                <span
+                                  className="text-white text-xs block"
+                                  onClick={() => setShowMore(!showMore)}
+                                >
+                                  {showMore ? "See More" : "Close"}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div
+                            className={`${
+                              showMore ? "" : ""
+                            } absolute w-full bottom-0 bg-dark opacity-40 py-4 z-[20] lg:hidden pr-8 pl-2 text-left`}
+                          >
+                            <div className="flex justify-start text-xl mb-4 font-medium text-transparent">
                               <span className="line-clamp-1 w-[85%]">
                                 {filter?.metadata?.name}
                               </span>
                             </div>
-                            <div className="mb-4 font-light min-h-[72px] text-white line-clamp-3">
-                              {filter?.metadata?.description}
+                            <div className="mb-4 font-light min-h-[72px] transition-all max-h-[400px] overflow-auto text-sm pl-2 text-white">
+                              <span
+                                className={`${
+                                  showMore ? "line-clamp-3" : ""
+                                } transition-all text-transparent`}
+                              >
+                                {filter?.metadata?.description}
+                              </span>
+                              {filter?.metadata?.description.length > 100 && (
+                                <span
+                                  className="text-white text-xs block"
+                                  onClick={() => setShowMore(!showMore)}
+                                >
+                                  {showMore ? "See More" : "Close"}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -539,7 +586,7 @@ const Reels: React.FC<ReelsProps> = ({
             </div>
 
             <div
-              className="absolute lg:hidden  top-[86%] -translate-y-[80%] right-0 z-50 bg-transparent"
+              className="absolute lg:hidden  top-[86%] -translate-y-[80%] right-0 md:right-4 z-50 bg-transparent"
               onClick={() => {
                 setActiveMobile(!activeMobile);
               }}
@@ -552,7 +599,7 @@ const Reels: React.FC<ReelsProps> = ({
             <div
               className={`${
                 activeMobile ? "translate-y-0" : "translate-y-full"
-              } absolute h-[60%] bottom-0 modal-buy transition-all lg:hidden bg-white w-full mx-auto z-20 pr-8 pl-2`}
+              } absolute h-[400px] overflow-y-auto bottom-0 modal-buy pb-4 transition-all lg:hidden bg-white w-full mx-auto z-20 pr-8 pl-2`}
             >
               <div className="w-full lg:hidden pt-4">
                 <div className="flex justify-between items-center">
@@ -808,18 +855,31 @@ const Reels: React.FC<ReelsProps> = ({
 
           {isSuccess && filter && (
             <div className="h-fit right-20 z-10 absolute mr-14 justify-start w-full  pt-4  top-8 lg:w-[35%] lg:block hidden md:w-2/5">
-              <div className="px-6 h-[530px] py-6 border rounded-lg border-dark3">
-                <div className="flex gap-4 mb-3 justify-between text-dark1">
-                  <div className="w-[30%]">
-                    <TabGroups
-                      choices={["BUY", "SELL"]}
-                      activeChoice={activeChoice}
-                      onChoiceChange={handleChoiceChange}
-                    />
+              <div className="px-6 h-fit relative overflow-hidden py-6 border rounded-lg border-dark3">
+                <div
+                  className={`${
+                    activeDetail ? "translate-x-0" : "translate-x-[100%]"
+                  } bg-white flex flex-col justify-between  items-center p-2 transition-all absolute w-full h-full top-0 left-0 right-0 z-20 rounded-lg`}
+                >
+                  <button
+                    onClick={() => {
+                      setActiveDetail(false);
+                    }}
+                    className="absolute top-0 p-1 mx-6 mt-8 hover:text-white hover:bg-secondary5 transition-all rounded-lg text-xl text-dark2 right-0"
+                  >
+                    <AiOutlineClose className="" />
+                  </button>
+
+                  <div className="flex justify-center text-center items-center h-[10%] pb-4 pt-8 text-xl font-medium text-dark1">
+                    <span className="mx-2">{filter.metadata.name}</span>
                   </div>
-                  <div className="w-[55%] overflow-auto">
+                  <div className="max-h-[300px] font-light overflow-scroll text-justify h-[70%] px-2  mx-2 rounded-lg">
+                    {filter.metadata.description}
+                  </div>
+
+                  <div className="">
                     {filter.metadata.attributes && (
-                      <div className="flex overflow-hidden justify-center w-full gap-x-4">
+                      <div className="flex overflow-hidden justify-start p-2 flex-wrap w-full gap-4">
                         {filter.metadata.attributes.map(
                           (item: any, index: number) => (
                             <div key={index} className="">
@@ -839,19 +899,40 @@ const Reels: React.FC<ReelsProps> = ({
                       </div>
                     )}
                   </div>
-                  <div className="w-1/5">
-                    <a
-                      href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
-                      target="_blank"
-                      className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
+                </div>
+                <div className="flex gap-4 mb-3 justify-between text-dark1">
+                  <div className="w-[30%]">
+                    <TabGroups
+                      choices={["BUY", "SELL"]}
+                      activeChoice={activeChoice}
+                      onChoiceChange={handleChoiceChange}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="">
+                      <a
+                        href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
+                        target="_blank"
+                        className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
+                      >
+                        <PoolIcon
+                          width={24}
+                          height={24}
+                          className="group-hover:fill-secondary3"
+                        />
+                        <p className="group-hover:text-secondary3">Pool</p>
+                      </a>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setActiveDetail(true);
+                      }}
+                      className="rounded-lg px-1 py-1 hover:bg-secondary5 hover:text-white transition-all"
                     >
-                      <PoolIcon
-                        width={24}
-                        height={24}
-                        className="group-hover:fill-secondary3"
-                      />
-                      <p className="group-hover:text-secondary3">Pool</p>
-                    </a>
+                      <BiDotsVerticalRounded />
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center mt-8 flex-wrap justify-center mb-2 text-dark2">
@@ -888,9 +969,9 @@ const Reels: React.FC<ReelsProps> = ({
                   ))}
                 </div>
 
-                <div className="mb-4 font-light text-center min-h-[72px] text-dark2 line-clamp-3">
+                {/* <div className="mb-4 font-light text-center min-h-[72px] text-dark2 line-clamp-3">
                   {filter.metadata.description}
-                </div>
+                </div> */}
 
                 <div className="flex flex-col items-center">
                   {amountNFTSubmit ? (

@@ -145,7 +145,7 @@ const Home = () => {
               {isSuccess && data?.pages[0] ? (
                 data?.pages.map((page, index) => (
                   <Fragment key={index}>
-                    {page.records.map((nftItem: any, index: number) => (
+                    {page?.records?.map((nftItem: any, index: number) => (
                       <NFTItems nftItem={nftItem} key={index} />
                     ))}
                   </Fragment>
