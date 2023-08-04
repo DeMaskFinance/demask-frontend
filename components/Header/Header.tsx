@@ -35,7 +35,7 @@ const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
   btnWallet:
-    "flex items-center justify-center py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
+    "flex items-center justify-center py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
 };
 
 export default function Header() {
@@ -199,7 +199,7 @@ export default function Header() {
                 <PolygonIcon
                   width={24}
                   height={24}
-                  className=" fill-secondary5 group-hover:fill-white"
+                  className=" fill-white group-hover:fill-secondary5"
                 />
               </button>
             </Tippy>
@@ -243,12 +243,12 @@ export default function Header() {
                   </span>
                 </p>
                 <Image
-                  className="group-hover:hidden"
+                  className="hidden group-hover:block"
                   src={Icons.wallet}
                   alt="wallet connect"
                 />
                 <Image
-                  className="hidden group-hover:block"
+                  className="block group-hover:hidden"
                   src={Icons.walletHover}
                   alt="wallet connect hover"
                 />

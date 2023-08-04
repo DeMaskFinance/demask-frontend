@@ -68,7 +68,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
     return (
 
         <Link
-            href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
+            href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}`}
         >
             <div className="relative">
                 <div className="relative pb-[100%] h-0">

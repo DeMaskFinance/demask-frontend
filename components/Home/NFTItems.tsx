@@ -85,9 +85,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
 
   return (
     <div className="px-4 py-6 mb-6 rounded-lg shadow-chart">
-      <div className="flex items-center justify-between flex-wrap">
-        <div className="flex justify-between mb-2 items-center">
-          <h2 className="mr-4 text-2xl line-clamp-1 flex gap-1 font-medium text-dark1">
+      <div className="flex flex-wrap items-center justify-between">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="flex gap-1 mr-4 text-2xl font-medium line-clamp-1 text-dark1">
             {nftItem.metadata.name} <svgComponents.buttonFlag />
           </h2>
           {reserveToken.toString() === "0" ||
@@ -96,7 +96,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               <ActiveIcon width={24} height={24} className="mr-4 fill-red" />
             ))}
         </div>
-        <div className="flex gap-x-2 items-center ">
+        <div className="flex items-center gap-x-2 ">
           <div className="bg-secondary5 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
             {reserveToken.toString() === "0" ||
             reserveNFT.toString() === "0" ||
@@ -104,8 +104,8 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               <div className="text-red">Unable to buy</div>
             ) : (
               <Link
-                href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}?dmlAddress=${nftItem.dmlAddress}`}
-                className="whitespace-pre font-semibold flex gap-2 items-center lg:text-lg md:text-md text-sm"
+                href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}`}
+                className="flex items-center gap-2 text-sm font-semibold whitespace-pre lg:text-lg md:text-md"
               >
                 {symbolToken && tokenAddress && nftAddress ? (
                   <span>
@@ -122,7 +122,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-4 my-2 text-dark2 flex-wrap">
+      <div className="flex flex-wrap items-center gap-4 my-2 text-dark2">
         <div className="flex items-center pr-6">
           <AvatarUser width={32} height={32} />
           <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
@@ -130,17 +130,17 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             4
           )}...${nftItem.creatorAddress.slice(-5)}`}</p>
           <p className="-translate-y-[4px] mx-1">.</p>
-          <p className="text-xs first-letter:uppercase whitespace-pre">
+          <p className="text-xs whitespace-pre first-letter:uppercase">
             {nftItem.blockTimestamp}
           </p>
         </div>
 
-        <div className="flex gap-2 items-center flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           {nftItem.metadata.category.map((item: any, index: number) => (
             <Link
               href={`/category/${item.toLowerCase()}`}
               key={index}
-              className="rounded-lg bg-dark4 px-2"
+              className="px-2 rounded-lg bg-dark4"
             >
               <p>{item}</p>
             </Link>
@@ -193,7 +193,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               style={{ backgroundImage: `url(${nftItem.metadata.image})` }}
               className="w-full max-h-[650px] bg-center bg-cover rounded-2xl blur-3xl z-0 h-[639px] absolute]"
             ></div>
-            <div className="absolute top-0 flex items-center justify-center   p-4 w-full h-full overflow-hidden">
+            <div className="absolute top-0 flex items-center justify-center w-full h-full p-4 overflow-hidden">
               <Image
                 width={1031}
                 height={1049}
