@@ -31,13 +31,13 @@ function TopNft() {
 
   return (
     <div className="collectionList mb-8">
-      <div className="px-2 pt-2 shadow-home rounded-lg overflow-hidden  overflow-x-scroll">
+      <div className="px-2 pt-2 pb-4 shadow-home rounded-lg overflow-hidden ">
         <TabGroups
           choices={["Top", "Trending"]}
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}
         />
-        <div className="px-6 pt-6 pb-0">
+        <div className="px-6 pt-6 pb-0  overflow-x-scroll">
           <table className="w-full text-left">
             <thead className="">
               <tr className="flex lg:text-base md:text-base text-sm border-b pb-2">

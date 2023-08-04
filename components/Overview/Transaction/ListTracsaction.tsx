@@ -79,11 +79,11 @@ function ListTracsaction() {
   }, [page, refetch]);
   return (
     <div className="transactionList">
-      <div className="px-2 pt-2 shadow-home rounded-lg overflow-hidden  overflow-x-scroll">
+      <div className="px-2 pt-2 shadow-home rounded-lg overflow-hidden">
         <button className="bg-secondary4 text-white py-2 px-6 rounded-lg">
           Transaction
         </button>
-        <div className="px-6 pt-6 pb-0">
+        <div className="px-6 pt-6 pb-0  overflow-x-scroll">
           <table className="w-full text-left">
             <thead className="">
               <tr className="flex lg:text-base md:text-base text-sm border-b pb-2">
@@ -99,6 +99,9 @@ function ListTracsaction() {
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   Token amount
+                </th>
+                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                  Symbol
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   Account
