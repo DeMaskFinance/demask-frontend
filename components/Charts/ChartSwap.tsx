@@ -11,6 +11,8 @@ if (typeof Highcharts === "object") {
 }
 
 const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
+  console.log(dataChart);
+  
   const averagePrice = [],
     volume = [];
   const dataChartSwap = dataChart.map((item) => Object.values(item));
@@ -41,7 +43,7 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
       zooming: {
         mouseWheel: false,
       },
-      height: 500,
+      height: 380,
     },
     navigator: {
       enabled: true,
@@ -50,8 +52,10 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         backgroundColor: "#D5D0FF",
         border: "none",
       },
+      margin:10,
       maskFill: "rgba(128,128,128,0.3)",
       outlineColor: "#D5D0FF",
+      height:30
     },
     credits: {
       enabled: false,
@@ -70,8 +74,9 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
       {
         // Primary yAxis
         labels: {
-          format: "{value}",
-          align: "left",
+          // format: "{value}",
+          // align: "left",
+          enabled:false
         },
         height: "80%",
         resize: {
@@ -103,7 +108,7 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
 
         let tooltipContent = `<b>${formattedDate}</b><br>`;
         this.points?.forEach((point) => {
-          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>${point.y}</b><br>`;
+          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>$${point.y}</b><br>`;
         });
         return tooltipContent;
       },

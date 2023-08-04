@@ -191,7 +191,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                   <li>
                     <Link
                       href={
-                        "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815?dmlAddress=0xa88b1d7ed8e62A94C12693FcCBC41ccDcAA14bEC"
+                        "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815"
                       }
                     >
                       Swap

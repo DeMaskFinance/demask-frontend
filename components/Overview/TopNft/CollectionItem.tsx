@@ -58,10 +58,10 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 </td>
                 <td className="py-2 lg:w-full md:w-full w-[200px]">
                   <Link
-                    href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}?dmlAddress=${item.dml}`}
-                    className="flex items-center justify-start transition-all hover:text-secondary4"
+                    href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
+                    className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
                   >
-                    <div className="flex items-center gap-2 relative group">
+                    <div className="relative flex items-center gap-2 group">
                       <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
                         {item.metadata?.image && (
                           <Image
@@ -104,7 +104,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                         {isFetching ? skeleton : item.metadata?.name}
                       </span>
 
-                      <p className="absolute  w-fit top-0 left-10 px-2 py-1 hidden rounded-lg lg:group-hover:block sub-title whitespace-pre bg-white border">
+                      <p className="absolute top-0 hidden px-2 py-1 whitespace-pre bg-white border rounded-lg w-fit left-10 lg:group-hover:block sub-title">
                         {item.metadata?.name}
                       </p>
                     </div>

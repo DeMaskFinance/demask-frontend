@@ -36,7 +36,7 @@ import { swapAPI } from "@/libs/service";
 import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import { ChartLoading } from "@/components/Charts";
 const styles = {
-  inputItem: "w-full py-2 pl-2 mb-6 border rounded-lg border-dark3 block",
+  inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
 // export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -89,7 +89,11 @@ const Swap: React.FC = () => {
   useEffect(() => {
     if (slug) {
       setNftAddress(slug[0]);
-      setTokenAddress(slug[1]);
+      if (slug[1] === '0x734aef51d427b2f745210ec4bf1062abd48eceb6') {
+        setTokenAddress("MATIC");
+      } else {
+        setTokenAddress(slug[1]);
+      }
       setIdNFT(slug[2]);
       setInputNFT("");
     }
@@ -141,7 +145,7 @@ const Swap: React.FC = () => {
   //   }
   // }, [router.query.slug, dmlToken]);
   // console.log(dmlToken.toLocaleLowerCase());
-
+  
   useEffect(() => {
     const fetchDataChart = async () => {
       if (dmlToken) {
@@ -390,7 +394,7 @@ const Swap: React.FC = () => {
   };
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
-
+  
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";
@@ -404,16 +408,16 @@ const Swap: React.FC = () => {
     document.body.style.overflowY = "hidden";
   };
   return (
-    <div className="py-8 mx-auto swap container-main">
+    <div className="py-8 mx-auto swap max-w-[1592px]">
       <Head>
         <title>Swap | DeMask</title>
       </Head>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="mb-2 text-xl font-medium text-dark0">{nameNFT}</h3>
         <p className="text-sm font-medium text-dark1">{symbolNFT}</p>
-      </div>
-      <div className="flex flex-col gap-10 lg:flex-row md:flex-row">
-        <div className="lg:w-[50%] md:w-2/4 w-full flex flex-col max-w-[772px] max-h-[772px] items-center">
+      </div> */}
+      <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
+        <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center">
           <div className="">
             {imageNFT && (
               <Image
@@ -421,8 +425,8 @@ const Swap: React.FC = () => {
                 alt="test"
                 width={680}
                 height={576}
-                sizes="(max-width: 772px) 100vw"
-                className="w-full rounded-lg "
+                sizes="(max-width: 770px) 100vw"
+                className="w-full rounded-lg lg:max-h-[calc(100vh-130px)]"
                 style={{
                   objectFit: "contain",
                 }}
@@ -460,12 +464,39 @@ const Swap: React.FC = () => {
             See detail
           </p>
         </div>
-        <div className="lg:w-[50%] md:w-2/4 w-full">
-          <div className="px-4 py-6 border rounded-lg border-dark3">
-            <div className="flex gap-4 mb-4 text-dark1">
-              <div className="basis-1/3">
-                <div className="flex text-xl font-medium text-dark1">
-                  {symbolToken && (symbolNFT || idNFT) ? (
+        <div className="lg:w-[40%] md:w-2/4 w-full">
+          <div className="px-2 py-2 border rounded-lg border-dark3">
+            <div className="flex justify-between gap-4 mb-2 text-dark1">
+              <div className="flex flex-col items-center ">
+                <TabGroups
+                  choices={["BUY", "SELL"]}
+                  activeChoice={activeChoice}
+                  onChoiceChange={handleChoiceChange}
+                />
+              </div>
+              <div className="flex flex-col ">
+                {dmlToken ? (
+                  <a
+                    href={`https://mumbai.polygonscan.com/address/${dmlToken}`}
+                    target="_blank"
+                    className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
+                  >
+                    <PoolIcon
+                      width={24}
+                      height={24}
+                      className="group-hover:fill-secondary3"
+                    />
+                    <p className="group-hover:text-secondary3">Pool</p>
+                  </a>
+                ) : (
+                  <div className="self-end w-10 h-5 mb-2 rounded-full animate-pulse bg-slate-200"></div>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="font-semibold">
+                <div className="flex text-xl text-dark1">
+                  {symbolToken && symbolNFT ? (
                     <div className="flex items-center">
                       {symbolNFT ? (
                         <span>{symbolNFT}</span>
@@ -484,7 +515,7 @@ const Swap: React.FC = () => {
                       height={24}
                       className={
                         dmlToken ===
-                        "0x0000000000000000000000000000000000000000"
+                          "0x0000000000000000000000000000000000000000"
                           ? "fill-red"
                           : ""
                       }
@@ -502,35 +533,9 @@ const Swap: React.FC = () => {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col items-center basis-1/3">
-                <TabGroups
-                  choices={["BUY", "SELL"]}
-                  activeChoice={activeChoice}
-                  onChoiceChange={handleChoiceChange}
-                />
-              </div>
-              <div className="flex flex-col basis-1/3">
-                {dmlToken ? (
-                  <a
-                    href={`https://mumbai.polygonscan.com/address/${dmlToken}`}
-                    target="_blank"
-                    className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
-                  >
-                    <PoolIcon
-                      width={24}
-                      height={24}
-                      className="group-hover:fill-secondary3"
-                    />
-                    <p className="group-hover:text-secondary3">Pool</p>
-                  </a>
-                ) : (
-                  <div className="self-end w-10 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
-                )}
-              </div>
-            </div>
-            <div className="text-center">
+              <div className="">
               {activeChoice === "BUY" && (
-                <div className="text-4xl text-secondary3">
+                <div className="text-3xl font-semibold text-secondary3">
                   {inputNFT ? (
                     <span>
                       {formatNumber(
@@ -558,10 +563,12 @@ const Swap: React.FC = () => {
                 </div>
               )}
             </div>
-            <form className="grid grid-cols-2 gap-x-4">
+            </div>
+            
+            <form className="mt-1">
               <div>
                 {reserves[1] ? (
-                  <p className="mb-4 text-dark3">
+                  <p className="mb-1 text-dark3">
                     Reverse NFT:{formatNumber(reserves[1])}
                   </p>
                 ) : (
@@ -575,7 +582,7 @@ const Swap: React.FC = () => {
                     placeholder="Input amount NFT"
                     className={
                       showRequiredMessage
-                        ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                        ? "w-full py-2 pl-2 mb-2 rounded-lg border-2 border-red"
                         : styles.inputItem
                     }
                     value={inputNFT}
@@ -631,9 +638,9 @@ const Swap: React.FC = () => {
                 )}
               </div>
 
-              <div className="flex flex-col">
+              <div className="">
                 {reserves[0] ? (
-                  <p className="mb-4 text-dark3 text-end">
+                  <p className="mb-1 text-dark3">
                     Reverse Token:
                     {formatNumber(
                       divideByDecimal(reserves[0].toString(), decimals)
@@ -707,7 +714,7 @@ const Swap: React.FC = () => {
                 )}
             </div>
           </div>
-          <div className="px-4 py-2 mt-6 border rounded-lg border-dark3">
+          <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
             {isLoadingDataChart ? (
               <div className="h-[355px]">
                 <ChartLoading />

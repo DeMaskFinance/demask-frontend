@@ -138,7 +138,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
             }  bg-white lg:w-72 w-full rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
           >
             <div className={`${searchTerm === "" ? "block" : "hidden"}`}>
-              <p className="mb-2 block">
+              <p className="block mb-2">
                 <span className="text-base">Searched</span>
                 {isMounted && (
                   <span className="text-sm text-dark2">
@@ -182,7 +182,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                             e.stopPropagation(); // Prevent click from reaching document
                             handleRemoveItem(index);
                           }}
-                          className="text-dark2 h-fit p-1 rounded-lg hover:bg-red hover:text-white"
+                          className="p-1 rounded-lg text-dark2 h-fit hover:bg-red hover:text-white"
                         >
                           <AiOutlineClose />
                         </button>

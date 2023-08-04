@@ -51,7 +51,7 @@ function InterestItem() {
                       autoPlay
                       loop
                       muted
-                      className="w-full h-full object-cover"
+                      className="object-cover w-full h-full"
                     />
                   )}
                   {item.metadata?.image && item.metadata?.animation_url && (
@@ -80,7 +80,7 @@ function InterestItem() {
                         width="25"
                         height="24"
                         viewBox="0 0 25 24"
-                        className=" flex-shrink-0"
+                        className="flex-shrink-0 "
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -103,7 +103,7 @@ function InterestItem() {
                 ART
               </Link> */}
                   </div>
-                  <p className="text-sm line-clamp-2 group-hover:hidden transition-all">
+                  <p className="text-sm transition-all line-clamp-2 group-hover:hidden">
                     {item.metadata?.description}
                   </p>
 

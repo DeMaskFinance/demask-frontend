@@ -99,7 +99,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                       <>
                         <SwiperSlide key={index}>
                           <Link
-                            href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}?dmlAddress=${nftItem.dml}`}
+                            href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}`}
                           >
                             <div className="w-[208px] h-[208px] relative overflow-hidden group cursor-pointer flex gap-20">
                               {nftItem.metadata.image && (
