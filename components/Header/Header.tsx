@@ -1,20 +1,13 @@
-import Link from "next/link";
-import React, {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import Tippy from "@tippyjs/react/headless";
-import "tippy.js/dist/tippy.css"; // optional
 import { ActiveLink } from "@/components/Link";
-import { ModalWallet } from "../Modal/ModalWallet";
-import Image from "next/image";
+import AccountContext from "@/context/AccountContext";
+import { getProvider } from "@/libs/connection/getProvider";
 import Icons from "@/public/icons/icon";
-import { SearchHeader } from "../Search";
-import { MenuHeader } from "../Menu";
-import { FaBars } from "react-icons/fa";
+import Tippy from "@tippyjs/react/headless";
+import Image from "next/image";
+import Link from "next/link";
+import { useContext, useEffect, useRef, useState } from "react";
+import { MdLogout, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import "tippy.js/dist/tippy.css"; // optional
 import {
   BscIcon,
   EtherIcon,
@@ -22,12 +15,11 @@ import {
   ProfileIcon,
   SearchIcon,
 } from "../Icons";
-import { MdLogout } from "react-icons/md";
-import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
-import MenuMobile from "../Menu/MenuMobile";
-import useSvgComponents from "../Picture/Picture";
 import { LogoDeMaskBeta } from "../Logo/Logo";
+import { MenuHeader } from "../Menu";
+import { ModalWallet } from "../Modal/ModalWallet";
+import useSvgComponents from "../Picture/Picture";
+import Search from "../Search/SearchHeader";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -48,7 +40,11 @@ export default function Header() {
     setIsOpen(true);
   };
 
-  const [openMenu, setOpenMenu] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
     // localStorage.removeItem("WALLET_DEMASK");
@@ -64,34 +60,46 @@ export default function Header() {
     getAddress();
   }, [provider]);
   useEffect(() => {
-    let prevScrollPos = window.scrollY;
+    if (window.innerWidth >= 768) {
+      let prevScrollPos = window.scrollY;
 
-    const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      const isScrolledUp = prevScrollPos > currentScrollPos;
-      if (headerRef.current) {
-        const headerClassList = headerRef.current.classList;
-        headerClassList.toggle("translate-y-0", isScrolledUp);
-        headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);
-        if (isScrolledUp) {
-          headerClassList.add("border-b", "border-solid", "border-gray-300");
-        } else {
-          headerClassList.remove("border-b", "border-solid", "border-gray-300");
+      const handleScroll = () => {
+        const currentScrollPos = window.scrollY;
+        const isScrolledUp = prevScrollPos > currentScrollPos;
+        if (headerRef.current) {
+          const headerClassList = headerRef.current.classList;
+          headerClassList.toggle("translate-y-0", isScrolledUp);
+          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);
+          if (isScrolledUp) {
+            headerClassList.add("border-b", "border-solid", "border-gray-300");
+          } else {
+            headerClassList.remove(
+              "border-b",
+              "border-solid",
+              "border-gray-300"
+            );
+          }
+          if (currentScrollPos === 0) {
+            headerClassList.remove(
+              "border-b",
+              "border-solid",
+              "border-gray-300"
+            );
+          }
         }
-        if (currentScrollPos === 0) {
-          headerClassList.remove("border-b", "border-solid", "border-gray-300");
-        }
-      }
 
-      prevScrollPos = currentScrollPos;
-    };
+        prevScrollPos = currentScrollPos;
+      };
 
-    window.addEventListener("scroll", handleScroll);
+      window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
   }, []);
+
+  const [showSearch, setShowSearch] = useState(false);
 
   return (
     <>
@@ -105,7 +113,7 @@ export default function Header() {
       /> */}
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 px-4 transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14"
+        className="fixed lg:shadow-none shadow-md top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 px-4 transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14"
       >
         <div className="flex items-center flex-shrink-0 gap-2">
           {/* <div
@@ -143,14 +151,52 @@ export default function Header() {
               </ActiveLink>
             </li>
           </ul>
-          <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
-            {/* <div className="">
+
+          <div
+            onClick={() => {
+              setShowSearch(false);
+            }}
+            className={`${
+              showSearch ? "block" : "hidden"
+            } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
+          ></div>
+          <div className="flex gap-2  lg:gap-x-6 md:gap-x-4">
+            <div
+              className="text-secondary5 lg:hidden"
+              onClick={() => {
+                setShowSearch(!showSearch);
+              }}
+            >
               <SearchIcon
                 width={32}
                 height={32}
-                className="w-full h-full cursor-pointer active:fill-secondary3"
+                className="w-full  cursor-pointer active:fill-secondary3"
               />
-            </div> */}
+            </div>
+
+            <div
+              className={`${
+                showSearch ? "translate-x-0" : "translate-x-[150%]"
+              } fixed w-[70%] px-6 pt-6 lg:hidden h-[100vh] bg-white z-[60] shadow-home transition-all top-0 right-0 bottom-0`}
+            >
+              <div className="ml-2 ">
+                <Search isFocused={isFocused} handleFocus={handleFocus} />
+              </div>
+
+              <button
+                onClick={() => {
+                  setShowSearch(false);
+                }}
+                className={`absolute top-6 -left-3 flex items-center p-1 rounded-full shadow-md bg-white`}
+              >
+                <MdOutlineKeyboardArrowRight
+                  className={`${
+                    showSearch ? "" : "rotate-180"
+                  }  text-xl text-dark2 transition-all`}
+                />
+              </button>
+            </div>
+
             <Tippy
               className=""
               interactive

@@ -8,6 +8,7 @@ export default function LayoutSecondary({ children }: PropsWithChildren) {
     <div className="box-border w-full ">
       <Header />
       <main className="mt-[64px] ">{children}</main>
+
       <FooterSecondary />
       <NavFooter reels={true} />
     </div>
