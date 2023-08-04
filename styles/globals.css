@@ -46,7 +46,7 @@ html{
   width: 48px;
   height: 48px;
   background-color: white;
-  border-radius: 100%;
+  border-radius: 5%;
   background-position: center;
   background-size: 14px;
   background-repeat: no-repeat;
@@ -108,3 +108,64 @@ input.hide-clear[type="search"]::-webkit-search-results-button,
 input.hide-clear[type="search"]::-webkit-search-results-decoration {
   background-color: red;
 } */
+
+.sub-title {
+  z-index: 1;
+  transform-origin: calc(50%) bottom;
+  animation: headerNotifyGrowth linear 0.2s;
+}
+
+@keyframes headerNotifyGrowth {
+  from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@-moz-keyframes headerNotifyGrowth {
+ from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@-ms-keyframes headerNotifyGrowth {
+ from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@-o-keyframes headerNotifyGrowth {
+ from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes headerNotifyGrowth {
+ from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

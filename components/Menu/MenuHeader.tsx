@@ -10,7 +10,7 @@ const styles = {
   menuSub:
     "pt-1 pb-1 bg-white border text-base rounded-lg shadow-xl box border-dark4 font-medium",
   itemSub:
-    "flex items-center justify-between text-base p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
+    "flex items-center justify-between text-base px-2 py-1 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
 };
 const data = [
   { id: 1, name: "Overview", url: "/overview" },
@@ -65,7 +65,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 interactive
                 render={(attrs) => (
                   <div className={styles.menuSub} tabIndex={-1} {...attrs}>
-                    <ul className="flex flex-col px-2 w-[136px]">
+                    <ul className="flex flex-col px-2 w-[170px]">
                       {subMenuTradeData.map((tradeItem) => (
                         <Link href={tradeItem.url} key={tradeItem.id}>
                           <li className={styles.itemSub}>{tradeItem.name}</li>
@@ -92,7 +92,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 interactive
                 render={(attrs) => (
                   <div className={styles.menuSub} tabIndex={-1} {...attrs}>
-                    <ul className="flex flex-col text-base px-2 w-[150px]">
+                    <ul className="flex flex-col text-base px-2 w-[170px]">
                       {subMenuCateData.map((cateItem) => (
                         <ActiveLink href={cateItem.url} key={cateItem.id}>
                           <li className={styles.itemSub}>{cateItem.name}</li>

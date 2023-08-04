@@ -1,3 +1,4 @@
+import Collectbles from "@/components/AboutPage/Collectbles";
 import Features from "@/components/AboutPage/Features";
 import Introduction from "@/components/AboutPage/Introduction";
 import Market from "@/components/AboutPage/Market";
@@ -16,6 +17,7 @@ export default function About() {
         <Introduction />
         <Market />
         <Features />
+        <Collectbles />
       </section>
     </>
   );

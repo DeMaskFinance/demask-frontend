@@ -87,7 +87,11 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
   const handleActive = () => {
     setActive(true);
   };
+  const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   useEffect(() => {
     const savedHistory = getCookie("searchHistory");
     const searchsHistory = savedHistory ? JSON.parse(savedHistory) : [];
@@ -96,7 +100,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
 
   return (
     <>
-      <li className="">
+      <li className="list-none">
         <div className="relative">
           <div
             ref={inputRef}
@@ -112,7 +116,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
               }}
               className={`border hide-clear rounded-lg relative pr-1 placeholder:text-dark2 transition-all ${
                 active
-                  ? "w-72 h-[32px]  border-secondary5 pl-10"
+                  ? "lg:w-72 w-full h-[32px]  border-secondary5 pl-10"
                   : "w-[32px] h-[32px] placeholder:text-transparent bg-transparent transition-all"
               } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
@@ -131,70 +135,73 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
           <ul
             className={`border max-h-72 overflow-y-auto ${
               click ? "block" : "hidden"
-            }  bg-white w-72 rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
+            }  bg-white lg:w-72 w-full rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
           >
             <div className={`${searchTerm === "" ? "block" : "hidden"}`}>
-              <span className="mb-2 block">
-                Searched{" "}
-                <span className="text-sm text-dark2">
-                  ({searchHistory.length})
-                </span>
-              </span>
-              {searchHistory.map((item: any, index: number) => (
-                <>
-                  <div
-                    key={index}
-                    className={` flex justify-between items-center`}
-                  >
-                    <Link
-                      key={item.metadata.name}
-                      onClick={() => handleResultItemClick(item)}
-                      href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
-                    >
-                      <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                        <h2 className="flex items-center gap-2">
-                          <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
-                            <AvatarUser width={32} height={32} />
-                          </div>
-                          <div className="flex flex-col items-baseline">
-                            <span className="block text-sm font-semibold">
-                              <span className="line-clamp-1">
-                                {item.metadata.name}
+              <p className="mb-2 block">
+                <span className="text-base">Searched</span>
+                {isMounted && (
+                  <span className="text-sm text-dark2">
+                    ({searchHistory.length})
+                  </span>
+                )}
+              </p>
+              <div>
+                {searchHistory.map((item: any, index: number) => (
+                  <>
+                    {isMounted && (
+                      <div
+                        key={index}
+                        className={`flex justify-between items-center`}
+                      >
+                        <div
+                          onClick={() => handleResultItemClick(item)}
+                          className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white"
+                        >
+                          <h2 className="flex items-center gap-2">
+                            <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
+                              <AvatarUser width={32} height={32} />
+                            </div>
+                            <div className="flex flex-col items-baseline">
+                              <span className="block text-sm font-semibold">
+                                <span className="line-clamp-1">
+                                  {item.metadata.name}
+                                </span>
                               </span>
-                            </span>
-                            <span className="flex text-xs item-center">
-                              <span className="block pb-2 mr-1 font-semibold">
-                                {item.dmlAddress.slice(0, 8)}...
-                                {item.dmlAddress.slice(-8)}
+                              <span className="flex text-xs item-center">
+                                <span className="block pb-2 mr-1 font-semibold">
+                                  {item.dmlAddress.slice(0, 8)}...
+                                  {item.dmlAddress.slice(-8)}
+                                </span>
                               </span>
-                            </span>
-                          </div>
-                        </h2>
+                            </div>
+                          </h2>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent click from reaching document
+                            handleRemoveItem(index);
+                          }}
+                          className="text-dark2 h-fit p-1 rounded-lg hover:bg-red hover:text-white"
+                        >
+                          <AiOutlineClose />
+                        </button>
                       </div>
-                    </Link>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent click from reaching document
-                        handleRemoveItem(index);
-                      }}
-                      className="text-dark2 h-fit p-1 rounded-lg hover:bg-red hover:text-white"
-                    >
-                      <AiOutlineClose />
-                    </button>
-                  </div>
-                </>
-              ))}
+                    )}
+                  </>
+                ))}
+              </div>
             </div>
             <div className={`${searchTerm !== "" ? "block" : "hidden"}`}>
               <p className="pb-2 text-base">Collections</p>
               {data && data.length > 0 ? (
                 <>
-                  <span className="flex text-xs item-center">
+                  <div className="flex text-xs item-center">
                     <span className="block pb-2 mr-1 font-semibold">
                       {data.length}
                     </span>{" "}
                     items
-                  </span>
+                  </div>
                   <div className="flex flex-col gap-4">
                     {data.map((item: any, index: number) => (
                       <>
@@ -202,6 +209,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                           key={item?.metadata?.name}
                           onClick={() => handleResultItemClick(item)}
                           href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
+                          className="flex-1"
                           //
                         >
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
