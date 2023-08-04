@@ -15,6 +15,7 @@ import "swiper/css/pagination";
 import { AvatarUser } from "../Avatars";
 import { Picture } from "../Picture";
 import useSvgComponents from "../Picture/Picture";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -112,8 +113,8 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                     {formatPrice} {symbolTokenSwap}
                   </span>
                 ) : (
-                  <div className="flex animate-pulse gap-x-4">
-                    <div className="w-24 h-6 rounded-lg bg-slate-200"></div>
+                  <div className="flex animate-spin gap-x-4 px-6">
+                    <AiOutlineLoading3Quarters />
                   </div>
                 )}
                 <svgComponents.buttonSwap />

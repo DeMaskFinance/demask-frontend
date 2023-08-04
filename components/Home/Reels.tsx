@@ -426,9 +426,9 @@ const Reels: React.FC<ReelsProps> = ({
   };
 
   return (
-    <div className="gap-4">
+    <div className="gap-4 lg:h-fit h-[82vh]">
       {isSuccess && (
-        <div className="lg:h-[90vh] overflow-hidden h-[78.5vh] rounded-xl w-full sticky px top-8">
+        <div className="lg:h-[90vh] overflow-hidden h-[80vh] w-full sticky px top-8">
           <>
             <Swiper
               direction={"vertical"}
@@ -443,7 +443,7 @@ const Reels: React.FC<ReelsProps> = ({
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
                       <SwiperSlide key={`${nftItem._id}-${index}`}>
-                        <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-auto h-[78.5vh] lg:ml-14 lg:px-4 md:px-4">
+                        <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-auto h-[80vh] lg:ml-14 lg:px-4 md:px-4">
                           {nftItem.metadata.image && (
                             <div className="relative ml-auto mr-auto lg:mt-12 lg:rounded-2xl overflow-hidden">
                               <div
