@@ -184,7 +184,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         const liquidity = handleBignumber(Number(inputLiquidity), Number(decimals));
-
+        console.log(liquidity);
+        
         try {
           let result;
           let transactionHash;
@@ -193,7 +194,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             result = await contract.removeLiquidityETH(
               data.fullInfoMetadata.nft,
               data.fullInfoMetadata.tokenId,
-              liquidity,
+              (Number(liquidity)).toFixed(0),
               amountTokenMin,
               amountNFTMin,
               account,
@@ -206,7 +207,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
               data.fullInfoMetadata.tokenAddress,
               data.fullInfoMetadata.nft,
               data.fullInfoMetadata.tokenId,
-              liquidity,
+              (Number(liquidity)).toFixed(0),
               amountTokenMin,
               amountNFTMin,
               account,
@@ -297,7 +298,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                     </div>
                     <div className={styles.inputItem} >
                       <div className="flex justify-between">
-                        <p>{amountNFT}</p>
+                        <p>{amountNFTMin}</p>
                         <p className="text-dark3">NFT</p>
                       </div>
                     </div>

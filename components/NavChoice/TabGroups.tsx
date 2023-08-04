@@ -16,7 +16,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   };
 
   return (
-    <div className="flex text-base text-white bg-dark3 p-1 rounded-lg w-max items-center text-center">
+    <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
       {choices.map((choice) => (
         <button
           key={choice}
