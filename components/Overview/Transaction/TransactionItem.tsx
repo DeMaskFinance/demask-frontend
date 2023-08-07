@@ -1,6 +1,7 @@
 import { AvatarUser } from "@/components/Avatars";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 interface TransactionItemProps {
@@ -21,14 +22,11 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
     <>
       {isLoading || isFetching ? (
         Array.from({ length: 10 }, (item, index) => (
-          <tr className="lg:text-base md:text-base text-sm flex text-dark2">
+          <tr className="flex text-sm lg:text-base md:text-base text-dark2">
             <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
               {skeleton}
             </td>
             <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
               {skeleton}
             </td>
             <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
@@ -48,7 +46,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
       ) : (
         <>
           {data?.data.map((item: any, idx: number) => (
-            <tr className="lg:text-base md:text-base border-b text-sm flex text-dark2  hover:bg-slate-100  rounded-lg lg:px-2">
+            <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
               <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                 {idx + 1}
               </td>
@@ -58,26 +56,61 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                   href={`https://mumbai.polygonscan.com/tx/${item.transactionHash}`}
                   className="relative group"
                 >
-                  <span className="flex items-center">
+                  <span className="flex items-center gap-x-2">
                     <span className="flex-shrink-0 block">
-                      <AvatarUser width={32} height={32} />
+                      <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
+                        {item.metadata?.image && (
+                          <Image
+                            loading="lazy"
+                            unoptimized
+                            width={32}
+                            height={32}
+                            src={item.metadata?.image}
+                            alt="NFT Image"
+                            className="object-cover w-full h-full"
+                          />
+                        )}
+                        {item.metadata?.animation_url &&
+                          !item.metadata?.image && (
+                            <video
+                              src={item.metadata?.animation_url}
+                              autoPlay={false}
+                              loop
+                              muted
+                              className="object-cover h-full"
+                            />
+                          )}
+                        {item.metadata?.image &&
+                          item.metadata?.animation_url && (
+                            <audio
+                              autoPlay
+                              loop
+                              muted
+                              controls
+                              src={item.metadata?.animation_url}
+                              className=""
+                            >
+                              Your browser does not support the
+                              <code>audio</code> element.
+                            </audio>
+                          )}
+                      </div>
                     </span>
                     <span className="line-clamp-1 lg:group-hover:hidden">
                       {isFetching ? skeleton : item.metadata.name}
                       {/* {item.actionName.length > 10 ? "..." : ""} */}
                     </span>
                     <span
-                      className={`ml-2 absolute top-0 left-48 bg-transparent border text-sm ${
-                        item.action === "Buy" || item.action === "Sell"
-                          ? "border-green text-green"
-                          : "border-red text-red"
-                      } p-1 rounded-lg`}
+                      className={`ml-5 absolute top-0 left-48 bg-transparent border text-sm ${item.action === "Buy" || item.action === "Add"
+                        ? "border-green text-green"
+                        : "border-red text-red"
+                        } p-1 rounded-lg`}
                     >
                       {isFetching ? skeleton : item.action}
                     </span>
                   </span>
 
-                  <p className="absolute  w-fit top-0 left-10 px-2 py-1 hidden rounded-lg lg:group-hover:block sub-title whitespace-pre bg-white border">
+                  <p className="absolute top-0 hidden px-2 py-1 whitespace-pre bg-white border rounded-lg w-fit left-10 lg:group-hover:block sub-title">
                     {item.metadata?.name}
                   </p>
                 </Link>
@@ -91,13 +124,16 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
 
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                 <span className="">
-                  {isFetching ? skeleton : item.amounttokenInUSD?.toFixed(3)}
-                </span>
-              </td>
-
-              <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                <span className="">
-                  {isFetching ? skeleton : item.tokenSymbol}
+                  {isFetching ? skeleton : (
+                    <div className="flex gap-x-1">
+                      <span>{item.amounttokenInUSD?.toFixed(3)}</span>
+                      {item.tokenSymbol === 'WETH' ? (
+                        <span>MATIC</span>
+                      ) : (
+                        <span>{item.tokenSymbol}</span>
+                      )}
+                    </div>
+                  )}
                 </span>
               </td>
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">

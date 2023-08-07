@@ -417,7 +417,7 @@ const Swap: React.FC = () => {
         <p className="text-sm font-medium text-dark1">{symbolNFT}</p>
       </div> */}
       <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
-        <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center">
+        <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
           <div className="">
             {imageNFT && (
               <Image

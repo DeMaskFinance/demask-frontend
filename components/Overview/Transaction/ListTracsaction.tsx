@@ -79,14 +79,14 @@ function ListTracsaction() {
   }, [page, refetch]);
   return (
     <div className="transactionList">
-      <div className="px-2 pt-2 shadow-home rounded-lg overflow-hidden">
-        <button className="bg-secondary4 text-white py-2 px-6 rounded-lg">
+      <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home">
+        <button className="px-6 py-2 text-white rounded-lg bg-secondary4">
           Transaction
         </button>
-        <div className="px-6 pt-6 pb-0  overflow-x-scroll">
+        <div className="px-6 pt-6 pb-0 overflow-x-scroll">
           <table className="w-full text-left">
             <thead className="">
-              <tr className="flex lg:text-base md:text-base text-sm border-b pb-2">
+              <tr className="flex pb-2 text-sm border-b lg:text-base md:text-base">
                 <th className="flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                   #
                 </th>
@@ -99,9 +99,6 @@ function ListTracsaction() {
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   Token amount
-                </th>
-                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  Symbol
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   Account
@@ -123,7 +120,7 @@ function ListTracsaction() {
         </div>
       </div>
 
-      {/* <div className="flex gap-10 py-8 justify-center">
+      {/* <div className="flex justify-center gap-10 py-8">
         <button
           onClick={prevPage}
           disabled={isPreviousData || page === 1 || isFetching}
@@ -137,9 +134,9 @@ function ListTracsaction() {
         </button>
         <p>
           Page
-          <span className="px-2 text-secondary2 font-medium">{page}</span> of
+          <span className="px-2 font-medium text-secondary2">{page}</span> of
           <span
-            className="px-2 text-secondary2 font-medium cursor-pointer"
+            className="px-2 font-medium cursor-pointer text-secondary2"
             onClick={() =>
               page !== data?.totalPages && setPage(data?.totalPages)
             }
@@ -159,9 +156,9 @@ function ListTracsaction() {
           <MdOutlineNavigateNext />
         </button>
       </div> */}
-      <div className="mx-auto w-full flex justify-center text-sm">
-        <div className="flex lg:flex-row md:flex-row flex-col lg:gap-10 md:gap-8 gap-4 py-8">
-          <div className="flex lg:gap-10 md:gap-8 gap-1">
+      <div className="flex justify-center w-full mx-auto text-sm">
+        <div className="flex flex-col gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
+          <div className="flex gap-1 lg:gap-10 md:gap-8">
             <button
               onClick={prevPage}
               disabled={isPreviousData || page === 1}
@@ -203,7 +200,7 @@ function ListTracsaction() {
               <MdOutlineNavigateNext className="text-xl text-dark2" />
             </button>
           </div>
-          <div className="ml-4 flex justify-center gap-4 items-center text-dark2">
+          <div className="flex items-center justify-center gap-4 ml-4 text-dark2">
             <span>Go to page </span>
             <div>
               <input
@@ -212,11 +209,11 @@ function ListTracsaction() {
                 max={data?.totalPages || 1}
                 value={pageNumberInput}
                 onChange={(e) => setPageNumberInput(e.target.value)}
-                className="w-12 max-w-fit text-sm outline-none px-2 py-1 text-center border rounded"
+                className="w-12 px-2 py-1 text-sm text-center border rounded outline-none max-w-fit"
               />{" "}
               <button
                 onClick={() => goToPage(parseInt(pageNumberInput))}
-                className="px-2 py-1 border rounded bg-secondary2 text-white hover:translate-x-1 transtion-all"
+                className="px-2 py-1 text-white border rounded bg-secondary2 hover:translate-x-1 transtion-all"
               >
                 Go
               </button>
