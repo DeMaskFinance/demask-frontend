@@ -54,6 +54,7 @@ export default function Header() {
   useEffect(() => {
     const getAddress = async () => {
       if (provider && provider.selectedAddress === null) {
+        console.log(provider);
         disconnectWallet();
       }
     };
@@ -113,7 +114,7 @@ export default function Header() {
       /> */}
       <header
         ref={headerRef}
-        className="fixed lg:shadow-none shadow-md top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 px-4 transition-all duration-500 ease-in-out bg-white h-header lg:px-primary md:px-14"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 transition-all duration-500 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14"
       >
         <div className="flex items-center flex-shrink-0 gap-2">
           {/* <div
@@ -160,7 +161,7 @@ export default function Header() {
               showSearch ? "block" : "hidden"
             } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
-          <div className="flex gap-2  lg:gap-x-6 md:gap-x-4">
+          <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
             <div
               className="text-secondary5 lg:hidden"
               onClick={() => {
@@ -170,7 +171,7 @@ export default function Header() {
               <SearchIcon
                 width={32}
                 height={32}
-                className="w-full  cursor-pointer active:fill-secondary3"
+                className="w-full cursor-pointer active:fill-secondary3"
               />
             </div>
 
@@ -276,7 +277,7 @@ export default function Header() {
                   <ProfileIcon
                     width={24}
                     height={24}
-                    className="group-hover:fill-white"
+                    className="fill-white"
                   />
                 </button>
               </Tippy>

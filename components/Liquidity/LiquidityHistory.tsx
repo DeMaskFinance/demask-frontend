@@ -1,3 +1,4 @@
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 
 interface LiquiditiesHistoryProps {
@@ -32,11 +33,11 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item:any, index:number) => (
             <div
-              className="grid gap-4 grid-cols-[80px,repeat(3,2fr),4fr] text-dark1 font-medium mb-2"
+              className="grid gap-4 lg:grid-cols-[80px,repeat(3,2fr),4fr] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 font-medium mb-2"
               key={index}
             >
               <p>{item.action}</p>
-              <p>{item.liquidity}</p>
+              <p>{formatNumber(divideByDecimal(item.liquidity,'18'))}</p>
               <p>{formatNumber(item.amountnft)}</p>
               <p>{formatNumber(item.amounttokenInUSD)}</p>
               <p>{item.blockTime}</p>

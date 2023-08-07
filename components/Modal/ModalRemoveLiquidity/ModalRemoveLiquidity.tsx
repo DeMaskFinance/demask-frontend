@@ -70,6 +70,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setIsSufficientLiquidity(false);
       }
     };
+    
     useEffect(() => {
       if (balanceOfDML) {
         if (activeChoice === '25%') {
@@ -85,11 +86,12 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       }
     }, [activeChoice])
     const totalSupply = useTotalSupply(account, wallet, data.fullInfoMetadata.dmlAddress, isApprovedDML);
-    // console.log(totalSupply);
+    console.log(totalSupply);
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
         const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
-        const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(inputLiquidity)) / ((Number(reserves[1].toString()) - Number(inputLiquidity)) * Number(totalSupply));
+        const amountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply);
+        const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(amountToken.toFixed(0))) / ((Number(reserves[1].toString()) - Number(resAmountNFT.toFixed(0))) * Number(totalSupply));
         const resAmountNFTMin = new BigNumber(resAmountNFT).times(0.95)
           .times(new BigNumber(10).pow(Number(decimals)))
           .toFixed(0);
@@ -98,6 +100,10 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setAmountToken(resAmountToken.toString());
         setAmountNFTMin(resAmountNFTMin);
         setAmountTokenMin(resAmountTokenMin.toFixed(0));
+        console.log(resAmountNFT);
+        console.log(amountToken.toFixed(0));
+        console.log(resAmountToken);
+        
       }
     }, [inputLiquidity])
     console.log(amountNFTMin);
@@ -126,13 +132,14 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       };
       checkApproveToken();
     }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance]);
-    const { reserves, isLoadingReserves }: any = useFetchReservesDML(
+    const { reserves, isLoadingReserves,res }: any = useFetchReservesDML(
       account,
       data.fullInfoMetadata.dmlAddress,
       wallet,
     );
     // console.log(reserves);
-
+    // console.log(reserves[0].toString());
+    // console.log(reserves[1].toString());
     const { balanceToken, decimals, bigNumberBalance, symbolToken } =
       useInformationToken(account, tokenAddress, wallet);
     console.log(isApprovedDML);
@@ -241,7 +248,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     }
     return (
       <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
-        <div className="z-50 flex flex-col justify-center cursor-default h-fit">
+        <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
           <div className="bg-white h-fit w-[432px] rounded-lg p-4 relative">
             <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
               Remove

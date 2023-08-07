@@ -39,15 +39,15 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   }, []);
   return (
     <Link href={`/details/${liquidity.dmlToken}`}>
-      <div className="box-border flex justify-between p-2 mb-6 rounded cursor-pointer text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
+      <div className="box-border flex justify-between p-2 mb-3 rounded cursor-pointer lg:mb-6 text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
         <p className="flex items-center leading-[13px]">
           <span>{liquidity.metadata.symbol}</span>
           <span className="overflow-hidden">/</span>
           <span>{tokenSymbol}</span>
         </p>
         <div className="flex items-center">
-          REWARD: 
-          {reward?(<span>{formatNumber(reward)}</span>):(<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)} 
+          Reward:  
+          {reward?(<span className="ml-2">{formatNumber(reward)}</span>):(<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)} 
           <span>{tokenSymbol}</span>
         </div>
       </div>

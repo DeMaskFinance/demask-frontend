@@ -48,7 +48,7 @@ export default function Liquidity() {
   console.log(hasNextPage);
   
   return (
-    <div className="py-8 px-secondary min-h-[calc(100vh-300px)]">
+    <div className="py-8 max-w-4xl mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
       <Head>
         <title>Liquidity | DeMask</title>
       </Head>
@@ -106,7 +106,7 @@ export default function Liquidity() {
         <Button
           type="button"
           primary
-          className="h-[34px] w-[158px] text-sm mb-4"
+          className="h-[34px] w-[158px] text-sm mb-4 block mx-auto"
           onClick={handleAddLiquidity}
         >
           + Add Liquidity
