@@ -37,7 +37,7 @@ export default function DetailLiquidity() {
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
   const [reward, setReward] = useState("");
-  const [isRewarded,setIsRewarded] = useState<boolean>(false);
+  const [isRewarded, setIsRewarded] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
@@ -63,9 +63,9 @@ export default function DetailLiquidity() {
       }
     };
     fetchDataReward();
-  }, [dmlTokenLiquidity, account,isRewarded]);
+  }, [dmlTokenLiquidity, account, isRewarded]);
   console.log(isRewarded);
-  
+
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -76,7 +76,7 @@ export default function DetailLiquidity() {
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({ wallet, dmlTokenLiquidity ,setIsRewarded});
+      getRewardDML({ wallet, dmlTokenLiquidity, setIsRewarded });
     } else {
       console.log("No account and DML");
     }
@@ -133,7 +133,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 min-h-[calc(100vh-330px)]">
+    <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
       <Head>
         <title>Detail Liquidity | DeMask</title>
       </Head>
@@ -162,10 +162,10 @@ export default function DetailLiquidity() {
           </button>
         </div>
       </div>
-      <div className="flex gap-x-20">
+      <div className="flex flex-col-reverse gap-x-20 lg:flex-row">
         <div className="grow">
           <div className="h-full ">
-            <div className="flex justify-between font-medium w-[500px]">
+            <div className="flex justify-between font-medium max-w-[500px]">
               <div>
                 <p className="text-dark1">Liquidity</p>
                 <p className="text-xl text-secondary3">
@@ -192,28 +192,29 @@ export default function DetailLiquidity() {
               History
             </h3>
             {account && data ? (
-              <div>
-                <div className="grid gap-4 grid-cols-[80px,repeat(3,2fr),4fr] text-dark1 font-medium mb-2">
-                  <p>Action</p>
-                  <p>Liquidity</p>
-                  <p>NFT</p>
-                  <p>Token</p>
-                  <p>Time</p>
+              <div className="w-[100vw] lg:w-[50vw] overflow-hidden">
+                <div className="overflow-x-auto">
+                  <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),4fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">
+                    <p>Action</p>
+                    <p>Liquidity</p>
+                    <p>NFT</p>
+                    <p>Token</p>
+                    <p>Time</p>
+                  </div>
+                  <LiquiditiesHistory
+                    data={data}
+                    isFetching={isFetching}
+                    isLoading={isLoading}
+                  />
                 </div>
-                <LiquiditiesHistory
-                  data={data}
-                  isFetching={isFetching}
-                  isLoading={isLoading}
-                />
                 <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
                   <button
                     onClick={prevPage}
                     disabled={isPreviousData || page === 1 || isFetching}
-                    className={`${
-                      isPreviousData || page === 1 || isFetching
+                    className={`${isPreviousData || page === 1 || isFetching
                         ? "text-white bg-slate-300"
                         : "hover:text-white hover:bg-secondary2 transition-all"
-                    } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                      } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                   >
                     <MdNavigateBefore />
                   </button>
@@ -237,11 +238,10 @@ export default function DetailLiquidity() {
                     disabled={
                       isPreviousData || page === data?.totalPages || isFetching
                     }
-                    className={`${
-                      isPreviousData || page === data?.totalPages || isFetching
+                    className={`${isPreviousData || page === data?.totalPages || isFetching
                         ? "text-white bg-slate-300"
                         : "hover:text-white hover:bg-secondary2 transition-all"
-                    } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                      } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                   >
                     <MdOutlineNavigateNext />
                   </button>
@@ -258,7 +258,7 @@ export default function DetailLiquidity() {
           </div>
         </div>
         {account && data && (
-          <div className="justify-end w-[504px]">
+          <div className="justify-end max-w-[700px] mb-6 mx-auto">
             {data.fullInfoMetadata.metadata.image && (
               <Image
                 width={760}
@@ -309,7 +309,7 @@ export default function DetailLiquidity() {
         )}
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data  && (
+      {data && (
         <ModalDetail
           nameNFT={data.fullInfoMetadata.metadata.name}
           symbolNFT={data.fullInfoMetadata.metadata.symbol}

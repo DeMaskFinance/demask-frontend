@@ -98,7 +98,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             ))}
         </div>
         <div className="flex items-center gap-x-2 ">
-          <div className="bg-secondary5 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
+          <div className="bg-secondary2 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
             {reserveToken.toString() === "0" ||
             reserveNFT.toString() === "0" ||
             reserveNFT.toString() === "1" ? (
@@ -113,7 +113,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                     {formatPrice} {symbolTokenSwap}
                   </span>
                 ) : (
-                  <div className="flex animate-spin gap-x-4 px-6">
+                  <div className="flex px-6 animate-spin gap-x-4">
                     <AiOutlineLoading3Quarters />
                   </div>
                 )}

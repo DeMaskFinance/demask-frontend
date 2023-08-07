@@ -127,7 +127,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                 height={32}
                 className={`${
                   active ? "" : ""
-                } cursor-pointer absolute top-0 right-0 left-0 bottom-0`}
+                } cursor-pointer absolute top-0 right-0 left-0 bottom-0 fill-secondary3`}
               />
             </div>
           </div>
