@@ -15,6 +15,7 @@ import {
   ProfileIcon,
   SearchIcon,
 } from "../Icons";
+import { BsCaretDownFill } from "react-icons/bs";
 import { LogoDeMaskBeta } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { ModalWallet } from "../Modal/ModalWallet";
@@ -27,7 +28,7 @@ const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
   btnWallet:
-    "flex items-center justify-center py-1  pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
+    "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
 };
 
 export default function Header() {
@@ -117,14 +118,6 @@ export default function Header() {
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 transition-all duration-500 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14"
       >
         <div className="flex items-center flex-shrink-0 gap-2">
-          {/* <div
-            className="block pr-2 lg:hidden md:block"
-            onClick={() => {
-              setOpenMenu(!openMenu);
-            }}
-          >
-            <FaBars className="text-dark1" />
-          </div> */}
           <div className="text-center">
             <Link href="/">
               <LogoDeMaskBeta width={94} height={24} />
@@ -171,7 +164,7 @@ export default function Header() {
               <SearchIcon
                 width={32}
                 height={32}
-                className="w-full cursor-pointer active:fill-secondary3"
+                className="w-full cursor-pointer fill-secondary3 active:fill-secondary2"
               />
             </div>
 
@@ -241,13 +234,16 @@ export default function Header() {
                 </div>
               )}
             >
-              <button className={`${style.btnWallet} lg:flex md:flex hidden`}>
-                <p>Polygon</p>
+              <button className={`${style.btnWallet} flex`}>
+                <p className="hidden lg:block">Polygon</p>
                 <PolygonIcon
                   width={24}
                   height={24}
                   className=" fill-white group-hover:fill-secondary5"
                 />
+                <span className="lg:hidden">
+                  <BsCaretDownFill/>
+                </span>
               </button>
             </Tippy>
             {account ? (

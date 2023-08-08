@@ -7,9 +7,11 @@ import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { AvatarUser } from "../Avatars";
 import { SearchIcon } from "../Icons";
+import { NFTTopService } from "@/libs/service";
+import Image from "next/image";
 
 interface SearchProps {
-  isFocused: any;
+  isFocused: boolean;
   handleFocus: any;
 }
 
@@ -25,26 +27,42 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
     setSearchTerm(event.target.value);
   };
 
-  const { isLoading, data, isFetching } = useQuery({
-    queryKey: ["categories", searchTerm],
-    queryFn: async () => {
-      if (searchTerm.includes("/")) {
-        const [param1, param2] = searchTerm.split(":");
-        const id = param1.includes("x") ? param2 : param1;
-        const nftAddress = param1.includes("x") ? param1 : param2;
-        const res = await categoryAPI(
-          `/search?nftAddress=${nftAddress}&id=${id}`
-        );
+  const { isLoading: searchLoading,
+    data: searchData,
+    isFetching: searchFetching,
+    refetch: searchRefetch,
+    isPreviousData: isSearchPreviousData } = useQuery({
+      queryKey: ["categories", searchTerm],
+      queryFn: async () => {
+        if (searchTerm.includes("/")) {
+          const [param1, param2] = searchTerm.split(":");
+          const id = param1.includes("x") ? param2 : param1;
+          const nftAddress = param1.includes("x") ? param1 : param2;
+          const res = await categoryAPI(
+            `/search?nftAddress=${nftAddress}&id=${id}`
+          );
+          return res;
+        } else {
+          const res = await categoryAPI(`/search?search=${searchTerm}`);
+          return res;
+        }
+      },
+    });
+  const { isLoading: topNftLoading,
+    data: topNftData,
+    isFetching: topNftFetching,
+    refetch: topNftRefetch,
+    isPreviousData: isTopNftPreviousData, } = useQuery({
+      queryKey: ["topNftSearch"],
+      queryFn: async () => {
+        const res = await NFTTopService(1);
         return res;
-      } else {
-        const res = await categoryAPI(`/search?search=${searchTerm}`);
-        return res;
-      }
-    },
-  });
+      },
+
+      keepPreviousData: true,
+    });
   const [active, setActive] = useState(false);
   const [click, setClick] = useState(false);
-
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -54,7 +72,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
         }
       }
     }
-
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
@@ -97,7 +114,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
     const searchsHistory = savedHistory ? JSON.parse(savedHistory) : [];
     setSearchHistory(searchsHistory);
   }, []);
-
+  
   return (
     <>
       <li className="list-none">
@@ -114,28 +131,25 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
               onClick={() => {
                 setClick(true);
               }}
-              className={`border hide-clear rounded-lg relative pr-1 placeholder:text-dark2 transition-all ${
-                active
-                  ? "lg:w-72 w-full h-[32px]  border-secondary5 pl-10"
-                  : "w-[32px] h-[32px] placeholder:text-transparent bg-transparent transition-all"
-              } outline-none text-sm  text-dark2`}
+              className={`border hide-clear rounded-lg relative pr-1 placeholder:text-dark2 transition-all ${active
+                ? "lg:w-[350px] 3xl:w-[450px] w-full h-[32px]  border-secondary5 pl-10"
+                : "w-[32px] h-[32px] placeholder:text-transparent bg-transparent transition-all"
+                } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
             />
             <div onClick={handleActive}>
               <SearchIcon
                 width={32}
                 height={32}
-                className={`${
-                  active ? "" : ""
-                } cursor-pointer absolute top-0 right-0 left-0 bottom-0 fill-secondary3`}
+                className={`${active ? "" : ""
+                  } cursor-pointer absolute top-0 right-0 left-0 bottom-0 fill-secondary3`}
               />
             </div>
           </div>
 
           <ul
-            className={`border max-h-72 overflow-y-auto ${
-              click ? "block" : "hidden"
-            }  bg-white lg:w-72 w-full rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
+            className={`border max-h-72 overflow-y-auto overflow-x-hidden ${click ? "block" : "hidden"
+              }  bg-white w-full rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
           >
             <div className={`${searchTerm === "" ? "block" : "hidden"}`}>
               <p className="block mb-2">
@@ -159,7 +173,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                           className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white"
                         >
                           <h2 className="flex items-center gap-2">
-                            <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
+                            <div className="w-[32px] mr-2 flex-shrink-0 h-[32px] overflow-hidden rounded-lg">
                               <AvatarUser width={32} height={32} />
                             </div>
                             <div className="flex flex-col items-baseline">
@@ -192,61 +206,180 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                 ))}
               </div>
             </div>
-            <div className={`${searchTerm !== "" ? "block" : "hidden"}`}>
-              <p className="pb-2 text-base">Collections</p>
-              {data && data.length > 0 ? (
-                <>
-                  <div className="flex text-xs item-center">
-                    <span className="block pb-2 mr-1 font-semibold">
-                      {data.length}
-                    </span>{" "}
-                    items
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {data.map((item: any, index: number) => (
-                      <>
-                        <Link
-                          key={item?.metadata?.name}
-                          onClick={() => handleResultItemClick(item)}
-                          href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}?dmlAddress=${item.dmlAddress}`}
-                          className="flex-1"
+            {searchTerm ? (
+              <div className=''>
+                <p className="pb-2 text-base">Collections</p>
+                {searchData && searchData.length > 0 ? (
+                  <>
+                    <div className="flex text-xs item-center">
+                      <span className="block pb-2 mr-1 font-semibold">
+                        {searchData.length}
+                      </span>{" "}
+                      items
+                    </div>
+                    <div className="flex flex-col gap-4">
+                      {searchData.map((item: any, index: number) => (
+                        <>
+                          <Link
+                            key={item?.metadata?.name}
+                            onClick={() => handleResultItemClick(item)}
+                            href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}`}
+                            className="flex-1"
                           //
-                        >
-                          <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                            <h2 className="flex items-center gap-2">
-                              <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
-                                <AvatarUser width={32} height={32} />
-                              </div>
-                              <div className="flex flex-col items-baseline">
-                                <span className="block text-sm font-semibold">
-                                  <span className="line-clamp-1">
-                                    {item?.metadata?.name}
+                          >
+                            <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
+                              <h2 className="flex items-center gap-2">
+                                <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                                {item.metadata?.image && (
+                                    <Image
+                                      loading="lazy"
+                                      unoptimized
+                                      width={32}
+                                      height={32}
+                                      src={item.metadata?.image}
+                                      alt="NFT Image"
+                                      className="object-cover w-full h-full"
+                                    />
+                                  )}
+                                  {item.metadata?.animation_url &&
+                                    !item.metadata?.image && (
+                                      <video
+                                        src={item.metadata?.animation_url}
+                                        autoPlay={false}
+                                        loop
+                                        muted
+                                        className="object-cover h-full"
+                                      />
+                                    )}
+                                  {item.metadata?.image &&
+                                    item.metadata?.animation_url && (
+                                      <audio
+                                        autoPlay
+                                        loop
+                                        muted
+                                        controls
+                                        src={item.metadata?.animation_url}
+                                        className=""
+                                      >
+                                        Your browser does not support the
+                                        <code>audio</code> element.
+                                      </audio>
+                                    )}
+                                </div>
+                                <div className="flex flex-col items-baseline">
+                                  <span className="block text-sm font-semibold">
+                                    <span className="line-clamp-1">
+                                      {item?.metadata?.name}
+                                    </span>
                                   </span>
-                                </span>
-                                <span className="flex text-xs item-center">
-                                  <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlAddress.slice(0, 8)}...
-                                    {item.dmlAddress.slice(-8)}
+                                  <span className="flex text-xs item-center">
+                                    <span className="block pb-2 mr-1 font-semibold">
+                                      {item.dmlAddress.slice(0, 8)}...
+                                      {item.dmlAddress.slice(-8)}
+                                    </span>
                                   </span>
-                                </span>
-                              </div>
-                            </h2>
-                          </div>
-                        </Link>
-                      </>
-                    ))}
+                                </div>
+                              </h2>
+                            </div>
+                          </Link>
+                        </>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {searchFetching ? (
+                      <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    ) : (
+                      <span className="text-base text-secondary3">No Result</span>
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              <div>
+                {topNftData && topNftData.nftDataList.length > 0 ? (
+                  <div>
+                    <p className="block mb-2">
+                      <span className="text-base">NFTs Top</span>
+                      {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
+                        <>
+                          <Link
+                            key={item?.metadata?.name}
+                            onClick={() => handleResultItemClick(item)}
+                            href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
+                            className="flex-1"
+                          //
+                          >
+                            <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
+                              <h2 className="flex items-center gap-2">
+                                <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                                  {item.metadata?.image && (
+                                    <Image
+                                      loading="lazy"
+                                      unoptimized
+                                      width={32}
+                                      height={32}
+                                      src={item.metadata?.image}
+                                      alt="NFT Image"
+                                      className="object-cover w-full h-full"
+                                    />
+                                  )}
+                                  {item.metadata?.animation_url &&
+                                    !item.metadata?.image && (
+                                      <video
+                                        src={item.metadata?.animation_url}
+                                        autoPlay={false}
+                                        loop
+                                        muted
+                                        className="object-cover h-full"
+                                      />
+                                    )}
+                                  {item.metadata?.image &&
+                                    item.metadata?.animation_url && (
+                                      <audio
+                                        autoPlay
+                                        loop
+                                        muted
+                                        controls
+                                        src={item.metadata?.animation_url}
+                                        className=""
+                                      >
+                                        Your browser does not support the
+                                        <code>audio</code> element.
+                                      </audio>
+                                    )}
+                                </div>
+                                <div className="flex flex-col items-baseline">
+                                  <span className="block text-sm font-semibold">
+                                    <span className="line-clamp-1">
+                                      {item?.metadata?.name}
+                                    </span>
+                                  </span>
+                                  <span className="flex text-xs item-center">
+                                    <span className="block pb-2 mr-1 font-semibold">
+                                      {item.dmlAddress.slice(0, 8)}...
+                                      {item.dmlAddress.slice(-8)}
+                                    </span>
+                                  </span>
+                                </div>
+                              </h2>
+                            </div>
+                          </Link></>
+                      ))}
+                    </p>
                   </div>
-                </>
-              ) : (
-                <>
-                  {isFetching ? (
-                    <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
-                  ) : (
-                    <span className="text-base text-secondary3">No Result</span>
-                  )}
-                </>
-              )}
-            </div>
+                ) : (
+                  <>
+                    {topNftFetching ? (
+                      <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    ) : (
+                      <span className="text-base text-secondary3">No Result</span>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </ul>
         </div>
       </li>
