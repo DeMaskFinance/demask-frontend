@@ -6,7 +6,8 @@ import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
 import { startOfWeek, endOfWeek, addDays } from 'date-fns';
-interface ChartVolumnProps {}
+import formatNumber from "@/libs/utils/formatNumer";
+interface ChartVolumnProps { }
 const styles = {
   btnActive: "rounded-full bg-secondary5",
 };
@@ -24,9 +25,9 @@ interface GroupedData {
 const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [activeChoice, setActiveChoice] = useState<string>("D");
-  const [dailyData,setDailyData] = useState('');
-  const [weeklyData,setWeeklyData] = useState('');
-  const [monthlyData,setMonthlyData] = useState('');
+  const [dailyData, setDailyData] = useState('');
+  const [weeklyData, setWeeklyData] = useState('');
+  const [monthlyData, setMonthlyData] = useState('');
   const { data, isLoading: LoadingVolume } = useQuery({
     queryKey: ["ChartVolume"],
     queryFn: async () => {
@@ -36,16 +37,15 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
       return res;
     },
   });
-  console.log(data);
   // const groupDataByWeek = (data: DataPoint[]): GroupedData[] => {
   //   const groupedData: { [key: string]: GroupedData } = {};
-  
+
   //   data.forEach((dataPoint) => {
   //     const date = new Date(dataPoint.date);
   //     const year = date.getFullYear();
   //     const weekNumber = getWeek(date);
   //     const weekKey = `${year}-${weekNumber}`;
-  
+
   //     if (!groupedData[weekKey]) {
   //       const startDate = format(startOfWeek(date), 'yyyy-MM-dd');
   //       const endDate = format(endOfWeek(date), 'yyyy-MM-dd');
@@ -55,15 +55,15 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   //         totalVolume: 0,
   //       };
   //     }
-  
+
   //     groupedData[weekKey].totalVolume += dataPoint.volumeInDay;
   //   });
-  
+
   //   return Object.values(groupedData);
   // };
   // const test = groupDataByWeek(data);
   // console.log(test);
-  
+
   const chartVolume = data?.map((dataPoint: any) => ({
     date: dataPoint.date,
     value: dataPoint.volumeInDay,
@@ -85,11 +85,11 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  useEffect(()=>{
+  useEffect(() => {
     switch (activeChoice) {
       case "D":
         console.log("day hihi");
-        
+
         // setDailyData(data);
         break;
       case "W":
@@ -111,7 +111,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
       default:
         break;
     }
-  },[activeChoice])
+  }, [activeChoice])
   return (
     <div className="hidden p-6 rounded-lg shadow-chart lg:block">
       {chartVolume && (
@@ -119,9 +119,11 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
           <div className="flex justify-between mb-2">
             <div className="mb-2 text-dark1">
               <p className="font-medium ">Volume</p>
-              <p className="my-2 text-2xl font-medium text-dark0">
-                ${activeData?.toFixed(2)}M
-              </p>
+              {activeData && (
+                <p className="my-2 text-2xl font-medium text-dark0">
+                  ${formatNumber(activeData?.toFixed(2))}
+                </p>
+              )}
               <p className="">
                 {activeDate && format(parseISO(activeDate), "MMM d, yyyy")}{" "}
                 (UTC)

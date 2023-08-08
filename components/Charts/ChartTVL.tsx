@@ -4,6 +4,7 @@ import { format, parseISO, subDays } from "date-fns";
 import React, { useState, useEffect } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import ChartLoading from "./ChartLoading";
+import formatNumber from "@/libs/utils/formatNumer";
 
 interface ChartTVLProps { }
 
@@ -59,9 +60,11 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
           <div className="h-full p-6 rounded-lg shadow-chart">
             <div className="mb-2 text-dark1">
               <p className="font-medium ">TVL</p>
-              <p className="my-2 text-2xl font-medium text-dark0">
-                ${activeData?.toFixed(2)}M
-              </p>
+              {activeData && (
+                <p className="my-2 text-2xl font-medium text-dark0">
+                  ${formatNumber(activeData?.toFixed(2))}
+                </p>
+              )}
               <p className="">
                 {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
               </p>
