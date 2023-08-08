@@ -1,3 +1,4 @@
+import { AvatarUser } from "@/components/Avatars";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -14,6 +15,8 @@ function Creators() {
 
     keepPreviousData: true,
   });
+  console.log(data);
+
   return (
     <div className="mt-4 border rounded-lg border-dark4 max-h-[168px] ">
       <h4 className="px-2 pt-4 pb-2 text-xl font-semibold">
@@ -29,50 +32,17 @@ function Creators() {
         ) : (
           <>
             {data?.creatorDataList.map((item: any) => (
-              <div className="w-full p-2 mt-2 border hover:border-secondary4 cursor-pointer hover:text-secondary4 rounded-lg">
+              <div className="w-full p-2 mt-2 border rounded-lg cursor-pointer hover:border-secondary4 hover:text-secondary4">
                 <div className="flex flex-col">
-                  <div className="flex justify-between items-center w-full gap-2">
+                  <div className="flex items-center justify-between w-full gap-2">
                     <h2 className="flex items-center">
                       <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
-                        {item.metadata?.image && (
-                          <Image
-                            loading="lazy"
-                            unoptimized
-                            width={24}
-                            height={24}
-                            src={item.metadata?.image}
-                            alt="NFT Image"
-                            className="w-full h-full"
-                          />
-                        )}
-                        {item.metadata?.animation_url &&
-                          !item.metadata?.image && (
-                            <video
-                              src={item.metadata?.animation_url}
-                              autoPlay
-                              loop
-                              muted
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                        {item.metadata?.image &&
-                          item.metadata?.animation_url && (
-                            <audio
-                              autoPlay
-                              loop
-                              muted
-                              controls
-                              src={item.metadata?.animation_url}
-                              className=""
-                            >
-                              Your browser does not support the
-                              <code>audio</code> element.
-                            </audio>
-                          )}
+                        <AvatarUser width={24} height={24} />
                       </div>
                       <div className="flex items-baseline gap-2">
                         <span className="block text-sm font-light">
-                          {item.metadata.name}
+                          {item.to.slice(0, 3)}...
+                          {item.to.slice(-4)}
                         </span>
                       </div>
 
