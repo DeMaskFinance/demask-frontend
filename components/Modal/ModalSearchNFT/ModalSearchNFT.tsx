@@ -10,6 +10,9 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { memo } from "react";
 import images from "@/public/images";
+import { NFTTopService } from "@/libs/service";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -37,13 +40,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     setLoading(true);
     const ERC1155 = await checkIsERC1155(value);
     console.log(ERC1155);
-    
+
     setIsERC1155(ERC1155);
     setLoading(false);
   };
   console.log(isERC1155);
   console.log(debouncedNFT);
-  
+
   useEffect(() => {
     if (debouncedNFT) {
       handleAddressNFT(debouncedNFT);
@@ -91,7 +94,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         const res = await fetch(ipfsLink);
         const metadata = await res.json();
         setMetadata(metadata);
-      } catch (error) {}
+      } catch (error) { }
     };
     fetchMetadata();
   }, [uri]);
@@ -122,7 +125,36 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
+  const { isLoading: topNftLoading,
+    data: topNftData,
+    isFetching: topNftFetching,
+    refetch: topNftRefetch,
+    isPreviousData: isTopNftPreviousData, } = useQuery({
+      queryKey: ["topNFT"],
+      queryFn: async () => {
+        const res = await NFTTopService(1);
+        return res;
+      },
 
+      keepPreviousData: true,
+    });
+  const handleSelectNFT = (item: any) => {
+    const { currency } = router.query;
+    const { slug } = router.query;
+    let newURL = "";
+    if (currency) {
+      const currentURL = router.asPath;
+      newURL = currentURL
+        .replace(currency[0], item.nftAddress)
+        .replace(currency[2], item.nftId);
+    } else if (slug) {
+      const currentURL = router.asPath;
+      newURL = currentURL.replace(slug[0], item.nftAddress).replace(slug[2], item.nftId);
+    }
+    router.push(newURL);
+    document.body.style.overflowY = "auto";
+    setIsOpenSearchNFT(false);
+  }
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -144,12 +176,93 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </div>
               )}
             </div>
-            <ul className={`${nftAddress?'hidden':'block'}`}>
-              <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={()=>setNftAddress(process.env.NEXT_PUBLIC_CREATOR as string)}>
-                <span><Image src='/logo.png' alt="logo" width={24} height={24}/></span>
+            <ul className={`${nftAddress ? 'hidden' : 'block'}`}>
+              <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={() => setNftAddress(process.env.NEXT_PUBLIC_CREATOR as string)}>
+                <span><Image src='/logo.png' alt="logo" width={24} height={24} /></span>
                 <span>DEMASK CREATOR</span>
               </li>
             </ul>
+            <div className={`${nftAddress ? 'hidden' : 'block'}`}>
+              <div className="mt-3">
+                {topNftData && topNftData.nftDataList.length > 0 ? (
+                  <div>
+                    <p className="block mb-2">
+                      <span className="text-base">NFTs Top</span>
+                      {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
+                        <div
+                          key={index}
+                          onClick={() => handleSelectNFT(item)}
+                          className="flex-1"
+                        >
+                          <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
+                            <h2 className="flex items-center gap-2">
+                              <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                                {item.metadata?.image && (
+                                  <Image
+                                    loading="lazy"
+                                    unoptimized
+                                    width={32}
+                                    height={32}
+                                    src={item.metadata?.image}
+                                    alt="NFT Image"
+                                    className="object-cover w-full h-full"
+                                  />
+                                )}
+                                {item.metadata?.animation_url &&
+                                  !item.metadata?.image && (
+                                    <video
+                                      src={item.metadata?.animation_url}
+                                      autoPlay={false}
+                                      loop
+                                      muted
+                                      className="object-cover h-full"
+                                    />
+                                  )}
+                                {item.metadata?.image &&
+                                  item.metadata?.animation_url && (
+                                    <audio
+                                      autoPlay
+                                      loop
+                                      muted
+                                      controls
+                                      src={item.metadata?.animation_url}
+                                      className=""
+                                    >
+                                      Your browser does not support the
+                                      <code>audio</code> element.
+                                    </audio>
+                                  )}
+                              </div>
+                              <div className="flex flex-col items-baseline">
+                                <span className="block text-sm font-semibold">
+                                  <span className="line-clamp-1">
+                                    {item?.metadata?.name}
+                                  </span>
+                                </span>
+                                <span className="flex text-xs item-center">
+                                  <span className="block pb-2 mr-1 font-semibold">
+                                    {item.dmlAddress.slice(0, 8)}...
+                                    {item.dmlAddress.slice(-8)}
+                                  </span>
+                                </span>
+                              </div>
+                            </h2>
+                          </div>
+                        </div>
+                      ))}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {topNftFetching ? (
+                      <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    ) : (
+                      <span className="text-base text-secondary3">No Result</span>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
             {isERC1155 && nftAddress && (
               <input
                 className={styles.inputItem}

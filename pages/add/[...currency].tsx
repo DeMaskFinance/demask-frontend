@@ -1,5 +1,5 @@
 import Button from "@/components/Buttons/Button";
-import { BackIcon, DownIcon, NFTIcon, TokenIcon } from "@/components/Icons";
+import { BackIcon, DownIcon, NFTIcon, TokenIcon, TokenIconNotDefine } from "@/components/Icons";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { BigNumber, ethers } from "ethers";
 import Head from "next/head";
@@ -32,6 +32,8 @@ import useNFTBalance from "@/hooks/useBalanceNFT";
 import useDMLToken from "@/hooks/useDMLToken";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import { BiLoaderAlt } from "react-icons/bi";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { tokenDefault } from "@/libs/constants";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -118,16 +120,22 @@ export default function AddLiquidity() {
         );
       }
       setAmountErcDesired(amountErcDesired);
-      const amountErcDesiredToDec = handleBignumbertoDec(
-        amountErcDesired,
-        18
-      );
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+      if (amountErcDesired) {
+        const amountErcDesiredToDec = divideByDecimal(
+          amountErcDesired?.toString(),
+          '18'
+        );
+        setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+      }
     }
   }, [inputNFT, inputToken]);
   console.log(dmlToken);
-  
-  console.log(amountErcDesired);
+  // console.log(amountErcDesired.toString());
+
+  // console.log(amountErcDesiredToDec.toString());
+  const tokenSymbolIcon = tokenDefault.find((item) => item.address === tokenAddress);
+console.log(tokenSymbolIcon);
+
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
@@ -137,8 +145,8 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   };
-  
-  
+
+
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -276,156 +284,192 @@ export default function AddLiquidity() {
     document.body.style.overflowY = "hidden";
   };
   return (
-    <div className="grid grid-cols-2 py-8 px-secondary gap-7">
+    <div className="px-4 py-8 lg:px-secondary md:px-14">
       <Head>
         <title>Add Liquidity | DeMask</title>
       </Head>
-      <div className="">
-        <div className="flex items-center mb-6">
-          <Link href="/liquidity">
-            <BackIcon width={24} height={24} />
-          </Link>
-          <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
-        </div>
-        <div>
-          <p className={styles.title}>
-            <span className="">Choose NFT</span>
-            <span className="text-red">*</span>
-          </p>
-          <div className={styles.inputItem} onClick={handleSearchNFT}>
-            <div className="flex justify-between cursor-pointer text-dark3">
-              <div className="flex gap-x-2">
-                <NFTIcon width={24} height={24} />
-                {nameNFT}
-              </div>
-              <DownIcon width={24} height={24} />
-            </div>
-          </div>
-        </div>
-        <div>
-          <p className={styles.title}>
-            <span className="">Choose Token</span>
-            <span className="text-red">*</span>
-          </p>
-          <div className={styles.inputItem} onClick={handleSearchToken}>
-            <div className="flex justify-between cursor-pointer text-dark3">
-              <div className="flex gap-x-2">
-                <TokenIcon width={24} height={24} />
-                {symbolToken}
-              </div>
-              <DownIcon width={24} height={24} />
-            </div>
-          </div>
-        </div>
-        <div>
-          <p className={styles.title}>Fee</p>
-          <Button className="p-2 mb-4 text-white bg-secondary5">0.5%</Button>
-        </div>
-        <div>
-          <p className={styles.title}>
-            <span className="">Deposit</span>
-            <span className="text-red">*</span>
-          </p>
+      <div className="flex items-center mb-6">
+        <Link href="/liquidity">
+          <BackIcon width={24} height={24} />
+        </Link>
+        <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
+        <div className="order-2">
           <div>
-            <div className="flex justify-between mb-4 text-dark1">
-              <p>NFT</p>
-              <p>Balance: {balanceNFT}</p>
+            <p className={styles.title}>
+              <span className="">Choose NFT</span>
+              <span className="text-red">*</span>
+            </p>
+            <div className='w-full p-2 mb-4 border rounded-lg border-secondary5' onClick={handleSearchNFT}>
+              <div className="flex justify-between cursor-pointer text-dark3">
+                <div className="flex gap-x-2 text-secondary5">
+                  <NFTIcon width={24} height={24} className="fill-secondary5" />
+                  {nameNFT}
+                </div>
+                <DownIcon width={24} height={24} />
+              </div>
             </div>
-            <input
-              className={styles.inputItem}
-              type="number"
-              placeholder="Input amount NFT"
-              value={inputNFT}
-              onChange={handleGetNFT}
-            />
-            {isSufficientNFT && (
-              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-                Insufficient NFT balance
-              </p>
-            )}
-            {isInputNFT && (
-              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
-                Required
-              </p>
-            )}
           </div>
           <div>
-            <div className="flex justify-between mb-4 text-dark1">
-              <p>Token</p>
-              <p>Balance: {balanceToken}</p>
+            <p className={styles.title}>
+              <span className="">Choose Token</span>
+              <span className="text-red">*</span>
+            </p>
+            <div className='w-full p-2 mb-4 border rounded-lg border-secondary5' onClick={handleSearchToken}>
+              <div className="flex justify-between cursor-pointer text-dark3">
+                <div className="flex gap-x-2 text-secondary5">
+                  {tokenSymbolIcon ? (
+                    <div>
+                      <tokenSymbolIcon.logo width={24} height={24} className="fill-secondary5"/>
+                    </div>
+                  ) : (
+                    <div>
+                      <TokenIconNotDefine width={24} height={24} className="fill-secondary5"/>
+                    </div>
+                  )}
+                  {symbolToken}
+                </div>
+                <DownIcon width={24} height={24} />
+              </div>
             </div>
-            {(tokenAddress === "MATIC" ||
-              dmlToken === "0x0000000000000000000000000000000000000000") ? (
+          </div>
+          <div>
+            <p className={styles.title}>Fee</p>
+            <Button className="p-2 mb-4 text-white bg-secondary5">0.5%</Button>
+          </div>
+          <div>
+            <p className={styles.title}>
+              <span className="">Deposit</span>
+              <span className="text-red">*</span>
+            </p>
+            <div>
+              <div className="flex justify-between mb-4 text-dark1">
+                <p>NFT</p>
+                <p>Balance: {balanceNFT}</p>
+              </div>
               <input
                 className={styles.inputItem}
                 type="number"
-                placeholder="Input amount Token"
-                value={inputToken}
-                onChange={handleGetToken}
+                placeholder="Input amount NFT"
+                value={inputNFT}
+                onChange={handleGetNFT}
               />
-            ) : (
-              <div>
-                {reserves[0] && reserves[1] ? (
-                  <div className={styles.inputItem}>
-                    {amountErcDesiredToDec}
-                  </div>
-                ) : (
-                  <div className={styles.inputItem}>
-                    <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
-                  </div>
-                )}
+              {isSufficientNFT && (
+                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+                  Insufficient NFT balance
+                </p>
+              )}
+              {isInputNFT && (
+                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                  Required
+                </p>
+              )}
+            </div>
+            <div>
+              <div className="flex justify-between mb-4 text-dark1">
+                <p>Token</p>
+                <p>Balance: {balanceToken}</p>
               </div>
-            )}
-            {isSufficientToken && (
-              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
-                Insufficient Token balance
-              </p>
-            )}
+              {(tokenAddress === "MATIC" ||
+                dmlToken === "0x0000000000000000000000000000000000000000") ? (
+                <input
+                  className={styles.inputItem}
+                  type="number"
+                  placeholder="Input amount Token"
+                  value={inputToken}
+                  onChange={handleGetToken}
+                />
+              ) : (
+                <div>
+                  {reserves[0] && reserves[1] ? (
+                    <div className={styles.inputItem}>
+                      {amountErcDesiredToDec}
+                    </div>
+                  ) : (
+                    <div className={styles.inputItem}>
+                      <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                    </div>
+                  )}
+                </div>
+              )}
+              {isSufficientToken && (
+                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                  Insufficient Token balance
+                </p>
+              )}
+            </div>
+          </div>
+          {!isApprovedNFT && (
+            <Button className="w-[126px] py-2" primary onClick={handleApproveNFT}>
+              APPROVE NFT
+            </Button>
+          )}
+          {isApprovedNFT && !isApprovedToken && (
+            <Button
+              className="w-[126px] py-2"
+              primary
+              onClick={handleApproveToken}
+            >
+              APPROVE TOKEN
+            </Button>
+          )}
+          {isApprovedNFT && isApprovedToken && (
+            <Button className="w-[126px] py-2" primary onClick={addLiquidity}>
+              ADD LIQUIDITY
+            </Button>
+          )}
+        </div>
+        <div className="order-1 w-full lg:order-2">
+          <div className="flex flex-col items-center w-full h-full ">
+            <div className="flex flex-col items-center justify-center w-full h-full text-center ">
+              {imageNFT && (
+                <Image
+                  src={imageNFT}
+                  width={504}
+                  height={100}
+                  alt="pictureLiquidity"
+                  style={{
+                    objectFit: "contain",
+                  }}
+                  className="w-full h-fit rounded-2xl"
+                  unoptimized
+                />
+              )}
+              {!imageNFT && animationUrl && (
+                <video
+                  src={animationUrl}
+                  autoPlay
+                  loop
+                  muted
+                  controls
+                  className="w-full h-full rounded-2xl"
+                />
+              )}
+              {imageNFT && animationUrl && (
+                <audio
+                  autoPlay
+                  loop
+                  muted
+                  controls
+                  src={animationUrl}
+                  className="mt-4 mb-2"
+                >
+                  Your browser does not support the
+                  <code>audio</code> element.
+                </audio>
+              )}
+            </div>
+            <p
+              className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
+              onClick={handleShowDetail}
+            >
+              Show detail
+            </p>
           </div>
         </div>
-        {!isApprovedNFT && (
-          <Button className="w-[126px] py-2" primary onClick={handleApproveNFT}>
-            APPROVE NFT
-          </Button>
-        )}
-        {isApprovedNFT && !isApprovedToken && (
-          <Button
-            className="w-[126px] py-2"
-            primary
-            onClick={handleApproveToken}
-          >
-            APPROVE TOKEN
-          </Button>
-        )}
-        {isApprovedNFT && isApprovedToken && (
-          <Button className="w-[126px] py-2" primary onClick={addLiquidity}>
-            ADD LIQUIDITY
-          </Button>
-        )}
       </div>
-      <div>
-        <div className="flex flex-col items-center w-[504px] h-full ">
-          <div className="flex flex-col items-center justify-center w-full h-full text-center ">
-            <Image
-              src={imageNFT}
-              width={504}
-              height={100}
-              alt="pictureLiquidity"
-              style={{
-                objectFit: "contain",
-              }}
-              className="w-[504px] h-full rounded-2xl"
-              unoptimized
-            />
-          </div>
-          <p
-            className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
-            onClick={handleShowDetail}
-          >
-            Show detail
-          </p>
-        </div>
-      </div>
+
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}

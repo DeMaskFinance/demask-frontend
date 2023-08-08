@@ -28,6 +28,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     };
     fetchDataReward();
   }, []);
+  console.log(reward);
+  
   useEffect(() => {
     if (account) {
       if (liquidity.erc === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
