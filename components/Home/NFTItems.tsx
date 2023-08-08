@@ -16,6 +16,7 @@ import { AvatarUser } from "../Avatars";
 import { Picture } from "../Picture";
 import useSvgComponents from "../Picture/Picture";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useInView } from "react-intersection-observer";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -26,6 +27,37 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   const [isMore, setIsMore] = useState<boolean>(false);
   const [symbolToken, setSymbolToken] = useState<string>("");
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
+  const { ref, inView } = useInView();
+  const handleInViewChange = (isVisible:boolean) => {
+    const video:any = videoRef.current;
+    const audio:any = audioRef.current;
+    if (video) {
+      if (isVisible) {
+        video.play();
+        video.muted = false;
+      } else {
+        video.pause();
+        video.muted = true;
+      }
+    }else if(audio){
+      if (isVisible) {
+        audio.play();
+        audio.muted = false;
+      } else {
+        audio.pause();
+        audio.muted = true;
+      }
+    }
+  };
+  useEffect(() => {
+    if (inView) {
+      handleInViewChange(true);
+    }else{
+      handleInViewChange(false);
+    }
+  }, [inView]);
   useEffect(() => {
     if (descriptionRef.current) {
       setHeightDescription(descriptionRef.current.clientHeight);
@@ -50,7 +82,8 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     reserveToken,
     tokenAddress,
   } = useInformationDML(nftItem.dmlAddress);
-
+  console.log(inView);
+  
   const { amountTokenBuy } = useAmountInMax(
     "1",
     nftItem.dmlAddress,
@@ -100,9 +133,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         <div className="flex items-center gap-x-2 ">
           <div className="bg-secondary2 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
             {reserveToken.toString() === "0" ||
-            reserveNFT.toString() === "0" ||
-            reserveNFT.toString() === "1" ? (
-              <div className="text-red">Unable to buy</div>
+              reserveNFT.toString() === "0" ||
+              reserveNFT.toString() === "1" ? (
+              <div className="font-semibold text-white">Unable to buy</div>
             ) : (
               <Link
                 href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}`}
@@ -187,7 +220,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           </Swiper>
         </div>
       )}
-      <div className="relative mx-auto mt-6">
+      <div className="relative mx-auto mt-6" ref={ref}>
         {nftItem.metadata.image && (
           <div className="h-full overflow-hidden rounded-2xl">
             <div
@@ -213,6 +246,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           <video
             src={nftItem.metadata.animation_url}
             autoPlay
+            ref={videoRef}
             loop
             muted
             controls
@@ -223,6 +257,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           <audio
             autoPlay
             loop
+            ref={audioRef}
             muted
             controls
             src={nftItem.metadata.animation_url}
