@@ -160,7 +160,6 @@ const Swap: React.FC = () => {
     };
     fetchDataChart();
   }, [dmlToken]);
-  console.log(dataChart);
 
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
@@ -412,10 +411,6 @@ const Swap: React.FC = () => {
       <Head>
         <title>Swap | DeMask</title>
       </Head>
-      {/* <div className="mb-6">
-        <h3 className="mb-2 text-xl font-medium text-dark0">{nameNFT}</h3>
-        <p className="text-sm font-medium text-dark1">{symbolNFT}</p>
-      </div> */}
       <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
         <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
           <div className="">
@@ -426,7 +421,7 @@ const Swap: React.FC = () => {
                 width={680}
                 height={576}
                 sizes="(max-width: 770px) 100vw"
-                className="w-full rounded-lg lg:max-h-[calc(100vh-130px)]"
+                className="w-full rounded-lg lg:max-h-[80vh]"
                 style={{
                   objectFit: "contain",
                 }}
@@ -603,7 +598,7 @@ const Swap: React.FC = () => {
                   balanceNFT &&
                   account && (
                     <p
-                      className="mb-2 ml-3 -mt-3 text-xs text-red"
+                      className="mt-0 mb-2 ml-3 text-xs text-red"
                       key="NFTbalance"
                     >
                       Insufficient NFT balance
@@ -617,20 +612,20 @@ const Swap: React.FC = () => {
                       activeChoice === "SELL" &&
                       account)) && (
                     <p
-                      className="mb-2 ml-3 -mt-3 text-xs text-red"
+                      className="mt-0 mb-2 ml-3 text-xs text-red"
                       key="Tokenbalance"
                     >
                       Insufficient Token balance
                     </p>
                   )}
                 {dmlToken === "0x0000000000000000000000000000000000000000" && (
-                  <p className="mb-2 ml-3 -mt-3 text-xs text-red">
+                  <p className="mt-0 mb-2 ml-3 text-xs text-red">
                     DML Token doesn't exist yet
                   </p>
                 )}
                 {showRequiredMessage && (
                   <p
-                    className="mb-2 ml-3 -mt-3 text-xs text-red"
+                    className="mt-0 mb-2 ml-3 text-xs text-red"
                     key="emptyNFT"
                   >
                     Required

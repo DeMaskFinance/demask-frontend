@@ -46,7 +46,7 @@ export default function Liquidity() {
   );
   console.log(data?.pages[0]);
   console.log(hasNextPage);
-  
+
   return (
     <div className="py-8 max-w-4xl mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
       <Head>
@@ -78,16 +78,17 @@ export default function Liquidity() {
                         </div>
                       )
                     )}
-                    {hasNextPage && (
-                      <p
-                        onClick={() => fetchNextPage()}
-                        className="mb-6 -mt-4 text-sm cursor-pointer text-secondary4"
-                      >
-                        See more
-                      </p>
-                    )}
+
                   </div>
                 ))}
+              {hasNextPage && (
+                <p
+                  onClick={() => fetchNextPage()}
+                  className="mb-6 -mt-4 text-sm cursor-pointer text-secondary4"
+                >
+                  See more
+                </p>
+              )}
             </div>
             {(isFetchingNextPage) && (
               <div>
