@@ -58,6 +58,10 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           infuraId: "9bab56a381cb440eb809f56e01c59de5",
         });
         await walletConnectProvider.enable();
+        const accounts = await walletConnectProvider.send("eth_accounts");
+        const firstAccount = accounts[0];
+        console.log("Danh sách tài khoản:", accounts);
+        console.log("Tài khoản đầu tiên:", firstAccount);
         break;
       default:
         const provider = getProvider(walletName);
@@ -89,18 +93,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         }
     }
   };
-  // useEffect(() => {
-  //   if (window.ethereum) {
-  //     window.ethereum.on("accountsChanged", (accounts: string) => {
-  //       if (accounts.length > 0) {
-  //         updateAccount(accounts[0]);
-  //       } else {
-  //         // setWallet("");
-  //         // setStatus("🦊 Connect to Metamask using the top right button.");
-  //       }
-  //     });
-  //   }
-  // }, []);
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center mt-[100px] rounded-lg relative pb-4">

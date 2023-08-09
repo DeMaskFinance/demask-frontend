@@ -249,7 +249,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     return (
       <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
         <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
-          <div className="bg-white h-fit w-[432px] rounded-lg p-4 relative">
+          <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
             <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
               Remove
               {data && (

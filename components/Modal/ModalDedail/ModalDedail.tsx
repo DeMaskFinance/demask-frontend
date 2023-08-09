@@ -41,7 +41,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
         <div className="z-50 flex flex-col justify-center max-h-[80vh] ">
-          <div className="bg-white h-fit w-[432px] rounded-lg px-4 pb-4 relative overflow-y-scroll">
+          <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative overflow-y-scroll">
             <p className="py-2 text-xl font-medium">Show Details</p>
             <ul>
               {nameNFT && (

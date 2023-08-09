@@ -8,6 +8,7 @@ import { MdLogout } from "react-icons/md";
 import Icons from "@/public/icons/icon";
 import { AiOutlineClose } from "react-icons/ai";
 import { useRouter } from "next/router";
+import { LogoDeMask } from "../Logo/Logo";
 interface MenuMobileProps {
   account: string;
   handleOpen: any;
@@ -84,6 +85,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
   );
 
   const router = useRouter();
+
   useEffect(() => {
     const handleRouteChange = () => {
       setOpenMenu(false);
@@ -99,6 +101,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
       }
     };
   }, [router, setOpenMenu]);
+  
   return (
     <div
       className={`${
@@ -121,13 +124,13 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
           <div className="flex items-center justify-between w-full text-center">
             <div className="gap-2">
               <Link href="/">
-                {/* <LogoDemask width={94} height={24} /> */}
-                <Image
+                <LogoDeMask width={94} height={24} />
+                {/* <Image
                   src={"/logoHeader.svg"}
                   alt=""
                   width={94}
                   height={24}
-                ></Image>
+                ></Image> */}
               </Link>
             </div>
             <div className="flex gap-2">

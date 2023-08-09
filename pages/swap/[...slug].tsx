@@ -435,7 +435,7 @@ const Swap: React.FC = () => {
                 loop
                 muted
                 controls
-                className="max-h-[772px] max-w-[772px] rounded-2xl"
+                className="w-full rounded-lg"
               />
             )}
             {imageNFT && animationUrl && (
