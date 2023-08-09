@@ -42,7 +42,7 @@ export default function Art() {
               <>
                 <li
                   title={item.metadata.name}
-                  className="items-center p-3 overflow-hidden transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
+                  className="items-center p-3 overflow-hidden text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
                 >
                   <NFTCategory item={item}/>
                 </li>

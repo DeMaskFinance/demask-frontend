@@ -61,15 +61,15 @@ const Category = ({ label }: { label: string }) => {
             ref={swiperRef}
             breakpoints={{
               0: {
-                slidesPerView: 1,
+                slidesPerView: 1.3,
                 spaceBetween: 30,
               },
               480: {
-                slidesPerView: 1,
+                slidesPerView: 1.3,
                 spaceBetween: 30,
               },
               768: {
-                slidesPerView: 2,
+                slidesPerView: 2.5,
                 spaceBetween: 30,
               },
               1024: {
@@ -82,7 +82,7 @@ const Category = ({ label }: { label: string }) => {
               {data &&
                 data?.items?.map((item: any, idx: number) => (
                   <>
-                    <SwiperSlide className="text-dark2">
+                    <SwiperSlide className="text-sm lg:text-base text-dark2">
                       <li
                         title={item.metadata.name}
                         key={idx}
@@ -104,7 +104,7 @@ const Category = ({ label }: { label: string }) => {
           </button>
         </div>
         {data && (
-          <button className="mt-[28px] self-end text-secondary2 text-sm font-semibold border  hover:border-secondary2 border-white rounded-lg px-4 py-2 transition-all ease-in duration-150">
+          <button className="lg:mt-[28px] self-end text-secondary2 text-sm font-semibold border  hover:border-secondary2 border-white rounded-lg px-4 py-2 transition-all ease-in duration-150">
             <Link href={`category/${label}`}>See more</Link>
           </button>
         )}

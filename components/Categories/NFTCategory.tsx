@@ -110,7 +110,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                                 muted
                                 controls
                                 src={item.metadata.animation_url}
-                                className="absolute top-32 h-10 translate-x-1/2 right-2/4 w-[80%] py-1 rounded-lg  object-cover"
+                                className="absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[80%] py-1 rounded-lg  object-cover"
                             >
                                 Your browser does not support the
                                 <code>audio</code> element.
