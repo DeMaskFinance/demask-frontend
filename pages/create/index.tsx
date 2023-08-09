@@ -209,7 +209,7 @@ export default function Creator() {
   return (
     <div className="flex flex-col gap-6 py-8 mx-auto lg:flex-row md:flex-row container-main">
       <Head>
-        <title>Creator | DeMask</title>
+        <title>Create | DeMask</title>
       </Head>
       {/* UpLoad File */}
       <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">

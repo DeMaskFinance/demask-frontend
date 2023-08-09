@@ -172,7 +172,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                           onClick={() => handleResultItemClick(item)}
                           className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white"
                         >
-                          <h2 className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
                             <div className="w-[32px] mr-2 flex-shrink-0 h-[32px] overflow-hidden rounded-lg">
                               <AvatarUser width={32} height={32} />
                             </div>
@@ -189,7 +189,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                                 </span>
                               </span>
                             </div>
-                          </h2>
+                          </div>
                         </div>
                         <button
                           onClick={(e) => {
@@ -221,14 +221,14 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                       {searchData.map((item: any, index: number) => (
                         <>
                           <Link
-                            key={item?.metadata?.name}
+                            key={index}
                             onClick={() => handleResultItemClick(item)}
                             href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}`}
                             className="flex-1"
                           //
                           >
                             <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                              <h2 className="flex items-center gap-2">
+                              <div className="flex items-center gap-2">
                                 <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
                                 {item.metadata?.image && (
                                     <Image
@@ -279,7 +279,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                                     </span>
                                   </span>
                                 </div>
-                              </h2>
+                              </div>
                             </div>
                           </Link>
                         </>
@@ -300,19 +300,19 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
               <div>
                 {topNftData && topNftData.nftDataList.length > 0 ? (
                   <div>
-                    <p className="block mb-2">
+                    <div className="block mb-2">
                       <span className="text-base">NFTs Top</span>
                       {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
                         <>
                           <Link
-                            key={item?.metadata?.name}
+                            key={index}
                             onClick={() => handleResultItemClick(item)}
                             href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
                             className="flex-1"
                           //
                           >
                             <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                              <h2 className="flex items-center gap-2">
+                              <div className="flex items-center gap-2">
                                 <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
                                   {item.metadata?.image && (
                                     <Image
@@ -363,11 +363,11 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                                     </span>
                                   </span>
                                 </div>
-                              </h2>
+                              </div>
                             </div>
                           </Link></>
                       ))}
-                    </p>
+                    </div>
                   </div>
                 ) : (
                   <>
