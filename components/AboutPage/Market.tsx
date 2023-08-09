@@ -3,25 +3,24 @@ import React from "react";
 
 function Market() {
   return (
-    <div className="py-6 border-b-2 flex items-center gap-8">
-      <div className="w-2/4 flex gap-4 justify-between">
+    <div className="items-center gap-8 py-6 border-b-2 lg:flex border-dark3">
+      <div className="flex flex-col items-center justify-between w-full gap-4 mb-4 lg:mb-0 lg:items-start lg:w-2/4 lg:flex-row hover:text-secondary3">
         <div>
-          <h4 className="font-semibold text-2xl">Old market</h4>
-          <p className="py-4 text-dark2">Comming soon</p>
+          <h4 className="text-2xl font-semibold">Old market</h4>
         </div>
         <Image
           src="/images/about/features.svg"
           width={228}
           height={228}
-          className=""
+          className="w-full h-full lg:w-[370px] lg:h-[370px]"
           alt="features.svg"
         />
       </div>
 
-      <div className="w-2/4 flex gap-4">
-        <div>
-          <h4 className="text-secondary3 font-semibold text-2xl">DEMASK</h4>
-          <p className="py-4 text-secondary3 text-base">
+      <div className="flex flex-col items-center justify-between w-full gap-4 lg:w-2/4 lg:flex-row hover:text-secondary3">
+        <div className="flex flex-col items-center justify-between lg:items-start ">
+          <h4 className="text-2xl font-semibold ">DEMASK</h4>
+          <p className="py-4 text-base ">
             DeMask creates a flexible and highly liquid trading environment,
             where assets can be easily bought or sold at prices close to the
             market value with quick execution time, eliminating the need for
@@ -32,7 +31,7 @@ function Market() {
           src="/images/about/features.svg"
           width={228}
           height={228}
-          className=""
+          className="w-full h-full lg:w-[370px] lg:h-[370px]"
           alt="features.svg"
         />
         {/* <Image

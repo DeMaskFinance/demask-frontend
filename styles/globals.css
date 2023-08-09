@@ -5,10 +5,9 @@
 body {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
-  
 }
-html{
-  font-family: 'Poppins', sans-serif;
+html {
+  font-family: "Poppins", sans-serif;
 }
 .active {
   color: black;
@@ -24,11 +23,11 @@ html{
 .swiper-button-prev {
   display: none;
 }
-.slide-nft-item{
-  width:fit-content !important;
+.slide-nft-item {
+  width: fit-content !important;
 }
-.swipper-swap{
-  padding:0 164px !important;
+.swipper-swap {
+  padding: 0 164px !important;
 }
 .swiper-button-next::after,
 .swiper-button-prev::after {
@@ -46,7 +45,6 @@ html{
   width: 48px;
   height: 48px;
   background-color: white;
-  border-radius: 5%;
   background-position: center;
   background-size: 14px;
   background-repeat: no-repeat;
@@ -60,11 +58,18 @@ html{
 .swiper-button-next-custom {
   right: -23px;
 }
-.highcharts-navigator-mask-inside{
-  rx:10
+.swiper-about {
+  padding-bottom: 32px !important;
 }
 
-.container-main{
+.swiper-pagination-bullet-active{
+  background-color:#9075FE !important;
+  }
+.highcharts-navigator-mask-inside {
+  rx: 10;
+}
+
+.container-main {
   max-width: 1048px;
 }
 /* Chrome, Safari, Edge, Opera */
@@ -91,15 +96,13 @@ html *::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0);
 }
 
-
 .submenu {
   overflow: hidden;
-  transition: all .2s linear;
+  transition: all 0.2s linear;
 }
 
 .submenu.visible {
   max-height: 500px;
-   
 }
 
 /* input.hide-clear[type="search"]::-webkit-search-decoration,
@@ -127,7 +130,7 @@ input.hide-clear[type="search"]::-webkit-search-results-decoration {
 }
 
 @-moz-keyframes headerNotifyGrowth {
- from {
+  from {
     opacity: 0;
     transform: translateX(-5%);
   }
@@ -138,7 +141,7 @@ input.hide-clear[type="search"]::-webkit-search-results-decoration {
 }
 
 @-ms-keyframes headerNotifyGrowth {
- from {
+  from {
     opacity: 0;
     transform: translateX(-5%);
   }
@@ -149,7 +152,7 @@ input.hide-clear[type="search"]::-webkit-search-results-decoration {
 }
 
 @-o-keyframes headerNotifyGrowth {
- from {
+  from {
     opacity: 0;
     transform: translateX(-5%);
   }
@@ -160,7 +163,7 @@ input.hide-clear[type="search"]::-webkit-search-results-decoration {
 }
 
 @keyframes headerNotifyGrowth {
- from {
+  from {
     opacity: 0;
     transform: translateX(-5%);
   }
