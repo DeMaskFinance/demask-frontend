@@ -28,8 +28,9 @@ function InterestItem() {
         </>
       ) : (
         <>
-          {data?.nftDataList?.map((item: any) => (
+          {data?.nftDataList?.map((item: any, index: number) => (
             <Link
+              key={index}
               href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}?dmlAddress=${item.dml}`}
             >
               <div className="flex items-start gap-4 max-h-[105px] p-2 mt-4 overflow-hidden transition-all border rounded-lg cursor-pointer group hover:text-secondary3 hover:border-secondary3">

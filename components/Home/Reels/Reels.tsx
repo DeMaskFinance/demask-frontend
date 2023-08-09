@@ -93,8 +93,6 @@ const Reels: React.FC<ReelsProps> = ({
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  const videoRef = useRef(null);
-  const audioRef = useRef(null);
   const { ref, inView } = useInView();
   
   useEffect(() => {

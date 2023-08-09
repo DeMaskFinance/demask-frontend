@@ -87,7 +87,7 @@ const Home = () => {
           )}
         </>
       ) : (
-        <div className="py-4 mx-auto container-main leading-7">
+        <div className="py-4 mx-auto leading-7 container-main">
           {/* <NFTTop /> */}
           <div className="flex flex-col items-center lg:mt-8">
             {data?.pages[0] ? (
@@ -119,19 +119,6 @@ const Home = () => {
               </div>
             )}
             <div className="my-6 lg:my-8">
-              {/* {Category.map((item, index) => (
-                <Button
-                  key={index}
-                  className="p-2 ml-6 text-sm font-medium leading-normal text-dark3"
-                  type="button"
-                  outline
-                  active={selectedCategory.includes(item.value)}
-                  onClick={() => setSelectedCategory(item.value)}
-                >
-                  {item.value}
-                </Button>
-              ))} */}
-
               <TabGroups
                 choices={["All", "Category", "Lastest"]}
                 activeChoice={activeChoice}

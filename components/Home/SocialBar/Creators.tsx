@@ -31,8 +31,8 @@ function Creators() {
           </>
         ) : (
           <>
-            {data?.creatorDataList.map((item: any) => (
-              <div className="w-full p-2 mt-2 border rounded-lg cursor-pointer hover:border-secondary4 hover:text-secondary4">
+            {data?.creatorDataList.map((item: any,index:number) => (
+              <div key={index} className="w-full p-2 mt-2 border rounded-lg cursor-pointer hover:border-secondary4 hover:text-secondary4">
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between w-full gap-2">
                     <h2 className="flex items-center">
