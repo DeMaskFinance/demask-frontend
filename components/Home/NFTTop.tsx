@@ -5,14 +5,14 @@ import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect,Fragment } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { SkeletonNFTTop } from "../Skeleton";
 import { NFTTopService } from "@/libs/service";
 import Link from "next/link";
 import { AvatarUser } from "../Avatars";
-interface NFTTopProps {}
+interface NFTTopProps { }
 
 const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
   const swiperRef = useRef<any>(null);
@@ -71,33 +71,31 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
               navigation={true}
               modules={[Navigation]}
               className="hidden mySwiper lg:block md:block"
-              slidesPerView={6}
               ref={swiperRef}
               breakpoints={{
                 0: {
-                  slidesPerView: 2,
+                  slidesPerView: 1.5,
                   spaceBetween: 30,
                 },
                 480: {
-                  slidesPerView: 2,
-                  spaceBetween: 30,
+                  slidesPerView: 1.5,
+                  spaceBetween: 10,
                 },
                 768: {
                   slidesPerView: 3,
-                  spaceBetween: 30,
+                  spaceBetween: 10,
                 },
                 1024: {
-                  slidesPerView: 6,
+                  slidesPerView: 5,
                   spaceBetween: 30,
                 },
               }}
             >
               {isSuccess &&
                 data?.pages.map((page, index) => (
-                  <div key={index}>
+                  <Fragment key={index}>
                     {page.nftDataList.map((nftItem: any, index: number) => (
-                      <>
-                        <SwiperSlide key={index}>
+                        <SwiperSlide key={nftItem._id}>
                           <Link
                             href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}`}
                           >
@@ -128,7 +126,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                               <div className="absolute bg-[rgba(0,0,0,0.2)] w-full rounded-lg h-full  opacity-0 group-hover:opacity-100 top-0 transition-all duration-300 ease-linear"></div>
                               <div className="absolute top-0 z-10 flex flex-col items-center justify-end w-full h-full p-1 duration-300 ease-linear translate-y-full rounded-lg group-hover:translate-y-0">
                                 <p className="text-3xl text-white">
-                                  {nftItem.price.toFixed(3)} USD
+                                  {nftItem.lastPrice.toFixed(3)} USD
                                 </p>
                                 <div className="flex mt-4 mb-1 text-xl text-dark4">
                                   <p>{nftItem.metadata.name}</p>
@@ -153,14 +151,14 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                           </Link>
                           <div ref={ref} style={{ height: "1px" }} />
                         </SwiperSlide>
-                      </>
                     ))}
-                  </div>
+                  </Fragment>
                 ))}
             </Swiper>
           ) : (
             <SkeletonNFTTop />
           )}
+
           <button
             type="button"
             className="flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom"

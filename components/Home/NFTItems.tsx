@@ -13,7 +13,6 @@ import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { AvatarUser } from "../Avatars";
-import { Picture } from "../Picture";
 import useSvgComponents from "../Picture/Picture";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInView } from "react-intersection-observer";
@@ -122,7 +121,8 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       <div className="flex flex-wrap items-center justify-between">
         <div className="flex items-center justify-between mb-2">
           <h2 className="flex gap-1 mr-4 text-2xl font-medium line-clamp-1 text-dark1">
-            {nftItem.metadata.name} <svgComponents.buttonFlag />
+            {nftItem.metadata.name} 
+            {/* <svgComponents.buttonFlag /> */}
           </h2>
           {reserveToken.toString() === "0" ||
             reserveNFT.toString() === "0" ||
@@ -181,6 +181,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           ))}
         </div>
       </div>
+      <div className="mb-4">
       <p
         className={`text-dark2 ${isMore ? "line-clamp-0" : "line-clamp-3"}`}
         ref={descriptionRef}
@@ -195,15 +196,33 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           Read more
         </p>
       )}
-      {nftItem.metadata.attributes && (
-        <div className="mt-4">
+      </div>
+      {nftItem.metadata.attributes && nftItem.metadata.attributes.length > 0 && (
+        <div className="mb-4">
           <Swiper
             pagination={{
               dynamicBullets: true,
             }}
             modules={[Pagination]}
-            slidesPerView={5}
-            className="flex mySwiper "
+            breakpoints={{
+              0: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              480: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+              },
+              1024: {
+                slidesPerView: 5,
+                spaceBetween: 10,
+              },
+            }}
+            className="flex mySwiper swiper-newsfeed"
           >
             {nftItem.metadata.attributes.map((item: any, index: number) => (
               <SwiperSlide key={index} className="slide-nft-item">
@@ -220,12 +239,12 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           </Swiper>
         </div>
       )}
-      <div className="relative mx-auto mt-6" ref={ref}>
+      <div className="relative mx-auto" ref={ref}>
         {nftItem.metadata.image && (
           <div className="h-full overflow-hidden rounded-2xl">
             <div
               style={{ backgroundImage: `url(${nftItem.metadata.image})` }}
-              className="w-full max-h-[650px] bg-center bg-cover rounded-2xl blur-3xl z-0 h-[639px] absolute]"
+              className="w-full max-h-[420px] lg:max-h-[650px] bg-center bg-cover rounded-2xl blur-3xl z-0 h-[639px] absolute]"
             ></div>
             <div className="absolute top-0 flex items-center justify-center w-full h-full p-4 overflow-hidden">
               <Image
@@ -234,7 +253,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                 src={nftItem.metadata.image}
                 alt="NFT Image"
                 unoptimized
-                className="min-w-[500px] relative imageNFT w-auto max-h-[650px] z-100 rounded-xl"
+                className="lg:min-w-[500px] relative imageNFT w-auto max-h-[650px] z-100 rounded-xl"
                 style={{
                   objectFit: "contain",
                 }}
