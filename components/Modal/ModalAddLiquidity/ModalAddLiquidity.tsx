@@ -57,21 +57,21 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   useEffect(() => {
     if (account && data) {
       if (
-        data.fullInfoMetadata.tokenAddress ===
+        data.tokenAddress ===
         "0x734aef51d427b2f745210ec4bf1062abd48eceb6"
       ) {
         setTokenSymbol("MATIC");
         setTokenAddress("MATIC");
       } else {
         setTokenSymbol(data.tokenSymbol);
-        setTokenAddress(data.fullInfoMetadata.tokenAddress);
+        setTokenAddress(data.tokenAddress);
       }
     }
   }, [data, account]);
   const balanceNFT = useNFTBalance(
     account,
-    data.fullInfoMetadata.nft,
-    data.fullInfoMetadata.tokenId,
+    data.nftAddress,
+    data.tokenId,
     wallet
   );
 
@@ -79,7 +79,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     useBalanceToken(account, tokenAddress, wallet);
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
-    data.fullInfoMetadata.dmlAddress,
+    data.dmlAddress,
     wallet
   );
 
@@ -106,7 +106,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     if (tokenAddress !== "MATIC") {
       let amountErcDesired;
       if (
-        data.fullInfoMetadata.dmlAddress !==
+        data.dmlAddress !==
         "0x0000000000000000000000000000000000000000" &&
         reserves &&
         inputNFT
@@ -158,12 +158,12 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       const result = await approveNFT(
         account,
         wallet,
-        data.fullInfoMetadata.nft
+        data.nftAddress
       );
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, data.fullInfoMetadata.nft, wallet]);
+  }, [account, data.nftAddress, wallet]);
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -184,8 +184,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
 
         if (tokenAddress === "MATIC") {
           result = await contract.addLiquidityETH(
-            data.fullInfoMetadata.nft,
-            data.fullInfoMetadata.tokenId,
+            data.nftAddress,
+            data.tokenId,
             inputNFT,
             0,
             account,
@@ -196,8 +196,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         } else {
           result = await contract.addLiquidity(
             tokenAddress,
-            data.fullInfoMetadata.nft,
-            data.fullInfoMetadata.tokenId,
+            data.nftAddress,
+            data.tokenId,
             amountErcDesired,
             inputNFT,
             0,
@@ -238,7 +238,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
             Add
             {data && (
               <div className="flex items-center leading-[16px] ml-1">
-                <span> {data.fullInfoMetadata.metadata.symbol}</span>
+                <span> {data.metadata.symbol}</span>
                 <span className="overflow-hidden">/</span>
                 <span>{tokenSymbol}</span>
               </div>
@@ -282,7 +282,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
                   {tokenAddress === "MATIC" ||
-                    data.fullInfoMetadata.dmlAddress ===
+                    data.dmlAddress ===
                     "0x0000000000000000000000000000000000000000" ? (
                     <input
                       className={styles.inputItem}
@@ -324,7 +324,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     handleApproveNFT(
                       account,
                       wallet,
-                      data.fullInfoMetadata.nft,
+                      data.nftAddress,
                       setIsOpen
                     )
                   }

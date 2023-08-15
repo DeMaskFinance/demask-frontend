@@ -16,12 +16,12 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
 }) => {
   const { account, wallet } = useContext(AccountContext);
   const [reward, setReward] = useState("");
-  const { decimals } = useInformationDML(liquidity.dmlToken);
+  const { decimals } = useInformationDML(liquidity.dmlAddress);
   const [tokenSymbol, setTokenSymbol] = useState("");
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account) {
-        const result = await viewReward(liquidity.dmlToken, account);
+        const result = await viewReward(liquidity.dmlAddress, account);
         const rewardDec = divideByDecimal(result.toString(), decimals);
         setReward(rewardDec);
       }
@@ -29,10 +29,11 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     fetchDataReward();
   }, []);
   console.log(reward);
+  console.log(liquidity);
   
   useEffect(() => {
     if (account) {
-      if (liquidity.erc === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
+      if (liquidity.tokenSymbol === "WETH") {
         setTokenSymbol("MATIC");
       } else {
         setTokenSymbol(liquidity.tokenSymbol);
@@ -40,10 +41,10 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     }
   }, []);
   return (
-    <Link href={`/details/${liquidity.dmlToken}`}>
+    <Link href={`/details/${liquidity.dmlAddress}`}>
       <div className="box-border flex justify-between p-2 mb-3 rounded cursor-pointer lg:mb-6 text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
         <p className="flex items-center leading-[13px]">
-          <span>{liquidity.metadata.symbol}</span>
+          <span>{liquidity.nftSymbol}</span>
           <span className="overflow-hidden">/</span>
           <span>{tokenSymbol}</span>
         </p>

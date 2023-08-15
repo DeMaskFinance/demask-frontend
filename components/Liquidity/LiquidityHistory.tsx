@@ -12,8 +12,6 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
   isFetching,
   isLoading,
 }) => {
-  console.log(data);
-
   return (
     <>
       {isLoading || isFetching ? (
@@ -37,7 +35,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
               key={index}
             >
               <p>{item.action}</p>
-              <p>{formatNumber(divideByDecimal(item.liquidity,'18'))}</p>
+              <p>{formatNumber(item.decimalsLiquidity)}</p>
               <p>{formatNumber(item.amountnft)}</p>
               <p>{formatNumber(item.amounttokenInUSD)}</p>
               <p>{item.blockTime}</p>

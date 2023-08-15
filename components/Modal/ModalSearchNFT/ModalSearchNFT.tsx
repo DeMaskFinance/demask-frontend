@@ -241,8 +241,8 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                                 </span>
                                 <span className="flex text-xs item-center">
                                   <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlAddress.slice(0, 8)}...
-                                    {item.dmlAddress.slice(-8)}
+                                    {item.dmlAddress?.slice(0, 4)}...
+                                    {item.dmlAddress?.slice(-8)}
                                   </span>
                                 </span>
                               </div>
@@ -257,7 +257,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                     {topNftFetching ? (
                       <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
                     ) : (
-                      <span className="text-base text-secondary3">No Result</span>
+                      <span className="text-base text-secondary3"></span>
                     )}
                   </>
                 )}
