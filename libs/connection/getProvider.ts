@@ -1,3 +1,5 @@
+import { getWalletConnectProvider } from "@/components/Modal/ModalWallet/WalletConnectProvider";
+
 export const getProvider = (wallet:string) => {
     let provider = null;
     if (wallet === "Metamask") {
@@ -23,6 +25,9 @@ export const getProvider = (wallet:string) => {
           }
         }
       else provider = window.coinbaseWalletExtension;
+    }
+    if (wallet === 'WalletConnect') {
+      provider = getWalletConnectProvider();
     }
     return provider;
   };

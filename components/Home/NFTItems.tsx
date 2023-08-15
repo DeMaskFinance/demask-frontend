@@ -80,12 +80,12 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     reserveNFT,
     reserveToken,
     tokenAddress,
-  } = useInformationDML(nftItem.dmlAddress);
+  } = useInformationDML(nftItem.dmlToken);
   console.log(inView);
   
   const { amountTokenBuy } = useAmountInMax(
     "1",
-    nftItem.dmlAddress,
+    nftItem.dmlToken,
     tokenAddress,
     nftAddress,
     idNFT,
@@ -138,7 +138,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               <div className="font-semibold text-white">Unable to buy</div>
             ) : (
               <Link
-                href={`/swap/${nftItem.nft}/${nftItem.tokenAddress}/${nftItem.tokenId}`}
+                href={`/swap/${nftItem.nft}/${nftItem.erc}/${nftItem.Factory_Contract_id}`}
                 className="flex items-center gap-2 text-sm font-semibold whitespace-pre lg:text-lg md:text-md"
               >
                 {symbolToken && tokenAddress && nftAddress ? (
@@ -159,10 +159,14 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       <div className="flex flex-wrap items-center gap-4 my-2 text-dark2">
         <div className="flex items-center pr-6">
           <AvatarUser width={32} height={32} />
-          <p className="font-medium text-dark2">{`${nftItem.creatorAddress.slice(
-            0,
-            4
-          )}...${nftItem.creatorAddress.slice(-5)}`}</p>
+          {nftItem.creatorAddress ? (
+            <p className="font-medium text-dark2">{`${nftItem.creatorAddress?.slice(
+              0,
+              4
+            )}...${nftItem.creatorAddress?.slice(-5)}`}</p>
+          ):(
+            <p>Unknow</p>
+          )}
           <p className="-translate-y-[4px] mx-1">.</p>
           <p className="text-xs whitespace-pre first-letter:uppercase">
             {nftItem.blockTimestamp}

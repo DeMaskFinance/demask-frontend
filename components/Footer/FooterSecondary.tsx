@@ -30,7 +30,7 @@ export default function FooterSecondary() {
       <button
         onClick={() => setShowFooter(!showFooter)}
         className="bg-secondary5 mr-14 fixed bottom-0 right-4 z-[110] lg:block hidden px-6 py-1 rounded-t-lg text-white"
-        // onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      // onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <MdOutlineKeyboardDoubleArrowUp
           className={`${showFooter ? "rotate-180" : ""} transition-all`}
@@ -38,9 +38,8 @@ export default function FooterSecondary() {
       </button>
 
       <footer
-        className={`${
-          !showFooter ? "translate-y-[100%]" : "translate-y-[0]"
-        } lg:flex hidden transition-all items-center gap-x-8 h-[66px] lg:px-primary md:px-14 sticky px-4 bg-dark4 bottom-0 left-0 right-0 z-[100] overflow-hidden`}
+        className={`${!showFooter ? "translate-y-[100%]" : "translate-y-[0]"
+          } lg:flex hidden transition-all items-center gap-x-8 h-[66px] lg:px-primary md:px-14 sticky px-4 bg-dark4 bottom-0 left-0 right-0 z-[100] overflow-hidden`}
       >
         <div className="mr-2">
           <Link href="/">
@@ -48,20 +47,28 @@ export default function FooterSecondary() {
           </Link>
         </div>
         <div className="flex gap-x-4">
-          <Link href="/">
+          <a
+            href="https://twitter.com/DemaskFinance"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
             <TwitterIcon
               width={24}
               height={24}
               className="fill-dark3 hover:fill-secondary5"
             />
-          </Link>
-          <Link href="/">
+          </a>
+          <a
+            href="https://web.telegram.org/k/#@DemaskFinance"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
             <TeleIcon
               width={24}
               height={24}
               className="fill-dark3 hover:fill-secondary5"
             />
-          </Link>
+          </a>
         </div>
         <div className="items-center hidden gap-4 lg:flex md:flex">
           <div>
@@ -69,9 +76,8 @@ export default function FooterSecondary() {
           </div>
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark2 w-max">
             <div
-              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${
-                activeMode === "Light" ? "bg-secondary5" : ""
-              }`}
+              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${activeMode === "Light" ? "bg-secondary5" : ""
+                }`}
               onClick={() => setAciveMode("Light")}
             >
               Light
@@ -79,9 +85,8 @@ export default function FooterSecondary() {
             </div>
 
             <div
-              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${
-                activeMode === "Dark" ? "bg-dark0" : ""
-              }`}
+              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${activeMode === "Dark" ? "bg-dark0" : ""
+                }`}
               onClick={() => setAciveMode("Dark")}
             >
               Dark
@@ -93,9 +98,8 @@ export default function FooterSecondary() {
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
             <button
               type="button"
-              className={`${
-                mode === "NEWFEEDS" ? "bg-secondary5" : ""
-              } py-1 px-4 rounded-lg`}
+              className={`${mode === "NEWFEEDS" ? "bg-secondary5" : ""
+                } py-1 px-4 rounded-lg`}
               onClick={() => handleChoiceChange("NEWFEEDS")}
             >
               NEWFEEDS
@@ -103,9 +107,8 @@ export default function FooterSecondary() {
 
             <button
               type="button"
-              className={`${
-                mode === "REELS" ? "bg-secondary5" : "px-2"
-              } py-1 px-4 rounded-lg`}
+              className={`${mode === "REELS" ? "bg-secondary5" : "px-2"
+                } py-1 px-4 rounded-lg`}
               onClick={() => handleChoiceChange("REELS")}
             >
               REELS

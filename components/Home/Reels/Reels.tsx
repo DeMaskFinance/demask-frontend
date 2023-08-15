@@ -117,7 +117,7 @@ const Reels: React.FC<ReelsProps> = ({
     }
   }, [inputNFT, selectedCategory, activeSlideIndex, activeChoice]);
 
-  const { reserves, isLoadingInforDML } = useInformationDML(filter.dmlAddress);
+  const { reserves, isLoadingInforDML } = useInformationDML(filter.dmlToken);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, filter.nft);
@@ -125,37 +125,37 @@ const Reels: React.FC<ReelsProps> = ({
     };
     checkApproveNFT();
   }, [account, filter, wallet]);
-  const balanceNFT = useNFTBalance(account, filter.nft, filter.tokenId, wallet);
+  const balanceNFT = useNFTBalance(account, filter.nft, filter.Factory_Contract_id, wallet);
   // console.log(isLoadingInforDML);
   // console.log(filter.nft);
 
   useEffect(() => {
-    if (filter.tokenAddress === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
+    if (filter.erc === "0x734aef51d427b2f745210ec4bf1062abd48eceb6") {
       setTokenAddressSwap("MATIC");
     } else {
-      setTokenAddressSwap(filter.tokenAddress);
+      setTokenAddressSwap(filter.erc);
     }
-  }, [filter.tokenAddress]);
+  }, [filter.erc]);
 
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
     useInformationToken(account, tokenAddressSwap, wallet);
 
   const { amountTokenSell, isLoadingSell } = useAmountOutMin(
     amountNFTSubmit,
-    filter.dmlAddress,
-    filter.tokenAddress,
+    filter.dmlToken,
+    filter.erc,
     filter.nft,
-    filter.tokenId,
+    filter.Factory_Contract_id,
     wallet,
     activeChoice
   );
 
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     amountNFTSubmit,
-    filter.dmlAddress,
-    filter.tokenAddress,
+    filter.dmlToken,
+    filter.erc,
     filter.nft,
-    filter.tokenId,
+    filter.Factory_Contract_id,
     wallet,
     activeChoice
   );
@@ -223,7 +223,7 @@ const Reels: React.FC<ReelsProps> = ({
         const currentAllowance = await approveToken(
           account,
           wallet,
-          filter.tokenAddress
+          filter.erc
         );
         if (Number(currentAllowance) < Number(amountTokenBuy)) {
           setIsApprovedToken(false);
@@ -235,7 +235,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, filter.tokenAddress, amountNFTSubmit, amountTokenBuy]);
+  }, [account, wallet, filter.erc, amountNFTSubmit, amountTokenBuy]);
 
   const handleApproveNFT = async () => {
     if (account) {
@@ -262,7 +262,7 @@ const Reels: React.FC<ReelsProps> = ({
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        filter.tokenAddress,
+        filter.erc,
         abiErc20,
         signer
       );
@@ -306,7 +306,7 @@ const Reels: React.FC<ReelsProps> = ({
           if (tokenAddressSwap === "MATIC") {
             result = await contract.buyETH(
               filter.nft,
-              filter.tokenId,
+              filter.Factory_Contract_id,
               amountNFTSubmit,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
@@ -314,9 +314,9 @@ const Reels: React.FC<ReelsProps> = ({
             );
           } else {
             result = await contract.buy(
-              filter.tokenAddress,
+              filter.erc,
               filter.nft,
-              filter.tokenId,
+              filter.Factory_Contract_id,
               amountNFTSubmit,
               amountBuy.toFixed(0),
               account,
@@ -373,7 +373,7 @@ const Reels: React.FC<ReelsProps> = ({
           if (tokenAddressSwap === "MATIC") {
             result = await contract.sellETH(
               filter.nft,
-              filter.tokenId,
+              filter.Factory_Contract_id,
               amountNFTSubmit,
               amountSell.toFixed(0),
               account,
@@ -382,9 +382,9 @@ const Reels: React.FC<ReelsProps> = ({
             );
           } else {
             result = await contract.sell(
-              filter.tokenAddress,
+              filter.erc,
               filter.nft,
-              filter.tokenId,
+              filter.Factory_Contract_id,
               amountNFTSubmit,
               amountSell.toFixed(0),
               account,
@@ -784,7 +784,7 @@ const Reels: React.FC<ReelsProps> = ({
                   <div className="flex items-center gap-4">
                     <div className="">
                       <a
-                        href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
+                        href={`https://mumbai.polygonscan.com/address/${filter.dmlToken}`}
                         target="_blank"
                         className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
                       >

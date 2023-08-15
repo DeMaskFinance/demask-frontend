@@ -18,6 +18,7 @@ interface SearchProps {
 const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLParagraphElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const getHistory = getCookie("searchHistory");
   const searchsHistory = getHistory ? JSON.parse(getHistory) : [];
@@ -103,6 +104,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
 
   const handleActive = () => {
     setActive(true);
+    searchRef.current?.focus();
   };
   const [isMounted, setIsMounted] = useState(false);
 
@@ -127,6 +129,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
               type="search"
               value={searchTerm}
               onChange={handleSearch}
+              ref={searchRef}
               placeholder="Search name / liquidity pairs / crypto collectibles : id"
               onClick={() => {
                 setClick(true);
@@ -173,9 +176,43 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                           className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white"
                         >
                           <div className="flex items-center gap-2">
-                            <div className="w-[32px] mr-2 flex-shrink-0 h-[32px] overflow-hidden rounded-lg">
-                              <AvatarUser width={32} height={32} />
-                            </div>
+                          <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                                {item.metadata?.image && (
+                                    <Image
+                                      loading="lazy"
+                                      unoptimized
+                                      width={32}
+                                      height={32}
+                                      src={item.metadata?.image}
+                                      alt="NFT Image"
+                                      className="object-cover w-full h-full"
+                                    />
+                                  )}
+                                  {item.metadata?.animation_url &&
+                                    !item.metadata?.image && (
+                                      <video
+                                        src={item.metadata?.animation_url}
+                                        autoPlay={false}
+                                        loop
+                                        muted
+                                        className="object-cover h-full"
+                                      />
+                                    )}
+                                  {item.metadata?.image &&
+                                    item.metadata?.animation_url && (
+                                      <audio
+                                        autoPlay
+                                        loop
+                                        muted
+                                        controls
+                                        src={item.metadata?.animation_url}
+                                        className=""
+                                      >
+                                        Your browser does not support the
+                                        <code>audio</code> element.
+                                      </audio>
+                                    )}
+                                </div>
                             <div className="flex flex-col items-baseline">
                               <span className="block text-sm font-semibold">
                                 <span className="line-clamp-1">
@@ -184,8 +221,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                               </span>
                               <span className="flex text-xs item-center">
                                 <span className="block pb-2 mr-1 font-semibold">
-                                  {item.dmlAddress.slice(0, 8)}...
-                                  {item.dmlAddress.slice(-8)}
+                                  {item.dmlToken?.slice(0, 8)}...
+                                  {item.dmlToken?.slice(-8)}
                                 </span>
                               </span>
                             </div>
@@ -223,7 +260,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                           <Link
                             key={index}
                             onClick={() => handleResultItemClick(item)}
-                            href={`swap/${item.nft}/${item.tokenId}/${item.tokenId}`}
+                            href={`/swap/${item.nft}/${item.erc}/${item.Factory_Contract_id}`}
                             className="flex-1"
                           //
                           >
@@ -274,8 +311,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                                   </span>
                                   <span className="flex text-xs item-center">
                                     <span className="block pb-2 mr-1 font-semibold">
-                                      {item.dmlAddress.slice(0, 8)}...
-                                      {item.dmlAddress.slice(-8)}
+                                      {item.dmlToken?.slice(0, 8)}...
+                                      {item.dmlToken?.slice(-8)}
                                     </span>
                                   </span>
                                 </div>
@@ -358,8 +395,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                                   </span>
                                   <span className="flex text-xs item-center">
                                     <span className="block pb-2 mr-1 font-semibold">
-                                      {item.dmlAddress.slice(0, 8)}...
-                                      {item.dmlAddress.slice(-8)}
+                                      {item.dmlAddress?.slice(0, 8)}...
+                                      {item.dmlAddress?.slice(-8)}
                                     </span>
                                   </span>
                                 </div>
@@ -374,7 +411,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                     {topNftFetching ? (
                       <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
                     ) : (
-                      <span className="text-base text-secondary3">No Result</span>
+                      <span className="text-base text-secondary3"></span>
                     )}
                   </>
                 )}

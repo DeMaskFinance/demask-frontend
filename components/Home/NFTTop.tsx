@@ -12,6 +12,7 @@ import { SkeletonNFTTop } from "../Skeleton";
 import { NFTTopService } from "@/libs/service";
 import Link from "next/link";
 import { AvatarUser } from "../Avatars";
+import formatNumber from "@/libs/utils/formatNumer";
 interface NFTTopProps { }
 
 const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
@@ -97,7 +98,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                     {page.nftDataList.map((nftItem: any, index: number) => (
                         <SwiperSlide key={nftItem._id}>
                           <Link
-                            href={`swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}`}
+                            href={`/swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftId}`}
                           >
                             <div className="w-[208px] h-[208px] relative overflow-hidden group cursor-pointer flex gap-20">
                               {nftItem.metadata.image && (
@@ -125,11 +126,11 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                                 )}
                               <div className="absolute bg-[rgba(0,0,0,0.2)] w-full rounded-lg h-full  opacity-0 group-hover:opacity-100 top-0 transition-all duration-300 ease-linear"></div>
                               <div className="absolute top-0 z-10 flex flex-col items-center justify-end w-full h-full p-1 duration-300 ease-linear translate-y-full rounded-lg group-hover:translate-y-0">
-                                <p className="text-3xl text-white">
-                                  {nftItem.lastPrice.toFixed(3)} USD
+                                <p className="text-2xl text-white">
+                                  {formatNumber(nftItem.lastPrice.toFixed(2))} USD
                                 </p>
                                 <div className="flex mt-4 mb-1 text-xl text-dark4">
-                                  <p>{nftItem.metadata.name}</p>
+                                  <p className="line-clamp-1">{nftItem.metadata.name}</p>
                                   <i>
                                     <ActiveIcon
                                       width={24}
