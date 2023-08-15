@@ -81,7 +81,9 @@ export default function DetailLiquidity() {
       console.log("No account and DML");
     }
   };
-
+  console.log(account);
+  console.log(dmlTokenLiquidity);
+  
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["liquidityHistory", account, dmlTokenLiquidity],
     queryFn: async () => {
@@ -95,8 +97,8 @@ export default function DetailLiquidity() {
   useEffect(() => {
     if (account && data) {
       if (
-        data.fullInfoMetadata.tokenAddress ===
-        "0x734aef51d427b2f745210ec4bf1062abd48eceb6"
+        data.tokenSymbol ===
+        "WETH"
       ) {
         setTokenSymbol("MATIC");
       } else {
@@ -104,15 +106,6 @@ export default function DetailLiquidity() {
       }
     }
   }, [data, account]);
-  // const {
-  //   nameNFT,
-  //   imageNFT,
-  //   symbolNFT,
-  //   category,
-  //   attributes,
-  //   animationUrl,
-  //   description,
-  // } = useMetadata(nftAddress, idNFT);
   const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
     setPage((next) => Math.min(next + 1, data?.totalPages));
@@ -144,7 +137,7 @@ export default function DetailLiquidity() {
           </Link>
           {account && data && (
             <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
-              <span>{data.fullInfoMetadata.metadata.symbol}</span>
+              <span>{data.metadata.symbol}</span>
               <span className="block overflow-hidden leading-[18px]">/</span>
               <span>{tokenSymbol}</span>
             </div>
@@ -259,11 +252,11 @@ export default function DetailLiquidity() {
         </div>
         {account && data && (
           <div className="justify-end max-w-[700px] mb-6 mx-auto">
-            {data.fullInfoMetadata.metadata.image && (
+            {data.metadata.image && (
               <Image
                 width={760}
                 height={760}
-                src={data.fullInfoMetadata.metadata.image}
+                src={data.metadata.image}
                 alt="NFT Image"
                 unoptimized
                 style={{
@@ -272,10 +265,10 @@ export default function DetailLiquidity() {
                 className="rounded-2xl max-w-[760px] max-h-[760px] w-full"
               />
             )}
-            {data.fullInfoMetadata.metadata.animation_url &&
-              !data.fullInfoMetadata.metadata.image && (
+            {data.metadata.animation_url &&
+              !data.metadata.image && (
                 <video
-                  src={data.fullInfoMetadata.metadata.animation_url}
+                  src={data.metadata.animation_url}
                   autoPlay
                   loop
                   muted
@@ -283,14 +276,14 @@ export default function DetailLiquidity() {
                   className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
                 />
               )}
-            {data.fullInfoMetadata.metadata.image &&
-              data.fullInfoMetadata.metadata.animation_url && (
+            {data.metadata.image &&
+              data.metadata.animation_url && (
                 <audio
                   autoPlay
                   loop
                   muted
                   controls
-                  src={data.fullInfoMetadata.metadata.animation_url}
+                  src={data.metadata.animation_url}
                   className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%] "
                 >
                   Your browser does not support the
@@ -311,11 +304,11 @@ export default function DetailLiquidity() {
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data && (
         <ModalDetail
-          nameNFT={data.fullInfoMetadata.metadata.name}
-          symbolNFT={data.fullInfoMetadata.metadata.symbol}
-          category={data.fullInfoMetadata.metadata.category}
-          attributes={data.fullInfoMetadata.metadata.attributes}
-          description={data.fullInfoMetadata.metadata.description}
+          nameNFT={data.metadata.name}
+          symbolNFT={data.metadata.symbol}
+          category={data.metadata.category}
+          attributes={data.metadata.attributes}
+          description={data.metadata.description}
           setIsOpenDetail={setIsOpenDetail}
           isOpenDetail={isOpenDetail}
         />
@@ -329,7 +322,7 @@ export default function DetailLiquidity() {
           setIsOpenLiquidity={setIsOpenAddLiquidity}
         />
       )}
-      {data && account && (
+      {/* {data && account && (
         <ModalRemmoveLiquidity
           data={data}
           account={account}
@@ -337,7 +330,7 @@ export default function DetailLiquidity() {
           isOpenRemoveLiquidity={isOpenRemoveLiquidity}
           setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         />
-      )}
+      )} */}
       <ToastContainer />
     </div>
   );
