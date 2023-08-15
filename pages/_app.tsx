@@ -11,6 +11,7 @@ import type { NextPage } from "next";
 import { Poppins } from "next/font/google";
 import { useEffect, useState } from "react";
 import { getProvider } from "@/libs/connection/getProvider";
+import MaintenanceError from "./maintenanceError";
 
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
@@ -32,7 +33,7 @@ export default function App({
   Component,
   pageProps,
 }: AppProps & { Component: NextPageWithLayout }) {
-  
+  const isMaintenanceMode = false;
   return (
     <AccountProvider>
       <Head>
@@ -57,7 +58,11 @@ export default function App({
             font-family: ${poppins.style.fontFamily};
           }
         `}</style>
-        {Component.PageLayout ? (
+        {isMaintenanceMode ? ( 
+          <Layout>
+            <MaintenanceError /> 
+          </Layout>
+        ) : Component.PageLayout ? (
           <Component.PageLayout>
             <Component {...pageProps} />
           </Component.PageLayout>
