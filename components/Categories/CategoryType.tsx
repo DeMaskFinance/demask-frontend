@@ -80,18 +80,15 @@ const Category = ({ label }: { label: string }) => {
           >
             <ul className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:grid-cols-2 text-dark2">
               {data &&
-                data?.items?.map((item: any, idx: number) => (
-                  <>
-                    <SwiperSlide className="text-sm lg:text-base text-dark2">
+                data?.items?.map((item: any, index: number) => (
+                    <SwiperSlide className="text-sm lg:text-base text-dark2" key={index}>
                       <li
                         title={item.metadata.name}
-                        key={idx}
                         className="items-center p-3 overflow-hidden transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
                       >
                         <NFTCategory item={item} />
                       </li>
                     </SwiperSlide>
-                  </>
                 ))}
             </ul>
           </Swiper>

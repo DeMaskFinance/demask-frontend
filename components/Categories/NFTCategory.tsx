@@ -25,10 +25,10 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
         reserveToken,
         tokenAddress,
         isLoadingInforDML
-    } = useInformationDML(item.dmlAddress);
+    } = useInformationDML(item.dmlToken);
     const { amountTokenBuy } = useAmountInMax(
         "1",
-        item.dmlAddress,
+        item.dmlToken,
         tokenAddress,
         nftAddress,
         idNFT,
@@ -68,7 +68,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
     return (
 
         <Link
-            href={`/swap/${item.nft}/${item.tokenAddress}/${item.tokenId}`}
+            href={`/swap/${item.nft}/${item.erc}/${item.Factory_Contract_id}`}
         >
             <div className="relative">
                 <div className="relative pb-[100%] h-0">
