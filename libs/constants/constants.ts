@@ -49,4 +49,10 @@ const rpcMumbai = [
     url:'https://polygon-mumbai-bor.publicnode.com',
   }
 ]
-export {tokenDefault,amountNFT,rpcMumbai}
+const mediaType ={
+  image:['.png','.jpg','.jpeg','.svg','.gif','.tiff','.xml'],
+  video:['.mp4','.quicktime'],
+  audio:['.mp3','.mpeg','.aiff','.x-m4a','.vnd.wav','.vnd.wave','mpga'],
+  pdf: ['.application/pdf'],
+}
+export {tokenDefault,amountNFT,rpcMumbai,mediaType}
