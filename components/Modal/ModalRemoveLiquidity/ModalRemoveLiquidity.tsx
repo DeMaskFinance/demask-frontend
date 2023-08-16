@@ -59,7 +59,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       setActiveChoice(choice);
     };
 
-    const { balanceOfDML } = useBananceOfDML(account, data.fullInfoMetadata.dmlAddress);
+    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress);
     const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputLiquidity(e.target.value);
       setShowRequiredMessage(false);
@@ -70,7 +70,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setIsSufficientLiquidity(false);
       }
     };
-    
+
     useEffect(() => {
       if (balanceOfDML) {
         if (activeChoice === '25%') {
@@ -85,8 +85,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setIsSufficientLiquidity(false);
       }
     }, [activeChoice])
-    const totalSupply = useTotalSupply(account, wallet, data.fullInfoMetadata.dmlAddress, isApprovedDML);
-    console.log(totalSupply);
+    const totalSupply = useTotalSupply(account, wallet, data.dmlAddress, isApprovedDML);
+    // console.log(totalSupply);
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
         const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
@@ -103,7 +103,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         console.log(resAmountNFT);
         console.log(amountToken.toFixed(0));
         console.log(resAmountToken);
-        
+
       }
     }, [inputLiquidity])
     console.log(amountNFTMin);
@@ -112,7 +112,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
 
     const currentAllowance = useAllowanceDML(
       account,
-      data.fullInfoMetadata.dmlAddress,
+      data.dmlAddress,
       wallet,
       isApprovedDML
     );
@@ -132,9 +132,9 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       };
       checkApproveToken();
     }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance]);
-    const { reserves, isLoadingReserves,res }: any = useFetchReservesDML(
+    const { reserves, isLoadingReserves, res }: any = useFetchReservesDML(
       account,
-      data.fullInfoMetadata.dmlAddress,
+      data.dmlAddress,
       wallet,
     );
     // console.log(reserves);
@@ -174,52 +174,57 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     useEffect(() => {
       if (account && data) {
         if (
-          data.fullInfoMetadata.tokenAddress ===
-          "0x734aef51d427b2f745210ec4bf1062abd48eceb6"
+          data.tokenAddress ===
+          process.env.NEXT_PUBLIC_WETH
         ) {
           setTokenAddress("MATIC");
         } else {
-          setTokenAddress(data.fullInfoMetadata.tokenAddress);
+          setTokenAddress(data.tokenAddress);
         }
       }
     }, [data, account]);
+    console.log(account);
+    
     const removeLiquidity = async () => {
-      if (inputLiquidity && !isSufficientLiquidity ) {
+      if (inputLiquidity && !isSufficientLiquidity) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         const liquidity = handleBignumber(Number(inputLiquidity), Number(decimals));
-        console.log(liquidity);
-        
+
         try {
           let result;
           let transactionHash;
 
           if (tokenAddress === "MATIC") {
             result = await contract.removeLiquidityETH(
-              data.fullInfoMetadata.nft,
-              data.fullInfoMetadata.tokenId,
+              data.nftAddress,
+              data.nftId,
               (Number(liquidity)).toFixed(0),
               amountTokenMin,
               amountNFTMin,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000}
+              { gasLimit: 8000000 }
             );
             transactionHash = result.hash;
           } else {
+            console.log(tokenAddress);
+            console.log(liquidity);
+            console.log(amountTokenMin);
+            console.log(amountNFTMin);
             result = await contract.removeLiquidity(
-              data.fullInfoMetadata.tokenAddress,
-              data.fullInfoMetadata.nft,
-              data.fullInfoMetadata.tokenId,
+              data.tokenAddress,
+              data.nftAddress,
+              data.nftId,
               (Number(liquidity)).toFixed(0),
               amountTokenMin,
               amountNFTMin,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000}
+              { gasLimit: 8000000 }
             );
             transactionHash = result.hash;
           }
@@ -254,7 +259,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
               Remove
               {data && (
                 <div className="flex items-center leading-[16px] ml-1">
-                  <span> {data.fullInfoMetadata.metadata.symbol}</span>
+                  <span> {data.metadata.symbol}</span>
                   <span className="overflow-hidden">/</span>
                   <span>{data.tokenSymbol}</span>
                 </div>
@@ -324,7 +329,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                             handleApproveDML(
                               account,
                               wallet,
-                              data.fullInfoMetadata.dmlAddress,
+                              data.dmlAddress,
                               inputLiquidity,
                               setIsApprovedDML,
                             )

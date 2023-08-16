@@ -113,7 +113,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     }
   }, [activeChoice])
   return (
-    <div className="p-6 rounded-lg  shadow-chart lg:block">
+    <div className="p-6 rounded-lg shadow-chart lg:block">
       {chartVolume && (
         <div>
           <div className="flex justify-between mb-2">
@@ -148,6 +148,11 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                   right: 0,
                   left: 0,
                   bottom: 0,
+                }}
+
+                onMouseLeave={() => {
+                  setActiveData(lastData.value);
+                  setActiveDate(lastData.date);
                 }}
                 onMouseMove={(event) => {
                   if (event && event.activeLabel && event.activePayload) {

@@ -80,6 +80,10 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
                     bottom: 0,
                   }}
                   onMouseMove={handleMouseMove}
+                  onMouseLeave={() => {
+                    setActiveData(lastData.value);
+                    setActiveDate(lastData.date);
+                  }}
                 >
                   <defs>
                     <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">

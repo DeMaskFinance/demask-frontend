@@ -12,7 +12,7 @@ if (typeof Highcharts === "object") {
 
 const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
   // console.log(dataChart);
-  
+
   const averagePrice = [],
     volume = [];
   const dataChartSwap = dataChart.map((item) => Object.values(item));
@@ -52,10 +52,10 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         backgroundColor: "#D5D0FF",
         border: "none",
       },
-      margin:10,
+      margin: 10,
       maskFill: "rgba(128,128,128,0.3)",
       outlineColor: "#D5D0FF",
-      height:30
+      height: 30
     },
     credits: {
       enabled: false,
@@ -68,6 +68,8 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
           color: "#cccccc",
           width: 1,
         },
+        lineColor :'transparent',
+        tickColor: 'transparent',
       },
     ],
     yAxis: [
@@ -76,12 +78,13 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
         labels: {
           // format: "{value}",
           // align: "left",
-          enabled:false
+          enabled: false
         },
         height: "80%",
         resize: {
           enabled: true,
         },
+        
       },
       {
         // Secondary yAxis

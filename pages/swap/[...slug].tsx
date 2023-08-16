@@ -37,6 +37,8 @@ import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import { ChartLoading } from "@/components/Charts";
 import { metadataService } from "@/libs/service/metadataService";
 import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
+import { BiLoaderAlt } from "react-icons/bi";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -50,17 +52,6 @@ const styles = {
 //     },
 //   };
 // };
-const fetcher = async (nftAddress:string, idNFT:string, tokenAddress:string) => {
-  console.log(nftAddress,idNFT,tokenAddress.toLowerCase());
-  
-  try {
-    const res = await metadataService(nftAddress.toLowerCase(), idNFT, tokenAddress.toLowerCase());
-    return res;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
 const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -83,18 +74,6 @@ const Swap: React.FC = () => {
   const { account, wallet } = useContext(AccountContext);
   const [dataChart, setDataChart] = useState<[]>([]);
   const [isLoadingDataChart, setIsLoadingDataChart] = useState<boolean>(false);
-  const {
-    nameNFT,
-    imageNFT,
-    symbolNFT,
-    category,
-    attributes,
-    animationUrl,
-    description,
-  } = useMetadata(nftAddress, idNFT);
-  const { data, error } = useSWR([nftAddress, idNFT, tokenAddress], fetcher);
-  console.log(data);
-  
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -104,7 +83,7 @@ const Swap: React.FC = () => {
   useEffect(() => {
     if (slug) {
       setNftAddress(slug[0]);
-      if (slug[1] === '0x734aef51d427b2f745210ec4bf1062abd48eceb6') {
+      if (slug[1] === process.env.NEXT_PUBLIC_WETH) {
         setTokenAddress("MATIC");
       } else {
         setTokenAddress(slug[1]);
@@ -114,6 +93,15 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
+    queryKey: ["NFT detail", idNFT, nftAddress],
+    queryFn: async () => {
+      const res = await metadataService(nftAddress.toLowerCase(), idNFT);
+      return res;
+    },
+    keepPreviousData: true,
+  });
+  console.log(data);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -160,7 +148,7 @@ const Swap: React.FC = () => {
   //   }
   // }, [router.query.slug, dmlToken]);
   // console.log(dmlToken.toLocaleLowerCase());
-  
+
   useEffect(() => {
     const fetchDataChart = async () => {
       if (dmlToken) {
@@ -408,7 +396,7 @@ const Swap: React.FC = () => {
   };
   const priceBuy = Number(amountBuy) / Number(inputNFT);
   const priceSell = Number(amountSell) / Number(inputNFT);
-  
+
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";
@@ -428,51 +416,64 @@ const Swap: React.FC = () => {
       </Head>
       <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
         <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
-          <div className="">
-            {imageNFT && (
-              <Image
-                src={imageNFT}
-                alt="test"
-                width={680}
-                height={576}
-                sizes="(max-width: 770px) 100vw"
-                className="w-full rounded-lg lg:max-h-[80vh]"
-                style={{
-                  objectFit: "contain",
-                }}
-                unoptimized
-              />
-            )}
-            {!imageNFT && animationUrl && (
-              <video
-                src={animationUrl}
-                autoPlay
-                loop
-                muted
-                controls
-                className="w-full rounded-lg"
-              />
-            )}
-            {imageNFT && animationUrl && (
-              <audio
-                autoPlay
-                loop
-                muted
-                controls
-                src={animationUrl}
-                className="mt-4 mb-2"
+          {isSuccess ? (
+            <div className="flex flex-col items-center">
+              <div className="">
+                {data.metadata.image && (
+                  <Image
+                    src={data.metadata.image}
+                    alt="test"
+                    width={680}
+                    height={576}
+                    sizes="(max-width: 770px) 100vw"
+                    className="w-full rounded-lg lg:max-h-[80vh]"
+                    style={{
+                      objectFit: "contain",
+                    }}
+                    unoptimized
+                  />
+                )}
+                {!data.metadata.image && data.metadata.animation_url && (
+                  <video
+                    src={data.metadata.animation_url}
+                    autoPlay
+                    loop
+                    muted
+                    controls
+                    className="w-full rounded-lg"
+                  />
+                )}
+                {data.metadata.image && data.metadata.animation_url && (
+                  <audio
+                    autoPlay
+                    loop
+                    muted
+                    controls
+                    src={data.metadata.animation_url}
+                    className="mt-4 mb-2"
+                  >
+                    Your browser does not support the
+                    <code>audio</code> element.
+                  </audio>
+                )}
+              </div>
+              <p
+                className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
+                onClick={handleShowDetail}
               >
-                Your browser does not support the
-                <code>audio</code> element.
-              </audio>
-            )}
-          </div>
-          <p
-            className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
-            onClick={handleShowDetail}
-          >
-            See detail
-          </p>
+                See detail
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center h-full">
+              <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
+            </div>
+          )}
+          {isLoading && (
+            <div className="flex items-center h-full">
+              <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
+            </div>
+          )}
         </div>
         <div className="lg:w-[40%] md:w-2/4 w-full">
           <div className="px-2 py-2 border rounded-lg border-dark3">
@@ -506,10 +507,10 @@ const Swap: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="font-semibold">
                 <div className="flex text-xl text-dark1">
-                  {symbolToken && symbolNFT ? (
+                  {symbolToken && isSuccess ? (
                     <div className="flex items-center">
-                      {symbolNFT ? (
-                        <span>{symbolNFT}</span>
+                      {data.metadata.symbol ? (
+                        <span>{data.metadata.symbol}</span>
                       ) : (
                         <span>{idNFT}</span>
                       )}
@@ -544,37 +545,37 @@ const Swap: React.FC = () => {
                 )}
               </div>
               <div className="">
-              {activeChoice === "BUY" && (
-                <div className="text-3xl font-semibold text-secondary3">
-                  {inputNFT ? (
-                    <span>
-                      {formatNumber(
-                        divideByDecimal(priceBuy.toFixed(), decimals)
-                      )}
-                    </span>
-                  ) : (
-                    <span>0</span>
-                  )}
-                  <span className="ml-2">{symbolToken}</span>
-                </div>
-              )}
-              {activeChoice === "SELL" && (
-                <div className="text-4xl text-secondary3">
-                  {inputNFT ? (
-                    <span>
-                      {formatNumber(
-                        divideByDecimal(priceSell.toFixed(), decimals)
-                      )}
-                    </span>
-                  ) : (
-                    <span>0</span>
-                  )}
-                  <span className="ml-2">{symbolToken}</span>
-                </div>
-              )}
+                {activeChoice === "BUY" && (
+                  <div className="text-lg font-semibold lg:text-3xl text-secondary3">
+                    {inputNFT ? (
+                      <span>
+                        {formatNumber(
+                          divideByDecimal(priceBuy.toFixed(), decimals)
+                        )}
+                      </span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                    <span className="ml-2">{symbolToken}</span>
+                  </div>
+                )}
+                {activeChoice === "SELL" && (
+                  <div className="text-4xl text-secondary3">
+                    {inputNFT ? (
+                      <span>
+                        {formatNumber(
+                          divideByDecimal(priceSell.toFixed(), decimals)
+                        )}
+                      </span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                    <span className="ml-2">{symbolToken}</span>
+                  </div>
+                )}
+              </div>
             </div>
-            </div>
-            
+
             <form className="mt-1">
               <div>
                 {reserves[1] ? (
@@ -605,7 +606,11 @@ const Swap: React.FC = () => {
                     className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
                     onClick={handleSearchNFT}
                   >
-                    {symbolNFT}
+                    {isSuccess && (
+                      <p className="text-center">
+                        {data.metadata.symbol}
+                      </p>
+                    )}
                   </div>
                 </div>
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
@@ -746,15 +751,18 @@ const Swap: React.FC = () => {
         isOpenSearchNFT={isOpenSearchNFT}
       />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalDetail
-        nameNFT={nameNFT}
-        symbolNFT={symbolNFT}
-        category={category}
-        attributes={attributes}
-        description={description}
-        setIsOpenDetail={setIsOpenDetail}
-        isOpenDetail={isOpenDetail}
-      />
+      {data && (
+        <ModalDetail
+          nameNFT={data.metadata.name}
+          symbolNFT={data.metadata.symbol}
+          category={data.metadata.category}
+          attributes={data.metadata.attributes}
+          description={data.metadata.description}
+          setIsOpenDetail={setIsOpenDetail}
+          uri={data.uri}
+          isOpenDetail={isOpenDetail}
+        />
+      )}
       <ModalSearchToken
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}

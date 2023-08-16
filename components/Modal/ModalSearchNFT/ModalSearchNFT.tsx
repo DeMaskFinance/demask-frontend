@@ -186,7 +186,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               <div className="mt-3">
                 {topNftData && topNftData.nftDataList.length > 0 ? (
                   <div>
-                    <p className="block mb-2">
+                    <div className="block mb-2">
                       <span className="text-base">NFTs Top</span>
                       {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
                         <div
@@ -195,7 +195,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                           className="flex-1"
                         >
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                            <h2 className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
                                 {item.metadata?.image && (
                                   <Image
@@ -246,11 +246,11 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                                   </span>
                                 </span>
                               </div>
-                            </h2>
+                            </div>
                           </div>
                         </div>
                       ))}
-                    </p>
+                    </div>
                   </div>
                 ) : (
                   <>

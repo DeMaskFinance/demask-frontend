@@ -309,6 +309,7 @@ export default function DetailLiquidity() {
           category={data.metadata.category}
           attributes={data.metadata.attributes}
           description={data.metadata.description}
+          uri={data.uri}
           setIsOpenDetail={setIsOpenDetail}
           isOpenDetail={isOpenDetail}
         />
@@ -322,7 +323,7 @@ export default function DetailLiquidity() {
           setIsOpenLiquidity={setIsOpenAddLiquidity}
         />
       )}
-      {/* {data && account && (
+      {data && account && (
         <ModalRemmoveLiquidity
           data={data}
           account={account}
@@ -330,7 +331,7 @@ export default function DetailLiquidity() {
           isOpenRemoveLiquidity={isOpenRemoveLiquidity}
           setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         />
-      )} */}
+      )}
       <ToastContainer />
     </div>
   );

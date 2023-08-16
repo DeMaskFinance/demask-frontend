@@ -43,7 +43,7 @@ function StatisticChart() {
     keepPreviousData: true,
   });
   return (
-    <div className="flex lg:flex-row md:flex-row flex-col gap-6 my-6 text-base font-medium text-dark2">
+    <div className="flex flex-col gap-6 my-6 text-base font-medium lg:flex-row md:flex-row text-dark2">
       <div className="flex">
         <span className="mr-2 ">
           Volume 24H:{" "}
@@ -66,7 +66,7 @@ function StatisticChart() {
       </div>
       <div className="flex ">
         <span className="mr-2 ">
-          Fees 24H: {volume && volume !== null ? volume.volumeInDay * 0.5 : 0}
+          Fees 24H: {volume && volume !== null ? formatNumber((volume.volumeInDay * 0.5).toString()) : 0}
         </span>
         (
         <span

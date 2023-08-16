@@ -34,6 +34,8 @@ import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import { BiLoaderAlt } from "react-icons/bi";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { tokenDefault } from "@/libs/constants";
+import { useQuery } from "@tanstack/react-query";
+import { metadataService } from "@/libs/service/metadataService";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -66,15 +68,15 @@ export default function AddLiquidity() {
       setIdNFT(currency[2]);
     }
   }, [currency]);
-  const {
-    nameNFT,
-    imageNFT,
-    symbolNFT,
-    category,
-    attributes,
-    animationUrl,
-    description,
-  } = useMetadata(nftAddress, idNFT);
+  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
+    queryKey: ["NFT detail", idNFT, nftAddress],
+    queryFn: async () => {
+      const res = await metadataService(nftAddress.toLowerCase(), idNFT);
+      return res;
+    },
+    keepPreviousData: true,
+  });
+  console.log(data);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
 
   const { balanceToken, decimals, bigNumberBalance, symbolToken } = useBalanceToken(
@@ -134,7 +136,7 @@ export default function AddLiquidity() {
 
   // console.log(amountErcDesiredToDec.toString());
   const tokenSymbolIcon = tokenDefault.find((item) => item.address === tokenAddress);
-console.log(tokenSymbolIcon);
+  console.log(tokenSymbolIcon);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -305,7 +307,9 @@ console.log(tokenSymbolIcon);
               <div className="flex justify-between cursor-pointer text-dark3">
                 <div className="flex gap-x-2 text-secondary5">
                   <NFTIcon width={24} height={24} className="fill-secondary5" />
-                  {nameNFT}
+                  {data && (
+                    <p>{data.metadata.name}</p>
+                  )}
                 </div>
                 <DownIcon width={24} height={24} />
               </div>
@@ -321,11 +325,11 @@ console.log(tokenSymbolIcon);
                 <div className="flex gap-x-2 text-secondary5">
                   {tokenSymbolIcon ? (
                     <div>
-                      <tokenSymbolIcon.logo width={24} height={24} className="fill-secondary5"/>
+                      <tokenSymbolIcon.logo width={24} height={24} className="fill-secondary5" />
                     </div>
                   ) : (
                     <div>
-                      <TokenIconNotDefine width={24} height={24} className="fill-secondary5"/>
+                      <TokenIconNotDefine width={24} height={24} className="fill-secondary5" />
                     </div>
                   )}
                   {symbolToken}
@@ -422,50 +426,60 @@ console.log(tokenSymbolIcon);
         </div>
         <div className="order-1 w-full lg:order-2">
           <div className="flex flex-col items-center w-full h-full ">
-            <div className="flex flex-col items-center justify-center w-full h-full text-center ">
-              {imageNFT && (
-                <Image
-                  src={imageNFT}
-                  width={504}
-                  height={100}
-                  alt="pictureLiquidity"
-                  style={{
-                    objectFit: "contain",
-                  }}
-                  className="w-full h-fit rounded-2xl"
-                  unoptimized
-                />
-              )}
-              {!imageNFT && animationUrl && (
-                <video
-                  src={animationUrl}
-                  autoPlay
-                  loop
-                  muted
-                  controls
-                  className="w-full h-full rounded-2xl"
-                />
-              )}
-              {imageNFT && animationUrl && (
-                <audio
-                  autoPlay
-                  loop
-                  muted
-                  controls
-                  src={animationUrl}
-                  className="mt-4 mb-2"
+            {isSuccess && (
+              <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center w-full h-full text-center ">
+                  {data.metadata.image && (
+                    <Image
+                      src={data.metadata.image}
+                      alt="test"
+                      width={680}
+                      height={576}
+                      sizes="(max-width: 770px) 100vw"
+                      className="w-full rounded-lg lg:max-h-[80vh]"
+                      style={{
+                        objectFit: "contain",
+                      }}
+                      unoptimized
+                    />
+                  )}
+                  {!data.metadata.image && data.metadata.animation_url && (
+                    <video
+                      src={data.metadata.animation_url}
+                      autoPlay
+                      loop
+                      muted
+                      controls
+                      className="w-full rounded-lg"
+                    />
+                  )}
+                  {data.metadata.image && data.metadata.animation_url && (
+                    <audio
+                      autoPlay
+                      loop
+                      muted
+                      controls
+                      src={data.metadata.animation_url}
+                      className="mt-4 mb-2"
+                    >
+                      Your browser does not support the
+                      <code>audio</code> element.
+                    </audio>
+                  )}
+                </div>
+                <p
+                  className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
+                  onClick={handleShowDetail}
                 >
-                  Your browser does not support the
-                  <code>audio</code> element.
-                </audio>
-              )}
+                  Show detail
+                </p>
+              </div>
+            )}
+            {isLoading && (
+            <div className="flex items-center h-full">
+              <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
             </div>
-            <p
-              className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
-              onClick={handleShowDetail}
-            >
-              Show detail
-            </p>
+          )}
           </div>
         </div>
       </div>
@@ -475,15 +489,18 @@ console.log(tokenSymbolIcon);
         isOpenSearchNFT={isOpenSearchNFT}
       />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalDetail
-        nameNFT={nameNFT}
-        symbolNFT={symbolNFT}
-        category={category}
-        attributes={attributes}
-        description={description}
-        setIsOpenDetail={setIsOpenDetail}
-        isOpenDetail={isOpenDetail}
-      />
+      {data && (
+        <ModalDetail
+          nameNFT={data.metadata.name}
+          symbolNFT={data.metadata.symbol}
+          category={data.metadata.category}
+          attributes={data.metadata.attributes}
+          description={data.metadata.description}
+          uri={data.uri}
+          setIsOpenDetail={setIsOpenDetail}
+          isOpenDetail={isOpenDetail}
+        />
+      )}
       <ModalSearchToken
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}

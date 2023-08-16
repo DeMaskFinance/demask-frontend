@@ -7,6 +7,7 @@ interface ModalDetailProps {
   category: string[];
   attributes: string[];
   description: string;
+  uri: string;
   setIsOpenDetail: any;
   isOpenDetail: boolean;
 }
@@ -17,14 +18,10 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   category,
   attributes,
   description,
+  uri,
   setIsOpenDetail,
   isOpenDetail,
 }) => {
-  console.log(nameNFT);
-  console.log(category);
-  console.log(category);
-  console.log(attributes);
-
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -40,14 +37,15 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
-        <div className="z-50 flex flex-col justify-center max-h-[80vh] ">
+        <div className="z-50 flex flex-col justify-center max-h-[80vh] cursor-default">
           <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative overflow-y-scroll">
             <p className="py-2 text-xl font-medium">Show Details</p>
             <ul>
               {nameNFT && (
                 <li className="mb-4">
                   <p>NFT Name</p>
-                  <p className="text-dark3">{nameNFT}</p>
+                  <a href={uri} rel="noreferrer noopener"
+                    target="_blank" className="text-secondary5 ">{nameNFT}</a>
                 </li>
               )}
               {symbolNFT && (
