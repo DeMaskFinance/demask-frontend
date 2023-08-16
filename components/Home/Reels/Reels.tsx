@@ -1,5 +1,4 @@
-import images from "@/public/images";
-import Image from "next/image";
+
 import { TabGroups } from "../../NavChoice";
 import React, { useContext, useEffect, useState,useRef } from "react";
 import AccountContext from "@/context/AccountContext";
@@ -11,7 +10,6 @@ import { Mousewheel, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
-import { GetServerSideProps } from "next";
 import useInformationDML from "@/hooks/useInformationDML";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformationToken from "@/hooks/useInformationToken";

@@ -119,7 +119,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                                       loop
                                       muted
                                       autoPlay
-                                      poster="https://demask.infura-ipfs.io/ipfs/QmZhEv2DwgQAcgTyhxdZsL4DxCEVoUxdETVkudTYajnshg"
+                                      // poster="https://demask.infura-ipfs.io/ipfs/QmZhEv2DwgQAcgTyhxdZsL4DxCEVoUxdETVkudTYajnshg"
                                       className="w-full h-full rounded-lg"
                                     />
                                   </div>

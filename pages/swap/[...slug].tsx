@@ -35,6 +35,8 @@ import { GetServerSideProps } from "next";
 import { swapAPI } from "@/libs/service";
 import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import { ChartLoading } from "@/components/Charts";
+import { metadataService } from "@/libs/service/metadataService";
+import useSWR from "swr";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -48,6 +50,17 @@ const styles = {
 //     },
 //   };
 // };
+const fetcher = async (nftAddress:string, idNFT:string, tokenAddress:string) => {
+  console.log(nftAddress,idNFT,tokenAddress.toLowerCase());
+  
+  try {
+    const res = await metadataService(nftAddress.toLowerCase(), idNFT, tokenAddress.toLowerCase());
+    return res;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -79,7 +92,9 @@ const Swap: React.FC = () => {
     animationUrl,
     description,
   } = useMetadata(nftAddress, idNFT);
-
+  const { data, error } = useSWR([nftAddress, idNFT, tokenAddress], fetcher);
+  console.log(data);
+  
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };

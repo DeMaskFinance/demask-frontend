@@ -122,7 +122,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         <div className="flex items-center justify-between mb-2">
           <h2 className="flex gap-1 mr-4 text-2xl font-medium line-clamp-1 text-dark1">
             {nftItem.metadata.name} 
-            {/* <svgComponents.buttonFlag /> */}
           </h2>
           {reserveToken.toString() === "0" ||
             reserveNFT.toString() === "0" ||

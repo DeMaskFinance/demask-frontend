@@ -9,6 +9,7 @@ import BigNumber from "bignumber.js";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import checkIsERC20 from '@/libs/validation/checkIsERC20';
 import Link from 'next/link';
+import { mediaType } from '@/libs/constants';
 
 interface NFTCategoryProps {
     item: any
@@ -65,6 +66,8 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
         const daysLeft = Math.ceil(timeDifferenceMillis / (1000 * 60 * 60 * 24));
         return -daysLeft;
     };
+    console.log(item);
+
     return (
 
         <Link
@@ -72,7 +75,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
         >
             <div className="relative">
                 <div className="relative pb-[100%] h-0">
-                    {item.metadata.image && (
+                    {item.metadata.image && mediaType.image.some(extension => item.metadata.image.endsWith(extension)) && (
                         <Image
                             loading="lazy"
                             width={760}
@@ -86,7 +89,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                         />
                     )}
                     {item.metadata.animation_url &&
-                        !item.metadata.image && (
+                        !item.metadata.image && mediaType.video.some(extension => item.metadata.animation_url.endsWith(extension)) && (
                             <video
                                 src={item.metadata.animation_url}
                                 autoPlay={false}
@@ -103,7 +106,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             />
                         )}
                     {item.metadata.image &&
-                        item.metadata.animation_url && (
+                        item.metadata.animation_url && mediaType.audio.some(extension => item.metadata.animation_url.endsWith(extension)) && (
                             <audio
                                 autoPlay
                                 loop
