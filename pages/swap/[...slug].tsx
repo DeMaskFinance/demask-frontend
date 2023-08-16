@@ -36,7 +36,6 @@ import { swapAPI } from "@/libs/service";
 import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import { ChartLoading } from "@/components/Charts";
 import { metadataService } from "@/libs/service/metadataService";
-import useSWR from "swr";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
 const styles = {
