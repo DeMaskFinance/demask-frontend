@@ -9,8 +9,6 @@ import { Layout } from "@/components/Layouts";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import { Poppins } from "next/font/google";
-import { useEffect, useState } from "react";
-import { getProvider } from "@/libs/connection/getProvider";
 import MaintenanceError from "./maintenanceError";
 
 type NextPageWithLayout<P = any> = NextPage<P> & {
@@ -19,6 +17,7 @@ type NextPageWithLayout<P = any> = NextPage<P> & {
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
 });
 const queryClient = new QueryClient({
   defaultOptions: {
