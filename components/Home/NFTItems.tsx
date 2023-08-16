@@ -93,7 +93,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     "BUY"
   );
   let tokenAddressSwap = "";
-  if (tokenAddress === "0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6") {
+  if (tokenAddress === process.env.NEXT_PUBLIC_WETH) {
     tokenAddressSwap = "MATIC";
   } else {
     tokenAddressSwap = tokenAddress;

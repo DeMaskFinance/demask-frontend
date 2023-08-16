@@ -58,7 +58,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     if (account && data) {
       if (
         data.tokenAddress ===
-        "0x734aef51d427b2f745210ec4bf1062abd48eceb6"
+        process.env.NEXT_PUBLIC_WETH
       ) {
         setTokenSymbol("MATIC");
         setTokenAddress("MATIC");

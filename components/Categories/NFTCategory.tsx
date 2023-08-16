@@ -37,7 +37,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
         "BUY"
     );
     let tokenAddressSwap = "";
-    if (tokenAddress === "0x734aeF51d427b2f745210Ec4BF1062ABd48Eceb6") {
+    if (tokenAddress === process.env.NEXT_PUBLIC_WETH) {
         tokenAddressSwap = "MATIC";
     } else {
         tokenAddressSwap = tokenAddress;
@@ -197,9 +197,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             {isLoadingInforDML ? (
                                 <span className="block w-20 h-6 rounded-xl animate-pulse bg-slate-200"></span>
                             ) : (
-                                <p className="block">{formatNumber(
-                                    divideByDecimal(reserveToken.toString(), decimals)
-                                )}</p>
+                                <p className="block">{formatNumber(divideByDecimal(reserveToken.toString(), decimals))}</p>
                             )
                             }
                         </div>
