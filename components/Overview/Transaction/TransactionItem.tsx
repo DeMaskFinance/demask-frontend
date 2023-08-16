@@ -1,5 +1,6 @@
 import { AvatarUser } from "@/components/Avatars";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
+import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +19,8 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
   isFetching,
   isLoading,
 }) => {
+  console.log(data);
+
   return (
     <>
       {isLoading || isFetching ? (
@@ -48,7 +51,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
           {data?.data.map((item: any, idx: number) => (
             <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
               <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
-                {idx + 1}
+                {(data.currentPage - 1) * 10 + (idx + 1)}
               </td>
               <td className="py-2 hover:text-secondary3 relative flex items-center justify-start lg:w-full md:w-full w-[200px]">
                 <Link
@@ -118,7 +121,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
 
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">
                 <span className="">
-                  {isFetching ? skeleton : item.amountnft}
+                  {isFetching ? skeleton : formatNumber(item.amountnft)}
                 </span>
               </td>
 
@@ -126,7 +129,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                 <span className="">
                   {isFetching ? skeleton : (
                     <div className="flex gap-x-1">
-                      <span>{item.amounttokenInUSD?.toFixed(3)}</span>
+                      <span>{formatNumber(item.amounttokenInUSD)}</span>
                       {item.tokenSymbol === 'WETH' ? (
                         <span>MATIC</span>
                       ) : (

@@ -54,7 +54,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
             data?.nftDataList?.map((item: any, idx: number) => (
               <tr className="flex px-2 text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100">
                 <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
-                  {idx + 1}
+                  {(data.currentPage - 1) * 10 + (idx + 1)}
                 </td>
                 <td className="py-2 lg:w-full md:w-full w-[200px]">
                   <Link
@@ -117,9 +117,8 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <span
-                    className={`flex items-center ${
-                      item.changePrice24h >= 0 ? "text-green" : "text-red"
-                    } `}
+                    className={`flex items-center ${item.changePrice24h >= 0 ? "text-green" : "text-red"
+                      } `}
                   >
                     {item.changePrice24h >= 0 ? <BsArrowUp /> : <BsArrowDown />}
                     {isFetching ? skeleton : formatNumber(item.changePrice24h)}%
