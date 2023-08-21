@@ -21,6 +21,7 @@ import { MenuHeader } from "../Menu";
 import { ModalWallet } from "../Modal/ModalWallet";
 import useSvgComponents from "../Picture/Picture";
 import Search from "../Search/SearchHeader";
+import { CgClose } from "react-icons/cg";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -102,7 +103,8 @@ export default function Header() {
   }, []);
 
   const [showSearch, setShowSearch] = useState(false);
-
+  console.log(showSearch);
+  
   return (
     <>
       {/* <MenuMobile
@@ -149,6 +151,7 @@ export default function Header() {
           <div
             onClick={() => {
               setShowSearch(false);
+              document.body.style.overflowY = "auto";
             }}
             className={`${
               showSearch ? "block" : "hidden"
@@ -159,6 +162,7 @@ export default function Header() {
               className="text-secondary5 lg:hidden"
               onClick={() => {
                 setShowSearch(!showSearch);
+                document.body.style.overflowY = "hidden";
               }}
             >
               <SearchIcon
@@ -170,24 +174,21 @@ export default function Header() {
 
             <div
               className={`${
-                showSearch ? "translate-x-0" : "translate-x-[150%]"
-              } fixed w-[70%] px-6 pt-6 lg:hidden h-[100vh] bg-white z-[60] shadow-home transition-all top-0 right-0 bottom-0`}
+                showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
+              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
-                <Search isFocused={isFocused} handleFocus={handleFocus} />
+                <Search isFocused={isFocused} handleFocus={handleFocus} showSearch={showSearch}/>
               </div>
 
               <button
                 onClick={() => {
                   setShowSearch(false);
+                  document.body.style.overflowY = "auto";
                 }}
-                className={`absolute top-6 -left-3 flex items-center p-1 rounded-full shadow-md bg-white`}
+                className={`absolute top-2 right-4 flex items-center p-1 rounded-full shadow-md bg-white`}
               >
-                <MdOutlineKeyboardArrowRight
-                  className={`${
-                    showSearch ? "" : "rotate-180"
-                  }  text-xl text-dark2 transition-all`}
-                />
+                <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
               </button>
             </div>
 
