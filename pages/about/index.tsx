@@ -2,9 +2,8 @@ import Collectibles from "@/components/AboutPage/Collectibles";
 import Features from "@/components/AboutPage/Features";
 import Introduction from "@/components/AboutPage/Introduction";
 import Market from "@/components/AboutPage/Market";
-import { NFTTop } from "@/components/Home";
+import NFTTop from "@/components/AboutPage/NFTTop";
 import Head from "next/head";
-import Image from "next/image";
 import React from "react";
 
 export default function About() {

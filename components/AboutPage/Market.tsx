@@ -12,12 +12,12 @@ function Market() {
           src="/images/about/OldFinal.gif"
           width={228}
           height={228}
-          className="w-full h-full lg:w-[370px] lg:h-[370px] rounded-lg"
+          className="w-full h-full lg:w-[300px] lg:h-[300px] rounded-lg"
           alt="features.svg"
         />
       </div>
 
-      <div className="flex flex-col items-center justify-between w-full gap-4 lg:w-2/4 lg:flex-row hover:text-secondary3">
+      <div className="flex flex-col items-center justify-between w-full gap-4 lg:items-start lg:w-2/4 lg:flex-row hover:text-secondary3">
         <div className="flex flex-col items-center justify-between lg:items-start ">
           <h4 className="text-2xl font-semibold ">DEMASK</h4>
           <p className="py-4 text-base ">
@@ -31,15 +31,9 @@ function Market() {
           src="/images/about/DemaskFinal.gif"
           width={228}
           height={228}
-          className="w-full h-full lg:w-[370px] lg:h-[370px] rounded-lg"
+          className="w-full h-full lg:w-[300px] lg:h-[300px] rounded-lg"
           alt="features.svg"
         />
-        {/* <Image
-          src={"/images/about/marketPool.svg"}
-          width={874}
-          height={106}
-          alt="about"
-        ></Image> */}
       </div>
     </div>
   );
