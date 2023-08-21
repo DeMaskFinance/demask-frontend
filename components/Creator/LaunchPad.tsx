@@ -292,6 +292,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           placeholder="Initial"
           type="number"
           id="initial"
+          autoComplete="off"
           value={initial || ""}
           className={
             emptyInputs.includes("initial")
@@ -314,6 +315,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         <input
           placeholder="Total Sale"
           type="number"
+          autoComplete="off"
           id="totalSale"
           value={totalSale || ""}
           className={
@@ -338,6 +340,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         <input
           placeholder="0x3248"
           type="text"
+          autoComplete="off"
           id="tokenPayment"
           value={tokenPayment || ""}
           className={
@@ -378,6 +381,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         <input
           placeholder="1,000"
           type="number"
+          autoComplete="off"
           id="price"
           value={price || ""}
           className={

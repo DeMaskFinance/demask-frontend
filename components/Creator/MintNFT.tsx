@@ -183,6 +183,7 @@ export default function MintNFT({
         placeholder="10,000"
         type="number"
         id="totalSupply"
+        autoComplete="off"
         value={totalSupply || ""}
         className={
           emptyInputs.includes("totalSupply")
