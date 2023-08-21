@@ -63,43 +63,15 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         // const firstAccount = accounts[0];
         // console.log("Danh sách tài khoản:", accounts);
         // console.log("Tài khoản đầu tiên:", firstAccount);
-        // const providerWallet = getProvider(walletName);
-        // try {
-        //   // const accounts = await (providerWallet as WalletConnectProvider).enable();
-        //   await providerWallet.enable();
-        //   const web3 = new Web3(providerWallet);
-        //   window.w3 = web3;
-        //   var accounts = await web3.eth.getAccounts();
-        //   console.log(accounts);
-
-        // } catch (error) {
-        //   console.log(error);
-        // }
-        // var provider1 = new WalletConnectProvider({
-        //   rpc: {
-        //     "1": "https://mainnet.eth.aragon.network",
-        //     "5": "https://goerli.eth.aragon.network",
-        //     "137": "https://polygon-rpc.com",
-        //     "80001": "https://rpc-mumbai.maticvigil.com",
-        //     "1666600000": "https://api.harmony.one/",
-        //     "1666700000": "https://api.s0.b.hmny.io/",
-        //     "97": "https://data-seed-prebsc-1-s1.binance.org:8545/",
-        //     "56": "https://bsc-dataseed.binance.org/",
-        //     "588": "https://stardust.metis.io/?owner=588",
-        //     "1088": "https://andromeda.metis.io/?owner=1088",
-        //     "43113": "https://api.avax-test.network/ext/bc/C/rpc",
-        //     "686": "https://eth-rpc-karura.aca-api.network/eth/http",
-        //     "43114": "https://api.avax.network/ext/bc/c/rpc",
-        //     "1311": "https://test.doschain.com/jsonrpc",
-        //   },
-        // });
-        // await provider1.enable();
-
-        // //  Create Web3 instance
-        // const web3 = new Web3(provider1);
-        // window.w3 = web3
-
-        // var accounts = await web3.eth.getAccounts(); // get all connected accounts
+        const providerWallet = getProvider(walletName);
+        try {
+          const accounts = await (providerWallet as WalletConnectProvider).enable();
+          // await providerWallet.enable();
+          console.log(accounts);
+          
+        } catch (error) {
+          console.log(error);
+        }
         break;
       default:
         const provider = getProvider(walletName);
