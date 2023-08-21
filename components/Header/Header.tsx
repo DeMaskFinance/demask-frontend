@@ -52,16 +52,16 @@ export default function Header() {
     // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
-  const provider = getProvider(wallet);
-  useEffect(() => {
-    const getAddress = async () => {
-      if (provider && provider.selectedAddress === null) {
-        console.log(provider);
-        disconnectWallet();
-      }
-    };
-    getAddress();
-  }, [provider]);
+  // const provider = getProvider(wallet);
+  // useEffect(() => {
+  //   const getAddress = async () => {
+  //     if (provider && provider.selectedAddress === null) {
+  //       console.log(provider);
+  //       disconnectWallet();
+  //     }
+  //   };
+  //   getAddress();
+  // }, [provider]);
   useEffect(() => {
     if (window.innerWidth >= 768) {
       let prevScrollPos = window.scrollY;
