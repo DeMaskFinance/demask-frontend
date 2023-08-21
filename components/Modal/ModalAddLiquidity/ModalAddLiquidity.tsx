@@ -19,6 +19,7 @@ import abiRouter from "@/abi/abiRouter.json";
 import TransitionURL from "@/components/Toast/TransionURL";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { BiLoaderAlt } from "react-icons/bi";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: any;
@@ -70,7 +71,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const balanceNFT = useNFTBalance(
     account,
     data.nftAddress,
-    data.tokenId,
+    data.nftId,
     wallet
   );
 
@@ -102,37 +103,37 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   };
 
   useEffect(() => {
-    if (tokenAddress !== "MATIC") {
-      let amountErcDesired;
-      if (
-        data.dmlAddress !==
-        "0x0000000000000000000000000000000000000000" &&
-        reserves &&
-        inputNFT
-      ) {
-        if (reserves[0] && reserves[1]) {
-          amountErcDesired = ethers.BigNumber.from(inputNFT)
-            .mul(reserves[0])
-            .div(reserves[1])
-            .mul(105)
-            .div(100);
-        }
-      } else {
-        amountErcDesired = handleBignumber(
-          Number(inputToken),
-          Number(decimals)
-        );
-      }
+    let amountErcDesired;
+    if (
+      data.dmlAddress !== "0x0000000000000000000000000000000000000000" &&
+      reserves &&
+      inputNFT
+    ) {
       if (reserves[0] && reserves[1]) {
-        setAmountErcDesired(amountErcDesired);
-        const amountErcDesiredToDec = handleBignumbertoDec(
-          amountErcDesired,
-          18
-        );
-        setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+        amountErcDesired = ethers.BigNumber.from(inputNFT)
+          .mul(reserves[0])
+          .div(reserves[1])
+          .mul(105)
+          .div(100);
       }
+    } else {
+      amountErcDesired = handleBignumber(
+        Number(inputToken),
+        Number(decimals)
+      );
+    }
+    setAmountErcDesired(amountErcDesired);
+    if (amountErcDesired) {
+      const amountErcDesiredToDec = divideByDecimal(
+        amountErcDesired?.toString(),
+        '18'
+      );
+      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
     }
   }, [inputNFT, inputToken]);
+  // console.log(amountErcDesired.toString());
+  // console.log(amountErcDesiredToDec.toString());
+  
   useEffect(() => {
     const checkApproveToken = async () => {
       if (tokenAddress !== "MATIC") {
@@ -175,7 +176,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       const signer = provider.getSigner();
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      const value = handleBignumber(Number(inputToken), 18);
+      // const value = handleBignumber(Number(inputToken), 18);
 
       try {
         let result;
@@ -184,19 +185,19 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         if (tokenAddress === "MATIC") {
           result = await contract.addLiquidityETH(
             data.nftAddress,
-            data.tokenId,
+            data.nftId,
             inputNFT,
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value }
+            { gasLimit: 8000000, value : amountErcDesired }
           );
           transactionHash = result.hash;
         } else {
           result = await contract.addLiquidity(
             tokenAddress,
             data.nftAddress,
-            data.tokenId,
+            data.nftId,
             amountErcDesired,
             inputNFT,
             0,
@@ -280,7 +281,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     <p className="font-semibold">Token</p>
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
-                  {tokenAddress === "MATIC" ||
+                  {
                     data.dmlAddress ===
                     "0x0000000000000000000000000000000000000000" ? (
                     <input

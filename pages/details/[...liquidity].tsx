@@ -58,18 +58,18 @@ export default function DetailLiquidity() {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity) {
         console.log(isRewarded);
-        
+
         const result = await viewReward(dmlTokenLiquidity, account);
         const rewardDec = divideByDecimal(result.toString(), decimals);
         console.log(rewardDec);
-        
+
         setReward(rewardDec);
       } else {
         setReward("0");
       }
     };
     fetchDataReward();
-    
+
 
     // // Lắng nghe sự kiện RewardUpdated từ smart contract
     // contract.on("updateReward", fetchDataReward);
@@ -84,7 +84,7 @@ export default function DetailLiquidity() {
   //   "https://polygon-mumbai-bor.publicnode.com"
   // );
   // const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, provider);
-  
+
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -102,7 +102,7 @@ export default function DetailLiquidity() {
   };
   // console.log(account);
   // console.log(dmlTokenLiquidity);
-  
+
 
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["liquidityHistory", account, dmlTokenLiquidity],
@@ -146,7 +146,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
+    <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)] max-w-screen-xl mx-auto">
       <Head>
         <title>Detail Liquidity | DeMask</title>
       </Head>
@@ -201,73 +201,73 @@ export default function DetailLiquidity() {
                 </Button>
               </div>
             </div>
-            <h3 className="mt-5 mb-4 text-lg font-medium text-dark1">
-              History
-            </h3>
-            {account && data ? (
-              <div className="w-[100vw] lg:w-[50vw] overflow-hidden">
-                <div className="overflow-x-auto">
-                  <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),4fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">
-                    <p>Action</p>
-                    <p>Liquidity</p>
-                    <p>NFT</p>
-                    <p>Token</p>
-                    <p>Time</p>
+            <div className="p-2 mt-6 ">
+              <Button primary className="px-6 py-2 text-lg">History</Button>
+              {account && data ? (
+                <div className="w-[100vw] lg:w-[45vw] 3xl:w-[36vw] overflow-hidden mt-6">
+                  <div className="overflow-x-auto">
+                    <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),4fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">
+                      <p>Action</p>
+                      <p>Liquidity</p>
+                      <p>NFT</p>
+                      <p>Token</p>
+                      <p>Time</p>
+                    </div>
+                    <LiquiditiesHistory
+                      data={data}
+                      isFetching={isFetching}
+                      isLoading={isLoading}
+                    />
                   </div>
-                  <LiquiditiesHistory
-                    data={data}
-                    isFetching={isFetching}
-                    isLoading={isLoading}
-                  />
-                </div>
-                <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
-                  <button
-                    onClick={prevPage}
-                    disabled={isPreviousData || page === 1 || isFetching}
-                    className={`${isPreviousData || page === 1 || isFetching
+                  <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
+                    <button
+                      onClick={prevPage}
+                      disabled={isPreviousData || page === 1 || isFetching}
+                      className={`${isPreviousData || page === 1 || isFetching
                         ? "text-white bg-slate-300"
                         : "hover:text-white hover:bg-secondary2 transition-all"
-                      } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
-                  >
-                    <MdNavigateBefore />
-                  </button>
-                  <p>
-                    Page
-                    <span className="px-2 font-medium text-secondary2">
-                      {page}
-                    </span>{" "}
-                    of
-                    <span
-                      className="px-2 font-medium cursor-pointer text-secondary2"
-                      onClick={() =>
-                        page !== data?.totalPages && setPage(data?.totalPages)
-                      }
+                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                     >
-                      {data?.totalPages}
-                    </span>
-                  </p>
-                  <button
-                    onClick={nextPage}
-                    disabled={
-                      isPreviousData || page === data?.totalPages || isFetching
-                    }
-                    className={`${isPreviousData || page === data?.totalPages || isFetching
+                      <MdNavigateBefore />
+                    </button>
+                    <p>
+                      Page
+                      <span className="px-2 font-medium text-secondary2">
+                        {page}
+                      </span>{" "}
+                      of
+                      <span
+                        className="px-2 font-medium cursor-pointer text-secondary2"
+                        onClick={() =>
+                          page !== data?.totalPages && setPage(data?.totalPages)
+                        }
+                      >
+                        {data?.totalPages}
+                      </span>
+                    </p>
+                    <button
+                      onClick={nextPage}
+                      disabled={
+                        isPreviousData || page === data?.totalPages || isFetching
+                      }
+                      className={`${isPreviousData || page === data?.totalPages || isFetching
                         ? "text-white bg-slate-300"
                         : "hover:text-white hover:bg-secondary2 transition-all"
-                      } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
-                  >
-                    <MdOutlineNavigateNext />
-                  </button>
+                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                    >
+                      <MdOutlineNavigateNext />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-x-2">
-                <BsClock className="w-5 h-5" />
-                <p className="text-sm font-medium text-dark1">
-                  No events in this time range
-                </p>
-              </div>
-            )}
+              ) : (
+                <div className="flex items-center gap-x-2">
+                  <BsClock className="w-5 h-5" />
+                  <p className="text-sm font-medium text-dark1">
+                    No events in this time range
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         {account && data && (
