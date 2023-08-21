@@ -3,23 +3,28 @@ import TransitionURL from "@/components/Toast/TransionURL";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { getProvider } from "../connection/getProvider";
+import viewReward from "./viewReward";
+import divideByDecimal from "./divideByDecimal";
 interface RewardDMLProps {
   wallet: string;
-  dmlTokenLiquidity:string;
+  dmlTokenLiquidity: string;
   setIsRewarded: React.Dispatch<React.SetStateAction<boolean>>;
+  account: string;
+  decimals: string;
+  setReward: any;
 }
-const getRewardDML = async ({ wallet,dmlTokenLiquidity,setIsRewarded }: RewardDMLProps) => {
+const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsRewarded, account, decimals, setReward }: RewardDMLProps) => {
   const providerChoice = getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
   const signer = provider.getSigner();
   const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, signer);
-  console.log(contract);
-  
+
   try {
     const result = await contract.getReward({ gasLimit: 8000000 });
-    const receipt = await provider.getTransactionReceipt(result.hash);
-    // console.log(receipt.);
-    
+    await provider.waitForTransaction(result.hash);
+    const resultTest = await viewReward(dmlTokenLiquidity, account);
+    const rewardDec = divideByDecimal(resultTest.toString(), decimals);
+    setReward(rewardDec);
     toast.success(
       <TransitionURL type={"Reward"} transactionHash={result.hash} />,
       {

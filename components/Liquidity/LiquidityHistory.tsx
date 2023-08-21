@@ -31,7 +31,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item:any, index:number) => (
             <div
-              className="grid gap-4 lg:grid-cols-[80px,repeat(3,2fr),4fr] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 font-medium mb-2"
+              className="grid gap-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 font-medium mb-2"
               key={index}
             >
               <p>{item.action}</p>

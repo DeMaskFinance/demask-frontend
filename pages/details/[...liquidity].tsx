@@ -54,6 +54,19 @@ export default function DetailLiquidity() {
   }, [liquidity]);
 
   const { decimals } = useInformationDML(dmlTokenLiquidity);
+  const fetchDataRewardTest = async () => {
+    if (account && dmlTokenLiquidity) {
+      console.log(isRewarded);
+
+      const result = await viewReward(dmlTokenLiquidity, account);
+      const rewardDec = divideByDecimal(result.toString(), decimals);
+      console.log(rewardDec);
+
+      setReward(rewardDec);
+    } else {
+      setReward("0");
+    }
+  };
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity) {
@@ -70,20 +83,7 @@ export default function DetailLiquidity() {
     };
     fetchDataReward();
 
-
-    // // Lắng nghe sự kiện RewardUpdated từ smart contract
-    // contract.on("updateReward", fetchDataReward);
-
-    // // Cleanup khi component bị unmounted
-    // return () => {
-    //   contract.off("updateReward", fetchDataReward);
-    // };
   }, [dmlTokenLiquidity, account, isRewarded]);
-  // console.log(isRewarded);
-  // const provider = new ethers.providers.JsonRpcProvider(
-  //   "https://polygon-mumbai-bor.publicnode.com"
-  // );
-  // const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, provider);
 
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
@@ -95,7 +95,7 @@ export default function DetailLiquidity() {
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({ wallet, dmlTokenLiquidity, setIsRewarded });
+      getRewardDML({ wallet, dmlTokenLiquidity, setIsRewarded, account, decimals, setReward });
     } else {
       console.log("No account and DML");
     }
@@ -146,7 +146,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)] max-w-screen-xl mx-auto">
+    <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)] w-[80%] mx-auto">
       <Head>
         <title>Detail Liquidity | DeMask</title>
       </Head>
@@ -175,7 +175,7 @@ export default function DetailLiquidity() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col-reverse gap-x-20 lg:flex-row">
+      <div className="flex flex-col-reverse lg:flex-row">
         <div className="grow">
           <div className="h-full ">
             <div className="flex justify-between font-medium max-w-[500px]">
@@ -187,9 +187,10 @@ export default function DetailLiquidity() {
               </div>
               <div>
                 <p className="text-dark1">Reward</p>
-                <p className="text-xl text-secondary3">
-                  ${formatNumber(reward)}
-                </p>
+                <div className="text-xl text-secondary3">
+                  <span className="mr-2">{formatNumber(reward)}</span>
+                  <span>{tokenSymbol}</span>
+                </div>
               </div>
               <div>
                 <Button
@@ -204,9 +205,9 @@ export default function DetailLiquidity() {
             <div className="p-2 mt-6 ">
               <Button primary className="px-6 py-2 text-lg">History</Button>
               {account && data ? (
-                <div className="w-[100vw] lg:w-[45vw] 3xl:w-[36vw] overflow-hidden mt-6">
+                <div className="w-[100vw] lg:w-[40vw] 3xl:w-[36vw] overflow-hidden mt-6">
                   <div className="overflow-x-auto">
-                    <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),4fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">
+                    <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">
                       <p>Action</p>
                       <p>Liquidity</p>
                       <p>NFT</p>

@@ -8,7 +8,7 @@ function MaintenanceError() {
     const [seconds, setSeconds] = useState(0);
     const today = new Date();
     useEffect(() => {
-        const countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
+        const countDownDate = new Date("Dec 10, 2023 15:37:25").getTime();
 
         const interval = setInterval(() => {
             const now = new Date().getTime();

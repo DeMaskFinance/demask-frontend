@@ -17,18 +17,21 @@ export default function Overview() {
       </Head>
       <section className="max-w-screen-xl pt-8 mx-auto lg:px-8">
         <h1 className="mb-6 text-2xl font-medium">Demask Info & Analytics</h1>
-        <TabGroups choices={["TVL", "VOLUMN"]}
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-          isOverview />
-        {/* Charts Mobile/Tablet */}
-        <div className="mt-3 lg:hidden">
-          {activeChoice === 'TVL' ? (
-            <ChartTVL />
-          ) : (
-            <ChartVolumn />
-
-          )}
+        <div className="lg:hidden">
+          <div className="pt-3 rounded-lg shadow-chart">
+            <div className="ml-2">
+              <TabGroups choices={["TVL", "VOLUMN"]}
+                activeChoice={activeChoice}
+                onChoiceChange={handleChoiceChange}
+                isOverview />
+            </div>
+            {/* Charts Mobile/Tablet */}
+            {activeChoice === 'TVL' ? (
+              <ChartTVL />
+            ) : (
+              <ChartVolumn />
+            )}
+          </div>
         </div>
         {/* Charts PC */}
         <div className="hidden lg:grid grid-cols-1 gap-10 lg:grid-cols-2 md:grid-cols-2 h-[372px]">

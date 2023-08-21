@@ -42,6 +42,8 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
+  console.log(TVL);
+  
   return (
     <div className="flex flex-col gap-6 my-6 text-base font-medium lg:flex-row md:flex-row text-dark2">
       <div className="flex">
@@ -85,7 +87,7 @@ function StatisticChart() {
       </div>
       <div className="flex">
         <span className="mr-2 ">
-          TVL: {TVL && TVL !== null ? formatNumber(TVL && TVL.tvlInDay) : 0}{" "}
+          TVL: {TVL && TVL.tvlInDay ? formatNumber(TVL && TVL.tvlInDay) : 0}{" "}
         </span>
         (
         <span
