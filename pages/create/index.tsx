@@ -445,13 +445,30 @@ export default function Creator() {
           <div className="mb-4">
             <p className={styles.title}>Mint Option</p>
             <TabGroups
-            choices={["Mint", "Launchpad"]}
-            activeChoice={activeButton}
-            onChoiceChange={handleChoiceChange}
+              choices={["Mint", "Launchpad"]}
+              activeChoice={activeButton}
+              onChoiceChange={handleChoiceChange}
             />
           </div>
-
-          {activeButton === "Mint" ? (
+          <MintNFT
+            name={name}
+            symbol={symbol}
+            attributeItems={attributeItems}
+            description={description}
+            fileIPFS={fileIPFS}
+            selectedCategory={selectedCategory}
+            setEmptyInputs={setEmptyInputs}
+            emptyInputs={emptyInputs}
+            setName={setName}
+            setSymbol={setSymbol}
+            setFileIPFS={setFileIPFS}
+            setDescription={setDescription}
+            setAttributeItems={setAttributeItems}
+            setSelectedCategory={setSelectedCategory}
+            setSelectedFile={setSelectedFile}
+            fileType={fileType}
+          />
+          {/* {activeButton === "Mint" ? (
             <MintNFT
               name={name}
               symbol={symbol}
@@ -489,7 +506,7 @@ export default function Creator() {
               setSelectedFile={setSelectedFile}
               fileType={fileType}
             />
-          )}
+          )} */}
         </form>
       </div>
     </div>
