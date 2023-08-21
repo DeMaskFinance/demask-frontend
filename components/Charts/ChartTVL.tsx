@@ -57,7 +57,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
     <div>
       {
         Chart && (
-          <div className="h-full p-6 rounded-lg shadow-chart">
+          <div className="h-full p-6 rounded-lg lg:shadow-chart">
             <div className="mb-2 text-dark1">
               <p className="font-medium ">TVL</p>
               {activeData && (

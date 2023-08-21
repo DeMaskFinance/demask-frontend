@@ -113,7 +113,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     }
   }, [activeChoice])
   return (
-    <div className="p-6 rounded-lg shadow-chart lg:block">
+    <div className="p-6 rounded-lg lg:shadow-chart lg:block">
       {chartVolume && (
         <div>
           <div className="flex justify-between mb-2">
