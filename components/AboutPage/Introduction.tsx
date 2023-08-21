@@ -36,11 +36,11 @@ function Introduction() {
 
         <div className="lg:w-2/5">
           <Image
-            src="/images/about.svg"
-            alt="about.svg"
+            src="/images/about/About.png"
+            alt="aboutImage"
             width={480}
             height={480}
-            className="w-full h-full"
+            className="object-none w-full h-full"
           />
         </div>
       </div>

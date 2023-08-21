@@ -9,10 +9,10 @@ function Market() {
           <h4 className="text-2xl font-semibold">Old market</h4>
         </div>
         <Image
-          src="/images/about/features.svg"
+          src="/images/about/OldFinal.gif"
           width={228}
           height={228}
-          className="w-full h-full lg:w-[370px] lg:h-[370px]"
+          className="w-full h-full lg:w-[370px] lg:h-[370px] rounded-lg"
           alt="features.svg"
         />
       </div>
@@ -28,10 +28,10 @@ function Market() {
           </p>
         </div>
         <Image
-          src="/images/about/features.svg"
+          src="/images/about/DemaskFinal.gif"
           width={228}
           height={228}
-          className="w-full h-full lg:w-[370px] lg:h-[370px]"
+          className="w-full h-full lg:w-[370px] lg:h-[370px] rounded-lg"
           alt="features.svg"
         />
         {/* <Image
