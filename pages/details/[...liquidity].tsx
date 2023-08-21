@@ -16,6 +16,8 @@ import getRewardDML from "@/libs/utils/getReward";
 import viewReward from "@/libs/utils/viewReward";
 import images from "@/public/images";
 import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
+import abiDML from "@/abi/abiDML.json";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,17 +57,34 @@ export default function DetailLiquidity() {
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity) {
+        console.log(isRewarded);
+        
         const result = await viewReward(dmlTokenLiquidity, account);
         const rewardDec = divideByDecimal(result.toString(), decimals);
+        console.log(rewardDec);
+        
         setReward(rewardDec);
       } else {
         setReward("0");
       }
     };
     fetchDataReward();
-  }, [dmlTokenLiquidity, account, isRewarded]);
-  console.log(isRewarded);
+    
 
+    // // Lắng nghe sự kiện RewardUpdated từ smart contract
+    // contract.on("updateReward", fetchDataReward);
+
+    // // Cleanup khi component bị unmounted
+    // return () => {
+    //   contract.off("updateReward", fetchDataReward);
+    // };
+  }, [dmlTokenLiquidity, account, isRewarded]);
+  // console.log(isRewarded);
+  // const provider = new ethers.providers.JsonRpcProvider(
+  //   "https://polygon-mumbai-bor.publicnode.com"
+  // );
+  // const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, provider);
+  
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -81,9 +100,10 @@ export default function DetailLiquidity() {
       console.log("No account and DML");
     }
   };
-  console.log(account);
-  console.log(dmlTokenLiquidity);
+  // console.log(account);
+  // console.log(dmlTokenLiquidity);
   
+
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["liquidityHistory", account, dmlTokenLiquidity],
     queryFn: async () => {

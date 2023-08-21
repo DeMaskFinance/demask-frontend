@@ -326,6 +326,7 @@ export default function Creator() {
               type="text"
               id="name"
               value={name}
+              autoComplete="off"
               className={
                 emptyInputs.includes("name")
                   ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
@@ -350,6 +351,7 @@ export default function Creator() {
               type="text"
               id="symbol"
               value={symbol}
+              autoComplete="off"
               className={
                 emptyInputs.includes("symbol")
                   ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
@@ -388,6 +390,7 @@ export default function Creator() {
               <div className="flex items-center gap-x-2" key={item.id}>
                 <input
                   placeholder="Trait Type"
+                  autoComplete="off"
                   type="text"
                   id={`traitType_${item.id}`}
                   value={item.trait_type}
@@ -396,6 +399,7 @@ export default function Creator() {
                 />
                 <input
                   placeholder="Value"
+                  autoComplete="off"
                   type="text"
                   id={`value_${item.id}`}
                   value={item.value}

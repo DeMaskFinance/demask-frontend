@@ -19,6 +19,8 @@ import TransitionURL from "@/components/Toast/TransionURL";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import handleBignumber from "@/libs/utils/handleBignumber";
+import { BiLoaderAlt } from "react-icons/bi";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 interface ModalRemmoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -49,7 +51,9 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [amountToken, setAmountToken] = useState('');
     const [tokenAddress, setTokenAddress] = useState("");
     const [amountTokenMin, setAmountTokenMin] = useState("");
+    const [amountTokenDec, setAmountTokenDec] = useState("");
     const [amountNFTMin, setAmountNFTMin] = useState("");
+    const [tokenSymbol, setTokenSymbol] = useState("");
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -60,6 +64,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     };
 
     const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress);
+    const { balanceToken, decimals, bigNumberBalance, symbolToken } =
+      useInformationToken(account, tokenAddress, wallet);
     const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputLiquidity(e.target.value);
       setShowRequiredMessage(false);
@@ -87,42 +93,41 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     }, [activeChoice])
     const totalSupply = useTotalSupply(account, wallet, data.dmlAddress, isApprovedDML);
     // console.log(totalSupply);
+    // console.log(handleBignumber(Number(inputLiquidity), 18));
+    // console.log(decimals);
+    
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
-        const resAmountNFT = Number(inputLiquidity) * Number(reserves[1].toString()) / Number(totalSupply);
-        const amountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply);
-        const resAmountToken = Number(inputLiquidity) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(inputLiquidity) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(amountToken.toFixed(0))) / ((Number(reserves[1].toString()) - Number(resAmountNFT.toFixed(0))) * Number(totalSupply));
-        const resAmountNFTMin = new BigNumber(resAmountNFT).times(0.95)
-          .times(new BigNumber(10).pow(Number(decimals)))
-          .toFixed(0);
-        const resAmountTokenMin = resAmountToken * 0.95;
+        const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), 18);
+        const resAmountNFT = Number(amountLIQUIDITY) * Number(reserves[1].toString()) / Number(totalSupply);
+        const amountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply);
+        const resAmountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(amountToken.toFixed(0))) / ((Number(reserves[1].toString()) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
+        const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(),decimals)
+        const resAmountNFTMin = Math.floor(Number(resAmountNFT * 0.95));
+        const resAmountTokenMin = Math.floor(Number(resAmountToken * 0.95));
         setAmountNFT(resAmountNFT.toString());
         setAmountToken(resAmountToken.toString());
-        setAmountNFTMin(resAmountNFTMin);
-        setAmountTokenMin(resAmountTokenMin.toFixed(0));
-        console.log(resAmountNFT);
-        console.log(amountToken.toFixed(0));
-        console.log(resAmountToken);
-
+        setAmountNFTMin(resAmountNFTMin.toString());
+        setAmountTokenMin(resAmountTokenMin.toString());
+        setAmountTokenDec(resAmountTokenMinShow)
       }
     }, [inputLiquidity])
-    console.log(amountNFTMin);
-    console.log(amountTokenMin);
-
-
+    // console.log(amountNFT);
+    // console.log(amountTokenMin);
+    // console.log(amountTokenDec);
     const currentAllowance = useAllowanceDML(
       account,
       data.dmlAddress,
       wallet,
-      isApprovedDML
+      isApprovedDML,
+      inputLiquidity
     );
     // console.log(currentAllowance);
     // console.log(inputLiquidity);
     // console.log(Number(handleBignumber(Number(inputLiquidity), 18)));
-
+      
     useEffect(() => {
       const checkApproveToken = async () => {
-        console.log('123kkhihi');
         console.log(currentAllowance);
         if (currentAllowance && Number(currentAllowance) < Number(handleBignumber(Number(inputLiquidity), Number(decimals)))) {
           setIsApprovedLiquidity(false);
@@ -140,10 +145,9 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(reserves);
     // console.log(reserves[0].toString());
     // console.log(reserves[1].toString());
-    const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-      useInformationToken(account, tokenAddress, wallet);
-    console.log(isApprovedDML);
-    console.log(isApprovedLiquidity);
+    
+    // console.log(isApprovedDML);
+    // console.log(isApprovedLiquidity);
     const handleApproveDML = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
       if (inputLiquidity) {
         setShowRequiredMessage(false);
@@ -160,8 +164,6 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         console.log(inputLiquidityBN);
 
         try {
-          console.log("abc");
-
           await contract.approve(routerAddress, inputLiquidityBN);
           setIsApprovedDML(true);
         } catch (error) {
@@ -174,17 +176,19 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     useEffect(() => {
       if (account && data) {
         if (
-          data.tokenAddress ===
-          process.env.NEXT_PUBLIC_WETH
+          data.tokenAddress === process.env.NEXT_PUBLIC_NATIVE_ADDRESS
         ) {
+          setTokenSymbol("MATIC");
           setTokenAddress("MATIC");
         } else {
+          setTokenSymbol(data.tokenSymbol);
           setTokenAddress(data.tokenAddress);
         }
       }
     }, [data, account]);
-    console.log(account);
-    
+    // console.log(account);
+    // console.log(tokenAddress);
+
     const removeLiquidity = async () => {
       if (inputLiquidity && !isSufficientLiquidity) {
         const providerChoice = getProvider(wallet);
@@ -193,7 +197,10 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         const liquidity = handleBignumber(Number(inputLiquidity), Number(decimals));
-
+        console.log(liquidity);
+        console.log(amountTokenMin);
+        console.log(amountNFTMin);
+        
         try {
           let result;
           let transactionHash;
@@ -211,10 +218,6 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             );
             transactionHash = result.hash;
           } else {
-            console.log(tokenAddress);
-            console.log(liquidity);
-            console.log(amountTokenMin);
-            console.log(amountNFTMin);
             result = await contract.removeLiquidity(
               data.tokenAddress,
               data.nftAddress,
@@ -261,7 +264,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                 <div className="flex items-center leading-[16px] ml-1">
                   <span> {data.metadata.symbol}</span>
                   <span className="overflow-hidden">/</span>
-                  <span>{data.tokenSymbol}</span>
+                  <span>{tokenSymbol}</span>
                 </div>
               )}
             </p>
@@ -310,14 +313,16 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                     </div>
                     <div className={styles.inputItem} >
                       <div className="flex justify-between">
-                        <p>{amountNFTMin}</p>
+                        {reserves[0] && reserves[1] ? (<p>{amountNFTMin}</p>) : (
+                          <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                        )}
                         <p className="text-dark3">NFT</p>
                       </div>
                     </div>
                     <div className={styles.inputItem}>
                       <div className="flex justify-between">
-                        <p>{amountToken}</p>
-                        <p className="text-dark3">{data.tokenSymbol}</p>
+                        <p>{amountTokenDec}</p>
+                        <p className="text-dark3">{tokenSymbol}</p>
                       </div>
                     </div>
                     <div className="flex justify-center">

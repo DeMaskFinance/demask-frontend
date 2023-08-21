@@ -49,7 +49,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
       ) : (
         <>
           {data?.data.map((item: any, idx: number) => (
-            <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
+            <tr key={idx} className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
               <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                 {(data.currentPage - 1) * 10 + (idx + 1)}
               </td>

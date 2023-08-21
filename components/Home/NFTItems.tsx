@@ -203,9 +203,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       {nftItem.metadata.attributes && nftItem.metadata.attributes.length > 0 && (
         <div className="mb-4">
           <Swiper
-            pagination={{
-              dynamicBullets: true,
-            }}
+            // pagination={{
+            //   dynamicBullets: true,
+            // }}
             modules={[Pagination]}
             breakpoints={{
               0: {

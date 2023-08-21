@@ -18,8 +18,6 @@ const getTotalSupply = async (
     try {
       const currentTotalSupply = await contract.totalSupply();
       const totalSupply = currentTotalSupply.toString();
-      console.log(totalSupply);
-
       return totalSupply;
     } catch (error) {
       console.error(error);

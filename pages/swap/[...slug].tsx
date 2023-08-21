@@ -82,7 +82,7 @@ const Swap: React.FC = () => {
   useEffect(() => {
     if (slug) {
       setNftAddress(slug[0]);
-      if (slug[1] === process.env.NEXT_PUBLIC_WETH) {
+      if (slug[1] === process.env.NEXT_PUBLIC_NATIVE_ADDRESS) {
         setTokenAddress("MATIC");
       } else {
         setTokenAddress(slug[1]);
@@ -91,6 +91,8 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
+  console.log(tokenAddress);
+  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
     queryKey: ["NFT detail", idNFT, nftAddress],
@@ -415,7 +417,7 @@ const Swap: React.FC = () => {
       </Head>
       <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
         <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
-          {isSuccess ? (
+          {isSuccess && (
             <div className="flex flex-col items-center">
               <div className="">
                 {data.metadata.image && (
@@ -462,10 +464,6 @@ const Swap: React.FC = () => {
               >
                 See detail
               </p>
-            </div>
-          ) : (
-            <div className="flex items-center h-full">
-              <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
             </div>
           )}
           {isLoading && (

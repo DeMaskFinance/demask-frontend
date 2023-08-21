@@ -13,9 +13,10 @@ import Image from "next/image";
 interface SearchProps {
   isFocused: boolean;
   handleFocus: any;
+  showSearch:boolean;
 }
 
-const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
+const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSearch }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLParagraphElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -27,7 +28,11 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
-
+  // useEffect(() => {
+  //   if(showSearch === true){
+  //     searchRef.current?.focus();
+  //   }
+  // }, [showSearch]);
   const { isLoading: searchLoading,
     data: searchData,
     isFetching: searchFetching,
@@ -135,8 +140,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                 setClick(true);
               }}
               className={`border hide-clear rounded-lg relative pr-1 placeholder:text-dark2 transition-all ${active
-                ? "lg:w-[350px] 3xl:w-[450px] w-full h-[32px]  border-secondary5 pl-10"
-                : "w-[32px] h-[32px] placeholder:text-transparent bg-transparent transition-all"
+                ? "lg:w-[350px] 3xl:w-[450px] w-screen lg:h-[32px] h-[40px]  border-secondary5 pl-2 lg:pl-10"
+                : "w-screen lg:w-[32px] shadow-slate-100 border-dark3 shadow pl-2 lg:h-[32px] h-[40px]  bg-transparent transition-all"
                 } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
             />
@@ -145,14 +150,14 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus }) => {
                 width={32}
                 height={32}
                 className={`${active ? "" : ""
-                  } cursor-pointer absolute top-0 right-0 left-0 bottom-0 fill-secondary3`}
+                  } cursor-pointer absolute top-0 right-0 left-0 bottom-0 fill-secondary3 hidden lg:block`}
               />
             </div>
           </div>
 
           <ul
-            className={`border max-h-72 overflow-y-auto overflow-x-hidden ${click ? "block" : "hidden"
-              }  bg-white w-full rounded-lg mt-1  p-4 absolute top-8 right-0 left-0`}
+            className={`lg:border max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden ${click ? "block" : "block lg:hidden"
+              }  bg-white w-full rounded-lg mt-3 lg:mt-1 py-4 lg:px-4 absolute top-8 right-0 left-0`}
           >
             <div className={`${searchTerm === "" ? "block" : "hidden"}`}>
               <p className="block mb-2">

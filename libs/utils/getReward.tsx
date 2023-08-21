@@ -17,7 +17,9 @@ const getRewardDML = async ({ wallet,dmlTokenLiquidity,setIsRewarded }: RewardDM
   
   try {
     const result = await contract.getReward({ gasLimit: 8000000 });
-    setIsRewarded(true);
+    const receipt = await provider.getTransactionReceipt(result.hash);
+    // console.log(receipt.);
+    
     toast.success(
       <TransitionURL type={"Reward"} transactionHash={result.hash} />,
       {
@@ -31,6 +33,7 @@ const getRewardDML = async ({ wallet,dmlTokenLiquidity,setIsRewarded }: RewardDM
         theme: "light",
       }
     );
+    setIsRewarded(true);
   } catch (error) {
     console.error(error);
     setIsRewarded(false);

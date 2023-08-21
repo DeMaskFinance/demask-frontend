@@ -8,8 +8,6 @@ const useTotalSupply = (account: string,
   const [totalSupply, setTotalSupply] = useState("0");
   useEffect(() => {
     const fetchTotalSupplyDML = async () => {
-        console.log("123");
-        
       if (account && dmlAddress && wallet) {
         try {
           const res = await getTotalSupply(account,wallet,dmlAddress);

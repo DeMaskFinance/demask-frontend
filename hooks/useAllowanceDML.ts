@@ -2,13 +2,13 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import  abiDML  from '@/abi/abiDML.json';
-const useAllowanceDML = (account: string, dmlAddress: string, wallet: string,isApprovedDML:boolean) => {
+const useAllowanceDML = (account: string, dmlAddress: string, wallet: string,isApprovedDML:boolean,inputLiquidity:string) => {
   const [currentAllowance, setCurrentAllowance] = useState<string | null>(null);
-  console.log(account,dmlAddress,wallet,isApprovedDML);
+  // console.log(account,dmlAddress,wallet,isApprovedDML);
   useEffect(() => {
     const getAllowance = async () => {
-      if (account && dmlAddress && wallet && isApprovedDML) {
-        console.log(account,dmlAddress,wallet,isApprovedDML);
+      if (account && dmlAddress && wallet ) {
+        // console.log(account,dmlAddress,wallet,isApprovedDML);
         
         const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
         const contract = new ethers.Contract(dmlAddress, abiDML, provider);
@@ -16,8 +16,6 @@ const useAllowanceDML = (account: string, dmlAddress: string, wallet: string,isA
         try {
           const dmlAllowance = await contract.allowance(account, routerAddress);
           const allowanceValue = dmlAllowance.toString();
-          console.log(allowanceValue);
-          
           setCurrentAllowance(allowanceValue);
         } catch (error) {
           console.error(error);
@@ -28,7 +26,7 @@ const useAllowanceDML = (account: string, dmlAddress: string, wallet: string,isA
     };
 
     getAllowance();
-  }, [account, dmlAddress, wallet,isApprovedDML]);
+  }, [account, dmlAddress, wallet,isApprovedDML,inputLiquidity]);
 
   return currentAllowance;
 };

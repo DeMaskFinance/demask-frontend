@@ -57,8 +57,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   useEffect(() => {
     if (account && data) {
       if (
-        data.tokenAddress ===
-        process.env.NEXT_PUBLIC_WETH
+        data.tokenAddress === process.env.NEXT_PUBLIC_NATIVE_ADDRESS
       ) {
         setTokenSymbol("MATIC");
         setTokenAddress("MATIC");

@@ -128,7 +128,7 @@ const Reels: React.FC<ReelsProps> = ({
   // console.log(filter.nft);
 
   useEffect(() => {
-    if (filter.erc === process.env.NEXT_PUBLIC_WETH) {
+    if (filter.erc === process.env.NEXT_PUBLIC_NATIVE_ADDRESS) {
       setTokenAddressSwap("MATIC");
     } else {
       setTokenAddressSwap(filter.erc);

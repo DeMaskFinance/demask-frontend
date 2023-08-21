@@ -6,7 +6,11 @@ const viewReward = async (dmlToken: string, account: string) => {
   );
   if (dmlToken) {
     const contract = new ethers.Contract(dmlToken, abiDML, provider);
+    console.log(contract);
+    
     try {
+      console.log("test");
+      
       const result = await contract.viewReward(account);
       return result;
     } catch (error) {
