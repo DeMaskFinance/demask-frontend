@@ -13,7 +13,7 @@ import Image from "next/image";
 interface SearchProps {
   isFocused: boolean;
   handleFocus: any;
-  showSearch:boolean;
+  showSearch?:boolean;
 }
 
 const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSearch }) => {
