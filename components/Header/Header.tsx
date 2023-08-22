@@ -54,18 +54,19 @@ export default function Header() {
     updateAccount("");
   };
   const provider = getProvider(wallet);
-  const test = new ethers.providers.Web3Provider(provider) as any;
-  console.log(test.provider.selectedAddress);
-  
+
+
   useEffect(() => {
     const getAddress = () => {
       if (provider) {
-        if(test.provider.selectedAddress === null){
+        const test = new ethers.providers.Web3Provider(provider) as any;
+        console.log(test.provider.selectedAddress);
+        if (test.provider.selectedAddress === null) {
           console.log(provider);
           console.log(provider.selectedAddress);
           console.log(provider.chainId);
           console.log("abc");
-          
+
           disconnectWallet();
         }
       }
