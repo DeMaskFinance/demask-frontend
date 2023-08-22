@@ -52,7 +52,12 @@ export default function Header() {
     // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
-  // const provider = getProvider(wallet);
+  const provider = getProvider(wallet);
+  
+  if (provider && provider.selectedAddress === null) {
+    console.log(provider.selectedAddress);
+    disconnectWallet();
+  }
   // useEffect(() => {
   //   const getAddress = async () => {
   //     if (provider && provider.selectedAddress === null) {
@@ -104,7 +109,7 @@ export default function Header() {
 
   const [showSearch, setShowSearch] = useState(false);
   console.log(showSearch);
-  
+
   return (
     <>
       {/* <MenuMobile
@@ -153,9 +158,8 @@ export default function Header() {
               setShowSearch(false);
               document.body.style.overflowY = "auto";
             }}
-            className={`${
-              showSearch ? "block" : "hidden"
-            } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
+            className={`${showSearch ? "block" : "hidden"
+              } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
           <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
             <div
@@ -173,12 +177,11 @@ export default function Header() {
             </div>
 
             <div
-              className={`${
-                showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
-              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
+              className={`${showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
+                } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
-                <Search isFocused={isFocused} handleFocus={handleFocus} showSearch={showSearch}/>
+                <Search isFocused={isFocused} handleFocus={handleFocus} showSearch={showSearch} />
               </div>
 
               <button
@@ -243,7 +246,7 @@ export default function Header() {
                   className=" fill-white group-hover:fill-secondary5"
                 />
                 <span className="lg:hidden">
-                  <BsCaretDownFill/>
+                  <BsCaretDownFill />
                 </span>
               </button>
             </Tippy>
