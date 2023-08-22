@@ -59,6 +59,7 @@ export default function Header() {
         if(provider.selectedAddress === null){
           console.log(provider);
           console.log(provider.selectedAddress);
+          console.log("abc");
           
           disconnectWallet();
         }

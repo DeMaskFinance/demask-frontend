@@ -16,7 +16,7 @@ export const AccountProvider = ({ children }) => {
       setWallet(storedWallet);
     }
   }, [account]);
-  console.log(account);
+  // console.log(account);
   const updateAccount = (newAccount) => {
     setAccount(newAccount);
     localStorage.setItem("ACCOUNT_DEMASK", newAccount);
@@ -28,8 +28,8 @@ export const AccountProvider = ({ children }) => {
   };
   const provider = getProvider(wallet);
   useEffect(() => {
-    console.log(wallet);
-    console.log(provider);
+    // console.log(wallet);
+    // console.log(provider);
     if (window.ethereum) {
       const handleAccountsChanged = (accounts) => {
         if (accounts.length > 0) {
