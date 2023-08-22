@@ -22,6 +22,7 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import useSvgComponents from "../Picture/Picture";
 import Search from "../Search/SearchHeader";
 import { CgClose } from "react-icons/cg";
+import { ethers } from "ethers";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -53,12 +54,16 @@ export default function Header() {
     updateAccount("");
   };
   const provider = getProvider(wallet);
+  const test = new ethers.providers.Web3Provider(provider) as any;
+  console.log(test.provider.selectedAddress);
+  
   useEffect(() => {
     const getAddress = () => {
       if (provider) {
-        if(provider.selectedAddress === null){
+        if(test.provider.selectedAddress === null){
           console.log(provider);
           console.log(provider.selectedAddress);
+          console.log(provider.chainId);
           console.log("abc");
           
           disconnectWallet();
