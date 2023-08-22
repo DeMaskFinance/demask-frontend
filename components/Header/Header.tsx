@@ -53,20 +53,16 @@ export default function Header() {
     updateAccount("");
   };
   const provider = getProvider(wallet);
-  
-  if (provider && provider.selectedAddress === null) {
-    console.log(provider.selectedAddress);
-    disconnectWallet();
-  }
-  // useEffect(() => {
-  //   const getAddress = async () => {
-  //     if (provider && provider.selectedAddress === null) {
-  //       console.log(provider);
-  //       disconnectWallet();
-  //     }
-  //   };
-  //   getAddress();
-  // }, [provider]);
+  useEffect(() => {
+    const getAddress = () => {
+      if (provider ) {
+        if(provider.selectedAddress === null){
+          disconnectWallet();
+        }
+      }
+    };
+    getAddress();
+  }, [provider]);
   useEffect(() => {
     if (window.innerWidth >= 768) {
       let prevScrollPos = window.scrollY;
