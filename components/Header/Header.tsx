@@ -55,8 +55,11 @@ export default function Header() {
   const provider = getProvider(wallet);
   useEffect(() => {
     const getAddress = () => {
-      if (provider ) {
+      if (provider) {
         if(provider.selectedAddress === null){
+          console.log(provider);
+          console.log(provider.selectedAddress);
+          
           disconnectWallet();
         }
       }
