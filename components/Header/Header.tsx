@@ -23,6 +23,7 @@ import useSvgComponents from "../Picture/Picture";
 import Search from "../Search/SearchHeader";
 import { CgClose } from "react-icons/cg";
 import { ethers } from "ethers";
+import Web3 from "web3";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -57,16 +58,21 @@ export default function Header() {
 
 
   useEffect(() => {
-    const getAddress = () => {
+    const getAddress = async () => {
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
         console.log(test.provider.selectedAddress);
-        if (test.provider.selectedAddress === null) {
+        const selectedAddress1 = await test.getSigner().getAddress();
+        console.log(selectedAddress1);
+        if (test && test.provider.selectedAddress === null) {
           console.log(provider);
           console.log(provider.selectedAddress);
           console.log(provider.chainId);
           console.log("abc");
-
+          const web3 = new Web3(provider);
+          const accounts = await web3.eth.getAccounts();
+          const selectedAddress = accounts[0];
+          console.log(selectedAddress);
           disconnectWallet();
         }
       }
