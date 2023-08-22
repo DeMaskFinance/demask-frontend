@@ -72,6 +72,8 @@ const Swap: React.FC = () => {
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet } = useContext(AccountContext);
   const [dataChart, setDataChart] = useState<[]>([]);
+  const [checkApproveNFT,setCheckApproveNFT] = useState<boolean>(false);
+  const [checkApproveToken,setCheckApproveToken] = useState<boolean>(false);
   const [isLoadingDataChart, setIsLoadingDataChart] = useState<boolean>(false);
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -91,8 +93,7 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
-  console.log(tokenAddress);
-  
+
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
     queryKey: ["NFT detail", idNFT, nftAddress],
@@ -102,15 +103,15 @@ const Swap: React.FC = () => {
     },
     keepPreviousData: true,
   });
-  console.log(data);
-
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, nftAddress, wallet]);
+  }, [account, nftAddress, wallet,checkApproveNFT]);
+  console.log(isApprovedNFT);
+  
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -119,7 +120,9 @@ const Swap: React.FC = () => {
       const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        await contract.setApprovalForAll(routerAddress, true);
+        const result = await contract.setApprovalForAll(routerAddress, true);
+        await provider.waitForTransaction(result.hash);
+        setCheckApproveNFT(true);
       } catch (error) {
         console.error(error);
       }
@@ -156,8 +159,6 @@ const Swap: React.FC = () => {
         console.log(dmlToken.toLocaleLowerCase());
         setIsLoadingDataChart(true);
         const res = await swapAPI(dmlToken.toLocaleLowerCase());
-        console.log(res);
-
         setDataChart(res);
         setIsLoadingDataChart(false);
       }
@@ -243,7 +244,7 @@ const Swap: React.FC = () => {
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy]);
+  }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy,checkApproveToken]);
 
   const handleApproveToken = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -256,7 +257,9 @@ const Swap: React.FC = () => {
       const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        await contract.approve(routerAddress, amountBuy.toFixed());
+        const result = await contract.approve(routerAddress, amountBuy.toFixed());
+        await provider.waitForTransaction(result.hash);
+        setCheckApproveToken(true);
         setInputNFT("");
       } catch (error) {
         console.error(error);

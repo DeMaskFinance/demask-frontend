@@ -61,6 +61,8 @@ export default function AddLiquidity() {
   const { account, wallet } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
+  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
+  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -170,7 +172,7 @@ export default function AddLiquidity() {
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value : amountErcDesired }
+            { gasLimit: 8000000, value: amountErcDesired }
           );
           transactionHash = result.hash;
         } else {
@@ -211,6 +213,7 @@ export default function AddLiquidity() {
     }
   };
 
+
   const handleApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -219,8 +222,9 @@ export default function AddLiquidity() {
       const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        await contract.approve(routerAddress, inputToken);
-        setIsApprovedToken(true);
+        const result = await contract.approve(routerAddress, inputToken);
+        await provider.waitForTransaction(result.hash);
+        setCheckApproveToken(true);
       } catch (error) {
         console.error(error);
       }
@@ -248,14 +252,15 @@ export default function AddLiquidity() {
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress, inputToken]);
+  }, [account, wallet, tokenAddress, inputToken, checkApproveToken]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, nftAddress, wallet]);
+  }, [account, nftAddress, wallet, checkApproveNFT]);
+  console.log(checkApproveNFT);
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -264,7 +269,9 @@ export default function AddLiquidity() {
       const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        await contract.setApprovalForAll(routerAddress, true);
+        const result = await contract.setApprovalForAll(routerAddress, true);
+        await provider.waitForTransaction(result.hash);
+        setCheckApproveNFT(true);
       } catch (error) {
         console.error(error);
       }

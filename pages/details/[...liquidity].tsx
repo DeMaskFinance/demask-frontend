@@ -27,6 +27,7 @@ import { BsClock } from "react-icons/bs";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
 
 const style = {
   btnWallet:
@@ -39,9 +40,9 @@ export default function DetailLiquidity() {
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
   const [reward, setReward] = useState("");
-  const [isRewarded, setIsRewarded] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
+  const [isOpenTransation ,setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
@@ -54,24 +55,9 @@ export default function DetailLiquidity() {
   }, [liquidity]);
 
   const { decimals } = useInformationDML(dmlTokenLiquidity);
-  const fetchDataRewardTest = async () => {
-    if (account && dmlTokenLiquidity) {
-      console.log(isRewarded);
-
-      const result = await viewReward(dmlTokenLiquidity, account);
-      const rewardDec = divideByDecimal(result.toString(), decimals);
-      console.log(rewardDec);
-
-      setReward(rewardDec);
-    } else {
-      setReward("0");
-    }
-  };
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity) {
-        console.log(isRewarded);
-
         const result = await viewReward(dmlTokenLiquidity, account);
         const rewardDec = divideByDecimal(result.toString(), decimals);
         console.log(rewardDec);
@@ -83,7 +69,7 @@ export default function DetailLiquidity() {
     };
     fetchDataReward();
 
-  }, [dmlTokenLiquidity, account, isRewarded]);
+  }, [dmlTokenLiquidity, account]);
 
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
@@ -95,7 +81,7 @@ export default function DetailLiquidity() {
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({ wallet, dmlTokenLiquidity, setIsRewarded, account, decimals, setReward });
+      getRewardDML({ wallet, dmlTokenLiquidity, account, decimals, setReward,setIsOpenTransaction });
     } else {
       console.log("No account and DML");
     }
@@ -261,7 +247,7 @@ export default function DetailLiquidity() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-x-2">
+                <div className="flex items-center mt-6 gap-x-2">
                   <BsClock className="w-5 h-5" />
                   <p className="text-sm font-medium text-dark1">
                     No events in this time range
@@ -271,6 +257,7 @@ export default function DetailLiquidity() {
             </div>
           </div>
         </div>
+        
         {account && data && (
           <div className="justify-end max-w-[700px] mb-6 mx-auto">
             {data.metadata.image && (
@@ -353,6 +340,7 @@ export default function DetailLiquidity() {
           setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         />
       )}
+      <ModalTransation isOpenTransation={isOpenTransation} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true}/>
       <ToastContainer />
     </div>
   );

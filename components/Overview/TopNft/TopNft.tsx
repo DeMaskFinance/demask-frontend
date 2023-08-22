@@ -30,17 +30,17 @@ function TopNft() {
   }, [page, refetch]);
 
   return (
-    <div className="collectionList mb-8">
-      <div className="px-2 pt-2 pb-4 shadow-home rounded-lg overflow-hidden ">
+    <div className="mb-8 collectionList">
+      <div className="px-2 pt-2 pb-4 overflow-hidden rounded-lg shadow-home ">
         <TabGroups
           choices={["Top", "Trending"]}
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}
         />
-        <div className="px-6 pt-6 pb-0  overflow-x-scroll">
+        <div className="px-6 pt-6 pb-0 overflow-x-scroll">
           <table className="w-full text-left">
             <thead className="">
-              <tr className="flex lg:text-base md:text-base text-sm border-b pb-2">
+              <tr className="flex pb-2 text-sm border-b lg:text-base md:text-base">
                 <th className="flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                   #
                 </th>
@@ -57,10 +57,10 @@ function TopNft() {
                   $ Volume
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  $ TVL
+                  TVL
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  $ Total supply
+                  Total supply
                 </th>
               </tr>
             </thead>
@@ -74,7 +74,7 @@ function TopNft() {
             </tbody>
           </table>
         </div>
-        <div className="flex gap-10 pt-4 pb-2 justify-center  text-dark2">
+        <div className="flex justify-center gap-10 pt-4 pb-2 text-dark2">
           <button
             onClick={prevPage}
             disabled={isPreviousData || page === 1 || isFetching}
@@ -88,9 +88,9 @@ function TopNft() {
           </button>
           <p>
             Page
-            <span className="px-2 text-secondary2 font-medium">{page}</span> of
+            <span className="px-2 font-medium text-secondary2">{page}</span> of
             <span
-              className="px-2 text-secondary2 font-medium cursor-pointer"
+              className="px-2 font-medium cursor-pointer text-secondary2"
               onClick={() =>
                 page !== data?.totalPages && setPage(data?.totalPages)
               }

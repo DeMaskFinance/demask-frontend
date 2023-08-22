@@ -67,9 +67,21 @@ module.exports = {
           "0%": { transform: "translateY(-64px)" },
           "100%": { transform: "translateY(0)" },
         },
+        loadingTransaction: {
+          "0%": {
+            transform: "rotate(45deg) rotateX(-25deg) rotateY(25deg)",
+          },
+          "50%": {
+            transform: "rotate(45deg) rotateX(-385deg) rotateY(25deg)",
+          },
+          "100%": {
+            transform: "rotate(45deg) rotateX(-385deg) rotateY(385deg)",
+          },
+        },
       },
       animation: {
         scrollUpHeader: "scrollUpHeader 0.3s ease-in-out",
+        loadingTransaction: 'loadingTransaction 1s ease-in-out infinite',
       },
       container: {
         main: "1048px",

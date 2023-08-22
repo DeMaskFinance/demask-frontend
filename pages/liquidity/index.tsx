@@ -12,7 +12,6 @@ import { BiLoaderAlt } from "react-icons/bi";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 export default function Liquidity() {
   const { account, wallet } = useContext(AccountContext);
-  const hasLiquidity = true;
   const router = useRouter();
   const handleAddLiquidity = () => {
     const nftAddress = "0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70";
@@ -55,12 +54,7 @@ export default function Liquidity() {
       <div className="w-full">
         <h2 className="text-2xl text-black24">Your Liquidity</h2>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
-        {(!account || data?.pages[0].combinedRecords.length === 0 && !isLoading) && (
-          <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
-            No liquidity found.
-          </div>
-        )}
-        {account && data?.pages[0].combinedRecords.length === 0 && (
+        {((!account || data?.pages[0].combinedRecords.length === 0) && !isLoading) && (
           <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
             No liquidity found.
           </div>

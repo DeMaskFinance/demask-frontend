@@ -77,6 +77,8 @@ const Reels: React.FC<ReelsProps> = ({
   const [priceBuy, setPriceBuy] = useState<number>(0);
   const [priceSell, setPriceSell] = useState<number>(0);
   const [tokenAddressSwap, setTokenAddressSwap] = useState<string>("");
+  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
+  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -122,7 +124,7 @@ const Reels: React.FC<ReelsProps> = ({
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, filter, wallet]);
+  }, [account, filter, wallet,checkApproveNFT]);
   const balanceNFT = useNFTBalance(account, filter.nft, filter.Factory_Contract_id, wallet);
   // console.log(isLoadingInforDML);
   // console.log(filter.nft);
@@ -233,7 +235,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, filter.erc, amountNFTSubmit, amountTokenBuy]);
+  }, [account, wallet, filter.erc, amountNFTSubmit, amountTokenBuy,checkApproveToken]);
 
   const handleApproveNFT = async () => {
     if (account) {
@@ -243,7 +245,9 @@ const Reels: React.FC<ReelsProps> = ({
       const contract = new ethers.Contract(filter.nft, abiErc1155, signer);
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        await contract.setApprovalForAll(routerAddress, true);
+        const result = await contract.setApprovalForAll(routerAddress, true);
+        await provider.waitForTransaction(result.hash);
+        setCheckApproveNFT(true);
       } catch (error) {
         console.error(error);
       }
@@ -266,7 +270,9 @@ const Reels: React.FC<ReelsProps> = ({
       );
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        await contract.approve(routerAddress, amountBuy.toFixed());
+        const result = await contract.approve(routerAddress, amountBuy.toFixed());
+        await provider.waitForTransaction(result.hash);
+        setCheckApproveToken(true);
         setInputNFT("");
       } catch (error) {
         console.error(error);
