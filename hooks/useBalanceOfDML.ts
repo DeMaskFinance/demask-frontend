@@ -5,7 +5,7 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 const useBananceOfDML = (
   account: string,
   dmlToken: string,
-  isOpenTransaction: boolean
+  isOpenTransaction?: boolean
 ) => {
   const [balanceOfDML, setBalanceOfDML] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(
