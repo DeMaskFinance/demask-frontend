@@ -258,9 +258,9 @@ export default function DetailLiquidity() {
           </div>
         </div>
         
-        {account && data && (
+        {account && data?.metadata && (
           <div className="justify-end max-w-[700px] mb-6 mx-auto">
-            {data.metadata.image && (
+            {data.metadata?.image && (
               <Image
                 width={760}
                 height={760}
@@ -273,8 +273,8 @@ export default function DetailLiquidity() {
                 className="rounded-2xl max-w-[760px] max-h-[760px] w-full"
               />
             )}
-            {data.metadata.animation_url &&
-              !data.metadata.image && (
+            {data.metadata?.animation_url &&
+              !data.metadata?.image && (
                 <video
                   src={data.metadata.animation_url}
                   autoPlay
@@ -284,8 +284,8 @@ export default function DetailLiquidity() {
                   className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
                 />
               )}
-            {data.metadata.image &&
-              data.metadata.animation_url && (
+            {data.metadata?.image &&
+              data.metadata?.animation_url && (
                 <audio
                   autoPlay
                   loop

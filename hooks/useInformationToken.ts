@@ -6,7 +6,8 @@ import { getProvider } from "@/libs/connection/getProvider";
 const useInformationToken = (
   account: string,
   tokenAddress: string,
-  wallet: string
+  wallet: string,
+  isOpenTransaction?: boolean
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
@@ -16,7 +17,7 @@ const useInformationToken = (
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mumbai-bor.publicnode.com"
   );
-  
+
   // let tokenAddressContract = "";
   // if (tokenAddressSwap) {
   //   tokenAddressContract = tokenAddressSwap;
@@ -26,7 +27,7 @@ const useInformationToken = (
   useEffect(() => {
     const getInformationToken = async () => {
       if (tokenAddress) {
-        if ( tokenAddress === "MATIC") {
+        if (tokenAddress === "MATIC") {
           setDecimals("18");
           setSymbolToken("MATIC");
           try {
@@ -69,7 +70,7 @@ const useInformationToken = (
     };
 
     getInformationToken();
-  }, [tokenAddress,account,wallet]);
+  }, [tokenAddress, account, wallet, isOpenTransaction]);
 
   return {
     balanceToken,

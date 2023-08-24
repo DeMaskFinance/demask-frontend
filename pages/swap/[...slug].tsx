@@ -38,6 +38,7 @@ import { ChartLoading } from "@/components/Charts";
 import { metadataService } from "@/libs/service/metadataService";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -72,14 +73,15 @@ const Swap: React.FC = () => {
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet } = useContext(AccountContext);
   const [dataChart, setDataChart] = useState<[]>([]);
-  const [checkApproveNFT,setCheckApproveNFT] = useState<boolean>(false);
-  const [checkApproveToken,setCheckApproveToken] = useState<boolean>(false);
+  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
+  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isLoadingDataChart, setIsLoadingDataChart] = useState<boolean>(false);
+  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
   const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-    useInformationToken(account, tokenAddress, wallet);
+    useInformationToken(account, tokenAddress, wallet, isOpenTransaction);
   const { slug } = router.query;
   useEffect(() => {
     if (slug) {
@@ -94,7 +96,7 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
 
-  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
     queryKey: ["NFT detail", idNFT, nftAddress],
     queryFn: async () => {
@@ -109,9 +111,9 @@ const Swap: React.FC = () => {
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, nftAddress, wallet,checkApproveNFT]);
+  }, [account, nftAddress, wallet, checkApproveNFT]);
   console.log(isApprovedNFT);
-  
+
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -244,7 +246,7 @@ const Swap: React.FC = () => {
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy,checkApproveToken]);
+  }, [account, wallet, tokenAddress, inputNFT, amountTokenBuy, checkApproveToken]);
 
   const handleApproveToken = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -291,6 +293,7 @@ const Swap: React.FC = () => {
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         try {
           let result;
+          setIsOpenTransaction(true);
           if (tokenAddress === "MATIC") {
             result = await contract.buyETH(
               nftAddress,
@@ -311,7 +314,9 @@ const Swap: React.FC = () => {
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
             );
-          }
+          }    
+          await provider.waitForTransaction(result.hash);
+          setIsOpenTransaction(false);
           toast.success(
             <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
             {
@@ -327,6 +332,7 @@ const Swap: React.FC = () => {
           );
           setInputNFT("");
         } catch (error) {
+          setIsOpenTransaction(false);
           console.error(error);
         }
       }
@@ -356,6 +362,7 @@ const Swap: React.FC = () => {
 
         try {
           let result;
+          setIsOpenTransaction(true);
           if (tokenAddress === "MATIC") {
             result = await contract.sellETH(
               nftAddress,
@@ -378,6 +385,8 @@ const Swap: React.FC = () => {
               { gasLimit: 8000000 }
             );
           }
+          await provider.waitForTransaction(result.hash);
+          setIsOpenTransaction(false);
           toast.success(
             <TransitionURL type={"Sell NFT"} transactionHash={result.hash} />,
             {
@@ -393,6 +402,7 @@ const Swap: React.FC = () => {
           );
           setInputNFT("");
         } catch (error) {
+          setIsOpenTransaction(false);
           console.error(error);
         }
       }
@@ -421,53 +431,56 @@ const Swap: React.FC = () => {
       <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
         <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
           {isSuccess && (
-            <div className="flex flex-col items-center">
-              <div className="">
-                {data.metadata.image && (
-                  <Image
-                    src={data.metadata.image}
-                    alt="test"
-                    width={680}
-                    height={576}
-                    sizes="(max-width: 770px) 100vw"
-                    className="w-full rounded-lg lg:max-h-[80vh]"
-                    style={{
-                      objectFit: "contain",
-                    }}
-                    unoptimized
-                  />
-                )}
-                {!data.metadata.image && data.metadata.animation_url && (
-                  <video
-                    src={data.metadata.animation_url}
-                    autoPlay
-                    loop
-                    muted
-                    controls
-                    className="w-full rounded-lg"
-                  />
-                )}
-                {data.metadata.image && data.metadata.animation_url && (
-                  <audio
-                    autoPlay
-                    loop
-                    muted
-                    controls
-                    src={data.metadata.animation_url}
-                    className="mt-4 mb-2"
+            <>
+              {data?.metadata && (
+                <div className="flex flex-col items-center">
+                  <div className="">
+                    {data.metadata?.image && (
+                      <Image
+                        src={data.metadata.image}
+                        alt="test"
+                        width={680}
+                        height={576}
+                        sizes="(max-width: 770px) 100vw"
+                        className="w-full rounded-lg lg:max-h-[80vh]"
+                        style={{
+                          objectFit: "contain",
+                        }}
+                        unoptimized
+                      />
+                    )}
+                    {!data.metadata?.image && data.metadata?.animation_url && (
+                      <video
+                        src={data.metadata.animation_url}
+                        autoPlay
+                        loop
+                        muted
+                        controls
+                        className="w-full rounded-lg"
+                      />
+                    )}
+                    {data.metadata?.image && data.metadata?.animation_url && (
+                      <audio
+                        autoPlay
+                        loop
+                        muted
+                        controls
+                        src={data.metadata.animation_url}
+                        className="mt-4 mb-2"
+                      >
+                        Your browser does not support the
+                        <code>audio</code> element.
+                      </audio>
+                    )}
+                  </div>
+                  <p
+                    className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
+                    onClick={handleShowDetail}
                   >
-                    Your browser does not support the
-                    <code>audio</code> element.
-                  </audio>
-                )}
-              </div>
-              <p
-                className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
-                onClick={handleShowDetail}
-              >
-                See detail
-              </p>
-            </div>
+                    See detail
+                  </p>
+                </div>
+              )}</>
           )}
           {isLoading && (
             <div className="flex items-center h-full">
@@ -509,7 +522,7 @@ const Swap: React.FC = () => {
                 <div className="flex text-xl text-dark1">
                   {symbolToken && isSuccess ? (
                     <div className="flex items-center">
-                      {data.metadata.symbol ? (
+                      {data.metadata?.symbol ? (
                         <span>{data.metadata.symbol}</span>
                       ) : (
                         <span>{idNFT}</span>
@@ -608,7 +621,7 @@ const Swap: React.FC = () => {
                   >
                     {isSuccess && (
                       <p className="text-center">
-                        {data.metadata.symbol}
+                        {data.metadata?.symbol}
                       </p>
                     )}
                   </div>
@@ -616,7 +629,8 @@ const Swap: React.FC = () => {
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                   !isSufficientNFT &&
                   balanceNFT &&
-                  account && (
+                  account &&
+                  reserves[1] && (
                     <p
                       className="mt-0 mb-2 ml-3 text-xs text-red"
                       key="NFTbalance"
@@ -627,9 +641,11 @@ const Swap: React.FC = () => {
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                   ((!isSufficientTokenBuy &&
                     activeChoice === "BUY" &&
+                    reserves [0] &&
                     account) ||
                     (!isSufficientTokenSell &&
                       activeChoice === "SELL" &&
+                      reserves[0] &&
                       account)) && (
                     <p
                       className="mt-0 mb-2 ml-3 text-xs text-red"
@@ -751,7 +767,7 @@ const Swap: React.FC = () => {
         isOpenSearchNFT={isOpenSearchNFT}
       />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data && (
+      {data?.metadata && (
         <ModalDetail
           nameNFT={data.metadata.name}
           symbolNFT={data.metadata.symbol}
@@ -767,6 +783,7 @@ const Swap: React.FC = () => {
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
       />
+      <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       <ToastContainer />
     </div>
   );

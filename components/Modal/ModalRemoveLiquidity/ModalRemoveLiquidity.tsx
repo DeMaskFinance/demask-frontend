@@ -21,6 +21,10 @@ import "react-toastify/dist/ReactToastify.css";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { BiLoaderAlt } from "react-icons/bi";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import approveNFT from "@/libs/utils/approveNFT";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import { ModalWallet } from "../ModalWallet";
+import { ModalTransation } from "../ModalTransation";
 interface ModalRemmoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -46,6 +50,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [isSufficientLiquidity, setIsSufficientLiquidity] = useState<boolean>(false);
     const [isApprovedLiquidity, setIsApprovedLiquidity] = useState<boolean>(false);
     const [isApprovedDML, setIsApprovedDML] = useState<boolean>(false);
+    const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
     const [showRequiredMessage, setShowRequiredMessage] = useState(false);
     const [amountNFT, setAmountNFT] = useState('');
     const [amountToken, setAmountToken] = useState('');
@@ -54,6 +59,10 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [amountTokenDec, setAmountTokenDec] = useState("");
     const [amountNFTMin, setAmountNFTMin] = useState("");
     const [tokenSymbol, setTokenSymbol] = useState("");
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
+    const [checkApproveDML, setCheckApproveDML] = useState<boolean>(false);
+    const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -63,7 +72,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       setActiveChoice(choice);
     };
 
-    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress);
+    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress,isOpenTransaction);
     const { balanceToken, decimals, bigNumberBalance, symbolToken } =
       useInformationToken(account, tokenAddress, wallet);
     const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,14 +104,14 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(totalSupply);
     // console.log(handleBignumber(Number(inputLiquidity), 18));
     // console.log(decimals);
-    
+
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
         const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), 18);
         const resAmountNFT = Number(amountLIQUIDITY) * Number(reserves[1].toString()) / Number(totalSupply);
         const amountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply);
         const resAmountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(amountToken.toFixed(0))) / ((Number(reserves[1].toString()) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
-        const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(),decimals)
+        const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(), decimals)
         const resAmountNFTMin = Math.floor(Number(resAmountNFT * 0.95));
         const resAmountTokenMin = Math.floor(Number(resAmountToken * 0.95));
         setAmountNFT(resAmountNFT.toString());
@@ -125,7 +134,17 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(currentAllowance);
     // console.log(inputLiquidity);
     // console.log(Number(handleBignumber(Number(inputLiquidity), 18)));
-      
+    useEffect(() => {
+      const checkApproveNFT = async () => {
+        const result = await approveNFT(
+          account,
+          wallet,
+          data.nftAddress
+        );
+        setIsApprovedNFT(result);
+      };
+      checkApproveNFT();
+    }, [account, data.nftAddress, wallet, checkApproveNFT]);
     useEffect(() => {
       const checkApproveToken = async () => {
         console.log(currentAllowance);
@@ -136,7 +155,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         }
       };
       checkApproveToken();
-    }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance]);
+    }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance, checkApproveDML]);
     const { reserves, isLoadingReserves, res }: any = useFetchReservesDML(
       account,
       data.dmlAddress,
@@ -145,7 +164,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(reserves);
     // console.log(reserves[0].toString());
     // console.log(reserves[1].toString());
-    
+
     // console.log(isApprovedDML);
     // console.log(isApprovedLiquidity);
     const handleApproveDML = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
@@ -164,9 +183,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         console.log(inputLiquidityBN);
 
         try {
-          await contract.approve(routerAddress, inputLiquidityBN);
-          setIsApprovedDML(true);
+          const result = await contract.approve(routerAddress, inputLiquidityBN);
+          await provider.waitForTransaction(result.hash);
+          setCheckApproveDML(true);
         } catch (error) {
+          setCheckApproveDML(false);
           console.error(error);
         }
       } else {
@@ -200,11 +221,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         console.log(liquidity);
         console.log(amountTokenMin);
         console.log(amountNFTMin);
-        
+
         try {
           let result;
           let transactionHash;
-
+          setIsOpenTransaction(true);
           if (tokenAddress === "MATIC") {
             result = await contract.removeLiquidityETH(
               data.nftAddress,
@@ -231,6 +252,9 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             );
             transactionHash = result.hash;
           }
+          await provider.waitForTransaction(transactionHash);
+          setIsOpenTransaction(false);
+          setInputLiquidity('');
           toast.success(
             <TransitionURL
               type={"Remove Liquidity"}
@@ -248,6 +272,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             }
           );
         } catch (error) {
+          setIsOpenTransaction(false);
           console.error(error);
         }
       } else {
@@ -326,6 +351,23 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                       </div>
                     </div>
                     <div className="flex justify-center">
+                      {!isApprovedNFT && (
+                        <Button
+                          className="w-[126px] py-2 mx-auto"
+                          primary
+                          onClick={() =>
+                            handleApproveNFT(
+                              account,
+                              wallet,
+                              data.nftAddress,
+                              setIsOpen,
+                              setCheckApproveNFT,
+                            )
+                          }
+                        >
+                          APPROVE NFT
+                        </Button>
+                      )}
                       {!isApprovedLiquidity && account && (
                         <Button
                           className="w-[126px] py-2 mx-auto"
@@ -343,7 +385,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                           APPROVE DML
                         </Button>
                       )}
-                      {(isApprovedLiquidity) && (
+                      {(isApprovedLiquidity && isApprovedNFT) && (
                         <Button
                           className="p-2 mx-auto"
                           primary
@@ -365,6 +407,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
+        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+        <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
         <ToastContainer />
       </Wrapper>
     );

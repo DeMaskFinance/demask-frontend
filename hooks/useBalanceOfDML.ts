@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import abiDML from "@/abi/abiDML.json";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-const useBananceOfDML = (account: string, dmlToken: string) => {
+const useBananceOfDML = (
+  account: string,
+  dmlToken: string,
+  isOpenTransaction: boolean
+) => {
   const [balanceOfDML, setBalanceOfDML] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mumbai-bor.publicnode.com"
@@ -23,7 +27,7 @@ const useBananceOfDML = (account: string, dmlToken: string) => {
       }
     };
     getBalanceOf();
-  }, [dmlToken, account]);
+  }, [dmlToken, account, isOpenTransaction]);
   return { balanceOfDML };
 };
 export default useBananceOfDML;

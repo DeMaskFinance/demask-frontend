@@ -1,7 +1,13 @@
-import getBalanceNFT from '@/libs/utils/getBalanceNFT';
-import { useEffect, useState } from 'react';
+import getBalanceNFT from "@/libs/utils/getBalanceNFT";
+import { useEffect, useState } from "react";
 
-const useBalanceNFT = (account:string, nftAddress:string, idNFT:string, wallet:string) => {
+const useBalanceNFT = (
+  account: string,
+  nftAddress: string,
+  idNFT: string,
+  wallet: string,
+  isOpenTransaction?: boolean
+) => {
   const [balanceNFT, setBalanceNFT] = useState("0");
   useEffect(() => {
     const fetchBalanceNFT = async () => {
@@ -18,7 +24,7 @@ const useBalanceNFT = (account:string, nftAddress:string, idNFT:string, wallet:s
     };
 
     fetchBalanceNFT();
-  }, [account, idNFT, nftAddress, wallet]);
+  }, [account, idNFT, nftAddress, wallet, isOpenTransaction]);
 
   return balanceNFT;
 };

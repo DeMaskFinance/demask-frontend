@@ -22,7 +22,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     const fetchDataReward = async () => {
       if (account) {
         const result = await viewReward(liquidity.dmlAddress, account);
-        const rewardDec = divideByDecimal(result.toString(), decimals);
+        const rewardDec = divideByDecimal(result?.toString(), decimals);
         setReward(rewardDec);
       }
     };

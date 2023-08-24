@@ -36,6 +36,7 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { tokenDefault } from "@/libs/constants";
 import { useQuery } from "@tanstack/react-query";
 import { metadataService } from "@/libs/service/metadataService";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -63,6 +64,7 @@ export default function AddLiquidity() {
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
+  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -78,12 +80,13 @@ export default function AddLiquidity() {
     },
     keepPreviousData: true,
   });
-  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet);
+  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
   const { balanceToken, decimals, bigNumberBalance, symbolToken } = useBalanceToken(
     account,
     tokenAddress,
-    wallet
+    wallet,
+    isOpenTransaction
   );
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
@@ -163,7 +166,7 @@ export default function AddLiquidity() {
       try {
         let result;
         let transactionHash;
-
+        setIsOpenTransaction(true);
         if (tokenAddress === "MATIC") {
           result = await contract.addLiquidityETH(
             nftAddress,
@@ -189,6 +192,11 @@ export default function AddLiquidity() {
           );
           transactionHash = result.hash;
         }
+        await provider.waitForTransaction(transactionHash);
+        setIsOpenTransaction(false);
+        setInputNFT('');
+        setInputToken('');
+        setAmountErcDesiredToDec('');
         toast.success(
           <TransitionURL
             type={"Add Liquidity"}
@@ -206,6 +214,7 @@ export default function AddLiquidity() {
           }
         );
       } catch (error) {
+        setIsOpenTransaction(false);
         console.error(error);
       }
     } else {
@@ -291,6 +300,8 @@ export default function AddLiquidity() {
     setIsOpenSearchToken(true);
     document.body.style.overflowY = "hidden";
   };
+  // console.log(isApprovedNFT);
+
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14">
       <Head>
@@ -432,53 +443,57 @@ export default function AddLiquidity() {
         <div className="order-1 w-full lg:order-2">
           <div className="flex flex-col items-center w-full h-full ">
             {isSuccess && (
-              <div className="flex flex-col items-center">
-                <div className="flex flex-col items-center justify-center w-full h-full text-center ">
-                  {data.metadata.image && (
-                    <Image
-                      src={data.metadata.image}
-                      alt="test"
-                      width={680}
-                      height={576}
-                      sizes="(max-width: 770px) 100vw"
-                      className="w-full rounded-lg lg:max-h-[80vh]"
-                      style={{
-                        objectFit: "contain",
-                      }}
-                      unoptimized
-                    />
-                  )}
-                  {!data.metadata.image && data.metadata.animation_url && (
-                    <video
-                      src={data.metadata.animation_url}
-                      autoPlay
-                      loop
-                      muted
-                      controls
-                      className="w-full rounded-lg"
-                    />
-                  )}
-                  {data.metadata.image && data.metadata.animation_url && (
-                    <audio
-                      autoPlay
-                      loop
-                      muted
-                      controls
-                      src={data.metadata.animation_url}
-                      className="mt-4 mb-2"
+              <>
+                {data?.metadata && (
+                  <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center justify-center w-full h-full text-center ">
+                      {data.metadata?.image && (
+                        <Image
+                          src={data.metadata.image}
+                          alt="test"
+                          width={680}
+                          height={576}
+                          sizes="(max-width: 770px) 100vw"
+                          className="w-full rounded-lg lg:max-h-[80vh]"
+                          style={{
+                            objectFit: "contain",
+                          }}
+                          unoptimized
+                        />
+                      )}
+                      {!data.metadata?.image && data.metadata?.animation_url && (
+                        <video
+                          src={data.metadata.animation_url}
+                          autoPlay
+                          loop
+                          muted
+                          controls
+                          className="w-full rounded-lg"
+                        />
+                      )}
+                      {data.metadata?.image && data.metadata?.animation_url && (
+                        <audio
+                          autoPlay
+                          loop
+                          muted
+                          controls
+                          src={data.metadata.animation_url}
+                          className="mt-4 mb-2"
+                        >
+                          Your browser does not support the
+                          <code>audio</code> element.
+                        </audio>
+                      )}
+                    </div>
+                    <p
+                      className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
+                      onClick={handleShowDetail}
                     >
-                      Your browser does not support the
-                      <code>audio</code> element.
-                    </audio>
-                  )}
-                </div>
-                <p
-                  className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
-                  onClick={handleShowDetail}
-                >
-                  Show detail
-                </p>
-              </div>
+                      Show detail
+                    </p>
+                  </div>
+                )}
+              </>
             )}
             {isLoading && (
               <div className="flex items-center h-full">
@@ -494,7 +509,7 @@ export default function AddLiquidity() {
         isOpenSearchNFT={isOpenSearchNFT}
       />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data && (
+      {data?.metadata && (
         <ModalDetail
           nameNFT={data.metadata.name}
           symbolNFT={data.metadata.symbol}
@@ -510,6 +525,7 @@ export default function AddLiquidity() {
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
       />
+      <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       <ToastContainer />
     </div>
   );

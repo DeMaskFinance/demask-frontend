@@ -20,6 +20,8 @@ import TransitionURL from "@/components/Toast/TransionURL";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { BiLoaderAlt } from "react-icons/bi";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { ModalTransation } from "../ModalTransation";
+import { ModalWallet } from "../ModalWallet";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: any;
@@ -50,6 +52,9 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
+  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
+  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
+  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -123,17 +128,17 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       );
     }
     setAmountErcDesired(amountErcDesired);
-    if (amountErcDesired) {
+    if (amountErcDesired && decimals) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
-        '18'
+        decimals
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
     }
   }, [inputNFT, inputToken]);
   // console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec.toString());
-  
+
   useEffect(() => {
     const checkApproveToken = async () => {
       if (tokenAddress !== "MATIC") {
@@ -152,7 +157,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, tokenAddress, inputToken]);
+  }, [account, wallet, tokenAddress, inputToken, checkApproveToken]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(
@@ -163,7 +168,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, data.nftAddress, wallet]);
+  }, [account, data.nftAddress, wallet, checkApproveNFT]);
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -181,7 +186,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       try {
         let result;
         let transactionHash;
-
+        setIsOpenTransaction(true);
         if (tokenAddress === "MATIC") {
           result = await contract.addLiquidityETH(
             data.nftAddress,
@@ -190,7 +195,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value : amountErcDesired }
+            { gasLimit: 8000000, value: amountErcDesired }
           );
           transactionHash = result.hash;
         } else {
@@ -207,6 +212,11 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           );
           transactionHash = result.hash;
         }
+        await provider.waitForTransaction(transactionHash);
+        setIsOpenTransaction(false);
+        setInputNFT('');
+        setInputToken('');
+        setAmountErcDesiredToDec('');
         toast.success(
           <TransitionURL
             type={"Add Liquidity"}
@@ -224,6 +234,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           }
         );
       } catch (error) {
+        setIsOpenTransaction(false);
         console.error(error);
       }
     } else {
@@ -283,27 +294,27 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   </div>
                   {
                     data.dmlAddress ===
-                    "0x0000000000000000000000000000000000000000" ? (
-                    <input
-                      className={styles.inputItem}
-                      type="number"
-                      placeholder="Input amount Token"
-                      value={inputToken}
-                      onChange={handleGetToken}
-                    />
-                  ) : (
-                    <div>
-                      {reserves[0] && reserves[1] ? (
-                        <div className={styles.inputItem}>
-                          {amountErcDesiredToDec}
-                        </div>
-                      ) : (
-                        <div className={styles.inputItem}>
-                          <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
-                        </div>
-                      )}
-                    </div>
-                  )}
+                      "0x0000000000000000000000000000000000000000" ? (
+                      <input
+                        className={styles.inputItem}
+                        type="number"
+                        placeholder="Input amount Token"
+                        value={inputToken}
+                        onChange={handleGetToken}
+                      />
+                    ) : (
+                      <div>
+                        {reserves[0] && reserves[1] ? (
+                          <div className={styles.inputItem}>
+                            {amountErcDesiredToDec}
+                          </div>
+                        ) : (
+                          <div className={styles.inputItem}>
+                            <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   {isSufficientToken && (
                     <p
                       className="mb-2 ml-3 -mt-1 text-xs text-red"
@@ -325,7 +336,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       account,
                       wallet,
                       data.nftAddress,
-                      setIsOpen
+                      setIsOpen,
+                      setCheckApproveNFT,
                     )
                   }
                 >
@@ -342,8 +354,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       wallet,
                       tokenAddress,
                       inputToken,
-                      setIsApprovedToken,
-                      setIsOpen
+                      setIsOpen,
+                      setCheckApproveToken,
                     )
                   }
                 >
@@ -369,7 +381,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
         </button>
       </div>
+      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
     </Wrapper>
+
   );
 };
 
