@@ -68,7 +68,7 @@ function StatisticChart() {
       </div>
       <div className="flex ">
         <span className="mr-2 ">
-          Fees 24H: {volume && volume !== null ? formatNumber((volume.volumeInDay * 0.5).toString()) : 0}
+          Fees 24H: {volume && volume !== null ? formatNumber((volume.volumeInDay * 0.005).toString()) : 0}
         </span>
         (
         <span

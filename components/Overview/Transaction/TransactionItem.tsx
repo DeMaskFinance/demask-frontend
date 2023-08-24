@@ -19,7 +19,6 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
   isFetching,
   isLoading,
 }) => {
-  console.log(data);
 
   return (
     <>

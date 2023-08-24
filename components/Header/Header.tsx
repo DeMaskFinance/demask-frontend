@@ -38,7 +38,6 @@ export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount, wallet } = useContext(AccountContext);
-  const svgComponents = useSvgComponents();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -62,9 +61,13 @@ export default function Header() {
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
         console.log(test.provider.selectedAddress);
-        const selectedAddress1 = await test.getSigner().getAddress();
-        console.log(selectedAddress1);
-        if (test && test.provider.selectedAddress === null) {
+        // const selectedAddress1 = await test.getSigner().getAddress();
+        // console.log(selectedAddress1);
+        const web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        const selectedAddress = accounts[0];
+        console.log('web3'+selectedAddress);
+        if (provider && test.provider.selectedAddress === null) {
           console.log(provider);
           console.log(provider.selectedAddress);
           console.log(provider.chainId);
