@@ -130,7 +130,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   </span>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  {isFetching ? skeleton : formatNumber(item.TVL)}
+                  ${isFetching ? skeleton : formatNumber(item.TVL)}
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   {isFetching ? skeleton : formatNumber(item.totalSupply)}

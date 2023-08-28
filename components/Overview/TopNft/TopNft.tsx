@@ -57,7 +57,7 @@ function TopNft() {
                   $ Volume
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  TVL
+                  $ TVL
                 </th>
                 <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                   Total supply
