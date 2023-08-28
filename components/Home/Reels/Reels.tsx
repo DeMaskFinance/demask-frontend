@@ -118,8 +118,10 @@ const Reels: React.FC<ReelsProps> = ({
       setAmountNFTSubmit(selectedCategory);
     }
   }, [inputNFT, selectedCategory, activeSlideIndex, activeChoice]);
-
+  
+  
   const { reserves, isLoadingInforDML, reserveNFT, reserveToken } = useInformationDML(filter.dmlToken);
+  console.log(reserves[0].toString());
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, filter.nft);

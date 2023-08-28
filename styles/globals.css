@@ -144,7 +144,9 @@ html *::-webkit-scrollbar-track {
 .spinner div:nth-of-type(6) {
  transform: translateZ(22px);
 }
-
+.w3m-overlay {
+  z-index: 9999 !important;
+}
 @keyframes spinner-y0fdc1 {
  0% {
   transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);

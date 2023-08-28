@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import Head from "next/head";
-import AccountContext, { AccountProvider } from "@/context/AccountContext";
+import { AccountProvider } from "@/context/AccountContext";
 import {
   QueryClient,
   QueryClientProvider,
@@ -10,6 +10,10 @@ import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import { Poppins } from "next/font/google";
 import MaintenanceError from "./maintenanceError";
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/react'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { arbitrum, mainnet, polygon } from 'wagmi/chains'
 
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
@@ -28,6 +32,18 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+const chains = [arbitrum, mainnet, polygon]
+const projectId = '1af0159e7a959f2fff3f96c541aef2cb'
+
+const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors: w3mConnectors({ projectId, chains }),
+  publicClient
+})
+const ethereumClient = new EthereumClient(wagmiConfig, chains)
+
 export default function App({
   Component,
   pageProps,
@@ -57,19 +73,25 @@ export default function App({
             font-family: ${poppins.style.fontFamily};
           }
         `}</style>
-        {isMaintenanceMode ? ( 
-          <Layout>
-            <MaintenanceError /> 
-          </Layout>
-        ) : Component.PageLayout ? (
-          <Component.PageLayout>
-            <Component {...pageProps} />
-          </Component.PageLayout>
-        ) : (
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        )}
+        <WagmiConfig config={wagmiConfig}>
+          {isMaintenanceMode ? (
+            <Layout>
+              <MaintenanceError />
+            </Layout>
+          ) : Component.PageLayout ? (
+            <Component.PageLayout>
+              <Component {...pageProps} />
+            </Component.PageLayout>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </WagmiConfig>
+
+        <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
+          '--w3m-z-index': '9999'
+        }} />
       </QueryClientProvider>
     </AccountProvider>
   );

@@ -70,7 +70,6 @@ export default function DetailLiquidity() {
     fetchDataReward();
 
   }, [dmlTokenLiquidity, account]);
-
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

@@ -43,7 +43,7 @@ export default function Liquidity() {
           : undefined,
     }
   );
-
+    
   return (
     <div className="py-8 max-w-4xl mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
       <Head>

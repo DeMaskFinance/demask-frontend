@@ -10,6 +10,9 @@ import AccountContext from "@/context/AccountContext";
 import Wrapper from "../Wrapper";
 import { chainName, chainStringId } from "./connector";
 import { getWalletConnectProvider } from "./WalletConnectProvider";
+import { useWeb3Modal } from '@web3modal/react'
+import { useAccount, useEnsName} from 'wagmi'
+
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -22,6 +25,8 @@ const styles = {
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { account, updateAccount, updateWallet } = useContext(AccountContext);
   const [walletWeb3, setWalletWeb3] = useState("");
+  const { open, close } = useWeb3Modal();
+  const { address, isConnecting, isDisconnected } = useAccount();
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -55,20 +60,10 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           return false;
         }
       case "WalletConnect":
-        // const walletConnectProvider = new WalletConnectProvider({
-        //   infuraId: "9bab56a381cb440eb809f56e01c59de5",
-        // });
-        // const accounts = await walletConnectProvider.enable();
-        // // const accounts = await walletConnectProvider.send("eth_accounts");
-        // const firstAccount = accounts[0];
-        // console.log("Danh sách tài khoản:", accounts);
-        // console.log("Tài khoản đầu tiên:", firstAccount);
         const providerWallet = getProvider(walletName);
         try {
-          const accounts = await (providerWallet as WalletConnectProvider).enable();
-          // await providerWallet.enable();
-          console.log(accounts);
-          
+          open();
+          console.log(address);
         } catch (error) {
           console.log(error);
         }
@@ -105,7 +100,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   };
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
-      <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center lg:mt-[100px] rounded-lg relative pb-4">
+      <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center rounded-lg relative pb-4">
         <h2 className="p-6 mb-3 text-xl font-medium">Connect your wallet</h2>
         <p>If you don't have a wallet, you can create one now.</p>
         <div className="mt-4 font-medium">
@@ -145,6 +140,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
             />
             <p>Binance wallet</p>
           </div>
+          {/* <div>{address}</div> */}
         </div>
         <button
           className="absolute top-0 right-0 p-6 text-lg"
