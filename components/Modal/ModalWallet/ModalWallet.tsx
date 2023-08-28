@@ -140,7 +140,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
             />
             <p>Binance wallet</p>
           </div>
-          {/* <div>{address}</div> */}
+          {/* <p>{address}</p> */}
         </div>
         <button
           className="absolute top-0 right-0 p-6 text-lg"

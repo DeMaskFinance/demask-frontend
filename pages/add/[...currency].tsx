@@ -242,7 +242,7 @@ export default function AddLiquidity() {
     }
   };
   useEffect(() => {
-    const checkApproveToken = async () => {
+    const handleCheckApproveToken = async () => {
       if (tokenAddress === "MATIC") {
         setIsApprovedToken(true);
       } else {
@@ -260,8 +260,10 @@ export default function AddLiquidity() {
         }
       }
     };
-    checkApproveToken();
+    handleCheckApproveToken();
   }, [account, wallet, tokenAddress, inputToken, checkApproveToken]);
+  console.log(amountErcDesired);
+  
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
@@ -269,7 +271,6 @@ export default function AddLiquidity() {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet, checkApproveNFT]);
-  console.log(checkApproveNFT);
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -300,7 +301,6 @@ export default function AddLiquidity() {
     setIsOpenSearchToken(true);
     document.body.style.overflowY = "hidden";
   };
-  // console.log(isApprovedNFT);
 
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14">
