@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useContext } from "react";
 import Button from "@/components/Buttons/Button";
 import Head from "next/head";
 import Link from "next/link";
