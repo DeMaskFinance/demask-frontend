@@ -133,9 +133,7 @@ export default function AddLiquidity() {
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
     }
   }, [inputNFT, inputToken]);
-  // console.log(dmlToken);
-  // console.log(amountErcDesired.toString());
-  // console.log(amountErcDesiredToDec.toString());
+
   const tokenSymbolIcon = tokenDefault.find((item) => item.address === tokenAddress);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -251,19 +249,23 @@ export default function AddLiquidity() {
           wallet,
           tokenAddress
         );
-        console.log(currentAllowance);
+        if (amountErcDesired) {
+          console.log('Current token:' + currentAllowance);
+          console.log("amountERC UEFF:" + amountErcDesired);
 
-        if (Number(currentAllowance) < Number(amountErcDesired)) {
-          setIsApprovedToken(false);
-        } else {
-          setIsApprovedToken(true);
+          if (Number(currentAllowance) < Number(amountErcDesired.toString())) {
+            setIsApprovedToken(false);
+          } else {
+            setIsApprovedToken(true);
+          }
         }
       }
     };
     handleCheckApproveToken();
-  }, [account, wallet, tokenAddress, inputToken, checkApproveToken]);
-  console.log(amountErcDesired);
-  
+  }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired]);
+  console.log("out" + amountErcDesired.toString());
+  // console.log(inputToken);
+
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);

@@ -140,24 +140,29 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   // console.log(amountErcDesiredToDec.toString());
 
   useEffect(() => {
-    const checkApproveToken = async () => {
-      if (tokenAddress !== "MATIC") {
+    const handleCheckApproveToken = async () => {
+      if (tokenAddress === "MATIC") {
+        setIsApprovedToken(true);
+      } else {
         const currentAllowance = await approveToken(
           account,
           wallet,
           tokenAddress
         );
-        if (Number(currentAllowance) < Number(amountErcDesired)) {
-          setIsApprovedToken(false);
-        } else {
-          setIsApprovedToken(true);
+        if (amountErcDesired) {
+          console.log('Current token:' + currentAllowance);
+          console.log("amountERC UEFF:" + amountErcDesired);
+
+          if (Number(currentAllowance) < Number(amountErcDesired.toString())) {
+            setIsApprovedToken(false);
+          } else {
+            setIsApprovedToken(true);
+          }
         }
-      } else {
-        setIsApprovedToken(true);
       }
     };
-    checkApproveToken();
-  }, [account, wallet, tokenAddress, inputToken, checkApproveToken]);
+    handleCheckApproveToken();
+  }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(
