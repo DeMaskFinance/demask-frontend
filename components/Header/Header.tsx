@@ -19,11 +19,11 @@ import { BsCaretDownFill } from "react-icons/bs";
 import { LogoDeMaskBeta } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { ModalWallet } from "../Modal/ModalWallet";
-import useSvgComponents from "../Picture/Picture";
 import Search from "../Search/SearchHeader";
 import { CgClose } from "react-icons/cg";
 import { ethers } from "ethers";
 import Web3 from "web3";
+import { MenuNetwork } from "../Menu/MenuNetwork";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -66,7 +66,7 @@ export default function Header() {
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
         const selectedAddress = accounts[0];
-        console.log('web3'+selectedAddress);
+        console.log('web3' + selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
           console.log(provider);
           console.log(provider.selectedAddress);
@@ -209,62 +209,7 @@ export default function Header() {
                 <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
               </button>
             </div>
-
-            <Tippy
-              className=""
-              interactive
-              render={(attrs) => (
-                <div
-                  className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
-                  tabIndex={-1}
-                  {...attrs}
-                >
-                  <p className="p-2 text-base border-b-[1px] border-dark3">
-                    Select a network
-                  </p>
-                  <ul className="flex flex-col mt-2 font-normal gap-y-3">
-                    <li className={`${style.itemSub} gap-x-2 group`}>
-                      <EtherIcon
-                        width={24}
-                        height={24}
-                        className="fill-dark2 group-hover:fill-secondary4"
-                      />
-                      <p>Ethereum</p>
-                    </li>
-                    <li
-                      className={`${style.itemSub} gap-x-2 group text-secondary3`}
-                    >
-                      <PolygonIcon
-                        width={24}
-                        height={24}
-                        className="fill-secondary4"
-                      />
-                      <p>Polygon</p>
-                    </li>
-                    <li className={`${style.itemSub} gap-x-2 group`}>
-                      <BscIcon
-                        width={24}
-                        height={24}
-                        className=" group-hover:fill-secondary4"
-                      />
-                      <p>BNB Smart Chain</p>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            >
-              <button className={`${style.btnWallet} flex`}>
-                <p className="hidden lg:block">Polygon</p>
-                <PolygonIcon
-                  width={24}
-                  height={24}
-                  className=" fill-white group-hover:fill-secondary5"
-                />
-                <span className="lg:hidden">
-                  <BsCaretDownFill />
-                </span>
-              </button>
-            </Tippy>
+            <MenuNetwork />
             {account ? (
               <Tippy
                 interactive
