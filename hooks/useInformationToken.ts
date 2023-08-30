@@ -18,15 +18,9 @@ const useInformationToken = (
     "https://polygon-mumbai-bor.publicnode.com"
   );
 
-  // let tokenAddressContract = "";
-  // if (tokenAddressSwap) {
-  //   tokenAddressContract = tokenAddressSwap;
-  // } else {
-  //   tokenAddressContract = tokenAddress;
-  // }
   useEffect(() => {
     const getInformationToken = async () => {
-      if (tokenAddress) {
+      if (tokenAddress && account) {
         if (tokenAddress === "MATIC") {
           setDecimals("18");
           setSymbolToken("MATIC");

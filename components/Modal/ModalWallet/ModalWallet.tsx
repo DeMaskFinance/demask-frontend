@@ -8,11 +8,10 @@ import { checkNetwork } from "@/libs/validation/checkNetwork";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import AccountContext from "@/context/AccountContext";
 import Wrapper from "../Wrapper";
-import { chainName, chainStringId } from "./connector";
-import { getWalletConnectProvider } from "./WalletConnectProvider";
 import { useWeb3Modal } from '@web3modal/react'
-import { useAccount, useEnsName} from 'wagmi'
-
+import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { ethers } from "ethers";
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -26,12 +25,22 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { account, updateAccount, updateWallet } = useContext(AccountContext);
   const [walletWeb3, setWalletWeb3] = useState("");
   const { open, close } = useWeb3Modal();
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address, isConnecting, isDisconnected, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);
   };
+  useEffect(() => {
+    if (isConnected) {
+      // Thực hiện các hành động sau khi kết nối thành công
+      updateAccount(address);
+      updateWallet("WalletConnect");
+      document.body.style.overflowY = "auto";
+      setIsOpen(false);
+    }
+  }, [isConnected, address]);
   const connectWallet = async (walletName: string) => {
     switch (walletName) {
       case "Binance":
@@ -61,9 +70,15 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         }
       case "WalletConnect":
         const providerWallet = getProvider(walletName);
+        const providerTest = new ethers.providers.Web3Provider(providerWallet);
+        // console.log(providerWallet);
+        // console.log(new Web3(providerWallet));
+        // console.log(providerTest);
+        
         try {
-          open();
+          await open();
           console.log(address);
+          
         } catch (error) {
           console.log(error);
         }
@@ -98,6 +113,8 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         }
     }
   };
+  console.log(isConnected);
+  
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center rounded-lg relative pb-4">
@@ -140,7 +157,14 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
             />
             <p>Binance wallet</p>
           </div>
-          {/* <p>{address}</p> */}
+          {/* {isConnected ? (
+            <>
+              <p>{address}</p>
+              <button onClick={() => disconnect}>Disconnect</button>
+            </>
+          ) : (
+            <button onClick={() => console.log("abc")}>Disconnect</button>
+          )} */}
         </div>
         <button
           className="absolute top-0 right-0 p-6 text-lg"

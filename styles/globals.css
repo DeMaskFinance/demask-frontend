@@ -160,12 +160,7 @@ html *::-webkit-scrollbar-track {
   transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
  }
 }
-/* input.hide-clear[type="search"]::-webkit-search-decoration,
-input.hide-clear[type="search"]::-webkit-search-cancel-button,
-input.hide-clear[type="search"]::-webkit-search-results-button,
-input.hide-clear[type="search"]::-webkit-search-results-decoration {
-  background-color: red;
-} */
+
 
 .sub-title {
   z-index: 1;

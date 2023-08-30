@@ -11,7 +11,7 @@ const checkIsERC20 = async (contractAddress: string) => {
     const totalSupply = await contract.totalSupply()/Math.pow(10, decimals);
 
     // Kiểm tra các phương thức ERC20
-    if (name && symbol && totalSupply) {
+    if (name && symbol && totalSupply && decimals) {
       return {
         isERC20: true,
         name: name,

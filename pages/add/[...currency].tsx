@@ -80,6 +80,8 @@ export default function AddLiquidity() {
     },
     keepPreviousData: true,
   });
+  console.log(data);
+  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
   const { balanceToken, decimals, bigNumberBalance, symbolToken } = useBalanceToken(
@@ -220,7 +222,10 @@ export default function AddLiquidity() {
     }
   };
 
-
+  // const providerChoice = getProvider('Metamask');
+  // const provider = new ethers.providers.Web3Provider(providerChoice);
+  // console.log(provider);
+  
   const handleApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -250,9 +255,6 @@ export default function AddLiquidity() {
           tokenAddress
         );
         if (amountErcDesired) {
-          console.log('Current token:' + currentAllowance);
-          console.log("amountERC UEFF:" + amountErcDesired);
-
           if (Number(currentAllowance) < Number(amountErcDesired.toString())) {
             setIsApprovedToken(false);
           } else {
@@ -263,8 +265,7 @@ export default function AddLiquidity() {
     };
     handleCheckApproveToken();
   }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired]);
-  console.log("out" + amountErcDesired.toString());
-  // console.log(inputToken);
+
 
   useEffect(() => {
     const checkApproveNFT = async () => {
