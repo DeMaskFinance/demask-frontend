@@ -32,15 +32,15 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
     document.body.style.overflowY = "auto";
     setIsOpen(false);
   };
-  useEffect(() => {
-    if (isConnected) {
-      // Thực hiện các hành động sau khi kết nối thành công
-      updateAccount(address);
-      updateWallet("WalletConnect");
-      document.body.style.overflowY = "auto";
-      setIsOpen(false);
-    }
-  }, [isConnected, address]);
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     // Thực hiện các hành động sau khi kết nối thành công
+  //     updateAccount(address);
+  //     updateWallet("WalletConnect");
+  //     document.body.style.overflowY = "auto";
+  //     setIsOpen(false);
+  //   }
+  // }, [isConnected, address]);
   const connectWallet = async (walletName: string) => {
     switch (walletName) {
       case "Binance":
