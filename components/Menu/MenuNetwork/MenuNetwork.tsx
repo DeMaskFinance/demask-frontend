@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BscIcon, EtherIcon, PolygonIcon } from "@/components/Icons";
 import { network } from "@/libs/constants";
 import Tippy from "@tippyjs/react/headless";
@@ -13,21 +14,31 @@ const style = {
     btnWallet:
         "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
 };
-
+interface networkProps {
+    name: string;
+    logo: React.FC;
+    chain: string;
+}
 const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const router = useRouter();
+    const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
     const handleChangeNetwork = (chain: string) => {
         // get infor current url
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('chain', chain);
-
         // new url
         router.push(currentUrl.toString());
     };
-    const filterNetwork = network.find((item) => item.chain === router.query.chain)
-    const LogoComponent: any = filterNetwork?.logo;
-    console.log(filterNetwork);
+    useEffect(() => {
+        if (router.query.chain) {
+            const foundNetwork = network.find((item) => item.chain === router.query.chain);
+            setFilterNetwork(foundNetwork);
+        } else {
+            setFilterNetwork(network[1]);
+        }
+    }, [router.query]);
 
+    const LogoComponent: any = filterNetwork?.logo;
     return (
         <Tippy
             className=""

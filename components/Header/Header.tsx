@@ -24,6 +24,7 @@ import { CgClose } from "react-icons/cg";
 import { ethers } from "ethers";
 import Web3 from "web3";
 import { MenuNetwork } from "../Menu/MenuNetwork";
+// import { MenuNetwork } from "../Menu/MenuNetwork";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -38,6 +39,7 @@ export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount, wallet } = useContext(AccountContext);
+  
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
