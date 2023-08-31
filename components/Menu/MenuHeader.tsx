@@ -24,7 +24,7 @@ const subMenuTradeData = [
   {
     id: 1,
     name: "Swap",
-    url: "/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815",
+    url: `/swap/${process.env.NEXT_PUBLIC_CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
   },
   { id: 2, name: "Liquidity", url: "/liquidity" },
 ];
@@ -79,7 +79,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   <Link
                     className="text-base "
                     ref={tradeRef}
-                    href="/swap/0x519d124e4F2E536f36Ce9f54ADd6CD3022C16c70/MATIC/4544751815"
+                    href={
+                      `/swap/${process.env.NEXT_PUBLIC_CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+                    }
                   >
                     Trade
                   </Link>

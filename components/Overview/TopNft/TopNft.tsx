@@ -5,14 +5,15 @@ import { useQuery } from "@tanstack/react-query";
 import { MdOutlineNavigateNext, MdNavigateBefore } from "react-icons/md";
 import CollectionItem from "./CollectionItem";
 import { TabGroups } from "@/components/NavChoice";
+import useNetWork from "@/hooks/useNetwork";
 function TopNft() {
   const [activeChoice, setActiveChoice] = useState<string>("Top");
   const [page, setPage] = useState(1);
-
+  const { chainId } = useNetWork();
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["topNft"],
+    queryKey: ["topNft",chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/topNFT-list?page=${page}`);
+      const res = await categoryAPI(`/v2/topNFT-list?chainId=${chainId}&page=${page}`);
       return res;
     },
 

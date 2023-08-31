@@ -9,6 +9,7 @@ import { AvatarUser } from "../Avatars";
 import { SearchIcon } from "../Icons";
 import { NFTTopService } from "@/libs/service";
 import Image from "next/image";
+import useNetWork from "@/hooks/useNetwork";
 
 interface SearchProps {
   isFocused: boolean;
@@ -24,7 +25,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
   const getHistory = getCookie("searchHistory");
   const searchsHistory = getHistory ? JSON.parse(getHistory) : [];
   const [searchHistory, setSearchHistory] = useState<any[]>(searchsHistory);
-
+  const { chainId } = useNetWork();
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
@@ -61,7 +62,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
     isPreviousData: isTopNftPreviousData, } = useQuery({
       queryKey: ["topNftSearch"],
       queryFn: async () => {
-        const res = await NFTTopService(1);
+        const res = await NFTTopService(1,chainId);
         return res;
       },
 

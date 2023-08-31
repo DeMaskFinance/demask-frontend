@@ -5,14 +5,16 @@ import React, { useState, useEffect } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import ChartLoading from "./ChartLoading";
 import formatNumber from "@/libs/utils/formatNumer";
+import useNetWork from "@/hooks/useNetwork";
 
 interface ChartTVLProps { }
 
 const ChartTVL: React.FC<ChartTVLProps> = () => {
+  const { chainId } = useNetWork();
   const { data: Chart, isLoading } = useQuery({
-    queryKey: ["chart"],
+    queryKey: ["chart", chainId],
     queryFn: async () => {
-      const res = await categoryAPI("/tvlChart?intervalDate=30");
+      const res = await categoryAPI(`v2/tvlChart?chainId=${chainId}&intervalDate=30`);
       return res;
     },
   });

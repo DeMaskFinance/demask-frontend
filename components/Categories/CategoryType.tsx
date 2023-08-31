@@ -15,13 +15,15 @@ import images from "@/public/images";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import useInformationDML from "@/hooks/useInformationDML";
 import NFTCategory from "./NFTCategory";
+import useNetWork from "@/hooks/useNetwork";
 
 const Category = ({ label }: { label: string }) => {
+  const { chainId } = useNetWork();
   const swiperRef = useRef<any>(null);
   const { data, isLoading } = useQuery({
-    queryKey: [label],
+    queryKey: [label,chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/items/${label}?page=1&limit=10`);
+      const res = await categoryAPI(`/v2/items/${label}?chainId=${chainId}&page=1&limit=10`);
       return res;
     },
   });

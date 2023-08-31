@@ -118,10 +118,10 @@ const Reels: React.FC<ReelsProps> = ({
       setAmountNFTSubmit(selectedCategory);
     }
   }, [inputNFT, selectedCategory, activeSlideIndex, activeChoice]);
-  
-  
-  const { reserves, isLoadingInforDML, reserveNFT, reserveToken } = useInformationDML(filter.dmlToken);
-  console.log(reserves[0].toString());
+
+
+  // const { reserves, isLoadingInforDML, filter.reserveNFT, reserveToken } = useInformationDML(filter.dmlToken);
+  // console.log(reserves[0].toString());
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, filter.nft);
@@ -149,17 +149,18 @@ const Reels: React.FC<ReelsProps> = ({
     filter.dmlToken,
     filter.erc,
     filter.nft,
-    filter.Factory_Contract_id,
+    filter.FactoryContract_id,
     wallet,
     activeChoice
   );
-
+    console.log(filter);
+    
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     amountNFTSubmit,
     filter.dmlToken,
     filter.erc,
     filter.nft,
-    filter.Factory_Contract_id,
+    filter.FactoryContract_id,
     wallet,
     activeChoice
   );
@@ -188,7 +189,7 @@ const Reels: React.FC<ReelsProps> = ({
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
-        if (reserves && Number(amountNFTSubmit) < Number(reserves[1])) {
+        if (filter.reserveNFT && Number(amountNFTSubmit) < Number(filter.reserveNFT)) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
@@ -301,8 +302,8 @@ const Reels: React.FC<ReelsProps> = ({
       if (
         isSufficientNFT &&
         isSufficientTokenBuy &&
-        Number(reserves[1].toString()) > 1 &&
-        Number(reserves[0].toString()) > 0
+        Number(filter.reserveNFT) > 1 &&
+        Number(filter.reserveToken) > 0
       ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -371,8 +372,8 @@ const Reels: React.FC<ReelsProps> = ({
       if (
         isSufficientNFT &&
         isSufficientTokenSell &&
-        Number(reserves[1].toString()) > 0 &&
-        Number(reserves[0].toString()) > 0
+        Number(filter.reserveNFT) > 1 &&
+        Number(filter.reserveToken) > 0
       ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -428,7 +429,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     }
   };
-  
+
   return (
     <div className="gap-4 lg:h-fit h-[82vh]">
       {isSuccess && (
@@ -576,11 +577,13 @@ const Reels: React.FC<ReelsProps> = ({
                       <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
                         <p className="flex flex-col items-center gap-2 mb-4 text-secondary4">
                           <span className="flex-shrink-0">Reserve NFT:</span>
-                          {isLoadingInforDML ? (
-                            <span className="block w-20 h-6 rounded-xl animate-pulse bg-slate-200"></span>
+                          {filter.reserveNFT ? (
+                            <span className="block">
+                              {formatNumber(filter.reserveNFT)}
+                            </span>
                           ) : (
                             <span className="block">
-                              {formatNumber(reserves[1])}
+                              {formatNumber(filter.reserveNFT)}
                             </span>
                           )}
                         </p>
@@ -588,15 +591,12 @@ const Reels: React.FC<ReelsProps> = ({
                         <p className="flex flex-col items-center gap-2 mb-4 text-secondary4">
                           <span className="flex-shrink-0">Reserve Token:</span>
 
-                          {!reserves[0] ? (
+                          {!filter.reserveToken ? (
                             <span className="block w-20 h-6 rounded-xl animate-pulse bg-slate-200"></span>
                           ) : (
                             <span className="block">
                               {formatNumber(
-                                divideByDecimal(
-                                  reserves[0].toString(),
-                                  decimals
-                                )
+                                filter.reserveToken
                               )}
                             </span>
                           )}
@@ -656,7 +656,7 @@ const Reels: React.FC<ReelsProps> = ({
                         )}
                       </div>
                     )}
-                    {!isSufficientNFT && balanceNFT && account && reserveNFT && (
+                    {!isSufficientNFT && balanceNFT && account && filter.reserveNFT && (
                       <p
                         className="mt-4 mb-2 ml-3 text-xs text-center text-red"
                         key="NFTbalance"
@@ -666,18 +666,18 @@ const Reels: React.FC<ReelsProps> = ({
                     )}
                     {((!isSufficientTokenBuy &&
                       activeChoice === "BUY" &&
-                      reserveToken &&
+                      filter.reserveToken &&
                       account) ||
                       (!isSufficientTokenSell &&
                         activeChoice === "SELL" &&
-                        reserveToken &&
+                        filter.reserveToken &&
                         account)) && (
-                    <p
-                      className="mt-4 ml-3 text-xs text-center text-red"
-                      key="Tokenbalance"
-                    >
-                      Insufficient Token balance
-                    </p>
+                        <p
+                          className="mt-4 ml-3 text-xs text-center text-red"
+                          key="Tokenbalance"
+                        >
+                          Insufficient Token balance
+                        </p>
                       )}
                     <div className="flex justify-center w-full mt-6">
                       {isApprovedToken && account && activeChoice === "BUY" && (
@@ -834,17 +834,17 @@ const Reels: React.FC<ReelsProps> = ({
                     width={32}
                     height={32}
                   />
-                  <p className="font-medium text-dark2">{`${filter.creatorAddress.slice(
+                  <p className="font-medium text-dark2">{`${filter.creator.slice(
                     0,
                     4
-                  )}...${filter.creatorAddress.slice(-5)}`}</p>
+                  )}...${filter.creator.slice(-5)}`}</p>
                   <p className="-translate-y-[4px] mx-1">.</p>
                   <p className="text-xs first-letter:uppercase">
                     {filter.blockTimestamp}
                   </p>
                 </div>
                 <div className="mx-auto mb-2 w-fit">
-                  {filter.metadata.category.map((item: any, index: number) => (
+                  {filter.metadata.category?.map((item: any, index: number) => (
                     <Link
                       href={`/category/${item.toLowerCase()}`}
                       key={index}
@@ -854,10 +854,6 @@ const Reels: React.FC<ReelsProps> = ({
                     </Link>
                   ))}
                 </div>
-
-                {/* <div className="mb-4 font-light text-center min-h-[72px] text-dark2 line-clamp-3">
-                  {filter.metadata.description}
-                </div> */}
 
                 <div className="flex flex-col items-center">
                   {amountNFTSubmit ? (
@@ -905,26 +901,24 @@ const Reels: React.FC<ReelsProps> = ({
                   <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
                     <p className="flex items-center gap-2 mb-4 text-secondary4">
                       <span className="flex-shrink-0">Reserve NFT:</span>
-                      {isLoadingInforDML ? (
-                        <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
-                      ) : (
+                      {filter.reserveNFT ? (
                         <span className="block">
-                          {formatNumber(reserves[1])}
+                          {formatNumber(filter.reserveNFT)}
                         </span>
+                      ) : (
+                        <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                       )}
                     </p>
-
                     <p className="flex items-center gap-2 mb-4 text-secondary4">
                       <span className="flex-shrink-0">Reserve Token:</span>
-
-                      {isLoadingInforDML ? (
-                        <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
-                      ) : (
+                      {filter.reserveToken ? (
                         <span className="block">
                           {formatNumber(
-                            divideByDecimal(reserves[0].toString(), decimals)
+                            divideByDecimal(filter.reserveToken, filter.tokenDecimals)
                           )}
                         </span>
+                      ) : (
+                        <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                       )}
                     </p>
                   </div>
@@ -983,7 +977,7 @@ const Reels: React.FC<ReelsProps> = ({
                   </div>
                 )}
 
-                {!isSufficientNFT && balanceNFT && account && reserves[1] && (
+                {!isSufficientNFT && balanceNFT && account && filter.reserveNFT && (
                   <p
                     className="mt-4 mb-2 ml-3 text-xs text-center text-red"
                     key="NFTbalance"
@@ -993,11 +987,11 @@ const Reels: React.FC<ReelsProps> = ({
                 )}
                 {((!isSufficientTokenBuy &&
                   activeChoice === "BUY" &&
-                  reserveToken &&
+                  filter.reserveToken &&
                   account) ||
                   (!isSufficientTokenSell &&
                     activeChoice === "SELL" &&
-                    reserves[0] &&
+                    filter.reserveToken &&
                     account)) && (
                     <p
                       className="mt-4 ml-3 text-xs text-center text-red"

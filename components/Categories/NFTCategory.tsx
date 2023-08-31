@@ -16,48 +16,11 @@ interface NFTCategoryProps {
 }
 
 const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
-    const [symbolToken, setSymbolToken] = useState<string>("");
-    const {
-        reserves,
-        decimals,
-        idNFT,
-        nftAddress,
-        reserveNFT,
-        reserveToken,
-        tokenAddress,
-        isLoadingInforDML
-    } = useInformationDML(item.dmlToken);
-    const { amountTokenBuy } = useAmountInMax(
-        "1",
-        item.dmlToken,
-        tokenAddress,
-        nftAddress,
-        idNFT,
-        "Metamask",
-        "BUY"
-    );
-    let tokenAddressSwap = "";
-    if (tokenAddress === process.env.NEXT_PUBLIC_WETH) {
-        tokenAddressSwap = "MATIC";
-    } else {
-        tokenAddressSwap = tokenAddress;
-    }
-    const amountBuy = new BigNumber(amountTokenBuy);
-    const formatPrice = formatNumber(
-        divideByDecimal(amountBuy.toFixed(), decimals)
-    );
-    useEffect(() => {
-        const handleToken = async () => {
-            const { symbol } = await checkIsERC20(tokenAddress);
-            setSymbolToken(symbol);
-        };
-        handleToken();
-    }, [tokenAddress]);
     let symbolTokenSwap = "";
-    if (symbolToken === "WETH") {
+    if (item.tokenSymbol === "WETH") {
         symbolTokenSwap = "MATIC";
     } else {
-        symbolTokenSwap = symbolToken;
+        symbolTokenSwap = item.tokenSymbol;
     }
     const getDate = (timeStamp: any) => {
         const date = timeStamp * 1000;
@@ -69,9 +32,8 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
     console.log(item);
 
     return (
-
         <Link
-            href={`/swap/${item.nft}/${item.erc}/${item.Factory_Contract_id}`}
+            href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}
         >
             <div className="relative">
                 <div className="relative pb-[100%] h-0">
@@ -153,23 +115,23 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             <AvatarUser width={24} height={24} />
                         </span>
                         <span className="pb-1 -ml-2.5 block">
-                            {item.creatorAddress.slice(0, 4)}...
-                            {item.creatorAddress.slice(-4)}
+                            {item.creator?.slice(0, 4)}...
+                            {item.creator?.slice(-4)}
                         </span>
                     </div>
                     <div className="flex justify-between pb-1">
 
                         <div>
                             <p>Price</p>
-                            {symbolToken && tokenAddress && nftAddress ? (
+                            {item.tokenSymbol && item.reserveToken && item.nft ? (
                                 <div className="flex flex-col">
-                                    {reserveToken.toString() === "0" ||
-                                        reserveNFT.toString() === "0" ||
-                                        reserveNFT.toString() === "1" ? (
+                                    {item.reserveToken.toString() === "0" ||
+                                        item.reserveNFT.toString() === "0" ||
+                                        item.reserveNFT.toString() === "1" ? (
                                         <div className="text-red">Can't buy</div>
                                     ) : (
                                         <p>
-                                            {formatPrice} {symbolTokenSwap}
+                                            {formatNumber(item.lastPrice)} {symbolTokenSwap}
                                         </p>
                                     )}
 
@@ -183,10 +145,12 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
 
                         <div className="flex flex-col">
                             <p>Reverse NFT</p>
-                            {isLoadingInforDML ? (
-                                <span className="block w-20 h-6 rounded-xl animate-pulse bg-slate-200"></span>
+                            {item.reserveNFT ? (
+                                <span className="block">
+                                    {formatNumber(item.reserveNFT)}
+                                </span>
                             ) : (
-                                <p className="block">{formatNumber(reserveNFT.toString())}</p>
+                                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                             )}
                         </div>
                     </div>
@@ -194,12 +158,15 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                     <div className="flex items-end justify-between">
                         <div className="flex flex-col">
                             <p>Reverse Token</p>
-                            {isLoadingInforDML ? (
-                                <span className="block w-20 h-6 rounded-xl animate-pulse bg-slate-200"></span>
+                            {item.reserveToken ? (
+                                <span className="block">
+                                    {formatNumber(
+                                        divideByDecimal(item.reserveToken, item.tokenDecimals)
+                                    )}
+                                </span>
                             ) : (
-                                <p className="block">{formatNumber(divideByDecimal(reserveToken.toString(), decimals))}</p>
-                            )
-                            }
+                                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
+                            )}
                         </div>
 
                         <p className="block">

@@ -1,3 +1,4 @@
+import useNetWork from "@/hooks/useNetwork";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
@@ -5,6 +6,7 @@ import React from "react";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 
 function StatisticChart() {
+  const { chainId } = useNetWork();
   const getCurrentDate = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -13,8 +15,10 @@ function StatisticChart() {
 
     return `${year}-${month}-${day}`;
   };
-
+  
   const currentDateFormatted = getCurrentDate();
+  console.log(currentDateFormatted);
+  
   const {
     isLoading,
     data: TVL,
@@ -22,20 +26,21 @@ function StatisticChart() {
     refetch,
     isPreviousData,
   } = useQuery({
-    queryKey: ["tvl"],
+    queryKey: ["tvl",chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/tvlChart?date=${currentDateFormatted}`);
+      const res = await categoryAPI(`/v2/tvlChart?chainId=${chainId}&date=${currentDateFormatted}`);
       return res;
     },
 
     keepPreviousData: true,
   });
-
+  console.log(TVL);
+  
   const { data: volume } = useQuery({
-    queryKey: ["volumne"],
+    queryKey: ["volumne",chainId],
     queryFn: async () => {
       const res = await categoryAPI(
-        `/volumeChart?date=${currentDateFormatted}`
+        `/v2/volumeChart?chainId=${chainId}&date=${currentDateFormatted}`
       );
       return res;
     },

@@ -39,6 +39,7 @@ import { metadataService } from "@/libs/service/metadataService";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
+import useNetWork from "@/hooks/useNetwork";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -77,6 +78,7 @@ const Swap: React.FC = () => {
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isLoadingDataChart, setIsLoadingDataChart] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const { chainId } = useNetWork();
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -95,16 +97,21 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
-
+  console.log(tokenAddress);
+  // console.log(slug[1]);
+  console.log(symbolToken);
+  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
-    queryKey: ["NFT detail", idNFT, nftAddress],
+    queryKey: ["NFT detail", idNFT, nftAddress,chainId],
     queryFn: async () => {
-      const res = await metadataService(nftAddress.toLowerCase(), idNFT);
+      const res = await metadataService(nftAddress.toLowerCase(), idNFT,chainId);
       return res;
     },
     keepPreviousData: true,
   });
+  console.log(data);
+  
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);

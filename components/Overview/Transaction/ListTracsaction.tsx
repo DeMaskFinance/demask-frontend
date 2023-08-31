@@ -3,15 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import TransactionItem from "./TransactionItem";
+import useNetWork from "@/hooks/useNetwork";
 
 function ListTracsaction() {
   const [page, setPage] = useState(1);
-
+  const { chainId } = useNetWork();
   const [pageNumberInput, setPageNumberInput] = useState("");
   const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
-    queryKey: ["transaction"],
+    queryKey: ["transaction",chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/transaction-list?page=${page}`);
+      const res = await categoryAPI(`/v2/transaction-list?chainId=${chainId}&page=${page}`);
       return res;
     },
 

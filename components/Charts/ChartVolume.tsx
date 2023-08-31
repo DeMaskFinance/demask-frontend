@@ -7,6 +7,8 @@ import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
 import { startOfWeek, endOfWeek, addDays } from 'date-fns';
 import formatNumber from "@/libs/utils/formatNumer";
+import { useRouter } from "next/router";
+import useNetWork from "@/hooks/useNetwork";
 interface ChartVolumnProps { }
 const styles = {
   btnActive: "rounded-full bg-secondary5",
@@ -28,11 +30,12 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [dailyData, setDailyData] = useState('');
   const [weeklyData, setWeeklyData] = useState('');
   const [monthlyData, setMonthlyData] = useState('');
+  const { chainId } = useNetWork();
   const { data, isLoading: LoadingVolume } = useQuery({
-    queryKey: ["ChartVolume"],
+    queryKey: ["ChartVolume",chainId],
     queryFn: async () => {
       const res = await categoryAPI(
-        "/volumeChart?intervalDate=30"
+        `/v2/volumeChart?chainId=${chainId}&intervalDate=30`
       );
       return res;
     },

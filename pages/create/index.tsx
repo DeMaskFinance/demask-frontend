@@ -46,9 +46,6 @@ export default function Creator() {
   const handleLeave = (e: DragEvent<HTMLDivElement>) => {
     itemRef.current?.classList.remove("item-active-drap");
   };
-  console.log(selectedFile);
-  console.log(fileIPFS);
-
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     file = e.dataTransfer.files[0];

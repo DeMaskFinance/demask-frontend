@@ -16,6 +16,7 @@ import { AvatarUser } from "../Avatars";
 import useSvgComponents from "../Picture/Picture";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInView } from "react-intersection-observer";
+import { log } from "console";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -63,57 +64,26 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     }
   }, []);
 
-  const formattedDescription = nftItem.metadata.description
-    .split("\\n")
-    .map((line: any, index: number) => (
+  const formattedDescription = nftItem.metadata?.description
+  ? nftItem.metadata.description.split("\\n").map((line: any, index: number) => (
       <React.Fragment key={index}>
         {line}
         <br />
       </React.Fragment>
-    ));
-
-  const {
-    reserves,
-    decimals,
-    idNFT,
-    nftAddress,
-    reserveNFT,
-    reserveToken,
-    tokenAddress,
-  } = useInformationDML(nftItem.dmlToken);
-  console.log(inView);
-  
-  const { amountTokenBuy } = useAmountInMax(
-    "1",
-    nftItem.dmlToken,
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    "Metamask",
-    "BUY"
-  );
+    ))
+  : null;
   let tokenAddressSwap = "";
-  if (tokenAddress === process.env.NEXT_PUBLIC_WETH) {
+  if (nftItem.erc === process.env.NEXT_PUBLIC_WETH) {
     tokenAddressSwap = "MATIC";
   } else {
-    tokenAddressSwap = tokenAddress;
+    tokenAddressSwap = nftItem.erc;
   }
-  const amountBuy = new BigNumber(amountTokenBuy);
-  const formatPrice = formatNumber(
-    divideByDecimal(amountBuy.toFixed(), decimals)
-  );
-  useEffect(() => {
-    const handleToken = async () => {
-      const { symbol } = await checkIsERC20(tokenAddress);
-      setSymbolToken(symbol);
-    };
-    handleToken();
-  }, [tokenAddress]);
+
   let symbolTokenSwap = "";
-  if (symbolToken === "WETH") {
+  if (nftItem.tokenSymbol === "WETH") {
     symbolTokenSwap = "MATIC";
   } else {
-    symbolTokenSwap = symbolToken;
+    symbolTokenSwap = nftItem.tokenSymbol;
   }
 
   return (
@@ -123,26 +93,26 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
           <h2 className="flex gap-1 mr-4 text-2xl font-medium line-clamp-1 text-dark1">
             {nftItem.metadata.name} 
           </h2>
-          {reserveToken.toString() === "0" ||
-            reserveNFT.toString() === "0" ||
-            (reserveNFT.toString() === "1" && (
+          {nftItem.reserveToken === "0" ||
+            nftItem.reserveNFT === "0" ||
+            (nftItem.reserveNFT === "1" && (
               <ActiveIcon width={24} height={24} className="mr-4 fill-red" />
             ))}
         </div>
         <div className="flex items-center gap-x-2 ">
           <div className="bg-secondary2 text-white rounded-lg lg:px-4 md:px-3 px-2 lg:py-1 md:py-0.5 py-0.5 hover:bg-secondary4 transition-all">
-            {reserveToken.toString() === "0" ||
-              reserveNFT.toString() === "0" ||
-              reserveNFT.toString() === "1" ? (
+            {nftItem.reserveToken === "0" ||
+              nftItem.reserveNFT === "0" ||
+              nftItem.reserveNFT === "1" ? (
               <div className="font-semibold text-white">Unable to buy</div>
             ) : (
               <Link
-                href={`/swap/${nftItem.nft}/${nftItem.erc}/${nftItem.Factory_Contract_id}`}
+                href={`/swap/${nftItem.nft}/${nftItem.erc}/${nftItem.FactoryContract_id}`}
                 className="flex items-center gap-2 text-sm font-semibold whitespace-pre lg:text-lg md:text-md"
               >
-                {symbolToken && tokenAddress && nftAddress ? (
+                {nftItem.erc && nftItem.nft ? (
                   <span>
-                    {formatPrice} {symbolTokenSwap}
+                    {formatNumber(nftItem.lastPrice)} {symbolTokenSwap}
                   </span>
                 ) : (
                   <div className="flex px-6 animate-spin gap-x-4">
@@ -158,13 +128,13 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       <div className="flex flex-wrap items-center gap-4 my-2 text-dark2">
         <div className="flex items-center pr-6">
           <AvatarUser width={32} height={32} />
-          {nftItem.creatorAddress ? (
-            <p className="font-medium text-dark2">{`${nftItem.creatorAddress?.slice(
+          {nftItem.creator ? (
+            <p className="font-medium text-dark2">{`${nftItem.creator?.slice(
               0,
               4
-            )}...${nftItem.creatorAddress?.slice(-5)}`}</p>
+            )}...${nftItem.creator?.slice(-5)}`}</p>
           ):(
-            <p>Unknow</p>
+            <p>Unknown</p>
           )}
           <p className="-translate-y-[4px] mx-1">.</p>
           <p className="text-xs whitespace-pre first-letter:uppercase">
@@ -173,7 +143,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {nftItem.metadata.category.map((item: any, index: number) => (
+          {nftItem.metadata.category?.map((item: any, index: number) => (
             <Link
               href={`/category/${item.toLowerCase()}`}
               key={index}

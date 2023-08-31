@@ -7,8 +7,10 @@ import Link from "next/link";
 import Image from "next/image";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import NFTCategory from "@/components/Categories/NFTCategory";
+import useNetWork from "@/hooks/useNetwork";
 
 export default function Art() {
+  const { chainId } = useNetWork();
   const getDate = (timeStamp: any) => {
     const date = timeStamp * 1000;
     const currentDateMillis = Date.now();
@@ -21,12 +23,15 @@ export default function Art() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   const { data, isLoading } = useQuery({
-    queryKey: [slug, "type"],
+    queryKey: [slug, "type",chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/items/${capitalizeFirstLetter(slug)}`);
+      const res = await categoryAPI(`/v2/items/${capitalizeFirstLetter(slug)}?chainId=${chainId}`);
       return res;
     },
   });
+  console.log(data);
+  console.log(chainId);
+  
   return (
     <section className="max-w-6xl pt-6 pb-32 mx-auto">
       <Head>

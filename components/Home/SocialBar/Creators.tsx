@@ -1,4 +1,5 @@
 import { AvatarUser } from "@/components/Avatars";
+import useNetWork from "@/hooks/useNetwork";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -6,10 +7,11 @@ import Link from "next/link";
 import React from "react";
 
 function Creators() {
+  const { chainId } = useNetWork();
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["creator-fl"],
+    queryKey: ["creator-fl",chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/created-nft-list?page=1`);
+      const res = await categoryAPI(`/v2/created-nft-list?chainId=${chainId}&page=1`);
       return res;
     },
 

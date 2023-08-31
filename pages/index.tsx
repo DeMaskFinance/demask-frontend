@@ -4,6 +4,7 @@ import SocialBar from "@/components/Home/SocialBar";
 import { LayoutSecondary } from "@/components/Layouts";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
+import useNetWork from "@/hooks/useNetwork";
 import * as homeService from "@/libs/service/homeService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Head from "next/head";
@@ -14,6 +15,7 @@ import { useInView } from "react-intersection-observer";
 const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
+  const { chainId } = useNetWork();
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -23,8 +25,8 @@ const Home = () => {
   }, [mode]);
 
   const { ref, inView } = useInView();
-  const fetchDataPage = async (pageParam = 1) => {
-    const data = await homeService.home(pageParam);
+  const fetchDataPage = async (pageParam = 1,chainId:string | string[]) => {
+    const data = await homeService.home(pageParam,chainId);
     return data;
   };
 
@@ -36,8 +38,8 @@ const Home = () => {
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["Homepage"],
-    ({ pageParam = 1 }) => fetchDataPage(pageParam),
+    ["Homepage",chainId],
+    ({ pageParam = 1 }) => fetchDataPage(pageParam,chainId),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPage
