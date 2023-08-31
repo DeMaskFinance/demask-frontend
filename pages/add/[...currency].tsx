@@ -37,6 +37,7 @@ import { tokenDefault } from "@/libs/constants";
 import { useQuery } from "@tanstack/react-query";
 import { metadataService } from "@/libs/service/metadataService";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
+import useNetWork from "@/hooks/useNetwork";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -65,6 +66,7 @@ export default function AddLiquidity() {
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const { chainId } = useNetWork();
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -75,13 +77,13 @@ export default function AddLiquidity() {
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
     queryKey: ["NFT detail", idNFT, nftAddress],
     queryFn: async () => {
-      const res = await metadataService(nftAddress.toLowerCase(), idNFT);
+      const res = await metadataService(nftAddress.toLowerCase(), idNFT, chainId);
       return res;
     },
     keepPreviousData: true,
   });
   console.log(data);
-  
+
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
   const { balanceToken, decimals, bigNumberBalance, symbolToken } = useBalanceToken(
@@ -225,7 +227,7 @@ export default function AddLiquidity() {
   // const providerChoice = getProvider('Metamask');
   // const provider = new ethers.providers.Web3Provider(providerChoice);
   // console.log(provider);
-  
+
   const handleApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);

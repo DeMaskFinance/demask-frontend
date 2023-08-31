@@ -28,6 +28,7 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
+import useNetWork from "@/hooks/useNetwork";
 
 const style = {
   btnWallet:
@@ -42,7 +43,7 @@ export default function DetailLiquidity() {
   const [reward, setReward] = useState("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
-  const [isOpenTransation ,setIsOpenTransaction] = useState<boolean>(false);
+  const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
@@ -55,6 +56,7 @@ export default function DetailLiquidity() {
   }, [liquidity]);
 
   const { decimals } = useInformationDML(dmlTokenLiquidity);
+  const { chainId } = useNetWork();
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity) {
@@ -80,7 +82,7 @@ export default function DetailLiquidity() {
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({ wallet, dmlTokenLiquidity, account, decimals, setReward,setIsOpenTransaction });
+      getRewardDML({ wallet, dmlTokenLiquidity, account, decimals, setReward, setIsOpenTransaction });
     } else {
       console.log("No account and DML");
     }
@@ -90,10 +92,10 @@ export default function DetailLiquidity() {
 
 
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["liquidityHistory", account, dmlTokenLiquidity],
+    queryKey: ["liquidityHistory", account, dmlTokenLiquidity, chainId],
     queryFn: async () => {
       if (account && dmlTokenLiquidity) {
-        const res = await liquidityHistory(account, dmlTokenLiquidity, page);
+        const res = await liquidityHistory(account, dmlTokenLiquidity, page, chainId);
         return res;
       }
     },
@@ -256,7 +258,7 @@ export default function DetailLiquidity() {
             </div>
           </div>
         </div>
-        
+
         {account && data?.metadata && (
           <div className="justify-end max-w-[700px] mb-6 mx-auto">
             {data.metadata?.image && (
@@ -339,7 +341,7 @@ export default function DetailLiquidity() {
           setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         />
       )}
-      <ModalTransation isOpenTransation={isOpenTransation} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true}/>
+      <ModalTransation isOpenTransation={isOpenTransation} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       <ToastContainer />
     </div>
   );
