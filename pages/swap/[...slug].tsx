@@ -157,7 +157,7 @@ const Swap: React.FC = () => {
     },
     keepPreviousData: true,
   });
-  const { reserves, isLoadingReserves }: any = useFetchReservesDML(
+  const { reserves }: any = useFetchReservesDML(
     account,
     dmlToken,
     wallet,

@@ -39,18 +39,18 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
     isFetching: searchFetching,
     refetch: searchRefetch,
     isPreviousData: isSearchPreviousData } = useQuery({
-      queryKey: ["categories", searchTerm],
+      queryKey: ["categories", searchTerm,chainId],
       queryFn: async () => {
         if (searchTerm.includes("/")) {
           const [param1, param2] = searchTerm.split(":");
           const id = param1.includes("x") ? param2 : param1;
           const nftAddress = param1.includes("x") ? param1 : param2;
           const res = await categoryAPI(
-            `/search?nftAddress=${nftAddress}&id=${id}`
+            `/v2/search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
           );
           return res;
         } else {
-          const res = await categoryAPI(`/search?search=${searchTerm}`);
+          const res = await categoryAPI(`/v2/search?chainId=${chainId}&search=${searchTerm}`);
           return res;
         }
       },

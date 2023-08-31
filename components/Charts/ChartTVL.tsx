@@ -36,7 +36,10 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
       setHasInitialSetting(true);
       setActiveDate(lastData.date);
     }
-  }, [lastData, hasInitialSetting]);
+  }, [lastData, hasInitialSetting, chainId]);
+  useEffect(()=>{
+    setHasInitialSetting(!true);
+  },[chainId])
 
   const handleMouseMove = (event: any) => {
     if (event && event.activePayload && event.activePayload.length) {

@@ -17,8 +17,7 @@ function StatisticChart() {
   };
   
   const currentDateFormatted = getCurrentDate();
-  console.log(currentDateFormatted);
-  
+
   const {
     isLoading,
     data: TVL,
@@ -34,8 +33,7 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
-  console.log(TVL);
-  
+
   const { data: volume } = useQuery({
     queryKey: ["volumne",chainId],
     queryFn: async () => {
@@ -47,8 +45,7 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
-  console.log(TVL);
-  
+
   return (
     <div className="flex flex-col gap-6 my-6 text-base font-medium lg:flex-row md:flex-row text-dark2">
       <div className="flex">
