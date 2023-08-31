@@ -36,6 +36,7 @@ import { AiOutlineClose, AiOutlineDoubleLeft } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import NFTItem from "./NFTItem";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
+import formatToUnit from "@/libs/utils/formatToUnit";
 
 interface ReelsProps {
   data: any;
@@ -903,7 +904,7 @@ const Reels: React.FC<ReelsProps> = ({
                       <span className="flex-shrink-0">Reserve NFT:</span>
                       {filter.reserveNFT ? (
                         <span className="block">
-                          {formatNumber(filter.reserveNFT)}
+                          {formatToUnit(filter.reserveNFT)}
                         </span>
                       ) : (
                         <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>

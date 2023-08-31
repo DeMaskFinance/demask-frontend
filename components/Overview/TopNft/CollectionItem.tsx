@@ -1,5 +1,6 @@
 import { AvatarUser } from "@/components/Avatars";
 import formatNumber from "@/libs/utils/formatNumer";
+import formatToUnit from "@/libs/utils/formatToUnit";
 import images from "@/public/images";
 import Image from "next/image";
 import Link from "next/link";
@@ -100,7 +101,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                           )}
                       </div>
 
-                      <span className="line-clamp-1 lg:group-hover:hidden">
+                      <span className="line-clamp-1 lg:group-hover:hidden max-w-[133px]">
                         {isFetching ? skeleton : item.metadata?.name}
                       </span>
 
@@ -112,7 +113,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <span className="">
-                    ${isFetching ? skeleton : formatNumber(item.lastPrice)}
+                    ${isFetching ? skeleton : formatToUnit(item.lastPrice)}
                   </span>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
@@ -126,14 +127,14 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <span className="">
-                    ${isFetching ? skeleton : formatNumber(item.volume24h)}
+                    ${isFetching ? skeleton : formatToUnit(item.volume24h)}
                   </span>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  ${isFetching ? skeleton : formatNumber(item.TVL)}
+                  ${isFetching ? skeleton : formatToUnit(item.TVL)}
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  {isFetching ? skeleton : formatNumber(item.totalSupply)}
+                  {isFetching ? skeleton : formatToUnit(item.totalSupply)}
                 </td>
               </tr>
             ))}

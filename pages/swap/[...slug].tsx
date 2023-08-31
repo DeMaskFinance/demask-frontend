@@ -44,15 +44,6 @@ const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
 };
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { dmlAddress } = context.query;
-//   const dataChart = await swapAPI(dmlAddress);
-//   return {
-//     props: {
-//       dataChart,
-//     },
-//   };
-// };
 const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -73,10 +64,8 @@ const Swap: React.FC = () => {
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet } = useContext(AccountContext);
-  const [dataChart, setDataChart] = useState<[]>([]);
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
-  const [isLoadingDataChart, setIsLoadingDataChart] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const { chainId } = useNetWork();
   const handleChoiceChange = (choice: string) => {
@@ -98,20 +87,19 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
   console.log(tokenAddress);
-  // console.log(slug[1]);
   console.log(symbolToken);
-  
+
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
-    queryKey: ["NFT detail", idNFT, nftAddress,chainId],
+    queryKey: ["NFT detail", idNFT, nftAddress, chainId],
     queryFn: async () => {
-      const res = await metadataService(nftAddress.toLowerCase(), idNFT,chainId);
+      const res = await metadataService(nftAddress.toLowerCase(), idNFT, chainId);
       return res;
     },
     keepPreviousData: true,
   });
   console.log(data);
-  
+
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress);
@@ -161,20 +149,14 @@ const Swap: React.FC = () => {
   //   }
   // }, [router.query.slug, dmlToken]);
   // console.log(dmlToken.toLocaleLowerCase());
-
-  useEffect(() => {
-    const fetchDataChart = async () => {
-      if (dmlToken) {
-        console.log(dmlToken.toLocaleLowerCase());
-        setIsLoadingDataChart(true);
-        const res = await swapAPI(dmlToken.toLocaleLowerCase());
-        setDataChart(res);
-        setIsLoadingDataChart(false);
-      }
-    };
-    fetchDataChart();
-  }, [dmlToken]);
-
+  const { isLoading:isLoadingChart, data:dataChart, isFetching:isFetchingChart, isSuccess:isSuccessChart } = useQuery({
+    queryKey: ["chart swap", idNFT, dmlToken, chainId],
+    queryFn: async () => {
+      const res = await swapAPI(dmlToken.toLocaleLowerCase(), chainId);
+      return res;
+    },
+    keepPreviousData: true,
+  });
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -321,7 +303,7 @@ const Swap: React.FC = () => {
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
             );
-          }    
+          }
           await provider.waitForTransaction(result.hash);
           setIsOpenTransaction(false);
           toast.success(
@@ -648,7 +630,7 @@ const Swap: React.FC = () => {
                 {dmlToken !== "0x0000000000000000000000000000000000000000" &&
                   ((!isSufficientTokenBuy &&
                     activeChoice === "BUY" &&
-                    reserves [0] &&
+                    reserves[0] &&
                     account) ||
                     (!isSufficientTokenSell &&
                       activeChoice === "SELL" &&
@@ -753,7 +735,7 @@ const Swap: React.FC = () => {
             </div>
           </div>
           <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
-            {isLoadingDataChart ? (
+            {isLoadingChart ? (
               <div className="h-[355px]">
                 <ChartLoading />
               </div>

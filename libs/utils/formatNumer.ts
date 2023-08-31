@@ -1,12 +1,6 @@
+// format number if <1 0.0000..., >1 1000->1,000
 const formatNumber = (number: string) => {
   const roundedNumber = Number(number);
-  // if (roundedNumber === 0) {
-  //   return 0;
-  // } else if (roundedNumber < 0.01) {
-  //   return roundedNumber.toExponential(4);
-  // } else {
-  //   return Number(roundedNumber.toFixed(2)).toLocaleString("en");
-  // }
   if (roundedNumber === 0) {
     return 0;
   } else if (roundedNumber < 1) {

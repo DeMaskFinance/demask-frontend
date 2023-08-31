@@ -1,6 +1,7 @@
 import { AvatarUser } from "@/components/Avatars";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import formatNumber from "@/libs/utils/formatNumer";
+import formatToUnit from "@/libs/utils/formatToUnit";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -120,7 +121,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
 
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">
                 <span className="">
-                  {isFetching ? skeleton : formatNumber(item.amountnft)}
+                  {isFetching ? skeleton : formatToUnit(item.amountnft)}
                 </span>
               </td>
 

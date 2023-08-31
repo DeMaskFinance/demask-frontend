@@ -10,6 +10,7 @@ import useAmountInMax from "@/hooks/useAmountInMax";
 import checkIsERC20 from '@/libs/validation/checkIsERC20';
 import Link from 'next/link';
 import { mediaType } from '@/libs/constants';
+import formatToUnit from '@/libs/utils/formatToUnit';
 
 interface NFTCategoryProps {
     item: any
@@ -131,7 +132,8 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                                         <div className="text-red">Can't buy</div>
                                     ) : (
                                         <p>
-                                            {formatNumber(item.lastPrice)} {symbolTokenSwap}
+                                            {formatToUnit(item.lastPrice)} 
+                                            {/* {symbolTokenSwap} */}
                                         </p>
                                     )}
 
@@ -143,11 +145,11 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             )}
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-end">
                             <p>Reverse NFT</p>
                             {item.reserveNFT ? (
                                 <span className="block">
-                                    {formatNumber(item.reserveNFT)}
+                                    {formatToUnit(item.reserveNFT)}
                                 </span>
                             ) : (
                                 <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
@@ -160,7 +162,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             <p>Reverse Token</p>
                             {item.reserveToken ? (
                                 <span className="block">
-                                    {formatNumber(
+                                    {formatToUnit(
                                         divideByDecimal(item.reserveToken, item.tokenDecimals)
                                     )}
                                 </span>
