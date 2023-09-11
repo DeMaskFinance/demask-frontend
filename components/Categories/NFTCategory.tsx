@@ -11,6 +11,7 @@ import checkIsERC20 from '@/libs/validation/checkIsERC20';
 import Link from 'next/link';
 import { mediaType } from '@/libs/constants';
 import formatToUnit from '@/libs/utils/formatToUnit';
+import { getBuyPrice } from '@/libs/utils/getPrice';
 
 interface NFTCategoryProps {
     item: any
@@ -131,10 +132,10 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                                         item.reserveNFT.toString() === "1" ? (
                                         <div className="text-red">Can't buy</div>
                                     ) : (
-                                        <p>
-                                            {formatToUnit(item.lastPrice)} 
-                                            {/* {symbolTokenSwap} */}
-                                        </p>
+                                        <div className='flex gap-x-1'>
+                                            <span>{formatNumber(getBuyPrice(item.reserveNFT, item.reserveToken, 1).toString())}</span>
+                                            <span>{symbolTokenSwap}</span>
+                                        </div>
                                     )}
 
                                 </div>
@@ -162,8 +163,8 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             <p>Reverse Token</p>
                             {item.reserveToken ? (
                                 <span className="block">
-                                    {formatToUnit(
-                                        divideByDecimal(item.reserveToken, item.tokenDecimals)
+                                    {formatNumber(
+                                        item.reserveToken
                                     )}
                                 </span>
                             ) : (
