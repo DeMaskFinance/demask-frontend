@@ -17,6 +17,7 @@ import useSvgComponents from "../Picture/Picture";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInView } from "react-intersection-observer";
 import { log } from "console";
+import { getBuyPrice } from "@/libs/utils/getPrice";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -112,7 +113,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               >
                 {nftItem.erc && nftItem.nft ? (
                   <span>
-                    {formatNumber(nftItem.lastPrice)} {symbolTokenSwap}
+                    {formatNumber(getBuyPrice(nftItem.reserveNFT, nftItem.reserveToken, 1).toString())} {symbolTokenSwap}
                   </span>
                 ) : (
                   <div className="flex px-6 animate-spin gap-x-4">

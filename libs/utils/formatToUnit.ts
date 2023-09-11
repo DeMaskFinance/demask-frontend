@@ -8,7 +8,13 @@ const formatToUnit = (number: string) => {
   if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + "B";
   if (n >= 1e12 && n < 1e15) return +(n / 1e12).toFixed(1) + "T";
   if (n >= 1e15 && n < 1e18) return +(n / 1e15).toFixed(1) + "Q";
-  if (n >= 1e18) return +(n / 1e18).toFixed(1) + "S";
+  if (n >= 1e18 && n < 1e21) return +(n / 1e18).toFixed(1) + "S";
+  if (n >= 1e21 && n < 1e24) return +(n / 1e21).toFixed(1) + "S";
+  if (n >= 1e24 && n < 1e27) return +(n / 1e24).toFixed(1) + "O";
+  if (n >= 1e27 && n < 1e30) return +(n / 1e27).toFixed(1) + "N";
+  if (n >= 1e30 && n < 1e33) return +(n / 1e30).toFixed(1) + "D";
+  if (n >= 1e33 && n < 1e35) return +(n / 1e33).toFixed(1) + "U";
+  if (n >= 1e35) return +(n / 1e35).toFixed(1) + "D";
 };
 
 export default formatToUnit;
