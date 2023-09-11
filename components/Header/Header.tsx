@@ -189,7 +189,7 @@ export default function Header() {
               <SearchIcon
                 width={32}
                 height={32}
-                className="w-full cursor-pointer fill-secondary3 active:fill-secondary2"
+                className="cursor-pointer fill-secondary3 active:fill-secondary2"
               />
             </div>
 
