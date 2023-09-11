@@ -37,6 +37,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import NFTItem from "./NFTItem";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import formatToUnit from "@/libs/utils/formatToUnit";
+import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
 
 interface ReelsProps {
   data: any;
@@ -76,19 +77,18 @@ const Reels: React.FC<ReelsProps> = ({
     useState<boolean>(false);
   const [isSufficientTokenSell, setIsSufficientTokenSell] =
     useState<boolean>(false);
-  const [priceBuy, setPriceBuy] = useState<number>(0);
-  const [priceSell, setPriceSell] = useState<number>(0);
   const [tokenAddressSwap, setTokenAddressSwap] = useState<string>("");
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [symbolToken, setSymbolToken] = useState<string>('');
+  const [activeMobile, setActiveMobile] = useState(false);
+  const [activeDetail, setActiveDetail] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  const [activeMobile, setActiveMobile] = useState(false);
-  const [activeDetail, setActiveDetail] = useState(false);
-  const [showMore, setShowMore] = useState(false);
   const handleSlideChange = (swiper: any) => {
     setActiveSlideIndex(swiper.activeIndex);
     setShowMore(true);
@@ -109,8 +109,6 @@ const Reels: React.FC<ReelsProps> = ({
       });
     });
   }, [activeSlideIndex]);
-  console.log(activeSlideIndex);
-  console.log(filter);
 
   useEffect(() => {
     if (selectedCategory === "CUSTOM") {
@@ -120,9 +118,6 @@ const Reels: React.FC<ReelsProps> = ({
     }
   }, [inputNFT, selectedCategory, activeSlideIndex, activeChoice]);
 
-
-  // const { reserves, isLoadingInforDML, filter.reserveNFT, reserveToken } = useInformationDML(filter.dmlToken);
-  // console.log(reserves[0].toString());
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, filter.nft);
@@ -130,62 +125,31 @@ const Reels: React.FC<ReelsProps> = ({
     };
     checkApproveNFT();
   }, [account, filter, wallet, checkApproveNFT]);
-  const balanceNFT = useNFTBalance(account, filter.nft, filter.Factory_Contract_id, wallet, isOpenTransaction);
-  // console.log(isLoadingInforDML);
-  // console.log(filter.nft);
+  const balanceNFT = useNFTBalance(account, filter.nft, filter.FactoryContract_id, wallet, isOpenTransaction);
 
   useEffect(() => {
     if (filter.erc === process.env.NEXT_PUBLIC_NATIVE_ADDRESS) {
       setTokenAddressSwap("MATIC");
+      setSymbolToken("MATIC")
     } else {
       setTokenAddressSwap(filter.erc);
+      setSymbolToken(filter.tokenSymbol)
     }
-  }, [activeSlideIndex]);
-  const { balanceToken, decimals, bigNumberBalance, symbolToken } =
+  }, [activeSlideIndex, filter.erc]);
+
+  const { balanceToken, decimals, bigNumberBalance,allowanceToken } =
     useInformationToken(account, tokenAddressSwap, wallet, isOpenTransaction);
-  console.log(balanceToken);
-
-  const { amountTokenSell, isLoadingSell } = useAmountOutMin(
-    amountNFTSubmit,
-    filter.dmlToken,
-    filter.erc,
-    filter.nft,
-    filter.FactoryContract_id,
-    wallet,
-    activeChoice
-  );
-    console.log(filter);
-    
-  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
-    amountNFTSubmit,
-    filter.dmlToken,
-    filter.erc,
-    filter.nft,
-    filter.FactoryContract_id,
-    wallet,
-    activeChoice
-  );
-  // console.log(amountTokenBuy);
-  // console.log(isLoadingBuy);
-
-  const amountBuy = new BigNumber(amountTokenBuy);
-  const amountSell = new BigNumber(amountTokenSell);
-  useEffect(() => {
-    setPriceBuy(Number(amountBuy) / Number(amountNFTSubmit));
-    setPriceSell(Number(amountSell) / Number(amountNFTSubmit));
-  }, [activeSlideIndex, amountNFTSubmit, amountBuy]);
-
+  const amountBuy = getBuyPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
+  const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
+  const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit);
+  const amountSellDec = getSellPrice(filter.reserveNFT, filter.reserveTokenDecimals, +(amountNFTSubmit)) * Number(amountNFTSubmit);
+  console.log(allowanceToken);
+  
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView]);
-  let symbolTokenSwap = "";
-  if (symbolToken === "WETH") {
-    symbolTokenSwap = "MATIC";
-  } else {
-    symbolTokenSwap = symbolToken;
-  }
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -196,8 +160,6 @@ const Reels: React.FC<ReelsProps> = ({
           setIsSufficientNFT(false);
         }
       } else {
-        console.log(amountNFTSubmit);
-        console.log(balanceNFT);
         if (Number(amountNFTSubmit) <= Number(balanceNFT)) {
           setIsSufficientNFT(true);
         } else {
@@ -206,32 +168,37 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkReservesNFT();
-    if (Number(amountBuy.toFixed()) > Number(bigNumberBalance)) {
+
+    if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-    if (Number(amountSell.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientTokenSell(false);
     } else {
       setIsSufficientTokenSell(true);
     }
-  }, [amountNFTSubmit, activeChoice, account, amountBuy, amountSell]);
+  }, [amountNFTSubmit, activeChoice, account, activeSlideIndex, amountBuyDec, amountBuyDec, balanceToken]);
   useEffect(() => {
     if (amountNFTSubmit === "") {
       setIsSufficientNFT(true);
     }
   }, []);
-
   useEffect(() => {
     const checkApproveToken = async () => {
+      console.log("test");
+      console.log(tokenAddressSwap);
+
       if (tokenAddressSwap !== "MATIC") {
         const currentAllowance = await approveToken(
           account,
           wallet,
           filter.erc
         );
-        if (Number(currentAllowance) < Number(amountTokenBuy)) {
+        console.log(currentAllowance);
+
+        if (Number(currentAllowance) < Number(amountBuyDec)) {
           setIsApprovedToken(false);
         } else {
           setIsApprovedToken(true);
@@ -241,7 +208,14 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, filter.erc, amountNFTSubmit, amountTokenBuy, checkApproveToken]);
+  }, [account, wallet, filter.erc, amountNFTSubmit, amountBuyDec, checkApproveToken, tokenAddressSwap]);
+  // console.log(amountBuy.toString());
+  // console.log(amountBuyDec);
+  // console.log(bigNumberBalance);
+  console.log(isSufficientTokenBuy);
+  console.log(isApprovedNFT);
+  console.log(isApprovedToken);
+  console.log(filter);
 
   const handleApproveNFT = async () => {
     if (account) {
@@ -276,7 +250,7 @@ const Reels: React.FC<ReelsProps> = ({
       );
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
-        const result = await contract.approve(routerAddress, amountBuy.toFixed(0));
+        const result = await contract.approve(routerAddress, amountBuyDec.toFixed(0));
         await provider.waitForTransaction(result.hash);
         setCheckApproveToken(true);
         setInputNFT("");
@@ -317,19 +291,19 @@ const Reels: React.FC<ReelsProps> = ({
           if (tokenAddressSwap === "MATIC") {
             result = await contract.buyETH(
               filter.nft,
-              filter.Factory_Contract_id,
+              filter.FactoryContract_id,
               amountNFTSubmit,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: amountBuy.toFixed(0) }
+              { gasLimit: 8000000, value: amountBuyDec.toFixed(0) }
             );
           } else {
             result = await contract.buy(
               filter.erc,
               filter.nft,
-              filter.Factory_Contract_id,
+              filter.FactoryContract_id,
               amountNFTSubmit,
-              amountBuy.toFixed(0),
+              amountBuyDec.toFixed(0),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -388,7 +362,7 @@ const Reels: React.FC<ReelsProps> = ({
           if (tokenAddressSwap === "MATIC") {
             result = await contract.sellETH(
               filter.nft,
-              filter.Factory_Contract_id,
+              filter.FactoryContract_id,
               amountNFTSubmit,
               amountSell.toFixed(0),
               account,
@@ -399,7 +373,7 @@ const Reels: React.FC<ReelsProps> = ({
             result = await contract.sell(
               filter.erc,
               filter.nft,
-              filter.Factory_Contract_id,
+              filter.FactoryContract_id,
               amountNFTSubmit,
               amountSell.toFixed(0),
               account,
@@ -431,10 +405,11 @@ const Reels: React.FC<ReelsProps> = ({
     }
   };
 
+
   return (
     <div className="gap-4 lg:h-fit h-[82vh]">
       {isSuccess && (
-        <div className="lg:h-[90vh] overflow-hidden h-[80vh] w-full sticky px top-8">
+        <div className="lg:h-[calc(100vh-130px)] overflow-hidden h-[80vh] w-full sticky px top-8">
           <>
             <Swiper
               direction={"vertical"}
@@ -448,7 +423,7 @@ const Reels: React.FC<ReelsProps> = ({
                 data?.pages.map((page: any, index: number) => (
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
-                      <SwiperSlide key={`${nftItem._id}-${index}`}>
+                      <SwiperSlide key={`${nftItem.FactoryContract_id}-${index}`}>
                         <NFTItem nftItem={nftItem} filter={filter} setShowMore={setShowMore} showMore={showMore} />
                         <div ref={ref} style={{ height: "1px" }} />
                       </SwiperSlide>
@@ -530,49 +505,43 @@ const Reels: React.FC<ReelsProps> = ({
                       {amountNFTSubmit ? (
                         <div className="text-center">
                           {activeChoice === "BUY" &&
-                            (!priceBuy || isLoadingBuy ? (
+                            (!amountBuy ? (
                               <p className="w-40 h-[36px] rounded-full animate-pulse bg-slate-200"></p>
                             ) : (
                               <div className="text-3xl text-secondary3">
                                 {amountNFTSubmit ? (
                                   <span>
                                     {formatNumber(
-                                      divideByDecimal(
-                                        priceBuy.toFixed(),
-                                        decimals
-                                      )
+                                      amountBuy.toString()
                                     )}
                                   </span>
                                 ) : (
                                   <span>0</span>
                                 )}
-                                <span className="ml-2">{symbolTokenSwap}</span>
+                                <span className="ml-2">{symbolToken}</span>
                               </div>
                             ))}
                           {activeChoice === "SELL" &&
-                            (!priceSell || isLoadingSell ? (
+                            (!amountSell ? (
                               <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
                             ) : (
                               <div className="text-4xl text-secondary3">
                                 {amountNFTSubmit ? (
                                   <span>
                                     {formatNumber(
-                                      divideByDecimal(
-                                        priceSell.toFixed(),
-                                        decimals
-                                      )
+                                      amountSell.toString()
                                     )}
                                   </span>
                                 ) : (
                                   <span>0</span>
                                 )}
-                                <span className="ml-2">{symbolTokenSwap}</span>
+                                <span className="ml-2">{symbolToken}</span>
                               </div>
                             ))}
                         </div>
                       ) : (
                         <h3 className="text-4xl text-secondary3">
-                          0 {symbolTokenSwap}
+                          0 {symbolToken}
                         </h3>
                       )}
                       <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
@@ -605,7 +574,7 @@ const Reels: React.FC<ReelsProps> = ({
                       </div>
                       {account && activeChoice === "BUY" && (
                         <p className="mb-4 -mt-4 text-secondary3">
-                          Balance:{formatNumber(balanceToken)} {symbolTokenSwap}
+                          Balance:{formatNumber(balanceToken)} {symbolToken}
                         </p>
                       )}
                       {account && activeChoice === "SELL" && (
@@ -742,7 +711,7 @@ const Reels: React.FC<ReelsProps> = ({
           </>
 
           {isSuccess && filter && (
-            <div className="h-fit right-20 z-10 absolute mr-14 justify-start w-full  pt-4  top-8 lg:w-[35%] lg:block hidden md:w-2/5">
+            <div className="h-[80%] items-center right-20 z-10 absolute mr-14 justify-start w-full  pt-4  top-8 lg:w-[35%] lg:flex hidden md:w-2/5">
               <div className="relative px-6 py-6 overflow-hidden border rounded-lg h-fit border-dark3">
                 <div
                   className={`${activeDetail ? "translate-x-0" : "translate-x-[100%]"
@@ -860,43 +829,43 @@ const Reels: React.FC<ReelsProps> = ({
                   {amountNFTSubmit ? (
                     <div className="text-center">
                       {activeChoice === "BUY" &&
-                        (!priceBuy || isLoadingBuy ? (
+                        (!amountBuy ? (
                           <p className="w-40 h-[36px] rounded-full animate-pulse bg-slate-200"></p>
                         ) : (
                           <div className="text-3xl text-secondary3">
                             {amountNFTSubmit ? (
                               <span>
                                 {formatNumber(
-                                  divideByDecimal(priceBuy.toFixed(), decimals)
+                                  amountBuy.toString()
                                 )}
                               </span>
                             ) : (
                               <span>0</span>
                             )}
-                            <span className="ml-2">{symbolTokenSwap}</span>
+                            <span className="ml-2">{symbolToken}</span>
                           </div>
                         ))}
                       {activeChoice === "SELL" &&
-                        (!priceSell || isLoadingSell ? (
+                        (!amountSell ? (
                           <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
                         ) : (
                           <div className="text-4xl text-secondary3">
                             {amountNFTSubmit ? (
                               <span>
                                 {formatNumber(
-                                  divideByDecimal(priceSell.toFixed(), decimals)
+                                  amountSell.toString()
                                 )}
                               </span>
                             ) : (
                               <span>0</span>
                             )}
-                            <span className="ml-2">{symbolTokenSwap}</span>
+                            <span className="ml-2">{symbolToken}</span>
                           </div>
                         ))}
                     </div>
                   ) : (
                     <h3 className="text-4xl text-secondary3">
-                      0 {symbolTokenSwap}
+                      0 {symbolToken}
                     </h3>
                   )}
                   <div className="flex mt-4 mb-4 font-normal text-secondary4 gap-x-8">
@@ -915,7 +884,7 @@ const Reels: React.FC<ReelsProps> = ({
                       {filter.reserveToken ? (
                         <span className="block">
                           {formatNumber(
-                            divideByDecimal(filter.reserveToken, filter.tokenDecimals)
+                            filter.reserveToken
                           )}
                         </span>
                       ) : (
@@ -925,7 +894,7 @@ const Reels: React.FC<ReelsProps> = ({
                   </div>
                   {account && activeChoice === "BUY" && (
                     <p className="mb-4 -mt-4 text-secondary3">
-                      Balance:{formatNumber(balanceToken)} {symbolTokenSwap}
+                      Balance:{formatNumber(balanceToken)} {symbolToken}
                     </p>
                   )}
                   {account && activeChoice === "SELL" && (

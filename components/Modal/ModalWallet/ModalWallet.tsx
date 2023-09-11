@@ -113,7 +113,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         }
     }
   };
-  console.log(isConnected);
   
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>

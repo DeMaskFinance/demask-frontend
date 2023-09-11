@@ -14,12 +14,14 @@ const useInformationToken = (
   const [decimals, setDecimals] = useState("18");
   const [symbolToken, setSymbolToken] = useState("USDT");
   const [nameTokenERC20, setNameTokenERC20] = useState("");
+  const [allowanceToken, setAllowanceToken] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mumbai-bor.publicnode.com"
   );
 
   useEffect(() => {
     const getInformationToken = async () => {
+      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       if (tokenAddress && account) {
         if (tokenAddress === "MATIC") {
           setDecimals("18");
@@ -51,9 +53,14 @@ const useInformationToken = (
             const decimalsInt = Number(decimals);
             const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
             const balance = bigNumberBalance.div(divisor);
-            console.log(symbol);
             setBalanceToken(balance.toString());
             setDecimals(decimals);
+            const tokenAllowance = await contract.allowance(
+              account,
+              routerAddress
+            );
+            const currentAllowance = tokenAllowance.toString();
+            setAllowanceToken(currentAllowance)
           } catch (error) {
             console.error(error);
           }
@@ -72,6 +79,7 @@ const useInformationToken = (
     decimals,
     nameTokenERC20,
     symbolToken,
+    allowanceToken
   };
 };
 
