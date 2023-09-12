@@ -137,14 +137,14 @@ const Reels: React.FC<ReelsProps> = ({
     }
   }, [activeSlideIndex, filter.erc]);
 
-  const { balanceToken, decimals, bigNumberBalance,allowanceToken } =
+  const { balanceToken, decimals, bigNumberBalance, allowanceToken } =
     useInformationToken(account, tokenAddressSwap, wallet, isOpenTransaction);
   const amountBuy = getBuyPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit);
   const amountSellDec = getSellPrice(filter.reserveNFT, filter.reserveTokenDecimals, +(amountNFTSubmit)) * Number(amountNFTSubmit);
   console.log(allowanceToken);
-  
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -191,14 +191,7 @@ const Reels: React.FC<ReelsProps> = ({
       console.log(tokenAddressSwap);
 
       if (tokenAddressSwap !== "MATIC") {
-        const currentAllowance = await approveToken(
-          account,
-          wallet,
-          filter.erc
-        );
-        console.log(currentAllowance);
-
-        if (Number(currentAllowance) < Number(amountBuyDec)) {
+        if (Number(allowanceToken) < Number(amountBuyDec)) {
           setIsApprovedToken(false);
         } else {
           setIsApprovedToken(true);
@@ -208,7 +201,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, filter.erc, amountNFTSubmit, amountBuyDec, checkApproveToken, tokenAddressSwap]);
+  }, [account, wallet, filter.erc, amountNFTSubmit, amountBuyDec, checkApproveToken, tokenAddressSwap, allowanceToken]);
   // console.log(amountBuy.toString());
   // console.log(amountBuyDec);
   // console.log(bigNumberBalance);

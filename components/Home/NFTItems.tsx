@@ -31,9 +31,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const { ref, inView } = useInView();
-  const handleInViewChange = (isVisible:boolean) => {
-    const video:any = videoRef.current;
-    const audio:any = audioRef.current;
+  const handleInViewChange = (isVisible: boolean) => {
+    const video: any = videoRef.current;
+    const audio: any = audioRef.current;
     if (video) {
       if (isVisible) {
         video.play();
@@ -42,7 +42,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         video.pause();
         video.muted = true;
       }
-    }else if(audio){
+    } else if (audio) {
       if (isVisible) {
         audio.play();
         audio.muted = false;
@@ -55,7 +55,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   useEffect(() => {
     if (inView) {
       handleInViewChange(true);
-    }else{
+    } else {
       handleInViewChange(false);
     }
   }, [inView]);
@@ -66,13 +66,13 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   }, []);
 
   const formattedDescription = nftItem.metadata?.description
-  ? nftItem.metadata.description.split("\\n").map((line: any, index: number) => (
+    ? nftItem.metadata.description.split("\\n").map((line: any, index: number) => (
       <React.Fragment key={index}>
         {line}
         <br />
       </React.Fragment>
     ))
-  : null;
+    : null;
   let tokenAddressSwap = "";
   if (nftItem.erc === process.env.NEXT_PUBLIC_WETH) {
     tokenAddressSwap = "MATIC";
@@ -90,9 +90,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   return (
     <div className="px-4 py-6 mb-6 rounded-lg shadow-chart">
       <div className="flex flex-wrap items-center justify-between">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="flex gap-1 mr-4 text-2xl font-medium line-clamp-1 text-dark1">
-            {nftItem.metadata.name} 
+        <div className="items-center justify-between mb-2 line-clamp-1">
+          <h2 className="gap-1 mr-4 text-2xl font-medium truncate text-dark1">
+          {nftItem.metadata.name}
           </h2>
           {nftItem.reserveToken === "0" ||
             nftItem.reserveNFT === "0" ||
@@ -134,7 +134,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               0,
               4
             )}...${nftItem.creator?.slice(-5)}`}</p>
-          ):(
+          ) : (
             <p>Unknown</p>
           )}
           <p className="-translate-y-[4px] mx-1">.</p>
@@ -156,20 +156,20 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
         </div>
       </div>
       <div className="mb-4">
-      <p
-        className={`text-dark2 ${isMore ? "line-clamp-0" : "line-clamp-3"}`}
-        ref={descriptionRef}
-      >
-        {formattedDescription}
-      </p>
-      {heightDescription >= 84 && !isMore && (
         <p
-          className="text-sm font-light cursor-pointer text-secondary4"
-          onClick={() => setIsMore(true)}
+          className={`text-dark2 ${isMore ? "line-clamp-0" : "line-clamp-3"}`}
+          ref={descriptionRef}
         >
-          Read more
+          {formattedDescription}
         </p>
-      )}
+        {heightDescription >= 84 && !isMore && (
+          <p
+            className="text-sm font-light cursor-pointer text-secondary4"
+            onClick={() => setIsMore(true)}
+          >
+            Read more
+          </p>
+        )}
       </div>
       {nftItem.metadata.attributes && nftItem.metadata.attributes.length > 0 && (
         <div className="mb-4">
@@ -226,7 +226,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                 height={1049}
                 src={nftItem.metadata.image}
                 alt="NFT Image"
-                unoptimized
                 className="lg:min-w-[500px] relative imageNFT w-auto max-h-[650px] z-100 rounded-xl"
                 style={{
                   objectFit: "contain",

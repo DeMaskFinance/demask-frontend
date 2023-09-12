@@ -72,6 +72,9 @@ export default function AddLiquidity() {
       setNftAddress(currency[0]);
       setTokenAddress(currency[1]);
       setIdNFT(currency[2]);
+      setInputNFT('');
+      setIsSufficientNFT(false);
+      setIsSufficientToken(false);
     }
   }, [currency]);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
@@ -82,11 +85,10 @@ export default function AddLiquidity() {
     },
     keepPreviousData: true,
   });
-  console.log(data);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
-  const { balanceToken, decimals, bigNumberBalance, symbolToken } = useBalanceToken(
+  const { balanceToken, decimals, bigNumberBalance, symbolToken, allowanceToken } = useBalanceToken(
     account,
     tokenAddress,
     wallet,
@@ -135,8 +137,15 @@ export default function AddLiquidity() {
         '18'
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
+        setIsSufficientToken(true)
+      } else {
+        setIsSufficientToken(false);
+      }
     }
   }, [inputNFT, inputToken]);
+  console.log(isSufficientToken);
+  
 
   const tokenSymbolIcon = tokenDefault.find((item) => item.address === tokenAddress);
 
@@ -150,7 +159,6 @@ export default function AddLiquidity() {
     }
   };
 
-
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -163,7 +171,6 @@ export default function AddLiquidity() {
       const signer = provider.getSigner();
       const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      // const value = handleBignumber(Number(inputToken), 18);
 
       try {
         let result;
@@ -224,10 +231,6 @@ export default function AddLiquidity() {
     }
   };
 
-  // const providerChoice = getProvider('Metamask');
-  // const provider = new ethers.providers.Web3Provider(providerChoice);
-  // console.log(provider);
-
   const handleApproveToken = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -251,13 +254,8 @@ export default function AddLiquidity() {
       if (tokenAddress === "MATIC") {
         setIsApprovedToken(true);
       } else {
-        const currentAllowance = await approveToken(
-          account,
-          wallet,
-          tokenAddress
-        );
-        if (amountErcDesired) {
-          if (Number(currentAllowance) < Number(amountErcDesired.toString())) {
+        if (amountErcDesired && allowanceToken) {
+          if (Number(allowanceToken) < Number(amountErcDesired.toString())) {
             setIsApprovedToken(false);
           } else {
             setIsApprovedToken(true);
@@ -266,8 +264,9 @@ export default function AddLiquidity() {
       }
     };
     handleCheckApproveToken();
-  }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired]);
-
+  }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired, allowanceToken]);
+  // console.log(amountErcDesired.toString());
+  // console.log(amountErcDesiredToDec);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -463,7 +462,6 @@ export default function AddLiquidity() {
                           style={{
                             objectFit: "contain",
                           }}
-                          unoptimized
                         />
                       )}
                       {!data.metadata?.image && data.metadata?.animation_url && (
