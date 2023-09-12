@@ -171,10 +171,10 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
               </p>
               <div>
                 {searchHistory.map((item: any, index: number) => (
-                  <>
+                  <div key={index}>
                     {isMounted && (
                       <div
-                        key={index}
+                        
                         className={`flex justify-between items-center`}
                       >
                         <div
@@ -186,7 +186,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                                 {item.metadata?.image && (
                                     <Image
                                       loading="lazy"
-                                      unoptimized
                                       width={32}
                                       height={32}
                                       src={item.metadata?.image}
@@ -245,7 +244,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                         </button>
                       </div>
                     )}
-                  </>
+                  </div>
                 ))}
               </div>
             </div>
@@ -262,7 +261,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                     </div>
                     <div className="flex flex-col gap-4">
                       {searchData.map((item: any, index: number) => (
-                        <>
                           <Link
                             key={index}
                             onClick={() => handleResultItemClick(item)}
@@ -276,7 +274,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                                 {item.metadata?.image && (
                                     <Image
                                       loading="lazy"
-                                      unoptimized
                                       width={32}
                                       height={32}
                                       src={item.metadata?.image}
@@ -325,7 +322,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                               </div>
                             </div>
                           </Link>
-                        </>
                       ))}
                     </div>
                   </>
@@ -346,7 +342,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                     <div className="block mb-2">
                       <span className="text-base">NFTs Top</span>
                       {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
-                        <>
                           <Link
                             key={index}
                             onClick={() => handleResultItemClick(item)}
@@ -360,7 +355,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                                   {item.metadata?.image && (
                                     <Image
                                       loading="lazy"
-                                      unoptimized
                                       width={32}
                                       height={32}
                                       src={item.metadata?.image}
@@ -408,7 +402,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                                 </div>
                               </div>
                             </div>
-                          </Link></>
+                          </Link>
                       ))}
                     </div>
                   </div>

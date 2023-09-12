@@ -42,7 +42,7 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
     }, [inView]);
     return (
         <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-full h-[80vh] lg:px-4 md:px-4">
-            <div ref={ref} className='lg:ml-20'>
+            <div ref={ref} className='relative lg:ml-20'>
                 {nftItem.metadata.image && (
                     <div className="relative ml-auto mr-auto overflow-hidden lg:rounded-2xl">
                         <div
@@ -58,7 +58,6 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
                                 height={530}
                                 src={nftItem.metadata.image}
                                 alt="NFT Image"
-                                unoptimized
                                 className="object-contain w-full h-full imageNFT rounded-xl"
                             />
                         </div>
@@ -91,7 +90,7 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
                     )}
                 {nftItem.metadata.image &&
                     nftItem.metadata.animation_url && (
-                        <div className="absolute lg:top-[75%] top-[50%] lg:right-[70%] right-[90%] mx-auto mt-12 rounded-xl ">
+                        <div className="absolute flex justify-center lg:top-[76%] top-[50%] lg:right-[0] w-full right-[90%] mx-auto mt-12 rounded-xl ">
                             <audio
                                 autoPlay
                                 loop

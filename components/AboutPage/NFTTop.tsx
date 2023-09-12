@@ -109,7 +109,6 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                                 alt="test"
                                 width={208}
                                 height={208}
-                                unoptimized
                                 className="w-full h-full rounded-lg"
                               />
                             )}

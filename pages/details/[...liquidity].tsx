@@ -267,7 +267,6 @@ export default function DetailLiquidity() {
                 height={760}
                 src={data.metadata.image}
                 alt="NFT Image"
-                unoptimized
                 style={{
                   objectFit: "contain",
                 }}

@@ -435,7 +435,6 @@ const Swap: React.FC = () => {
                         style={{
                           objectFit: "contain",
                         }}
-                        unoptimized
                       />
                     )}
                     {!data.metadata?.image && data.metadata?.animation_url && (

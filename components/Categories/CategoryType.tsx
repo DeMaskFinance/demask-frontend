@@ -39,7 +39,8 @@ const Category = ({ label }: { label: string }) => {
       swiperRef.current.swiper.slidePrev();
     }
   };
-
+  console.log(data);
+  
   return (
     <section className="mt-6">
       <div className="flex flex-col">

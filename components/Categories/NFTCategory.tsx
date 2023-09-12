@@ -43,7 +43,6 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                         <Image
                             loading="lazy"
                             width={760}
-                            unoptimized
                             height={760}
                             src={item.metadata.image}
                             alt="NFT Image"

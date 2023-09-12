@@ -72,7 +72,7 @@ const rpcMumbai = [
   },
 ];
 const mediaType = {
-  image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml"],
+  image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml",".webp"],
   video: [".mp4", ".quicktime"],
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],

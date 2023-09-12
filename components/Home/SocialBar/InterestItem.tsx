@@ -40,7 +40,6 @@ function InterestItem() {
                   {item.metadata?.image && (
                     <Image
                       loading="lazy"
-                      unoptimized
                       width={88}
                       height={88}
                       src={item.metadata?.image}

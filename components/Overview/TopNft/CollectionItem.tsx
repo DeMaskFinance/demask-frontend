@@ -25,7 +25,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
     <>
       {isLoading || isFetching ? (
         Array.from({ length: 10 }, (item, index) => (
-          <tr className="flex text-sm lg:text-base md:text-base text-dark2 ">
+          <tr key={index} className="flex text-sm lg:text-base md:text-base text-dark2 ">
             <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
               {skeleton}
             </td>
@@ -67,7 +67,6 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                         {item.metadata?.image && (
                           <Image
                             loading="lazy"
-                            unoptimized
                             width={32}
                             height={32}
                             src={item.metadata?.image}

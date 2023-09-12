@@ -4,7 +4,7 @@ const { Domain } = require("domain");
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["demask.infura-ipfs.io"],
+    domains: ["demask.infura-ipfs.io", "api.demask.finance"],
   },
 };
 

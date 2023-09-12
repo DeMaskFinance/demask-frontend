@@ -202,7 +202,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                                 {item.metadata?.image && (
                                   <Image
                                     loading="lazy"
-                                    unoptimized
                                     width={32}
                                     height={32}
                                     src={item.metadata?.image}
@@ -293,7 +292,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 className="h-6 mr-2 rounded-full"
                 width={24}
                 height={24}
-                unoptimized
               />
               <div>
                 <h2 className="font-medium group-hover:text-secondary5">
