@@ -38,6 +38,7 @@ import NFTItem from "./NFTItem";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import formatToUnit from "@/libs/utils/formatToUnit";
 import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
+import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 
 interface ReelsProps {
   data: any;
@@ -65,7 +66,7 @@ const Reels: React.FC<ReelsProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("1");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [filter, setFilter] = useState<any>("");
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, demask } = useContext(AccountContext);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputNFT, setInputNFT] = useState<string>("0");
@@ -85,6 +86,8 @@ const Reels: React.FC<ReelsProps> = ({
   const [activeMobile, setActiveMobile] = useState(false);
   const [activeDetail, setActiveDetail] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const routerAddress = demask.ROUTER;
+
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -187,9 +190,6 @@ const Reels: React.FC<ReelsProps> = ({
   }, []);
   useEffect(() => {
     const checkApproveToken = async () => {
-      console.log("test");
-      console.log(tokenAddressSwap);
-
       if (tokenAddressSwap !== "MATIC") {
         if (Number(allowanceToken) < Number(amountBuyDec)) {
           setIsApprovedToken(false);
@@ -205,10 +205,10 @@ const Reels: React.FC<ReelsProps> = ({
   // console.log(amountBuy.toString());
   // console.log(amountBuyDec);
   // console.log(bigNumberBalance);
-  console.log(isSufficientTokenBuy);
-  console.log(isApprovedNFT);
-  console.log(isApprovedToken);
-  console.log(filter);
+  // console.log(isSufficientTokenBuy);
+  // console.log(isApprovedNFT);
+  // console.log(isApprovedToken);
+  // console.log(filter);
 
   const handleApproveNFT = async () => {
     if (account) {
@@ -216,7 +216,7 @@ const Reels: React.FC<ReelsProps> = ({
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(filter.nft, abiErc1155, signer);
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+
       try {
         const result = await contract.setApprovalForAll(routerAddress, true);
         await provider.waitForTransaction(result.hash);
@@ -241,7 +241,6 @@ const Reels: React.FC<ReelsProps> = ({
         abiErc20,
         signer
       );
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         const result = await contract.approve(routerAddress, amountBuyDec.toFixed(0));
         await provider.waitForTransaction(result.hash);
@@ -276,7 +275,6 @@ const Reels: React.FC<ReelsProps> = ({
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         try {
           let result;
@@ -346,7 +344,6 @@ const Reels: React.FC<ReelsProps> = ({
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
 
         try {
@@ -865,9 +862,7 @@ const Reels: React.FC<ReelsProps> = ({
                     <p className="flex items-center gap-2 mb-4 text-secondary4">
                       <span className="flex-shrink-0">Reserve NFT:</span>
                       {filter.reserveNFT ? (
-                        <span className="block">
-                          {formatToUnit(filter.reserveNFT)}
-                        </span>
+                        <ModalNumber data={filter.reserveNFT} />
                       ) : (
                         <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                       )}

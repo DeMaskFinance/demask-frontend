@@ -1,4 +1,5 @@
 import { AvatarUser } from "@/components/Avatars";
+import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import formatNumber from "@/libs/utils/formatNumer";
 import formatToUnit from "@/libs/utils/formatToUnit";
 import images from "@/public/images";
@@ -100,7 +101,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                           )}
                       </div>
 
-                      <span className="line-clamp-1 lg:group-hover:hidden max-w-[133px]">
+                      <span className="line-clamp-1 truncate lg:group-hover:hidden max-w-[133px] block">
                         {isFetching ? skeleton : item.metadata?.name}
                       </span>
 
@@ -111,9 +112,8 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   </Link>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  <span className="">
-                    ${isFetching ? skeleton : formatToUnit(item.lastPrice)}
-                  </span>
+                  <span>$</span>
+                  {isFetching ? skeleton : <ModalNumber data={item.lastPrice} />}
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <span
@@ -125,15 +125,16 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   </span>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  <span className="">
-                    ${isFetching ? skeleton : formatToUnit(item.volume24h)}
-                  </span>
+                  <span>$</span>
+                  {isFetching ? skeleton : <ModalNumber data={item.volume24h} />}
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  ${isFetching ? skeleton : formatToUnit(item.TVL)}
+                  <span>$</span>
+                  {isFetching ? skeleton : <ModalNumber data={item.TVL} />}
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  {isFetching ? skeleton : formatToUnit(item.totalSupply)}
+                <span>$</span>
+                  {isFetching ? skeleton : <ModalNumber data={item.totalSupply}/>}
                 </td>
               </tr>
             ))}

@@ -25,7 +25,7 @@ import approveNFT from "@/libs/utils/approveNFT";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { ModalWallet } from "../ModalWallet";
 import { ModalTransation } from "../ModalTransation";
-interface ModalRemmoveLiquidityProps {
+interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
   account: string;
@@ -37,7 +37,7 @@ const styles = {
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
 };
 const ModalRemmoveLiquidity: React.FunctionComponent<
-  ModalRemmoveLiquidityProps
+  ModalRemoveLiquidityProps
 > = ({
   isOpenRemoveLiquidity,
   data,
@@ -63,6 +63,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
     const [checkApproveDML, setCheckApproveDML] = useState<boolean>(false);
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+    const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -73,8 +74,6 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     };
 
     const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress,isOpenTransaction);
-    const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-      useInformationToken(account, tokenAddress, wallet);
     const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputLiquidity(e.target.value);
       setShowRequiredMessage(false);
@@ -103,7 +102,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const totalSupply = useTotalSupply(account, wallet, data.dmlAddress, isApprovedDML);
     // console.log(totalSupply);
     // console.log(handleBignumber(Number(inputLiquidity), 18));
-    // console.log(decimals);
+    console.log(data.dmlDecimals);
 
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
@@ -111,7 +110,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const resAmountNFT = Number(amountLIQUIDITY) * Number(reserves[1].toString()) / Number(totalSupply);
         const amountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply);
         const resAmountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(amountToken.toFixed(0))) / ((Number(reserves[1].toString()) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
-        const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(), decimals)
+        const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(), data.dmlDecimals)
         const resAmountNFTMin = Math.floor(Number(resAmountNFT * 0.95));
         const resAmountTokenMin = Math.floor(Number(resAmountToken * 0.95));
         setAmountNFT(resAmountNFT.toString());
@@ -148,7 +147,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     useEffect(() => {
       const checkApproveToken = async () => {
         console.log(currentAllowance);
-        if (currentAllowance && Number(currentAllowance) < Number(handleBignumber(Number(inputLiquidity), Number(decimals)))) {
+        if (currentAllowance && Number(currentAllowance) < Number(handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals)))) {
           setIsApprovedLiquidity(false);
         } else {
           setIsApprovedLiquidity(true);
@@ -156,17 +155,21 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       };
       checkApproveToken();
     }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance, checkApproveDML]);
-    const { reserves, isLoadingReserves, res }: any = useFetchReservesDML(
+    
+    const { reserves, isLoadingReserves }: any = useFetchReservesDML(
       account,
       data.dmlAddress,
       wallet,
     );
-    // console.log(reserves);
+    console.log(reserves);
     // console.log(reserves[0].toString());
     // console.log(reserves[1].toString());
-
+    //   console.log(data);
+      
     // console.log(isApprovedDML);
     // console.log(isApprovedLiquidity);
+    // console.log(isApprovedNFT);
+    
     const handleApproveDML = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
       if (inputLiquidity) {
         setShowRequiredMessage(false);
@@ -176,9 +179,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(dmlAddress, abiDML, signer);
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const inputLiquidityBN = new BigNumber(inputLiquidity)
-          .times(new BigNumber(10).pow(Number(decimals)))
+          .times(new BigNumber(10).pow(Number(data.dmlDecimals)))
           .toFixed(0);
         console.log(inputLiquidityBN);
 
@@ -215,9 +217,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        const liquidity = handleBignumber(Number(inputLiquidity), Number(decimals));
+        const liquidity = handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals));
         console.log(liquidity);
         console.log(amountTokenMin);
         console.log(amountNFTMin);

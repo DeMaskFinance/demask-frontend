@@ -1,4 +1,5 @@
 import { AvatarUser } from "@/components/Avatars";
+import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import formatNumber from "@/libs/utils/formatNumer";
 import formatToUnit from "@/libs/utils/formatToUnit";
@@ -98,9 +99,8 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                           )}
                       </div>
                     </span>
-                    <span className="line-clamp-1 lg:group-hover:hidden">
+                    <span className="line-clamp-1 truncate lg:group-hover:hidden max-w-[133px] block">
                       {isFetching ? skeleton : item.metadata.name}
-                      {/* {item.actionName.length > 10 ? "..." : ""} */}
                     </span>
                     <span
                       className={`ml-5 absolute top-0 left-48 bg-transparent border text-sm ${item.action === "Buy" || item.action === "Add"
@@ -120,7 +120,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
 
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">
                 <span className="">
-                  {isFetching ? skeleton : formatToUnit(item.amountnft)}
+                  {isFetching ? skeleton : <ModalNumber data={item.amountnft}/>}
                 </span>
               </td>
 
