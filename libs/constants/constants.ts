@@ -26,6 +26,32 @@ const tokenDefault = [
     logo: USDCIcon,
   },
 ];
+const BSC_DEMASK = {
+  RPC: process.env.NEXT_PUBLIC_RPC_BSC,
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_BSC,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_BSC,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_BSC,
+  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BSC,
+  WETH: process.env.NEXT_PUBLIC_WETH_BSC,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
+  USDT: process.env.NEXT_PUBLIC_USDT_BSC,
+  USDC: process.env.NEXT_PUBLIC_USDC_BSC,
+}
+const MUMBAI_DEMASK = {
+  RPC: process.env.NEXT_PUBLIC_RPC,
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR,
+  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN,
+  WETH: process.env.NEXT_PUBLIC_WETH,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT,
+  USDT: process.env.NEXT_PUBLIC_USDT,
+  USDC: process.env.NEXT_PUBLIC_USDC,
+}
 const network = [
   {
     name: "Ethereum",
@@ -72,9 +98,9 @@ const rpcMumbai = [
   },
 ];
 const mediaType = {
-  image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml",".webp"],
+  image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml", ".webp"],
   video: [".mp4", ".quicktime"],
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
-export { tokenDefault, amountNFT, rpcMumbai, mediaType, network };
+export { tokenDefault, amountNFT, rpcMumbai, mediaType, network ,BSC_DEMASK,MUMBAI_DEMASK};
