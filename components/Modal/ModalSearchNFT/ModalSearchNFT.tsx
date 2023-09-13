@@ -13,7 +13,7 @@ import images from "@/public/images";
 import { NFTTopService } from "@/libs/service";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -37,7 +37,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const [imageNFT, setImageNFT] = useState("");
   const [symbolNFT, setSymbolNFT] = useState("");
   const router = useRouter();
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);
   const handleAddressNFT = async (value: string) => {
     setLoading(true);
     const ERC1155 = await checkIsERC1155(value);

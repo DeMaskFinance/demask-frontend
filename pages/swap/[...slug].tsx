@@ -39,7 +39,7 @@ import { metadataService } from "@/libs/service/metadataService";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
-import useNetWork from "@/hooks/useNetwork";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -63,11 +63,11 @@ const Swap: React.FC = () => {
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const { chainId } = useNetWork();
+  const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -115,7 +115,6 @@ const Swap: React.FC = () => {
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         const result = await contract.setApprovalForAll(routerAddress, true);
         await provider.waitForTransaction(result.hash);
@@ -149,7 +148,7 @@ const Swap: React.FC = () => {
   //   }
   // }, [router.query.slug, dmlToken]);
   // console.log(dmlToken.toLocaleLowerCase());
-  const { isLoading:isLoadingChart, data:dataChart, isFetching:isFetchingChart, isSuccess:isSuccessChart } = useQuery({
+  const { isLoading: isLoadingChart, data: dataChart, isFetching: isFetchingChart, isSuccess: isSuccessChart } = useQuery({
     queryKey: ["chart swap", idNFT, dmlToken, chainId],
     queryFn: async () => {
       const res = await swapAPI(dmlToken.toLocaleLowerCase(), chainId);
@@ -246,7 +245,6 @@ const Swap: React.FC = () => {
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         const result = await contract.approve(routerAddress, amountBuy.toFixed());
         await provider.waitForTransaction(result.hash);
@@ -278,7 +276,6 @@ const Swap: React.FC = () => {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         try {
           let result;
@@ -346,7 +343,6 @@ const Swap: React.FC = () => {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
-        const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
 
         try {
@@ -509,9 +505,11 @@ const Swap: React.FC = () => {
               <div className="font-semibold">
                 <div className="flex text-xl text-dark1">
                   {symbolToken && isSuccess ? (
-                    <div className="flex items-center">
+                    <div className="relative flex items-center">
                       {data.metadata?.symbol ? (
-                        <span>{data.metadata.symbol}</span>
+                        <div className="w-24">
+                          <ModalDocument data={data.metadata?.symbol} />
+                        </div>
                       ) : (
                         <span>{idNFT}</span>
                       )}
@@ -608,9 +606,10 @@ const Swap: React.FC = () => {
                     onClick={handleSearchNFT}
                   >
                     {isSuccess && (
-                      <p className="text-center">
-                        {data.metadata?.symbol}
-                      </p>
+                      <div className="w-16 text-center">
+                        {/* {data.metadata?.symbol} */}
+                        <h2 className="truncate">{data.metadata?.symbol}</h2>
+                      </div>
                     )}
                   </div>
                 </div>

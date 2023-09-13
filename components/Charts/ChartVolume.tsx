@@ -1,14 +1,13 @@
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import { format, getWeek, parseISO } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
 import { startOfWeek, endOfWeek, addDays } from 'date-fns';
 import formatNumber from "@/libs/utils/formatNumer";
-import { useRouter } from "next/router";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 interface ChartVolumnProps { }
 const styles = {
   btnActive: "rounded-full bg-secondary5",
@@ -30,9 +29,9 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [dailyData, setDailyData] = useState('');
   const [weeklyData, setWeeklyData] = useState('');
   const [monthlyData, setMonthlyData] = useState('');
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);
   const { data, isLoading: LoadingVolume } = useQuery({
-    queryKey: ["ChartVolume",chainId],
+    queryKey: ["ChartVolume", chainId],
     queryFn: async () => {
       const res = await categoryAPI(
         `/v2/volumeChart?chainId=${chainId}&intervalDate=30`

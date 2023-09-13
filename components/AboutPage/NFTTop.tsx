@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import { useRef, useEffect, Fragment } from "react";
+import { useRef, useEffect, Fragment, useContext } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { SkeletonNFTTop } from "../Skeleton";
@@ -13,11 +13,13 @@ import { NFTTopService } from "@/libs/service";
 import Link from "next/link";
 import { AvatarUser } from "../Avatars";
 import formatNumber from "@/libs/utils/formatNumer";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 interface NFTTopProps { }
 
 const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
-  const { chainId } = useNetWork();
+  const { chainId, demask } = useContext(AccountContext);
+  console.log(demask);
+  
   const swiperRef = useRef<any>(null);
   const { ref, inView } = useInView();
   const fetchDataTopNFT = async (pageParam = 1, chainId: string | string[]) => {

@@ -10,11 +10,9 @@ import { liquidityListAPI } from "@/libs/service/liquidityService";
 import AccountContext from "@/context/AccountContext";
 import { BiLoaderAlt } from "react-icons/bi";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
-import useNetWork from "@/hooks/useNetwork";
 export default function Liquidity() {
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
-  const { chainId } = useNetWork();
   const handleAddLiquidity = () => {
     const nftAddress = "0xe51a2dEC45a6256B049dEd81B75C110E4F1a64e7";
     const tokenAddress = "MATIC";
@@ -22,8 +20,8 @@ export default function Liquidity() {
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
   const { ref, inView } = useInView();
-  const fetchDataListLiquidity = async (accountUser: string, pageParam = 1,chainId:string|string[]) => {
-    const data = await liquidityListAPI(accountUser.toLowerCase(), pageParam,chainId);
+  const fetchDataListLiquidity = async (accountUser: string, pageParam = 1, chainId: string | string[]) => {
+    const data = await liquidityListAPI(accountUser.toLowerCase(), pageParam, chainId);
     return data;
   };
   const {
@@ -35,8 +33,8 @@ export default function Liquidity() {
     isFetching,
     hasNextPage,
   } = useInfiniteQuery(
-    ["LiquidityList", account,chainId],
-    ({ pageParam = 1 }) => fetchDataListLiquidity(account, pageParam,chainId),
+    ["LiquidityList", account, chainId],
+    ({ pageParam = 1 }) => fetchDataListLiquidity(account, pageParam, chainId),
     {
       getNextPageParam: (page) =>
         page?.currentPage < page?.totalPages
@@ -44,7 +42,7 @@ export default function Liquidity() {
           : undefined,
     }
   );
-    
+
   return (
     <div className="py-8 max-w-4xl mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
       <Head>

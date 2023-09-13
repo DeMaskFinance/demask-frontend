@@ -10,8 +10,8 @@ import useAmountInMax from "@/hooks/useAmountInMax";
 import checkIsERC20 from '@/libs/validation/checkIsERC20';
 import Link from 'next/link';
 import { mediaType } from '@/libs/constants';
-import formatToUnit from '@/libs/utils/formatToUnit';
 import { getBuyPrice } from '@/libs/utils/getPrice';
+import ModalNumber from '../Modal/ModalLength/ModalNumber';
 
 interface NFTCategoryProps {
     item: any
@@ -148,9 +148,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                         <div className="flex flex-col items-end">
                             <p>Reverse NFT</p>
                             {item.reserveNFT ? (
-                                <span className="block">
-                                    {formatToUnit(item.reserveNFT)}
-                                </span>
+                                <ModalNumber data={item.reserveNFT}/>
                             ) : (
                                 <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                             )}

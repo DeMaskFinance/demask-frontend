@@ -3,21 +3,21 @@ import { getCookie, setCookie } from "@/libs/utils/cookieUtils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { AvatarUser } from "../Avatars";
 import { SearchIcon } from "../Icons";
 import { NFTTopService } from "@/libs/service";
 import Image from "next/image";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 
 interface SearchProps {
   isFocused: boolean;
   handleFocus: any;
-  showSearch?:boolean;
+  showSearch?: boolean;
 }
 
-const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSearch }) => {
+const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSearch }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLParagraphElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -25,7 +25,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
   const getHistory = getCookie("searchHistory");
   const searchsHistory = getHistory ? JSON.parse(getHistory) : [];
   const [searchHistory, setSearchHistory] = useState<any[]>(searchsHistory);
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
@@ -39,7 +39,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
     isFetching: searchFetching,
     refetch: searchRefetch,
     isPreviousData: isSearchPreviousData } = useQuery({
-      queryKey: ["categories", searchTerm,chainId],
+      queryKey: ["categories", searchTerm, chainId],
       queryFn: async () => {
         if (searchTerm.includes("/")) {
           const [param1, param2] = searchTerm.split(":");
@@ -62,7 +62,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
     isPreviousData: isTopNftPreviousData, } = useQuery({
       queryKey: ["topNftSearch"],
       queryFn: async () => {
-        const res = await NFTTopService(1,chainId);
+        const res = await NFTTopService(1, chainId);
         return res;
       },
 
@@ -122,7 +122,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
     const searchsHistory = savedHistory ? JSON.parse(savedHistory) : [];
     setSearchHistory(searchsHistory);
   }, []);
-  
+
   return (
     <>
       <li className="list-none">
@@ -174,7 +174,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                   <div key={index}>
                     {isMounted && (
                       <div
-                        
+
                         className={`flex justify-between items-center`}
                       >
                         <div
@@ -182,42 +182,42 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                           className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white"
                         >
                           <div className="flex items-center gap-2">
-                          <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                {item.metadata?.image && (
-                                    <Image
-                                      loading="lazy"
-                                      width={32}
-                                      height={32}
-                                      src={item.metadata?.image}
-                                      alt="NFT Image"
-                                      className="object-cover w-full h-full"
-                                    />
-                                  )}
-                                  {item.metadata?.animation_url &&
-                                    !item.metadata?.image && (
-                                      <video
-                                        src={item.metadata?.animation_url}
-                                        autoPlay={false}
-                                        loop
-                                        muted
-                                        className="object-cover h-full"
-                                      />
-                                    )}
-                                  {item.metadata?.image &&
-                                    item.metadata?.animation_url && (
-                                      <audio
-                                        autoPlay
-                                        loop
-                                        muted
-                                        controls
-                                        src={item.metadata?.animation_url}
-                                        className=""
-                                      >
-                                        Your browser does not support the
-                                        <code>audio</code> element.
-                                      </audio>
-                                    )}
-                                </div>
+                            <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                              {item.metadata?.image && (
+                                <Image
+                                  loading="lazy"
+                                  width={32}
+                                  height={32}
+                                  src={item.metadata?.image}
+                                  alt="NFT Image"
+                                  className="object-cover w-full h-full"
+                                />
+                              )}
+                              {item.metadata?.animation_url &&
+                                !item.metadata?.image && (
+                                  <video
+                                    src={item.metadata?.animation_url}
+                                    autoPlay={false}
+                                    loop
+                                    muted
+                                    className="object-cover h-full"
+                                  />
+                                )}
+                              {item.metadata?.image &&
+                                item.metadata?.animation_url && (
+                                  <audio
+                                    autoPlay
+                                    loop
+                                    muted
+                                    controls
+                                    src={item.metadata?.animation_url}
+                                    className=""
+                                  >
+                                    Your browser does not support the
+                                    <code>audio</code> element.
+                                  </audio>
+                                )}
+                            </div>
                             <div className="flex flex-col items-baseline">
                               <span className="block text-sm font-semibold">
                                 <span className="line-clamp-1">
@@ -261,67 +261,67 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                     </div>
                     <div className="flex flex-col gap-4">
                       {searchData.map((item: any, index: number) => (
-                          <Link
-                            key={index}
-                            onClick={() => handleResultItemClick(item)}
-                            href={`/swap/${item.nft}/${item.erc}/${item.Factory_Contract_id}`}
-                            className="flex-1"
-                          //
-                          >
-                            <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                              <div className="flex items-center gap-2">
-                                <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                        <Link
+                          key={index}
+                          onClick={() => handleResultItemClick(item)}
+                          href={`/swap/${item.nft}/${item.erc}/${item.Factory_Contract_id}`}
+                          className="flex-1"
+                        //
+                        >
+                          <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
+                            <div className="flex items-center gap-2">
+                              <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
                                 {item.metadata?.image && (
-                                    <Image
-                                      loading="lazy"
-                                      width={32}
-                                      height={32}
-                                      src={item.metadata?.image}
-                                      alt="NFT Image"
-                                      className="object-cover w-full h-full"
+                                  <Image
+                                    loading="lazy"
+                                    width={32}
+                                    height={32}
+                                    src={item.metadata?.image}
+                                    alt="NFT Image"
+                                    className="object-cover w-full h-full"
+                                  />
+                                )}
+                                {item.metadata?.animation_url &&
+                                  !item.metadata?.image && (
+                                    <video
+                                      src={item.metadata?.animation_url}
+                                      autoPlay={false}
+                                      loop
+                                      muted
+                                      className="object-cover h-full"
                                     />
                                   )}
-                                  {item.metadata?.animation_url &&
-                                    !item.metadata?.image && (
-                                      <video
-                                        src={item.metadata?.animation_url}
-                                        autoPlay={false}
-                                        loop
-                                        muted
-                                        className="object-cover h-full"
-                                      />
-                                    )}
-                                  {item.metadata?.image &&
-                                    item.metadata?.animation_url && (
-                                      <audio
-                                        autoPlay
-                                        loop
-                                        muted
-                                        controls
-                                        src={item.metadata?.animation_url}
-                                        className=""
-                                      >
-                                        Your browser does not support the
-                                        <code>audio</code> element.
-                                      </audio>
-                                    )}
-                                </div>
-                                <div className="flex flex-col items-baseline">
-                                  <span className="block text-sm font-semibold">
-                                    <span className="line-clamp-1">
-                                      {item?.metadata?.name}
-                                    </span>
+                                {item.metadata?.image &&
+                                  item.metadata?.animation_url && (
+                                    <audio
+                                      autoPlay
+                                      loop
+                                      muted
+                                      controls
+                                      src={item.metadata?.animation_url}
+                                      className=""
+                                    >
+                                      Your browser does not support the
+                                      <code>audio</code> element.
+                                    </audio>
+                                  )}
+                              </div>
+                              <div className="flex flex-col items-baseline">
+                                <span className="block text-sm font-semibold">
+                                  <span className="line-clamp-1">
+                                    {item?.metadata?.name}
                                   </span>
-                                  <span className="flex text-xs item-center">
-                                    <span className="block pb-2 mr-1 font-semibold">
-                                      {item.dmlToken?.slice(0, 8)}...
-                                      {item.dmlToken?.slice(-8)}
-                                    </span>
+                                </span>
+                                <span className="flex text-xs item-center">
+                                  <span className="block pb-2 mr-1 font-semibold">
+                                    {item.dmlToken?.slice(0, 8)}...
+                                    {item.dmlToken?.slice(-8)}
                                   </span>
-                                </div>
+                                </span>
                               </div>
                             </div>
-                          </Link>
+                          </div>
+                        </Link>
                       ))}
                     </div>
                   </>
@@ -342,67 +342,67 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus,showSea
                     <div className="block mb-2">
                       <span className="text-base">NFTs Top</span>
                       {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
-                          <Link
-                            key={index}
-                            onClick={() => handleResultItemClick(item)}
-                            href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
-                            className="flex-1"
-                          //
-                          >
-                            <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                              <div className="flex items-center gap-2">
-                                <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                  {item.metadata?.image && (
-                                    <Image
-                                      loading="lazy"
-                                      width={32}
-                                      height={32}
-                                      src={item.metadata?.image}
-                                      alt="NFT Image"
-                                      className="object-cover w-full h-full"
+                        <Link
+                          key={index}
+                          onClick={() => handleResultItemClick(item)}
+                          href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
+                          className="flex-1"
+                        //
+                        >
+                          <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
+                            <div className="flex items-center gap-2">
+                              <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                                {item.metadata?.image && (
+                                  <Image
+                                    loading="lazy"
+                                    width={32}
+                                    height={32}
+                                    src={item.metadata?.image}
+                                    alt="NFT Image"
+                                    className="object-cover w-full h-full"
+                                  />
+                                )}
+                                {item.metadata?.animation_url &&
+                                  !item.metadata?.image && (
+                                    <video
+                                      src={item.metadata?.animation_url}
+                                      autoPlay={false}
+                                      loop
+                                      muted
+                                      className="object-cover h-full"
                                     />
                                   )}
-                                  {item.metadata?.animation_url &&
-                                    !item.metadata?.image && (
-                                      <video
-                                        src={item.metadata?.animation_url}
-                                        autoPlay={false}
-                                        loop
-                                        muted
-                                        className="object-cover h-full"
-                                      />
-                                    )}
-                                  {item.metadata?.image &&
-                                    item.metadata?.animation_url && (
-                                      <audio
-                                        autoPlay
-                                        loop
-                                        muted
-                                        controls
-                                        src={item.metadata?.animation_url}
-                                        className=""
-                                      >
-                                        Your browser does not support the
-                                        <code>audio</code> element.
-                                      </audio>
-                                    )}
-                                </div>
-                                <div className="flex flex-col items-baseline">
-                                  <span className="block text-sm font-semibold">
-                                    <span className="line-clamp-1">
-                                      {item?.metadata?.name}
-                                    </span>
+                                {item.metadata?.image &&
+                                  item.metadata?.animation_url && (
+                                    <audio
+                                      autoPlay
+                                      loop
+                                      muted
+                                      controls
+                                      src={item.metadata?.animation_url}
+                                      className=""
+                                    >
+                                      Your browser does not support the
+                                      <code>audio</code> element.
+                                    </audio>
+                                  )}
+                              </div>
+                              <div className="flex flex-col items-baseline">
+                                <span className="block text-sm font-semibold">
+                                  <span className="line-clamp-1">
+                                    {item?.metadata?.name}
                                   </span>
-                                  <span className="flex text-xs item-center">
-                                    <span className="block pb-2 mr-1 font-semibold">
-                                      {item.dmlAddress?.slice(0, 8)}...
-                                      {item.dmlAddress?.slice(-8)}
-                                    </span>
+                                </span>
+                                <span className="flex text-xs item-center">
+                                  <span className="block pb-2 mr-1 font-semibold">
+                                    {item.dmlAddress?.slice(0, 8)}...
+                                    {item.dmlAddress?.slice(-8)}
                                   </span>
-                                </div>
+                                </span>
                               </div>
                             </div>
-                          </Link>
+                          </div>
+                        </Link>
                       ))}
                     </div>
                   </div>

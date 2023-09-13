@@ -28,7 +28,6 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
-import useNetWork from "@/hooks/useNetwork";
 
 const style = {
   btnWallet:
@@ -36,7 +35,7 @@ const style = {
 };
 
 export default function DetailLiquidity() {
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
@@ -56,7 +55,6 @@ export default function DetailLiquidity() {
   }, [liquidity]);
 
   const { decimals } = useInformationDML(dmlTokenLiquidity);
-  const { chainId } = useNetWork();
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity) {

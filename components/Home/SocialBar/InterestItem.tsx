@@ -1,16 +1,16 @@
 import SocialLoading from "@/components/Skeleton/SocialLoading";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 
 function InterestItem() {
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);;
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["topNftHome",chainId],
+    queryKey: ["topNftHome", chainId],
     queryFn: async () => {
       const res = await categoryAPI(`/v2/topNFT-list?chainId=${chainId}&page=1`);
       return res;

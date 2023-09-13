@@ -1,16 +1,16 @@
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import TransactionItem from "./TransactionItem";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 
 function ListTracsaction() {
   const [page, setPage] = useState(1);
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);
   const [pageNumberInput, setPageNumberInput] = useState("");
   const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
-    queryKey: ["transaction",chainId],
+    queryKey: ["transaction", chainId],
     queryFn: async () => {
       const res = await categoryAPI(`/v2/transaction-list?chainId=${chainId}&page=${page}`);
       return res;
@@ -163,11 +163,10 @@ function ListTracsaction() {
             <button
               onClick={prevPage}
               disabled={isPreviousData || page === 1}
-              className={`${
-                isPreviousData || page === 1
+              className={`${isPreviousData || page === 1
                   ? "text-dark3 hover:border-red"
                   : "text-dark2"
-              }`}
+                }`}
             >
               <MdNavigateBefore className="text-xl border border-transparent" />
             </button>
@@ -178,9 +177,8 @@ function ListTracsaction() {
                     <span>...</span>
                   ) : (
                     <button
-                      className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${
-                        pageNum === page ? "bg-secondary2 text-white" : ""
-                      }`}
+                      className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${pageNum === page ? "bg-secondary2 text-white" : ""
+                        }`}
                       onClick={() => goToPage(pageNum)}
                     >
                       {pageNum}
@@ -192,11 +190,10 @@ function ListTracsaction() {
             <button
               onClick={nextPage}
               disabled={isPreviousData || page === data?.totalPages}
-              className={`${
-                isPreviousData || page === data?.totalPages
+              className={`${isPreviousData || page === data?.totalPages
                   ? "text-dark3 hover:border"
                   : ""
-              }`}
+                }`}
             >
               <MdOutlineNavigateNext className="text-xl text-dark2" />
             </button>

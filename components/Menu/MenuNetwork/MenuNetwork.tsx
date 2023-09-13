@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { BscIcon, EtherIcon, PolygonIcon } from "@/components/Icons";
 import { network } from "@/libs/constants";
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
+import AccountContext from '@/context/AccountContext';
 interface MenuNetworkProps {
 
 }
@@ -20,23 +21,19 @@ interface networkProps {
     chain: string;
 }
 const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
-    const router = useRouter();
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
+    const { updateChainId, chainId } = useContext(AccountContext);
     const handleChangeNetwork = (chain: string) => {
-        // get infor current url
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('chain', chain);
-        // new url
-        router.push(currentUrl.toString());
+        updateChainId(chain);
     };
     useEffect(() => {
-        if (router.query.chain) {
-            const foundNetwork = network.find((item) => item.chain === router.query.chain);
+        if (chainId) {
+            const foundNetwork = network.find((item) => item.chain === chainId);
             setFilterNetwork(foundNetwork);
         } else {
             setFilterNetwork(network[1]);
         }
-    }, [router.query]);
+    }, [chainId]);
 
     const LogoComponent: any = filterNetwork?.logo;
     return (

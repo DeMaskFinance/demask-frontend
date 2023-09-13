@@ -37,7 +37,6 @@ import { tokenDefault } from "@/libs/constants";
 import { useQuery } from "@tanstack/react-query";
 import { metadataService } from "@/libs/service/metadataService";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
-import useNetWork from "@/hooks/useNetwork";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -60,13 +59,13 @@ export default function AddLiquidity() {
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const { chainId } = useNetWork();
+  const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -145,7 +144,7 @@ export default function AddLiquidity() {
     }
   }, [inputNFT, inputToken]);
   console.log(isSufficientToken);
-  
+
 
   const tokenSymbolIcon = tokenDefault.find((item) => item.address === tokenAddress);
 
@@ -169,7 +168,7 @@ export default function AddLiquidity() {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+      
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
 
       try {
@@ -237,7 +236,6 @@ export default function AddLiquidity() {
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         const result = await contract.approve(routerAddress, inputToken);
         await provider.waitForTransaction(result.hash);
@@ -281,7 +279,6 @@ export default function AddLiquidity() {
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       try {
         const result = await contract.setApprovalForAll(routerAddress, true);
         await provider.waitForTransaction(result.hash);

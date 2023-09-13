@@ -1,16 +1,16 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import Link from "next/link";
 import Image from "next/image";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import NFTCategory from "@/components/Categories/NFTCategory";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 
 export default function Art() {
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);
   const getDate = (timeStamp: any) => {
     const date = timeStamp * 1000;
     const currentDateMillis = Date.now();
@@ -23,7 +23,7 @@ export default function Art() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   const { data, isLoading } = useQuery({
-    queryKey: [slug, "type",chainId],
+    queryKey: [slug, "type", chainId],
     queryFn: async () => {
       const res = await categoryAPI(`/v2/items/${capitalizeFirstLetter(slug)}?chainId=${chainId}`);
       return res;
@@ -31,7 +31,7 @@ export default function Art() {
   });
   console.log(data);
   console.log(chainId);
-  
+
   return (
     <section className="max-w-6xl pt-6 pb-32 mx-auto">
       <Head>
@@ -47,9 +47,9 @@ export default function Art() {
               <>
                 <li
                   title={item.metadata.name}
-                  className="items-center p-3 overflow-hidden text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
+                  className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
                 >
-                  <NFTCategory item={item}/>
+                  <NFTCategory item={item} />
                 </li>
               </>
             ))}

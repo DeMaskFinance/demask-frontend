@@ -1,12 +1,12 @@
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useContext } from "react";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 
 function StatisticChart() {
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);;
   const getCurrentDate = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -15,7 +15,7 @@ function StatisticChart() {
 
     return `${year}-${month}-${day}`;
   };
-  
+
   const currentDateFormatted = getCurrentDate();
 
   const {
@@ -25,7 +25,7 @@ function StatisticChart() {
     refetch,
     isPreviousData,
   } = useQuery({
-    queryKey: ["tvl",chainId],
+    queryKey: ["tvl", chainId],
     queryFn: async () => {
       const res = await categoryAPI(`/v2/tvlChart?chainId=${chainId}&date=${currentDateFormatted}`);
       return res;
@@ -35,7 +35,7 @@ function StatisticChart() {
   });
 
   const { data: volume } = useQuery({
-    queryKey: ["volumne",chainId],
+    queryKey: ["volumne", chainId],
     queryFn: async () => {
       const res = await categoryAPI(
         `/v2/volumeChart?chainId=${chainId}&date=${currentDateFormatted}`
@@ -55,9 +55,8 @@ function StatisticChart() {
         </span>{" "}
         (
         <span
-          className={`flex items-center ${
-            volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
-          } `}
+          className={`flex items-center ${volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
+            } `}
         >
           {volume && volume.volumePercent >= 0 ? (
             <BsArrowUp />
@@ -74,9 +73,8 @@ function StatisticChart() {
         </span>
         (
         <span
-          className={`flex items-center ${
-            volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
-          } `}
+          className={`flex items-center ${volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
+            } `}
         >
           {volume && volume.volumePercent >= 0 ? (
             <BsArrowUp />
@@ -93,9 +91,8 @@ function StatisticChart() {
         </span>
         (
         <span
-          className={`flex items-center ${
-            TVL && TVL.tvlPercent >= 0 ? "text-green" : "text-red"
-          } `}
+          className={`flex items-center ${TVL && TVL.tvlPercent >= 0 ? "text-green" : "text-red"
+            } `}
         >
           {TVL && TVL.tvlPercent >= 0 ? <BsArrowUp /> : <BsArrowDown />}
           {TVL && TVL !== null ? TVL.tvlPercent.toFixed(2) : 0}%

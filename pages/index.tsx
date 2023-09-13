@@ -4,18 +4,20 @@ import SocialBar from "@/components/Home/SocialBar";
 import { LayoutSecondary } from "@/components/Layouts";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 import * as homeService from "@/libs/service/homeService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import Link from "next/link";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState,useContext } from "react";
 import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);
+  console.log(chainId);
+  
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };

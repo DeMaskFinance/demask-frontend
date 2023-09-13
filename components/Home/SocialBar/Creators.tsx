@@ -1,13 +1,13 @@
 import { AvatarUser } from "@/components/Avatars";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 
 function Creators() {
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);;
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["creator-fl",chainId],
     queryFn: async () => {

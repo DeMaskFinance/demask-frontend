@@ -1,16 +1,16 @@
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO, subDays } from "date-fns";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import ChartLoading from "./ChartLoading";
 import formatNumber from "@/libs/utils/formatNumer";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 
 interface ChartTVLProps { }
 
 const ChartTVL: React.FC<ChartTVLProps> = () => {
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);;
   const { data: Chart, isLoading } = useQuery({
     queryKey: ["chart", chainId],
     queryFn: async () => {
@@ -37,9 +37,9 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
       setActiveDate(lastData.date);
     }
   }, [lastData, hasInitialSetting, chainId]);
-  useEffect(()=>{
+  useEffect(() => {
     setHasInitialSetting(!true);
-  },[chainId])
+  }, [chainId])
 
   const handleMouseMove = (event: any) => {
     if (event && event.activePayload && event.activePayload.length) {

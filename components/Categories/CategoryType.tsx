@@ -1,27 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
-import Image from "next/image";
 import Link from "next/link";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper";
+import { Navigation } from "swiper";
 import { SkeletonNFTTop } from "../Skeleton";
 import SkeletonCategory from "../Skeleton/SkeletonCategory";
-import { AvatarUser } from "../Avatars";
-import images from "@/public/images";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import useInformationDML from "@/hooks/useInformationDML";
 import NFTCategory from "./NFTCategory";
-import useNetWork from "@/hooks/useNetwork";
+import AccountContext from "@/context/AccountContext";
 
 const Category = ({ label }: { label: string }) => {
-  const { chainId } = useNetWork();
+  const { chainId } = useContext(AccountContext);;
   const swiperRef = useRef<any>(null);
   const { data, isLoading } = useQuery({
-    queryKey: [label,chainId],
+    queryKey: [label, chainId],
     queryFn: async () => {
       const res = await categoryAPI(`/v2/items/${label}?chainId=${chainId}&page=1&limit=10`);
       return res;
@@ -40,7 +36,7 @@ const Category = ({ label }: { label: string }) => {
     }
   };
   console.log(data);
-  
+
   return (
     <section className="mt-6">
       <div className="flex flex-col">
@@ -84,14 +80,14 @@ const Category = ({ label }: { label: string }) => {
             <ul className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:grid-cols-2 text-dark2">
               {data &&
                 data?.items?.map((item: any, index: number) => (
-                    <SwiperSlide className="text-sm lg:text-base text-dark2" key={index}>
-                      <li
-                        title={item.metadata.name}
-                        className="items-center p-3 overflow-hidden transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
-                      >
-                        <NFTCategory item={item} />
-                      </li>
-                    </SwiperSlide>
+                  <SwiperSlide className="text-sm lg:text-base text-dark2" key={index}>
+                    <li
+                      title={item.metadata.name}
+                      className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
+                    >
+                      <NFTCategory item={item} />
+                    </li>
+                  </SwiperSlide>
                 ))}
             </ul>
           </Swiper>

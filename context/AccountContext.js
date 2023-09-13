@@ -1,21 +1,34 @@
 import { getProvider } from "@/libs/connection/getProvider";
 import React, { createContext, useEffect, useState } from "react";
-
+import { MUMBAI_DEMASK, BSC_DEMASK } from "@/libs/constants";
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
   const [account, setAccount] = useState("");
   const [wallet, setWallet] = useState("");
+  const [chainId, setChainId] = useState("80001");
+  const [demask, setDemask] = useState("");
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
+    const storedChainId = localStorage.getItem("CHAINID_DEMASK");
     if (storedAccount) {
       setAccount(storedAccount);
     }
     if (storedWallet) {
       setWallet(storedWallet);
     }
+    if (storedChainId) {
+      setChainId(storedChainId);
+    }
   }, [account]);
+  useEffect(()=>{
+    if(chainId==="80001"){
+      setDemask(MUMBAI_DEMASK)
+    }else{
+      setDemask(BSC_DEMASK)
+    }
+  },[chainId])
   // console.log(account);
   const updateAccount = (newAccount) => {
     setAccount(newAccount);
@@ -25,6 +38,11 @@ export const AccountProvider = ({ children }) => {
   const updateWallet = (newWallet) => {
     setWallet(newWallet);
     localStorage.setItem("WALLET_DEMASK", newWallet);
+  };
+
+  const updateChainId = (newChainId) => {
+    setChainId(newChainId);
+    localStorage.setItem("CHAINID_DEMASK", newChainId);
   };
   const provider = getProvider(wallet);
   useEffect(() => {
@@ -45,10 +63,18 @@ export const AccountProvider = ({ children }) => {
         provider?.removeAllListeners("accountsChanged", handleAccountsChanged);
       };
     }
-  },[provider]);
+  }, [provider]);
   return (
     <AccountContext.Provider
-      value={{ account, updateAccount, updateWallet, wallet }}
+      value={{
+        account,
+        updateAccount,
+        updateWallet,
+        wallet,
+        updateChainId,
+        chainId,
+        demask
+      }}
     >
       {children}
     </AccountContext.Provider>
