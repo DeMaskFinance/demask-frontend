@@ -5,7 +5,6 @@ import { CgClose } from "react-icons/cg";
 import { getProvider } from "@/libs/connection/getProvider";
 import Web3 from "web3";
 import { checkNetwork } from "@/libs/validation/checkNetwork";
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import AccountContext from "@/context/AccountContext";
 import Wrapper from "../Wrapper";
 import { useWeb3Modal } from '@web3modal/react'

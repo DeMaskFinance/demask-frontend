@@ -1,8 +1,7 @@
-import React, { PureComponent, useState, useEffect } from "react";
-import Highcharts, { Point } from "highcharts";
+import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";
-import Image from "next/image";
+import React from "react";
 interface ChartSwapProps {
   dataChart: [];
 }
@@ -11,8 +10,8 @@ if (typeof Highcharts === "object") {
 }
 
 const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
-  // console.log(dataChart);
-
+  console.log(dataChart);
+  
   const averagePrice = [],
     volume = [];
   const dataChartSwap = dataChart.map((item) => Object.values(item));

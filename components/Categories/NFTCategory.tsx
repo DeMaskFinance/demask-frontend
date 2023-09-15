@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react'
-import Image from "next/image";
-import { AvatarUser } from "../Avatars";
-import images from "@/public/images";
-import useInformationDML from "@/hooks/useInformationDML";
-import formatNumber from "@/libs/utils/formatNumer";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import BigNumber from "bignumber.js";
-import useAmountInMax from "@/hooks/useAmountInMax";
-import checkIsERC20 from '@/libs/validation/checkIsERC20';
-import Link from 'next/link';
 import { mediaType } from '@/libs/constants';
+import formatNumber from "@/libs/utils/formatNumer";
 import { getBuyPrice } from '@/libs/utils/getPrice';
+import images from "@/public/images";
+import Image from "next/image";
+import Link from 'next/link';
+import { AvatarUser } from "../Avatars";
 import ModalNumber from '../Modal/ModalLength/ModalNumber';
 
 interface NFTCategoryProps {

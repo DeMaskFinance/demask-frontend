@@ -3,7 +3,7 @@ import React from "react";
 
 export default function SkeletonReels() {
   return (
-    <div className="lg:flex items-center animate-pulse gap-x-10 lg:px-primary lg:ml-14 lg:mr-14">
+    <div className="lg:flex lg:h-[calc(100vh-130px)] items-center animate-pulse gap-x-10 lg:px-primary lg:ml-14 lg:mr-14">
       <div className="w-2/4">
         <div className="bg-slate-200 h-[530px] mt-12 w-[530px] border rounded-2xl"></div>
       </div>

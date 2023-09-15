@@ -37,7 +37,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
               <p>{item.action}</p>
               <p>{formatNumber(item.decimalsLiquidity)}</p>
               <p>{formatNumber(item.amountnft)}</p>
-              <p>{formatNumber(item.amounttokenInUSD)}</p>
+              <p>{formatNumber(item.amounttoken)}</p>
               <p>{item.blockTime}</p>
             </div>
           ))}
