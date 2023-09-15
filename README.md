@@ -17,8 +17,10 @@ Users will easily buy and sell items through liquidity pools.
 ## Installation
 This project is built using Next.js with TypeScript and is designed to help you perform basic operations. Below are the steps to get started with using the project.
 ### Install Node.js and npm (if not already installed)
-`node -v`
-`npm -v`
+```bash
+node -v
+npm -v
+```
 If not installed, download and install them from their official website.
 ### Clone the Project
 `git clone https://github.com/DeMaskFinance/demask-frontend.git`
