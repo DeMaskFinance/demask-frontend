@@ -1,4 +1,4 @@
-# 👹 Demask Frontend
+# 🌎 Demask Frontend
 <p align="center">
   <a href="https://pancakeswap.finance">
       <img src="/public/logo.png" height="228">
@@ -23,8 +23,10 @@ If not installed, download and install them from their official website.
 ### Clone the Project
 `git clone https://github.com/DeMaskFinance/demask-frontend.git`
 ### Install Dependencies
-`cd your-project`
-`npm install`
+```bash
+cd your-project
+npm install
+```
 ### Start the Project
 `npm run dev`
 ## Roadmap
