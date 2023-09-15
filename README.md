@@ -1,6 +1,6 @@
 # 🌎 Demask Frontend
 <p align="center">
-  <a href="https://pancakeswap.finance">
+  <a href="https://demask.finance/">
       <img src="/public/logo.png" height="228">
   </a>
 </p>
