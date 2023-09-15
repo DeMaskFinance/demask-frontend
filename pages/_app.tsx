@@ -1,6 +1,98 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import "@/styles/globals.css";
+import Head from "next/head";
+import { AccountProvider } from "@/context/AccountContext";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { Layout } from "@/components/Layouts";
+import type { AppProps } from "next/app";
+import type { NextPage } from "next";
+import { Poppins } from "next/font/google";
+import MaintenanceError from "./maintenanceError";
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/react'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { arbitrum, mainnet, polygon } from 'wagmi/chains'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+type NextPageWithLayout<P = any> = NextPage<P> & {
+  PageLayout?: any;
+};
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: 60000,
+    },
+  },
+});
+
+const chains = [arbitrum, mainnet, polygon]
+const projectId = '1af0159e7a959f2fff3f96c541aef2cb'
+
+const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors: w3mConnectors({ projectId, chains }),
+  publicClient
+})
+const ethereumClient = new EthereumClient(wagmiConfig, chains)
+
+export default function App({
+  Component,
+  pageProps,
+}: AppProps & { Component: NextPageWithLayout }) {
+  const isMaintenanceMode = false;
+  return (
+    <AccountProvider>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        ></link>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        ></link>
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <style jsx global>{`
+          html {
+            font-family: ${poppins.style.fontFamily};
+          }
+        `}</style>
+        <WagmiConfig config={wagmiConfig}>
+          {isMaintenanceMode ? (
+            <Layout>
+              <MaintenanceError />
+            </Layout>
+          ) : Component.PageLayout ? (
+            <Component.PageLayout>
+              <Component {...pageProps} />
+            </Component.PageLayout>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </WagmiConfig>
+
+        <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
+          '--w3m-z-index': '9999'
+        }} />
+      </QueryClientProvider>
+    </AccountProvider>
+  );
 }
