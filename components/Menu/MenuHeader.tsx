@@ -1,11 +1,11 @@
 import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { ActiveLink } from "../Link";
 import Search from "../Search/SearchHeader";
-
-interface MenuHeaderProps {}
+import AccountContext from "@/context/AccountContext";
+interface MenuHeaderProps { }
 const styles = {
   menuSub:
     "pt-1 pb-1 bg-white border text-base rounded-lg shadow-xl box border-dark4 font-medium",
@@ -20,14 +20,7 @@ const data = [
   { id: 5, name: "Create", url: "/create" },
 ];
 
-const subMenuTradeData = [
-  {
-    id: 1,
-    name: "Swap",
-    url: `/swap/${process.env.NEXT_PUBLIC_CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
-  },
-  { id: 2, name: "Liquidity", url: "/liquidity" },
-];
+
 const subMenuCateData = [
   { id: 1, name: "Art", url: "/category/art" },
   { id: 2, name: "Gaming", url: "/category/gaming" },
@@ -40,7 +33,15 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const tradeRef = useRef<HTMLAnchorElement | null>(null);
   const router = useRouter();
   const [isFocused, setIsFocused] = useState(false);
-
+  const { demask } = useContext(AccountContext);
+  const subMenuTradeData = [
+    {
+      id: 1,
+      name: "Swap",
+      url: `/swap/${demask.CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+    },
+    { id: 2, name: "Liquidity", url: "/liquidity" },
+  ];
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -80,7 +81,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                     className="text-base "
                     ref={tradeRef}
                     href={
-                      `/swap/${process.env.NEXT_PUBLIC_CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+                      `/swap/${demask.CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
                     }
                   >
                     Trade

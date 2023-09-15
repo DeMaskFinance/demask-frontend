@@ -40,7 +40,7 @@ interface LauchPadProps {
   setSymbol: React.Dispatch<React.SetStateAction<string>>;
   setSelectedFile: React.Dispatch<any>;
   fileType: string | null;
-  setFileIPFS:React.Dispatch<any>;
+  setFileIPFS: React.Dispatch<any>;
 }
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
@@ -77,7 +77,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount,wallet } = useContext(AccountContext);
+  const { account, updateAccount, wallet, demask } = useContext(AccountContext);
+  const contractAddress = demask.CREATOR; // Creator
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
@@ -126,7 +127,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contractAddress = process.env.NEXT_PUBLIC_CREATOR || ""; // Creator
       const contract = new ethers.Contract(contractAddress, abiErc1155, signer);
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
@@ -337,24 +337,24 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span className="text-red">*</span>
         </label>
         <div>
-        <input
-          placeholder="0x3248"
-          type="text"
-          autoComplete="off"
-          id="tokenPayment"
-          value={tokenPayment || ""}
-          className={
-            emptyInputs.includes("tokenPayment")
-              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red block"
-              : styles.inputItem
-          }
-          onChange={handleTokenPaymentChange}
-        />
-        {isTokenPayment && (
-          <div className="absolute top-[50%] right-2 -translate-y-1/2">
-            <BiLoaderAlt className="animate-spin text-secondary5" />
-          </div>
-        )}
+          <input
+            placeholder="0x3248"
+            type="text"
+            autoComplete="off"
+            id="tokenPayment"
+            value={tokenPayment || ""}
+            className={
+              emptyInputs.includes("tokenPayment")
+                ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red block"
+                : styles.inputItem
+            }
+            onChange={handleTokenPaymentChange}
+          />
+          {isTokenPayment && (
+            <div className="absolute top-[50%] right-2 -translate-y-1/2">
+              <BiLoaderAlt className="animate-spin text-secondary5" />
+            </div>
+          )}
         </div>
         {inforErc20.isERC20 ? (
           <div className="mb-2">

@@ -2,13 +2,14 @@ import Link from "next/link";
 import { ProfileIcon, SearchIcon } from "../Icons";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Tippy from "@tippyjs/react";
 import { MdLogout } from "react-icons/md";
 import Icons from "@/public/icons/icon";
 import { AiOutlineClose } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { LogoDeMask } from "../Logo/Logo";
+import AccountContext from "@/context/AccountContext";
 interface MenuMobileProps {
   account: string;
   handleOpen: any;
@@ -27,7 +28,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
 }) => {
   const [activeTrade, setActiveTrade] = useState(true);
   const [activeCat, setActiveCat] = useState(true);
-
+  const { demask } = useContext(AccountContext);
   const buttonConnect = (
     <div>
       {account ? (
@@ -101,14 +102,13 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
       }
     };
   }, [router, setOpenMenu]);
-  
+
   return (
     <div
-      className={`${
-        openMenu
+      className={`${openMenu
           ? "translate-x-0 transition-all"
           : "-translate-x-[100%] transition-all"
-      } bg-white lg:hidden md:flex flex flex-col fixed justify-between h-full top-0 right-0 z-[100] left-0 p-4 bottom-0 w-full`}
+        } bg-white lg:hidden md:flex flex flex-col fixed justify-between h-full top-0 right-0 z-[100] left-0 p-4 bottom-0 w-full`}
     >
       <div>
         <div className="flex items-center flex-shrink-0 gap-2">
@@ -179,22 +179,20 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                   Trade
                 </span>
                 <IoIosArrowForward
-                  className={`${
-                    activeTrade ? "rotate-0" : "rotate-90"
-                  } transition-all`}
+                  className={`${activeTrade ? "rotate-0" : "rotate-90"
+                    } transition-all`}
                 />
               </li>
 
               <ul
-                className={`submenu ${
-                  activeTrade ? "max-h-0" : "visible"
-                } flex flex-col gap-4`}
+                className={`submenu ${activeTrade ? "max-h-0" : "visible"
+                  } flex flex-col gap-4`}
               >
                 <div className="flex flex-col gap-4 p-2 pl-8 border rounded-md">
                   <li>
                     <Link
                       href={
-                        `/swap/${process.env.NEXT_PUBLIC_CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+                        `/swap/${demask.CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
                       }
                     >
                       Swap
@@ -238,16 +236,14 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                   Category
                 </Link>
                 <IoIosArrowForward
-                  className={`${
-                    activeCat ? "rotate-0" : "rotate-90"
-                  } transition-all`}
+                  className={`${activeCat ? "rotate-0" : "rotate-90"
+                    } transition-all`}
                 />
               </li>
 
               <ul
-                className={`submenu ${
-                  activeCat ? "max-h-0" : "visible"
-                } flex flex-col gap-4`}
+                className={`submenu ${activeCat ? "max-h-0" : "visible"
+                  } flex flex-col gap-4`}
               >
                 <div className="flex flex-col gap-4 p-2 pl-8 border rounded-md">
                   <li>

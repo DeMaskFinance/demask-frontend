@@ -1,17 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import MenuOptions from "../Menu/MenuOptions";
 import { CategoryIcon, CreateIcon, LaunchpadIcon, OthersIcon, OverviewIcon, TradeIcon } from "../Icons/Mobile/IconMobile";
 import { useRouter } from "next/router";
-const styles = {
-  btnActive: "rounded-lg bg-secondary5 px-2",
-};
+import AccountContext from "@/context/AccountContext";
+
 export default function NavFooter({ reels }: any) {
   const [active, setActive] = useState<boolean>(false);
   const [menu, setMenu] = useState<string>("");
   const [mode, setMode] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>(mode);
+  const { account, updateAccount, wallet, demask } = useContext(AccountContext);
+  const contractAddress = demask.CREATOR; // Creator
   useEffect(() => {
     setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
   }, [activeChoice]);
@@ -71,7 +71,7 @@ export default function NavFooter({ reels }: any) {
                   <li>
                     <Link
                       href={
-                        `/swap/${process.env.NEXT_PUBLIC_CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+                        `/swap/${contractAddress}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
                       }
                       className="block w-full"
                     >

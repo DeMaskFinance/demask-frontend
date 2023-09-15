@@ -37,7 +37,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const [imageNFT, setImageNFT] = useState("");
   const [symbolNFT, setSymbolNFT] = useState("");
   const router = useRouter();
-  const { chainId } = useContext(AccountContext);
+  const { chainId, demask } = useContext(AccountContext);
   const handleAddressNFT = async (value: string) => {
     setLoading(true);
     const ERC1155 = await checkIsERC1155(value);
@@ -132,9 +132,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     isFetching: topNftFetching,
     refetch: topNftRefetch,
     isPreviousData: isTopNftPreviousData, } = useQuery({
-      queryKey: ["topNFT",chainId],
+      queryKey: ["topNFT", chainId],
       queryFn: async () => {
-        const res = await NFTTopService(1,chainId);
+        const res = await NFTTopService(1, chainId);
         return res;
       },
 
@@ -179,7 +179,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               )}
             </div>
             <ul className={`${nftAddress ? 'hidden' : 'block'}`}>
-              <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={() => setNftAddress(process.env.NEXT_PUBLIC_CREATOR as string)}>
+              <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={() => setNftAddress(demask.CREATOR)}>
                 <span><Image src='/logo.png' alt="logo" width={24} height={24} /></span>
                 <span>DEMASK CREATOR</span>
               </li>

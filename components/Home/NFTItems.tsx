@@ -1,23 +1,17 @@
-import Image from "next/image";
-import { ActiveIcon, SwapIcon } from "../Icons";
-import React, { useState, useRef, useEffect } from "react";
-import useInformationDML from "@/hooks/useInformationDML";
-import useAmountInMax from "@/hooks/useAmountInMax";
 import formatNumber from "@/libs/utils/formatNumer";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import BigNumber from "bignumber.js";
-import checkIsERC20 from "@/libs/validation/checkIsERC20";
+import { getBuyPrice } from "@/libs/utils/getPrice";
+import Image from "next/image";
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useEffect, useRef, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useInView } from "react-intersection-observer";
 import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { AvatarUser } from "../Avatars";
+import { ActiveIcon } from "../Icons";
 import useSvgComponents from "../Picture/Picture";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useInView } from "react-intersection-observer";
-import { log } from "console";
-import { getBuyPrice } from "@/libs/utils/getPrice";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -26,7 +20,6 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
 
   const [heightDescription, setHeightDescription] = useState(0);
   const [isMore, setIsMore] = useState<boolean>(false);
-  const [symbolToken, setSymbolToken] = useState<string>("");
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const videoRef = useRef(null);
   const audioRef = useRef(null);

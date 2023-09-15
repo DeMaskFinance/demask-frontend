@@ -49,8 +49,9 @@ export default function MintNFT({
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount, wallet } = useContext(AccountContext);
-  console.log(account);
+  const { account, updateAccount, wallet, demask } = useContext(AccountContext);
+  const contractAddress = demask.CREATOR; // Creator
+  console.log(contractAddress);
 
   async function mintNFT({ amount, data, url }: mintProps) {
     const ethereum = (window as any).ethereum;
@@ -64,7 +65,6 @@ export default function MintNFT({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contractAddress = process.env.NEXT_PUBLIC_CREATOR || ""; // Creator
       const contract = new ethers.Contract(contractAddress, abiDemask, signer);
       console.log(contract);
 
