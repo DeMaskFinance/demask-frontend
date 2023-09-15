@@ -15,7 +15,7 @@ This project contains the main features of the demask application.
 DeMask is the leading platform to find solutions to increase liquidity for the market for trading crypto collectibles. 
 Users will easily buy and sell items through liquidity pools.
 ## Installation
-This project is built using Next.js with TypeScript and is designed to help you perform basic operations. Below are the steps to get started with using the project:
+This project is built using Next.js with TypeScript and is designed to help you perform basic operations. Below are the steps to get started with using the project.
 ### Install Node.js and npm (if not already installed)
 `node -v`
 `npm -v`
