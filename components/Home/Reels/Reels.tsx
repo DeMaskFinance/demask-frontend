@@ -1,44 +1,36 @@
 
-import { TabGroups } from "../../NavChoice";
-import React, { useContext, useEffect, useState, useRef } from "react";
+import abiErc1155 from "@/abi/abiErc1155.json";
+import abiErc20 from "@/abi/abiErc20.json";
+import abiRouter from "@/abi/abiRouter.json";
+import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
+import useNFTBalance from "@/hooks/useBalanceNFT";
+import useInformationToken from "@/hooks/useInformationToken";
+import { getProvider } from "@/libs/connection/getProvider";
+import { amountNFT } from "@/libs/constants";
+import approveNFT from "@/libs/utils/approveNFT";
 import formatNumber from "@/libs/utils/formatNumer";
-import { PoolIcon } from "../../Icons";
-import { Button } from "../../Buttons";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
+import { ethers } from "ethers";
+import Link from "next/link";
+import React, { useContext, useEffect, useState } from "react";
+import { AiOutlineClose, AiOutlineDoubleLeft } from "react-icons/ai";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { useInView } from "react-intersection-observer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Mousewheel, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useInView } from "react-intersection-observer";
-import useInformationDML from "@/hooks/useInformationDML";
-import useNFTBalance from "@/hooks/useBalanceNFT";
-import useInformationToken from "@/hooks/useInformationToken";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import { ModalWallet } from "../../Modal/ModalWallet";
-import { amountNFT } from "@/libs/constants";
-import useAmountOutMin from "@/hooks/useAmountOutMin";
-import useAmountInMax from "@/hooks/useAmountInMax";
-import BigNumber from "bignumber.js";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
-import abiErc20 from "@/abi/abiErc20.json";
-import abiErc1155 from "@/abi/abiErc1155.json";
-import abiRouter from "@/abi/abiRouter.json";
-import TransitionURL from "../../Toast/TransionURL";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import approveToken from "@/libs/utils/approveToken";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { AvatarUser } from "../../Avatars";
-import Link from "next/link";
-import { SkeletonReels } from "../../Skeleton";
-import approveNFT from "@/libs/utils/approveNFT";
-import { AiOutlineClose, AiOutlineDoubleLeft } from "react-icons/ai";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { Button } from "../../Buttons";
+import { PoolIcon } from "../../Icons";
+import { ModalWallet } from "../../Modal/ModalWallet";
+import { TabGroups } from "../../NavChoice";
+import TransitionURL from "../../Toast/TransionURL";
 import NFTItem from "./NFTItem";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
-import formatToUnit from "@/libs/utils/formatToUnit";
-import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
-import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 
 interface ReelsProps {
   data: any;
@@ -66,7 +58,7 @@ const Reels: React.FC<ReelsProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("1");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [filter, setFilter] = useState<any>("");
-  const { account, wallet, demask } = useContext(AccountContext);
+  const { account, wallet, demask, chainId } = useContext(AccountContext);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputNFT, setInputNFT] = useState<string>("0");
@@ -78,7 +70,7 @@ const Reels: React.FC<ReelsProps> = ({
     useState<boolean>(false);
   const [isSufficientTokenSell, setIsSufficientTokenSell] =
     useState<boolean>(false);
-  const [tokenAddressSwap, setTokenAddressSwap] = useState<string>("");
+  const [tokenAddress, setTokenAddress] = useState<string>("");
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -86,7 +78,7 @@ const Reels: React.FC<ReelsProps> = ({
   const [activeMobile, setActiveMobile] = useState(false);
   const [activeDetail, setActiveDetail] = useState(false);
   const [showMore, setShowMore] = useState(false);
-  const routerAddress = demask.ROUTER;
+  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
 
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -123,7 +115,7 @@ const Reels: React.FC<ReelsProps> = ({
 
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, filter.nft);
+      const result = await approveNFT(account, wallet, filter.nft, routerAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
@@ -131,17 +123,22 @@ const Reels: React.FC<ReelsProps> = ({
   const balanceNFT = useNFTBalance(account, filter.nft, filter.FactoryContract_id, wallet, isOpenTransaction);
 
   useEffect(() => {
-    if (filter.erc === process.env.NEXT_PUBLIC_NATIVE_ADDRESS) {
-      setTokenAddressSwap("MATIC");
+    if (filter.erc === nativeAddress && chainId === "80001") {
+      setTokenAddress("MATIC");
       setSymbolToken("MATIC")
+    } else if (
+      filter.erc === nativeAddress && chainId === "97"
+    ) {
+      setTokenAddress("MATIC");
+      setSymbolToken("BNB")
     } else {
-      setTokenAddressSwap(filter.erc);
+      setTokenAddress(filter.erc);
       setSymbolToken(filter.tokenSymbol)
     }
   }, [activeSlideIndex, filter.erc]);
 
   const { balanceToken, decimals, bigNumberBalance, allowanceToken } =
-    useInformationToken(account, tokenAddressSwap, wallet, isOpenTransaction);
+    useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, isOpenTransaction);
   const amountBuy = getBuyPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit);
@@ -190,7 +187,7 @@ const Reels: React.FC<ReelsProps> = ({
   }, []);
   useEffect(() => {
     const checkApproveToken = async () => {
-      if (tokenAddressSwap !== "MATIC") {
+      if (tokenAddress !== "MATIC") {
         if (Number(allowanceToken) < Number(amountBuyDec)) {
           setIsApprovedToken(false);
         } else {
@@ -201,7 +198,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, filter.erc, amountNFTSubmit, amountBuyDec, checkApproveToken, tokenAddressSwap, allowanceToken]);
+  }, [account, wallet, filter.erc, amountNFTSubmit, amountBuyDec, checkApproveToken, tokenAddress, allowanceToken]);
   // console.log(amountBuy.toString());
   // console.log(amountBuyDec);
   // console.log(bigNumberBalance);
@@ -279,7 +276,7 @@ const Reels: React.FC<ReelsProps> = ({
         try {
           let result;
           setIsOpenTransaction(true);
-          if (tokenAddressSwap === "MATIC") {
+          if (tokenAddress === "MATIC") {
             result = await contract.buyETH(
               filter.nft,
               filter.FactoryContract_id,
@@ -349,7 +346,7 @@ const Reels: React.FC<ReelsProps> = ({
         try {
           let result;
           setIsOpenTransaction(true);
-          if (tokenAddressSwap === "MATIC") {
+          if (tokenAddress === "MATIC") {
             result = await contract.sellETH(
               filter.nft,
               filter.FactoryContract_id,
@@ -394,7 +391,14 @@ const Reels: React.FC<ReelsProps> = ({
       }
     }
   };
-
+  const formattedDescription = filter.metadata?.description
+    ? filter.metadata.description.split("\\n").map((line: any, index: number) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ))
+    : null;
 
   return (
     <div className="gap-4 lg:h-fit h-[82vh]">
@@ -482,10 +486,10 @@ const Reels: React.FC<ReelsProps> = ({
                         width={32}
                         height={32}
                       />
-                      <p className="font-medium text-dark2">{`${filter?.creatorAddress?.slice(
+                      <p className="font-medium text-dark2">{`${filter?.creator?.slice(
                         0,
                         4
-                      )}...${filter?.creatorAddress?.slice(-5)}`}</p>
+                      )}...${filter?.creator?.slice(-5)}`}</p>
                       <p className="-translate-y-[4px] mx-1">.</p>
                       <p className="text-xs first-letter:uppercase">
                         {filter?.blockTimestamp}
@@ -673,7 +677,7 @@ const Reels: React.FC<ReelsProps> = ({
                       {!isApprovedToken &&
                         account &&
                         isSufficientTokenBuy &&
-                        tokenAddressSwap !== "MATIC" &&
+                        tokenAddress !== "MATIC" &&
                         activeChoice === "BUY" && (
                           <Button
                             className="w-[126px] py-2"
@@ -716,11 +720,13 @@ const Reels: React.FC<ReelsProps> = ({
                     <AiOutlineClose className="" />
                   </button>
 
-                  <div className="flex justify-center text-center items-center h-[10%] pb-4 pt-8 text-xl font-medium text-dark1">
-                    <span className="mx-2">{filter.metadata.name}</span>
-                  </div>
+                  {activeDetail && (
+                    <div className="w-full flex justify-center text-center items-center h-[10%] pb-4 pt-8 text-xl font-medium text-dark1">
+                      <span className="mx-2 break-words">{filter.metadata.name}</span>
+                    </div>
+                  )}
                   <div className="max-h-[300px] font-light overflow-scroll text-justify h-[70%] px-2  mx-2 rounded-lg">
-                    {filter.metadata.description}
+                    {formattedDescription}
                   </div>
 
                   <div className="">
@@ -784,7 +790,7 @@ const Reels: React.FC<ReelsProps> = ({
                 <div className="flex flex-wrap items-center justify-center mt-8 mb-2 text-dark2">
                   <div className="">
                     <div className="flex justify-center text-xl font-medium text-dark1">
-                      <span className="mr-4 line-clamp-1">
+                      <span className="mr-4 truncate line-clamp-1 lg:max-w-[250px] block text-center">
                         {filter.metadata.name}
                       </span>
                     </div>
@@ -992,7 +998,7 @@ const Reels: React.FC<ReelsProps> = ({
                   {!isApprovedToken &&
                     account &&
                     isSufficientTokenBuy &&
-                    tokenAddressSwap !== "MATIC" &&
+                    tokenAddress !== "MATIC" &&
                     activeChoice === "BUY" && (
                       <Button
                         className="w-[126px] py-2"

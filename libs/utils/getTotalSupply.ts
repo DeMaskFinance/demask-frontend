@@ -8,13 +8,10 @@ const getTotalSupply = async (
   dmlAddress: string
 ) => {
   if (account && dmlAddress && wallet) {
-    console.log(account,dmlAddress,wallet);
-    
-    const provider = new ethers.providers.JsonRpcProvider(
-      "https://polygon-mumbai-bor.publicnode.com"
-    );
-    const contract = new ethers.Contract(dmlAddress, abiDML, provider);
-    const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+    const providerChoice = getProvider(wallet);
+    const provider = new ethers.providers.Web3Provider(providerChoice);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(dmlAddress, abiDML, signer);
     try {
       const currentTotalSupply = await contract.totalSupply();
       const totalSupply = currentTotalSupply.toString();

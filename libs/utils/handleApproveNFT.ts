@@ -8,13 +8,13 @@ const handleApproveNFT = async (
   nftAddress: string,
   setIsOpen: any,
   setCheckApproveNFT:any,
+  routerAddress:string
 ) => {
   if (account) {
     const providerChoice = getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
-    const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
     try {
       const result = await contract.setApprovalForAll(routerAddress, true);
       await provider.waitForTransaction(result.hash);

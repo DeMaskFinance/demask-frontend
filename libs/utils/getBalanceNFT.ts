@@ -1,20 +1,30 @@
-import  abiErc1155  from '@/abi/abiErc1155.json';
+import abiErc1155 from "@/abi/abiErc1155.json";
 import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
 
-const getBalanceNFT = async (account:string,nftAddress:string,idNFT:string) => {
-    if (account) {
-      const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
-      const contract = new ethers.Contract(nftAddress, abiErc1155, provider);
-      try {
-        const bigNumberBalance = await contract.balanceOf(account, idNFT.toString());
-        const balance = bigNumberBalance.toString();
-        return balance;
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.log("No account");
+const getBalanceNFT = async (
+  account: string,
+  nftAddress: string,
+  idNFT: string,
+  wallet: string
+) => {
+  if (account) {
+    const providerChoice = getProvider(wallet);
+    const provider = new ethers.providers.Web3Provider(providerChoice);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
+    try {
+      const bigNumberBalance = await contract.balanceOf(
+        account,
+        idNFT.toString()
+      );
+      const balance = bigNumberBalance.toString();
+      return balance;
+    } catch (error) {
+      console.error(error);
     }
-  };
-  export default getBalanceNFT;
+  } else {
+    console.log("No account");
+  }
+};
+export default getBalanceNFT;

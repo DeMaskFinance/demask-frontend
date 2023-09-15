@@ -6,7 +6,27 @@ import {
   BscIcon,
   EtherIcon,
 } from "../../components/Icons";
-const tokenDefault = [
+const tokenMatic = [
+  {
+    name: "Polygon",
+    symbol: "MATIC",
+    address: "MATIC",
+    logo: MaticIcon,
+  },
+  {
+    name: "Tether",
+    symbol: "USDT",
+    address: "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096",
+    logo: USDTIcon,
+  },
+  {
+    name: "USD Coin",
+    symbol: "USDC",
+    address: "0x8d03ae448B76C089EAEDa30aAABC9D2A9C55d2A1",
+    logo: USDCIcon,
+  },
+];
+const tokenBsc = [
   {
     name: "Polygon",
     symbol: "MATIC",
@@ -38,7 +58,7 @@ const BSC_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
   USDT: process.env.NEXT_PUBLIC_USDT_BSC,
   USDC: process.env.NEXT_PUBLIC_USDC_BSC,
-}
+};
 const MUMBAI_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC,
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL,
@@ -51,7 +71,7 @@ const MUMBAI_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT,
   USDT: process.env.NEXT_PUBLIC_USDT,
   USDC: process.env.NEXT_PUBLIC_USDC,
-}
+};
 const network = [
   {
     name: "Ethereum",
@@ -103,4 +123,12 @@ const mediaType = {
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
-export { tokenDefault, amountNFT, rpcMumbai, mediaType, network ,BSC_DEMASK,MUMBAI_DEMASK};
+export {
+  tokenMatic,
+  amountNFT,
+  rpcMumbai,
+  mediaType,
+  network,
+  BSC_DEMASK,
+  MUMBAI_DEMASK,
+};

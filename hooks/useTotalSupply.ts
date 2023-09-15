@@ -1,16 +1,17 @@
-import getBalanceNFT from '@/libs/utils/getBalanceNFT';
-import getTotalSupply from '@/libs/utils/getTotalSupply';
-import { useEffect, useState } from 'react';
-const useTotalSupply = (account: string,
-    wallet: string,
-    dmlAddress: string,
-    isApprovedDML: boolean) => {
+import getTotalSupply from "@/libs/utils/getTotalSupply";
+import { useEffect, useState } from "react";
+const useTotalSupply = (
+  account: string,
+  wallet: string,
+  dmlAddress: string,
+  isApprovedDML: boolean
+) => {
   const [totalSupply, setTotalSupply] = useState("0");
   useEffect(() => {
     const fetchTotalSupplyDML = async () => {
       if (account && dmlAddress && wallet) {
         try {
-          const res = await getTotalSupply(account,wallet,dmlAddress);
+          const res = await getTotalSupply(account, wallet, dmlAddress);
           setTotalSupply(res);
         } catch (error) {
           console.error(error);
@@ -21,7 +22,7 @@ const useTotalSupply = (account: string,
     };
 
     fetchTotalSupplyDML();
-  }, [account,wallet,dmlAddress,isApprovedDML]);
+  }, [account, wallet, dmlAddress, isApprovedDML, wallet]);
 
   return totalSupply;
 };

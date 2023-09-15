@@ -13,7 +13,12 @@ const useBalanceNFT = (
     const fetchBalanceNFT = async () => {
       if (account && nftAddress && idNFT) {
         try {
-          const balance = await getBalanceNFT(account, nftAddress, idNFT);
+          const balance = await getBalanceNFT(
+            account,
+            nftAddress,
+            idNFT,
+            wallet
+          );
           setBalanceNFT(balance);
         } catch (error) {
           console.error(error);

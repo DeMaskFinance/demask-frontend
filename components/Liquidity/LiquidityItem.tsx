@@ -1,11 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import AccountContext from "@/context/AccountContext";
-import viewReward from "@/libs/utils/viewReward";
-import useInformationDML from "@/hooks/useInformationDML";
-import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
+import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
 interface LiquidytiesItemProps {
   liquidity: any;
@@ -16,13 +14,12 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
 }) => {
   const { account, wallet } = useContext(AccountContext);
   const [reward, setReward] = useState("");
-  const { decimals } = useInformationDML(liquidity.dmlAddress);
   const [tokenSymbol, setTokenSymbol] = useState("");
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account) {
-        const result = await viewReward(liquidity.dmlAddress, account);
-        const rewardDec = divideByDecimal(result?.toString(), decimals);
+        const result = await viewReward(liquidity.dmlAddress, account, wallet);
+        const rewardDec = divideByDecimal(result?.toString(), liquidity.dmlDecimals);
         setReward(rewardDec);
       }
     };
@@ -30,7 +27,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   }, []);
   console.log(reward);
   console.log(liquidity);
-  
+
   useEffect(() => {
     if (account) {
       if (liquidity.tokenSymbol === "WETH") {
@@ -49,8 +46,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           <span>{tokenSymbol}</span>
         </p>
         <div className="flex items-center">
-          Reward:  
-          {reward?(<span className="ml-2">{formatNumber(reward)}</span>):(<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)} 
+          Reward:
+          {reward ? (<span className="ml-2">{formatNumber(reward)}</span>) : (<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)}
           <span>{tokenSymbol}</span>
         </div>
       </div>

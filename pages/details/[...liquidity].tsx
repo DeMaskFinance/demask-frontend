@@ -4,20 +4,16 @@ import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
-import useInformationDML from "@/hooks/useInformationDML";
-import useMetadata from "@/hooks/useMetadata";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 import getRewardDML from "@/libs/utils/getReward";
 import viewReward from "@/libs/utils/viewReward";
-import images from "@/public/images";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
-import abiDML from "@/abi/abiDML.json";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +23,6 @@ import { BsClock } from "react-icons/bs";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
 
 const style = {
   btnWallet:
@@ -48,47 +43,12 @@ export default function DetailLiquidity() {
     useState<boolean>(false);
   const [page, setPage] = useState(1);
   const [tokenSymbol, setTokenSymbol] = useState("");
+
   useEffect(() => {
     if (liquidity) {
       setDmlTokenLiquidity(liquidity[0]);
     }
   }, [liquidity]);
-
-  const { decimals } = useInformationDML(dmlTokenLiquidity);
-  useEffect(() => {
-    const fetchDataReward = async () => {
-      if (account && dmlTokenLiquidity) {
-        const result = await viewReward(dmlTokenLiquidity, account);
-        const rewardDec = divideByDecimal(result.toString(), decimals);
-        console.log(rewardDec);
-
-        setReward(rewardDec);
-      } else {
-        setReward("0");
-      }
-    };
-    fetchDataReward();
-
-  }, [dmlTokenLiquidity, account]);
-  const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity);
-  const handleGetReward = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    if (!account) {
-      setIsOpen(true);
-      return;
-    }
-    if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({ wallet, dmlTokenLiquidity, account, decimals, setReward, setIsOpenTransaction });
-    } else {
-      console.log("No account and DML");
-    }
-  };
-  // console.log(account);
-  // console.log(dmlTokenLiquidity);
-
-
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["liquidityHistory", account, dmlTokenLiquidity, chainId],
     queryFn: async () => {
@@ -99,6 +59,46 @@ export default function DetailLiquidity() {
     },
     keepPreviousData: true,
   });
+
+
+  useEffect(() => {
+    const fetchDataReward = async () => {
+      if (account && dmlTokenLiquidity && data) {
+        const result = await viewReward(dmlTokenLiquidity, account, wallet);
+        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+        console.log(rewardDec);
+
+        setReward(rewardDec);
+      } else {
+        setReward("0");
+      }
+    };
+    fetchDataReward();
+
+  }, [dmlTokenLiquidity, account, data]);
+  console.log(reward);
+
+  const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
+  const handleGetReward = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (!account) {
+      setIsOpen(true);
+      return;
+    }
+    if (account && dmlTokenLiquidity && wallet) {
+      getRewardDML({
+        wallet, dmlTokenLiquidity, account, data: {
+          dmlDecimals: data.dmlDecimals
+        }, setReward, setIsOpenTransaction
+      });
+    } else {
+      console.log("No account and DML");
+    }
+  };
+  // console.log(account);
+  // console.log(dmlTokenLiquidity);
   useEffect(() => {
     if (account && data) {
       if (

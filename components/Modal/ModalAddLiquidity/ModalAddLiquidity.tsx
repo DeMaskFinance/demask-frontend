@@ -1,6 +1,6 @@
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/Buttons";
 import useBalanceToken from "@/hooks/useInformationToken";
 import useNFTBalance from "@/hooks/useBalanceNFT";
@@ -22,6 +22,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
+import AccountContext from "@/context/AccountContext";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: any;
@@ -55,6 +56,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const { demask } = useContext(AccountContext);
+  const routerAddress = demask.ROUTER;
+  const rpc = demask.RPC;
+  console.log(routerAddress)
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -81,7 +86,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   );
 
   const { balanceToken, decimals, bigNumberBalance, symbolToken, allowanceToken } =
-    useBalanceToken(account, tokenAddress, wallet);
+    useBalanceToken(account, tokenAddress, wallet,routerAddress,rpc);
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     data.dmlAddress,
@@ -160,7 +165,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       const result = await approveNFT(
         account,
         wallet,
-        data.nftAddress
+        data.nftAddress,
+        routerAddress
       );
       setIsApprovedNFT(result);
     };
@@ -176,7 +182,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
       // const value = handleBignumber(Number(inputToken), 18);
 
@@ -335,6 +340,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       data.nftAddress,
                       setIsOpen,
                       setCheckApproveNFT,
+                      routerAddress
                     )
                   }
                 >
@@ -351,6 +357,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       wallet,
                       tokenAddress,
                       inputToken,
+                      routerAddress,
                       setIsOpen,
                       setCheckApproveToken,
                     )

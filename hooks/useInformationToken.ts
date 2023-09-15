@@ -7,6 +7,8 @@ const useInformationToken = (
   account: string,
   tokenAddress: string,
   wallet: string,
+  routerAddress: string,
+  rpc: string,
   isOpenTransaction?: boolean
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
@@ -15,13 +17,10 @@ const useInformationToken = (
   const [symbolToken, setSymbolToken] = useState("USDT");
   const [nameTokenERC20, setNameTokenERC20] = useState("");
   const [allowanceToken, setAllowanceToken] = useState("");
-  const provider = new ethers.providers.JsonRpcProvider(
-    "https://polygon-mumbai-bor.publicnode.com"
-  );
+  const provider = new ethers.providers.JsonRpcProvider(rpc);
 
   useEffect(() => {
     const getInformationToken = async () => {
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       if (tokenAddress && account) {
         if (tokenAddress === "MATIC") {
           setDecimals("18");
@@ -60,7 +59,7 @@ const useInformationToken = (
               routerAddress
             );
             const currentAllowance = tokenAllowance.toString();
-            setAllowanceToken(currentAllowance)
+            setAllowanceToken(currentAllowance);
           } catch (error) {
             console.error(error);
           }
@@ -79,7 +78,7 @@ const useInformationToken = (
     decimals,
     nameTokenERC20,
     symbolToken,
-    allowanceToken
+    allowanceToken,
   };
 };
 

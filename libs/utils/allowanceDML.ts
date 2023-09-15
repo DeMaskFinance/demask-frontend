@@ -6,14 +6,13 @@ const allowanceDML = async (
   account: string,
   wallet: string,
   dmlAddress: string,
-  isApprovedDML:string,
+  routerAddress:string,
 ) => {
   if (account && dmlAddress && wallet) {
     const providerChoice = getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(dmlAddress, abiDML, signer);
-    const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
     try {
         const dmlAllowance = await contract.allowance(account, routerAddress);
         const currentAllowance = dmlAllowance.toString();

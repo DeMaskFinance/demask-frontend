@@ -9,7 +9,6 @@ import Head from "next/head";
 import Image from "next/image";
 import AccountContext from "@/context/AccountContext";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
-import useMetadata from "@/hooks/useMetadata";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { useRouter } from "next/router";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
@@ -31,7 +30,6 @@ import BigNumber from "bignumber.js";
 import formatNumber from "@/libs/utils/formatNumer";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ChartSwap from "@/components/Charts/ChartSwap";
-import { GetServerSideProps } from "next";
 import { swapAPI } from "@/libs/service";
 import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import { ChartLoading } from "@/components/Charts";
@@ -48,6 +46,7 @@ const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
+  const [symbolToken, setSymbolToken] = useState<string>('');
   const [idNFT, setIdNFT] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
@@ -63,17 +62,26 @@ const Swap: React.FC = () => {
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, chainId, demask } = useContext(AccountContext);
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+  const { ROUTER: routerAddress, RPC: rpc } = demask;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  const { balanceToken, decimals, bigNumberBalance, symbolToken } =
-    useInformationToken(account, tokenAddress, wallet, isOpenTransaction);
+  const { balanceToken, decimals, bigNumberBalance, allowanceToken } =
+    useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, isOpenTransaction);
   const { slug } = router.query;
+  const { isLoading, data, isFetching, isSuccess } = useQuery({
+    queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
+    queryFn: async () => {
+      const res = await swapAPI(tokenAddress.toLocaleLowerCase(), chainId, nftAddress.toLowerCase(), idNFT);
+      return res;
+    },
+    keepPreviousData: true,
+  });
+  // console.log(data.tokenSymbol);
   useEffect(() => {
     if (slug) {
       setNftAddress(slug[0]);
@@ -86,23 +94,23 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
+  useEffect(() => {
+    if (data && data.tokenSymbol !== "WETH") {
+      setSymbolToken(data.tokenSymbol)
+    } else {
+      setSymbolToken("MATIC")
+    }
+  }, [data, slug])
   console.log(tokenAddress);
+  console.log(nftAddress);
+  console.log(idNFT);
   console.log(symbolToken);
-
+  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
-    queryKey: ["NFT detail", idNFT, nftAddress, chainId],
-    queryFn: async () => {
-      const res = await metadataService(nftAddress.toLowerCase(), idNFT, chainId);
-      return res;
-    },
-    keepPreviousData: true,
-  });
-  console.log(data);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, nftAddress);
+      const result = await approveNFT(account, wallet, nftAddress, routerAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
@@ -127,35 +135,8 @@ const Swap: React.FC = () => {
     }
   };
 
-  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
-  // useEffect(() => {
-  //   if (router.query.slug && dmlToken) {
-  //     const { slug } = router.query;
-  //     const newQuery = {
-  //       dmlAddress: tokenAddress,
-  //     };
-
-  //     // Get the target URL using router.asPath
-  //     const targetURL = `/swap/${slug[0]}/${slug[1]}/${slug[2]}?dmlAddress=${dmlToken}`;
-
-  //     // Compare the current URL with the target URL
-  //     if (router.asPath !== targetURL) {
-  //       router.push({
-  //         pathname: `/swap/${slug[0]}/${slug[1]}/${slug[2]}`,
-  //         query: newQuery,
-  //       });
-  //     }
-  //   }
-  // }, [router.query.slug, dmlToken]);
-  // console.log(dmlToken.toLocaleLowerCase());
-  const { isLoading: isLoadingChart, data: dataChart, isFetching: isFetchingChart, isSuccess: isSuccessChart } = useQuery({
-    queryKey: ["chart swap", idNFT, dmlToken, chainId],
-    queryFn: async () => {
-      const res = await swapAPI(dmlToken.toLocaleLowerCase(), chainId);
-      return res;
-    },
-    keepPreviousData: true,
-  });
+  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress, wallet);
+  console.log(dmlToken);
   const { reserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -222,7 +203,8 @@ const Swap: React.FC = () => {
         const currentAllowance = await approveToken(
           account,
           wallet,
-          tokenAddress
+          tokenAddress,
+          routerAddress
         );
         if (Number(currentAllowance) < Number(amountTokenBuy)) {
           setIsApprovedToken(false);
@@ -240,7 +222,7 @@ const Swap: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (account) {
+    if (account && wallet) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
@@ -607,7 +589,6 @@ const Swap: React.FC = () => {
                   >
                     {isSuccess && (
                       <div className="w-16 text-center">
-                        {/* {data.metadata?.symbol} */}
                         <h2 className="truncate">{data.metadata?.symbol}</h2>
                       </div>
                     )}
@@ -733,13 +714,13 @@ const Swap: React.FC = () => {
             </div>
           </div>
           <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
-            {isLoadingChart ? (
+            {isLoading ? (
               <div className="h-[355px]">
                 <ChartLoading />
               </div>
-            ) : dataChart && dataChart.length > 0 ? (
+            ) : data && data.mergedResults.length > 0 ? (
               <div className="">
-                <ChartSwap dataChart={dataChart} />
+                <ChartSwap dataChart={data.mergedResults} />
               </div>
             ) : (
               <div className="h-[355px]">

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { Button } from "@/components/Buttons";
-import { tokenDefault } from "@/libs/constants";
+import { tokenMatic } from "@/libs/constants";
 import { useRouter } from "next/router";
 import { memo } from "react";
 interface ModalSearchTokenProps {
@@ -128,7 +128,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
           )}
           {!tokenAddress && (
             <>
-              {tokenDefault.map((item, index) => (
+              {tokenMatic.map((item, index) => (
                 <div
                   key={index}
                   className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3"

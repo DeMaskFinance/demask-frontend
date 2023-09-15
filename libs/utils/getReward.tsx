@@ -10,10 +10,12 @@ interface RewardDMLProps {
   dmlTokenLiquidity: string;
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   account: string;
-  decimals: string;
+  data: {
+    dmlDecimals: string;
+  }
   setReward: any;
 }
-const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, decimals, setReward }: RewardDMLProps) => {
+const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, data, setReward }: RewardDMLProps) => {
   const providerChoice = getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
   const signer = provider.getSigner();
@@ -23,8 +25,8 @@ const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, a
     const result = await contract.getReward({ gasLimit: 8000000 });
     setIsOpenTransaction(true);
     await provider.waitForTransaction(result.hash);
-    const resultTest = await viewReward(dmlTokenLiquidity, account);
-    const rewardDec = divideByDecimal(resultTest.toString(), decimals);
+    const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);
+    const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
     setReward(rewardDec);
     setIsOpenTransaction(false);
     toast.success(

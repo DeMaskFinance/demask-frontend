@@ -1,30 +1,29 @@
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/Buttons";
-import { TabGroups } from "@/components/NavChoice";
-import useBananceOfDML from "@/hooks/useBalanceOfDML";
-import formatNumber from "@/libs/utils/formatNumer";
-import allowanceDML from "@/libs/utils/allowanceDML";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
 import abiDML from "@/abi/abiDML.json";
 import abiRouter from "@/abi/abiRouter.json";
-import BigNumber from "bignumber.js";
-import useInformationToken from "@/hooks/useInformationToken";
+import { Button } from "@/components/Buttons";
+import { TabGroups } from "@/components/NavChoice";
+import TransitionURL from "@/components/Toast/TransionURL";
+import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
-import TransitionURL from "@/components/Toast/TransionURL";
+import { getProvider } from "@/libs/connection/getProvider";
+import approveNFT from "@/libs/utils/approveNFT";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import formatNumber from "@/libs/utils/formatNumer";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import handleBignumber from "@/libs/utils/handleBignumber";
+import BigNumber from "bignumber.js";
+import { ethers } from "ethers";
+import { useEffect, useState, useContext } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import { BiLoaderAlt } from "react-icons/bi";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import approveNFT from "@/libs/utils/approveNFT";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { ModalWallet } from "../ModalWallet";
 import { ModalTransation } from "../ModalTransation";
+import { ModalWallet } from "../ModalWallet";
+import Wrapper from "../Wrapper";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -63,7 +62,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
     const [checkApproveDML, setCheckApproveDML] = useState<boolean>(false);
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-    const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+    const { demask } = useContext(AccountContext);
+    const { ROUTER: routerAddress, RPC: rpc } = demask;
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -73,7 +73,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       setActiveChoice(choice);
     };
 
-    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress,isOpenTransaction);
+    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress, wallet, isOpenTransaction);
     const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputLiquidity(e.target.value);
       setShowRequiredMessage(false);
@@ -102,7 +102,6 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const totalSupply = useTotalSupply(account, wallet, data.dmlAddress, isApprovedDML);
     // console.log(totalSupply);
     // console.log(handleBignumber(Number(inputLiquidity), 18));
-    console.log(data.dmlDecimals);
 
     useEffect(() => {
       if (reserves[0] && reserves[1]) {
@@ -128,9 +127,10 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       data.dmlAddress,
       wallet,
       isApprovedDML,
-      inputLiquidity
+      inputLiquidity,
+      routerAddress,
     );
-    // console.log(currentAllowance);
+    console.log(currentAllowance);
     // console.log(inputLiquidity);
     // console.log(Number(handleBignumber(Number(inputLiquidity), 18)));
     useEffect(() => {
@@ -138,7 +138,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         const result = await approveNFT(
           account,
           wallet,
-          data.nftAddress
+          data.nftAddress,
+          routerAddress
         );
         setIsApprovedNFT(result);
       };
@@ -155,7 +156,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       };
       checkApproveToken();
     }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance, checkApproveDML]);
-    
+
     const { reserves, isLoadingReserves }: any = useFetchReservesDML(
       account,
       data.dmlAddress,
@@ -165,11 +166,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(reserves[0].toString());
     // console.log(reserves[1].toString());
     //   console.log(data);
-      
+
     // console.log(isApprovedDML);
     // console.log(isApprovedLiquidity);
     // console.log(isApprovedNFT);
-    
+
     const handleApproveDML = async (account: string, wallet: string, dmlAddress: string, inputLiquidity: string, setIsApprovedDML: any) => {
       if (inputLiquidity) {
         setShowRequiredMessage(false);
@@ -363,6 +364,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                               data.nftAddress,
                               setIsOpen,
                               setCheckApproveNFT,
+                              routerAddress
                             )
                           }
                         >

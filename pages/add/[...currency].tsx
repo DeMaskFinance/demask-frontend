@@ -1,42 +1,35 @@
+import abiErc1155 from "@/abi/abiErc1155.json";
+import abiErc20 from "@/abi/abiErc20.json";
+import abiRouter from "@/abi/abiRouter.json";
 import Button from "@/components/Buttons/Button";
-import { BackIcon, DownIcon, NFTIcon, TokenIcon, TokenIconNotDefine } from "@/components/Icons";
+import { BackIcon, DownIcon, NFTIcon, TokenIconNotDefine } from "@/components/Icons";
+import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
-import { BigNumber, ethers } from "ethers";
+import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
+import { ModalWallet } from "@/components/Modal/ModalWallet";
+import TransitionURL from "@/components/Toast/TransionURL";
+import AccountContext from "@/context/AccountContext";
+import useNFTBalance from "@/hooks/useBalanceNFT";
+import useDMLToken from "@/hooks/useDMLToken";
+import useFetchReservesDML from "@/hooks/useFetchReservesDML";
+import useBalanceToken from "@/hooks/useInformationToken";
+import { getProvider } from "@/libs/connection/getProvider";
+import { tokenMatic } from "@/libs/constants";
+import { metadataService } from "@/libs/service/metadataService";
+import approveNFT from "@/libs/utils/approveNFT";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import handleBignumber from "@/libs/utils/handleBignumber";
+import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState, useEffect, useContext } from "react";
-import { getProvider } from "@/libs/connection/getProvider";
-import AccountContext from "@/context/AccountContext";
-import useMetadata from "@/hooks/useMetadata";
-import abiErc20 from "@/abi/abiErc20.json";
-import abiRouter from "@/abi/abiRouter.json";
-import getDMLToken from "@/libs/utils/getDMLToken";
-import getBalanceNFT from "@/libs/utils/getBalanceNFT";
-import approveNFT from "@/libs/utils/approveNFT";
+import React, { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import approveToken from "@/libs/utils/approveToken";
-import { ModalWallet } from "@/components/Modal/ModalWallet";
-import { ModalDetail } from "@/components/Modal/ModalDedail";
-import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import getReserves from "@/libs/utils/getInforDML";
-import BigNumberJS from "bignumber.js";
-import abiErc1155 from "@/abi/abiErc1155.json";
-import TransitionURL from "@/components/Toast/TransionURL";
-import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
-import useBalanceToken from "@/hooks/useInformationToken";
-import useNFTBalance from "@/hooks/useBalanceNFT";
-import useDMLToken from "@/hooks/useDMLToken";
-import useFetchReservesDML from "@/hooks/useFetchReservesDML";
-import { BiLoaderAlt } from "react-icons/bi";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import { tokenDefault } from "@/libs/constants";
-import { useQuery } from "@tanstack/react-query";
-import { metadataService } from "@/libs/service/metadataService";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -59,13 +52,14 @@ export default function AddLiquidity() {
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, chainId, demask } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
+  const routerAddress = demask.ROUTER;
+  const rpc = demask.RPC;
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -91,9 +85,11 @@ export default function AddLiquidity() {
     account,
     tokenAddress,
     wallet,
+    routerAddress,
+    rpc,
     isOpenTransaction
   );
-  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress);
+  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress, wallet);
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -146,7 +142,7 @@ export default function AddLiquidity() {
   console.log(isSufficientToken);
 
 
-  const tokenSymbolIcon = tokenDefault.find((item) => item.address === tokenAddress);
+  const tokenSymbolIcon = tokenMatic.find((item) => item.address === tokenAddress);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -168,7 +164,7 @@ export default function AddLiquidity() {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      
+
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
 
       try {
@@ -268,7 +264,7 @@ export default function AddLiquidity() {
 
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, nftAddress);
+      const result = await approveNFT(account, wallet, nftAddress, routerAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();

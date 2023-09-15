@@ -2,8 +2,6 @@ import abiErc1155 from "@/abi/abiErc1155.json";
 import { ethers } from "ethers";
 
 const checkIsERC1155 = async (contractAddress: string) => {
-  console.log(contractAddress);
-  
   const provider = new ethers.providers.JsonRpcProvider(
     "https://polygon-mumbai-bor.publicnode.com"
   );

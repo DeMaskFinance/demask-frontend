@@ -20,6 +20,7 @@ interface BuyNFTProps {
   idNFT: string;
   wallet: string; 
   amountBuy: BigNumber;
+  routerAddress: string
 }
 const handleBuyNFT = async ({
   e,
@@ -36,6 +37,7 @@ const handleBuyNFT = async ({
   idNFT,
   wallet,
   amountBuy,
+  routerAddress,
 }: BuyNFTProps) => {
   e.preventDefault();
   if (!account) {
@@ -55,7 +57,6 @@ const handleBuyNFT = async ({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
       try {
         let result;
