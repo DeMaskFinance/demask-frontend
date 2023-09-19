@@ -10,7 +10,6 @@ if (typeof Highcharts === "object") {
 }
 
 const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
-  console.log(dataChart);
   
   const averagePrice = [],
     volume = [];

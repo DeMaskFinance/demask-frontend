@@ -41,8 +41,8 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
         }
     }, [inView]);
     return (
-        <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-full h-[80vh] lg:px-4 md:px-4">
-            <div ref={ref} className='relative lg:ml-20'>
+        <div className="relative overflow-hidden flex items-center lg:w-2/4 w-full lg:h-full h-[80vh] lg:px-4">
+            <div className='relative lg:ml-20 '>
                 {nftItem.metadata.image && (
                     <div className="relative ml-auto mr-auto overflow-hidden lg:rounded-2xl">
                         <div
@@ -50,15 +50,15 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
                                 backgroundImage: `url(${nftItem.metadata.image})`,
                                 backgroundSize: "cover",
                             }}
-                            className={`lg:w-[530px] md:w-[1768px] w-[678px] bg-black max-[968px]:!bg-none max-[678px]:!bg-none lg:bg-nft(${nftItem.metadata.image}) lg:blur-[12px] lg:rounded-xl lg:h-[530px] h-[90vh]`}
+                            className={`lg:w-[530px] w-screen bg-black max-[968px]:!bg-none max-[678px]:!bg-none lg:bg-nft(${nftItem.metadata.image}) lg:blur-[12px] lg:rounded-xl lg:h-[530px] h-[calc(100vh-172px)]`}
                         ></div>
-                        <div className="absolute w-full  top-[50%] -translate-y-2/4 lg:w-[530px] mx-auto lg:p-4 p-2 rounded-xl lg:h-[530px] ">
+                        <div className="absolute w-full top-[50%] -translate-y-2/4 lg:w-[530px] mx-auto lg:p-4 lg:rounded-xl lg:h-[530px] ">
                             <Image
                                 width={530}
                                 height={530}
                                 src={nftItem.metadata.image}
                                 alt="NFT Image"
-                                className="object-contain w-full h-full imageNFT rounded-xl"
+                                className="object-contain w-screen lg:w-full imageNFT rounded-xl"
                             />
                         </div>
                     </div>
@@ -66,16 +66,17 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
                 {nftItem.metadata.animation_url &&
                     !nftItem.metadata.image && (
                         <>
-                            <div className="lg:w-[530px] mx-auto overflow-hidden rounded-xl relative h-full">
-                                <div className="w-full bg-dark flex items-center mx-auto z-20 blur-[8px]  rounded-xl h-[80vh] ">
+                            <div className="lg:w-[530px] mx-auto overflow-hidden lg:rounded-xl relative h-full">
+                                <div className="w-full bg-dark flex items-center mx-auto z-20 blur-[8px] rounded-xl h-[calc(100vh-172px)] ">
                                     <video
                                         src={nftItem.metadata.animation_url}
                                         muted
                                         className="object-cover h-full rounded-2xl"
                                     />
                                 </div>
-                                <div className="lg:w-[530px] absolute flex items-center  mx-auto z-20 px-4 top-[50%] -translate-y-2/4 rounded-xl h-[70vh] lg:h-[530px]">
+                                <div ref={ref} className="lg:w-[530px]  absolute flex items-center mx-auto z-20 px-4 top-[50%] -translate-y-2/4 rounded-xl lg:h-[530px]">
                                     <video
+
                                         src={nftItem.metadata.animation_url}
                                         muted
                                         autoPlay
@@ -90,7 +91,7 @@ const NFTItem: React.FunctionComponent<NFTItemsProps> = ({ nftItem, filter, setS
                     )}
                 {nftItem.metadata.image &&
                     nftItem.metadata.animation_url && (
-                        <div className="absolute flex justify-center lg:top-[76%] top-[50%] lg:right-[0] w-full right-[90%] mx-auto mt-12 rounded-xl ">
+                        <div ref={ref} className="absolute flex justify-center lg:top-[76%] top-[50%] right-0 w-full  mx-auto mt-12 rounded-xl ">
                             <audio
                                 autoPlay
                                 loop
