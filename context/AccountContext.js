@@ -1,6 +1,11 @@
 import { getProvider } from "@/libs/connection/getProvider";
 import React, { createContext, useEffect, useState } from "react";
-import { MUMBAI_DEMASK, BSC_DEMASK } from "@/libs/constants";
+import {
+  MUMBAI_DEMASK,
+  BSC_DEMASK,
+  tokenBsc,
+  tokenMatic,
+} from "@/libs/constants";
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
@@ -8,6 +13,7 @@ export const AccountProvider = ({ children }) => {
   const [wallet, setWallet] = useState("");
   const [chainId, setChainId] = useState("80001");
   const [demask, setDemask] = useState("");
+  const [tokenDefault, setTokenDefault] = useState("");
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
@@ -22,13 +28,15 @@ export const AccountProvider = ({ children }) => {
       setChainId(storedChainId);
     }
   }, [account]);
-  useEffect(()=>{
-    if(chainId==="80001"){
-      setDemask(MUMBAI_DEMASK)
-    }else{
-      setDemask(BSC_DEMASK)
+  useEffect(() => {
+    if (chainId === "80001") {
+      setDemask(MUMBAI_DEMASK);
+      setTokenDefault(tokenMatic);
+    } else {
+      setDemask(BSC_DEMASK);
+      setTokenDefault(tokenBsc);
     }
-  },[chainId])
+  }, [chainId]);
   // console.log(account);
   const updateAccount = (newAccount) => {
     setAccount(newAccount);
@@ -73,7 +81,8 @@ export const AccountProvider = ({ children }) => {
         wallet,
         updateChainId,
         chainId,
-        demask
+        demask,
+        tokenDefault
       }}
     >
       {children}

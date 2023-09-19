@@ -1,12 +1,12 @@
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import checkIsERC20 from "@/libs/validation/checkIsERC20";
-import { Button } from "@/components/Buttons";
-import { tokenMatic } from "@/libs/constants";
 import { useRouter } from "next/router";
 import { memo } from "react";
+import AccountContext from "@/context/AccountContext";
+
 interface ModalSearchTokenProps {
   setIsOpenSearchToken: any;
   isOpenSearchToken: boolean;
@@ -28,6 +28,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   const [name, setName] = useState<string>("");
   const [symbol, setSymbol] = useState<string>("");
   const router = useRouter();
+  const { tokenDefault } = useContext(AccountContext);
   const handleAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     setTokenAddress(e.target.value);
@@ -62,7 +63,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     // setName('');
     // setSymbol('');
     setIsOpenSearchToken(false);
-    
+
   };
   const handleChangeRouteDefault = (address: string, symbol: string) => {
     const { currency } = router.query;
@@ -85,6 +86,8 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
   };
+  console.log(tokenDefault);
+
   return (
     <Wrapper isOpen={isOpenSearchToken} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -106,7 +109,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
                 </div>
               )}
             </div>
-            {showError &&tokenAddress && (
+            {showError && tokenAddress && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
                 key="token address"
@@ -126,9 +129,9 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
               </div>
             </div>
           )}
-          {!tokenAddress && (
+          {!tokenAddress && tokenDefault  && (
             <>
-              {tokenMatic.map((item, index) => (
+              {tokenDefault?.map((item: any, index: number) => (
                 <div
                   key={index}
                   className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3"

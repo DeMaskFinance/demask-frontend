@@ -9,7 +9,6 @@ import AccountContext from "@/context/AccountContext";
 import Wrapper from "../Wrapper";
 import { useWeb3Modal } from '@web3modal/react'
 import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { ethers } from "ethers";
 interface ModalWalletProps {
   isOpen?: boolean;
@@ -68,8 +67,8 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           return false;
         }
       case "WalletConnect":
-        const providerWallet = getProvider(walletName);
-        const providerTest = new ethers.providers.Web3Provider(providerWallet);
+        // const providerWallet = getProvider(walletName);
+        // const providerTest = new ethers.providers.Web3Provider(providerWallet);
         // console.log(providerWallet);
         // console.log(new Web3(providerWallet));
         // console.log(providerTest);

@@ -105,6 +105,7 @@ const Swap: React.FC = () => {
   console.log(nftAddress);
   console.log(idNFT);
   console.log(symbolToken);
+  console.log(data);
   
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
@@ -143,6 +144,8 @@ const Swap: React.FC = () => {
     wallet,
     inputNFT
   );
+  console.log(reserves);
+  
   const { amountTokenSell } = useAmountOutMin(
     inputNFT,
     dmlToken,
@@ -422,7 +425,7 @@ const Swap: React.FC = () => {
                         loop
                         muted
                         controls
-                        className="w-full rounded-lg"
+                        className="w-full rounded-lg lg:h-[calc(100vh-326px)]"
                       />
                     )}
                     {data.metadata?.image && data.metadata?.animation_url && (
@@ -718,7 +721,7 @@ const Swap: React.FC = () => {
               <div className="h-[355px]">
                 <ChartLoading />
               </div>
-            ) : data && data.mergedResults.length > 0 ? (
+            ) : data && data?.mergedResults?.length > 0 ? (
               <div className="">
                 <ChartSwap dataChart={data.mergedResults} />
               </div>

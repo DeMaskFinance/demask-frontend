@@ -52,7 +52,7 @@ export default function AddLiquidity() {
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
@@ -90,6 +90,7 @@ export default function AddLiquidity() {
     isOpenTransaction
   );
   const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress, wallet);
+
   const { reserves, isLoadingReserves }: any = useFetchReservesDML(
     account,
     dmlToken,
@@ -142,7 +143,7 @@ export default function AddLiquidity() {
   console.log(isSufficientToken);
 
 
-  const tokenSymbolIcon = tokenMatic.find((item) => item.address === tokenAddress);
+  const tokenSymbolIcon = tokenDefault?.find((item:any) => item.address === tokenAddress);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);

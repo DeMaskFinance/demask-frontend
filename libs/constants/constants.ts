@@ -16,33 +16,33 @@ const tokenMatic = [
   {
     name: "Tether",
     symbol: "USDT",
-    address: "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096",
+    address: process.env.NEXT_PUBLIC_USDT,
     logo: USDTIcon,
   },
   {
     name: "USD Coin",
     symbol: "USDC",
-    address: "0x8d03ae448B76C089EAEDa30aAABC9D2A9C55d2A1",
+    address: process.env.NEXT_PUBLIC_USDC,
     logo: USDCIcon,
   },
 ];
 const tokenBsc = [
   {
-    name: "Polygon",
-    symbol: "MATIC",
-    address: "MATIC",
-    logo: MaticIcon,
+    name: "Smart Chain",
+    symbol: "BNB",
+    address: "BNB",
+    logo: BscIcon,
   },
   {
     name: "Tether",
     symbol: "USDT",
-    address: "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096",
+    address: process.env.NEXT_PUBLIC_USDT_BSC,
     logo: USDTIcon,
   },
   {
     name: "USD Coin",
     symbol: "USDC",
-    address: "0x8d03ae448B76C089EAEDa30aAABC9D2A9C55d2A1",
+    address: process.env.NEXT_PUBLIC_USDC_BSC,
     logo: USDCIcon,
   },
 ];
@@ -131,4 +131,5 @@ export {
   network,
   BSC_DEMASK,
   MUMBAI_DEMASK,
+  tokenBsc,
 };

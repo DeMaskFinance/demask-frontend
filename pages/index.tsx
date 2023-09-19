@@ -92,7 +92,6 @@ const Home = () => {
         </>
       ) : (
         <div className="py-4 mx-auto leading-7 container-main">
-          {/* <NFTTop /> */}
           <div className="flex flex-col items-center lg:mt-8">
             {data?.pages[0] ? (
               <div className="flex flex-col items-center mx-auto">
