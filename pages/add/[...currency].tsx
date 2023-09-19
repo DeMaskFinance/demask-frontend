@@ -143,7 +143,7 @@ export default function AddLiquidity() {
   console.log(isSufficientToken);
 
 
-  const tokenSymbolIcon = tokenDefault?.find((item:any) => item.address === tokenAddress);
+  const tokenSymbolIcon = (tokenDefault || []).find((item:any) => item.address === tokenAddress);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
