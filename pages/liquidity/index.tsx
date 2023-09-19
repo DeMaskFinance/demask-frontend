@@ -1,15 +1,19 @@
-import { useContext } from "react";
 import Button from "@/components/Buttons/Button";
-import Head from "next/head";
-import Link from "next/link";
-import React from "react";
-import { useRouter } from "next/router";
-import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { liquidityListAPI } from "@/libs/service/liquidityService";
-import AccountContext from "@/context/AccountContext";
-import { BiLoaderAlt } from "react-icons/bi";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
+import AccountContext from "@/context/AccountContext";
+import { liquidityListAPI } from "@/libs/service/liquidityService";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { useInView } from "react-intersection-observer";
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
+const updateMeta = {
+  ...SEO,
+  title: 'Detail Liquidity',
+};
 export default function Liquidity() {
   const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
@@ -45,9 +49,7 @@ export default function Liquidity() {
 
   return (
     <div className="py-8 max-w-4xl mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
-      <Head>
-        <title>Liquidity | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       <div className="w-full">
         <h2 className="text-2xl text-black24">Your Liquidity</h2>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>

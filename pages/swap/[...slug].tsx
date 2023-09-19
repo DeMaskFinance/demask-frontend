@@ -1,46 +1,50 @@
-import { useState, useContext, useEffect } from "react";
+import abiErc1155 from "@/abi/abiErc1155.json";
+import abiErc20 from "@/abi/abiErc20.json";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
+import { ChartLoading } from "@/components/Charts";
+import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
+import ChartSwap from "@/components/Charts/ChartSwap";
 import { ActiveIcon, PoolIcon } from "@/components/Icons";
-import { TabGroups } from "@/components/NavChoice";
-import abiErc20 from "@/abi/abiErc20.json";
-import abiErc1155 from "@/abi/abiErc1155.json";
-import Head from "next/head";
-import Image from "next/image";
-import AccountContext from "@/context/AccountContext";
-import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
-import { useRouter } from "next/router";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
-import { ethers } from "ethers";
-import { getProvider } from "@/libs/connection/getProvider";
-import approveToken from "@/libs/utils/approveToken";
-import useFetchReservesDML from "@/hooks/useFetchReservesDML";
+import { ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
+import { TabGroups } from "@/components/NavChoice";
 import TransitionURL from "@/components/Toast/TransionURL";
+import AccountContext from "@/context/AccountContext";
+import useAmountInMax from "@/hooks/useAmountInMax";
+import useAmountOutMin from "@/hooks/useAmountOutMin";
+import useNFTBalance from "@/hooks/useBalanceNFT";
+import useDMLToken from "@/hooks/useDMLToken";
+import useFetchReservesDML from "@/hooks/useFetchReservesDML";
+import useInformationToken from "@/hooks/useInformationToken";
+import { getProvider } from "@/libs/connection/getProvider";
+import { swapAPI } from "@/libs/service";
+import approveNFT from "@/libs/utils/approveNFT";
+import approveToken from "@/libs/utils/approveToken";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import formatNumber from "@/libs/utils/formatNumer";
+import { useQuery } from "@tanstack/react-query";
+import BigNumber from "bignumber.js";
+import { ethers } from "ethers";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import approveNFT from "@/libs/utils/approveNFT";
-import useNFTBalance from "@/hooks/useBalanceNFT";
-import useInformationToken from "@/hooks/useInformationToken";
-import useDMLToken from "@/hooks/useDMLToken";
-import useAmountOutMin from "@/hooks/useAmountOutMin";
-import useAmountInMax from "@/hooks/useAmountInMax";
-import BigNumber from "bignumber.js";
-import formatNumber from "@/libs/utils/formatNumer";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ChartSwap from "@/components/Charts/ChartSwap";
-import { swapAPI } from "@/libs/service";
-import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
-import { ChartLoading } from "@/components/Charts";
-import { metadataService } from "@/libs/service/metadataService";
-import { useQuery } from "@tanstack/react-query";
-import { BiLoaderAlt } from "react-icons/bi";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
+};
+const updateMeta = {
+  ...SEO,
+  title: 'Swap',
 };
 const Swap: React.FC = () => {
   const router = useRouter();
@@ -395,9 +399,7 @@ const Swap: React.FC = () => {
   };
   return (
     <div className="py-8 mx-auto swap max-w-[1592px]">
-      <Head>
-        <title>Swap | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
         <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
           {isSuccess && (

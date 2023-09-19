@@ -1,6 +1,5 @@
 import Button from "@/components/Buttons/Button";
 import Icons from "@/public/icons/icon";
-import Head from "next/head";
 import Image from "next/image";
 import React, {
   ChangeEvent,
@@ -16,10 +15,17 @@ import MintNFT from "@/components/Creator/MintNFT";
 import { LaunchPad } from "@/components/Creator";
 import images from "@/public/images";
 import { TabGroups } from "@/components/NavChoice";
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
+import { Category } from "@/libs/constants";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
   btnActive: "rounded-lg bg-secondary5",
+};
+const updateMeta = {
+  ...SEO,
+  title: 'Create',
 };
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
@@ -162,28 +168,6 @@ export default function Creator() {
     }
   };
 
-  const Category = [
-    {
-      id: 1,
-      value: "Art",
-    },
-    {
-      id: 2,
-      value: "Film",
-    },
-    {
-      id: 3,
-      value: "Music",
-    },
-    {
-      id: 4,
-      value: "Gaming",
-    },
-    {
-      id: 5,
-      value: "Memberships",
-    },
-  ];
   const handleTextareaResize = (event: any) => {
     const textarea = event.target;
     textarea.style.height = "auto"; // reset height
@@ -205,9 +189,7 @@ export default function Creator() {
   };
   return (
     <div className="flex flex-col gap-6 py-8 mx-auto lg:flex-row md:flex-row container-main">
-      <Head>
-        <title>Create | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       {/* UpLoad File */}
       <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">
         <div className="sticky top-16">

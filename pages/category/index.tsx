@@ -1,14 +1,14 @@
-import Head from "next/head";
-import Image from "next/image";
 import CategoryType from "@/components/Categories/CategoryType";
-
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
+const updateMeta = {
+  ...SEO,
+  title: 'Category',
+};
 export default function Categories() {
   return (
     <>
-      <Head>
-        <title>Category | DeMask</title>
-      </Head>
-      {/* 123o */}
+      <NextSeo {...updateMeta} />
 
       <div className="max-w-6xl pt-2 pb-16 mx-auto">
         <CategoryType label={"Art"} />

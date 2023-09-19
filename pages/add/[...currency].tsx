@@ -22,7 +22,6 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -30,10 +29,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
   btnActive: "rounded-full bg-base2",
+};
+const updateMeta = {
+  ...SEO,
+  title: 'Add Liquidity',
 };
 export default function AddLiquidity() {
   const router = useRouter();
@@ -143,7 +148,7 @@ export default function AddLiquidity() {
   console.log(isSufficientToken);
 
 
-  const tokenSymbolIcon = (tokenDefault || []).find((item:any) => item.address === tokenAddress);
+  const tokenSymbolIcon = (tokenDefault || []).find((item: any) => item.address === tokenAddress);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -302,9 +307,7 @@ export default function AddLiquidity() {
 
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14">
-      <Head>
-        <title>Add Liquidity | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       <div className="flex items-center mb-6">
         <Link href="/liquidity">
           <BackIcon width={24} height={24} />

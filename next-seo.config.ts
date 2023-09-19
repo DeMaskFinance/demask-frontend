@@ -1,10 +1,10 @@
 import { DefaultSeoProps } from "next-seo";
 
 export const SEO: DefaultSeoProps = {
-  title: "Lauchpad | DeMask",
+  titleTemplate: "%s | DeMask",
   defaultTitle: "DeMask",
   description:
-    "Cheaper and faster than Uniswap? Discover DeMask, the leading DEX on BNB Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE.",
+    "Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program.",
   twitter: {
     cardType: "summary_large_image",
     handle: "@DeMask",
@@ -12,9 +12,9 @@ export const SEO: DefaultSeoProps = {
   },
   openGraph: {
     title:
-      "🥞 DeMask - A next evolution DeFi exchange on BNB Smart Chain (BSC)",
+      "🥞 DeMask - Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program",
     description:
-      "The most popular AMM on BSC by user count! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by DeMask), NFTs, and more, on a platform you can trust.",
-    images: [{ url: "https://assets.pancakeswap.finance/web/og/hero.jpg" }],
+      "DeMask is the leading platform to find solutions to increase liquidity for the market for trading crypto collectibles. ",
+    images: [{ url: "https://demask.infura-ipfs.io/ipfs/QmfAAXAgAWFqkAovUa4u8iwtr4zYCCdqs35Fu3kAt2n4DH" }],
   },
 };

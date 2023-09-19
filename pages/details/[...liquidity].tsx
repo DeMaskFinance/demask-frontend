@@ -14,7 +14,6 @@ import formatNumber from "@/libs/utils/formatNumer";
 import getRewardDML from "@/libs/utils/getReward";
 import viewReward from "@/libs/utils/viewReward";
 import { useQuery } from "@tanstack/react-query";
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -23,12 +22,16 @@ import { BsClock } from "react-icons/bs";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
 };
-
+const updateMeta = {
+  ...SEO,
+  title: 'Detail Liquidity',
+};
 export default function DetailLiquidity() {
   const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
@@ -132,9 +135,7 @@ export default function DetailLiquidity() {
 
   return (
     <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)] w-[80%] mx-auto">
-      <Head>
-        <title>Detail Liquidity | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       <div className="flex justify-between ">
         <div className="flex items-center mb-6">
           <Link href="/liquidity" className="p-1 rounded-lg hover:bg-secondary2 group">

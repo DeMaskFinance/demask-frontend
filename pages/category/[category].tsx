@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -8,7 +7,12 @@ import Image from "next/image";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import NFTCategory from "@/components/Categories/NFTCategory";
 import AccountContext from "@/context/AccountContext";
-
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
+const updateMeta = {
+  ...SEO,
+  title: 'Category',
+};
 export default function Art() {
   const { chainId } = useContext(AccountContext);
   const getDate = (timeStamp: any) => {
@@ -34,9 +38,7 @@ export default function Art() {
 
   return (
     <section className="max-w-6xl pt-6 pb-32 mx-auto">
-      <Head>
-        <title>Category| DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       <div className="">
         <h2 className="px-4 py-1 mx-auto mb-2 text-2xl font-medium uppercase rounded-md bg-dark4 w-max text-dark1">
           {slug}

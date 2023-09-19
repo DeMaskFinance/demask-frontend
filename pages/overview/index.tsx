@@ -3,8 +3,13 @@ import { TabGroups } from "@/components/NavChoice";
 import StatisticChart from "@/components/Overview/StatisticChart";
 import TopNft from "@/components/Overview/TopNft/TopNft";
 import ListTracsaction from "@/components/Overview/Transaction/ListTracsaction";
-import Head from "next/head";
 import React, { useState } from "react";
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
+const updateMeta = {
+  ...SEO,
+  title: 'Overview',
+};
 export default function Overview() {
   const [activeChoice, setActiveChoice] = useState<string>("TVL");
   const handleChoiceChange = (choice: string) => {
@@ -12,9 +17,7 @@ export default function Overview() {
   };
   return (
     <>
-      <Head>
-        <title>Overview | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       <section className="max-w-screen-xl pt-8 mx-auto lg:px-8">
         <h1 className="mb-6 text-2xl font-medium">Demask Info & Analytics</h1>
         <div className="lg:hidden">

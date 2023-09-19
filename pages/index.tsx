@@ -7,17 +7,19 @@ import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
 import * as homeService from "@/libs/service/homeService";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import Link from "next/link";
-import { Fragment, useEffect, useState,useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-
+import { SEO } from '../next-seo.config';
 const Home = () => {
   const [modeInitial, setModeInitial] = useState<string>("");
   const [mode, setMode] = useState<string>(modeInitial);
   const { chainId } = useContext(AccountContext);
-  console.log(chainId);
-  
+  const updateMeta = {
+    ...SEO,
+    title: 'Home',
+  };
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -72,9 +74,7 @@ const Home = () => {
 
   return (
     <div className="">
-      <Head>
-        <title>Home | DeMask</title>
-      </Head>
+      <NextSeo {...updateMeta} />
       {modeInitial === "REELS" ? (
         <>
           {data?.pages[0] ? (

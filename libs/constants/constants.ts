@@ -123,6 +123,28 @@ const mediaType = {
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
+const Category = [
+  {
+    id: 1,
+    value: "Art",
+  },
+  {
+    id: 2,
+    value: "Film",
+  },
+  {
+    id: 3,
+    value: "Music",
+  },
+  {
+    id: 4,
+    value: "Gaming",
+  },
+  {
+    id: 5,
+    value: "Memberships",
+  },
+];
 export {
   tokenMatic,
   amountNFT,
@@ -132,4 +154,5 @@ export {
   BSC_DEMASK,
   MUMBAI_DEMASK,
   tokenBsc,
+  Category
 };

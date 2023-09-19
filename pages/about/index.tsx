@@ -3,16 +3,17 @@ import Features from "@/components/AboutPage/Features";
 import Introduction from "@/components/AboutPage/Introduction";
 import Market from "@/components/AboutPage/Market";
 import NFTTop from "@/components/AboutPage/NFTTop";
-import Head from "next/head";
 import React from "react";
-
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
 export default function About() {
+  const updateMeta = {
+    ...SEO,
+    title: 'About',
+  };
   return (
     <>
-      <Head>
-        <title>About | DeMask</title>
-      </Head>
-
+      <NextSeo {...updateMeta} />
       <section className="max-w-screen-xl pb-32 mx-auto">
         <Introduction />
         <Market />
