@@ -1,11 +1,13 @@
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { useRouter } from "next/router";
 import { memo } from "react";
 import AccountContext from "@/context/AccountContext";
+import { useQuery } from "@tanstack/react-query";
+import { searchTokenService } from "@/libs/service/searchService";
 
 interface ModalSearchTokenProps {
   setIsOpenSearchToken: any;
@@ -22,27 +24,21 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   isOpenSearchToken
 }) => {
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [isERC20, setIsERC20] = useState<boolean>(false);
-  const [showError, setShowError] = useState(false);
-  const [name, setName] = useState<string>("");
-  const [symbol, setSymbol] = useState<string>("");
   const router = useRouter();
-  const { tokenDefault } = useContext(AccountContext);
+  const { tokenDefault, chainId } = useContext(AccountContext);
   const handleAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
     setTokenAddress(e.target.value);
-    const { isERC20, name, symbol, decimals } = await checkIsERC20(
-      e.target.value
-    );
-    setIsERC20(isERC20);
-    setName(name);
-    setSymbol(symbol);
-    setShowError(!isERC20);
-    setLoading(false);
   };
   console.log(tokenAddress);
-
+  const { isLoading, data, isFetching, refetch, isPreviousData,isSuccess } = useQuery({
+    queryKey: ["searchToken", chainId, tokenAddress],
+    queryFn: async () => {
+      const res = await searchTokenService(tokenAddress, chainId);
+      return res;
+    },
+  });
+  console.log(data);
+  console.log(tokenAddress);
   const handleChangeRouteToken = () => {
     const { currency } = router.query;
     const { slug } = router.query;
@@ -57,11 +53,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
       router.push(newURL);
     }
     setTokenAddress('');
-    setIsERC20(false);
     document.body.style.overflowY = "auto";
-    // setTokenAddress('')
-    // setName('');
-    // setSymbol('');
     setIsOpenSearchToken(false);
 
   };
@@ -103,13 +95,13 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
                 value={tokenAddress}
                 onChange={handleAddressToken}
               />
-              {loading && (
+              {isLoading && (
                 <div className="absolute top-[50%] right-2 -translate-y-1/2">
                   <BiLoaderAlt className="animate-spin text-secondary5" />
                 </div>
               )}
             </div>
-            {showError && tokenAddress && (
+            {isSuccess && data.status === false && tokenAddress && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
                 key="token address"
@@ -118,18 +110,18 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
               </p>
             )}
           </div>
-          {isERC20 && (
+          {isSuccess && (
             <div
               className="flex items-center pl-2 rounded-lg cursor-pointer hover:bg-dark4"
               onClick={handleChangeRouteToken}
             >
               <div>
-                <h2 className="font-medium">{symbol}</h2>
-                <p className="text-sm text-dark3">{name}</p>
+                <h2 className="font-medium">{data.tokenSymbol}</h2>
+                <p className="text-sm text-dark3">{data.tokenName}</p>
               </div>
             </div>
           )}
-          {!tokenAddress && tokenDefault  && (
+          {!tokenAddress && tokenDefault && (
             <>
               {tokenDefault?.map((item: any, index: number) => (
                 <div

@@ -43,7 +43,6 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
           : page?.currentPage + 1,
     }
   );
-  console.log(data);
   const goNext = () => {
     if (swiperRef && swiperRef.current) {
       swiperRef.current.swiper.slideNext();

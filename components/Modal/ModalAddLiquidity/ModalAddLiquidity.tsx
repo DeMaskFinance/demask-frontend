@@ -56,9 +56,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const { demask } = useContext(AccountContext);
-  const routerAddress = demask.ROUTER;
-  const rpc = demask.RPC;
+  const { demask, tokenDefault } = useContext(AccountContext);
+  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   console.log(routerAddress)
   const handleClose = (e: any) => {
     e.preventDefault();
@@ -66,18 +65,14 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     setIsOpenLiquidity(false);
   };
   useEffect(() => {
-    if (account && data) {
-      if (
-        data.tokenAddress === process.env.NEXT_PUBLIC_NATIVE_ADDRESS
-      ) {
-        setTokenSymbol("MATIC");
-        setTokenAddress("MATIC");
+    if (tokenDefault && data) {
+      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
+        setTokenSymbol(data.tokenSymbol)
       } else {
-        setTokenSymbol(data.tokenSymbol);
-        setTokenAddress(data.tokenAddress);
+        setTokenSymbol(tokenDefault[0].symbol)
       }
     }
-  }, [data, account]);
+  }, [data, tokenDefault])
   const balanceNFT = useNFTBalance(
     account,
     data.nftAddress,
@@ -85,9 +80,11 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     wallet
   );
 
-  const { balanceToken, decimals, bigNumberBalance, symbolToken, allowanceToken } =
-    useBalanceToken(account, tokenAddress, wallet,routerAddress,rpc);
-  const { reserves, isLoadingReserves }: any = useFetchReservesDML(
+  const { balanceToken, decimals, bigNumberBalance, allowanceToken } =
+    useBalanceToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress);
+    console.log(tokenAddress);
+    
+  const { reserves }: any = useFetchReservesDML(
     account,
     data.dmlAddress,
     wallet
@@ -143,6 +140,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   }, [inputNFT, inputToken]);
   // console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec.toString());
+  console.log(balanceToken);
 
   useEffect(() => {
     const handleCheckApproveToken = async () => {

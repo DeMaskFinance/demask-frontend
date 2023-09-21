@@ -9,22 +9,21 @@ const useInformationToken = (
   wallet: string,
   routerAddress: string,
   rpc: string,
+  nativeAddress: string,
   isOpenTransaction?: boolean
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
   const [decimals, setDecimals] = useState("18");
-  const [symbolToken, setSymbolToken] = useState("USDT");
   const [nameTokenERC20, setNameTokenERC20] = useState("");
   const [allowanceToken, setAllowanceToken] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(rpc);
 
   useEffect(() => {
     const getInformationToken = async () => {
-      if (tokenAddress && account) {
-        if (tokenAddress === "MATIC") {
+      if (tokenAddress && account && nativeAddress) {
+        if (tokenAddress === nativeAddress) {
           setDecimals("18");
-          setSymbolToken("MATIC");
           try {
             const balance = await provider.getBalance(account);
             const balanceInMatic = parseFloat(
@@ -43,7 +42,6 @@ const useInformationToken = (
           );
           const symbol = await contract.symbol();
           const name = await contract.name();
-          setSymbolToken(symbol);
           setNameTokenERC20(name);
           try {
             const bigNumberBalance = await contract.balanceOf(account);
@@ -77,7 +75,6 @@ const useInformationToken = (
     bigNumberBalance,
     decimals,
     nameTokenERC20,
-    symbolToken,
     allowanceToken,
   };
 };

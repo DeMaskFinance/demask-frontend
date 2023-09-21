@@ -1,6 +1,6 @@
 import axios from "axios";
 
 const request=axios.create({
-    baseURL:'https://api.demask.finance',
+    baseURL:process.env.NEXT_PUBLIC_API_URL,
 });
 export default request;

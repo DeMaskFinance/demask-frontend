@@ -12,6 +12,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { AvatarUser } from "../Avatars";
 import { ActiveIcon } from "../Icons";
 import useSvgComponents from "../Picture/Picture";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ModalNumber from "../Modal/ModalLength/ModalNumber";
 interface NFTItemsProps {
   nftItem: any;
 }
@@ -66,17 +68,14 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       </React.Fragment>
     ))
     : null;
-  let tokenAddressSwap = "";
-  if (nftItem.erc === process.env.NEXT_PUBLIC_WETH) {
-    tokenAddressSwap = "MATIC";
-  } else {
-    tokenAddressSwap = nftItem.erc;
-  }
 
   let symbolTokenSwap = "";
   if (nftItem.tokenSymbol === "WETH") {
     symbolTokenSwap = "MATIC";
-  } else {
+  } else if (nftItem.tokenSymbol === "WBNB") {
+    symbolTokenSwap = "BNB";
+  }
+  else {
     symbolTokenSwap = nftItem.tokenSymbol;
   }
 
@@ -85,7 +84,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
       <div className="flex flex-wrap items-center justify-between">
         <div className="items-center justify-between mb-2 line-clamp-1">
           <h2 className="gap-1 mr-4 text-2xl font-medium truncate text-dark1">
-          {nftItem.metadata.name}
+            {nftItem.metadata.name}
           </h2>
           {nftItem.reserveToken === "0" ||
             nftItem.reserveNFT === "0" ||
@@ -105,9 +104,12 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                 className="flex items-center gap-2 text-sm font-semibold whitespace-pre lg:text-lg md:text-md"
               >
                 {nftItem.erc && nftItem.nft ? (
-                  <span>
-                    {formatNumber(getBuyPrice(nftItem.reserveNFT, nftItem.reserveToken, 1).toString())} {symbolTokenSwap}
-                  </span>
+                  <div className="flex gap-x-1">
+                    <ModalNumber data={(divideByDecimal(getBuyPrice(nftItem.reserveNFT, nftItem.reserveTokenDecimals, 1).toString(), nftItem.tokenDecimals))} />
+                    <span>
+                      {symbolTokenSwap}
+                    </span>
+                  </div>
                 ) : (
                   <div className="flex px-6 animate-spin gap-x-4">
                     <AiOutlineLoading3Quarters />

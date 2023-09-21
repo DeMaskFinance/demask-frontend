@@ -15,11 +15,12 @@ const updateMeta = {
   title: 'Detail Liquidity',
 };
 export default function Liquidity() {
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, chainId, demask } = useContext(AccountContext);
   const router = useRouter();
+  const { NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
-    const nftAddress = "0xe51a2dEC45a6256B049dEd81B75C110E4F1a64e7";
-    const tokenAddress = "MATIC";
+    const nftAddress = demask.CREATOR;
+    const tokenAddress = nativeAddress;
     const idNFT = process.env.NEXT_PUBLIC_IDNFT;
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };

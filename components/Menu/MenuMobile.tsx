@@ -192,7 +192,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                   <li>
                     <Link
                       href={
-                        `/swap/${demask.CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+                        `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${process.env.NEXT_PUBLIC_IDNFT}`
                       }
                     >
                       Swap

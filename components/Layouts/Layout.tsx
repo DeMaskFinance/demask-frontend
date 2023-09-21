@@ -5,7 +5,7 @@ import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
 export default function Layout({ children }: PropsWithChildren) {
   return (
-    <div className="box-border w-full">
+    <div className="box-border w-full overflow-hidden">
       <Header />
       <main className="mt-[64px] lg:px-primary md:px-14 px-4">{children}</main>
       <Footer />

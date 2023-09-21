@@ -58,7 +58,7 @@ const Reels: React.FC<ReelsProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("1");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [filter, setFilter] = useState<any>("");
-  const { account, wallet, demask, chainId } = useContext(AccountContext);
+  const { account, wallet, demask, chainId, tokenDefault } = useContext(AccountContext);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputNFT, setInputNFT] = useState<string>("0");
@@ -70,7 +70,6 @@ const Reels: React.FC<ReelsProps> = ({
     useState<boolean>(false);
   const [isSufficientTokenSell, setIsSufficientTokenSell] =
     useState<boolean>(false);
-  const [tokenAddress, setTokenAddress] = useState<string>("");
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -104,7 +103,8 @@ const Reels: React.FC<ReelsProps> = ({
       });
     });
   }, [activeSlideIndex]);
-
+  console.log(filter);
+  
   useEffect(() => {
     if (selectedCategory === "CUSTOM") {
       setAmountNFTSubmit(inputNFT);
@@ -123,22 +123,17 @@ const Reels: React.FC<ReelsProps> = ({
   const balanceNFT = useNFTBalance(account, filter.nft, filter.FactoryContract_id, wallet, isOpenTransaction);
 
   useEffect(() => {
-    if (filter.erc === nativeAddress && chainId === "80001") {
-      setTokenAddress("MATIC");
-      setSymbolToken("MATIC")
-    } else if (
-      filter.erc === nativeAddress && chainId === "97"
-    ) {
-      setTokenAddress("MATIC");
-      setSymbolToken("BNB")
-    } else {
-      setTokenAddress(filter.erc);
-      setSymbolToken(filter.tokenSymbol)
+    if (tokenDefault && filter) {
+      if (filter.tokenSymbol !== tokenDefault[0].symbolNative) {
+        setSymbolToken(filter.tokenSymbol)
+      } else {
+        setSymbolToken(tokenDefault[0].symbol)
+      }
     }
-  }, [activeSlideIndex, filter.erc]);
+  }, [filter, tokenDefault])
 
-  const { balanceToken, decimals, bigNumberBalance, allowanceToken } =
-    useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, isOpenTransaction);
+  const { balanceToken, bigNumberBalance, allowanceToken } =
+    useInformationToken(account, filter.erc, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
   const amountBuy = getBuyPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit);
@@ -187,7 +182,7 @@ const Reels: React.FC<ReelsProps> = ({
   }, []);
   useEffect(() => {
     const checkApproveToken = async () => {
-      if (tokenAddress !== "MATIC") {
+      if (filter.erc !== nativeAddress) {
         if (Number(allowanceToken) < Number(amountBuyDec)) {
           setIsApprovedToken(false);
         } else {
@@ -198,7 +193,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, filter.erc, amountNFTSubmit, amountBuyDec, checkApproveToken, tokenAddress, allowanceToken]);
+  }, [account, wallet, amountNFTSubmit, amountBuyDec, checkApproveToken, filter.erc, allowanceToken]);
   // console.log(amountBuy.toString());
   // console.log(amountBuyDec);
   // console.log(bigNumberBalance);
@@ -229,7 +224,7 @@ const Reels: React.FC<ReelsProps> = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (account) {
+    if (account && wallet) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
@@ -276,7 +271,7 @@ const Reels: React.FC<ReelsProps> = ({
         try {
           let result;
           setIsOpenTransaction(true);
-          if (tokenAddress === "MATIC") {
+          if (filter.erc === nativeAddress) {
             result = await contract.buyETH(
               filter.nft,
               filter.FactoryContract_id,
@@ -346,7 +341,7 @@ const Reels: React.FC<ReelsProps> = ({
         try {
           let result;
           setIsOpenTransaction(true);
-          if (tokenAddress === "MATIC") {
+          if (filter.erc === nativeAddress) {
             result = await contract.sellETH(
               filter.nft,
               filter.FactoryContract_id,
@@ -399,7 +394,8 @@ const Reels: React.FC<ReelsProps> = ({
       </React.Fragment>
     ))
     : null;
-
+    console.log(balanceToken);
+    
   return (
     <div className="gap-4 lg:h-fit h-[82vh]">
       {isSuccess && (
@@ -677,7 +673,7 @@ const Reels: React.FC<ReelsProps> = ({
                       {!isApprovedToken &&
                         account &&
                         isSufficientTokenBuy &&
-                        tokenAddress !== "MATIC" &&
+                        filter.erc !== nativeAddress &&
                         activeChoice === "BUY" && (
                           <Button
                             className="w-[126px] py-2"
@@ -998,7 +994,7 @@ const Reels: React.FC<ReelsProps> = ({
                   {!isApprovedToken &&
                     account &&
                     isSufficientTokenBuy &&
-                    tokenAddress !== "MATIC" &&
+                    filter.erc !== nativeAddress &&
                     activeChoice === "BUY" && (
                       <Button
                         className="w-[126px] py-2"

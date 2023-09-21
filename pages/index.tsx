@@ -20,8 +20,6 @@ const Home = () => {
     ...SEO,
     title: 'Home',
   };
-  console.log(process.env.NEXT_PUBLIC_API_URL,'api');
-  console.log(process.env.NEXT_PUBLIC_DEMASKTOKEN,'token');
   
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);

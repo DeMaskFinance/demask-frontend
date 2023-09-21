@@ -15,6 +15,8 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
     let symbolTokenSwap = "";
     if (item.tokenSymbol === "WETH") {
         symbolTokenSwap = "MATIC";
+    } else if (item.tokenSymbol === "WBNB") {
+        symbolTokenSwap = "BNB";
     } else {
         symbolTokenSwap = item.tokenSymbol;
     }
@@ -142,7 +144,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                         <div className="flex flex-col items-end">
                             <p>Reverse NFT</p>
                             {item.reserveNFT ? (
-                                <ModalNumber data={item.reserveNFT}/>
+                                <ModalNumber data={item.reserveNFT} />
                             ) : (
                                 <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                             )}

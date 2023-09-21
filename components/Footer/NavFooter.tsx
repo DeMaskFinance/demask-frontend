@@ -71,7 +71,7 @@ export default function NavFooter({ reels }: any) {
                   <li>
                     <Link
                       href={
-                        `/swap/${contractAddress}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+                        `/swap/${contractAddress}/${demask.NATIVE_ADDRESS}/${process.env.NEXT_PUBLIC_IDNFT}`
                       }
                       className="block w-full"
                     >

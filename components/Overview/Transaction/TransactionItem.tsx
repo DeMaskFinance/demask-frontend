@@ -128,7 +128,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                 <span className="">
                   {isFetching ? skeleton : (
                     <div className="flex gap-x-1">
-                      <span>{formatNumber(item.amounttokenInUSD)}</span>
+                      <ModalNumber data={item.amounttokenInUSD}/>
                       {item.tokenSymbol === 'WETH' ? (
                         <span>MATIC</span>
                       ) : (

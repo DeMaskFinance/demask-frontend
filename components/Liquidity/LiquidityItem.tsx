@@ -32,6 +32,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     if (account) {
       if (liquidity.tokenSymbol === "WETH") {
         setTokenSymbol("MATIC");
+      } else if (liquidity.tokenSymbol === "WBNB") {
+        setTokenSymbol("BNB")
       } else {
         setTokenSymbol(liquidity.tokenSymbol);
       }

@@ -15,6 +15,12 @@ html {
 .item-active-drap {
   border: 1px solid #0e8388;
 }
+.swipper-about {
+  height: auto !important;
+}
+.swipper-about:hover {
+  scale: 0.9;
+}
 .swiper-custom:hover .swiper-button-next-custom,
 .swiper-custom:hover .swiper-button-prev-custom {
   opacity: 1;
@@ -59,7 +65,7 @@ html {
   right: -23px;
 }
 .swiper-about {
-  padding-bottom: 32px !important;
+  padding: 4px !important;
 }
 
 .swiper-pagination-bullet-active {
@@ -150,8 +156,8 @@ html *::-webkit-scrollbar-track {
 .document__truncate:hover + .document__tooltip {
   display: block;
 }
-.clip-polygon{
-  clip-path: polygon(50% 50%, 0 0, 100% 0)
+.clip-polygon {
+  clip-path: polygon(50% 50%, 0 0, 100% 0);
 }
 @keyframes spinner-y0fdc1 {
   0% {

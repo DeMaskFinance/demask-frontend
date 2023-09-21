@@ -10,8 +10,9 @@ const tokenMatic = [
   {
     name: "Polygon",
     symbol: "MATIC",
-    address: "MATIC",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS,
     logo: MaticIcon,
+    symbolNative: "WETH",
   },
   {
     name: "Tether",
@@ -30,8 +31,9 @@ const tokenBsc = [
   {
     name: "Smart Chain",
     symbol: "BNB",
-    address: "BNB",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
     logo: BscIcon,
+    symbolNative: "WBNB"
   },
   {
     name: "Tether",

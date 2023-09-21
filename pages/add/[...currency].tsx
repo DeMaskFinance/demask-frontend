@@ -31,6 +31,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
+import { swapAPI } from "@/libs/service";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -63,8 +64,9 @@ export default function AddLiquidity() {
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const routerAddress = demask.ROUTER;
-  const rpc = demask.RPC;
+  const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
+  const [symbolToken, setSymbolToken] = useState<string>('');
+  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -75,32 +77,34 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   }, [currency]);
-  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
-    queryKey: ["NFT detail", idNFT, nftAddress],
+  const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
+    queryKey: ["liquidity", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
-      const res = await metadataService(nftAddress.toLowerCase(), idNFT, chainId);
-      return res;
+      try {
+        const res = await swapAPI(tokenAddress.toLocaleLowerCase(), chainId, nftAddress.toLowerCase(), idNFT);
+        if (res) {
+          return res;
+        } else {
+          throw new Error("Invalid data from API");
+        }
+      } catch (error) {
+        console.error("Error in queryFn:", error);
+        throw error;
+      }
     },
     keepPreviousData: true,
   });
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
-  const { balanceToken, decimals, bigNumberBalance, symbolToken, allowanceToken } = useBalanceToken(
+  const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
     tokenAddress,
     wallet,
     routerAddress,
     rpc,
+    nativeAddress,
     isOpenTransaction
-  );
-  const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress, wallet);
-
-  const { reserves, isLoadingReserves }: any = useFetchReservesDML(
-    account,
-    dmlToken,
-    wallet,
-    inputNFT
   );
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
@@ -114,21 +118,25 @@ export default function AddLiquidity() {
   useEffect(() => {
     let amountErcDesired;
     if (
-      dmlToken !== "0x0000000000000000000000000000000000000000" &&
-      reserves &&
+      data?.dmlAddress !== null &&
+      data &&
       inputNFT
     ) {
-      if (reserves[0] && reserves[1]) {
-        amountErcDesired = ethers.BigNumber.from(inputNFT)
-          .mul(reserves[0])
-          .div(reserves[1])
-          .mul(105)
-          .div(100);
-      }
+      console.log(data.reserveToken);
+      console.log(data.reserveNFT);
+      
+      amountErcDesired = ethers.BigNumber.from(inputNFT)
+        .mul(data.reserveToken)
+        .div(data.reserveNFT)
+        .mul(105)
+        .div(100);
+        console.log(amountErcDesired.toString());
     } else {
+      console.log(data?.tokenDecimals);
+      
       amountErcDesired = handleBignumber(
         Number(inputToken),
-        Number(decimals)
+        Number(data?.tokenDecimals)
       );
     }
     setAmountErcDesired(amountErcDesired);
@@ -144,11 +152,28 @@ export default function AddLiquidity() {
         setIsSufficientToken(false);
       }
     }
-  }, [inputNFT, inputToken]);
+  }, [inputNFT, inputToken, data]);
   console.log(isSufficientToken);
+  console.log(amountErcDesired);
+  console.log(data?.tokenDecimals);
 
+  useEffect(() => {
+    if (tokenDefault && data) {
+      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
+        setSymbolToken(data.tokenSymbol)
+      } else {
+        setSymbolToken(tokenDefault[0].symbol)
+      }
+    }
+  }, [data, tokenDefault, chainId])
 
-  const tokenSymbolIcon = (tokenDefault || []).find((item: any) => item.address === tokenAddress);
+  useEffect(() => {
+    console.log(tokenAddress);
+    if (tokenAddress) {
+      const icon = (tokenDefault || []).find((item: any) => item.address.toLowerCase() === tokenAddress);
+      setTokenSymbolIcon(icon);
+    }
+  }, [currency, chainId, tokenAddress])
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -314,136 +339,137 @@ export default function AddLiquidity() {
         </Link>
         <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
-        <div className="order-2">
-          <div>
-            <p className={styles.title}>
-              <span className="">Choose NFT</span>
-              <span className="text-red">*</span>
-            </p>
-            <div className='w-full p-2 mb-4 border rounded-lg border-secondary5' onClick={handleSearchNFT}>
-              <div className="flex justify-between cursor-pointer text-dark3">
-                <div className="flex gap-x-2 text-secondary5">
-                  <NFTIcon width={24} height={24} className="fill-secondary5" />
-                  {data && (
-                    <p>{data.metadata.name}</p>
-                  )}
-                </div>
-                <DownIcon width={24} height={24} />
-              </div>
-            </div>
-          </div>
-          <div>
-            <p className={styles.title}>
-              <span className="">Choose Token</span>
-              <span className="text-red">*</span>
-            </p>
-            <div className='w-full p-2 mb-4 border rounded-lg border-secondary5' onClick={handleSearchToken}>
-              <div className="flex justify-between cursor-pointer text-dark3">
-                <div className="flex gap-x-2 text-secondary5">
-                  {tokenSymbolIcon ? (
-                    <div>
-                      <tokenSymbolIcon.logo width={24} height={24} className="fill-secondary5" />
-                    </div>
-                  ) : (
-                    <div>
-                      <TokenIconNotDefine width={24} height={24} className="fill-secondary5" />
-                    </div>
-                  )}
-                  {symbolToken}
-                </div>
-                <DownIcon width={24} height={24} />
-              </div>
-            </div>
-          </div>
-          <div>
-            <p className={styles.title}>Fee</p>
-            <Button className="p-2 mb-4 text-white bg-secondary5">0.5%</Button>
-          </div>
-          <div>
-            <p className={styles.title}>
-              <span className="">Deposit</span>
-              <span className="text-red">*</span>
-            </p>
+      {isSuccess && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
+          <div className="order-2">
             <div>
-              <div className="flex justify-between mb-4 text-dark1">
-                <p>NFT</p>
-                <p>Balance: {balanceNFT}</p>
+              <p className={styles.title}>
+                <span className="">Choose NFT</span>
+                <span className="text-red">*</span>
+              </p>
+              <div className='w-full p-2 mb-4 border rounded-lg border-secondary5' onClick={handleSearchNFT}>
+                <div className="flex justify-between cursor-pointer text-dark3">
+                  <div className="flex gap-x-2 text-secondary5">
+                    <NFTIcon width={24} height={24} className="fill-secondary5" />
+                    {data && (
+                      <p>{data.metadata.name}</p>
+                    )}
+                  </div>
+                  <DownIcon width={24} height={24} />
+                </div>
               </div>
-              <input
-                className={styles.inputItem}
-                type="number"
-                placeholder="Input amount NFT"
-                value={inputNFT}
-                onChange={handleGetNFT}
-              />
-              {isSufficientNFT && (
-                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-                  Insufficient NFT balance
-                </p>
-              )}
-              {isInputNFT && (
-                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
-                  Required
-                </p>
-              )}
             </div>
             <div>
-              <div className="flex justify-between mb-4 text-dark1">
-                <p>Token</p>
-                <p>Balance: {balanceToken}</p>
+              <p className={styles.title}>
+                <span className="">Choose Token</span>
+                <span className="text-red">*</span>
+              </p>
+              <div className='w-full p-2 mb-4 border rounded-lg border-secondary5' onClick={handleSearchToken}>
+                <div className="flex justify-between cursor-pointer text-dark3">
+                  <div className="flex gap-x-2 text-secondary5">
+                    {tokenSymbolIcon ? (
+                      <div>
+                        {/* @ts-ignore */}
+                        <tokenSymbolIcon.logo width={24} height={24} className="fill-secondary5" />
+                      </div>
+                    ) : (
+                      <div>
+                        <TokenIconNotDefine width={24} height={24} className="fill-secondary5" />
+                      </div>
+                    )}
+                    {symbolToken}
+                  </div>
+                  <DownIcon width={24} height={24} />
+                </div>
               </div>
-              {(dmlToken === "0x0000000000000000000000000000000000000000") ? (
+            </div>
+            <div>
+              <p className={styles.title}>Fee</p>
+              <Button className="p-2 mb-4 text-white bg-secondary5">0.5%</Button>
+            </div>
+            <div>
+              <p className={styles.title}>
+                <span className="">Deposit</span>
+                <span className="text-red">*</span>
+              </p>
+              <div>
+                <div className="flex justify-between mb-4 text-dark1">
+                  <p>NFT</p>
+                  <p>Balance: {balanceNFT}</p>
+                </div>
                 <input
                   className={styles.inputItem}
                   type="number"
-                  placeholder="Input amount Token"
-                  value={inputToken}
-                  onChange={handleGetToken}
+                  placeholder="Input amount NFT"
+                  value={inputNFT}
+                  onChange={handleGetNFT}
                 />
-              ) : (
-                <div>
-                  {reserves[0] && reserves[1] ? (
-                    <div className={styles.inputItem}>
-                      {amountErcDesiredToDec}
-                    </div>
-                  ) : (
-                    <div className={styles.inputItem}>
-                      <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
-                    </div>
-                  )}
+                {isSufficientNFT && (
+                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+                    Insufficient NFT balance
+                  </p>
+                )}
+                {isInputNFT && (
+                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                    Required
+                  </p>
+                )}
+              </div>
+              <div>
+                <div className="flex justify-between mb-4 text-dark1">
+                  <p>Token</p>
+                  <p>Balance: {balanceToken}</p>
                 </div>
-              )}
-              {isSufficientToken && (
-                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
-                  Insufficient Token balance
-                </p>
-              )}
+                {(data.dmlAddress === null) ? (
+                  <input
+                    className={styles.inputItem}
+                    type="number"
+                    placeholder="Input amount Token"
+                    value={inputToken}
+                    onChange={handleGetToken}
+                  />
+                ) : (
+                  <div>
+                    {data ? (
+                      <div className={styles.inputItem}>
+                        {amountErcDesiredToDec}
+                      </div>
+                    ) : (
+                      <div className={styles.inputItem}>
+                        <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                      </div>
+                    )}
+                  </div>
+                )}
+                {isSufficientToken && (
+                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                    Insufficient Token balance
+                  </p>
+                )}
+              </div>
             </div>
+            {!isApprovedNFT && (
+              <Button className="w-[126px] py-2" primary onClick={handleApproveNFT}>
+                APPROVE NFT
+              </Button>
+            )}
+            {isApprovedNFT && !isApprovedToken && tokenAddress !== 'MATIC' && (
+              <Button
+                className="w-[126px] py-2"
+                primary
+                onClick={handleApproveToken}
+              >
+                APPROVE TOKEN
+              </Button>
+            )}
+            {isApprovedNFT && isApprovedToken && (
+              <Button className="w-[126px] py-2" primary onClick={addLiquidity}>
+                ADD LIQUIDITY
+              </Button>
+            )}
           </div>
-          {!isApprovedNFT && (
-            <Button className="w-[126px] py-2" primary onClick={handleApproveNFT}>
-              APPROVE NFT
-            </Button>
-          )}
-          {isApprovedNFT && !isApprovedToken && tokenAddress !== 'MATIC' && (
-            <Button
-              className="w-[126px] py-2"
-              primary
-              onClick={handleApproveToken}
-            >
-              APPROVE TOKEN
-            </Button>
-          )}
-          {isApprovedNFT && isApprovedToken && (
-            <Button className="w-[126px] py-2" primary onClick={addLiquidity}>
-              ADD LIQUIDITY
-            </Button>
-          )}
-        </div>
-        <div className="order-1 w-full lg:order-2">
-          <div className="flex flex-col items-center w-full h-full ">
-            {isSuccess && (
+          <div className="order-1 w-full lg:order-2">
+            <div className="flex flex-col items-center w-full h-full ">
               <>
                 {data?.metadata && (
                   <div className="flex flex-col items-center">
@@ -494,16 +520,16 @@ export default function AddLiquidity() {
                   </div>
                 )}
               </>
-            )}
-            {isLoading && (
-              <div className="flex items-center h-full">
-                <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
-              </div>
-            )}
+
+            </div>
           </div>
         </div>
-      </div>
-
+      )}
+      {isLoading && (
+        <div className="flex items-center h-full">
+          <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
+        </div>
+      )}
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
