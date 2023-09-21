@@ -12,7 +12,6 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         nft: "var(--nftItem.metadata.image)",
-        "gradient-about": "linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1))"
       },
       height: {
         header: "64px",
@@ -61,8 +60,8 @@ module.exports = {
       boxShadow: {
         home: "0px 4px 12px 0px rgba(0, 0, 0, 0.08)",
         swiper: "rgba(0, 0, 0, 0.15) 0px 4px 10px",
-        chart: "0px 8px 24px 0px rgba(0, 0, 0, 0.15);",
-        about:"#9075FE 0px 22px 70px 4px;"
+        chart: "0px 8px 24px 0px rgba(0, 0, 0, 0.15)",
+        about:"#9075FE 0px 22px 70px 4px"
       },
       keyframes: {
         scrollUpHeader: {
