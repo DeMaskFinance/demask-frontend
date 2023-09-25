@@ -35,6 +35,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
+import { SkeletonReels } from "@/components/Skeleton";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -389,7 +390,7 @@ const Swap: React.FC = () => {
   return (
     <div className="py-8 mx-auto swap max-w-[1592px]">
       <NextSeo {...updateMeta} />
-      {isSuccess && (
+      {isSuccess ? (
         <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
           <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
             <>
@@ -576,11 +577,9 @@ const Swap: React.FC = () => {
                       className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
                       onClick={handleSearchNFT}
                     >
-                      {isSuccess && (
-                        <div className="w-16 text-center">
-                          <h2 className="truncate">{data.metadata?.symbol}</h2>
-                        </div>
-                      )}
+                      <div className="w-16 text-center">
+                        <h2 className="truncate">{data.metadata?.symbol}</h2>
+                      </div>
                     </div>
                   </div>
                   {data.dmlAddress !== null &&
@@ -719,11 +718,11 @@ const Swap: React.FC = () => {
             </div>
           </div>
         </div>
+      ):(
+        <SkeletonReels/>
       )}
       {isLoading && (
-        <div className="flex items-center h-full">
-          <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
-        </div>
+        <SkeletonReels/>
       )}
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}

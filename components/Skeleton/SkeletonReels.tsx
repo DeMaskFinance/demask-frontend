@@ -3,9 +3,9 @@ import React from "react";
 
 export default function SkeletonReels() {
   return (
-    <div className="lg:flex lg:h-[calc(100vh-130px)] items-center animate-pulse gap-x-10 lg:px-primary lg:ml-14 lg:mr-14">
+    <div className="lg:flex h-[calc(100vh-130px)] items-center animate-pulse gap-x-10 lg:px-primary lg:ml-14 lg:mr-14">
       <div className="w-2/4">
-        <div className="bg-slate-200 h-[530px] mt-12 w-[530px] border rounded-2xl"></div>
+        <div className="bg-slate-200 w-screen h-[530px] mt-12 lg:w-[530px] border rounded-2xl"></div>
       </div>
       <div className="px-4 lg:flex hidden flex-col w-2/4 h-[530px] justify-between py-6 border rounded-lg border-dark3 grow mt-12">
         <div className="flex justify-between">

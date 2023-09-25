@@ -1026,7 +1026,6 @@ const Reels: React.FC<ReelsProps> = ({
           )}
         </div>
       )}
-      {/* {(!isLoading || !isFetchingNextPage || !isFetching) && <SkeletonReels />} */}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       <ToastContainer />

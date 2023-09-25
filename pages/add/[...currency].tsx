@@ -30,6 +30,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import { swapAPI } from "@/libs/service";
+import { SkeletonAddLiquidity } from "@/components/Skeleton";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -338,7 +339,7 @@ export default function AddLiquidity() {
         </Link>
         <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
       </div>
-      {isSuccess && (
+      {isSuccess ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
           <div className="order-2">
             <div>
@@ -526,11 +527,11 @@ export default function AddLiquidity() {
             </div>
           </div>
         </div>
+      ):(
+        <SkeletonAddLiquidity/>
       )}
       {isLoading && (
-        <div className="flex items-center h-full">
-          <BiLoaderAlt className="text-5xl animate-spin text-secondary5" />
-        </div>
+        <SkeletonAddLiquidity/>
       )}
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}
