@@ -15,8 +15,6 @@ import useDMLToken from "@/hooks/useDMLToken";
 import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import useBalanceToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
-import { tokenMatic } from "@/libs/constants";
-import { metadataService } from "@/libs/service/metadataService";
 import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import handleBignumber from "@/libs/utils/handleBignumber";
@@ -122,18 +120,21 @@ export default function AddLiquidity() {
       data &&
       inputNFT
     ) {
-      console.log(data.reserveToken);
+      console.log(data.reserveTokenDecimals);
       console.log(data.reserveNFT);
-      
-      amountErcDesired = ethers.BigNumber.from(inputNFT)
-        .mul(data.reserveToken)
-        .div(data.reserveNFT)
-        .mul(105)
-        .div(100);
-        console.log(amountErcDesired.toString());
+
+      // amountErcDesired = ethers.BigNumber.from(inputNFT)
+      //   .mul(data.reserveTokenDecimals)
+      //   .div(data.reserveNFT)
+      //   .mul(105)
+      //   .div(100);
+      //   console.log(amountErcDesired.toString());
+      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * 1.05;
+      console.log(amountErcDesired);
+
     } else {
       console.log(data?.tokenDecimals);
-      
+
       amountErcDesired = handleBignumber(
         Number(inputToken),
         Number(data?.tokenDecimals)
@@ -143,7 +144,7 @@ export default function AddLiquidity() {
     if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
-        '18'
+        data?.tokenDecimals
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
@@ -153,9 +154,7 @@ export default function AddLiquidity() {
       }
     }
   }, [inputNFT, inputToken, data]);
-  console.log(isSufficientToken);
   console.log(amountErcDesired);
-  console.log(data?.tokenDecimals);
 
   useEffect(() => {
     if (tokenDefault && data) {
@@ -191,7 +190,7 @@ export default function AddLiquidity() {
       return;
     }
 
-    if (inputNFT && !isSufficientNFT && !isSufficientToken) {
+    if (inputNFT && !isSufficientNFT && !isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
@@ -202,7 +201,7 @@ export default function AddLiquidity() {
         let result;
         let transactionHash;
         setIsOpenTransaction(true);
-        if (tokenAddress === "MATIC") {
+        if (tokenAddress === nativeAddress) {
           result = await contract.addLiquidityETH(
             nftAddress,
             idNFT,
@@ -210,7 +209,7 @@ export default function AddLiquidity() {
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value: amountErcDesired }
+            { gasLimit: 8000000, value: Math.floor(amountErcDesired).toString() }
           );
           transactionHash = result.hash;
         } else {
@@ -218,7 +217,7 @@ export default function AddLiquidity() {
             tokenAddress,
             nftAddress,
             idNFT,
-            amountErcDesired,
+            Math.floor(amountErcDesired).toString(),
             inputNFT,
             0,
             account,
@@ -276,7 +275,7 @@ export default function AddLiquidity() {
   };
   useEffect(() => {
     const handleCheckApproveToken = async () => {
-      if (tokenAddress === "MATIC") {
+      if (tokenAddress === nativeAddress) {
         setIsApprovedToken(true);
       } else {
         if (amountErcDesired && allowanceToken) {
@@ -351,9 +350,7 @@ export default function AddLiquidity() {
                 <div className="flex justify-between cursor-pointer text-dark3">
                   <div className="flex gap-x-2 text-secondary5">
                     <NFTIcon width={24} height={24} className="fill-secondary5" />
-                    {data && (
-                      <p>{data.metadata.name}</p>
-                    )}
+                    <p>{data.metadata.name}</p>
                   </div>
                   <DownIcon width={24} height={24} />
                 </div>
@@ -453,7 +450,7 @@ export default function AddLiquidity() {
                 APPROVE NFT
               </Button>
             )}
-            {isApprovedNFT && !isApprovedToken && tokenAddress !== 'MATIC' && (
+            {isApprovedNFT && !isApprovedToken && tokenAddress !== nativeAddress && (
               <Button
                 className="w-[126px] py-2"
                 primary
@@ -466,6 +463,11 @@ export default function AddLiquidity() {
               <Button className="w-[126px] py-2" primary onClick={addLiquidity}>
                 ADD LIQUIDITY
               </Button>
+            )}
+            {Math.floor(amountErcDesired) === 0 && inputNFT && (
+              <p className="mt-3 ml-3 text-xs text-red" key="inputNFT">
+                Can't add liquidity
+              </p>
             )}
           </div>
           <div className="order-1 w-full lg:order-2">

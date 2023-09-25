@@ -1,12 +1,8 @@
-import { AvatarUser } from "@/components/Avatars";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import formatNumber from "@/libs/utils/formatNumer";
-import formatToUnit from "@/libs/utils/formatToUnit";
-import { useQuery } from "@tanstack/react-query";
+import AccountContext from "@/context/AccountContext";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 interface TransactionItemProps {
   data: any;
   isFetching: boolean;
@@ -21,7 +17,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
   isFetching,
   isLoading,
 }) => {
-
+  const { demask } = useContext(AccountContext);
   return (
     <>
       {isLoading || isFetching ? (
@@ -57,7 +53,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
               <td className="py-2 hover:text-secondary3 relative flex items-center justify-start lg:w-full md:w-full w-[200px]">
                 <Link
                   target="_blank"
-                  href={`https://mumbai.polygonscan.com/tx/${item.transactionHash}`}
+                  href={`${demask.urltxHash}${item.transactionHash}`}
                   className="relative group"
                 >
                   <span className="flex items-center gap-x-2">
@@ -100,7 +96,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                       </div>
                     </span>
                     <span className="line-clamp-1 truncate lg:group-hover:hidden max-w-[133px] block">
-                      {isFetching ? skeleton : item.metadata.name}
+                      {isFetching ? skeleton : item.metadata?.name}
                     </span>
                     <span
                       className={`ml-5 absolute top-0 left-48 bg-transparent border text-sm ${item.action === "Buy" || item.action === "Add"
@@ -120,7 +116,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
 
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">
                 <span className="">
-                  {isFetching ? skeleton : <ModalNumber data={item.amountnft}/>}
+                  {isFetching ? skeleton : <ModalNumber data={item.amountnft} />}
                 </span>
               </td>
 
@@ -128,7 +124,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                 <span className="">
                   {isFetching ? skeleton : (
                     <div className="flex gap-x-1">
-                      <ModalNumber data={item.amounttokenInUSD}/>
+                      <ModalNumber data={item.amounttokenInUSD} />
                       {item.tokenSymbol === 'WETH' ? (
                         <span>MATIC</span>
                       ) : (

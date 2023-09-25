@@ -104,7 +104,7 @@ const Reels: React.FC<ReelsProps> = ({
     });
   }, [activeSlideIndex]);
   console.log(filter);
-  
+
   useEffect(() => {
     if (selectedCategory === "CUSTOM") {
       setAmountNFTSubmit(inputNFT);
@@ -136,10 +136,9 @@ const Reels: React.FC<ReelsProps> = ({
     useInformationToken(account, filter.erc, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
   const amountBuy = getBuyPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
-  const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit);
-  const amountSellDec = getSellPrice(filter.reserveNFT, filter.reserveTokenDecimals, +(amountNFTSubmit)) * Number(amountNFTSubmit);
-  console.log(allowanceToken);
-
+  const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit) * 1.05;
+  const amountSellDec = getSellPrice(filter.reserveNFT, filter.reserveTokenDecimals, +(amountNFTSubmit)) * Number(amountNFTSubmit) * 0.95;
+  
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -234,7 +233,7 @@ const Reels: React.FC<ReelsProps> = ({
         signer
       );
       try {
-        const result = await contract.approve(routerAddress, amountBuyDec.toFixed(0));
+        const result = await contract.approve(routerAddress, Math.floor(amountBuyDec).toString());
         await provider.waitForTransaction(result.hash);
         setCheckApproveToken(true);
         setInputNFT("");
@@ -278,15 +277,16 @@ const Reels: React.FC<ReelsProps> = ({
               amountNFTSubmit,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: amountBuyDec.toFixed(0) }
+              { gasLimit: 8000000, value: Math.floor(amountBuyDec).toString() }
             );
           } else {
+            console.log(Math.floor(amountBuyDec).toString());
             result = await contract.buy(
               filter.erc,
               filter.nft,
               filter.FactoryContract_id,
               amountNFTSubmit,
-              amountBuyDec.toFixed(0),
+              Math.floor(amountBuyDec).toString(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -315,6 +315,9 @@ const Reels: React.FC<ReelsProps> = ({
       }
     }
   };
+  console.log(Math.floor(amountSellDec).toString());
+  console.log(Math.floor(amountBuyDec).toString());
+
   const handleSellNFT = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -337,6 +340,7 @@ const Reels: React.FC<ReelsProps> = ({
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+        console.log(Math.floor(amountSellDec).toString());
 
         try {
           let result;
@@ -346,18 +350,20 @@ const Reels: React.FC<ReelsProps> = ({
               filter.nft,
               filter.FactoryContract_id,
               amountNFTSubmit,
-              amountSell.toFixed(0),
+              Math.floor(amountSellDec).toString(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
             );
           } else {
+            console.log(Math.floor(amountSellDec).toString());
+            console.log(amountNFTSubmit);
             result = await contract.sell(
               filter.erc,
               filter.nft,
               filter.FactoryContract_id,
               amountNFTSubmit,
-              amountSell.toFixed(0),
+              Math.floor(amountSellDec).toString(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -394,8 +400,8 @@ const Reels: React.FC<ReelsProps> = ({
       </React.Fragment>
     ))
     : null;
-    console.log(balanceToken);
-    
+  console.log(balanceToken);
+
   return (
     <div className="gap-4 lg:h-fit h-[82vh]">
       {isSuccess && (

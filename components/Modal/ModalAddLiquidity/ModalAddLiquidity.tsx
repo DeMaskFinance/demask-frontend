@@ -52,13 +52,14 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [tokenSymbol, setTokenSymbol] = useState("");
-  const [tokenAddress, setTokenAddress] = useState("");
   const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
   const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const { demask, tokenDefault } = useContext(AccountContext);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   console.log(routerAddress)
+  console.log(data);
+
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -80,15 +81,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     wallet
   );
 
-  const { balanceToken, decimals, bigNumberBalance, allowanceToken } =
-    useBalanceToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress);
-    console.log(tokenAddress);
-    
-  const { reserves }: any = useFetchReservesDML(
-    account,
-    data.dmlAddress,
-    wallet
-  );
+  const { balanceToken, bigNumberBalance, allowanceToken } =
+    useBalanceToken(account, data.tokenAddress, wallet, routerAddress, rpc, nativeAddress);
 
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
@@ -108,43 +102,50 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       setIsSufficientToken(false);
     }
   };
-
+  console.log(data);
+  
   useEffect(() => {
     let amountErcDesired;
     if (
-      data.dmlAddress !== "0x0000000000000000000000000000000000000000" &&
-      reserves &&
+      data?.dmlAddress !== null &&
+      data &&
       inputNFT
     ) {
-      if (reserves[0] && reserves[1]) {
-        amountErcDesired = ethers.BigNumber.from(inputNFT)
-          .mul(reserves[0])
-          .div(reserves[1])
-          .mul(105)
-          .div(100);
-      }
+      console.log(data.reserveToken);
+      console.log(data.reserveNFT);
+      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * 1.05;
+      console.log(amountErcDesired);
+
     } else {
+      console.log(data?.dmlDecimals);
+
       amountErcDesired = handleBignumber(
         Number(inputToken),
-        Number(decimals)
+        Number(data?.dmlDecimals)
       );
     }
     setAmountErcDesired(amountErcDesired);
-    if (amountErcDesired && decimals) {
+    if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
-        decimals
+        data?.dmlDecimals
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
+        setIsSufficientToken(true)
+      } else {
+        setIsSufficientToken(false);
+      }
     }
-  }, [inputNFT, inputToken]);
+  }, [inputNFT, inputToken, data]);
   // console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec.toString());
-  console.log(balanceToken);
-
+  // console.log(balanceToken);
+  console.log(allowanceToken);
+  
   useEffect(() => {
     const handleCheckApproveToken = async () => {
-      if (tokenAddress === "MATIC") {
+      if (data.tokenAddress === nativeAddress) {
         setIsApprovedToken(true);
       } else {
         if (amountErcDesired) {
@@ -157,7 +158,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       }
     };
     handleCheckApproveToken();
-  }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired, allowanceToken]);
+  }, [account, wallet, data, inputToken, checkApproveToken, amountErcDesired, allowanceToken]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(
@@ -176,18 +177,17 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       return;
     }
 
-    if (inputNFT && !isSufficientNFT && !isSufficientToken) {
+    if (inputNFT && !isSufficientNFT && !isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      // const value = handleBignumber(Number(inputToken), 18);
 
       try {
         let result;
         let transactionHash;
         setIsOpenTransaction(true);
-        if (tokenAddress === "MATIC") {
+        if (data.tokenAddress === nativeAddress) {
           result = await contract.addLiquidityETH(
             data.nftAddress,
             data.nftId,
@@ -195,15 +195,18 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value: amountErcDesired }
+            { gasLimit: 8000000, value: Math.floor(amountErcDesired).toString()}
           );
           transactionHash = result.hash;
         } else {
+          console.log(Math.floor(amountErcDesired).toString());
+          console.log(inputNFT);
+          
           result = await contract.addLiquidity(
-            tokenAddress,
+            data.tokenAddress,
             data.nftAddress,
             data.nftId,
-            amountErcDesired,
+            Math.floor(amountErcDesired).toString(),
             inputNFT,
             0,
             account,
@@ -293,8 +296,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
                   {
-                    data.dmlAddress ===
-                      "0x0000000000000000000000000000000000000000" ? (
+                    data.dmlAddress === null ? (
                       <input
                         className={styles.inputItem}
                         type="number"
@@ -304,7 +306,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       />
                     ) : (
                       <div>
-                        {reserves[0] && reserves[1] ? (
+                        {data ? (
                           <div className={styles.inputItem}>
                             {amountErcDesiredToDec}
                           </div>
@@ -353,7 +355,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     handleApproveToken(
                       account,
                       wallet,
-                      tokenAddress,
+                      data.tokenAddress,
                       inputToken,
                       routerAddress,
                       setIsOpen,

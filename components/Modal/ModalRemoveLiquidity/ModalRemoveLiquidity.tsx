@@ -62,8 +62,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
     const [checkApproveDML, setCheckApproveDML] = useState<boolean>(false);
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-    const { demask } = useContext(AccountContext);
-    const { ROUTER: routerAddress, RPC: rpc } = demask;
+    const { demask ,tokenDefault} = useContext(AccountContext);
+    const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
     const handleClose = (e: any) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -104,11 +104,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(handleBignumber(Number(inputLiquidity), 18));
 
     useEffect(() => {
-      if (reserves[0] && reserves[1]) {
-        const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), 18);
-        const resAmountNFT = Number(amountLIQUIDITY) * Number(reserves[1].toString()) / Number(totalSupply);
-        const amountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply);
-        const resAmountToken = Number(amountLIQUIDITY) * Number(reserves[0].toString()) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(reserves[1].toString()) % Number(totalSupply)) * (Number(reserves[0].toString()) - Number(amountToken.toFixed(0))) / ((Number(reserves[1].toString()) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
+      if (data) {
+        const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals));
+        const resAmountNFT = Number(amountLIQUIDITY) * Number(data.reserveNFT) / Number(totalSupply);
+        const amountToken = Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals) / Number(totalSupply);
+        const resAmountToken = Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(data.reserveNFT) % Number(totalSupply)) * (Number(data.reserveTokenDecimals) - Number(amountToken.toFixed(0))) / ((Number(data.reserveNFT) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
         const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(), data.dmlDecimals)
         const resAmountNFTMin = Math.floor(Number(resAmountNFT * 0.95));
         const resAmountTokenMin = Math.floor(Number(resAmountToken * 0.95));
@@ -118,10 +118,10 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setAmountTokenMin(resAmountTokenMin.toString());
         setAmountTokenDec(resAmountTokenMinShow)
       }
-    }, [inputLiquidity])
-    // console.log(amountNFT);
-    // console.log(amountTokenMin);
-    // console.log(amountTokenDec);
+    }, [inputLiquidity,data])
+    console.log(amountNFT);
+    console.log(amountTokenMin);
+    console.log(amountTokenDec);
     const currentAllowance = useAllowanceDML(
       account,
       data.dmlAddress,
@@ -131,8 +131,6 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       routerAddress,
     );
     console.log(currentAllowance);
-    // console.log(inputLiquidity);
-    // console.log(Number(handleBignumber(Number(inputLiquidity), 18)));
     useEffect(() => {
       const checkApproveNFT = async () => {
         const result = await approveNFT(
@@ -157,15 +155,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       checkApproveToken();
     }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance, checkApproveDML]);
 
-    const { reserves, isLoadingReserves }: any = useFetchReservesDML(
-      account,
-      data.dmlAddress,
-      wallet,
-    );
-    console.log(reserves);
-    // console.log(reserves[0].toString());
-    // console.log(reserves[1].toString());
-    //   console.log(data);
+      console.log(data);
 
     // console.log(isApprovedDML);
     // console.log(isApprovedLiquidity);
@@ -200,18 +190,17 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     useEffect(() => {
       if (account && data) {
         if (
-          data.tokenAddress === process.env.NEXT_PUBLIC_NATIVE_ADDRESS
+          data.tokenSymbol === tokenDefault[0].symbolNative
         ) {
-          setTokenSymbol("MATIC");
-          setTokenAddress("MATIC");
+          setTokenSymbol(tokenDefault[0].symbolNative);
         } else {
           setTokenSymbol(data.tokenSymbol);
-          setTokenAddress(data.tokenAddress);
         }
       }
     }, [data, account]);
     // console.log(account);
     // console.log(tokenAddress);
+    // console.log(tokenSymbol);
 
     const removeLiquidity = async () => {
       if (inputLiquidity && !isSufficientLiquidity) {
@@ -228,7 +217,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
           let result;
           let transactionHash;
           setIsOpenTransaction(true);
-          if (tokenAddress === "MATIC") {
+          if (tokenAddress === nativeAddress) {
             result = await contract.removeLiquidityETH(
               data.nftAddress,
               data.nftId,
@@ -340,7 +329,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                     </div>
                     <div className={styles.inputItem} >
                       <div className="flex justify-between">
-                        {reserves[0] && reserves[1] ? (<p>{amountNFTMin}</p>) : (
+                        {data.reserveTokenDecimals ? (<p>{amountNFTMin}</p>) : (
                           <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
                         )}
                         <p className="text-dark3">NFT</p>

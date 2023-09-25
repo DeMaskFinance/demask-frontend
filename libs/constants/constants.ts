@@ -60,6 +60,7 @@ const BSC_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
   USDT: process.env.NEXT_PUBLIC_USDT_BSC,
   USDC: process.env.NEXT_PUBLIC_USDC_BSC,
+  urltxHash:"https://testnet.bscscan.com/tx/",
 };
 const MUMBAI_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC,
@@ -73,6 +74,7 @@ const MUMBAI_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT,
   USDT: process.env.NEXT_PUBLIC_USDT,
   USDC: process.env.NEXT_PUBLIC_USDC,
+  urltxHash:"https://mumbai.polygonscan.com/tx/",
 };
 const network = [
   {

@@ -33,7 +33,7 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
-
+  
   const { data: volume } = useQuery({
     queryKey: ["volumne", chainId],
     queryFn: async () => {
@@ -51,11 +51,11 @@ function StatisticChart() {
       <div className="flex">
         <span className="mr-2 ">
           Volume 24H:{" "}
-          {volume && volume !== null ? formatNumber(volume.volumeInDay) : 0}
+          {volume && volume?.volumeInDay !== null ? formatNumber(volume?.volumeInDay) : 0}
         </span>{" "}
         (
         <span
-          className={`flex items-center ${volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
+          className={`flex items-center ${volume && volume?.volumePercent >= 0 ? "text-green" : "text-red"
             } `}
         >
           {volume && volume.volumePercent >= 0 ? (
@@ -63,39 +63,39 @@ function StatisticChart() {
           ) : (
             <BsArrowDown />
           )}
-          {volume && volume !== null ? volume.volumePercent.toFixed(2) : 0}%
+          {volume && volume?.volumePercent !== null ? volume?.volumePercent.toFixed(2) : 0}%
         </span>
         )
       </div>
       <div className="flex ">
         <span className="mr-2 ">
-          Fees 24H: {volume && volume !== null ? formatNumber((volume.volumeInDay * 0.005).toString()) : 0}
+          Fees 24H: {volume && volume?.volumeInDay !== null ? formatNumber((volume?.volumeInDay * 0.005).toString()) : 0}
         </span>
         (
         <span
-          className={`flex items-center ${volume && volume.volumePercent >= 0 ? "text-green" : "text-red"
+          className={`flex items-center ${volume && volume?.volumePercent >= 0 ? "text-green" : "text-red"
             } `}
         >
-          {volume && volume.volumePercent >= 0 ? (
+          {volume && volume?.volumePercent >= 0 ? (
             <BsArrowUp />
           ) : (
             <BsArrowDown />
           )}
-          {volume && volume !== null ? volume.volumePercent.toFixed(2) : 0}%
+          {volume && volume?.volumePercent !== null ? volume?.volumePercent.toFixed(2) : 0}%
         </span>
         )
       </div>
       <div className="flex">
         <span className="mr-2 ">
-          TVL: {TVL && TVL.tvlInDay ? formatNumber(TVL && TVL.tvlInDay) : 0}{" "}
+          TVL: {TVL && TVL.tvlInDay !==null ? formatNumber(TVL && TVL?.tvlInDay) : 0}{" "}
         </span>
         (
         <span
-          className={`flex items-center ${TVL && TVL.tvlPercent >= 0 ? "text-green" : "text-red"
+          className={`flex items-center ${TVL && TVL?.tvlPercent >= 0 ? "text-green" : "text-red"
             } `}
         >
-          {TVL && TVL.tvlPercent >= 0 ? <BsArrowUp /> : <BsArrowDown />}
-          {TVL && TVL !== null ? TVL.tvlPercent.toFixed(2) : 0}%
+          {TVL && TVL?.tvlPercent >= 0 ? <BsArrowUp /> : <BsArrowDown />}
+          {TVL && TVL?.tvlPercent !== null ? TVL?.tvlPercent.toFixed(2) : 0}%
         </span>
         )
       </div>

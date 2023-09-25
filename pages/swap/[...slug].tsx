@@ -25,7 +25,6 @@ import approveToken from "@/libs/utils/approveToken";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
-import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -151,19 +150,20 @@ const Swap: React.FC = () => {
   };
   useEffect(() => {
     if (inputNFT && data) {
-      setAmountBuy(getBuyPrice(data.reserveNFT, data.reserveTokenDecimals, +(inputNFT)))
-      setAmountSell(getSellPrice(data.reserveNFT, data.reserveTokenDecimals, +(inputNFT)))
-      setAmountBuyDec(getBuyPrice(data.reserveNFT, data.reserveToken, Number(inputNFT)) * Number(inputNFT))
-      setAmountSellDec(getSellPrice(data.reserveNFT, data.reserveToken, +(inputNFT)) * Number(inputNFT))
+      setAmountBuy(getBuyPrice(data.reserveNFT, data.reserveToken, +(inputNFT)))
+      setAmountSell(getSellPrice(data.reserveNFT, data.reserveToken, +(inputNFT)))
+      setAmountBuyDec(getBuyPrice(data.reserveNFT, data.reserveTokenDecimals, Number(inputNFT)) * Number(inputNFT) * 1.05)
+      setAmountSellDec(getSellPrice(data.reserveNFT, data.reserveTokenDecimals, +(inputNFT)) * Number(inputNFT) * 0.95)
     } else {
       setAmountBuy(0);
       setAmountSell(0);
     }
   }, [inputNFT, data])
-  console.log(amountBuy);
-  console.log(amountBuyDec);
+  console.log(amountSell);
+  console.log(amountSellDec);
   console.log(allowanceToken);
-  
+  console.log(Math.floor(amountBuyDec).toString());
+
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -258,26 +258,22 @@ const Swap: React.FC = () => {
           let result;
           setIsOpenTransaction(true);
           if (tokenAddress === nativeAddress) {
-            console.log(tokenAddress);
-            console.log(nativeAddress);
-            
+
             result = await contract.buyETH(
               nftAddress,
               idNFT,
               inputNFT,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: amountBuyDec.toFixed(0) }
+              { gasLimit: 8000000, value: Math.floor(amountBuyDec).toString() }
             );
           } else {
-            console.log(amountBuyDec.toFixed(0));
-            
             result = await contract.buy(
               tokenAddress,
               nftAddress,
               idNFT,
               inputNFT,
-              amountBuyDec.toFixed(0),
+              Math.floor(amountBuyDec).toString(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -328,6 +324,7 @@ const Swap: React.FC = () => {
         const signer = provider.getSigner();
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
 
+
         try {
           let result;
           setIsOpenTransaction(true);
@@ -336,7 +333,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              amountSellDec.toFixed(0),
+              Math.floor(amountSellDec).toString(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -347,7 +344,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              amountSellDec.toFixed(0),
+              Math.floor(amountSellDec).toString(),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -499,7 +496,7 @@ const Swap: React.FC = () => {
                         height={24}
                         className={
                           data.dmlAddress ===
-                            ""
+                            null
                             ? "fill-red"
                             : ""
                         }
@@ -586,7 +583,7 @@ const Swap: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  {data.dmlAddress !== "" &&
+                  {data.dmlAddress !== null &&
                     !isSufficientNFT &&
                     balanceNFT &&
                     account &&
@@ -598,7 +595,7 @@ const Swap: React.FC = () => {
                         Insufficient NFT balance
                       </p>
                     )}
-                  {data.dmlAddress !== "" &&
+                  {data.dmlAddress !== null &&
                     ((!isSufficientTokenBuy &&
                       activeChoice === "BUY" &&
                       data.reserveToken &&
@@ -614,7 +611,7 @@ const Swap: React.FC = () => {
                         Insufficient Token balance
                       </p>
                     )}
-                  {data.dmlAddress === "" && (
+                  {data.dmlAddress === null && (
                     <p className="mt-0 mb-2 ml-3 text-xs text-red">
                       DML Token doesn't exist yet
                     </p>
