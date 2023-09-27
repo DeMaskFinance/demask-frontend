@@ -35,27 +35,27 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
   useEffect(() => {
     setDomLoaded(true); //fix Hydration failed because the initial UI does not match what was rendered on the server.
   }, []);
-  // const { isLoading: searchLoading,
-  //   data: searchData,
-  //   isFetching: searchFetching,
-  //   refetch: searchRefetch,
-  //   isPreviousData: isSearchPreviousData } = useQuery({
-  //     queryKey: ["categories", searchTerm, chainId],
-  //     queryFn: async () => {
-  //       if (searchTerm.includes("/")) {
-  //         const [param1, param2] = searchTerm.split(":");
-  //         const id = param1.includes("x") ? param2 : param1;
-  //         const nftAddress = param1.includes("x") ? param1 : param2;
-  //         const res = await categoryAPI(
-  //           `/v2/search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
-  //         );
-  //         return res;
-  //       } else {
-  //         const res = await categoryAPI(`/v2/search?chainId=${chainId}&search=${searchTerm}`);
-  //         return res;
-  //       }
-  //     },
-  //   });
+  const { isLoading: searchLoading,
+    data: searchData,
+    isFetching: searchFetching,
+    refetch: searchRefetch,
+    isPreviousData: isSearchPreviousData } = useQuery({
+      queryKey: ["categories", searchTerm, chainId],
+      queryFn: async () => {
+        if (searchTerm.includes("/")) {
+          const [param1, param2] = searchTerm.split(":");
+          const id = param1.includes("x") ? param2 : param1;
+          const nftAddress = param1.includes("x") ? param1 : param2;
+          const res = await categoryAPI(
+            `/v2/search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
+          );
+          return res;
+        } else {
+          const res = await categoryAPI(`/v2/search?chainId=${chainId}&search=${searchTerm}`);
+          return res;
+        }
+      },
+    });
     
   const { isLoading: topNftLoading,
     data: topNftData,
@@ -93,7 +93,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata.name &&
-        historyItem.dmlAddress === item.dmlAddress
+        historyItem.dmlToken === item.dmlToken
     );
 
     if (existingItemIndex === -1) {
@@ -103,7 +103,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
     }
     console.log(item);
     
-    router.replace(`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`)
+    router.replace(`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`)
   };
   
   const handleRemoveItem = (index: number) => {
@@ -258,7 +258,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
             {searchTerm ? (
               <div className=''>
                 <p className="pb-2 text-base">Collections</p>
-                {/* {searchData && searchData.length > 0 ? (
+                {searchData && searchData.length > 0 ? (
                   <>
                     <div className="flex text-xs item-center">
                       <span className="block pb-2 mr-1 font-semibold">
@@ -340,7 +340,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                       <span className="text-base text-secondary3">No Result</span>
                     )}
                   </>
-                )} */}
+                )}
               </div>
             ) : (
               <div>
@@ -352,7 +352,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                         <Link
                           key={index}
                           onClick={() => handleResultItemClick(item)}
-                          href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
+                          href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}
                           className="flex-1"
                         //
                         >
@@ -402,8 +402,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                                 </span>
                                 <span className="flex text-xs item-center">
                                   <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlAddress?.slice(0, 8)}...
-                                    {item.dmlAddress?.slice(-8)}
+                                    {item.dmlToken?.slice(0, 8)}...
+                                    {item.dmlToken?.slice(-8)}
                                   </span>
                                 </span>
                               </div>

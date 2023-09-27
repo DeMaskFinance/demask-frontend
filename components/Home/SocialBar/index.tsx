@@ -13,34 +13,70 @@ function SocialBar() {
           <ul className="flex flex-wrap gap-x-[10px]">
             <span className="font-semibold text-dark2">© 2023 Demask</span>
             <li className="mb-1 text-dark2">
-              <Link href="/brand">Brand</Link>
+              <a
+                href="https://github.com/DeMaskFinance/demask_brand/tree/master"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Brand
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/blog">Blog</Link>
+              <p className="cursor-not-allowed">Blog</p>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Audits</Link>
+              <a
+                href="https://docs.demask.finance/audit"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Audits
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/whitepaper">Whitepaper</Link>
+              <a
+                href="https://docs.demask.finance/whitepaper"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Whitepaper
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Term of Service</Link>
+              <p className="cursor-not-allowed">Term of Service</p>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Careers</Link>
+              <p className="cursor-not-allowed">Careers</p>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/guilders">Guilders</Link>
+              <a
+                href="https://docs.demask.finance/product"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Guilders
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Documentation</Link>
+              <a
+                href=" https://docs.demask.finance/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Documentation
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/bug">Bug Bounty</Link>
+              <a
+                href="https://docs.demask.finance/audit"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Audits
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/support">Custumer Support</Link>
+              <p className="cursor-not-allowed">Customer Support</p>
             </li>
           </ul>
         </div>
