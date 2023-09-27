@@ -1,7 +1,6 @@
 import Collectibles from "@/components/AboutPage/Collectibles";
 import Features from "@/components/AboutPage/Features";
 import Introduction from "@/components/AboutPage/Introduction";
-import NFTTop from "@/components/AboutPage/NFTTop";
 import React from "react";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';

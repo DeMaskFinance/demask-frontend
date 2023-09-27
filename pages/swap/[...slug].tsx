@@ -84,10 +84,6 @@ const Swap: React.FC = () => {
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
     queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
-      console.log("123test");
-      console.log(idNFT);
-      console.log(tokenAddress);
-
       const res = await swapAPI(tokenAddress.toLocaleLowerCase(), chainId, nftAddress.toLowerCase(), idNFT);
       return res;
     },

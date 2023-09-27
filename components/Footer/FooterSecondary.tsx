@@ -76,20 +76,18 @@ export default function FooterSecondary() {
           </div>
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark2 w-max">
             <div
-              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${activeMode === "Light" ? "bg-secondary5" : ""
+              className={`py-1 cursor-pointer px-2 rounded-lg text-sm flex gap-2 items-center ${activeMode === "Light" ? "bg-secondary5" : ""
                 }`}
               onClick={() => setAciveMode("Light")}
             >
-              Light
               <svgComponents.buttonLight />
             </div>
 
             <div
-              className={`py-1 cursor-pointer px-4 rounded-lg text-sm flex gap-2 items-center ${activeMode === "Dark" ? "bg-dark0" : ""
+              className={`py-1 cursor-pointer px-2 rounded-lg text-sm flex gap-2 items-center ${activeMode === "Dark" ? "bg-dark0" : ""
                 }`}
               onClick={() => setAciveMode("Dark")}
             >
-              Dark
               <svgComponents.buttonDark />
             </div>
           </div>

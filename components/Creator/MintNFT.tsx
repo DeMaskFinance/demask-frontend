@@ -1,20 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import Button from "../Buttons/Button";
-import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abiDemask from "@/abi/abiErc1155.json";
 import TransitionURL from "../Toast/TransionURL";
-import fs from "fs";
-import images from "@/public/images";
-import Image from "next/image";
 import { Processing } from "../Loading";
-import getMatadataUrl from "@/libs/utils/getMetadata";
 import getMetadataUrl from "@/libs/utils/getMetadata";
 import { getProvider } from "@/libs/connection/getProvider";
 import { ModalWallet } from "../Modal/ModalWallet";
-import { useAccount } from "@/hooks/useAccount";
 import AccountContext from "@/context/AccountContext";
 import { checkNetwork } from "@/libs/validation";
 const styles = {
@@ -87,6 +81,8 @@ export default function MintNFT({
         } else {
           const tx = await contract.mint(account, randomID, amount, data, url);
           transactionHash = tx.hash;
+          console.log(transactionHash);
+          
           toast.success(
             <TransitionURL type={"Mint"} transactionHash={transactionHash} />,
             {
@@ -116,7 +112,8 @@ export default function MintNFT({
     }
     setIsProcess(false);
   }
-
+  console.log(isProcess);
+  
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (account) {

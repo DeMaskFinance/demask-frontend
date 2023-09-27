@@ -23,35 +23,53 @@ export default function Footer() {
           </h2>
           <ul>
             <li className="mb-1 text-dark2">
-              <Link href="/brand">Brand</Link>
+            <a
+                href="https://github.com/DeMaskFinance/demask_brand/tree/master"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Brand
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/blog">Blog</Link>
+              <p className="cursor-not-allowed">Blog</p>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/whitepaper">Whitepaper</Link>
+              <a
+                href="https://docs.demask.finance/whitepaper"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Whitepaper
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Term of Service</Link>
+              <p className="cursor-not-allowed">Term of Service</p>
             </li>
           </ul>
         </div>
         <div className="order-3 lg:order-none md:order-none">
           <h2 className="mb-2 text-lg font-medium leading-6">
-            <Link href="/brand">Help</Link>
+            Help
           </h2>
           <ul>
             <li className="mb-1 text-dark2">
-              <Link href="/support">Custumer Support</Link>
+              <p className="cursor-not-allowed">Customer Support</p>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/guilders">Guilders</Link>
+              <a
+                href="https://docs.demask.finance/product"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Guilders
+              </a>
             </li>
           </ul>
         </div>
         <div className="order-4 lg:order-none md:order-none">
           <h2 className="mb-2 text-lg font-medium leading-6">
-            <Link href="/term">Developers</Link>
+            Developers
           </h2>
           <ul>
             <li className="mb-1 text-dark2">
@@ -64,36 +82,52 @@ export default function Footer() {
               </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Documentation</Link>
+              <a
+                href=" https://docs.demask.finance/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Documentation
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/bug">Bug Bounty</Link>
+              <a
+                href="https://docs.demask.finance/welcome-to-demask-docs/roadmap"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Road Map
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Audits</Link>
+              <a
+                href="https://docs.demask.finance/audit"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Audits
+              </a>
             </li>
             <li className="mb-1 text-dark2">
-              <Link href="/term">Careers</Link>
+            <p className="cursor-not-allowed">Careers</p>
             </li>
           </ul>
         </div>
         <div className="lg:order-none md:order-none order-2 pl-[2%]">
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
             <div
-              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex gap-2 items-center ${activeChoice === "Light" ? "bg-secondary5" : ""
+              className={`p-2 cursor-pointer rounded-lg text-sm flex gap-2 items-center ${activeChoice === "Light" ? "bg-secondary5" : ""
                 }`}
               onClick={() => handleChoiceChange("Light")}
             >
-              Light
               <svgComponents.buttonLight />
             </div>
 
             <div
-              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex items-center gap-2 ${activeChoice === "Dark" ? "bg-dark0" : ""
+              className={`p-2 cursor-pointer rounded-lg text-sm flex items-center gap-2 ${activeChoice === "Dark" ? "bg-dark0" : ""
                 }`}
               onClick={() => handleChoiceChange("Dark")}
             >
-              Dark
               <svgComponents.buttonDark />
             </div>
           </div>
