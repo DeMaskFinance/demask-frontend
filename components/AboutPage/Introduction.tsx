@@ -30,7 +30,7 @@ function Introduction() {
                 data-aos-duration="800"
                 data-aos-easing="ease-in-sine">
                 <video
-                  src='https://demask.infura-ipfs.io/ipfs/QmS8qqgQdnkMfmU821amXEZMt8eU5XNDTAxyCJuUb2tj8S'
+                  src='https://api.demask.finance/media/logo_lamp.mp4'
                   autoPlay
                   loop
                   muted

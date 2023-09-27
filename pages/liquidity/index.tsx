@@ -3,7 +3,6 @@ import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";

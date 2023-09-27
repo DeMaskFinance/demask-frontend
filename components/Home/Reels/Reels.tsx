@@ -138,6 +138,8 @@ const Reels: React.FC<ReelsProps> = ({
   const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit) * 1.05;
   const amountSellDec = getSellPrice(filter.reserveNFT, filter.reserveTokenDecimals, +(amountNFTSubmit)) * Number(amountNFTSubmit) * 0.95;
+  // console.log(bigNumberBalance);
+  // console.log(Number(amountBuyDec.toFixed()));
   
   useEffect(() => {
     if (inView) {
@@ -966,6 +968,16 @@ const Reels: React.FC<ReelsProps> = ({
                       Insufficient Token balance
                     </p>
                   )}
+                {activeChoice === "BUY" && Math.floor(amountBuyDec) === 0 && amountNFTSubmit && (
+                  <p className="mt-4 ml-3 text-xs text-center text-red">
+                    Can't buy
+                  </p>
+                )}
+                {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && amountNFTSubmit && (
+                  <p className="mt-4 ml-3 text-xs text-center text-red">
+                    Can't sell
+                  </p>
+                )}
                 <div className="flex justify-center w-full mt-6">
                   {isApprovedToken && account && activeChoice === "BUY" && (
                     <button

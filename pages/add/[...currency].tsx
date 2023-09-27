@@ -530,7 +530,7 @@ export default function AddLiquidity() {
       ):(
         <SkeletonAddLiquidity/>
       )}
-      {isLoading && (
+      {isLoading && !isSuccess && (
         <SkeletonAddLiquidity/>
       )}
       <ModalSearchNFT

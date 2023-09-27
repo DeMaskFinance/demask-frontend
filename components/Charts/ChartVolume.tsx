@@ -9,9 +9,7 @@ import { startOfWeek, endOfWeek, addDays } from 'date-fns';
 import formatNumber from "@/libs/utils/formatNumer";
 import AccountContext from "@/context/AccountContext";
 interface ChartVolumnProps { }
-const styles = {
-  btnActive: "rounded-full bg-secondary5",
-};
+
 interface DataPoint {
   _id: string;
   date: string;

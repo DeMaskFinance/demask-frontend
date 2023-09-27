@@ -3,28 +3,23 @@ import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
 import Icons from "@/public/icons/icon";
 import Tippy from "@tippyjs/react/headless";
+import { ethers } from "ethers";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
-import { MdLogout, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { CgClose } from "react-icons/cg";
+import { MdLogout } from "react-icons/md";
 import "tippy.js/dist/tippy.css"; // optional
+import Web3 from "web3";
 import {
-  BscIcon,
-  EtherIcon,
-  PolygonIcon,
   ProfileIcon,
-  SearchIcon,
+  SearchIcon
 } from "../Icons";
-import { BsCaretDownFill } from "react-icons/bs";
 import { LogoDeMaskBeta } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
+import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import Search from "../Search/SearchHeader";
-import { CgClose } from "react-icons/cg";
-import { ethers } from "ethers";
-import Web3 from "web3";
-import { MenuNetwork } from "../Menu/MenuNetwork";
-// import { MenuNetwork } from "../Menu/MenuNetwork";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -129,14 +124,6 @@ export default function Header() {
 
   return (
     <>
-      {/* <MenuMobile
-        account={account}
-        style={style}
-        disconnectWallet={disconnectWallet}
-        handleOpen={handleOpen}
-        openMenu={openMenu}
-        setOpenMenu={setOpenMenu}
-      /> */}
       <header
         ref={headerRef}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 transition-all duration-500 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14"

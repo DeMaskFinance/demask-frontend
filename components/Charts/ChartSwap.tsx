@@ -1,3 +1,5 @@
+import formatNumber from "@/libs/utils/formatNumer";
+import formatToUnit from "@/libs/utils/formatToUnit";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";
@@ -105,11 +107,11 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
       ): string {
         const timestamp = this.x as number;
         const date: any = new Date(timestamp);
-        const formattedDate = Highcharts.dateFormat("%Y-%m-%d", date);
+        const formattedDate = Highcharts.dateFormat("%m/%d/%Y", date);
 
         let tooltipContent = `<b>${formattedDate}</b><br>`;
         this.points?.forEach((point) => {
-          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>$${point.y}</b><br>`;
+          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>$${formatToUnit((point.y)?.toString()||"")}</b><br>`;
         });
         return tooltipContent;
       },
