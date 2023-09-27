@@ -20,6 +20,7 @@ import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import Search from "../Search/SearchHeader";
+import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -33,15 +34,31 @@ const style = {
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount, wallet } = useContext(AccountContext);
-  
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+  const { account, updateAccount, wallet, chainId } = useContext(AccountContext);
+
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
 
   const [isFocused, setIsFocused] = useState(false);
+  useEffect(() => {
+    if (account && wallet) {
+      const checkNetwork = async () => {
+        const provider = getProvider(wallet);
+        const networkId = await provider.request({ method: "net_version" });
+        console.log(networkId);
 
+        if (networkId !== chainId) {
+          setIsWrongNetwork(true);
+        } else {
+          setIsWrongNetwork(false)
+        }
+      }
+      checkNetwork();
+    }
+  }, [chainId, account, wallet])
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -256,6 +273,7 @@ export default function Header() {
       <div className="absolute z-[200]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
+      <WrongNetwork isWrongNetwork={isWrongNetwork} />
     </>
   );
 }

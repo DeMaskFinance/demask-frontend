@@ -1,5 +1,6 @@
+import Web3 from "web3";
 const mumbaiNetwork = {
-    chainId: "0x13881", // Chain ID của Mumbai
+    chainId: "80001", // Chain ID của Mumbai
   };
 export const checkNetwork = async (provider:any) => {
       try {
@@ -8,7 +9,7 @@ export const checkNetwork = async (provider:any) => {
           try {
             await provider.request({
               method: "wallet_switchEthereumChain",
-              params: [{ chainId: "0x13881" }],
+              params: [{ chainId: Web3.utils.toHex(mumbaiNetwork.chainId) }],
             });
           } catch (errors: any) {
             // This error code indicates that the chain has not been added to MetaMask
@@ -18,7 +19,7 @@ export const checkNetwork = async (provider:any) => {
                 params: [
                   {
                     chainName: "Mumbai",
-                    chainId: "0x13881",
+                    chainId: Web3.utils.toHex(mumbaiNetwork.chainId),
                     nativeCurrency: {
                       name: "MATIC",
                       decimals: 18,
