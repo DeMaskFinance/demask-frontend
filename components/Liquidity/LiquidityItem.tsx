@@ -17,16 +17,14 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   const [tokenSymbol, setTokenSymbol] = useState("");
   useEffect(() => {
     const fetchDataReward = async () => {
-      if (account) {
+      if (account && wallet && liquidity) {
         const result = await viewReward(liquidity.dmlAddress, account, wallet);
         const rewardDec = divideByDecimal(result?.toString(), liquidity.dmlDecimals);
         setReward(rewardDec);
       }
     };
     fetchDataReward();
-  }, []);
-  console.log(reward);
-  console.log(liquidity);
+  }, [liquidity, account, wallet]);
 
   useEffect(() => {
     if (account) {

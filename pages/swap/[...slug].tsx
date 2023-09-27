@@ -160,10 +160,10 @@ const Swap: React.FC = () => {
       setAmountSell(0);
     }
   }, [inputNFT, data])
-  console.log(amountSell);
-  console.log(amountSellDec);
-  console.log(allowanceToken);
-  console.log(Math.floor(amountBuyDec).toString());
+  // console.log(amountSell);
+  // console.log(amountSellDec);
+  // console.log(allowanceToken);
+  // console.log(amountBuyDec);
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -249,7 +249,8 @@ const Swap: React.FC = () => {
         isSufficientNFT &&
         isSufficientTokenBuy &&
         Number(data.reserveNFT) > 1 &&
-        Number(data.reserveToken) > 0
+        Number(data.reserveToken) > 0 &&
+        Math.floor(amountBuyDec) > 0
       ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -318,7 +319,8 @@ const Swap: React.FC = () => {
         isSufficientNFT &&
         isSufficientTokenSell &&
         Number(data.reserveNFT) > 0 &&
-        Number(data.reserveToken) > 0
+        Number(data.reserveToken) > 0 &&
+        Math.floor(amountSellDec) > 0
       ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -390,7 +392,7 @@ const Swap: React.FC = () => {
   return (
     <div className="py-8 mx-auto swap max-w-[1592px]">
       <NextSeo {...updateMeta} />
-      {isSuccess ? (
+      {isSuccess && (
         <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
           <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
             <>
@@ -659,6 +661,16 @@ const Swap: React.FC = () => {
                   </div>
                 </div>
               </form>
+              {activeChoice === "BUY" && Math.floor(amountBuyDec) === 0 && inputNFT && (
+                  <p className="mt-0 mb-2 ml-3 text-xs text-red">
+                    Can't buy
+                  </p>
+                )}
+                {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && inputNFT && (
+                  <p className="mt-0 mb-2 ml-3 text-xs text-red">
+                    Can't sell
+                  </p>
+                )}
               <div className="flex justify-center w-full">
                 {isApprovedToken && activeChoice === "BUY" && (
                   <button
@@ -718,11 +730,9 @@ const Swap: React.FC = () => {
             </div>
           </div>
         </div>
-      ):(
-        <SkeletonReels/>
       )}
-      {isLoading && (
-        <SkeletonReels/>
+      {isLoading && !isSuccess && (
+        <SkeletonReels />
       )}
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}

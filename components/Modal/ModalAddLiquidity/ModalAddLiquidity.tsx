@@ -103,7 +103,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     }
   };
   console.log(data);
-  
+
   useEffect(() => {
     let amountErcDesired;
     if (
@@ -141,8 +141,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   // console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec.toString());
   // console.log(balanceToken);
-  console.log(allowanceToken);
-  
+
   useEffect(() => {
     const handleCheckApproveToken = async () => {
       if (data.tokenAddress === nativeAddress) {
@@ -195,13 +194,13 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value: Math.floor(amountErcDesired).toString()}
+            { gasLimit: 8000000, value: Math.floor(amountErcDesired).toString() }
           );
           transactionHash = result.hash;
         } else {
           console.log(Math.floor(amountErcDesired).toString());
           console.log(inputNFT);
-          
+
           result = await contract.addLiquidity(
             data.tokenAddress,
             data.nftAddress,
@@ -323,6 +322,11 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       key="inputNFT"
                     >
                       Insufficient Token balance
+                    </p>
+                  )}
+                  {Math.floor(amountErcDesired) === 0 && inputNFT && (
+                    <p className="mt-2 ml-2 text-xs text-red" key="inputNFT">
+                      Can't add liquidity
                     </p>
                   )}
                 </div>

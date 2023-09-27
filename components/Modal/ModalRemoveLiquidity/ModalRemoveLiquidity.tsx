@@ -53,7 +53,6 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [showRequiredMessage, setShowRequiredMessage] = useState(false);
     const [amountNFT, setAmountNFT] = useState('');
     const [amountToken, setAmountToken] = useState('');
-    const [tokenAddress, setTokenAddress] = useState("");
     const [amountTokenMin, setAmountTokenMin] = useState("");
     const [amountTokenDec, setAmountTokenDec] = useState("");
     const [amountNFTMin, setAmountNFTMin] = useState("");
@@ -62,7 +61,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
     const [checkApproveDML, setCheckApproveDML] = useState<boolean>(false);
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-    const { demask ,tokenDefault} = useContext(AccountContext);
+    const { demask, tokenDefault } = useContext(AccountContext);
     const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
     const handleClose = (e: any) => {
       e.preventDefault();
@@ -115,13 +114,15 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setAmountNFT(resAmountNFT.toString());
         setAmountToken(resAmountToken.toString());
         setAmountNFTMin(resAmountNFTMin.toString());
-        setAmountTokenMin(resAmountTokenMin.toString());
+        // setAmountTokenMin(resAmountTokenMin.toString());
+        setAmountTokenMin(Math.floor(resAmountTokenMin).toString());
         setAmountTokenDec(resAmountTokenMinShow)
       }
-    }, [inputLiquidity,data])
+    }, [inputLiquidity, data])
     console.log(amountNFT);
     console.log(amountTokenMin);
     console.log(amountTokenDec);
+    console.log(amountNFTMin);
     const currentAllowance = useAllowanceDML(
       account,
       data.dmlAddress,
@@ -155,7 +156,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       checkApproveToken();
     }, [account, wallet, inputLiquidity, isApprovedDML, currentAllowance, checkApproveDML]);
 
-      console.log(data);
+    console.log(data);
 
     // console.log(isApprovedDML);
     // console.log(isApprovedLiquidity);
@@ -203,7 +204,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(tokenSymbol);
 
     const removeLiquidity = async () => {
-      if (inputLiquidity && !isSufficientLiquidity) {
+      if (inputLiquidity && !isSufficientLiquidity && Number(amountTokenMin) > 0 ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
@@ -217,11 +218,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
           let result;
           let transactionHash;
           setIsOpenTransaction(true);
-          if (tokenAddress === nativeAddress) {
+          if (data.tokenAddress === nativeAddress) {
             result = await contract.removeLiquidityETH(
               data.nftAddress,
               data.nftId,
-              (Number(liquidity)).toFixed(0),
+              Math.floor(Number(liquidity)).toString(),
               amountTokenMin,
               amountNFTMin,
               account,
@@ -341,6 +342,11 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
                         <p className="text-dark3">{tokenSymbol}</p>
                       </div>
                     </div>
+                    {Number(amountTokenMin) < 1 && inputLiquidity && (
+                      <p className="my-2 ml-3 text-xs text-red" key="inputNFT">
+                        Can't remove liquidity
+                      </p>
+                    )}
                     <div className="flex justify-center">
                       {!isApprovedNFT && (
                         <Button

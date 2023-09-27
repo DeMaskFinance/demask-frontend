@@ -35,27 +35,27 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
   useEffect(() => {
     setDomLoaded(true); //fix Hydration failed because the initial UI does not match what was rendered on the server.
   }, []);
-  const { isLoading: searchLoading,
-    data: searchData,
-    isFetching: searchFetching,
-    refetch: searchRefetch,
-    isPreviousData: isSearchPreviousData } = useQuery({
-      queryKey: ["categories", searchTerm, chainId],
-      queryFn: async () => {
-        if (searchTerm.includes("/")) {
-          const [param1, param2] = searchTerm.split(":");
-          const id = param1.includes("x") ? param2 : param1;
-          const nftAddress = param1.includes("x") ? param1 : param2;
-          const res = await categoryAPI(
-            `/v2/search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
-          );
-          return res;
-        } else {
-          const res = await categoryAPI(`/v2/search?chainId=${chainId}&search=${searchTerm}`);
-          return res;
-        }
-      },
-    });
+  // const { isLoading: searchLoading,
+  //   data: searchData,
+  //   isFetching: searchFetching,
+  //   refetch: searchRefetch,
+  //   isPreviousData: isSearchPreviousData } = useQuery({
+  //     queryKey: ["categories", searchTerm, chainId],
+  //     queryFn: async () => {
+  //       if (searchTerm.includes("/")) {
+  //         const [param1, param2] = searchTerm.split(":");
+  //         const id = param1.includes("x") ? param2 : param1;
+  //         const nftAddress = param1.includes("x") ? param1 : param2;
+  //         const res = await categoryAPI(
+  //           `/v2/search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
+  //         );
+  //         return res;
+  //       } else {
+  //         const res = await categoryAPI(`/v2/search?chainId=${chainId}&search=${searchTerm}`);
+  //         return res;
+  //       }
+  //     },
+  //   });
     
   const { isLoading: topNftLoading,
     data: topNftData,
@@ -69,7 +69,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
       },
       keepPreviousData: true,
     });
-  
+    console.log(searchHistory);
+    
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -87,7 +88,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata.name);
-
+    console.log(item);
+    
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata.name &&
@@ -99,8 +101,11 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
       setSearchHistory(newHistory);
       setCookie("searchHistory", JSON.stringify(newHistory), { expires: 7 });
     }
+    console.log(item);
+    
+    router.replace(`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`)
   };
-
+  
   const handleRemoveItem = (index: number) => {
     const updatedHistory = [...searchHistory];
     updatedHistory.splice(index, 1);
@@ -253,7 +258,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
             {searchTerm ? (
               <div className=''>
                 <p className="pb-2 text-base">Collections</p>
-                {searchData && searchData.length > 0 ? (
+                {/* {searchData && searchData.length > 0 ? (
                   <>
                     <div className="flex text-xs item-center">
                       <span className="block pb-2 mr-1 font-semibold">
@@ -335,7 +340,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                       <span className="text-base text-secondary3">No Result</span>
                     )}
                   </>
-                )}
+                )} */}
               </div>
             ) : (
               <div>

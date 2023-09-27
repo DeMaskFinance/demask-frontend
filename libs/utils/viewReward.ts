@@ -6,16 +6,14 @@ const viewReward = async (
   account: string,
   wallet: string
 ) => {
-  const providerChoice = getProvider(wallet);
-  const provider = new ethers.providers.Web3Provider(providerChoice);
-  const signer = provider.getSigner();
-  if (dmlToken) {
+  if (dmlToken && account && wallet) {
+    const providerChoice = getProvider(wallet);
+    const provider = new ethers.providers.Web3Provider(providerChoice);
+    const signer = provider.getSigner();
     const contract = new ethers.Contract(dmlToken, abiDML, signer);
     console.log(contract);
 
     try {
-      console.log("test");
-
       const result = await contract.viewReward(account);
       return result;
     } catch (error) {
