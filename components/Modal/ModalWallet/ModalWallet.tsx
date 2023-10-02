@@ -10,6 +10,7 @@ import Wrapper from "../Wrapper";
 import { useWeb3Modal } from '@web3modal/react'
 import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
 import { ethers } from "ethers";
+import { changeNetwork } from "@/libs/utils/changeNetwork";
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -20,7 +21,7 @@ const styles = {
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
-  const { account, updateAccount, updateWallet } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet } = useContext(AccountContext);
   const [walletWeb3, setWalletWeb3] = useState("");
   const { open, close } = useWeb3Modal();
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
@@ -72,18 +73,21 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         // console.log(providerWallet);
         // console.log(new Web3(providerWallet));
         // console.log(providerTest);
-        
+
         try {
           await open();
           console.log(address);
-          
+
         } catch (error) {
           console.log(error);
         }
         break;
       default:
         const provider = getProvider(walletName);
-        const networkSwitched = await checkNetwork(provider);
+        // const networkSwitched = await checkNetwork(provider);
+        const networkSwitched = await changeNetwork(chainId,walletName,demask);
+        console.log(networkSwitched);
+        
         if (!networkSwitched) {
           return;
         }
@@ -111,7 +115,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         }
     }
   };
-  
+
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
       <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center rounded-lg relative pb-4">

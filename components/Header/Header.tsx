@@ -48,12 +48,12 @@ export default function Header() {
       const checkNetwork = async () => {
         const provider = getProvider(wallet);
         const networkId = await provider.request({ method: "net_version" });
-        console.log(networkId);
-
         if (networkId !== chainId) {
           setIsWrongNetwork(true);
+          document.body.style.overflowY = "hidden";
         } else {
           setIsWrongNetwork(false)
+          document.body.style.overflowY = "auto";
         }
       }
       checkNetwork();
@@ -273,7 +273,7 @@ export default function Header() {
       <div className="absolute z-[200]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <WrongNetwork isWrongNetwork={isWrongNetwork} />
+      <WrongNetwork isWrongNetwork={isWrongNetwork} setIsWrongNetwork={setIsWrongNetwork}/>
     </>
   );
 }

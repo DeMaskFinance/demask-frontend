@@ -62,14 +62,15 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
     isFetching: topNftFetching,
     refetch: topNftRefetch,
     isPreviousData: isTopNftPreviousData, } = useQuery({
-      queryKey: ["topNftSearch"],
+      queryKey: ["topNftSearch",chainId],
       queryFn: async () => {
-        const res = await NFTTopService(1, chainId);
+        const res = await NFTTopService(1,chainId);
         return res;
       },
       keepPreviousData: true,
     });
     console.log(searchHistory);
+    console.log(topNftData);
     
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -88,8 +89,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata.name);
-    console.log(item);
-    
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata.name &&

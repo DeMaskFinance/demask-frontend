@@ -5,58 +5,23 @@ import Wrapper from '../Wrapper';
 import { CgClose } from 'react-icons/cg';
 import { getProvider } from '@/libs/connection/getProvider';
 import AccountContext from '@/context/AccountContext';
+import { changeNetwork } from '@/libs/utils/changeNetwork';
 
 interface WrongNetworkProps {
-    isWrongNetwork: boolean
+    isWrongNetwork: boolean,
+    setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
 }
-const WrongNetwork: React.FC<WrongNetworkProps> = ({ isWrongNetwork }) => {
-    const { account, wallet, chainId, demask, tokenDefault,updateAccount} = useContext(AccountContext);
+const WrongNetwork: React.FC<WrongNetworkProps> = ({ isWrongNetwork, setIsWrongNetwork }) => {
+    const { account, wallet, chainId, demask, tokenDefault, updateAccount } = useContext(AccountContext);
+    console.log(demask);
+    console.log('123');
+
     const disconnectWallet = () => {
         localStorage.removeItem("ACCOUNT_DEMASK");
         // localStorage.removeItem("WALLET_DEMASK");
         updateAccount("");
-      };
-    const changeNetwork = async (chainId: string) => {
-        try {
-            const provider = getProvider("Metamask");
-            const networkId = await provider.request({ method: "net_version" });
-            if (networkId !== chainId) {
-                try {
-                    await provider.request({
-                        method: "wallet_switchEthereumChain",
-                        params: [{ chainId: Web3.utils.toHex(chainId) }],
-                    });
-                    // refresh
-                    window.location.reload();
-                } catch (errors: any) {
-                    // This error code indicates that the chain has not been added to MetaMask
-                    if (errors.code === 4902) {
-                        await provider.request({
-                            method: "wallet_addEthereumChain",
-                            params: [
-                                {
-                                    chainName: "Mumbai",
-                                    chainId: Web3.utils.toHex(chainId),
-                                    nativeCurrency: {
-                                        name: "MATIC",
-                                        decimals: 18,
-                                        symbol: "MATIC",
-                                    },
-                                    rpcUrls: ["https://polygon-mumbai-bor.publicnode.com"],
-                                },
-                            ],
-                        });
-                    }
-                    else {
-                        return false;
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("Failed to switch network:", error);
-            return;
-        }
-        return true;
+        setIsWrongNetwork(false)
+        document.body.style.overflowY = "auto";
     };
 
     return (
@@ -71,7 +36,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = ({ isWrongNetwork }) => {
                         <p className=' text-yellow'>Please switch your network to continue</p>
                     </div>
                     <div className='flex justify-between px-0 lg:px-6'>
-                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId)}>Switch Network</button>
+                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId,wallet,demask)}>Switch Network</button>
                         <button className='p-2 text-sm font-medium text-white rounded-lg bg-red' onClick={disconnectWallet}>Disconnect wallet</button>
                     </div>
                     <button

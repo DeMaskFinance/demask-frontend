@@ -1,11 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
-import { BscIcon, EtherIcon, PolygonIcon } from "@/components/Icons";
+import AccountContext from '@/context/AccountContext';
 import { network } from "@/libs/constants";
 import Tippy from "@tippyjs/react/headless";
-import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
-import AccountContext from '@/context/AccountContext';
 interface MenuNetworkProps {
 
 }

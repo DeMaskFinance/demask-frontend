@@ -61,6 +61,9 @@ const BSC_DEMASK = {
   USDT: process.env.NEXT_PUBLIC_USDT_BSC,
   USDC: process.env.NEXT_PUBLIC_USDC_BSC,
   urltxHash:"https://testnet.bscscan.com/tx/",
+  chainName:"BNB Smart Chain Testnet",
+  NAME:"BNB Smart Chain Testnet",
+  CURRENCY:"tBNB"
 };
 const MUMBAI_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC,
@@ -75,12 +78,16 @@ const MUMBAI_DEMASK = {
   USDT: process.env.NEXT_PUBLIC_USDT,
   USDC: process.env.NEXT_PUBLIC_USDC,
   urltxHash:"https://mumbai.polygonscan.com/tx/",
+  chainName: "Mumbai",
+  NAME:"MUMBAI",
+  CURRENCY:"MATIC",
 };
 const network = [
   {
     name: "Ethereum",
     logo: EtherIcon,
     chain: "1",
+    disable : true,
   },
   {
     name: "Polygon",
@@ -115,12 +122,6 @@ const amountNFT = [
     value: "CUSTOM",
   },
 ];
-const rpcMumbai = [
-  {
-    id: 1,
-    url: "https://polygon-mumbai-bor.publicnode.com",
-  },
-];
 const mediaType = {
   image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml", ".webp"],
   video: [".mp4", ".quicktime"],
@@ -152,7 +153,6 @@ const Category = [
 export {
   tokenMatic,
   amountNFT,
-  rpcMumbai,
   mediaType,
   network,
   BSC_DEMASK,

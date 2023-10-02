@@ -66,9 +66,14 @@ export const AccountProvider = ({ children }) => {
           updateAccount("");
         }
       };
+      const handleChainChanged = (networkId) =>{
+        updateChainId(networkId);
+      }
       provider?.on("accountsChanged", handleAccountsChanged);
+      provider?.on("networkChanged", handleChainChanged);
       return () => {
         provider?.removeAllListeners("accountsChanged", handleAccountsChanged);
+        provider?.removeAllListeners("networkChanged", handleChainChanged);
       };
     }
   }, [provider]);
