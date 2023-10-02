@@ -22,7 +22,9 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
     const { updateChainId, chainId } = useContext(AccountContext);
     const handleChangeNetwork = (chain: string) => {
-        updateChainId(chain);
+        if (chain !== '1') {
+            updateChainId(chain);
+        }
     };
     useEffect(() => {
         if (chainId) {
@@ -49,11 +51,16 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                     </p>
                     <ul className="flex flex-col mt-2 font-normal gap-y-3">
                         {network.map((item, index) => (
-                            <li key={index} className={`${style.itemSub} gap-x-2 group`} onClick={() => handleChangeNetwork(item.chain)}>
-                                <item.logo width={24}
-                                    height={24}
-                                    className={`fill-dark2 group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
-                                <p className={`${filterNetwork?.chain === item.chain && "text-secondary2 font-medium"}`}>{item.name}</p>
+                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center ${item.disable?'cursor-no-drop':''} `} onClick={() => handleChangeNetwork(item.chain)}>
+                                <div className='flex gap-x-2'>
+                                    <item.logo width={24}
+                                        height={24}
+                                        className={`fill-dark2 group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
+                                    <p className={`${filterNetwork?.chain === item.chain && "text-secondary2 font-medium"}`}>{item.name}</p>
+                                </div>
+                                {item.disable && (
+                                    <p className='text-xs right-0'>Upcoming</p>
+                                )}
                             </li>
                         ))}
                     </ul>

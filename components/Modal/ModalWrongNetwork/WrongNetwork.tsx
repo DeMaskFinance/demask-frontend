@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Web3 from 'web3';
 import { WarningIcon } from '../../Icons';
 import Wrapper from '../Wrapper';
@@ -8,14 +8,26 @@ import AccountContext from '@/context/AccountContext';
 import { changeNetwork } from '@/libs/utils/changeNetwork';
 
 interface WrongNetworkProps {
-    isWrongNetwork: boolean,
-    setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
 }
-const WrongNetwork: React.FC<WrongNetworkProps> = ({ isWrongNetwork, setIsWrongNetwork }) => {
+const WrongNetwork: React.FC<WrongNetworkProps> = () => {
+    const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { account, wallet, chainId, demask, tokenDefault, updateAccount } = useContext(AccountContext);
-    console.log(demask);
-    console.log('123');
-
+    useEffect(() => {
+        if (account && wallet) {
+          const checkNetwork = async () => {
+            const provider = getProvider(wallet);
+            const networkId = await provider.request({ method: "net_version" });
+            if (networkId !== chainId) {
+              setIsWrongNetwork(true);
+              document.body.style.overflowY = "hidden";
+            } else {
+              setIsWrongNetwork(false)
+              document.body.style.overflowY = "auto";
+            }
+          }
+          checkNetwork();
+        }
+      }, [chainId, account, wallet])
     const disconnectWallet = () => {
         localStorage.removeItem("ACCOUNT_DEMASK");
         // localStorage.removeItem("WALLET_DEMASK");

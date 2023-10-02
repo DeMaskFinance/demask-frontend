@@ -68,9 +68,10 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           return false;
         }
       case "WalletConnect":
-        // const providerWallet = getProvider(walletName);
+        const providerWallet = getProvider(walletName);
         // const providerTest = new ethers.providers.Web3Provider(providerWallet);
-        // console.log(providerWallet);
+        // alert(providerTest)
+        console.log(providerWallet);
         // console.log(new Web3(providerWallet));
         // console.log(providerTest);
 

@@ -11,6 +11,7 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { ModalWallet } from "../Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import { checkNetwork } from "@/libs/validation";
+import { changeNetwork } from "@/libs/utils/changeNetwork";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -43,7 +44,7 @@ export default function MintNFT({
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount, wallet, demask } = useContext(AccountContext);
+  const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
   console.log(contractAddress);
 
@@ -69,7 +70,7 @@ export default function MintNFT({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      const networkSwitched = await checkNetwork(providerChoice);
+      const networkSwitched = await changeNetwork(chainId, wallet, demask);
       if (!networkSwitched) {
         return;
       }
@@ -82,7 +83,7 @@ export default function MintNFT({
           const tx = await contract.mint(account, randomID, amount, data, url);
           transactionHash = tx.hash;
           console.log(transactionHash);
-          
+
           toast.success(
             <TransitionURL type={"Mint"} transactionHash={transactionHash} />,
             {
@@ -113,7 +114,7 @@ export default function MintNFT({
     setIsProcess(false);
   }
   console.log(isProcess);
-  
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (account) {

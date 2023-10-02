@@ -127,7 +127,9 @@ const Swap: React.FC = () => {
     checkApproveNFT();
   }, [account, nftAddress, wallet, checkApproveNFT]);
   console.log(isApprovedNFT);
-
+  // const providerChoice = getProvider('Metamask');
+  // console.log(providerChoice);
+  
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);

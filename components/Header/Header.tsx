@@ -34,7 +34,7 @@ const style = {
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+ 
   const { account, updateAccount, wallet, chainId } = useContext(AccountContext);
 
   const handleOpen = () => {
@@ -43,22 +43,7 @@ export default function Header() {
   };
 
   const [isFocused, setIsFocused] = useState(false);
-  useEffect(() => {
-    if (account && wallet) {
-      const checkNetwork = async () => {
-        const provider = getProvider(wallet);
-        const networkId = await provider.request({ method: "net_version" });
-        if (networkId !== chainId) {
-          setIsWrongNetwork(true);
-          document.body.style.overflowY = "hidden";
-        } else {
-          setIsWrongNetwork(false)
-          document.body.style.overflowY = "auto";
-        }
-      }
-      checkNetwork();
-    }
-  }, [chainId, account, wallet])
+  
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -273,7 +258,7 @@ export default function Header() {
       <div className="absolute z-[200]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <WrongNetwork isWrongNetwork={isWrongNetwork} setIsWrongNetwork={setIsWrongNetwork}/>
+      <WrongNetwork />
     </>
   );
 }

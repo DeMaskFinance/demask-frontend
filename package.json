@@ -17,6 +17,7 @@
     "@types/node": "20.1.4",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "@walletconnect/ethereum-provider": "^2.10.1",
     "@walletconnect/web3-provider": "^1.8.0",
     "@web3modal/ethereum": "^2.7.1",
     "aos": "^2.3.4",

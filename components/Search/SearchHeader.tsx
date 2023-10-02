@@ -69,8 +69,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
       },
       keepPreviousData: true,
     });
-    console.log(searchHistory);
-    console.log(topNftData);
     
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -100,8 +98,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
       setSearchHistory(newHistory);
       setCookie("searchHistory", JSON.stringify(newHistory), { expires: 7 });
     }
-    console.log(item);
-    
     router.replace(`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`)
   };
   

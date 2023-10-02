@@ -66,9 +66,11 @@ export const AccountProvider = ({ children }) => {
           updateAccount("");
         }
       };
-      const handleChainChanged = (networkId) =>{
-        updateChainId(networkId);
-      }
+      const handleChainChanged = (networkId) => {
+        if (networkId === "80001" || networkId === "97") {
+          updateChainId(networkId);
+        }
+      };
       provider?.on("accountsChanged", handleAccountsChanged);
       provider?.on("networkChanged", handleChainChanged);
       return () => {
@@ -87,7 +89,7 @@ export const AccountProvider = ({ children }) => {
         updateChainId,
         chainId,
         demask,
-        tokenDefault
+        tokenDefault,
       }}
     >
       {children}
