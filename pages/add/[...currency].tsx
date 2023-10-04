@@ -25,12 +25,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {  toast } from "react-toastify";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import { swapAPI } from "@/libs/service";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -65,6 +65,7 @@ export default function AddLiquidity() {
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [symbolToken, setSymbolToken] = useState<string>('');
+  const [hash,setHash] = useState("");
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -95,7 +96,8 @@ export default function AddLiquidity() {
   });
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-
+  console.log(balanceNFT);
+  
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
     tokenAddress,
@@ -184,7 +186,24 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   };
-
+  useEffect(()=>{
+    if(hash){
+      toast.success(
+        <TransitionURL type={"Add Liquidity"} transactionHash={hash} />,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: 'success1',
+          theme: "light",
+        }
+      );
+    }
+  },[hash])
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -210,7 +229,7 @@ export default function AddLiquidity() {
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value: Math.floor(amountErcDesired).toString() }
+            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountErcDesired)) }
           );
           transactionHash = result.hash;
         } else {
@@ -218,7 +237,7 @@ export default function AddLiquidity() {
             tokenAddress,
             nftAddress,
             idNFT,
-            Math.floor(amountErcDesired).toString(),
+            exponentialToDecimal(Math.floor(amountErcDesired)),
             inputNFT,
             0,
             account,
@@ -228,26 +247,14 @@ export default function AddLiquidity() {
           transactionHash = result.hash;
         }
         await provider.waitForTransaction(transactionHash);
+        setHash(transactionHash)
         setIsOpenTransaction(false);
         setInputNFT('');
         setInputToken('');
         setAmountErcDesiredToDec('');
-        toast.success(
-          <TransitionURL
-            type={"Add Liquidity"}
-            transactionHash={transactionHash}
-          />,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
+        console.log(transactionHash);
+        
+        
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -555,7 +562,7 @@ export default function AddLiquidity() {
         isOpenSearchToken={isOpenSearchToken}
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

@@ -23,6 +23,7 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import AccountContext from "@/context/AccountContext";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: any;
@@ -194,7 +195,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
             0,
             account,
             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value: Math.floor(amountErcDesired).toString() }
+            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountErcDesired)) }
           );
           transactionHash = result.hash;
         } else {
@@ -205,7 +206,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
             data.tokenAddress,
             data.nftAddress,
             data.nftId,
-            Math.floor(amountErcDesired).toString(),
+            exponentialToDecimal(Math.floor(amountErcDesired)),
             inputNFT,
             0,
             account,

@@ -18,8 +18,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineDoubleLeft } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {  toast } from "react-toastify";
 import { Mousewheel, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -31,6 +30,7 @@ import { ModalWallet } from "../../Modal/ModalWallet";
 import { TabGroups } from "../../NavChoice";
 import TransitionURL from "../../Toast/TransionURL";
 import NFTItem from "./NFTItem";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 
 interface ReelsProps {
   data: any;
@@ -279,7 +279,7 @@ const Reels: React.FC<ReelsProps> = ({
               amountNFTSubmit,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: Math.floor(amountBuyDec).toString() }
+              { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec)) }
             );
           } else {
             console.log(Math.floor(amountBuyDec).toString());
@@ -288,7 +288,7 @@ const Reels: React.FC<ReelsProps> = ({
               filter.nft,
               filter.FactoryContract_id,
               amountNFTSubmit,
-              Math.floor(amountBuyDec).toString(),
+              exponentialToDecimal(Math.floor(amountBuyDec)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -296,19 +296,22 @@ const Reels: React.FC<ReelsProps> = ({
           }
           await provider.waitForTransaction(result.hash);
           setIsOpenTransaction(false);
-          toast.success(
-            <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
+          if(result.hash){
+            toast.success(
+              <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                toastId: 'success1',
+                theme: "light",
+              }
+            );
+          }
           setInputNFT("");
         } catch (error) {
           setIsOpenTransaction(false);
@@ -352,7 +355,7 @@ const Reels: React.FC<ReelsProps> = ({
               filter.nft,
               filter.FactoryContract_id,
               amountNFTSubmit,
-              Math.floor(amountSellDec).toString(),
+              exponentialToDecimal(Math.floor(amountSellDec)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -365,7 +368,7 @@ const Reels: React.FC<ReelsProps> = ({
               filter.nft,
               filter.FactoryContract_id,
               amountNFTSubmit,
-              Math.floor(amountSellDec).toString(),
+              exponentialToDecimal(Math.floor(amountSellDec)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -1040,7 +1043,7 @@ const Reels: React.FC<ReelsProps> = ({
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };

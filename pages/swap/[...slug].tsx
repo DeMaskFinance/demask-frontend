@@ -36,6 +36,8 @@ import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
 import { SkeletonReels } from "@/components/Skeleton";
+import Web3 from "web3";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -127,8 +129,6 @@ const Swap: React.FC = () => {
     checkApproveNFT();
   }, [account, nftAddress, wallet, checkApproveNFT]);
   console.log(isApprovedNFT);
-  // const providerChoice = getProvider('Metamask');
-  // console.log(providerChoice);
   
   const handleApproveNFT = async () => {
     if (account) {
@@ -161,8 +161,9 @@ const Swap: React.FC = () => {
   // console.log(amountSell);
   // console.log(amountSellDec);
   // console.log(allowanceToken);
-  // console.log(amountBuyDec);
-
+  console.log(amountBuyDec);
+  console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
+  
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -252,20 +253,28 @@ const Swap: React.FC = () => {
       ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
+        // const providerUrl = 'https://polygon-mumbai-bor.publicnode.com';
+        // const web3Provider = new Web3.providers.HttpProvider(providerUrl);
+        // const web3 = new Web3(web3Provider);
+
+        // const provider = new ethers.providers.Web3Provider(web3);
         const signer = provider.getSigner();
+        // console.log(signer);
+
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+        // alert(contract);
+
         try {
           let result;
           setIsOpenTransaction(true);
           if (tokenAddress === nativeAddress) {
-
             result = await contract.buyETH(
               nftAddress,
               idNFT,
               inputNFT,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: Math.floor(amountBuyDec).toString() }
+              { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec))}
             );
           } else {
             result = await contract.buy(
@@ -273,7 +282,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              Math.floor(amountBuyDec).toString(),
+              exponentialToDecimal(Math.floor(amountBuyDec)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -334,7 +343,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              Math.floor(amountSellDec).toString(),
+              exponentialToDecimal(Math.floor(amountSellDec)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -345,7 +354,7 @@ const Swap: React.FC = () => {
               nftAddress,
               idNFT,
               inputNFT,
-              Math.floor(amountSellDec).toString(),
+              exponentialToDecimal(Math.floor(amountSellDec)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -660,15 +669,15 @@ const Swap: React.FC = () => {
                 </div>
               </form>
               {activeChoice === "BUY" && Math.floor(amountBuyDec) === 0 && inputNFT && (
-                  <p className="mt-0 mb-2 ml-3 text-xs text-red">
-                    Can't buy
-                  </p>
-                )}
-                {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && inputNFT && (
-                  <p className="mt-0 mb-2 ml-3 text-xs text-red">
-                    Can't sell
-                  </p>
-                )}
+                <p className="mt-0 mb-2 ml-3 text-xs text-red">
+                  Can't buy
+                </p>
+              )}
+              {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && inputNFT && (
+                <p className="mt-0 mb-2 ml-3 text-xs text-red">
+                  Can't sell
+                </p>
+              )}
               <div className="flex justify-center w-full">
                 {isApprovedToken && activeChoice === "BUY" && (
                   <button

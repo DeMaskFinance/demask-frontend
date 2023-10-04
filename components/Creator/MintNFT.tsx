@@ -12,6 +12,7 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import { checkNetwork } from "@/libs/validation";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -70,7 +71,7 @@ export default function MintNFT({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      const networkSwitched = await changeNetwork(chainId, wallet, demask);
+      const networkSwitched = await changeNetwork(chainId, wallet, demask,setIsOpen);
       if (!networkSwitched) {
         return;
       }
@@ -80,7 +81,7 @@ export default function MintNFT({
         if (isExisting) {
           checkAndMint();
         } else {
-          const tx = await contract.mint(account, randomID, amount, data, url);
+          const tx = await contract.mint(account, randomID, exponentialToDecimal(amount), data, url);
           transactionHash = tx.hash;
           console.log(transactionHash);
 

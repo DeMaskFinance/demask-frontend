@@ -103,7 +103,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
     // console.log(handleBignumber(Number(inputLiquidity), 18));
 
     useEffect(() => {
-      if (data) {
+      if (data && inputLiquidity) {
         const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals));
         const resAmountNFT = Number(amountLIQUIDITY) * Number(data.reserveNFT) / Number(totalSupply);
         const amountToken = Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals) / Number(totalSupply);
@@ -119,10 +119,10 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         setAmountTokenDec(resAmountTokenMinShow)
       }
     }, [inputLiquidity, data])
-    console.log(amountNFT);
-    console.log(amountTokenMin);
-    console.log(amountTokenDec);
-    console.log(amountNFTMin);
+    // console.log(amountNFT);
+    // console.log(amountTokenMin);
+    // console.log(amountTokenDec);
+    // console.log(amountNFTMin);
     const currentAllowance = useAllowanceDML(
       account,
       data.dmlAddress,
@@ -130,7 +130,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
       isApprovedDML,
       inputLiquidity,
       routerAddress,
-    );
+    ); 
     console.log(currentAllowance);
     useEffect(() => {
       const checkApproveNFT = async () => {
@@ -235,7 +235,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
               data.tokenAddress,
               data.nftAddress,
               data.nftId,
-              (Number(liquidity)).toFixed(0),
+              Math.floor(Number(liquidity)).toString(),
               amountTokenMin,
               amountNFTMin,
               account,
