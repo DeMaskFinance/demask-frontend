@@ -73,8 +73,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         // alert(providerTest)
         console.log(providerWallet);
         // console.log(new Web3(providerWallet));
-        // console.log(providerTest);
-
+        // console.log(providerTest)
+        
+        updateWallet(walletName);
         try {
           await open();
           console.log(address);
@@ -85,10 +86,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         break;
       default:
         const provider = getProvider(walletName);
-        // const networkSwitched = await checkNetwork(provider);
-        const networkSwitched = await changeNetwork(chainId,walletName,demask);
-        console.log(networkSwitched);
-        
+        const networkSwitched = await changeNetwork(chainId,walletName,demask,setIsOpen);
         if (!networkSwitched) {
           return;
         }

@@ -15,7 +15,8 @@ import { Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon } from 'wagmi/chains'
 import Script from "next/script";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -105,6 +106,7 @@ export default function App({
         <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
           '--w3m-z-index': '9999'
         }} />
+        <ToastContainer limit={1}/>
       </QueryClientProvider>
     </AccountProvider>
   );

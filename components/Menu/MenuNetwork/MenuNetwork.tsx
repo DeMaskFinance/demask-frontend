@@ -51,7 +51,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                     </p>
                     <ul className="flex flex-col mt-2 font-normal gap-y-3">
                         {network.map((item, index) => (
-                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center ${item.disable?'cursor-no-drop':''} `} onClick={() => handleChangeNetwork(item.chain)}>
+                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center ${item.disable ? 'hover:cursor-no-drop' : ''} `} onClick={() => handleChangeNetwork(item.chain)}>
                                 <div className='flex gap-x-2'>
                                     <item.logo width={24}
                                         height={24}

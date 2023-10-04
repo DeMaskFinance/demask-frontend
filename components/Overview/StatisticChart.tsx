@@ -45,13 +45,13 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
-
+  
   return (
     <div className="flex flex-col gap-6 my-6 text-base font-medium lg:flex-row md:flex-row text-dark2">
       <div className="flex">
         <span className="mr-2 ">
           Volume 24H:{" "}
-          {volume && volume?.volumeInDay !== null ? formatNumber(volume?.volumeInDay) : 0}
+          {volume && volume?.volumeInDay !== undefined ? formatNumber(volume?.volumeInDay) : 0}
         </span>{" "}
         (
         <span
@@ -63,13 +63,13 @@ function StatisticChart() {
           ) : (
             <BsArrowDown />
           )}
-          {volume && volume?.volumePercent !== null ? volume?.volumePercent.toFixed(2) : 0}%
+          {volume && volume?.volumePercent !== undefined ? volume?.volumePercent.toFixed(2) : 0}%
         </span>
         )
       </div>
       <div className="flex ">
         <span className="mr-2 ">
-          Fees 24H: {volume && volume?.volumeInDay !== null ? formatNumber((volume?.volumeInDay * 0.005).toString()) : 0}
+          Fees 24H: {volume && volume?.volumeInDay !== undefined ? formatNumber((volume?.volumeInDay * 0.005).toString()) : 0}
         </span>
         (
         <span
@@ -81,13 +81,13 @@ function StatisticChart() {
           ) : (
             <BsArrowDown />
           )}
-          {volume && volume?.volumePercent !== null ? volume?.volumePercent.toFixed(2) : 0}%
+          {volume && volume?.volumePercent !== undefined ? volume?.volumePercent.toFixed(2) : 0}%
         </span>
         )
       </div>
       <div className="flex">
         <span className="mr-2 ">
-          TVL: {TVL && TVL.tvlInDay !==null ? formatNumber(TVL && TVL?.tvlInDay) : 0}{" "}
+          TVL: {TVL && TVL.tvlInDay !==undefined ? formatNumber(TVL && TVL?.tvlInDay) : 0}{" "}
         </span>
         (
         <span
@@ -95,7 +95,7 @@ function StatisticChart() {
             } `}
         >
           {TVL && TVL?.tvlPercent >= 0 ? <BsArrowUp /> : <BsArrowDown />}
-          {TVL && TVL?.tvlPercent !== null ? TVL?.tvlPercent.toFixed(2) : 0}%
+          {TVL && TVL?.tvlPercent !== undefined ? TVL?.tvlPercent.toFixed(2) : 0}%
         </span>
         )
       </div>

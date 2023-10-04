@@ -48,7 +48,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                         <p className=' text-yellow'>Please switch your network to continue</p>
                     </div>
                     <div className='flex justify-between px-0 lg:px-6'>
-                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId,wallet,demask)}>Switch Network</button>
+                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId,wallet,demask,setIsWrongNetwork)}>Switch Network</button>
                         <button className='p-2 text-sm font-medium text-white rounded-lg bg-red' onClick={disconnectWallet}>Disconnect wallet</button>
                     </div>
                     <button

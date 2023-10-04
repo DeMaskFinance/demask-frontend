@@ -8,7 +8,7 @@
 
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
 
-async function getWalletConnectProvider() {
+async function getWalletConnectProvider() { 
 
   try {
     const provider = await EthereumProvider.init({

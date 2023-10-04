@@ -1,9 +1,14 @@
-import { getProvider } from './../connection/getProvider';
+import { getProvider } from "./../connection/getProvider";
 import Web3 from "web3";
 
-export const changeNetwork = async (chainId: string, wallet:string , demask: any) => {
+export const changeNetwork = async (
+  chainId: string,
+  wallet: string,
+  demask: any,
+  setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
   try {
-    const provider =  getProvider(wallet);
+    const provider = getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
     if (networkId !== chainId) {
       try {
@@ -14,7 +19,9 @@ export const changeNetwork = async (chainId: string, wallet:string , demask: any
         console.log("reload");
 
         // refresh
-        window.location.reload();
+        // window.location.reload();
+        setIsWrongNetwork(false);
+        document.body.style.overflowY = "auto";
       } catch (errors: any) {
         // This error code indicates that the chain has not been added to MetaMask
         if (errors.code === 4902) {
@@ -34,7 +41,9 @@ export const changeNetwork = async (chainId: string, wallet:string , demask: any
             ],
           });
           // refresh
-          window.location.reload();
+          // window.location.reload();
+          setIsWrongNetwork(false);
+          document.body.style.overflowY = "auto";
         } else {
           return false;
         }
