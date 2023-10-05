@@ -479,7 +479,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <ToastContainer />
     </div>
   );
 };

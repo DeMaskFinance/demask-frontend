@@ -36,7 +36,6 @@ const ModalTransation: React.FunctionComponent<ModalTransationProps> = ({ isOpen
                     <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
                 </button>
             </div>
-            <ToastContainer />
         </Wrapper>
     );
 }

@@ -210,7 +210,6 @@ export default function MintNFT({
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <ToastContainer />
     </div>
   );
 }
