@@ -70,8 +70,6 @@ const Reels: React.FC<ReelsProps> = ({
     useState<boolean>(false);
   const [isSufficientTokenSell, setIsSufficientTokenSell] =
     useState<boolean>(false);
-  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
-  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [symbolToken, setSymbolToken] = useState<string>('');
   const [activeMobile, setActiveMobile] = useState(false);
@@ -119,7 +117,7 @@ const Reels: React.FC<ReelsProps> = ({
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, filter, wallet, checkApproveNFT]);
+  }, [account, filter, wallet, isOpenTransaction]);
   const balanceNFT = useNFTBalance(account, filter.nft, filter.FactoryContract_id, wallet, isOpenTransaction);
 
   useEffect(() => {
@@ -194,7 +192,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, amountNFTSubmit, amountBuyDec, checkApproveToken, filter.erc, allowanceToken]);
+  }, [account, wallet, amountNFTSubmit, amountBuyDec, isOpenTransaction, filter.erc, allowanceToken]);
   // console.log(amountBuy.toString());
   // console.log(amountBuyDec);
   // console.log(bigNumberBalance);
@@ -212,8 +210,9 @@ const Reels: React.FC<ReelsProps> = ({
 
       try {
         const result = await contract.setApprovalForAll(routerAddress, true);
+        setIsOpenTransaction(true);
         await provider.waitForTransaction(result.hash);
-        setCheckApproveNFT(true);
+        setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
       }
@@ -235,10 +234,11 @@ const Reels: React.FC<ReelsProps> = ({
         signer
       );
       try {
+        setIsOpenTransaction(true);
         const result = await contract.approve(routerAddress, Math.floor(amountBuyDec).toString());
         await provider.waitForTransaction(result.hash);
-        setCheckApproveToken(true);
         setInputNFT("");
+        setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
       }
@@ -1043,7 +1043,6 @@ const Reels: React.FC<ReelsProps> = ({
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      {/* <ToastContainer /> */}
     </div>
   );
 };

@@ -7,7 +7,7 @@ const handleApproveNFT = async (
   wallet: string,
   nftAddress: string,
   setIsOpen: any,
-  setCheckApproveNFT:any,
+  setIsOpenTransaction:any,
   routerAddress:string
 ) => {
   if (account) {
@@ -17,8 +17,9 @@ const handleApproveNFT = async (
     const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
     try {
       const result = await contract.setApprovalForAll(routerAddress, true);
+      setIsOpenTransaction(true);
       await provider.waitForTransaction(result.hash);
-      setCheckApproveNFT(true);
+      setIsOpenTransaction(false);
     } catch (error) {
       console.error(error);
     }

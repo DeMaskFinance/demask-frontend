@@ -25,7 +25,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import { swapAPI } from "@/libs/service";
@@ -60,12 +60,10 @@ export default function AddLiquidity() {
   const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
-  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
-  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [symbolToken, setSymbolToken] = useState<string>('');
-  const [hash,setHash] = useState("");
+  const [hash, setHash] = useState("");
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -94,10 +92,10 @@ export default function AddLiquidity() {
     },
     keepPreviousData: true,
   });
+  console.log(data);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-  console.log(balanceNFT);
-  
+
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
     tokenAddress,
@@ -168,7 +166,7 @@ export default function AddLiquidity() {
       }
     }
   }, [data, tokenDefault, chainId])
-  
+
   useEffect(() => {
     console.log(tokenAddress);
     if (tokenAddress) {
@@ -186,24 +184,6 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   };
-  useEffect(()=>{
-    if(hash){
-      toast.success(
-        <TransitionURL type={"Add Liquidity"} transactionHash={hash} />,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: 'success1',
-          theme: "light",
-        }
-      );
-    }
-  },[hash])
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -253,8 +233,23 @@ export default function AddLiquidity() {
         setInputToken('');
         setAmountErcDesiredToDec('');
         console.log(transactionHash);
-        
-        
+        if (transactionHash) {
+          toast.success(
+            <TransitionURL type={"Add Liquidity"} transactionHash={hash} />,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              toastId: 'success1',
+              theme: "light",
+            }
+          );
+        }
+
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -263,6 +258,7 @@ export default function AddLiquidity() {
       setIsInputNFT(true);
     }
   };
+  console.log(allowanceToken);
 
   const handleApproveToken = async () => {
     if (account) {
@@ -270,10 +266,19 @@ export default function AddLiquidity() {
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
+      let result;
       try {
-        const result = await contract.approve(routerAddress, inputToken);
+        if (data.dmlAddress === null) {
+          result = await contract.approve(routerAddress, handleBignumber(
+            Number(inputToken),
+            Number(data?.tokenDecimals)
+          ));
+        } else {
+          result = await contract.approve(routerAddress, exponentialToDecimal(amountErcDesired));
+        }
+        setIsOpenTransaction(true);
         await provider.waitForTransaction(result.hash);
-        setCheckApproveToken(true);
+        setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
       }
@@ -296,9 +301,10 @@ export default function AddLiquidity() {
       }
     };
     handleCheckApproveToken();
-  }, [account, wallet, tokenAddress, inputToken, checkApproveToken, amountErcDesired, allowanceToken]);
-  // console.log(amountErcDesired.toString());
+  }, [account, wallet, tokenAddress, inputToken, isOpenTransaction, amountErcDesired, allowanceToken]);
+  console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec);
+  console.log(allowanceToken);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -306,7 +312,7 @@ export default function AddLiquidity() {
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, nftAddress, wallet, checkApproveNFT]);
+  }, [account, nftAddress, wallet, isOpenTransaction]);
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -314,9 +320,10 @@ export default function AddLiquidity() {
       const signer = provider.getSigner();
       const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
       try {
+        setIsOpenTransaction(true);
         const result = await contract.setApprovalForAll(routerAddress, true);
         await provider.waitForTransaction(result.hash);
-        setCheckApproveNFT(true);
+        setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
       }
@@ -414,7 +421,7 @@ export default function AddLiquidity() {
                     Insufficient NFT balance
                   </p>
                 )}
-                {isInputNFT && (
+                {!inputNFT && isInputNFT && (
                   <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
                     Required
                   </p>
@@ -534,11 +541,11 @@ export default function AddLiquidity() {
             </div>
           </div>
         </div>
-      ):(
-        <SkeletonAddLiquidity/>
+      ) : (
+        <SkeletonAddLiquidity />
       )}
       {isLoading && !isSuccess && (
-        <SkeletonAddLiquidity/>
+        <SkeletonAddLiquidity />
       )}
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}
@@ -562,7 +569,6 @@ export default function AddLiquidity() {
         isOpenSearchToken={isOpenSearchToken}
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      {/* <ToastContainer /> */}
     </div>
   );
 }

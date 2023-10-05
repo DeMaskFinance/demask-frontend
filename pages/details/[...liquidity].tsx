@@ -340,7 +340,6 @@ export default function DetailLiquidity() {
         />
       )}
       <ModalTransation isOpenTransation={isOpenTransation} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      <ToastContainer />
     </div>
   );
 }

@@ -10,7 +10,7 @@ const useInformationToken = (
   routerAddress: string,
   rpc: string,
   nativeAddress: string,
-  isOpenTransaction?: boolean
+  isOpenTransaction?: boolean,
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
@@ -40,9 +40,9 @@ const useInformationToken = (
             abiErc20,
             provider
           );
-          const symbol = await contract.symbol();
-          const name = await contract.name();
-          setNameTokenERC20(name);
+          // const symbol = await contract.symbol();
+          // const name = await contract.name();
+          // setNameTokenERC20(name);
           try {
             const bigNumberBalance = await contract.balanceOf(account);
             setBigNumberBalance(bigNumberBalance.toString());
@@ -51,7 +51,7 @@ const useInformationToken = (
             const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
             const balance = bigNumberBalance.div(divisor);
             setBalanceToken(balance.toString());
-            setDecimals(decimals);
+            // setDecimals(decimals);
             const tokenAllowance = await contract.allowance(
               account,
               routerAddress
@@ -74,7 +74,6 @@ const useInformationToken = (
     balanceToken,
     bigNumberBalance,
     decimals,
-    nameTokenERC20,
     allowanceToken,
   };
 };

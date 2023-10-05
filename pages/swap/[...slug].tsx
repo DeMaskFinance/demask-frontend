@@ -67,8 +67,6 @@ const Swap: React.FC = () => {
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
-  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
-  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [amountBuy, setAmountBuy] = useState<number>(0);
   const [amountSell, setAmountSell] = useState<number>(0);
@@ -127,7 +125,7 @@ const Swap: React.FC = () => {
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, nftAddress, wallet, checkApproveNFT]);
+  }, [account, nftAddress, wallet, isOpenTransaction]);
   console.log(isApprovedNFT);
   
   const handleApproveNFT = async () => {
@@ -138,8 +136,9 @@ const Swap: React.FC = () => {
       const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
       try {
         const result = await contract.setApprovalForAll(routerAddress, true);
+        setIsOpenTransaction(true);
         await provider.waitForTransaction(result.hash);
-        setCheckApproveNFT(true);
+        setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
       }
@@ -160,9 +159,9 @@ const Swap: React.FC = () => {
   }, [inputNFT, data])
   // console.log(amountSell);
   // console.log(amountSellDec);
-  // console.log(allowanceToken);
-  console.log(amountBuyDec);
-  console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
+  // // console.log(allowanceToken);
+  // console.log(amountBuyDec);
+  // console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
   
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -211,8 +210,10 @@ const Swap: React.FC = () => {
       }
     };
     checkApproveToken();
-  }, [account, wallet, data, inputNFT, amountBuyDec, checkApproveToken, tokenAddress, allowanceToken]);
-
+  }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
+  console.log('Check',isOpenTransaction);
+  console.log(allowanceToken);
+  
   const handleApproveToken = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -224,9 +225,10 @@ const Swap: React.FC = () => {
       const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
       try {
         const result = await contract.approve(routerAddress, amountBuyDec.toFixed(0));
+        setIsOpenTransaction(true);
         await provider.waitForTransaction(result.hash);
-        setCheckApproveToken(true);
         setInputNFT("");
+        setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
       }
@@ -763,7 +765,6 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      <ToastContainer />
     </div>
   );
 };

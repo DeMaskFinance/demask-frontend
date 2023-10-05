@@ -2,7 +2,7 @@ import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
 import { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/Buttons";
-import useBalanceToken from "@/hooks/useInformationToken";
+import useInformation from "@/hooks/useInformationToken";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
@@ -13,7 +13,7 @@ import approveToken from "@/libs/utils/approveToken";
 import approveNFT from "@/libs/utils/approveNFT";
 import handleApproveToken from "@/libs/utils/handleApproveToken";
 import { getProvider } from "@/libs/connection/getProvider";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import abiRouter from "@/abi/abiRouter.json";
 import TransitionURL from "@/components/Toast/TransionURL";
@@ -53,8 +53,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [tokenSymbol, setTokenSymbol] = useState("");
-  const [checkApproveNFT, setCheckApproveNFT] = useState<boolean>(false);
-  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const { demask, tokenDefault } = useContext(AccountContext);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
@@ -83,7 +81,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   );
 
   const { balanceToken, bigNumberBalance, allowanceToken } =
-    useBalanceToken(account, data.tokenAddress, wallet, routerAddress, rpc, nativeAddress);
+    useInformation(account, data.tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
 
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
@@ -139,7 +137,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       }
     }
   }, [inputNFT, inputToken, data]);
-  // console.log(amountErcDesired.toString());
+  console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec.toString());
   // console.log(balanceToken);
 
@@ -158,7 +156,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       }
     };
     handleCheckApproveToken();
-  }, [account, wallet, data, inputToken, checkApproveToken, amountErcDesired, allowanceToken]);
+  }, [account, wallet, data, inputToken, isOpenTransaction, amountErcDesired, allowanceToken]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(
@@ -170,7 +168,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, data.nftAddress, wallet, checkApproveNFT]);
+  }, [account, data.nftAddress, wallet, isOpenTransaction]);
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -344,7 +342,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       wallet,
                       data.nftAddress,
                       setIsOpen,
-                      setCheckApproveNFT,
+                      setIsOpenTransaction,
                       routerAddress
                     )
                   }
@@ -361,10 +359,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       account,
                       wallet,
                       data.tokenAddress,
-                      inputToken,
+                      amountErcDesired,
                       routerAddress,
                       setIsOpen,
-                      setCheckApproveToken,
+                      setIsOpenTransaction,
                     )
                   }
                 >

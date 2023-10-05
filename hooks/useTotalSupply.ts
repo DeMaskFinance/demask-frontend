@@ -4,7 +4,7 @@ const useTotalSupply = (
   account: string,
   wallet: string,
   dmlAddress: string,
-  isApprovedDML: boolean
+  isOpenTransaction: boolean
 ) => {
   const [totalSupply, setTotalSupply] = useState("0");
   useEffect(() => {
@@ -22,7 +22,7 @@ const useTotalSupply = (
     };
 
     fetchTotalSupplyDML();
-  }, [account, wallet, dmlAddress, isApprovedDML, wallet]);
+  }, [account, wallet, dmlAddress, isOpenTransaction, wallet]);
 
   return totalSupply;
 };
