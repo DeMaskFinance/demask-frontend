@@ -55,11 +55,11 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                                 <div className='flex gap-x-2'>
                                     <item.logo width={24}
                                         height={24}
-                                        className={`fill-dark2 group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
+                                        className={`fill-dark2  group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
                                     <p className={`${filterNetwork?.chain === item.chain && "text-secondary2 font-medium"}`}>{item.name}</p>
                                 </div>
                                 {item.disable && (
-                                    <p className='text-xs right-0'>Upcoming</p>
+                                    <p className='right-0 text-xs'>Upcoming</p>
                                 )}
                             </li>
                         ))}

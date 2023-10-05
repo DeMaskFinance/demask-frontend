@@ -5,6 +5,7 @@ import {
   PolygonIcon,
   BscIcon,
   EtherIcon,
+  zkSyncIcon
 } from "../../components/Icons";
 const tokenMatic = [
   {
@@ -48,6 +49,27 @@ const tokenBsc = [
     logo: USDCIcon,
   },
 ];
+const tokenzkSync = [
+  {
+    name: "zkSync Era Testnet",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_zkSync,
+    logo: zkSyncIcon,
+    symbolNative: "ETH"
+  },
+  {
+    name: "Tether",
+    symbol: "USDT",
+    address: process.env.NEXT_PUBLIC_USDT_zkSync,
+    logo: USDTIcon,
+  },
+  {
+    name: "USD Coin",
+    symbol: "USDC",
+    address: process.env.NEXT_PUBLIC_USDC_zkSync,
+    logo: USDCIcon,
+  },
+];
 const BSC_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_BSC,
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
@@ -82,6 +104,23 @@ const MUMBAI_DEMASK = {
   NAME:"MUMBAI",
   CURRENCY:"MATIC",
 };
+const Zksync_DEMASK = {
+  RPC: process.env.NEXT_PUBLIC_RPC_Zksync,
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_Zksync,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_Zksync,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_Zksync,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_Zksync,
+  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_Zksync,
+  WETH: process.env.NEXT_PUBLIC_WETH_Zksync,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_Zksync,
+  USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
+  USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
+  urltxHash:"https://goerli.explorer.zksync.io/tx/",
+  chainName:"zkSync Era Testnet",
+  NAME:"zkSync Era Testnet",
+  CURRENCY:"ETH"
+};
 const network = [
   {
     name: "Ethereum",
@@ -98,6 +137,11 @@ const network = [
     name: "BNB Smart Chain",
     logo: BscIcon,
     chain: "97",
+  },
+  {
+    name: "zkSync Era Testnet",
+    logo: zkSyncIcon,
+    chain: "280",
   },
 ];
 const amountNFT = [
@@ -157,6 +201,8 @@ export {
   network,
   BSC_DEMASK,
   MUMBAI_DEMASK,
+  Zksync_DEMASK,
   tokenBsc,
+  tokenzkSync,
   Category
 };

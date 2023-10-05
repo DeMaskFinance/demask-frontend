@@ -64,6 +64,16 @@ export const PolygonIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+export const zkSyncIcon: React.FunctionComponent<IconProps> = ({
+  className
+}) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 8" fill="#636977" className={className}>
+      <path fillRule="evenodd" clipRule="evenodd" d="M15.0502 4.00286L11.0482 0.0188599V2.93486L7.07617 5.85686H11.0482V7.98686L15.0502 4.00286Z"  />
+      <path fillRule="evenodd" clipRule="evenodd" d="M0.949219 4.003L4.95122 7.987V5.089L8.92322 2.143H4.95122V0.0130005L0.949219 4.003Z" />
+    </svg>
+  );
+};
 export const ProfileIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
@@ -207,8 +217,8 @@ export const HandlesHightChartIcon: React.FunctionComponent<IconProps> = ({
         fill="var(--control-background-color)"
       ></path>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M6 6.85938C6 6.58323 5.77614 6.35938 5.5 6.35938C5.22386 6.35938 5 6.58323 5 6.85938V13.1341C5 13.4102 5.22386 13.6341 5.5 13.6341C5.77614 13.6341 6 13.4102 6 13.1341V6.85938ZM9 6.85938C9 6.58323 8.7761 6.35938 8.5 6.35938C8.2239 6.35938 8 6.58323 8 6.85938V13.1341C8 13.4102 8.2239 13.6341 8.5 13.6341C8.7761 13.6341 9 13.4102 9 13.1341V6.85938Z"
         fill="#A6B0C3"
       ></path>
@@ -303,8 +313,8 @@ export const TwitterIcon: React.FunctionComponent<IconProps> = ({
   height,
 }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" 
-    className={className}
+    <svg xmlns="http://www.w3.org/2000/svg"
+      className={className}
       width={width}
       height={height} viewBox="0 0 21 24" fill="#5C5C5C">
       <path d="M3 1.5C1.34531 1.5 0 2.84531 0 4.5V19.5C0 21.1547 1.34531 22.5 3 22.5H18C19.6547 22.5 21 21.1547 21 19.5V4.5C21 2.84531 19.6547 1.5 18 1.5H3ZM16.9266 5.4375L12.0609 10.9969L17.7844 18.5625H13.3031L9.79688 13.9734L5.77969 18.5625H3.55313L8.75625 12.6141L3.26719 5.4375H7.86094L11.0344 9.63281L14.7 5.4375H16.9266ZM15.1547 17.2313L7.19062 6.69844H5.86406L13.9172 17.2313H15.15H15.1547Z" />

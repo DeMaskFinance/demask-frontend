@@ -20,7 +20,7 @@ export default function Liquidity() {
   const handleAddLiquidity = () => {
     const nftAddress = demask.CREATOR;
     const tokenAddress = nativeAddress;
-    const idNFT = process.env.NEXT_PUBLIC_IDNFT;
+    const idNFT = demask.IDNFT;
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
   const { ref, inView } = useInView();

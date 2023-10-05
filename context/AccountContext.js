@@ -5,6 +5,8 @@ import {
   BSC_DEMASK,
   tokenBsc,
   tokenMatic,
+  Zksync_DEMASK,
+  tokenzkSync,
 } from "@/libs/constants";
 const AccountContext = createContext();
 
@@ -32,9 +34,12 @@ export const AccountProvider = ({ children }) => {
     if (chainId === "80001") {
       setDemask(MUMBAI_DEMASK);
       setTokenDefault(tokenMatic);
-    } else {
+    } else if(chainId === "97") {
       setDemask(BSC_DEMASK);
       setTokenDefault(tokenBsc);
+    } else if(chainId === "280") {
+      setDemask(Zksync_DEMASK);
+      setTokenDefault(tokenzkSync);
     }
   }, [chainId]);
   // console.log(account);

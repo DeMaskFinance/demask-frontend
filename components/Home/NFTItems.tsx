@@ -237,7 +237,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
             loop
             muted
             controls
-            className="mx-auto rounded-2xl"
+            className="w-full lg:max-h-[600px] mx-auto rounded-2xl"
           />
         )}
         {nftItem.metadata.image && nftItem.metadata.animation_url && (

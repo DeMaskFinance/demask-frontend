@@ -38,7 +38,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
     {
       id: 1,
       name: "Swap",
-      url: `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${process.env.NEXT_PUBLIC_IDNFT}`
+      url: `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`
     },
     { id: 2, name: "Liquidity", url: "/liquidity" },
   ];
@@ -81,7 +81,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                     className="text-base "
                     ref={tradeRef}
                     href={
-                      `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${process.env.NEXT_PUBLIC_IDNFT}`
+                      `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.NATIVE_ADDRESS}`
                     }
                   >
                     Trade
