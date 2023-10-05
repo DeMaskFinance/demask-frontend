@@ -302,9 +302,9 @@ export default function AddLiquidity() {
     };
     handleCheckApproveToken();
   }, [account, wallet, tokenAddress, inputToken, isOpenTransaction, amountErcDesired, allowanceToken]);
-  console.log(amountErcDesired.toString());
+  // console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec);
-  console.log(allowanceToken);
+  // console.log(allowanceToken);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
