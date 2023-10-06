@@ -16,7 +16,6 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
     },
   });
 
-  console.log(query);
   return (
     <>
       <div className="container">
@@ -27,7 +26,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
                 {item.status === query && (
                   <>
                     <li
-                      title={item.metadata.name}
+                      title={item?.metadata?.name}
                       className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
                     >
                       <ActiveLaunchItem item={item} query={query} />
