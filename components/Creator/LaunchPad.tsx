@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
+import abiCreator from "@/abi/abiCreator.json";
+
 import TransitionURL from "../Toast/TransionURL";
 import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { Processing } from "../Loading";
@@ -16,6 +18,10 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { ModalWallet } from "../Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import { checkNetwork } from "@/libs/validation";
+import InputField from "./InputField";
+import { useQuery } from "@tanstack/react-query";
+
+import { categoryAPI } from "@/libs/service/categoriesChartService";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -67,12 +73,22 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 }) => {
   const [initial, setInitial] = useState<any>();
   const [totalSale, setTotalSale] = useState<number | null>();
+  const [percentLock, setPercentLock] = useState<number | null>();
+
+  const [priceListing, setPriceListing] = useState<any>();
+  const [maxBuy, setMaxBuy] = useState<any>();
+  const [isRefundType, setIsRefundType] = useState<boolean>(false);
+  const [isWhiteList, setIsWhiteList] = useState<boolean>(false);
+
   const [tokenPayment, setTokenPayment] = useState<string>("");
   const [price, setPrice] = useState<any>();
   const [launchActive, setLaunchActive] = useState<string>("NOW");
   const [inforErc20, setInforErc20] = useState<any>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+
+  const [durationLock, setDurationLock] = useState<Date | null>(null);
+
   const [isError, setIsError] = useState(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
@@ -82,7 +98,23 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
+    setIsError;
   };
+
+  const { isLoading, refetch, data, isFetching } = useQuery({
+    queryKey: ["tokenPayment"],
+    queryFn: async () => {
+      const res = await categoryAPI(
+        `v2/token?chainId=80001&tokenAddress=${tokenPayment}`
+      );
+      return res;
+    },
+
+    refetchInterval: 60000,
+  });
+
+  console.log(data);
+
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
       setIsError(true);
@@ -103,7 +135,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     endDate,
     url,
     data,
+    durationLock,
     totalSale,
+    isRefundType,
+    isWhiteList,
   }: any) => {
     const totalSupply = initial + totalSale;
     console.log(
@@ -127,7 +162,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, abiErc1155, signer);
+      const contract = new ethers.Contract(contractAddress, abiCreator, signer);
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
         return isExisting;
@@ -139,27 +174,57 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       if (!networkSwitched) {
         return;
       }
+      console.log("check1");
+
       const checkAndLauchPadSubmit = async () => {
         const randomID = generateRandomNumber();
         const isExisting = await checkExists(randomID);
         if (isExisting) {
           checkAndLauchPadSubmit();
+          console.log("check2");
         } else {
           const startTimeTimestamp = startDate.getTime() / 1000;
           const endTimeTimestamp = endDate.getTime() / 1000;
-          const transaction = await contract.launchpad_submit(
+          const durationLockTimestamp = durationLock.getTime() / 1000;
+
+          console.log(
             randomID,
             initial,
-            priceLauchpad,
-            account,
-            totalSupply,
+            totalSale,
+            percentLock,
+            price,
+            priceListing,
+            tokenPayment,
+            durationLockTimestamp,
             startTimeTimestamp,
-            endTimeTimestamp,
+            endTimeTimestamp
+          );
+          const transaction = await contract.launchpad_submit(
+            [
+              account,
+              randomID,
+              initial,
+              totalSale,
+              percentLock,
+              price,
+              priceListing,
+              tokenPayment,
+              startTimeTimestamp,
+              endTimeTimestamp,
+              durationLockTimestamp,
+              maxBuy,
+              isRefundType,
+              isWhiteList,
+              50000,
+            ],
             url,
             data
           );
-          // await transaction.wait();
+          await transaction.wait();
           transactionHash = transaction.hash;
+
+          console.log(transactionHash);
+
           toast.success(
             <TransitionURL
               type={"Launchpad"}
@@ -186,6 +251,9 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           setInitial(0);
           setTotalSale(null);
           setPrice(null);
+          setPriceListing(null);
+          setMaxBuy(null);
+          setPercentLock(null);
           setTokenPayment("");
           setStartDate(null);
           setEndDate(null);
@@ -197,8 +265,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     }
     setIsProcess(false);
   };
-  console.log(isProcess);
-  console.log(account);
 
   const handleTokenPaymentChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -220,8 +286,12 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         "symbol",
         "initial",
         "tokenPayment",
+        "priceListing",
+        "maxBuy",
         "price",
+        "percentLock",
         "totalSale",
+        "durationLock",
       ];
       requiredFields.forEach((field) => {
         if (!eval(field)) {
@@ -254,6 +324,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       console.log(priceLauchpad);
 
       if (emptyInputFields.length === 0) {
+        console.log("check 1");
         const urlMetadata = getMetadataUrl({
           attributeItems,
           fileType,
@@ -263,6 +334,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           description,
           selectedCategory,
         });
+        console.log("pass URL meta");
+
         launchPadAction({
           initial,
           priceLauchpad,
@@ -270,6 +343,12 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           endDate,
           data: "0x",
           totalSale,
+          maxBuy,
+          priceListing,
+          durationLock,
+          percentLock,
+          isRefundType,
+          isWhiteList,
           url: await urlMetadata,
         });
       } else {
@@ -279,58 +358,82 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       setIsOpen(true);
     }
   };
-  console.log(isOpen);
+
+  const listInput = [
+    {
+      id: "initial",
+      label: "Initial",
+      placeholder: "Initial",
+      type: "number",
+      value: initial,
+      onChange: (e: any) => setInitial(e.target.value),
+      isError: emptyInputs.includes("initial"),
+      errorMsg: "Required",
+    },
+    {
+      id: "totalSale",
+      label: "TotalSale",
+      placeholder: "TotalSale",
+      type: "number",
+      value: totalSale,
+      onChange: (e: any) => setTotalSale(+e.target.value),
+      isError: emptyInputs.includes("totalSale"),
+      errorMsg: "Required",
+    },
+
+    {
+      id: "percentLock",
+      label: "Percent Lock",
+      placeholder: "Percent Lock",
+      type: "number",
+      value: percentLock,
+      onChange: (e: any) => setPercentLock(e.target.value),
+      isError: emptyInputs.includes("percentLock"),
+      errorMsg: "Required",
+    },
+
+    {
+      id: "price",
+      label: "Price",
+      placeholder: "Price",
+      type: "number",
+      value: price,
+      onChange: (e: any) => setPrice(e.target.value),
+      isError: emptyInputs.includes("totalSale"),
+      errorMsg: "Required",
+    },
+
+    {
+      id: "priceListing",
+      label: "Price Listing",
+      placeholder: "Price Listing",
+      type: "number",
+      value: priceListing,
+      onChange: (e: any) => setPriceListing(e.target.value),
+      isError: emptyInputs.includes("priceListing"),
+      errorMsg: "Required",
+    },
+  ];
 
   return (
     <div>
-      <div>
-        <label htmlFor="initial" className={styles.title}>
-          <span className="">Initial</span>
-          <span className="text-red">*</span>
-        </label>
-        <input
-          placeholder="Initial"
-          type="number"
-          id="initial"
-          autoComplete="off"
-          value={initial || ""}
-          className={
-            emptyInputs.includes("initial")
-              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-              : styles.inputItem
-          }
-          onChange={(e) => setInitial(e.target.value)}
-        />
-        {emptyInputs.includes("initial") && (
-          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
-            Required
-          </p>
-        )}
-      </div>
-      <div>
-        <label htmlFor="totalSale" className={styles.title}>
-          <span className="">Total Sale</span>
-          <span className="text-red">*</span>
-        </label>
-        <input
-          placeholder="Total Sale"
-          type="number"
-          autoComplete="off"
-          id="totalSale"
-          value={totalSale || ""}
-          className={
-            emptyInputs.includes("totalSale")
-              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-              : styles.inputItem
-          }
-          onChange={(e) => setTotalSale(+e.target.value)}
-        />
-        {emptyInputs.includes("totalSale") && (
-          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-            Required
-          </p>
-        )}
-      </div>
+      {listInput.map((item) => (
+        <>
+          <InputField
+            id={item.id}
+            label={item.label}
+            placeholder={item.label}
+            type={item.type}
+            value={item.value}
+            onChange={item.onChange}
+            isError={item.isError}
+            errorMsg={item.errorMsg}
+            emptyInputs={emptyInputs}
+            styles={styles}
+          />
+        </>
+      ))}
+
       <div className="relative">
         <label htmlFor="tokenPayment" className={styles.title}>
           <span className="">Token Payment</span>
@@ -373,30 +476,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </p>
         )}
       </div>
-      <div>
-        <label htmlFor="price" className={styles.title}>
-          <span className="">Price</span>
-          <span className="text-red">*</span>
-        </label>
-        <input
-          placeholder="1,000"
-          type="number"
-          autoComplete="off"
-          id="price"
-          value={price || ""}
-          className={
-            emptyInputs.includes("price")
-              ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-              : styles.inputItem
-          }
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        {emptyInputs.includes("price") && (
-          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
-            Required
-          </p>
-        )}
-      </div>
+
       <div>
         <label htmlFor="time" className={styles.title}>
           <span className="">Start & end time</span>
@@ -465,6 +545,139 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </p>
         )}
       </div>
+
+      <div>
+        <label htmlFor="durationLock" className={styles.title}>
+          <span className="">Duration Lock</span>
+          <span className="text-red">*</span>
+        </label>
+        <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+          <DatePicker
+            selected={durationLock}
+            onChange={(date) => setDurationLock(date)}
+            timeIntervals={15}
+            showTimeSelect
+            selectsEnd
+            startDate={endDate}
+            endDate={durationLock}
+            minDate={new Date()}
+            dateFormat="MMMM d, yyyy h:mm aa"
+            className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
+            placeholderText="Forever"
+          />
+        </div>
+      </div>
+
+      {isError && (
+        <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
+          Start time should be earlier than End time
+        </p>
+      )}
+      {emptyInputs.includes("durationLock") && (
+        <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="time">
+          You have to enter the time
+        </p>
+      )}
+
+      <InputField
+        id="maxBuy"
+        label="Max buy"
+        placeholder="500"
+        type="number"
+        value={maxBuy}
+        onChange={(e) => setMaxBuy(e.target.value)}
+        isError={emptyInputs.includes("maxBuy")}
+        errorMsg="Required"
+        emptyInputs={emptyInputs}
+        styles={styles}
+      />
+
+      <div>
+        <label htmlFor="isRefundType" className={styles.title}>
+          <span className="">Refund Type</span>
+          <span className="text-red">*</span>
+        </label>
+
+        <form className="flex gap-4 mb-4">
+          <div className="flex items-center border px-2 rounded-lg">
+            <input
+              id="burn"
+              onChange={() => {
+                setIsRefundType(true);
+              }}
+              type="radio"
+              name="bordered-radio"
+            />
+            <label
+              htmlFor="burn"
+              className="w-full text-sm p-2 font-medium text-gray-600"
+            >
+              Burn
+            </label>
+          </div>
+
+          <div className="flex items-center border px-2 rounded-lg">
+            <input
+              id="refund"
+              onChange={() => {
+                setIsRefundType(false);
+              }}
+              type="radio"
+              name="bordered-radio"
+            />
+            <label
+              htmlFor="refund"
+              className="w-full text-sm  p-2  font-medium text-gray-600"
+            >
+              Refund
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <label htmlFor="isWhiteList" className={styles.title}>
+          <span className="">Whitelist</span>
+          <span className="text-red">*</span>
+        </label>
+
+        <form className="flex gap-4 mb-4">
+          <div className="flex items-center border px-2 rounded-lg">
+            <input
+              id="public"
+              onChange={() => {
+                setIsWhiteList(true);
+              }}
+              type="radio"
+              name="bordered-radio"
+            />
+            <label
+              htmlFor="public"
+              className="w-full text-sm p-2 font-medium text-gray-600"
+            >
+              Public
+            </label>
+          </div>
+
+          <div className="flex items-center border px-2 rounded-lg">
+            <input
+              id="private"
+              onChange={() => {
+                setIsWhiteList(false);
+              }}
+              type="radio"
+              name="bordered-radio"
+            />
+            <label
+              htmlFor="private"
+              className="w-full text-sm  p-2  font-medium text-gray-600"
+            >
+              Private
+            </label>
+          </div>
+        </form>
+      </div>
+
       <div className="relative">
         <div>
           <Button
@@ -472,6 +685,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             className="w-[140px] py-2"
             primary
             onClick={handleLauchpadSubmit}
+            // onClick={handleLaunchPad}
           >
             CREATE
           </Button>
