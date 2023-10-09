@@ -18,7 +18,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineDoubleLeft } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Mousewheel, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -31,6 +31,7 @@ import { TabGroups } from "../../NavChoice";
 import TransitionURL from "../../Toast/TransionURL";
 import NFTItem from "./NFTItem";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 
 interface ReelsProps {
   data: any;
@@ -193,13 +194,6 @@ const Reels: React.FC<ReelsProps> = ({
     };
     checkApproveToken();
   }, [account, wallet, amountNFTSubmit, amountBuyDec, isOpenTransaction, filter.erc, allowanceToken]);
-  // console.log(amountBuy.toString());
-  // console.log(amountBuyDec);
-  // console.log(bigNumberBalance);
-  // console.log(isSufficientTokenBuy);
-  // console.log(isApprovedNFT);
-  // console.log(isApprovedToken);
-  // console.log(filter);
 
   const handleApproveNFT = async () => {
     if (account) {
@@ -296,7 +290,7 @@ const Reels: React.FC<ReelsProps> = ({
           }
           await provider.waitForTransaction(result.hash);
           setIsOpenTransaction(false);
-          if(result.hash){
+          if (result.hash) {
             toast.success(
               <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
               {
@@ -320,8 +314,6 @@ const Reels: React.FC<ReelsProps> = ({
       }
     }
   };
-  console.log(Math.floor(amountSellDec).toString());
-  console.log(Math.floor(amountBuyDec).toString());
 
   const handleSellNFT = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -506,14 +498,14 @@ const Reels: React.FC<ReelsProps> = ({
                       {amountNFTSubmit ? (
                         <div className="text-center">
                           {activeChoice === "BUY" &&
-                            (!amountBuy ? (
+                            (!amountBuyDec ? (
                               <p className="w-40 h-[36px] rounded-full animate-pulse bg-slate-200"></p>
                             ) : (
                               <div className="text-3xl text-secondary3">
                                 {amountNFTSubmit ? (
                                   <span>
                                     {formatNumber(
-                                      amountBuy.toString()
+                                      divideByDecimal(amountBuyDec.toString(), filter.tokenDecimals)
                                     )}
                                   </span>
                                 ) : (
@@ -523,14 +515,14 @@ const Reels: React.FC<ReelsProps> = ({
                               </div>
                             ))}
                           {activeChoice === "SELL" &&
-                            (!amountSell ? (
+                            (!amountSellDec ? (
                               <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
                             ) : (
                               <div className="text-4xl text-secondary3">
                                 {amountNFTSubmit ? (
                                   <span>
                                     {formatNumber(
-                                      amountSell.toString()
+                                      divideByDecimal(amountSellDec.toString(), filter.tokenDecimals)
                                     )}
                                   </span>
                                 ) : (
@@ -804,8 +796,8 @@ const Reels: React.FC<ReelsProps> = ({
                   </div>
                   <AvatarUser
                     activeSlideIndex={activeSlideIndex}
-                    width={32}
-                    height={32}
+                    width={24}
+                    height={24}
                   />
                   <p className="font-medium text-dark2">{`${filter.creator.slice(
                     0,
@@ -832,14 +824,14 @@ const Reels: React.FC<ReelsProps> = ({
                   {amountNFTSubmit ? (
                     <div className="text-center">
                       {activeChoice === "BUY" &&
-                        (!amountBuy ? (
+                        (!amountBuyDec ? (
                           <p className="w-40 h-[36px] rounded-full animate-pulse bg-slate-200"></p>
                         ) : (
                           <div className="text-3xl text-secondary3">
                             {amountNFTSubmit ? (
                               <span>
                                 {formatNumber(
-                                  amountBuy.toString()
+                                  divideByDecimal(amountBuyDec.toString(), filter.tokenDecimals)
                                 )}
                               </span>
                             ) : (
@@ -849,14 +841,14 @@ const Reels: React.FC<ReelsProps> = ({
                           </div>
                         ))}
                       {activeChoice === "SELL" &&
-                        (!amountSell ? (
+                        (!amountSellDec ? (
                           <p className="w-40 h-6 rounded-full animate-pulse bg-slate-200"></p>
                         ) : (
                           <div className="text-4xl text-secondary3">
                             {amountNFTSubmit ? (
                               <span>
                                 {formatNumber(
-                                  amountSell.toString()
+                                  divideByDecimal(amountSellDec.toString(), filter.tokenDecimals)
                                 )}
                               </span>
                             ) : (

@@ -211,7 +211,7 @@ export default function Header() {
                     {...attrs}
                   >
                     <ul className="pb-2 mt-2">
-                      <li className={`${style.itemSub}`}>Proflie</li>
+                      <Link href='/profile' className={`${style.itemSub}`}>Profile</Link>
                       <li
                         className={`${style.itemSub} justify-between mb-2`}
                         onClick={disconnectWallet}

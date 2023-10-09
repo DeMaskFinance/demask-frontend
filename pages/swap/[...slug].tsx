@@ -127,7 +127,7 @@ const Swap: React.FC = () => {
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
   console.log(isApprovedNFT);
-  
+
   const handleApproveNFT = async () => {
     if (account) {
       const providerChoice = getProvider(wallet);
@@ -155,14 +155,16 @@ const Swap: React.FC = () => {
     } else {
       setAmountBuy(0);
       setAmountSell(0);
+      setAmountBuyDec(0);
+      setAmountSellDec(0);
     }
   }, [inputNFT, data])
   // console.log(amountSell);
   // console.log(amountSellDec);
-  // // console.log(allowanceToken);
+  // console.log(allowanceToken);
   // console.log(amountBuyDec);
   // console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
-  
+
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -211,9 +213,9 @@ const Swap: React.FC = () => {
     };
     checkApproveToken();
   }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
-  console.log('Check',isOpenTransaction);
-  console.log(allowanceToken);
-  
+  // console.log('Check',isOpenTransaction);
+  // console.log(allowanceToken);
+
   const handleApproveToken = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -276,7 +278,7 @@ const Swap: React.FC = () => {
               inputNFT,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec))}
+              { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec)) }
             );
           } else {
             result = await contract.buy(
@@ -532,7 +534,7 @@ const Swap: React.FC = () => {
                       {inputNFT ? (
                         <span>
                           {formatNumber(
-                            amountBuy.toString()
+                            divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
                           )}
                         </span>
                       ) : (
@@ -546,7 +548,7 @@ const Swap: React.FC = () => {
                       {inputNFT ? (
                         <span>
                           {formatNumber(
-                            amountSell.toString()
+                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
                           )}
                         </span>
                       ) : (
@@ -651,13 +653,13 @@ const Swap: React.FC = () => {
                     {activeChoice === "BUY" ? (
                       <div className={styles.inputItem}>
                         {formatNumber(
-                          amountBuy.toString()
+                          divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
                         )}
                       </div>
                     ) : (
                       <div className={styles.inputItem}>
                         {formatNumber(
-                          amountSell.toFixed()
+                          divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
                         )}
                       </div>
                     )}

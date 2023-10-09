@@ -61,7 +61,7 @@ const AvatarUser: FunctionComponent<AvatarProps> = ({ activeSlideIndex,width,hei
   }, [activeSlideIndex]);
 
   return (
-    <div className="w-8 h-8 mr-2 rounded-full">
+    <div className="mr-2 rounded-full">
       <Image src={avatarUser.avt} alt="avatar" width={width} height={height} />
     </div>
   );

@@ -137,7 +137,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       }
     }
   }, [inputNFT, inputToken, data]);
-  console.log(amountErcDesired.toString());
+  // console.log(amountErcDesired.toString());
   // console.log(amountErcDesiredToDec.toString());
   // console.log(balanceToken);
 

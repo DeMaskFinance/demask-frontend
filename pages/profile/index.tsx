@@ -1,0 +1,75 @@
+import React, { useContext, useState } from 'react'
+import { NextSeo } from "next-seo";
+import { SEO } from '../../next-seo.config';
+import AccountContext from '@/context/AccountContext';
+import { ModalWallet } from '@/components/Modal/ModalWallet';
+import { Button } from '@/components/Buttons';
+import { AvatarUser } from '@/components/Avatars';
+import { IoCopyOutline } from "react-icons/io5";
+import { toast } from 'react-toastify';
+import Profile from '@/components/Profile/Profile';
+const updateMeta = {
+    ...SEO,
+    title: 'Profile',
+};
+function ProfilePage() {
+    const { account, wallet, demask, chainId, tokenDefault } = useContext(AccountContext);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const handleOpen = () => {
+        document.body.style.overflowY = "hidden";
+        setIsOpen(true);
+    };
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(account)
+        toast.success(
+            'Copied',
+            {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            }
+        );
+    }
+    return (
+        <div>
+            <NextSeo {...updateMeta} />
+            <div className='max-w-6xl pt-6 mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]'>
+                {account ? (
+                    <div>
+                        <section>
+                            <div className='h-[320px] bg-dark3 rounded-xl'></div>
+                            <div className='flex items-end mt-2'>
+                                <AvatarUser width={96} height={96} />
+                                <div>
+                                    <p className='text-2xl font-semibold'>Unnamed</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <span className='text-secondary1'>{`${account.slice(0, 6)}...${account.slice(-4)}`}</span>
+                                        <button onClick={copyToClipboard}><IoCopyOutline /></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        {/* <Profile /> */}
+                    </div>
+                ) : (
+                    <Button
+                        className="w-[140px] py-2 block mx-auto"
+                        primary
+                        onClick={handleOpen}
+                    >
+                        CONNECT WALLET
+                    </Button>
+                )}
+            </div>
+            <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+        </div>
+    )
+}
+
+export default ProfilePage;
+

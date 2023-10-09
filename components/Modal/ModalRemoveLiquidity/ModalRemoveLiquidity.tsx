@@ -24,6 +24,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -197,8 +198,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
         }
       }
     }, [data, account]);
-    // console.log(account);
-    // console.log(tokenAddress);
+    console.log(exponentialToDecimal(Number(amountTokenMin)));
+    console.log(exponentialToDecimal(Number(amountNFTMin)));
     // console.log(tokenSymbol);
 
     const removeLiquidity = async () => {
@@ -221,8 +222,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
               data.nftAddress,
               data.nftId,
               Math.floor(Number(liquidity)).toString(),
-              amountTokenMin,
-              amountNFTMin,
+              exponentialToDecimal(Number(amountTokenMin)),
+              exponentialToDecimal(Number(amountNFTMin)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }
@@ -234,8 +235,8 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
               data.nftAddress,
               data.nftId,
               Math.floor(Number(liquidity)).toString(),
-              amountTokenMin,
-              amountNFTMin,
+              exponentialToDecimal(Number(amountTokenMin)),
+              exponentialToDecimal(Number(amountNFTMin)),
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
               { gasLimit: 8000000 }

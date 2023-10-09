@@ -38,7 +38,7 @@ function Creators() {
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between w-full gap-2">
                     <h2 className="flex items-center">
-                      <div className="w-[24px] mr-2 flex-shrink-0 h-[24px] overflow-hidden rounded-lg">
+                      <div className="flex-shrink-0 overflow-hidden rounded-lg">
                         <AvatarUser width={24} height={24} />
                       </div>
                       <div className="flex items-baseline gap-2">
