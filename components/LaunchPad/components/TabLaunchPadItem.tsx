@@ -1,18 +1,40 @@
 import { AvatarUser } from "@/components/Avatars";
+import { convertTime } from "@/hooks/useConvertTime";
 import { formatDate } from "@/libs/utils/formatDate";
 import formatNumber from "@/libs/utils/formatNumer";
 import { getBuyPrice } from "@/libs/utils/getPrice";
 import getDate from "date-fns/getDate";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface TabLaunchPadProps {
   item: any;
   query: string;
 }
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
+  const blockNumber = item.startTime;
+  const [blockNumberTimer, setBlockNumberTimer] = useState(0);
+
+  const timer = () => {
+    const currentTime = Math.floor(Date.now() / 1000);
+    const reBase = Math.max(0, blockNumber - currentTime);
+    setBlockNumberTimer(reBase);
+  };
+
+  useEffect(() => {
+    timer();
+    const id = setInterval(timer, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    timer();
+  }, [blockNumber]);
+
+  const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
+
   return (
-    <div>
+    <div className="">
       <div className="relative">
         <div className="">
           {item.metadata.image && (
@@ -90,49 +112,57 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
           </div>
           <div className="">
             <div>
-              <div className="flex justify-between">
-                <div>
-                  <p>Start time</p>
-                  <p>{formatDate(item.startTime)}</p>
-                </div>
-                <div>
-                  <p>End time</p>
-                  <p>{formatDate(item.endTime)}</p>
-                </div>
-              </div>
+              {seconds > 0 && (
+                <div className="flex justify-between">
+                  <div className="mb-2 flex justify-between w-full">
+                    <span className="border rounded-full py-1 px-2">
+                      {days}d
+                    </span>
+                    <span className="border rounded-full py-1 px-2">
+                      {hours}h
+                    </span>
 
-              <p>Price</p>
-              <p>{item.price}</p>
-              <div className="flex justify-end items-end">
-                <button className="text-white border px-4 bg-green rounded-md">
-                  BUY
-                </button>
+                    <span className="border rounded-full py-1 px-2">
+                      {minutes > 9 ? minutes : "0" + minutes}m
+                    </span>
+                    <span className="border rounded-full py-1 px-2">
+                      {seconds > 9 ? seconds : "0" + seconds}s
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <p>Price</p>
+                  <p>{item.price}</p>
+                </div>
+
+                <div>
+                  <p>Price listing</p>
+                  <p>{item.priceListing}</p>
+                </div>
+
+                <div>
+                  <p>Initial</p>
+                  <p>{item.initial}</p>
+                </div>
+
+                <div>
+                  <p>Percent Lock</p>
+                  <p>{item.percentLock}</p>
+                </div>
+
+                <div>
+                  <p>Max buy</p>
+                  <p>{item.maxbuy}</p>
+                </div>
+
+                <div>
+                  <p>Whitelist</p>
+                  <p>{item.whiteList}</p>
+                </div>
               </div>
-              {/* {item.tokenSymbol && item.reserveToken && item.nft ? (
-                <div className="flex flex-col">
-                  {item.reserveToken.toString() === "0" ||
-                  item.reserveNFT.toString() === "0" ||
-                  item.reserveNFT.toString() === "1" ? (
-                    <div className="text-red">Can't buy</div>
-                  ) : (
-                    <div className="flex gap-x-1">
-                      <span>
-                        {formatNumber(
-                          getBuyPrice(
-                            item.reserveNFT,
-                            item.reserveToken,
-                            1
-                          ).toString()
-                        )}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="flex animate-pulse gap-x-4">
-                  <div className="w-24 h-6 rounded-full bg-slate-200"></div>
-                </div>
-              )} */}
             </div>
           </div>
         </div>

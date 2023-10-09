@@ -113,8 +113,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     refetchInterval: 60000,
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
       setIsError(true);
@@ -187,18 +185,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           const endTimeTimestamp = endDate.getTime() / 1000;
           const durationLockTimestamp = durationLock.getTime() / 1000;
 
-          console.log(
-            randomID,
-            initial,
-            totalSale,
-            percentLock,
-            price,
-            priceListing,
-            tokenPayment,
-            durationLockTimestamp,
-            startTimeTimestamp,
-            endTimeTimestamp
-          );
           const transaction = await contract.launchpad_submit(
             [
               account,
@@ -415,6 +401,12 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     },
   ];
 
+  const convertTime = (timestamp: any) => {
+    const secondsInADay = 60 * 60 * 24;
+    const days = Math.floor(timestamp / secondsInADay);
+    return days;
+  };
+
   return (
     <div>
       {listInput.map((item) => (
@@ -551,20 +543,25 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span className="">Duration Lock</span>
           <span className="text-red">*</span>
         </label>
-        <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
-          <DatePicker
-            selected={durationLock}
-            onChange={(date) => setDurationLock(date)}
-            timeIntervals={15}
-            showTimeSelect
-            selectsEnd
-            startDate={endDate}
-            endDate={durationLock}
-            minDate={new Date()}
-            dateFormat="MMMM d, yyyy h:mm aa"
-            className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
-            placeholderText="Forever"
-          />
+        <div className="flex gap-4">
+          <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            <DatePicker
+              selected={durationLock}
+              onChange={(date) => setDurationLock(date)}
+              timeIntervals={15}
+              showTimeSelect
+              selectsEnd
+              startDate={endDate}
+              endDate={durationLock}
+              minDate={new Date()}
+              dateFormat="MMMM d, yyyy h:mm aa"
+              className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
+              placeholderText="Forever"
+            />
+          </div>
+          {/* <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            {convertTime(durationLock && durationLock.getTime() / 1000)}
+          </div> */}
         </div>
       </div>
 
