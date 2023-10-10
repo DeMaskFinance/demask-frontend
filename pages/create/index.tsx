@@ -16,7 +16,7 @@ import { LaunchPad } from "@/components/Creator";
 import images from "@/public/images";
 import { TabGroups } from "@/components/NavChoice";
 import { NextSeo } from "next-seo";
-import { SEO } from '../../next-seo.config';
+import { SEO } from "../../next-seo.config";
 import { Category } from "@/libs/constants";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
@@ -25,7 +25,7 @@ const styles = {
 };
 const updateMeta = {
   ...SEO,
-  title: 'Create',
+  title: "Create",
 };
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
@@ -429,7 +429,7 @@ export default function Creator() {
               onChoiceChange={handleChoiceChange}
             />
           </div>
-          <MintNFT
+          {/* <MintNFT
             name={name}
             symbol={symbol}
             attributeItems={attributeItems}
@@ -446,8 +446,8 @@ export default function Creator() {
             setSelectedCategory={setSelectedCategory}
             setSelectedFile={setSelectedFile}
             fileType={fileType}
-          />
-          {/* {activeButton === "Mint" ? (
+          /> */}
+          {activeButton === "Mint" ? (
             <MintNFT
               name={name}
               symbol={symbol}
@@ -455,7 +455,7 @@ export default function Creator() {
               description={description}
               fileIPFS={fileIPFS}
               selectedCategory={selectedCategory}
-              setEmptyInputs={setEmptyInputs}
+            setEmptyInputs={setEmptyInputs}
               emptyInputs={emptyInputs}
               setName={setName}
               setSymbol={setSymbol}
@@ -485,7 +485,7 @@ export default function Creator() {
               setSelectedFile={setSelectedFile}
               fileType={fileType}
             />
-          )} */}
+          )}
         </form>
       </div>
     </div>

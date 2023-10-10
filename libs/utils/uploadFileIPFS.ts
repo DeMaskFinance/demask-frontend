@@ -5,6 +5,7 @@ import { create } from "ipfs-http-client";
 const projectId = process.env.NEXT_PUBLIC_INFURA_KEY;
 const projectSecret = process.env.NEXT_PUBLIC_INFURA_SECRET;
 
+console.log(projectId, projectSecret);
 const authorization =
   "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
 const ipfs = create({
@@ -13,7 +14,7 @@ const ipfs = create({
     authorization,
   },
 });
-export async function uploadFileToIPFS(file:any) {
+export async function uploadFileToIPFS(file: any) {
   if (file !== null) {
     try {
       const response = await ipfs.add(file);

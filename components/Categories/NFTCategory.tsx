@@ -1,84 +1,86 @@
-import { mediaType } from '@/libs/constants';
+import { mediaType } from "@/libs/constants";
 import formatNumber from "@/libs/utils/formatNumer";
-import { getBuyPrice } from '@/libs/utils/getPrice';
+import { getBuyPrice } from "@/libs/utils/getPrice";
 import images from "@/public/images";
 import Image from "next/image";
-import Link from 'next/link';
+import Link from "next/link";
 import { AvatarUser } from "../Avatars";
-import ModalNumber from '../Modal/ModalLength/ModalNumber';
+import ModalNumber from "../Modal/ModalLength/ModalNumber";
 
 interface NFTCategoryProps {
-    item: any
+  item: any;
 }
 
 const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
-    let symbolTokenSwap = "";
-    if (item.tokenSymbol === "WETH") {
-        symbolTokenSwap = "MATIC";
-    } else if (item.tokenSymbol === "WBNB") {
-        symbolTokenSwap = "BNB";
-    } else {
-        symbolTokenSwap = item.tokenSymbol;
-    }
-    const getDate = (timeStamp: any) => {
-        const date = timeStamp * 1000;
-        const currentDateMillis = Date.now();
-        const timeDifferenceMillis = date - currentDateMillis;
-        const daysLeft = Math.ceil(timeDifferenceMillis / (1000 * 60 * 60 * 24));
-        return -daysLeft;
-    };
-    console.log(item);
+  let symbolTokenSwap = "";
+  if (item.tokenSymbol === "WETH") {
+    symbolTokenSwap = "MATIC";
+  } else if (item.tokenSymbol === "WBNB") {
+    symbolTokenSwap = "BNB";
+  } else {
+    symbolTokenSwap = item.tokenSymbol;
+  }
+  const getDate = (timeStamp: any) => {
+    const date = timeStamp * 1000;
+    const currentDateMillis = Date.now();
+    const timeDifferenceMillis = date - currentDateMillis;
+    const daysLeft = Math.ceil(timeDifferenceMillis / (1000 * 60 * 60 * 24));
+    return -daysLeft;
+  };
 
-    return (
-        <Link
-            href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}
-        >
-            <div className="relative">
-                <div className="relative pb-[100%] h-0">
-                    {item.metadata.image && mediaType.image.some(extension => item.metadata.image.endsWith(extension)) && (
-                        <Image
-                            loading="lazy"
-                            width={760}
-                            height={760}
-                            src={item.metadata.image}
-                            alt="NFT Image"
-                            placeholder="blur"
-                            blurDataURL={`${images.blur}`}
-                            className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
-                        />
-                    )}
-                    {item.metadata.animation_url &&
-                        !item.metadata.image && mediaType.video.some(extension => item.metadata.animation_url.endsWith(extension)) && (
-                            <video
-                                src={item.metadata.animation_url}
-                                autoPlay={false}
-                                loop
-                                muted
-                                controls={false}
-                                onMouseOver={(event) =>
-                                    (event.target as any).play()
-                                }
-                                onMouseOut={(event) =>
-                                    (event.target as any).pause()
-                                }
-                                className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
-                            />
-                        )}
-                    {item.metadata.image &&
-                        item.metadata.animation_url && mediaType.audio.some(extension => item.metadata.animation_url.endsWith(extension)) && (
-                            <audio
-                                autoPlay
-                                loop
-                                muted
-                                controls
-                                src={item.metadata.animation_url}
-                                className="absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[80%] py-1 rounded-lg  object-cover"
-                            >
-                                Your browser does not support the
-                                <code>audio</code> element.
-                            </audio>
-                        )}
-                </div>
+  return (
+    <Link href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}>
+      <div className="relative">
+        <div className="relative pb-[100%] h-0">
+          {item.metadata.image &&
+            mediaType.image.some((extension) =>
+              item.metadata.image.endsWith(extension)
+            ) && (
+              <Image
+                loading="lazy"
+                width={760}
+                height={760}
+                src={item.metadata.image}
+                alt="NFT Image"
+                placeholder="blur"
+                blurDataURL={`${images.blur}`}
+                className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
+              />
+            )}
+          {item.metadata.animation_url &&
+            !item.metadata.image &&
+            mediaType.video.some((extension) =>
+              item.metadata.animation_url.endsWith(extension)
+            ) && (
+              <video
+                src={item.metadata.animation_url}
+                autoPlay={false}
+                loop
+                muted
+                controls={false}
+                onMouseOver={(event) => (event.target as any).play()}
+                onMouseOut={(event) => (event.target as any).pause()}
+                className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
+              />
+            )}
+          {item.metadata.image &&
+            item.metadata.animation_url &&
+            mediaType.audio.some((extension) =>
+              item.metadata.animation_url.endsWith(extension)
+            ) && (
+              <audio
+                autoPlay
+                loop
+                muted
+                controls
+                src={item.metadata.animation_url}
+                className="absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[80%] py-1 rounded-lg  object-cover"
+              >
+                Your browser does not support the
+                <code>audio</code> element.
+              </audio>
+            )}
+        </div>
 
                 <div>
                     <h6
@@ -141,38 +143,32 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                             )}
                         </div>
 
-                        <div className="flex flex-col items-end">
-                            <p>Reverse NFT</p>
-                            {item.reserveNFT ? (
-                                <ModalNumber data={item.reserveNFT} />
-                            ) : (
-                                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="flex items-end justify-between">
-                        <div className="flex flex-col">
-                            <p>Reverse Token</p>
-                            {item.reserveToken ? (
-                                <span className="block">
-                                    {formatNumber(
-                                        item.reserveToken
-                                    )}
-                                </span>
-                            ) : (
-                                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
-                            )}
-                        </div>
-
-                        <p className="block">
-                            {getDate(item.blockTimestamp)} d ago
-                        </p>
-                    </div>
-                </div>
+            <div className="flex flex-col items-end">
+              <p>Reverse NFT</p>
+              {item.reserveNFT ? (
+                <ModalNumber data={item.reserveNFT} />
+              ) : (
+                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
+              )}
             </div>
-        </Link>
-    );
-}
+          </div>
+
+          <div className="flex items-end justify-between">
+            <div className="flex flex-col">
+              <p>Reverse Token</p>
+              {item.reserveToken ? (
+                <span className="block">{formatNumber(item.reserveToken)}</span>
+              ) : (
+                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
+              )}
+            </div>
+
+            <p className="block">{getDate(item.blockTimestamp)} d ago</p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 export default NFTCategory;

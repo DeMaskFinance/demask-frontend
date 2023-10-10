@@ -1,19 +1,20 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 import { AccountProvider } from "@/context/AccountContext";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "@/components/Layouts";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import { Poppins } from "next/font/google";
 import MaintenanceError from "./maintenanceError";
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { Web3Modal } from '@web3modal/react'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { arbitrum, mainnet, polygon } from 'wagmi/chains'
+import {
+  EthereumClient,
+  w3mConnectors,
+  w3mProvider,
+} from "@web3modal/ethereum";
+import { Web3Modal } from "@web3modal/react";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { arbitrum, mainnet, polygon } from "wagmi/chains";
 import Script from "next/script";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,22 +39,23 @@ const queryClient = new QueryClient({
   },
 });
 
-const chains = [arbitrum, mainnet, polygon]
-const projectId = '1af0159e7a959f2fff3f96c541aef2cb'
+const chains = [arbitrum, mainnet, polygon];
+const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: w3mConnectors({ projectId, chains }),
-  publicClient
-})
-const ethereumClient = new EthereumClient(wagmiConfig, chains)
+  publicClient,
+});
+const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 export default function App({
   Component,
   pageProps,
 }: AppProps & { Component: NextPageWithLayout }) {
   const isMaintenanceMode = false;
+
   return (
     <AccountProvider>
       <Script
@@ -61,11 +63,11 @@ export default function App({
       />
 
       <Script id="google-analytics">
-        {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+        {` 
+                    window.dataLayer = window.dataLayer || []; 
+                    function gtag(){dataLayer.push(arguments);} 
+                    gtag('js', new Date()); 
+                    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}'); 
                 `}
       </Script>
       <Head>
