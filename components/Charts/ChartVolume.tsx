@@ -32,7 +32,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     queryKey: ["ChartVolume", chainId],
     queryFn: async () => {
       const res = await categoryAPI(
-        `/v2/volumeChart?chainId=${chainId}&intervalDate=30`
+        `volumeChart?chainId=${chainId}&intervalDate=30`
       );
       return res;
     },

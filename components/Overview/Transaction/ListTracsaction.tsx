@@ -12,7 +12,7 @@ function ListTracsaction() {
   const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
     queryKey: ["transaction", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/v2/transaction-list?chainId=${chainId}&page=${page}`);
+      const res = await categoryAPI(`transaction-list?chainId=${chainId}&page=${page}`);
       return res;
     },
 

@@ -12,7 +12,7 @@ function InterestItem() {
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["topNftHome", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/v2/topNFT-list?chainId=${chainId}&page=1`);
+      const res = await categoryAPI(`topNFT-list?chainId=${chainId}&page=1`);
       return res;
     },
 

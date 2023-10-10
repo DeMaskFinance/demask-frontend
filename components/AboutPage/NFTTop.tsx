@@ -129,7 +129,7 @@ const NFTTop: React.FunctionComponent<NFTTopProps> = () => {
                             <div className="absolute bg-[rgba(0,0,0,0.2)] w-full rounded-lg h-full  opacity-0 group-hover:opacity-100 top-0 transition-all duration-300 ease-linear"></div>
                             <div className="absolute top-0 z-10 flex flex-col items-center justify-end w-full h-full p-1 duration-300 ease-linear translate-y-full rounded-lg group-hover:translate-y-0">
                               <p className="text-2xl text-white">
-                                {formatNumber(nftItem.lastPrice.toFixed(2))} USD
+                                {formatNumber(nftItem?.lastPrice?.toFixed(2))} USD
                               </p>
                               <div className="flex mt-4 mb-1 text-xl text-dark4">
                                 <p className="line-clamp-1">{nftItem.metadata.name}</p>

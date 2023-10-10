@@ -47,7 +47,7 @@ export default function MintNFT({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
-  console.log(contractAddress);
+  console.log(fileIPFS);
 
   async function mintNFT({ amount, data, url }: mintProps) {
     const ethereum = (window as any).ethereum;

@@ -19,7 +19,7 @@ const Category = ({ label }: { label: string }) => {
   const { data, isLoading } = useQuery({
     queryKey: [label, chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/v2/items/${label}?chainId=${chainId}&page=1&limit=10`);
+      const res = await categoryAPI(`items/${label}?chainId=${chainId}&page=1&limit=10`);
       return res;
     },
   });

@@ -13,7 +13,7 @@ function TopNft() {
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["topNft", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/v2/topNFT-list?chainId=${chainId}&page=${page}`);
+      const res = await categoryAPI(`topNFT-list?chainId=${chainId}&page=${page}`);
       return res;
     },
 

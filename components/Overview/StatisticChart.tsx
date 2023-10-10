@@ -27,7 +27,7 @@ function StatisticChart() {
   } = useQuery({
     queryKey: ["tvl", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/v2/tvlChart?chainId=${chainId}&date=${currentDateFormatted}`);
+      const res = await categoryAPI(`tvlChart?chainId=${chainId}&date=${currentDateFormatted}`);
       return res;
     },
 
@@ -38,7 +38,7 @@ function StatisticChart() {
     queryKey: ["volumne", chainId],
     queryFn: async () => {
       const res = await categoryAPI(
-        `/v2/volumeChart?chainId=${chainId}&date=${currentDateFormatted}`
+        `volumeChart?chainId=${chainId}&date=${currentDateFormatted}`
       );
       return res;
     },
