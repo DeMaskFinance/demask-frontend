@@ -42,7 +42,9 @@ function ProfilePage() {
                 {account ? (
                     <div>
                         <section>
-                            <div className='h-[320px] bg-dark3 rounded-xl'></div>
+                            <div className='h-[320px] bg-dark3 rounded-xl'>
+                                <img src='/images/thumbDemask.png' alt='thumb' className='object-cover w-full h-full rounded-xl'/>
+                            </div>
                             <div className='flex items-end mt-2'>
                                 <AvatarUser width={96} height={96} />
                                 <div>
@@ -54,7 +56,7 @@ function ProfilePage() {
                                 </div>
                             </div>
                         </section>
-                        {/* <Profile /> */}
+                        <Profile />
                     </div>
                 ) : (
                     <Button

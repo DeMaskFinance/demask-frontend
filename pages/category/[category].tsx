@@ -29,7 +29,7 @@ export default function Art() {
   const { data, isLoading } = useQuery({
     queryKey: [slug, "type", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`/v2/items/${capitalizeFirstLetter(slug)}?chainId=${chainId}`);
+      const res = await categoryAPI(`items/${capitalizeFirstLetter(slug)}?chainId=${chainId}`);
       return res;
     },
   });

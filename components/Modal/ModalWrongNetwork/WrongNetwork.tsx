@@ -14,20 +14,20 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     const { account, wallet, chainId, demask, tokenDefault, updateAccount } = useContext(AccountContext);
     useEffect(() => {
         if (account && wallet) {
-          const checkNetwork = async () => {
-            const provider = getProvider(wallet);
-            const networkId = await provider.request({ method: "net_version" });
-            if (networkId !== chainId) {
-              setIsWrongNetwork(true);
-              document.body.style.overflowY = "hidden";
-            } else {
-              setIsWrongNetwork(false)
-              document.body.style.overflowY = "auto";
+            const checkNetwork = async () => {
+                const provider = getProvider(wallet);
+                const networkId = await provider.request({ method: "net_version" });
+                if (networkId !== chainId) {
+                    setIsWrongNetwork(true);
+                    document.body.style.overflowY = "hidden";
+                } else {
+                    setIsWrongNetwork(false)
+                    document.body.style.overflowY = "auto";
+                }
             }
-          }
-          checkNetwork();
+            checkNetwork();
         }
-      }, [chainId, account, wallet])
+    }, [chainId, account, wallet])
     const disconnectWallet = () => {
         localStorage.removeItem("ACCOUNT_DEMASK");
         // localStorage.removeItem("WALLET_DEMASK");
@@ -35,7 +35,10 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
         setIsWrongNetwork(false)
         document.body.style.overflowY = "auto";
     };
-
+    // const handleClose = () =>{
+    //     setIsWrongNetwork(false)
+    //     document.body.style.overflowY = "auto";
+    // }
     return (
         <Wrapper isOpen={isWrongNetwork}>
             <div className="z-50 flex flex-col justify-center h-full">
@@ -48,12 +51,12 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                         <p className=' text-yellow'>Please switch your network to continue</p>
                     </div>
                     <div className='flex justify-between px-0 lg:px-6'>
-                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId,wallet,demask,setIsWrongNetwork)}>Switch Network</button>
+                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId, wallet, demask, setIsWrongNetwork)}>Switch Network</button>
                         <button className='p-2 text-sm font-medium text-white rounded-lg bg-red' onClick={disconnectWallet}>Disconnect wallet</button>
                     </div>
                     <button
                         className="absolute top-0 right-0 p-2 text-lg"
-                    // onClick={handleClose}
+                        onClick={disconnectWallet}
                     >
                         <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
                     </button>

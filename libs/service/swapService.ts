@@ -9,7 +9,7 @@ export const swapAPI = async (
 ) => {
   try {
     const res = await request.get(
-      `/v2/swap?chainId=${chainId}&nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}`
+      `swap?chainId=${chainId}&nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}`
     );
     return res.data;
   } catch (error) {

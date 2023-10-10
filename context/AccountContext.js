@@ -72,7 +72,7 @@ export const AccountProvider = ({ children }) => {
         }
       };
       const handleChainChanged = (networkId) => {
-        if (networkId === "80001" || networkId === "97") {
+        if (networkId === "80001" || networkId === "97" || networkId === "280") {
           updateChainId(networkId);
         }
       };

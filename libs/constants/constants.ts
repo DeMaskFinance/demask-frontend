@@ -168,7 +168,7 @@ const amountNFT = [
 ];
 const mediaType = {
   image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml", ".webp"],
-  video: [".mp4", ".quicktime"],
+  video: [".mp4", ".quicktime",".m4v"],
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };

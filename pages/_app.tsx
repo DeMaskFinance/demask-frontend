@@ -17,6 +17,8 @@ import { arbitrum, mainnet, polygon } from 'wagmi/chains'
 import Script from "next/script";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NextAdapterPages from 'next-query-params';
+import { QueryParamProvider } from 'use-query-params';
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -24,7 +26,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
-  adjustFontFallback: false 
+  adjustFontFallback: false
 });
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,31 +85,33 @@ export default function App({
         ></link>
       </Head>
       <QueryClientProvider client={queryClient}>
-        <style jsx global>{`
+        <QueryParamProvider adapter={NextAdapterPages}>
+          <style jsx global>{`
           html {
             font-family: ${poppins.style.fontFamily};
           }
         `}</style>
-        <WagmiConfig config={wagmiConfig}>
-          {isMaintenanceMode ? (
-            <Layout>
-              <MaintenanceError />
-            </Layout>
-          ) : Component.PageLayout ? (
-            <Component.PageLayout>
-              <Component {...pageProps} />
-            </Component.PageLayout>
-          ) : (
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          )}
-        </WagmiConfig>
+          <WagmiConfig config={wagmiConfig}>
+            {isMaintenanceMode ? (
+              <Layout>
+                <MaintenanceError />
+              </Layout>
+            ) : Component.PageLayout ? (
+              <Component.PageLayout>
+                <Component {...pageProps} />
+              </Component.PageLayout>
+            ) : (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )}
+          </WagmiConfig>
 
-        <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
-          '--w3m-z-index': '9999'
-        }} />
-        <ToastContainer limit={1}/>
+          <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
+            '--w3m-z-index': '9999'
+          }} />
+          <ToastContainer limit={1} />
+        </QueryParamProvider>
       </QueryClientProvider>
     </AccountProvider>
   );
