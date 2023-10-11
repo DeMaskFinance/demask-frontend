@@ -7,13 +7,14 @@ import {
   tokenMatic,
   Zksync_DEMASK,
   tokenzkSync,
+  network,
 } from "@/libs/constants";
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
   const [account, setAccount] = useState("");
   const [wallet, setWallet] = useState("");
-  const [chainId, setChainId] = useState("80001");
+  const [chainId, setChainId] = useState(network[0]?.chain);
   const [demask, setDemask] = useState("");
   const [tokenDefault, setTokenDefault] = useState("");
   useEffect(() => {
@@ -34,10 +35,10 @@ export const AccountProvider = ({ children }) => {
     if (chainId === "80001") {
       setDemask(MUMBAI_DEMASK);
       setTokenDefault(tokenMatic);
-    } else if(chainId === "97") {
+    } else if (chainId === "97") {
       setDemask(BSC_DEMASK);
       setTokenDefault(tokenBsc);
-    } else if(chainId === "280") {
+    } else if (chainId === "280") {
       setDemask(Zksync_DEMASK);
       setTokenDefault(tokenzkSync);
     }
@@ -58,6 +59,7 @@ export const AccountProvider = ({ children }) => {
     localStorage.setItem("CHAINID_DEMASK", newChainId);
   };
   const provider = getProvider(wallet);
+  const PORT = process.env.NEXT_PUBLIC_APP_PORT;
   useEffect(() => {
     // console.log(wallet);
     // console.log(provider);
@@ -72,7 +74,12 @@ export const AccountProvider = ({ children }) => {
         }
       };
       const handleChainChanged = (networkId) => {
-        if (networkId === "80001" || networkId === "97" || networkId === "280") {
+        if (PORT === "3000" && networkId === "280") {
+          updateChainId(networkId);
+        } else if (
+          PORT === "1307" &&
+          (networkId === "97" || networkId === "80001")
+        ) {
           updateChainId(networkId);
         }
       };

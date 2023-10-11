@@ -100,21 +100,15 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
               <div className="font-semibold text-white">Unable to buy</div>
             ) : (
               <Link
-                href={`/swap/${nftItem.nft}/${nftItem.erc}/${nftItem.FactoryContract_id}`}
+                href={`/swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftID}`}
                 className="flex items-center gap-2 text-sm font-semibold whitespace-pre lg:text-lg md:text-md"
               >
-                {nftItem.erc && nftItem.nft ? (
-                  <div className="flex gap-x-1">
-                    <ModalNumber data={(divideByDecimal(getBuyPrice(nftItem.reserveNFT, nftItem.reserveTokenDecimals, 1).toString(), nftItem.tokenDecimals))} />
-                    <span>
-                      {symbolTokenSwap}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex px-6 animate-spin gap-x-4">
-                    <AiOutlineLoading3Quarters />
-                  </div>
-                )}
+                <div className="flex gap-x-1">
+                  <ModalNumber data={(divideByDecimal(getBuyPrice(nftItem.reserveNFT, nftItem.reserveTokenDecimals, 1).toString(), nftItem.tokenDecimals))} />
+                  <span>
+                    {symbolTokenSwap}
+                  </span>
+                </div>
                 <svgComponents.buttonSwap />
               </Link>
             )}

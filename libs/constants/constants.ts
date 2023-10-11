@@ -7,6 +7,12 @@ import {
   EtherIcon,
   zkSyncIcon
 } from "../../components/Icons";
+interface NetworkItem {
+  name: string;
+  logo: any;
+  chain: string;
+  disable?: boolean;
+}
 const tokenMatic = [
   {
     name: "Polygon",
@@ -121,29 +127,38 @@ const Zksync_DEMASK = {
   NAME:"zkSync Era Testnet",
   CURRENCY:"ETH"
 };
-const network = [
-  {
-    name: "Ethereum",
-    logo: EtherIcon,
-    chain: "1",
-    disable : true,
-  },
-  {
-    name: "Polygon",
-    logo: PolygonIcon,
-    chain: "80001",
-  },
-  {
-    name: "BNB Smart Chain",
-    logo: BscIcon,
-    chain: "97",
-  },
-  {
-    name: "zkSync Era Testnet",
-    logo: zkSyncIcon,
-    chain: "280",
-  },
-];
+const PORT = process.env.NEXT_PUBLIC_APP_PORT;
+
+let network: NetworkItem[] = [];
+
+if (PORT === '3000') {
+  network = [
+    {
+      name: "zkSync Era Testnet",
+      logo: zkSyncIcon,
+      chain: "280",
+    },
+    {
+      name: "Ethereum",
+      logo: EtherIcon,
+      chain: "1",
+      disable: true,
+    },
+  ];
+} else if (PORT === '1307') {
+  network = [
+    {
+      name: "Polygon",
+      logo: PolygonIcon,
+      chain: "80001",
+    },
+    {
+      name: "BNB Smart Chain",
+      logo: BscIcon,
+      chain: "97",
+    }
+  ];
+}
 const amountNFT = [
   {
     id: 1,

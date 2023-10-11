@@ -33,7 +33,7 @@ function InterestItem() {
           {data?.nftDataList?.map((item: any, index: number) => (
             <Link
               key={index}
-              href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}
+              href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
             >
               <div className="flex items-start gap-4 max-h-[105px] p-2 mt-4 overflow-hidden transition-all border rounded-lg cursor-pointer group hover:text-secondary3 hover:border-secondary3">
                 <div className="w-[88px]  transition-all flex-shrink-0 h-[88px] overflow-hidden rounded-lg">
