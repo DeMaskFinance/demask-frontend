@@ -1,29 +1,26 @@
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
-import { useState, useEffect, useContext } from "react";
+import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
-import useInformation from "@/hooks/useInformationToken";
+import TransitionURL from "@/components/Toast/TransionURL";
+import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import formatNumber from "@/libs/utils/formatNumer";
-import handleBignumbertoDec from "@/libs/utils/handleBigNumbertoDec";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import useFetchReservesDML from "@/hooks/useFetchReservesDML";
-import { ethers } from "ethers";
-import approveToken from "@/libs/utils/approveToken";
-import approveNFT from "@/libs/utils/approveNFT";
-import handleApproveToken from "@/libs/utils/handleApproveToken";
+import useInformation from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
+import approveNFT from "@/libs/utils/approveNFT";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import formatNumber from "@/libs/utils/formatNumer";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import handleApproveToken from "@/libs/utils/handleApproveToken";
+import handleBignumber from "@/libs/utils/handleBignumber";
+import { ethers } from "ethers";
+import { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import abiRouter from "@/abi/abiRouter.json";
-import TransitionURL from "@/components/Toast/TransionURL";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { BiLoaderAlt } from "react-icons/bi";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
-import AccountContext from "@/context/AccountContext";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import Wrapper from "../Wrapper";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: any;
@@ -363,6 +360,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       routerAddress,
                       setIsOpen,
                       setIsOpenTransaction,
+                      setInputNFT
                     )
                   }
                 >

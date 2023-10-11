@@ -72,7 +72,10 @@ const Home = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+  const appPort = process.env.NEXT_PUBLIC_APP_PORT;
 
+  console.log(appPort);
+  
   return (
     <div className="">
       <NextSeo {...updateMeta} />

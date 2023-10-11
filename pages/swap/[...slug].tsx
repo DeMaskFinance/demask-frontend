@@ -1,4 +1,3 @@
-import abiErc1155 from "@/abi/abiErc1155.json";
 import abiErc20 from "@/abi/abiErc20.json";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
@@ -13,31 +12,29 @@ import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
+import { SkeletonReels } from "@/components/Skeleton";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { swapAPI } from "@/libs/service";
 import approveNFT from "@/libs/utils/approveNFT";
-import approveToken from "@/libs/utils/approveToken";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
+import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
+import { NextSeo } from "next-seo";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
-import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
-import { SkeletonReels } from "@/components/Skeleton";
-import Web3 from "web3";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import handleApproveToken from "@/libs/utils/handleApproveToken";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -128,24 +125,6 @@ const Swap: React.FC = () => {
   }, [account, nftAddress, wallet, isOpenTransaction]);
   console.log(isApprovedNFT);
 
-  const handleApproveNFT = async () => {
-    if (account) {
-      const providerChoice = getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
-      try {
-        const result = await contract.setApprovalForAll(routerAddress, true);
-        setIsOpenTransaction(true);
-        await provider.waitForTransaction(result.hash);
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
   useEffect(() => {
     if (inputNFT && data) {
       setAmountBuy(getBuyPrice(data.reserveNFT, data.reserveToken, +(inputNFT)))
@@ -213,31 +192,6 @@ const Swap: React.FC = () => {
     };
     checkApproveToken();
   }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
-  // console.log('Check',isOpenTransaction);
-  // console.log(allowanceToken);
-
-  const handleApproveToken = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    if (account && wallet) {
-      const providerChoice = getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
-      try {
-        const result = await contract.approve(routerAddress, amountBuyDec.toFixed(0));
-        setIsOpenTransaction(true);
-        await provider.waitForTransaction(result.hash);
-        setInputNFT("");
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -705,7 +659,16 @@ const Swap: React.FC = () => {
                   <Button
                     className="w-[126px] py-2"
                     primary
-                    onClick={handleApproveNFT}
+                    onClick={() =>
+                      handleApproveNFT(
+                        account,
+                        wallet,
+                        nftAddress,
+                        setIsOpen,
+                        setIsOpenTransaction,
+                        routerAddress
+                      )
+                    }
                   >
                     APPROVE NFT
                   </Button>
@@ -717,7 +680,18 @@ const Swap: React.FC = () => {
                       className="w-[126px] py-2"
                       type="button"
                       primary
-                      onClick={handleApproveToken}
+                      onClick={() =>
+                        handleApproveToken(
+                          account,
+                          wallet,
+                          tokenAddress,
+                          amountBuyDec,
+                          routerAddress,
+                          setIsOpen,
+                          setIsOpenTransaction,
+                          setInputNFT
+                        )
+                      }
                     >
                       APPROVE TOKEN
                     </Button>

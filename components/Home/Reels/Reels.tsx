@@ -32,6 +32,7 @@ import TransitionURL from "../../Toast/TransionURL";
 import NFTItem from "./NFTItem";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 
 interface ReelsProps {
   data: any;
@@ -195,25 +196,6 @@ const Reels: React.FC<ReelsProps> = ({
     checkApproveToken();
   }, [account, wallet, amountNFTSubmit, amountBuyDec, isOpenTransaction, filter.erc, allowanceToken]);
 
-  const handleApproveNFT = async () => {
-    if (account) {
-      const providerChoice = getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(filter.nft, abiErc1155, signer);
-
-      try {
-        const result = await contract.setApprovalForAll(routerAddress, true);
-        setIsOpenTransaction(true);
-        await provider.waitForTransaction(result.hash);
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
   const handleApproveToken = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -668,7 +650,16 @@ const Reels: React.FC<ReelsProps> = ({
                           <Button
                             className="w-[126px] py-2"
                             primary
-                            onClick={handleApproveNFT}
+                            onClick={() =>
+                              handleApproveNFT(
+                                account,
+                                wallet,
+                                filter.nft,
+                                setIsOpen,
+                                setIsOpenTransaction,
+                                routerAddress
+                              )
+                            }
                           >
                             APPROVE NFT
                           </Button>
@@ -999,7 +990,16 @@ const Reels: React.FC<ReelsProps> = ({
                       <Button
                         className="w-[126px] py-2"
                         primary
-                        onClick={handleApproveNFT}
+                        onClick={() =>
+                          handleApproveNFT(
+                            account,
+                            wallet,
+                            filter.nft,
+                            setIsOpen,
+                            setIsOpenTransaction,
+                            routerAddress
+                          )
+                        }
                       >
                         APPROVE NFT
                       </Button>

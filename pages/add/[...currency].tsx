@@ -31,6 +31,7 @@ import { SEO } from '../../next-seo.config';
 import { swapAPI } from "@/libs/service";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -313,24 +314,6 @@ export default function AddLiquidity() {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
-  const handleApproveNFT = async () => {
-    if (account) {
-      const providerChoice = getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
-      try {
-        setIsOpenTransaction(true);
-        const result = await contract.setApprovalForAll(routerAddress, true);
-        await provider.waitForTransaction(result.hash);
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
   const handleShowDetail = () => {
     setIsOpenDetail(true);
     document.body.style.overflowY = "hidden";
@@ -461,7 +444,16 @@ export default function AddLiquidity() {
               </div>
             </div>
             {!isApprovedNFT && (
-              <Button className="w-[126px] py-2" primary onClick={handleApproveNFT}>
+              <Button className="w-[126px] py-2" primary onClick={() =>
+                handleApproveNFT(
+                  account,
+                  wallet,
+                  nftAddress,
+                  setIsOpen,
+                  setIsOpenTransaction,
+                  routerAddress
+                )
+              }>
                 APPROVE NFT
               </Button>
             )}

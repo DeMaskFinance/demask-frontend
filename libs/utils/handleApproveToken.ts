@@ -10,7 +10,8 @@ const handleApproveToken = async (
   amountErcDesired: number,
   routerAddress: string,
   setIsOpen: any,
-  setIsOpenTransaction: any
+  setIsOpenTransaction: any,
+  setInputNFT?:any,
 ) => {
   if (account) {
     const providerChoice = getProvider(wallet);
@@ -21,6 +22,7 @@ const handleApproveToken = async (
       const result = await contract.approve(routerAddress, exponentialToDecimal(amountErcDesired));
       setIsOpenTransaction(true);
       await provider.waitForTransaction(result.hash);
+      setInputNFT("");
       setIsOpenTransaction(false);
     } catch (error) {
       console.error(error);
