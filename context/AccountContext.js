@@ -20,7 +20,7 @@ export const AccountProvider = ({ children }) => {
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
-    const storedChainId = localStorage.getItem("CHAINID_DEMASK");
+    const storedChainId = localStorage.getItem("CHAINID");
     if (storedAccount) {
       setAccount(storedAccount);
     }
@@ -56,7 +56,7 @@ export const AccountProvider = ({ children }) => {
 
   const updateChainId = (newChainId) => {
     setChainId(newChainId);
-    localStorage.setItem("CHAINID_DEMASK", newChainId);
+    localStorage.setItem("CHAINID", newChainId);
   };
   const provider = getProvider(wallet);
   const PORT = process.env.NEXT_PUBLIC_APP_PORT;

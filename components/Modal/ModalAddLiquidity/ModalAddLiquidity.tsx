@@ -73,7 +73,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const balanceNFT = useNFTBalance(
     account,
     data.nftAddress,
-    data.nftId,
+    data.nftID,
     wallet
   );
 
@@ -185,7 +185,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         if (data.tokenAddress === nativeAddress) {
           result = await contract.addLiquidityETH(
             data.nftAddress,
-            data.nftId,
+            data.nftID,
             inputNFT,
             0,
             account,
@@ -200,7 +200,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           result = await contract.addLiquidity(
             data.tokenAddress,
             data.nftAddress,
-            data.nftId,
+            data.nftID,
             exponentialToDecimal(Math.floor(amountErcDesired)),
             inputNFT,
             0,

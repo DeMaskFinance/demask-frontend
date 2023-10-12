@@ -33,7 +33,7 @@ const updateMeta = {
   title: 'Detail Liquidity',
 };
 export default function DetailLiquidity() {
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, chainId ,tokenDefault} = useContext(AccountContext);
   const router = useRouter();
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
@@ -106,9 +106,10 @@ export default function DetailLiquidity() {
     if (account && data) {
       if (
         data.tokenSymbol ===
-        "WETH"
+        "WETH" ||data.tokenSymbol ===
+        "WBNB"
       ) {
-        setTokenSymbol("MATIC");
+        setTokenSymbol(tokenDefault[0].symbol);
       } else {
         setTokenSymbol(data.tokenSymbol);
       }

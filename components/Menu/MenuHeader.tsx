@@ -81,7 +81,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                     className="text-base "
                     ref={tradeRef}
                     href={
-                      `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.NATIVE_ADDRESS}`
+                      `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`
                     }
                   >
                     Trade

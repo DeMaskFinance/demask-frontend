@@ -9,14 +9,13 @@ import ModalNumber from "../Modal/ModalLength/ModalNumber";
 
 interface NFTCategoryProps {
   item: any;
+  tokenDefault:[any];
 }
 
-const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
+const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item ,tokenDefault}) => {
   let symbolTokenSwap = "";
-  if (item.tokenSymbol === "WETH") {
-    symbolTokenSwap = "MATIC";
-  } else if (item.tokenSymbol === "WBNB") {
-    symbolTokenSwap = "BNB";
+  if (item.tokenSymbol === "WETH" || item.tokenSymbol === "WBNB") {
+    symbolTokenSwap = tokenDefault[0].symbolNative;
   } else {
     symbolTokenSwap = item.tokenSymbol;
   }
@@ -29,7 +28,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
   };
 
   return (
-    <Link href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}>
+    <Link href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}>
       <div className="relative">
         <div className="relative pb-[100%] h-0">
           {item.metadata.image &&
@@ -122,7 +121,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
 
                         <div>
                             <p>Price</p>
-                            {item.tokenSymbol && item.reserveToken && item.nft ? (
+                            {item.tokenSymbol && item.reserveToken && item.nftAddress ? (
                                 <div className="flex flex-col">
                                     {item.reserveToken.toString() === "0" ||
                                         item.reserveNFT.toString() === "0" ||

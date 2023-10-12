@@ -76,6 +76,10 @@ const Swap: React.FC = () => {
   const { balanceToken, bigNumberBalance, allowanceToken } =
     useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
   console.log(balanceToken);
+  console.log(allowanceToken);
+  console.log({
+    account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction
+  });
 
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
@@ -716,7 +720,7 @@ const Swap: React.FC = () => {
           </div>
         </div>
       )}
-      {isLoading && !isSuccess && (
+      {(isLoading || isFetching) && (
         <SkeletonReels />
       )}
       <ModalSearchNFT

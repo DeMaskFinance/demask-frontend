@@ -126,7 +126,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                     <div className="flex gap-x-1">
                       <ModalNumber data={item.amounttokenInUSD} />
                       {item.tokenSymbol === 'WETH' ? (
-                        <span>MATIC</span>
+                        <span>ETH</span>
                       ) : (
                         <span>{item.tokenSymbol}</span>
                       )}

@@ -39,6 +39,8 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     //     setIsWrongNetwork(false)
     //     document.body.style.overflowY = "auto";
     // }
+    console.log(isWrongNetwork);
+    
     const PORT = process.env.NEXT_PUBLIC_APP_PORT;
     return (
         <Wrapper isOpen={isWrongNetwork}>

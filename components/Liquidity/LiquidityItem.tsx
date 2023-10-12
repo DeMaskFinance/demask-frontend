@@ -7,10 +7,12 @@ import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
 interface LiquidytiesItemProps {
   liquidity: any;
+  tokenDefault:[any]
 }
 
 const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
+  tokenDefault
 }) => {
   const { account, wallet } = useContext(AccountContext);
   const [reward, setReward] = useState("");
@@ -28,11 +30,9 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
 
   useEffect(() => {
     if (account) {
-      if (liquidity.tokenSymbol === "WETH") {
-        setTokenSymbol("MATIC");
-      } else if (liquidity.tokenSymbol === "WBNB") {
-        setTokenSymbol("BNB")
-      } else {
+      if (liquidity.tokenSymbol === "WETH" || liquidity.tokenSymbol === "WBNB") {
+        setTokenSymbol(tokenDefault[0].symbol);
+      }  else {
         setTokenSymbol(liquidity.tokenSymbol);
       }
     }

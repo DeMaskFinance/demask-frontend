@@ -14,7 +14,7 @@ const updateMeta = {
   title: 'Detail Liquidity',
 };
 export default function Liquidity() {
-  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
   const router = useRouter();
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
@@ -67,7 +67,7 @@ export default function Liquidity() {
                     {page?.combinedRecords.map(
                       (liquidity: any, index: number) => (
                         <div key={index}>
-                          <LiquidytiesItem liquidity={liquidity} />
+                          <LiquidytiesItem liquidity={liquidity} tokenDefault={tokenDefault} />
                         </div>
                       )
                     )}

@@ -220,7 +220,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
           if (data.tokenAddress === nativeAddress) {
             result = await contract.removeLiquidityETH(
               data.nftAddress,
-              data.nftId,
+              data.nftID,
               Math.floor(Number(liquidity)).toString(),
               exponentialToDecimal(Number(amountTokenMin)),
               exponentialToDecimal(Number(amountNFTMin)),
@@ -233,7 +233,7 @@ const ModalRemmoveLiquidity: React.FunctionComponent<
             result = await contract.removeLiquidity(
               data.tokenAddress,
               data.nftAddress,
-              data.nftId,
+              data.nftID,
               Math.floor(Number(liquidity)).toString(),
               exponentialToDecimal(Number(amountTokenMin)),
               exponentialToDecimal(Number(amountNFTMin)),

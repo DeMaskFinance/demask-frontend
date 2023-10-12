@@ -14,7 +14,7 @@ import NFTCategory from "./NFTCategory";
 import AccountContext from "@/context/AccountContext";
 
 const Category = ({ label }: { label: string }) => {
-  const { chainId } = useContext(AccountContext);;
+  const { chainId, tokenDefault } = useContext(AccountContext);;
   const swiperRef = useRef<any>(null);
   const { data, isLoading } = useQuery({
     queryKey: [label, chainId],
@@ -85,7 +85,7 @@ const Category = ({ label }: { label: string }) => {
                       title={item.metadata.name}
                       className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home "
                     >
-                      <NFTCategory item={item} />
+                      <NFTCategory item={item} tokenDefault={tokenDefault}/>
                     </li>
                   </SwiperSlide>
                 ))}

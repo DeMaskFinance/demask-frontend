@@ -14,7 +14,7 @@ const updateMeta = {
   title: 'Category',
 };
 export default function Art() {
-  const { chainId } = useContext(AccountContext);
+  const { chainId, tokenDefault } = useContext(AccountContext);
   const getDate = (timeStamp: any) => {
     const date = timeStamp * 1000;
     const currentDateMillis = Date.now();
@@ -51,7 +51,7 @@ export default function Art() {
                   title={item.metadata.name}
                   className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
                 >
-                  <NFTCategory item={item} />
+                  <NFTCategory item={item} tokenDefault={tokenDefault} />
                 </li>
               </>
             ))}

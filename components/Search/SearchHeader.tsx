@@ -90,7 +90,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata.name &&
-        historyItem.dmlToken === item.dmlToken
+        historyItem.dmlAddress === item.dmlAddress
     );
 
     if (existingItemIndex === -1) {
@@ -98,7 +98,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
       setSearchHistory(newHistory);
       setCookie("searchHistory", JSON.stringify(newHistory), { expires: 7 });
     }
-    router.replace(`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`)
+    router.replace(`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`)
   };
   
   const handleRemoveItem = (index: number) => {
@@ -227,8 +227,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                                 </span>
                                 <span className="flex text-xs item-center">
                                   <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlToken?.slice(0, 8)}...
-                                    {item.dmlToken?.slice(-8)}
+                                    {item.dmlAddress?.slice(0, 8)}...
+                                    {item.dmlAddress?.slice(-8)}
                                   </span>
                                 </span>
                               </div>
@@ -266,7 +266,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                         <Link
                           key={index}
                           onClick={() => handleResultItemClick(item)}
-                          href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}
+                          href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
                           className="flex-1"
                         //
                         >
@@ -316,8 +316,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                                 </span>
                                 <span className="flex text-xs item-center">
                                   <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlToken?.slice(0, 8)}...
-                                    {item.dmlToken?.slice(-8)}
+                                    {item.dmlAddress?.slice(0, 8)}...
+                                    {item.dmlAddress?.slice(-8)}
                                   </span>
                                 </span>
                               </div>
@@ -347,7 +347,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                         <Link
                           key={index}
                           onClick={() => handleResultItemClick(item)}
-                          href={`/swap/${item.nft}/${item.erc}/${item.FactoryContract_id}`}
+                          href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
                           className="flex-1"
                         //
                         >
@@ -397,8 +397,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                                 </span>
                                 <span className="flex text-xs item-center">
                                   <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlToken?.slice(0, 8)}...
-                                    {item.dmlToken?.slice(-8)}
+                                    {item.dmlAddress?.slice(0, 8)}...
+                                    {item.dmlAddress?.slice(-8)}
                                   </span>
                                 </span>
                               </div>

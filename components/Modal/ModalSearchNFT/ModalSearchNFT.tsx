@@ -147,11 +147,11 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     if (currency) {
       const currentURL = router.asPath;
       newURL = currentURL
-        .replace(currency[0], item.nft)
-        .replace(currency[2], item.FactoryContract_id);
+        .replace(currency[0], item.nftAddress)
+        .replace(currency[2], item.nftID);
     } else if (slug) {
       const currentURL = router.asPath;
-      newURL = currentURL.replace(slug[0], item.nft).replace(slug[2], item.FactoryContract_id);
+      newURL = currentURL.replace(slug[0], item.nftAddress).replace(slug[2], item.nftID);
     }
     router.push(newURL);
     document.body.style.overflowY = "auto";
@@ -242,8 +242,8 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                                 </span>
                                 <span className="flex text-xs item-center">
                                   <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlToken?.slice(0, 4)}...
-                                    {item.dmlToken?.slice(-8)}
+                                    {item.dmlAddress?.slice(0, 4)}...
+                                    {item.dmlAddress?.slice(-8)}
                                   </span>
                                 </span>
                               </div>

@@ -160,10 +160,10 @@ export default function AddLiquidity() {
 
   useEffect(() => {
     if (tokenDefault && data) {
-      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
-        setSymbolToken(data.tokenSymbol)
-      } else {
+      if (data.tokenSymbol === "WETH" || data.tokenSymbol === "WBNB") {
         setSymbolToken(tokenDefault[0].symbol)
+      } else {
+        setSymbolToken(data.tokenSymbol)
       }
     }
   }, [data, tokenDefault, chainId])

@@ -115,12 +115,12 @@ const Reels: React.FC<ReelsProps> = ({
 
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, filter.nft, routerAddress);
+      const result = await approveNFT(account, wallet, filter.nftAddress, routerAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
   }, [account, filter, wallet, isOpenTransaction]);
-  const balanceNFT = useNFTBalance(account, filter.nft, filter.FactoryContract_id, wallet, isOpenTransaction);
+  const balanceNFT = useNFTBalance(account, filter.nftAddress, filter.nftID, wallet, isOpenTransaction);
 
   useEffect(() => {
     if (tokenDefault && filter) {
@@ -133,7 +133,7 @@ const Reels: React.FC<ReelsProps> = ({
   }, [filter, tokenDefault])
 
   const { balanceToken, bigNumberBalance, allowanceToken } =
-    useInformationToken(account, filter.erc, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
+    useInformationToken(account, filter.tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
   const amountBuy = getBuyPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountSell = getSellPrice(filter.reserveNFT, filter.reserveToken, +(amountNFTSubmit));
   const amountBuyDec = getBuyPrice(filter.reserveNFT, filter.reserveTokenDecimals, Number(amountNFTSubmit)) * Number(amountNFTSubmit) * 1.05;
@@ -183,7 +183,7 @@ const Reels: React.FC<ReelsProps> = ({
   }, []);
   useEffect(() => {
     const checkApproveToken = async () => {
-      if (filter.erc !== nativeAddress) {
+      if (filter.tokenAddress !== nativeAddress) {
         if (Number(allowanceToken) < Number(amountBuyDec)) {
           setIsApprovedToken(false);
         } else {
@@ -194,7 +194,7 @@ const Reels: React.FC<ReelsProps> = ({
       }
     };
     checkApproveToken();
-  }, [account, wallet, amountNFTSubmit, amountBuyDec, isOpenTransaction, filter.erc, allowanceToken]);
+  }, [account, wallet, amountNFTSubmit, amountBuyDec, isOpenTransaction, filter.tokenAddress, allowanceToken]);
 
   const handleApproveToken = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -205,7 +205,7 @@ const Reels: React.FC<ReelsProps> = ({
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        filter.erc,
+        filter.tokenAddress,
         abiErc20,
         signer
       );
@@ -248,10 +248,10 @@ const Reels: React.FC<ReelsProps> = ({
         try {
           let result;
           setIsOpenTransaction(true);
-          if (filter.erc === nativeAddress) {
+          if (filter.tokenAddress === nativeAddress) {
             result = await contract.buyETH(
-              filter.nft,
-              filter.FactoryContract_id,
+              filter.nftAddress,
+              filter.nftID,
               amountNFTSubmit,
               account,
               Math.floor((new Date().getTime() + 20 * 60000) / 1000),
@@ -260,9 +260,9 @@ const Reels: React.FC<ReelsProps> = ({
           } else {
             console.log(Math.floor(amountBuyDec).toString());
             result = await contract.buy(
-              filter.erc,
-              filter.nft,
-              filter.FactoryContract_id,
+              filter.tokenAddress,
+              filter.nftAddress,
+              filter.nftID,
               amountNFTSubmit,
               exponentialToDecimal(Math.floor(amountBuyDec)),
               account,
@@ -324,10 +324,10 @@ const Reels: React.FC<ReelsProps> = ({
         try {
           let result;
           setIsOpenTransaction(true);
-          if (filter.erc === nativeAddress) {
+          if (filter.tokenAddress === nativeAddress) {
             result = await contract.sellETH(
-              filter.nft,
-              filter.FactoryContract_id,
+              filter.nftAddress,
+              filter.nftID,
               amountNFTSubmit,
               exponentialToDecimal(Math.floor(amountSellDec)),
               account,
@@ -338,9 +338,9 @@ const Reels: React.FC<ReelsProps> = ({
             console.log(Math.floor(amountSellDec).toString());
             console.log(amountNFTSubmit);
             result = await contract.sell(
-              filter.erc,
-              filter.nft,
-              filter.FactoryContract_id,
+              filter.tokenAddress,
+              filter.nftAddress,
+              filter.nftID,
               amountNFTSubmit,
               exponentialToDecimal(Math.floor(amountSellDec)),
               account,
@@ -398,7 +398,7 @@ const Reels: React.FC<ReelsProps> = ({
                 data?.pages.map((page: any, index: number) => (
                   <div key={index}>
                     {page.records.map((nftItem: any, index: number) => (
-                      <SwiperSlide key={`${nftItem.FactoryContract_id}-${index}`}>
+                      <SwiperSlide key={`${nftItem.nftID}-${index}`}>
                         <NFTItem nftItem={nftItem} filter={filter} setShowMore={setShowMore} showMore={showMore} />
                         <div ref={ref} style={{ height: "1px" }} />
                       </SwiperSlide>
@@ -654,7 +654,7 @@ const Reels: React.FC<ReelsProps> = ({
                               handleApproveNFT(
                                 account,
                                 wallet,
-                                filter.nft,
+                                filter.nftAddress,
                                 setIsOpen,
                                 setIsOpenTransaction,
                                 routerAddress
@@ -667,7 +667,7 @@ const Reels: React.FC<ReelsProps> = ({
                       {!isApprovedToken &&
                         account &&
                         isSufficientTokenBuy &&
-                        filter.erc !== nativeAddress &&
+                        filter.tokenAddress !== nativeAddress &&
                         activeChoice === "BUY" && (
                           <Button
                             className="w-[126px] py-2"
@@ -754,7 +754,7 @@ const Reels: React.FC<ReelsProps> = ({
                   <div className="flex items-center gap-4">
                     <div className="">
                       <a
-                        href={`https://mumbai.polygonscan.com/address/${filter.dmlToken}`}
+                        href={`https://mumbai.polygonscan.com/address/${filter.dmlAddress}`}
                         target="_blank"
                         className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
                       >
@@ -994,7 +994,7 @@ const Reels: React.FC<ReelsProps> = ({
                           handleApproveNFT(
                             account,
                             wallet,
-                            filter.nft,
+                            filter.nftAddress,
                             setIsOpen,
                             setIsOpenTransaction,
                             routerAddress
@@ -1007,7 +1007,7 @@ const Reels: React.FC<ReelsProps> = ({
                   {!isApprovedToken &&
                     account &&
                     isSufficientTokenBuy &&
-                    filter.erc !== nativeAddress &&
+                    filter.tokenAddress !== nativeAddress &&
                     activeChoice === "BUY" && (
                       <Button
                         className="w-[126px] py-2"

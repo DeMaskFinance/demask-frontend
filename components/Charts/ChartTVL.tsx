@@ -18,10 +18,11 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
       return res;
     },
   });
-
+  console.log(Chart);
+  
   const chartData = Chart?.map((dataPoint: any) => ({
     date: dataPoint.date,
-    value: dataPoint.tvlInDay,
+    value: dataPoint.dailyTVL,
   }));
 
   const lastData = chartData && chartData[chartData.length - 1];
@@ -57,7 +58,8 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
 
     return null;
   };
-
+  console.log(typeof(activeData));
+  
   return (
     <div>
       {
@@ -67,7 +69,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
               <p className="font-medium ">TVL</p>
               {activeData && (
                 <p className="my-2 text-2xl font-medium text-dark0">
-                  ${formatNumber(activeData?.toFixed(2))}
+                  ${formatNumber(Number(activeData).toFixed(2))}
                 </p>
               )}
               <p className="">

@@ -59,20 +59,20 @@ const tokenzkSync = [
   {
     name: "zkSync Era Testnet",
     symbol: "ETH",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_zkSync,
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
     logo: zkSyncIcon,
     symbolNative: "ETH"
   },
   {
     name: "Tether",
     symbol: "USDT",
-    address: process.env.NEXT_PUBLIC_USDT_zkSync,
+    address: process.env.NEXT_PUBLIC_USDT_Zksync,
     logo: USDTIcon,
   },
   {
     name: "USD Coin",
     symbol: "USDC",
-    address: process.env.NEXT_PUBLIC_USDC_zkSync,
+    address: process.env.NEXT_PUBLIC_USDC_Zksync,
     logo: USDCIcon,
   },
 ];

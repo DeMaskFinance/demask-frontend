@@ -60,7 +60,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 </td>
                 <td className="py-2 lg:w-full md:w-full w-[200px]">
                   <Link
-                    href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftId}`}
+                    href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
                     className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
                   >
                     <div className="relative flex items-center gap-2 group">

@@ -66,7 +66,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
 
   const chartVolume = data?.map((dataPoint: any) => ({
     date: dataPoint.date,
-    value: dataPoint.volumeInDay,
+    value: dataPoint.dailyVolume,
   }));
   const lastData = chartVolume && chartVolume[chartVolume.length - 1];
 
@@ -121,7 +121,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
               <p className="font-medium ">Volume</p>
               {activeData && (
                 <p className="my-2 text-2xl font-medium text-dark0">
-                  ${formatNumber(activeData?.toFixed(2))}
+                  ${formatNumber(Number(activeData)?.toFixed(2))}
                 </p>
               )}
               <p className="">

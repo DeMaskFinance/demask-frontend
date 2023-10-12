@@ -2,7 +2,7 @@ import formatNumber from "@/libs/utils/formatNumer";
 import { getBuyPrice } from "@/libs/utils/getPrice";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInView } from "react-intersection-observer";
 import { Pagination } from "swiper";
@@ -14,12 +14,13 @@ import { ActiveIcon } from "../Icons";
 import useSvgComponents from "../Picture/Picture";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
+import AccountContext from "@/context/AccountContext";
 interface NFTItemsProps {
   nftItem: any;
 }
 const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   const svgComponents = useSvgComponents();
-
+  const { tokenDefault } = useContext(AccountContext);
   const [heightDescription, setHeightDescription] = useState(0);
   const [isMore, setIsMore] = useState<boolean>(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -70,11 +71,9 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     : null;
 
   let symbolTokenSwap = "";
-  if (nftItem.tokenSymbol === "WETH") {
-    symbolTokenSwap = "MATIC";
-  } else if (nftItem.tokenSymbol === "WBNB") {
-    symbolTokenSwap = "BNB";
-  }
+  if (nftItem.tokenSymbol === "WETH" || nftItem.tokenSymbol === "WBNB") {
+    symbolTokenSwap = tokenDefault[0].symbolNative;
+  } 
   else {
     symbolTokenSwap = nftItem.tokenSymbol;
   }
