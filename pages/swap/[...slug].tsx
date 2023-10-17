@@ -75,11 +75,6 @@ const Swap: React.FC = () => {
   };
   const { balanceToken, bigNumberBalance, allowanceToken } =
     useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
-  console.log(balanceToken);
-  console.log(allowanceToken);
-  console.log({
-    account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction
-  });
 
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
@@ -215,17 +210,8 @@ const Swap: React.FC = () => {
       ) {
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
-        // const providerUrl = 'https://polygon-mumbai-bor.publicnode.com';
-        // const web3Provider = new Web3.providers.HttpProvider(providerUrl);
-        // const web3 = new Web3(web3Provider);
-
-        // const provider = new ethers.providers.Web3Provider(web3);
         const signer = provider.getSigner();
-        // console.log(signer);
-
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        // alert(contract);
-
         try {
           let result;
           setIsOpenTransaction(true);
@@ -361,7 +347,9 @@ const Swap: React.FC = () => {
   return (
     <div className="py-8 mx-auto swap max-w-[1592px]">
       <NextSeo {...updateMeta} />
-      {isSuccess && (
+      {(isLoading || isFetching) ? (
+        <SkeletonReels />
+      ) : isSuccess ? (
         <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
           <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
             <>
@@ -719,8 +707,7 @@ const Swap: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
-      {(isLoading || isFetching) && (
+      ) : (
         <SkeletonReels />
       )}
       <ModalSearchNFT

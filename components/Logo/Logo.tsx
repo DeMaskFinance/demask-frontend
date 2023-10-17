@@ -1,8 +1,3 @@
-import Icons from "@/public/icons/icon";
-import Image from "next/image";
-import Link from "next/link";
-import { FunctionComponent } from "react";
-
 interface LogoProps {
   className?: string;
   width?: number;

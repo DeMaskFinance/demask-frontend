@@ -1,4 +1,3 @@
-import abiErc1155 from "@/abi/abiErc1155.json";
 import abiErc20 from "@/abi/abiErc20.json";
 import abiRouter from "@/abi/abiRouter.json";
 import Button from "@/components/Buttons/Button";
@@ -8,30 +7,28 @@ import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
+import { SkeletonAddLiquidity } from "@/components/Skeleton";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import useDMLToken from "@/hooks/useDMLToken";
-import useFetchReservesDML from "@/hooks/useFetchReservesDML";
 import useBalanceToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
+import { swapAPI } from "@/libs/service";
 import approveNFT from "@/libs/utils/approveNFT";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
+import { NextSeo } from "next-seo";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { toast } from "react-toastify";
-import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
-import { swapAPI } from "@/libs/service";
-import { SkeletonAddLiquidity } from "@/components/Skeleton";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",

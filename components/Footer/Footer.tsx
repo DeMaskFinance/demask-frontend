@@ -153,7 +153,7 @@ export default function Footer() {
               />
             </a>
             <a
-              href="https://web.telegram.org/k/#@DemaskFinance"
+              href="https://t.me/DemaskFinance"
               rel="noreferrer noopener"
               target="_blank"
             >
