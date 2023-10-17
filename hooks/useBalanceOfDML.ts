@@ -10,7 +10,8 @@ const useBananceOfDML = (
   isOpenTransaction?: boolean
 ) => {
   const [balanceOfDML, setBalanceOfDML] = useState("");
-
+  const [totalSupply, setTotalSupply] = useState("");
+  const [balanceDML, setBalanceDML] = useState("");
   useEffect(() => {
     const getBalanceOf = async () => {
       if (dmlToken && account && wallet) {
@@ -22,15 +23,19 @@ const useBananceOfDML = (
           const result = await contract.balanceOf(account);
           const balanceOfDMLDec = divideByDecimal(result.toString(), "18");
           setBalanceOfDML(balanceOfDMLDec);
+          setBalanceDML(result);
+          const totalSL = await contract.totalSupply();
+          setTotalSupply(totalSL);
         } catch (error) {
           console.error(error);
         }
       } else {
         setBalanceOfDML("0");
+        setTotalSupply("0");
       }
     };
     getBalanceOf();
   }, [dmlToken, account, isOpenTransaction, wallet]);
-  return { balanceOfDML };
+  return { balanceOfDML, totalSupply, balanceDML };
 };
 export default useBananceOfDML;

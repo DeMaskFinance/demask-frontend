@@ -87,7 +87,7 @@ function ListTracsaction() {
         <div className="px-6 pt-6 pb-0 overflow-x-scroll">
           <table className="w-full text-left">
             <thead className="">
-              <tr className="flex pb-2 text-sm border-b lg:text-base md:text-base">
+              <tr className="flex px-2 pb-2 text-sm border-b lg:text-base md:text-base">
                 <th className="flex justify-start lg:w-[440px] md:w-[340px] w-[50px]">
                   #
                 </th>

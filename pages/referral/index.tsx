@@ -1,0 +1,108 @@
+import { Button } from '@/components/Buttons';
+import { ModalWallet } from '@/components/Modal/ModalWallet';
+import AccountContext from '@/context/AccountContext';
+import { getProvider } from '@/libs/connection/getProvider';
+import { ethers } from 'ethers';
+import React, { useContext, useEffect, useState } from 'react'
+import { useQueryParam, StringParam, withDefault } from 'use-query-params';
+import abiReferral from "@/abi/abiReferral.json";
+import { ModalTransation } from '@/components/Modal/ModalTransation';
+import TransitionURL from '@/components/Toast/TransionURL';
+import { toast } from "react-toastify";
+export default function Referral() {
+    const [sponsor] = useQueryParam('sponsor', withDefault(StringParam, '0x4699A9A5607c9281103Ad504fA922276Eb6385A2'));
+    const { account, wallet, demask } = useContext(AccountContext);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [messageError, setMessageError] = useState<string>('');
+    const [sponsors, setSponsors] = useState<string>('');
+    const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+    const handleOpen = () => {
+        document.body.style.overflowY = "hidden";
+        setIsOpen(true);
+    };
+
+    useEffect(() => {
+        const getSponsor = async () => {
+            if (account && wallet && sponsor) {
+                const providerChoice = getProvider(wallet);
+                const provider = new ethers.providers.Web3Provider(providerChoice);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(demask.REFERRAL, abiReferral, signer);
+                const result = await contract.getSponsor(account);
+                setSponsors(result);
+            }
+        }
+        getSponsor();
+    }, [account, wallet, isOpenTransaction])
+    const handleSponsor = async () => {
+        console.log(sponsor);
+        console.log(demask.REFERRAL);
+        if (messageError === '') {
+            const providerChoice = getProvider(wallet);
+            const provider = new ethers.providers.Web3Provider(providerChoice);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(demask.REFERRAL, abiReferral, signer);
+            setIsOpenTransaction(true);
+            const result = await contract.referee(sponsor);
+            console.log(result.hash);
+
+            setIsOpenTransaction(false);
+            toast.success(
+                <TransitionURL type={"Referral"} transactionHash={result.hash} />,
+                {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                }
+            );
+        }
+    }
+    useEffect(() => {
+        if (sponsor === account) {
+            setMessageError('Your account is a sponsor')
+        } else if (sponsor === sponsors) {
+            setMessageError("Sponsor is already exists")
+        } else if (!sponsor) {
+            setMessageError("Sponsor is needed")
+        } else if (sponsors !== '0x0000000000000000000000000000000000000000') {
+            setMessageError("Sponsor is already exists")
+        } else {
+            setMessageError('');
+        }
+    }, [account, sponsors, sponsor, isOpenTransaction])
+    console.log(messageError);
+    console.log(sponsors);
+    console.log(sponsor);
+
+    return (
+        <div className='lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]'>
+            <p>{sponsor}</p>
+            {account ? (
+                <div>
+                    <Button primary className='p-2 my-3' onClick={handleSponsor} >Set sponsor</Button>
+                    <p
+                        className="text-xs text-red"
+                        key="NFTbalance"
+                    >
+                        {messageError}
+                    </p>
+                </div>
+            ) : (
+                <Button
+                    className="w-[140px] py-2 block mx-auto"
+                    primary
+                    onClick={handleOpen}
+                >
+                    CONNECT WALLET
+                </Button>
+            )}
+            <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+            <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+        </div>
+    )
+}

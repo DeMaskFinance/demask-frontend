@@ -2,6 +2,8 @@ import React from 'react'
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import NFTs from './NFTs';
 import OptionNetwork from './OptionNetwork';
+import Pools from './Pools';
+import Referral from './Referral';
 const Profile = () => {
     const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "nfts"));
     const TABS = [
@@ -15,7 +17,7 @@ const Profile = () => {
         {
             title: "Pools",
             panel: () => (
-                <div className='text-dark2'>Upcoming</div>
+                <Pools/>
             ),
             key: "pools",
         },
@@ -33,7 +35,7 @@ const Profile = () => {
         },
         {
             title: "Referral",
-            panel: () => <div className='text-dark2'>Upcoming</div>,
+            panel: () => <Referral/>,
             key: "referral",
         },
         {

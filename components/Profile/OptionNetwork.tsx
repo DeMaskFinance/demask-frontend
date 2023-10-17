@@ -26,26 +26,24 @@ const network = [
         chain: "all",
     },
     {
-        name: "Polygon",
-        logo: PolygonIcon,
-        chain: "80001",
-    },
-    {
-        name: "BNB Smart Chain",
-        logo: BscIcon,
-        chain: "97",
-    },
-    {
         name: "zkSync Era Testnet",
         logo: zkSyncIcon,
         chain: "280",
+    },
+    {
+        name: "Ethereum",
+        logo: EtherIcon,
+        chain: "1",
+        disable: true,
     },
 ];
 const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
     const [chain, setChain] = useQueryParam("chain", withDefault(StringParam, "all"));
     const handleChangeNetwork = (chain: string) => {
-        setChain(chain);
+        if (chain !== "1") {
+            setChain(chain);
+        }
     };
     useEffect(() => {
         if (chain) {
@@ -72,13 +70,16 @@ const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                     </p>
                     <ul className="flex flex-col mt-2 font-normal gap-y-3">
                         {network.map((item, index) => (
-                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center `} onClick={() => handleChangeNetwork(item.chain)}>
+                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center ${item.disable ? 'hover:cursor-no-drop' : ''}`} onClick={() => handleChangeNetwork(item.chain)}>
                                 <div className='flex gap-x-2'>
                                     <item.logo width={24}
                                         height={24}
                                         className={`fill-dark2  group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
                                     <p className={`${filterNetwork?.chain === item.chain && "text-secondary2 font-medium"}`}>{item.name}</p>
                                 </div>
+                                {item.disable && (
+                                    <p className='right-0 text-xs'>Upcoming</p>
+                                )}
                             </li>
                         ))}
                     </ul>
