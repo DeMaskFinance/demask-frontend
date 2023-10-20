@@ -145,23 +145,6 @@ export default function Header() {
         </div>
 
         <div className="flex items-center justify-end flex-shrink-0 gap-x-6">
-          <ul className={`${style.itemNav} lg:flex hidden`}>
-            <li className="flex hover:text-secondary5 active:text-secondary3">
-              <a
-                href="https://docs.demask.finance/"
-                target="_blank"
-                className="text-base"
-              >
-                Docs
-              </a>
-            </li>
-            <li className="relative hover:text-secondary5 active:text-secondary3">
-              <ActiveLink href="/about">
-                <p className="text-base">About</p>
-              </ActiveLink>
-            </li>
-          </ul>
-
           <div
             onClick={() => {
               setShowSearch(false);

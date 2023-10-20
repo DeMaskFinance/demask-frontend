@@ -5,13 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start1307": "next start -p 1307",
-    "start3000": "next start -p 3000",
+    "start": "next start -p 3005",
     "lint": "next lint",
-    "deploy1307": "git pull origin && npm run build && pm2 restart demask-frontend",
-    "redeploy1307": "git pull origin && npm run build && pm2 start npm --name demask-frontend -- start1307",
-    "deploy3000": "git pull origin && npm run build && pm2 restart demask-frontend-3000",
-    "redeploy3000": "git pull origin && npm run build && pm2 start npm --name demask-frontend-3000 -- start3000"
+    "deploy": "git pull origin && npm run build && pm2 restart demask-frontend-app",
+    "redeploy": "git pull origin && npm run build && pm2 start npm --name demask-frontend-app -- start"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.25",
