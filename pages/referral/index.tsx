@@ -15,6 +15,7 @@ export default function Referral() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [messageError, setMessageError] = useState<string>('');
     const [sponsors, setSponsors] = useState<string>('');
+    const [spender, setSpender] = useState<string>('');
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const handleOpen = () => {
         document.body.style.overflowY = "hidden";
@@ -29,14 +30,14 @@ export default function Referral() {
                 const signer = provider.getSigner();
                 const contract = new ethers.Contract(demask.REFERRAL, abiReferral, signer);
                 const result = await contract.getSponsor(account);
+                const res = await contract.getSponsor(sponsor)
                 setSponsors(result);
+                setSpender(res);
             }
         }
         getSponsor();
     }, [account, wallet, isOpenTransaction])
     const handleSponsor = async () => {
-        console.log(sponsor);
-        console.log(demask.REFERRAL);
         if (messageError === '') {
             const providerChoice = getProvider(wallet);
             const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -71,27 +72,25 @@ export default function Referral() {
             setMessageError("Sponsor is needed")
         } else if (sponsors !== '0x0000000000000000000000000000000000000000') {
             setMessageError("Sponsor is already exists")
+        } else if (spender.toLocaleLowerCase() === account.toLocaleLowerCase()) {
+            setMessageError("You may not sponsor someone who has sponsored you")
         } else {
             setMessageError('');
         }
     }, [account, sponsors, sponsor, isOpenTransaction])
-    console.log(messageError);
-    console.log(sponsors);
-    console.log(sponsor);
-
     return (
         <div className='lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]'>
-            <p>{sponsor}</p>
             {account ? (
-                <div>
-                    <Button primary className='p-2 my-3' onClick={handleSponsor} >Set sponsor</Button>
-                    <p
-                        className="text-xs text-red"
-                        key="NFTbalance"
-                    >
-                        {messageError}
-                    </p>
-                </div>
+                <div><p>{sponsor}</p>
+                    <div>
+                        <Button primary className='p-2 my-3' onClick={handleSponsor} >Set sponsor</Button>
+                        <p
+                            className="text-xs text-red"
+                            key="NFTbalance"
+                        >
+                            {messageError}
+                        </p>
+                    </div></div>
             ) : (
                 <Button
                     className="w-[140px] py-2 block mx-auto"

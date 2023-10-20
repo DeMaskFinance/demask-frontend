@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AvatarUser } from "../Avatars";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
+import { useEffect, useState } from "react";
 
 interface NFTCategoryProps {
   item: any;
@@ -13,12 +14,14 @@ interface NFTCategoryProps {
 }
 
 const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item ,tokenDefault}) => {
-  let symbolTokenSwap = "";
-  if (item.tokenSymbol === "WETH" || item.tokenSymbol === "WBNB") {
-    symbolTokenSwap = tokenDefault[0].symbolNative;
-  } else {
-    symbolTokenSwap = item.tokenSymbol;
-  }
+  const [symbolTokenSwap, setSymbolTokenSwap] = useState<string>('');
+  useEffect(()=>{
+    if (item.tokenSymbol === "WETH" || item.tokenSymbol === "WBNB") {
+      setSymbolTokenSwap(tokenDefault[0].symbolNative);
+    } else {
+      setSymbolTokenSwap(item.tokenSymbol);
+    }
+  },[tokenDefault])
   const getDate = (timeStamp: any) => {
     const date = timeStamp * 1000;
     const currentDateMillis = Date.now();

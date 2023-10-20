@@ -36,7 +36,7 @@ export default function NavFooter({ reels }: any) {
         className={`bg-dark ${active ? "block" : "hidden"
           } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
       ></div>
-      <footer className="sticky bottom-0 z-20 bg-white lg:hidden">
+      <footer className="fixed bottom-0 z-20 w-full bg-white lg:hidden">
         <div>
           <ul className="border-t flex justify-between pt-4 pb-2 px-6 gap-4 text-[10px] items-center">
             <div>

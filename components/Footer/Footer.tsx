@@ -6,6 +6,7 @@ import { TeleIcon, TwitterIcon } from "../Icons";
 import { TabGroups } from "../NavChoice";
 import useSvgComponents from "../Picture/Picture";
 import { LogoDeMaskFooter } from "../Logo/Logo";
+import { version } from "@/libs/constants";
 export default function Footer() {
   const svgComponents = useSvgComponents();
 
@@ -23,7 +24,7 @@ export default function Footer() {
           </h2>
           <ul>
             <li className="mb-1 text-dark2">
-            <a
+              <a
                 href="https://github.com/DeMaskFinance/demask_brand/tree/master"
                 rel="noreferrer noopener"
                 target="_blank"
@@ -109,7 +110,7 @@ export default function Footer() {
               </a>
             </li>
             <li className="mb-1 text-dark2">
-            <p className="cursor-not-allowed">Careers</p>
+              <p className="cursor-not-allowed">Careers</p>
             </li>
           </ul>
         </div>
@@ -132,6 +133,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="py-4">
+            <p className="text-xs font-semibold text-dark3">{version}</p>
             <h2 className="flex text-lg font-medium leading-6">
               <Link href="/">
                 <LogoDeMaskFooter width={212}

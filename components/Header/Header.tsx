@@ -21,6 +21,8 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import Search from "../Search/SearchHeader";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
+import { version } from "@/libs/constants";
+import { useRouter } from "next/router";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -34,7 +36,7 @@ const style = {
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
- 
+  const router = useRouter();
   const { account, updateAccount, wallet, chainId } = useContext(AccountContext);
 
   const handleOpen = () => {
@@ -43,7 +45,7 @@ export default function Header() {
   };
 
   const [isFocused, setIsFocused] = useState(false);
-  
+
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -132,9 +134,10 @@ export default function Header() {
       >
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">
-            <Link href="/">
-              <LogoDeMaskBeta width={94} height={24} />
+            <Link href="/" className={`p-2 border border-white rounded-xl block hover:border-purple ${router.pathname === '/' ? "bg-purple" : ""}`}>
+              <LogoDeMaskBeta width={94} height={24} className={`${router.pathname === '/' ? "fill-white" : ""}`}/>
             </Link>
+            <p className="text-xs font-semibold text-dark3 lg:hidden">{version}</p>
           </div>
           <div className="hidden ml-8 lg:block">
             <MenuHeader />

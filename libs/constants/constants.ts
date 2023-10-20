@@ -13,6 +13,7 @@ interface NetworkItem {
   chain: string;
   disable?: boolean;
 }
+const version ="Version 0.1";
 const tokenMatic = [
   {
     name: "Polygon",
@@ -219,5 +220,6 @@ export {
   Zksync_DEMASK,
   tokenBsc,
   tokenzkSync,
-  Category
+  Category,
+  version
 };

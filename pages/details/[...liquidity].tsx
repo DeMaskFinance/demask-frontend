@@ -33,7 +33,7 @@ const updateMeta = {
   title: 'Detail Liquidity',
 };
 export default function DetailLiquidity() {
-  const { account, wallet, chainId ,tokenDefault} = useContext(AccountContext);
+  const { account, wallet, chainId, tokenDefault } = useContext(AccountContext);
   const router = useRouter();
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
@@ -52,7 +52,7 @@ export default function DetailLiquidity() {
       setDmlTokenLiquidity(liquidity[0]);
     }
   }, [liquidity]);
-  const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
+  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
     queryKey: ["liquidityHistory", account, dmlTokenLiquidity, chainId],
     queryFn: async () => {
       if (account && dmlTokenLiquidity) {
@@ -79,7 +79,7 @@ export default function DetailLiquidity() {
     fetchDataReward();
 
   }, [dmlTokenLiquidity, account, data]);
-  console.log(reward);
+  console.log(data);
 
   const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
   const handleGetReward = async (
@@ -106,7 +106,7 @@ export default function DetailLiquidity() {
     if (account && data) {
       if (
         data.tokenSymbol ===
-        "WETH" ||data.tokenSymbol ===
+        "WETH" || data.tokenSymbol ===
         "WBNB"
       ) {
         setTokenSymbol(tokenDefault[0].symbol);
@@ -191,7 +191,7 @@ export default function DetailLiquidity() {
             </div>
             <div className="p-2 mt-6 ">
               <Button primary className="px-6 py-2 text-lg">History</Button>
-              {account && data ? (
+              {account && isSuccess && data.liquidityHistory.length > 0 ? (
                 <div className="w-[100vw] lg:w-[40vw] 3xl:w-[36vw] overflow-hidden mt-6">
                   <div className="overflow-x-auto">
                     <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">

@@ -3,9 +3,9 @@ import { Button } from '../Buttons';
 import AccountContext from '@/context/AccountContext';
 import { toast } from 'react-toastify';
 const Referral = () => {
-    const { account } = useContext(AccountContext);
+    const { account, chainId } = useContext(AccountContext);
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(`https://demask.finance/referral?sponsor=${account}`)
+        navigator.clipboard.writeText(`https://demask.finance/referral?sponsor=${account}&chain=${chainId}`)
         toast.success(
             'Copied',
             {

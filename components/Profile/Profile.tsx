@@ -4,6 +4,7 @@ import NFTs from './NFTs';
 import OptionNetwork from './OptionNetwork';
 import Pools from './Pools';
 import Referral from './Referral';
+import History from './History';
 const Profile = () => {
     const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "nfts"));
     const TABS = [
@@ -30,7 +31,7 @@ const Profile = () => {
         },
         {
             title: "History",
-            panel: () => <div className='text-dark2'>Upcoming</div>,
+            panel: () => <History/>,
             key: "history",
         },
         {

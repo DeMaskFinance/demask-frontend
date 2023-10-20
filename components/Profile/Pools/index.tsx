@@ -4,84 +4,26 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useEffect, useState } from 'react'
 import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md'
 import PoolItem from './PoolItem';
+import { Pagination } from '@/components/Common';
+import { SkeletonTable } from '@/components/Skeleton';
 
 export default function Pools() {
     const [page, setPage] = useState(1);
     const [pageNumberInput, setPageNumberInput] = useState("");
     const { account, chainId } = useContext(AccountContext);
-    const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
+    const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } = useQuery({
         queryKey: ["transaction", chainId],
         queryFn: async () => {
             const res = await liquidityUser(account.toLowerCase(), page, chainId);
             return res;
         },
     });
-    const goToPage = (pageNum: any) => {
-        const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
-        setPage(newPageNumber);
-        setPageNumberInput(String(newPageNumber));
-    };
-    const generatePagination = (currentPage: any, totalPages: any) => {
-        const buttons = [];
-        const maxButtonsToShow = 3;
-
-        if (totalPages <= maxButtonsToShow + 2) {
-            for (let i = 1; i <= totalPages; i++) {
-                buttons.push(i);
-            }
-        } else {
-            const showFirstDots = currentPage > maxButtonsToShow;
-            const showLastDots = currentPage < totalPages - maxButtonsToShow + 1;
-
-            buttons.push(1);
-            buttons.push(2);
-
-            if (showFirstDots) {
-                buttons.push("...");
-            }
-
-            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-                if (i > 2 && i < totalPages - 1) {
-                    buttons.push(i);
-                }
-            }
-
-            if (showLastDots) {
-                buttons.push("...");
-            }
-
-            buttons.push(totalPages - 1);
-            buttons.push(totalPages);
-        }
-
-        return buttons;
-    };
-
-    const prevPage = () => {
-        const prevPageNumber = Math.max(page - 1, 1);
-        setPage(prevPageNumber);
-    };
-
-    const nextPage = () => {
-        const nextPageNumber = Math.min(page + 1, data?.totalPages);
-        setPage(nextPageNumber);
-    };
-
-    useEffect(() => {
-        if (data === null) {
-            setPage(1);
-        }
-    }, [data]);
-    useEffect(() => {
-        refetch();
-    }, [page, refetch]);
-    console.log(data);
 
     return (
         <div>
             {(isLoading || isFetching) ? (
-                <Skeleton />
-            ) : (
+                <SkeletonTable length={4} />
+            ) : (isSuccess && data.combinedRecords.length > 0) ? (
                 <div className="transactionList">
                     <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home">
                         <div className="px-6 pt-6 pb-0 overflow-x-scroll">
@@ -107,98 +49,18 @@ export default function Pools() {
                                 <tbody className="flex flex-col">
                                     {data?.combinedRecords.map((item: any, index: number) => (
                                         <PoolItem item={item} />
-                                    ))} 
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div className="flex justify-center w-full mx-auto text-sm">
-                        <div className="flex flex-col gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
-                            <div className="flex gap-1 lg:gap-10 md:gap-8">
-                                <button
-                                    onClick={prevPage}
-                                    disabled={isPreviousData || page === 1}
-                                    className={`${isPreviousData || page === 1
-                                        ? "text-dark3 hover:border-red"
-                                        : "text-dark2"
-                                        }`}
-                                >
-                                    <MdNavigateBefore className="text-xl border border-transparent" />
-                                </button>
-                                {generatePagination(page, data?.totalPages).map(
-                                    (pageNum, index) => (
-                                        <React.Fragment key={index}>
-                                            {pageNum === "..." ? (
-                                                <span>...</span>
-                                            ) : (
-                                                <button
-                                                    className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${pageNum === page ? "bg-secondary2 text-white" : ""
-                                                        }`}
-                                                    onClick={() => goToPage(pageNum)}
-                                                >
-                                                    {pageNum}
-                                                </button>
-                                            )}
-                                        </React.Fragment>
-                                    )
-                                )}
-                                <button
-                                    onClick={nextPage}
-                                    disabled={isPreviousData || page === data?.totalPages}
-                                    className={`${isPreviousData || page === data?.totalPages
-                                        ? "text-dark3 hover:border"
-                                        : ""
-                                        }`}
-                                >
-                                    <MdOutlineNavigateNext className="text-xl text-dark2" />
-                                </button>
-                            </div>
-                            <div className="flex items-center justify-center gap-4 ml-4 text-dark2">
-                                <span>Go to page </span>
-                                <div>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max={data?.totalPages || 1}
-                                        value={pageNumberInput}
-                                        onChange={(e) => setPageNumberInput(e.target.value)}
-                                        className="w-12 px-2 py-1 text-sm text-center border rounded outline-none max-w-fit"
-                                    />{" "}
-                                    <button
-                                        onClick={() => goToPage(parseInt(pageNumberInput))}
-                                        className="px-2 py-1 text-white border rounded bg-secondary2 hover:translate-x-1 transtion-all"
-                                    >
-                                        Go
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Pagination data={data} page={page} pageNumberInput={pageNumberInput} isPreviousData={isPreviousData} setPage={setPage} setPageNumberInput={setPageNumberInput} refetch={refetch} />
+                </div>
+            ) : (
+                <div>
+                    <p>No data available.</p>
                 </div>
             )}
         </div>
     )
 }
-const Skeleton = () => {
-    const skeletonRows = Array.from({ length: 4 }, (item, index) => (
-        <tr key={index} className="flex text-sm lg:text-base md:text-base text-dark2">
-            <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
-                <div className="w-[100%] h-8 bg-slate-200 animate-pulse mr-2 rounded-xl" />
-            </td>
-            <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
-                <div className="w-[100%] h-8 bg-slate-200 animate-pulse mr-2 rounded-xl" />
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                <div className="w-[100%] h-8 bg-slate-200 animate-pulse mr-2 rounded-xl" />
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                <div className="w-[100%] h-8 bg-slate-200 animate-pulse mr-2 rounded-xl" />
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                <div className="w-[100%] h-8 bg-slate-200 animate-pulse mr-2 rounded-xl" />
-            </td>
-        </tr>
-    ));
-
-    return <>{skeletonRows}</>;
-};

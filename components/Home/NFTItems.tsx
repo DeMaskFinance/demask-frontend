@@ -23,6 +23,7 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
   const { tokenDefault } = useContext(AccountContext);
   const [heightDescription, setHeightDescription] = useState(0);
   const [isMore, setIsMore] = useState<boolean>(false);
+  const [symbolTokenSwap, setSymbolTokenSwap] = useState<string>('');
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const videoRef = useRef(null);
   const audioRef = useRef(null);
@@ -70,13 +71,14 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
     ))
     : null;
 
-  let symbolTokenSwap = "";
-  if (nftItem.tokenSymbol === "WETH" || nftItem.tokenSymbol === "WBNB") {
-    symbolTokenSwap = tokenDefault[0].symbolNative;
-  } 
-  else {
-    symbolTokenSwap = nftItem.tokenSymbol;
-  }
+  useEffect(() => {
+    if (nftItem.tokenSymbol === "WETH" || nftItem.tokenSymbol === "WBNB") {
+      setSymbolTokenSwap(tokenDefault[0].symbolNative);
+    }
+    else {
+      setSymbolTokenSwap(nftItem.tokenSymbol)
+    }
+  }, [tokenDefault])
 
   return (
     <div className="px-4 py-6 mb-6 rounded-lg shadow-chart">

@@ -47,6 +47,7 @@ module.exports = {
         red: "#FD8082",
         yellow: "#FFC258",
         blue: "#1D85E8",
+        purple:"#7413DC",
       },
       fontFamily: {
         DMMono: ["DM Mono", "monospace"],
