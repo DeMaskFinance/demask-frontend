@@ -10,6 +10,7 @@ import { SearchIcon } from "../Icons";
 import { NFTTopService } from "@/libs/service";
 import Image from "next/image";
 import AccountContext from "@/context/AccountContext";
+import MediaNFT from "../Common/MediaNFT";
 
 interface SearchProps {
   isFocused: boolean;
@@ -184,40 +185,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                           >
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                {item.metadata?.image && (
-                                  <Image
-                                    loading="lazy"
-                                    width={32}
-                                    height={32}
-                                    src={item.metadata?.image}
-                                    alt="NFT Image"
-                                    className="object-cover w-full h-full"
-                                  />
-                                )}
-                                {item.metadata?.animation_url &&
-                                  !item.metadata?.image && (
-                                    <video
-                                      src={item.metadata?.animation_url}
-                                      autoPlay={false}
-                                      loop
-                                      muted
-                                      className="object-cover h-full"
-                                    />
-                                  )}
-                                {item.metadata?.image &&
-                                  item.metadata?.animation_url && (
-                                    <audio
-                                      autoPlay
-                                      loop
-                                      muted
-                                      controls
-                                      src={item.metadata?.animation_url}
-                                      className=""
-                                    >
-                                      Your browser does not support the
-                                      <code>audio</code> element.
-                                    </audio>
-                                  )}
+                                <MediaNFT data={item} isControls={false}/>
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">
@@ -273,40 +241,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                {item.metadata?.image && (
-                                  <Image
-                                    loading="lazy"
-                                    width={32}
-                                    height={32}
-                                    src={item.metadata?.image}
-                                    alt="NFT Image"
-                                    className="object-cover w-full h-full"
-                                  />
-                                )}
-                                {item.metadata?.animation_url &&
-                                  !item.metadata?.image && (
-                                    <video
-                                      src={item.metadata?.animation_url}
-                                      autoPlay={false}
-                                      loop
-                                      muted
-                                      className="object-cover h-full"
-                                    />
-                                  )}
-                                {item.metadata?.image &&
-                                  item.metadata?.animation_url && (
-                                    <audio
-                                      autoPlay
-                                      loop
-                                      muted
-                                      controls
-                                      src={item.metadata?.animation_url}
-                                      className=""
-                                    >
-                                      Your browser does not support the
-                                      <code>audio</code> element.
-                                    </audio>
-                                  )}
+                                <MediaNFT data={item} isControls={false}/>
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">
@@ -354,40 +289,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                {item.metadata?.image && (
-                                  <Image
-                                    loading="lazy"
-                                    width={32}
-                                    height={32}
-                                    src={item.metadata?.image}
-                                    alt="NFT Image"
-                                    className="object-cover w-full h-full"
-                                  />
-                                )}
-                                {item.metadata?.animation_url &&
-                                  !item.metadata?.image && (
-                                    <video
-                                      src={item.metadata?.animation_url}
-                                      autoPlay={false}
-                                      loop
-                                      muted
-                                      className="object-cover h-full"
-                                    />
-                                  )}
-                                {item.metadata?.image &&
-                                  item.metadata?.animation_url && (
-                                    <audio
-                                      autoPlay
-                                      loop
-                                      muted
-                                      controls
-                                      src={item.metadata?.animation_url}
-                                      className=""
-                                    >
-                                      Your browser does not support the
-                                      <code>audio</code> element.
-                                    </audio>
-                                  )}
+                                <MediaNFT data={item} isControls={false}/>
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">

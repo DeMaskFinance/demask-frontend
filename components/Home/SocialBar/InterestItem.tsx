@@ -1,3 +1,4 @@
+import MediaNFT from "@/components/Common/MediaNFT";
 import SocialLoading from "@/components/Skeleton/SocialLoading";
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
@@ -37,38 +38,7 @@ function InterestItem() {
             >
               <div className="flex items-start gap-4 max-h-[105px] p-2 mt-4 overflow-hidden transition-all border rounded-lg cursor-pointer group hover:text-secondary3 hover:border-secondary3">
                 <div className="w-[88px]  transition-all flex-shrink-0 h-[88px] overflow-hidden rounded-lg">
-                  {item.metadata?.image && (
-                    <Image
-                      loading="lazy"
-                      width={88}
-                      height={88}
-                      src={item.metadata?.image}
-                      alt="NFT Image"
-                      className="w-full h-full"
-                    />
-                  )}
-                  {item.metadata?.animation_url && !item.metadata?.image && (
-                    <video
-                      src={item.metadata?.animation_url}
-                      autoPlay
-                      loop
-                      muted
-                      className="object-cover w-full h-full"
-                    />
-                  )}
-                  {item.metadata?.image && item.metadata?.animation_url && (
-                    <audio
-                      autoPlay
-                      loop
-                      muted
-                      controls
-                      src={item.metadata?.animation_url}
-                      className=""
-                    >
-                      Your browser does not support the
-                      <code>audio</code> element.
-                    </audio>
-                  )}
+                  <MediaNFT data={item} isControls={false}/>
                 </div>
                 <div className="flex flex-col justify-between">
                   <div className="flex flex-wrap justify-between w-full gap-2 pb-2">

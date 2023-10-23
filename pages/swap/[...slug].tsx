@@ -35,6 +35,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
 import handleApproveToken from "@/libs/utils/handleApproveToken";
+import MediaNFT from "@/components/Common/MediaNFT";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -352,56 +353,13 @@ const Swap: React.FC = () => {
       ) : isSuccess ? (
         <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
           <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
-            <>
-              {data?.metadata && (
-                <div className="flex flex-col items-center">
-                  <div className="">
-                    {data.metadata?.image && (
-                      <Image
-                        src={data.metadata.image}
-                        alt="test"
-                        width={680}
-                        height={576}
-                        sizes="(max-width: 770px) 100vw"
-                        className="w-full rounded-lg lg:max-h-[80vh]"
-                        style={{
-                          objectFit: "contain",
-                        }}
-                      />
-                    )}
-                    {!data.metadata?.image && data.metadata?.animation_url && (
-                      <video
-                        src={data.metadata.animation_url}
-                        autoPlay
-                        loop
-                        muted
-                        controls
-                        className="w-full rounded-lg lg:h-[calc(100vh-326px)]"
-                      />
-                    )}
-                    {data.metadata?.image && data.metadata?.animation_url && (
-                      <audio
-                        autoPlay
-                        loop
-                        muted
-                        controls
-                        src={data.metadata.animation_url}
-                        className="mt-4 mb-2"
-                      >
-                        Your browser does not support the
-                        <code>audio</code> element.
-                      </audio>
-                    )}
-                  </div>
-                  <p
-                    className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
-                    onClick={handleShowDetail}
-                  >
-                    See detail
-                  </p>
-                </div>
-              )}</>
-
+            <MediaNFT data={data} isControls={true}/>
+            <p
+              className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
+              onClick={handleShowDetail}
+            >
+              See detail
+            </p>
           </div>
           <div className="lg:w-[40%] md:w-2/4 w-full">
             <div className="px-2 py-2 border rounded-lg border-dark3">

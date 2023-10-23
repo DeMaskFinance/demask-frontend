@@ -29,6 +29,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { toast } from "react-toastify";
 import { SEO } from '../../next-seo.config';
+import MediaNFT from "@/components/Common/MediaNFT";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -476,57 +477,13 @@ export default function AddLiquidity() {
           </div>
           <div className="order-1 w-full lg:order-2">
             <div className="flex flex-col items-center w-full h-full ">
-              <>
-                {data?.metadata && (
-                  <div className="flex flex-col items-center">
-                    <div className="flex flex-col items-center justify-center w-full h-full text-center ">
-                      {data.metadata?.image && (
-                        <Image
-                          src={data.metadata.image}
-                          alt="test"
-                          width={680}
-                          height={576}
-                          sizes="(max-width: 770px) 100vw"
-                          className="w-full rounded-lg lg:max-h-[80vh]"
-                          style={{
-                            objectFit: "contain",
-                          }}
-                        />
-                      )}
-                      {!data.metadata?.image && data.metadata?.animation_url && (
-                        <video
-                          src={data.metadata.animation_url}
-                          autoPlay
-                          loop
-                          muted
-                          controls
-                          className="w-full rounded-lg"
-                        />
-                      )}
-                      {data.metadata?.image && data.metadata?.animation_url && (
-                        <audio
-                          autoPlay
-                          loop
-                          muted
-                          controls
-                          src={data.metadata.animation_url}
-                          className="mt-4 mb-2"
-                        >
-                          Your browser does not support the
-                          <code>audio</code> element.
-                        </audio>
-                      )}
-                    </div>
-                    <p
-                      className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
-                      onClick={handleShowDetail}
-                    >
-                      Show detail
-                    </p>
-                  </div>
-                )}
-              </>
-
+              <MediaNFT data={data} isControls={true}/>
+              <p
+                className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
+                onClick={handleShowDetail}
+              >
+                Show detail
+              </p>
             </div>
           </div>
         </div>

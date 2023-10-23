@@ -24,6 +24,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
+import MediaNFT from "@/components/Common/MediaNFT";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
@@ -139,7 +140,7 @@ export default function DetailLiquidity() {
       <NextSeo {...updateMeta} />
       <div className="flex justify-between ">
         <div className="flex items-center mb-6">
-          <Link href="/liquidity" className="p-1 rounded-lg hover:bg-secondary2 group">
+          <Link href="/pools" className="p-1 rounded-lg hover:bg-secondary2 group">
             <BackIcon width={24} height={24} />
           </Link>
           {account && data && (
@@ -261,43 +262,7 @@ export default function DetailLiquidity() {
 
         {account && data?.metadata && (
           <div className="justify-end max-w-[700px] mb-6 mx-auto">
-            {data.metadata?.image && (
-              <Image
-                width={760}
-                height={760}
-                src={data.metadata.image}
-                alt="NFT Image"
-                style={{
-                  objectFit: "contain",
-                }}
-                className="rounded-2xl max-w-[760px] max-h-[760px] w-full"
-              />
-            )}
-            {data.metadata?.animation_url &&
-              !data.metadata?.image && (
-                <video
-                  src={data.metadata.animation_url}
-                  autoPlay
-                  loop
-                  muted
-                  controls
-                  className=" rounded-2xl max-w-[760px] max-h-[760px]  w-full"
-                />
-              )}
-            {data.metadata?.image &&
-              data.metadata?.animation_url && (
-                <audio
-                  autoPlay
-                  loop
-                  muted
-                  controls
-                  src={data.metadata.animation_url}
-                  className="absolute bottom-4 mx-auto mt-4 mb-2 translate-x-1/2 right-2/4 w-[80%] "
-                >
-                  Your browser does not support the
-                  <code>audio</code> element.
-                </audio>
-              )}
+            <MediaNFT data={data} isControls={true}/>
             <div className="w-full">
               <p
                 className="block mx-auto mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
