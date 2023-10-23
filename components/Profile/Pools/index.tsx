@@ -6,6 +6,7 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md'
 import PoolItem from './PoolItem';
 import { Pagination } from '@/components/Common';
 import { SkeletonTable } from '@/components/Skeleton';
+import { poolsUserService } from '@/libs/service/profileService';
 
 export default function Pools() {
     const [page, setPage] = useState(1);
@@ -14,11 +15,12 @@ export default function Pools() {
     const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } = useQuery({
         queryKey: ["transaction", chainId],
         queryFn: async () => {
-            const res = await liquidityUser(account.toLowerCase(), page, chainId);
+            const res = await poolsUserService(account.toLowerCase(), chainId, page);
             return res;
         },
     });
-
+    console.log(data);
+    
     return (
         <div>
             {(isLoading || isFetching) ? (

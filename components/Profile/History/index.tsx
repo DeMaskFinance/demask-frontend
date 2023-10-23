@@ -5,19 +5,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md'
 import { Pagination } from '@/components/Common';
 import { SkeletonTable } from '@/components/Skeleton';
+import { historyUserService } from '@/libs/service/profileService';
+import HistoryItem from './HistoryItem';
 
 export default function History() {
     const [page, setPage] = useState(1);
     const [pageNumberInput, setPageNumberInput] = useState("");
     const { account, chainId } = useContext(AccountContext);
     const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
-        queryKey: ["transaction", chainId],
+        queryKey: ["historyUser", chainId],
         queryFn: async () => {
-            const res = await liquidityUser(account.toLowerCase(), page, chainId);
+            const res = await historyUserService(account.toLowerCase(), chainId, page);
             return res;
         },
     });
-   
+
     console.log(data);
 
     return (
@@ -45,23 +47,23 @@ export default function History() {
                                             Item
                                         </th>
                                         <th className="flex justify-start md:basis-1/6 w-[140px]">
-                                            Item
+                                            Price
                                         </th>
                                         <th className="flex justify-start md:basis-1/6 w-[140px]">
-                                            Item
+                                            TxID
                                         </th>
                                     </tr>
                                 </thead>
 
                                 <tbody className="flex flex-col">
-                                    {/* {data?.combinedRecords.map((item: any, index: number) => (
-                                        <PoolItem item={item} />
-                                    ))}  */}
+                                    {data?.userTransactionList.map((item: any, index: number) => (
+                                        <HistoryItem item={item} />
+                                    ))} 
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <Pagination data={data} page={page} pageNumberInput={pageNumberInput} isPreviousData={isPreviousData} setPage={setPage} setPageNumberInput={setPageNumberInput} refetch={refetch}/>
+                    <Pagination data={data} page={page} pageNumberInput={pageNumberInput} isPreviousData={isPreviousData} setPage={setPage} setPageNumberInput={setPageNumberInput} refetch={refetch} />
                 </div>
             )}
         </div>

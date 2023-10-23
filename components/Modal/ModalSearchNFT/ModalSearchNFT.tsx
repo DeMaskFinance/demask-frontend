@@ -1,19 +1,17 @@
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
-import { useState, useEffect, useContext } from "react";
+import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
-import checkIsERC1155 from "@/libs/validation/checkIsERC1155";
-import { ethers } from "ethers";
-import abiErc1155 from "@/abi/abiErc1155.json";
-import Image from "next/image";
-import { BiLoaderAlt } from "react-icons/bi";
-import { useRouter } from "next/router";
-import { memo } from "react";
-import images from "@/public/images";
 import { NFTTopService } from "@/libs/service";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import AccountContext from "@/context/AccountContext";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { memo, useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
+import Wrapper from "../Wrapper";
+import { checkIsERC1155Service } from "@/libs/service/checkIsERC1155";
+import axios from "axios";
+import MediaNFT from "@/components/Common/MediaNFT";
+import { searchNFTService } from "@/libs/service/searchService";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -38,68 +36,25 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const [symbolNFT, setSymbolNFT] = useState("");
   const router = useRouter();
   const { chainId, demask } = useContext(AccountContext);
-  const handleAddressNFT = async (value: string) => {
-    setLoading(true);
-    const ERC1155 = await checkIsERC1155(value);
-    console.log(ERC1155);
-
-    setIsERC1155(ERC1155);
-    setLoading(false);
-  };
   console.log(isERC1155);
   console.log(debouncedNFT);
 
-  useEffect(() => {
-    if (debouncedNFT) {
-      handleAddressNFT(debouncedNFT);
-    }
-
-    const handleSearch = async () => {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://rpc.ankr.com/polygon_mumbai"
-      );
-      const contract = new ethers.Contract(debouncedNFT, abiErc1155, provider);
-      try {
-        const uri = await contract.uri(idNFT);
-        console.log(uri);
-
-        if (uri) {
-          setUri(uri);
-          const res = await fetch(uri);
-          const metadata = await res.json();
-          setMetadata(metadata);
-
-          if (metadata !== null) {
-            const { name, symbol, image } = metadata;
-            setNameNFT(name);
-            setSymbolNFT(symbol);
-            setImageNFT(image);
-          } else {
-            console.log("Metadata is null");
-          }
-        } else {
-          setMetadata(null);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    if (isERC1155 && idNFT && debouncedNFT) {
-      handleSearch();
-    }
-  }, [debouncedNFT, idNFT]);
-  useEffect(() => {
-    const fetchMetadata = async () => {
-      try {
-        const ipfsLink = uri;
-        const res = await fetch(ipfsLink);
-        const metadata = await res.json();
-        setMetadata(metadata);
-      } catch (error) { }
-    };
-    fetchMetadata();
-  }, [uri]);
+  const { isLoading, data, isFetching, isSuccess } = useQuery({
+    queryKey: ["checkNFT", nftAddress, chainId],
+    queryFn: async () => {
+      const res = await checkIsERC1155Service(nftAddress.toLowerCase(), chainId)
+      return res;
+    },
+  });
+  const { isLoading: isLoadingNFT, data: dataNFT, isFetching: isFetchingNFT, isSuccess: isSuccessNFT } = useQuery({
+    queryKey: ["searchNFT", nftAddress, chainId, idNFT],
+    queryFn: async () => {
+      const res = await searchNFTService(nftAddress.toLowerCase(), idNFT, chainId)
+      return res;
+    },
+  });
+  console.log(nftAddress);
+  console.log(dataNFT);
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -157,6 +112,8 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   }
+  console.log(dataNFT);
+  
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -172,7 +129,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 value={nftAddress}
                 onChange={(e) => setNftAddress(e.target.value)}
               />
-              {loading && (
+              {isLoading && (
                 <div className="absolute top-[50%] right-2 -translate-y-1/2">
                   <BiLoaderAlt className="animate-spin text-secondary5" />
                 </div>
@@ -199,40 +156,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                {item.metadata?.image && (
-                                  <Image
-                                    loading="lazy"
-                                    width={32}
-                                    height={32}
-                                    src={item.metadata?.image}
-                                    alt="NFT Image"
-                                    className="object-cover w-full h-full"
-                                  />
-                                )}
-                                {item.metadata?.animation_url &&
-                                  !item.metadata?.image && (
-                                    <video
-                                      src={item.metadata?.animation_url}
-                                      autoPlay={false}
-                                      loop
-                                      muted
-                                      className="object-cover h-full"
-                                    />
-                                  )}
-                                {item.metadata?.image &&
-                                  item.metadata?.animation_url && (
-                                    <audio
-                                      autoPlay
-                                      loop
-                                      muted
-                                      controls
-                                      src={item.metadata?.animation_url}
-                                      className=""
-                                    >
-                                      Your browser does not support the
-                                      <code>audio</code> element.
-                                    </audio>
-                                  )}
+                                <MediaNFT data={item} isControls={false} />
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">
@@ -264,7 +188,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 )}
               </div>
             </div>
-            {isERC1155 && nftAddress && (
+            {data?.status === true && nftAddress && (
               <input
                 className={styles.inputItem}
                 placeholder="Address id or paste id"
@@ -272,7 +196,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 onChange={(e) => setIdNFT(e.target.value)}
               />
             )}
-            {!isERC1155 && nftAddress && (
+            {data?.status === false && nftAddress && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
                 key="totalPayment"
@@ -281,23 +205,19 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               </p>
             )}
           </div>
-          {metadata && (
+          {isSuccessNFT && dataNFT[0]?.metadata && (
             <div
-              className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group"
+              className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group gap-x-2"
               onClick={handleChangeRouteNFT}
             >
-              <Image
-                src={imageNFT}
-                alt=""
-                className="h-6 mr-2 rounded-full"
-                width={24}
-                height={24}
-              />
+              <div className="w-8 h-8">
+                <MediaNFT data={dataNFT[0]} isControls={false}/>
+              </div>
               <div>
                 <h2 className="font-medium group-hover:text-secondary5">
-                  {symbolNFT}
+                  {dataNFT[0]?.metadata?.symbol}
                 </h2>
-                <p className="text-sm text-dark3">{nameNFT}</p>
+                <p className="text-sm text-dark3">{dataNFT[0]?.metadata?.name}</p>
               </div>
             </div>
           )}
@@ -308,7 +228,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        {/* <Button primary className="p-3" onClick={handleSearch}>Check</Button> */}
       </div>
     </Wrapper>
   );

@@ -1,3 +1,4 @@
+import MediaNFT from "@/components/Common/MediaNFT";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
@@ -8,10 +9,10 @@ import { useContext } from "react";
 
 const PoolItem = ({ item }: any) => {
     const { account, wallet } = useContext(AccountContext);
-    const { balanceOfDML, totalSupply,balanceDML } = useBananceOfDML(account, item.dmlAddress, wallet);
+    const { balanceOfDML, totalSupply, balanceDML } = useBananceOfDML(account, item.dmlAddress, wallet);
     // console.log(totalSupply.toString());
     // console.log(balanceDML.toString());
-    
+
     // console.log(item);
     const notionSize = (Number(balanceDML) / Number(totalSupply)) * item.reserveToken * 2 / 1700
     return (
@@ -23,9 +24,7 @@ const PoolItem = ({ item }: any) => {
                     </td>
 
                     <td className="flex items-center justify-start py-2 md:basis-3/6 w-[200px]">
-                        <span className="max-w-[200px] md:max-w-full">
-                            <ModalDocument data={item.dmlAddress} />
-                        </span>
+                        {`${item.dmlAddress.slice(0, 6)}...${item.dmlAddress.slice(-4)}`}
                     </td>
 
                     <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
@@ -33,7 +32,10 @@ const PoolItem = ({ item }: any) => {
                             {formatToUnit(notionSize.toString())}
                         </span>
                     </td>
-                    <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
+                    <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] gap-x-2">
+                        <div className="w-8 h-8">
+                            <MediaNFT data={item} isControls={false}/>
+                        </div>
                         <div className="flex items-center">
                             <span>{item.metadata.symbol}</span>
                             <span className="block overflow-hidden leading-3">/</span>
