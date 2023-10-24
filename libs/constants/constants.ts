@@ -5,7 +5,7 @@ import {
   PolygonIcon,
   BscIcon,
   EtherIcon,
-  zkSyncIcon
+  ZkSyncIcon
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -61,7 +61,7 @@ const tokenzkSync = [
     name: "zkSync Era Testnet",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
-    logo: zkSyncIcon,
+    logo: ZkSyncIcon,
     symbolNative: "ETH"
   },
   {
@@ -136,7 +136,7 @@ if (PORT === '3000') {
   network = [
     {
       name: "zkSync Era Testnet",
-      logo: zkSyncIcon,
+      logo: ZkSyncIcon,
       chain: "280",
     },
     {

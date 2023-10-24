@@ -64,7 +64,7 @@ export const PolygonIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
-export const zkSyncIcon: React.FunctionComponent<IconProps> = ({
+export const ZkSyncIcon: React.FunctionComponent<IconProps> = ({
   className
 }) => {
   return (

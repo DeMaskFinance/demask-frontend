@@ -14,9 +14,10 @@ import { Button } from '../Buttons';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import { CgClose } from 'react-icons/cg';
 import { searchNFTService } from '@/libs/service/searchService';
+import { ZkSyncIcon } from '../Icons';
 const NFTs = () => {
     const { account } = useContext(AccountContext);
-    const [chain] = useQueryParam('chain', withDefault(StringParam, 'all'));
+    const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
     const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
     const [selectedAction, setSelectedAction] = useState<string>('Add');
     const { ref, inView } = useInView();
@@ -24,6 +25,8 @@ const NFTs = () => {
         const data = await nftsUserService(account, chain, pageParam);
         return data;
     };
+    console.log(chain);
+
     const {
         data,
         fetchNextPage,
@@ -42,6 +45,7 @@ const NFTs = () => {
         }
     );
 
+    console.log(data);
     useEffect(() => {
         if (inView) {
             fetchNextPage();
@@ -140,8 +144,16 @@ const NFTs = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='absolute top-[13px] left-[13px] rounded-tl-lg text-white text-sm bg-secondary5'>Chain:{chain}</div>
-                                        <TransionDML item={item} chainId={chain} selectedAction={selectedAction} index={index} selectedItemIndex={selectedItemIndex} setSelectedItemIndex={setSelectedItemIndex} />
+                                        <div className='absolute top-[13px] left-[13px] rounded-tl-lg text-white text-sm bg-secondary5'>
+                                            {item.chainId === 280 && (
+                                                <>
+                                                    <span><ZkSyncIcon className='p-1 fill-white' /></span>
+                                                </>
+                                            )}
+                                        </div>
+                                        {item && (
+                                            <TransionDML item={item} chainId={item.chainId} selectedAction={selectedAction} index={index} selectedItemIndex={selectedItemIndex} setSelectedItemIndex={setSelectedItemIndex} />
+                                        )}
                                     </div>
                                 ))}
                             </Fragment>
@@ -175,14 +187,24 @@ const TransionDML = (
         },
         keepPreviousData: true,
     });
+    console.log(data);
+
     return (
         <div className={`absolute border p-2 top-0 left-0 w-full h-full bg-white rounded-md transition-all ease-linear duration-150 ${props.selectedItemIndex === props.index ? 'translate-y-0' : 'translate-y-full'}`}>
             {props.selectedAction}
-            {isSuccess && data.map((dmlItem: any, index: number) => (
-                <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'><span>{dmlItem.metadata.symbol}</span>
-                <span className="block overflow-hidden leading-3">/</span>
-                <span>{dmlItem.tokenSymbol}</span></Link>
-            ))}
+            {(isLoading || isFetching) ? (
+                <p>Loading...</p>
+            ) : isSuccess && data.length > 0 ? (
+                data.map((dmlItem: any, index: number) => (
+                    <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'>
+                        <span>{dmlItem.metadata.symbol}</span>
+                        <span className="block overflow-hidden leading-3">/</span>
+                        <span>{dmlItem.tokenSymbol}</span>
+                    </Link>
+                ))
+            ) : (
+                <p>No data available.</p>
+            )}
             <button
                 className="absolute top-0 right-0 p-2 text-lg"
                 onClick={() => props.setSelectedItemIndex(null)}

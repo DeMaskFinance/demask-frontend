@@ -3,7 +3,7 @@ import Tippy from "@tippyjs/react/headless";
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
-import { BscIcon, EtherIcon, PolygonIcon, zkSyncIcon } from '../Icons';
+import { BscIcon, EtherIcon, PolygonIcon, ZkSyncIcon } from '../Icons';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 interface MenuNetworkProps {
 
@@ -23,11 +23,11 @@ const network = [
     {
         name: "All",
         logo: EtherIcon,
-        chain: "all",
+        chain: "All",
     },
     {
         name: "zkSync Era Testnet",
-        logo: zkSyncIcon,
+        logo: ZkSyncIcon,
         chain: "280",
     },
     {
@@ -39,7 +39,7 @@ const network = [
 ];
 const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
-    const [chain, setChain] = useQueryParam("chain", withDefault(StringParam, "all"));
+    const [chain, setChain] = useQueryParam("chain", withDefault(StringParam, "All"));
     const handleChangeNetwork = (chain: string) => {
         if (chain !== "1") {
             setChain(chain);
