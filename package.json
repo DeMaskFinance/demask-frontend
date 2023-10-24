@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start -p 3005",
     "lint": "next lint",
-    "deploy": "git pull origin && npm run build && pm2 restart demask-frontend-app",
-    "redeploy": "git pull origin && npm run build && pm2 start npm --name demask-frontend-app -- start"
+    "deploy": "git pull origin && npm run build && pm2 restart demask-app",
+    "redeploy": "git pull origin && npm run build && pm2 start npm --name demask-app -- start"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.25",
