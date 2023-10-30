@@ -17,7 +17,6 @@ function Creators() {
 
     keepPreviousData: true,
   });
-  console.log(data);
 
   return (
     <div className="mt-4 border rounded-lg border-dark4 max-h-[168px] ">

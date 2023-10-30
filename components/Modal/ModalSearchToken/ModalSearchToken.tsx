@@ -29,7 +29,6 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   const handleAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setTokenAddress(e.target.value);
   };
-  console.log(tokenAddress);
   const { isLoading, data, isFetching, refetch, isPreviousData,isSuccess } = useQuery({
     queryKey: ["searchToken", chainId, tokenAddress],
     queryFn: async () => {
@@ -37,8 +36,6 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
       return res;
     },
   });
-  console.log(data);
-  console.log(tokenAddress);
   const handleChangeRouteToken = () => {
     const { currency } = router.query;
     const { slug } = router.query;
@@ -78,7 +75,6 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
   };
-  console.log(tokenDefault);
 
   return (
     <Wrapper isOpen={isOpenSearchToken} onClick={handleClose}>

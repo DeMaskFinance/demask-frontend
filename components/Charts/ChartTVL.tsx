@@ -18,8 +18,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
       return res;
     },
   });
-  console.log(Chart);
-  
+
   const chartData = Chart?.map((dataPoint: any) => ({
     date: dataPoint.date,
     value: dataPoint.dailyTVL,
@@ -58,7 +57,6 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
 
     return null;
   };
-  console.log(typeof(activeData));
   
   return (
     <div>

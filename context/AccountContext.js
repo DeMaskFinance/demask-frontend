@@ -43,7 +43,6 @@ export const AccountProvider = ({ children }) => {
       setTokenDefault(tokenzkSync);
     }
   }, [chainId]);
-  // console.log(account);
   const updateAccount = (newAccount) => {
     setAccount(newAccount);
     localStorage.setItem("ACCOUNT_DEMASK", newAccount);
@@ -61,8 +60,6 @@ export const AccountProvider = ({ children }) => {
   const provider = getProvider(wallet);
   const PORT = process.env.NEXT_PUBLIC_APP_PORT;
   useEffect(() => {
-    // console.log(wallet);
-    // console.log(provider);
     if (window.ethereum) {
       const handleAccountsChanged = (accounts) => {
         if (accounts.length > 0) {

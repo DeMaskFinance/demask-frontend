@@ -26,7 +26,6 @@ const ModalDocument = ({ data }: { data: string }) => {
             }
         }
     }, [data]);
-    console.log(isTruncated);
 
     return (
         <>

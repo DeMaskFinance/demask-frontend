@@ -1,21 +1,33 @@
-import getInfor from '@/libs/utils/getInforDML';
-import { useEffect, useState } from 'react';
+import getInfor from "@/libs/utils/getInforDML";
+import { useEffect, useState } from "react";
 
-const useInformationDML = (dmlToken:string|undefined) => {
+const useInformationDML = (
+  dmlToken: string | undefined,
+  wallet: string,
+  account: string
+) => {
   const [reserves, setReserves] = useState<any[]>([0]);
-  const [decimals,setDecimals] = useState<string>("18");
-  const [idNFT,setIdNFT] = useState<string>("");
-  const [nftAddress,setNftAddress] = useState<string>("");
-  const [reserveNFT,setReserveNFT] = useState<string>("");
-  const [reserveToken,setReserveToken] = useState<string>("");
-  const [tokenAddress,setTokenAddress] = useState<string>("");
-  const [isLoadingInforDML,setIsLoadingInforDML] = useState<boolean>(false);
+  const [decimals, setDecimals] = useState<string>("18");
+  const [idNFT, setIdNFT] = useState<string>("");
+  const [nftAddress, setNftAddress] = useState<string>("");
+  const [reserveNFT, setReserveNFT] = useState<string>("");
+  const [reserveToken, setReserveToken] = useState<string>("");
+  const [tokenAddress, setTokenAddress] = useState<string>("");
+  const [isLoadingInforDML, setIsLoadingInforDML] = useState<boolean>(false);
   useEffect(() => {
     const fetchInforDML = async () => {
-      setIsLoadingInforDML(true)
+      setIsLoadingInforDML(true);
       try {
-        if (dmlToken) {
-          const {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress}:any = await getInfor(dmlToken);
+        if (dmlToken && wallet && account) {
+          const {
+            reserves,
+            decimals,
+            idNFT,
+            nftAddress,
+            reserveNFT,
+            reserveToken,
+            tokenAddress,
+          }: any = await getInfor(dmlToken, wallet);
           setReserves(reserves);
           setDecimals(decimals);
           setIdNFT(idNFT);
@@ -27,13 +39,22 @@ const useInformationDML = (dmlToken:string|undefined) => {
       } catch (error) {
         console.error(error);
       }
-      setIsLoadingInforDML(false)
+      setIsLoadingInforDML(false);
     };
 
     fetchInforDML();
-  }, [dmlToken]);
+  }, [dmlToken, wallet, account]);
 
-  return {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress,isLoadingInforDML};
+  return {
+    reserves,
+    decimals,
+    idNFT,
+    nftAddress,
+    reserveNFT,
+    reserveToken,
+    tokenAddress,
+    isLoadingInforDML,
+  };
 };
 
 export default useInformationDML;

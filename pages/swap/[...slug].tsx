@@ -36,6 +36,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
 import handleApproveToken from "@/libs/utils/handleApproveToken";
 import MediaNFT from "@/components/Common/MediaNFT";
+import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -70,6 +71,7 @@ const Swap: React.FC = () => {
   const [amountSell, setAmountSell] = useState<number>(0);
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
+  const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -353,7 +355,7 @@ const Swap: React.FC = () => {
       ) : isSuccess ? (
         <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
           <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
-            <MediaNFT data={data} isControls={true}/>
+            <MediaNFT data={data} isControls={true} />
             <p
               className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
               onClick={handleShowDetail}
@@ -591,7 +593,7 @@ const Swap: React.FC = () => {
                   <button
                     type="button"
                     className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
-                    onClick={handleBuyNFT}
+                    onClick={() => setIsOpenBuyNFT(true)}
                   >
                     BUY NFT
                   </button>
@@ -689,6 +691,9 @@ const Swap: React.FC = () => {
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
       />
+      {data && (
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} />
+      )}
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
     </div>
   );

@@ -36,8 +36,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const [symbolNFT, setSymbolNFT] = useState("");
   const router = useRouter();
   const { chainId, demask } = useContext(AccountContext);
-  console.log(isERC1155);
-  console.log(debouncedNFT);
 
   const { isLoading, data, isFetching, isSuccess } = useQuery({
     queryKey: ["checkNFT", nftAddress, chainId],
@@ -53,8 +51,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
       return res;
     },
   });
-  console.log(nftAddress);
-  console.log(dataNFT);
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -112,7 +108,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   }
-  console.log(dataNFT);
   
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
