@@ -15,7 +15,6 @@ const useInformationToken = (
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
   const [decimals, setDecimals] = useState("18");
-  const [nameTokenERC20, setNameTokenERC20] = useState("");
   const [allowanceToken, setAllowanceToken] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(rpc);
 
@@ -40,9 +39,7 @@ const useInformationToken = (
             abiErc20,
             provider
           );
-          // const symbol = await contract.symbol();
-          // const name = await contract.name();
-          // setNameTokenERC20(name);
+
           try {
             const bigNumberBalance = await contract.balanceOf(account);
             setBigNumberBalance(bigNumberBalance.toString());

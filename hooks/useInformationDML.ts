@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 const useInformationDML = (
   dmlToken: string | undefined,
   wallet: string,
-  account: string
+  account: string,
+  isOpenTransaction:boolean,
 ) => {
   const [reserves, setReserves] = useState<any[]>([0]);
   const [decimals, setDecimals] = useState<string>("18");
@@ -43,7 +44,7 @@ const useInformationDML = (
     };
 
     fetchInforDML();
-  }, [dmlToken, wallet, account]);
+  }, [dmlToken, wallet, account,isOpenTransaction]);
 
   return {
     reserves,

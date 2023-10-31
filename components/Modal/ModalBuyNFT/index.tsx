@@ -1,46 +1,38 @@
-import abiDML from "@/abi/abiDML.json";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
-import { TabGroups } from "@/components/NavChoice";
+import { DownIcon } from "@/components/Icons";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
-import useAllowanceDML from "@/hooks/useAllowanceDML";
-import useBananceOfDML from "@/hooks/useBalanceOfDML";
-import useTotalSupply from "@/hooks/useTotalSupply";
+import useInformationDML from "@/hooks/useInformationDML";
+import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
-import approveNFT from "@/libs/utils/approveNFT";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import BigNumber from "bignumber.js";
+import { getBuyPrice, getFeeBuy } from "@/libs/utils/getPrice";
+import handleApproveToken from "@/libs/utils/handleApproveToken";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import { DownIcon } from "@/components/Icons";
-import useInformationDML from "@/hooks/useInformationDML";
-import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
-import useInformationToken from "@/hooks/useInformationToken";
-import handleApproveToken from "@/libs/utils/handleApproveToken";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
     data: any;
     inputNFT: string;
     symbolToken: string;
+    nftAddress: string;
+    idNFT: string;
+    isOpenTransaction: boolean,
+    setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenBuyNFT: React.Dispatch<React.SetStateAction<boolean>>;
+    setInputNFT: React.Dispatch<React.SetStateAction<string>>;
 }
-const styles = {
-    title: "block mb-4 text-base font-medium text-black24",
-    inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
-};
+
 const ModalBuyNFT: React.FunctionComponent<
     ModalBuyNFTProps
 > = ({
@@ -49,42 +41,42 @@ const ModalBuyNFT: React.FunctionComponent<
     data,
     inputNFT,
     symbolToken,
+    nftAddress,
+    idNFT,
+    isOpenTransaction,
+    setIsOpenTransaction,
     setIsOpenBuyNFT,
+    setInputNFT,
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
-        const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
-        const { demask, tokenDefault, account, wallet } = useContext(AccountContext);
+        const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const [amountBuy, setAmountBuy] = useState<number>(0);
-        const [amountSell, setAmountSell] = useState<number>(0);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
-        const [amountSellDec, setAmountSellDec] = useState<number>(0);
         console.log(data);
-        const { balanceToken, bigNumberBalance, allowanceToken } =
+        const { allowanceToken } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
         const handleClose = (e: any) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenBuyNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account)
+        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction)
         console.log(reserveNFT.toString());
         console.log(Number(reserveToken));
         useEffect(() => {
             if (inputNFT && data) {
                 setAmountBuy(getBuyPrice(Number(reserveNFT), data.reserveToken, +(inputNFT)))
-                setAmountSell(getSellPrice(Number(reserveNFT), data.reserveToken, +(inputNFT)))
                 setAmountBuyDec(getBuyPrice(Number(reserveNFT), data.reserveTokenDecimals, Number(inputNFT)) * Number(inputNFT) * 1.05)
-                setAmountSellDec(getSellPrice(Number(reserveNFT), data.reserveTokenDecimals, +(inputNFT)) * Number(inputNFT) * 0.95)
             } else {
                 setAmountBuy(0);
-                setAmountSell(0);
                 setAmountBuyDec(0);
-                setAmountSellDec(0);
             }
         }, [inputNFT, data])
         console.log(amountBuyDec);
+        console.log(allowanceToken);
+
         useEffect(() => {
             const checkApproveToken = async () => {
                 if (tokenAddress !== nativeAddress) {
@@ -99,6 +91,69 @@ const ModalBuyNFT: React.FunctionComponent<
             };
             checkApproveToken();
         }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
+        const handleBuyNFT = async (e: any) => {
+            e.preventDefault();
+            if (!account) {
+                setIsOpen(true);
+                return;
+            }
+            if (
+                Number(data.reserveNFT) > 1 &&
+                Number(data.reserveToken) > 0 &&
+                Math.floor(amountBuyDec) > 0
+            ) {
+                const providerChoice = getProvider(wallet);
+                const provider = new ethers.providers.Web3Provider(providerChoice);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+                try {
+                    let result;
+                    setIsOpenTransaction(true);
+                    if (tokenAddress === nativeAddress) {
+                        result = await contract.buyETH(
+                            nftAddress,
+                            idNFT,
+                            inputNFT,
+                            account,
+                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec)) }
+                        );
+                    } else {
+                        result = await contract.buy(
+                            tokenAddress,
+                            nftAddress,
+                            idNFT,
+                            inputNFT,
+                            exponentialToDecimal(Math.floor(amountBuyDec)),
+                            account,
+                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                            { gasLimit: 8000000 }
+                        );
+                    }
+                    await provider.waitForTransaction(result.hash);
+                    setIsOpenTransaction(false);
+                    setIsOpenBuyNFT(false);
+                    toast.success(
+                        <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
+                        {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: false,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        }
+                    );
+
+                    setInputNFT("");
+                } catch (error) {
+                    setIsOpenTransaction(false);
+                    console.error(error);
+                }
+            }
+        };
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -121,35 +176,42 @@ const ModalBuyNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
                             <p>Slippage tolerance</p>
-                            <p>20.00%</p>
+                            <p>{slippage}%</p>
                         </div>
                         <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least 12,000 NFT1 or the transaction will revert</p>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
-                                <p>123</p>
+                                <p>{formatNumber(
+                                    (Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                )}</p>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
-                                <p>NFT1</p>
+                                <div className="flex gap-x-1">
+                                    <p>{inputNFT}</p>
+                                    <p>{data.metadata.symbol}</p>
+                                </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Trading fee</p>
-                                <p>NFT1</p>
+                                <div className="flex gap-x-1">
+                                    <p>{formatNumber(getFeeBuy(Number(reserveNFT), Number(reserveToken), +(inputNFT)).toString())}</p>
+                                </div>
                             </div>
                         </div>
-                        <div className="mt-6">
+                        <div className="flex flex-col items-center mt-6">
                             {isApprovedToken ? (
                                 <button
                                     type="button"
                                     className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
-                                    onClick={() => setIsOpenBuyNFT(true)}
+                                    onClick={handleBuyNFT}
                                 >
                                     BUY NFT
                                 </button>
                             ) : (
                                 <Button
-                                    className="w-[126px] py-2"
+                                    className="w-[126px] py-2 mx-auto"
                                     type="button"
                                     primary
                                     onClick={() =>

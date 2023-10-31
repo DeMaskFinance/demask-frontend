@@ -12,6 +12,7 @@ interface ButtonProps {
   outline?: boolean;
   className?: string;
   type?:"button" | "submit" | "reset" | undefined;
+  third?:boolean
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -26,6 +27,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   outline,
   className,
   type,
+  third
 }) => {
   return (
     <button
@@ -36,6 +38,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       rounded-lg
       text-sm
       ${primary ? "bg-secondary2 text-white font-medium" : ""}
+      ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
       ${active ? "bg-dark2 text-white" : ""}
       ${secondary ? "bg-white text-dark3" : ""}
       ${outline ? " border border-dark3 " : ""}

@@ -168,75 +168,6 @@ const Swap: React.FC = () => {
     }
   }, []);
 
-  const handleBuyNFT = async (e: any) => {
-    e.preventDefault();
-    if (!account) {
-      setIsOpen(true);
-      return;
-    }
-    if (inputNFT === "") {
-      setShowRequiredMessage(true);
-    } else {
-      setShowRequiredMessage(false);
-      if (
-        isSufficientNFT &&
-        isSufficientTokenBuy &&
-        Number(data.reserveNFT) > 1 &&
-        Number(data.reserveToken) > 0 &&
-        Math.floor(amountBuyDec) > 0
-      ) {
-        const providerChoice = getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        try {
-          let result;
-          setIsOpenTransaction(true);
-          if (tokenAddress === nativeAddress) {
-            result = await contract.buyETH(
-              nftAddress,
-              idNFT,
-              inputNFT,
-              account,
-              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec)) }
-            );
-          } else {
-            result = await contract.buy(
-              tokenAddress,
-              nftAddress,
-              idNFT,
-              inputNFT,
-              exponentialToDecimal(Math.floor(amountBuyDec)),
-              account,
-              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000 }
-            );
-          }
-          await provider.waitForTransaction(result.hash);
-          setIsOpenTransaction(false);
-          toast.success(
-            <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-
-          setInputNFT("");
-        } catch (error) {
-          setIsOpenTransaction(false);
-          console.error(error);
-        }
-      }
-    }
-  };
   const handleSellNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -308,7 +239,13 @@ const Swap: React.FC = () => {
       }
     }
   };
-
+  const handleBuy = () => {
+    if (inputNFT === "") {
+      setShowRequiredMessage(true);
+    } else if (isSufficientNFT && isSufficientTokenBuy) {
+      setIsOpenBuyNFT(true);
+    }
+  };
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";
@@ -321,6 +258,7 @@ const Swap: React.FC = () => {
     setIsOpenSearchToken(true);
     document.body.style.overflowY = "hidden";
   };
+
   return (
     <div className="py-8 mx-auto swap max-w-[1592px]">
       <NextSeo {...updateMeta} />
@@ -570,11 +508,7 @@ const Swap: React.FC = () => {
                   <button
                     type="button"
                     className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
-                    onClick={() => {
-                      if(inputNFT){
-                        setIsOpenBuyNFT(true)}
-                      }
-                    }
+                    onClick={handleBuy}
                   >
                     BUY NFT
                   </button>
@@ -606,29 +540,6 @@ const Swap: React.FC = () => {
                     APPROVE NFT
                   </Button>
                 )}
-                {/* {!isApprovedToken &&
-                  tokenAddress !== nativeAddress &&
-                  activeChoice === "BUY" && (
-                    <Button
-                      className="w-[126px] py-2"
-                      type="button"
-                      primary
-                      onClick={() =>
-                        handleApproveToken(
-                          account,
-                          wallet,
-                          tokenAddress,
-                          amountBuyDec,
-                          routerAddress,
-                          setIsOpen,
-                          setIsOpenTransaction,
-                          setInputNFT
-                        )
-                      }
-                    >
-                      APPROVE TOKEN
-                    </Button>
-                  )} */}
               </div>
             </div>
             <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
@@ -673,7 +584,7 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} tokenAddress={tokenAddress} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} />
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
