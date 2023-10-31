@@ -17,6 +17,8 @@ export const AccountProvider = ({ children }) => {
   const [chainId, setChainId] = useState(network[0]?.chain);
   const [demask, setDemask] = useState("");
   const [tokenDefault, setTokenDefault] = useState("");
+  const [slippage, setSlippage] = useState(5);
+  const [txDeadline, setTxDeadline] = useState(20);
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
@@ -56,6 +58,14 @@ export const AccountProvider = ({ children }) => {
   const updateChainId = (newChainId) => {
     setChainId(newChainId);
     localStorage.setItem("CHAINID", newChainId);
+  };
+  const updateSlippage = (newSlippage) => {
+    setSlippage(newSlippage);
+    localStorage.setItem("SLIPPAGE_DEMASK", newSlippage);
+  };
+  const updateTxDeadline = (newTime) => {
+    setTxDeadline(newTime);
+    localStorage.setItem("TXDEADLINE_DEMASK", newTime);
   };
   const provider = getProvider(wallet);
   const PORT = process.env.NEXT_PUBLIC_APP_PORT;
@@ -99,6 +109,10 @@ export const AccountProvider = ({ children }) => {
         chainId,
         demask,
         tokenDefault,
+        txDeadline,
+        updateTxDeadline,
+        slippage,
+        updateSlippage,
       }}
     >
       {children}

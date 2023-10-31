@@ -26,9 +26,15 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { DownIcon } from "@/components/Icons";
 import useInformationDML from "@/hooks/useInformationDML";
+import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
+import useInformationToken from "@/hooks/useInformationToken";
+import handleApproveToken from "@/libs/utils/handleApproveToken";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
+    tokenAddress: string;
     data: any;
+    inputNFT: string;
+    symbolToken: string;
     setIsOpenBuyNFT: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const styles = {
@@ -39,15 +45,24 @@ const ModalBuyNFT: React.FunctionComponent<
     ModalBuyNFTProps
 > = ({
     isOpenBuyNFT,
+    tokenAddress,
     data,
+    inputNFT,
+    symbolToken,
     setIsOpenBuyNFT,
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+        const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+        const [amountBuy, setAmountBuy] = useState<number>(0);
+        const [amountSell, setAmountSell] = useState<number>(0);
+        const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+        const [amountSellDec, setAmountSellDec] = useState<number>(0);
         console.log(data);
-
+        const { balanceToken, bigNumberBalance, allowanceToken } =
+            useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
         const handleClose = (e: any) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
@@ -56,7 +71,34 @@ const ModalBuyNFT: React.FunctionComponent<
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account)
         console.log(reserveNFT.toString());
         console.log(Number(reserveToken));
-
+        useEffect(() => {
+            if (inputNFT && data) {
+                setAmountBuy(getBuyPrice(Number(reserveNFT), data.reserveToken, +(inputNFT)))
+                setAmountSell(getSellPrice(Number(reserveNFT), data.reserveToken, +(inputNFT)))
+                setAmountBuyDec(getBuyPrice(Number(reserveNFT), data.reserveTokenDecimals, Number(inputNFT)) * Number(inputNFT) * 1.05)
+                setAmountSellDec(getSellPrice(Number(reserveNFT), data.reserveTokenDecimals, +(inputNFT)) * Number(inputNFT) * 0.95)
+            } else {
+                setAmountBuy(0);
+                setAmountSell(0);
+                setAmountBuyDec(0);
+                setAmountSellDec(0);
+            }
+        }, [inputNFT, data])
+        console.log(amountBuyDec);
+        useEffect(() => {
+            const checkApproveToken = async () => {
+                if (tokenAddress !== nativeAddress) {
+                    if (Number(allowanceToken) < Number(amountBuyDec)) {
+                        setIsApprovedToken(false);
+                    } else {
+                        setIsApprovedToken(true);
+                    }
+                } else {
+                    setIsApprovedToken(true);
+                }
+            };
+            checkApproveToken();
+        }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -65,15 +107,17 @@ const ModalBuyNFT: React.FunctionComponent<
                             Confirm Buy
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>12,000</p>
-                            <p>NFT1</p>
+                            <p>{inputNFT}</p>
+                            <p>{data.metadata.symbol}</p>
                         </div>
                         <div>
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>12,000</p>
-                            <p>NFT1</p>
+                            <p>{formatNumber(
+                                divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
+                            )}</p>
+                            <p>{symbolToken}</p>
                         </div>
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
                             <p>Slippage tolerance</p>
@@ -95,13 +139,34 @@ const ModalBuyNFT: React.FunctionComponent<
                             </div>
                         </div>
                         <div className="mt-6">
-                            <button
-                                type="button"
-                                className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
-                                onClick={() => setIsOpenBuyNFT(true)}
-                            >
-                                BUY NFT
-                            </button>
+                            {isApprovedToken ? (
+                                <button
+                                    type="button"
+                                    className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
+                                    onClick={() => setIsOpenBuyNFT(true)}
+                                >
+                                    BUY NFT
+                                </button>
+                            ) : (
+                                <Button
+                                    className="w-[126px] py-2"
+                                    type="button"
+                                    primary
+                                    onClick={() =>
+                                        handleApproveToken(
+                                            account,
+                                            wallet,
+                                            tokenAddress,
+                                            amountBuyDec,
+                                            routerAddress,
+                                            setIsOpen,
+                                            setIsOpenTransaction
+                                        )
+                                    }
+                                >
+                                    APPROVE TOKEN
+                                </Button>
+                            )}
                         </div>
                     </div>
                     <button

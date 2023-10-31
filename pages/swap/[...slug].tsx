@@ -37,6 +37,8 @@ import { SEO } from '../../next-seo.config';
 import handleApproveToken from "@/libs/utils/handleApproveToken";
 import MediaNFT from "@/components/Common/MediaNFT";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
+import { AiFillSetting } from "react-icons/ai";
+import ModalSetting from "@/components/Modal/ModalSetting";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -54,7 +56,8 @@ const Swap: React.FC = () => {
   const [inputNFT, setInputNFT] = useState<string>("");
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
+  const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
+  const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
@@ -71,7 +74,6 @@ const Swap: React.FC = () => {
   const [amountSell, setAmountSell] = useState<number>(0);
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
-  const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -106,15 +108,6 @@ const Swap: React.FC = () => {
     }
   }, [data, slug, tokenDefault])
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('time');
-
-      refetch();
-    }, 5000);
-
-    // return () => clearTimeout(timer);
-  }, [isOpenTransaction]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
   console.log(data);
 
@@ -140,11 +133,6 @@ const Swap: React.FC = () => {
       setAmountSellDec(0);
     }
   }, [inputNFT, data])
-  // console.log(amountSell);
-  // console.log(amountSellDec);
-  // console.log(allowanceToken);
-  // console.log(amountBuyDec);
-  // console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -180,20 +168,6 @@ const Swap: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const checkApproveToken = async () => {
-      if (tokenAddress !== nativeAddress) {
-        if (Number(allowanceToken) < Number(amountBuyDec)) {
-          setIsApprovedToken(false);
-        } else {
-          setIsApprovedToken(true);
-        }
-      } else {
-        setIsApprovedToken(true);
-      }
-    };
-    checkApproveToken();
-  }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -373,7 +347,10 @@ const Swap: React.FC = () => {
                     onChoiceChange={handleChoiceChange}
                   />
                 </div>
-                <div className="flex flex-col ">
+                <div className="flex items-center gap-x-2">
+                  <div onClick={() => setIsOpenSetting(true)}>
+                    <AiFillSetting className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
+                  </div>
                   {data.dmlAddress ? (
                     <a
                       href={`https://mumbai.polygonscan.com/address/${data.dmlAddress}`}
@@ -589,11 +566,15 @@ const Swap: React.FC = () => {
                 </p>
               )}
               <div className="flex justify-center w-full">
-                {isApprovedToken && activeChoice === "BUY" && (
+                {activeChoice === "BUY" && (
                   <button
                     type="button"
                     className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
-                    onClick={() => setIsOpenBuyNFT(true)}
+                    onClick={() => {
+                      if(inputNFT){
+                        setIsOpenBuyNFT(true)}
+                      }
+                    }
                   >
                     BUY NFT
                   </button>
@@ -625,7 +606,7 @@ const Swap: React.FC = () => {
                     APPROVE NFT
                   </Button>
                 )}
-                {!isApprovedToken &&
+                {/* {!isApprovedToken &&
                   tokenAddress !== nativeAddress &&
                   activeChoice === "BUY" && (
                     <Button
@@ -647,7 +628,7 @@ const Swap: React.FC = () => {
                     >
                       APPROVE TOKEN
                     </Button>
-                  )}
+                  )} */}
               </div>
             </div>
             <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
@@ -691,9 +672,10 @@ const Swap: React.FC = () => {
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
       />
-      {data && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} />
+      {data && account && (
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} tokenAddress={tokenAddress} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} />
       )}
+      <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
     </div>
   );
