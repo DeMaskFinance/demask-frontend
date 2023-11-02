@@ -1,44 +1,36 @@
-import abiErc20 from "@/abi/abiErc20.json";
-import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import { ChartLoading } from "@/components/Charts";
 import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import ChartSwap from "@/components/Charts/ChartSwap";
+import MediaNFT from "@/components/Common/MediaNFT";
 import { ActiveIcon, PoolIcon } from "@/components/Icons";
+import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
+import ModalSetting from "@/components/Modal/ModalSetting";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonReels } from "@/components/Skeleton";
-import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformationToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
 import { swapAPI } from "@/libs/service";
 import approveNFT from "@/libs/utils/approveNFT";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 import { getBuyPrice, getSellPrice } from "@/libs/utils/getPrice";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
 import { NextSeo } from "next-seo";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { AiFillSetting } from "react-icons/ai";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
-import handleApproveToken from "@/libs/utils/handleApproveToken";
-import MediaNFT from "@/components/Common/MediaNFT";
-import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
-import { AiFillSetting } from "react-icons/ai";
-import ModalSetting from "@/components/Modal/ModalSetting";
+import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -57,6 +49,7 @@ const Swap: React.FC = () => {
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
+  const [isOpenSellNFT, setIsOpenSellNFT] = useState<boolean>(false);
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
@@ -168,82 +161,19 @@ const Swap: React.FC = () => {
     }
   }, []);
 
-  const handleSellNFT = async (e: any) => {
-    e.preventDefault();
-    if (!account) {
-      setIsOpen(true);
-      return;
-    }
-    if (inputNFT === "") {
-      setShowRequiredMessage(true);
-    } else {
-      setShowRequiredMessage(false);
-      if (
-        isSufficientNFT &&
-        isSufficientTokenSell &&
-        Number(data.reserveNFT) > 0 &&
-        Number(data.reserveToken) > 0 &&
-        Math.floor(amountSellDec) > 0
-      ) {
-        const providerChoice = getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
 
-
-        try {
-          let result;
-          setIsOpenTransaction(true);
-          if (tokenAddress === nativeAddress) {
-            result = await contract.sellETH(
-              nftAddress,
-              idNFT,
-              inputNFT,
-              exponentialToDecimal(Math.floor(amountSellDec)),
-              account,
-              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000 }
-            );
-          } else {
-            result = await contract.sell(
-              tokenAddress,
-              nftAddress,
-              idNFT,
-              inputNFT,
-              exponentialToDecimal(Math.floor(amountSellDec)),
-              account,
-              Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-              { gasLimit: 8000000 }
-            );
-          }
-          await provider.waitForTransaction(result.hash);
-          setIsOpenTransaction(false);
-          toast.success(
-            <TransitionURL type={"Sell NFT"} transactionHash={result.hash} />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          setInputNFT("");
-        } catch (error) {
-          setIsOpenTransaction(false);
-          console.error(error);
-        }
-      }
-    }
-  };
   const handleBuy = () => {
     if (inputNFT === "") {
       setShowRequiredMessage(true);
-    } else if (isSufficientNFT && isSufficientTokenBuy) {
+    } else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null) {
       setIsOpenBuyNFT(true);
+    }
+  };
+  const handleSell = () => {
+    if (inputNFT === "") {
+      setShowRequiredMessage(true);
+    } else if (isSufficientNFT && isSufficientTokenSell && data.dmlAddress !== null) {
+      setIsOpenSellNFT(true);
     }
   };
   const handleSearchNFT = () => {
@@ -258,7 +188,10 @@ const Swap: React.FC = () => {
     setIsOpenSearchToken(true);
     document.body.style.overflowY = "hidden";
   };
-
+  const handleOpen = () => {
+    document.body.style.overflowY = "hidden";
+    setIsOpen(true);
+  };
   return (
     <div className="py-8 mx-auto swap max-w-[1592px]">
       <NextSeo {...updateMeta} />
@@ -504,7 +437,7 @@ const Swap: React.FC = () => {
                 </p>
               )}
               <div className="flex justify-center w-full">
-                {activeChoice === "BUY" && (
+                {isApprovedNFT && activeChoice === "BUY" && account && (
                   <button
                     type="button"
                     className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
@@ -513,16 +446,16 @@ const Swap: React.FC = () => {
                     BUY NFT
                   </button>
                 )}
-                {isApprovedNFT && activeChoice === "SELL" && (
+                {isApprovedNFT && activeChoice === "SELL" && account && (
                   <button
                     type="button"
                     className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
-                    onClick={handleSellNFT}
+                    onClick={handleSell}
                   >
                     SELL NFT
                   </button>
                 )}
-                {!isApprovedNFT && activeChoice === "SELL" && (
+                {!isApprovedNFT && account && (
                   <Button
                     className="w-[126px] py-2"
                     primary
@@ -540,6 +473,17 @@ const Swap: React.FC = () => {
                     APPROVE NFT
                   </Button>
                 )}
+                {
+                  !account && (
+                    <Button
+                      className="w-[144px] py-2"
+                      primary
+                      onClick={handleOpen}
+                    >
+                      CONNECT WALLET
+                    </Button>
+                  )
+                }
               </div>
             </div>
             <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
@@ -585,6 +529,9 @@ const Swap: React.FC = () => {
       />
       {data && account && (
         <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
+      )}
+      {data && account && (
+        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />

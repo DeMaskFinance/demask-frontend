@@ -11,6 +11,8 @@ const useInformationToken = (
   rpc: string,
   nativeAddress: string,
   isOpenTransaction?: boolean,
+  isOpenBuyNFT?: boolean,
+  isOpenSellNFT?: boolean
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
@@ -65,7 +67,7 @@ const useInformationToken = (
     };
 
     getInformationToken();
-  }, [tokenAddress, account, wallet, isOpenTransaction]);
+  }, [tokenAddress, account, wallet, isOpenTransaction, isOpenBuyNFT,isOpenSellNFT]);
 
   return {
     balanceToken,
