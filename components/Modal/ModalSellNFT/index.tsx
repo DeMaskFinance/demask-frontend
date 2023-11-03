@@ -201,8 +201,8 @@ const ModalSellNFT: React.FunctionComponent<
                             <p>{slippage}%</p>
                         </div>
                         <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {formatNumber(
-                                divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
-                            )} {symbolToken} or the transaction will revert</p>
+                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                        )} {symbolToken} or the transaction will revert</p>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
@@ -213,8 +213,10 @@ const ModalSellNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
                                 <div className="flex gap-x-1">
-                                    <p>{inputNFT}</p>
-                                    <p>{data.metadata.symbol}</p>
+                                    <p>{formatNumber(
+                                        divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                                    )}</p>
+                                    <p>{symbolToken}</p>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">

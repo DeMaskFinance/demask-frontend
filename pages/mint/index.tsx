@@ -38,7 +38,6 @@ export default function Creator() {
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<any>(null);
-  const [activeButton, setActiveButton] = useState<string>("Mint");
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
   ]);
@@ -184,9 +183,7 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
-  const handleChoiceChange = (choice: string) => {
-    setActiveButton(choice);
-  };
+
   return (
     <div className="flex flex-col gap-6 py-8 mx-auto lg:flex-row md:flex-row container-main">
       <NextSeo {...updateMeta} />
@@ -362,8 +359,8 @@ export default function Creator() {
             />
           </div>
           <div>
-            <label htmlFor="attributes" className={styles.title}>
-              <span>Attributes</span>
+            <label htmlFor="traits" className={styles.title}>
+              <span>Traits</span>
             </label>
             {attributeItems.map((item) => (
               <div className="flex items-center gap-x-2" key={item.id}>
@@ -421,15 +418,7 @@ export default function Creator() {
               </Button>
             ))}
           </div>
-          <div className="mb-4">
-            <p className={styles.title}>Mint Option</p>
-            <TabGroups
-              choices={["Mint", "Launchpad"]}
-              activeChoice={activeButton}
-              onChoiceChange={handleChoiceChange}
-            />
-          </div>
-          {/* <MintNFT
+          <MintNFT
             name={name}
             symbol={symbol}
             attributeItems={attributeItems}
@@ -446,46 +435,7 @@ export default function Creator() {
             setSelectedCategory={setSelectedCategory}
             setSelectedFile={setSelectedFile}
             fileType={fileType}
-          /> */}
-          {activeButton === "Mint" ? (
-            <MintNFT
-              name={name}
-              symbol={symbol}
-              attributeItems={attributeItems}
-              description={description}
-              fileIPFS={fileIPFS}
-              selectedCategory={selectedCategory}
-            setEmptyInputs={setEmptyInputs}
-              emptyInputs={emptyInputs}
-              setName={setName}
-              setSymbol={setSymbol}
-              setFileIPFS={setFileIPFS}
-              setDescription={setDescription}
-              setAttributeItems={setAttributeItems}
-              setSelectedCategory={setSelectedCategory}
-              setSelectedFile={setSelectedFile}
-              fileType={fileType}
-            />
-          ) : (
-            <LaunchPad
-              name={name}
-              symbol={symbol}
-              attributeItems={attributeItems}
-              description={description}
-              fileIPFS={fileIPFS}
-              selectedCategory={selectedCategory}
-              setEmptyInputs={setEmptyInputs}
-              emptyInputs={emptyInputs}
-              setName={setName}
-              setSymbol={setSymbol}
-              setFileIPFS={setFileIPFS}
-              setDescription={setDescription}
-              setAttributeItems={setAttributeItems}
-              setSelectedCategory={setSelectedCategory}
-              setSelectedFile={setSelectedFile}
-              fileType={fileType}
-            />
-          )}
+          />
         </form>
       </div>
     </div>

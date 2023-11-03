@@ -64,18 +64,18 @@ const tokenzkSync = [
     logo: ZkSyncIcon,
     symbolNative: "WETH"
   },
-  {
-    name: "Tether",
-    symbol: "USDT",
-    address: process.env.NEXT_PUBLIC_USDT_Zksync,
-    logo: USDTIcon,
-  },
-  {
-    name: "USD Coin",
-    symbol: "USDC",
-    address: process.env.NEXT_PUBLIC_USDC_Zksync,
-    logo: USDCIcon,
-  },
+  // {
+  //   name: "Tether",
+  //   symbol: "USDT",
+  //   address: process.env.NEXT_PUBLIC_USDT_Zksync,
+  //   logo: USDTIcon,
+  // },
+  // {
+  //   name: "USD Coin",
+  //   symbol: "USDC",
+  //   address: process.env.NEXT_PUBLIC_USDC_Zksync,
+  //   logo: USDCIcon,
+  // },
 ];
 const BSC_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_BSC,

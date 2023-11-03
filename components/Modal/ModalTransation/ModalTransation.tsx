@@ -1,5 +1,4 @@
 import { CgClose } from "react-icons/cg";
-import { ToastContainer } from "react-toastify";
 import Wrapper from "../Wrapper";
 
 interface ModalTransationProps {

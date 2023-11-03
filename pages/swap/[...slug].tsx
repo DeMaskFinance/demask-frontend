@@ -10,7 +10,7 @@ import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSetting from "@/components/Modal/ModalSetting";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonReels } from "@/components/Skeleton";
@@ -535,6 +535,8 @@ const Swap: React.FC = () => {
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+      {/* <ModalSuccess isOpenSuccess={true} setIsOpenSuccess={setIsOpen} type="Buy NFT Success" transactionHash="123"/> */}
+      {/* <ModalError isOpenError={true} setIsOpenError={setIsOpen} type="Buy NFT" transactionHash="123"/> */}
     </div>
   );
 };
