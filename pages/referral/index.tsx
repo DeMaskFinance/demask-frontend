@@ -46,21 +46,37 @@ export default function Referral() {
             setIsOpenTransaction(true);
             const result = await contract.referee(sponsor);
             console.log(result.hash);
-
+            const check = await provider.waitForTransaction(result.hash);
             setIsOpenTransaction(false);
-            toast.success(
-                <TransitionURL type={"Referral"} transactionHash={result.hash} />,
-                {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                }
-            );
+            if (check.status === 1) {
+                toast.success(
+                    <TransitionURL type={"Referral success"} transactionHash={result.hash} />,
+                    {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    }
+                );
+            }else{
+                toast.error(
+                    <TransitionURL type={"Referral failed"} transactionHash={result.hash} />,
+                    {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    }
+                );
+            }
         }
     }
     useEffect(() => {
@@ -79,7 +95,7 @@ export default function Referral() {
         }
     }, [account, sponsors, sponsor, isOpenTransaction])
     return (
-        <div className='lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]'>
+        <div className='min-h-[75vh]'>
             {account ? (
                 <div><p>{sponsor}</p>
                     <div>

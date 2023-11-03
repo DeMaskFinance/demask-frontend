@@ -6,12 +6,12 @@ const getDMLToken = async (
   nftAddress: string,
   idNFT: string,
   tokenAddress: string,
-  wallet: string
+  wallet: string,
+  factoryAddress:string,
 ) => {
   const providerChoice = getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
   const signer = provider.getSigner();
-  const factoryAddress = process.env.NEXT_PUBLIC_FACTORY || "";
   const contract = new ethers.Contract(factoryAddress, abiFactory, signer);
   try {
     const result = await contract.getDmlToken(tokenAddress, nftAddress, idNFT);

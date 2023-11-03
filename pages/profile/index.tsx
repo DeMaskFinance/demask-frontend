@@ -38,7 +38,7 @@ function ProfilePage() {
     return (
         <div>
             <NextSeo {...updateMeta} />
-            <div className='max-w-6xl pt-6 mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]'>
+            <div className='max-w-6xl pt-6 mx-auto min-h-[75vh]'>
                 {account ? (
                     <div>
                         <section>

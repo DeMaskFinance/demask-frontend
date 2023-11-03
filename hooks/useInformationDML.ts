@@ -8,6 +8,8 @@ const useInformationDML = (
   isOpenTransaction?:boolean,
   isOpenBuyNFT?:boolean,
   isOpenSellNFT?:boolean,
+  isOpenConfirmAddLiquidity?:boolean,
+  isOpenConfirmRemoveLiquidity?:boolean,
 ) => {
   const [reserves, setReserves] = useState<any[]>([0]);
   const [decimals, setDecimals] = useState<string>("18");
@@ -46,7 +48,7 @@ const useInformationDML = (
     };
 
     fetchInforDML();
-  }, [dmlToken, wallet, account,isOpenTransaction,isOpenBuyNFT,isOpenSellNFT]);
+  }, [dmlToken, wallet, account,isOpenTransaction,isOpenBuyNFT,isOpenSellNFT,isOpenConfirmAddLiquidity,isOpenConfirmRemoveLiquidity]);
 
   return {
     reserves,

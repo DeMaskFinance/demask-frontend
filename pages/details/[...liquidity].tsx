@@ -104,18 +104,14 @@ export default function DetailLiquidity() {
   // console.log(account);
   // console.log(dmlTokenLiquidity);
   useEffect(() => {
-    if (account && data) {
-      if (
-        data.tokenSymbol ===
-        "WETH" || data.tokenSymbol ===
-        "WBNB"
-      ) {
-        setTokenSymbol(tokenDefault[0].symbol);
+    if (tokenDefault && data) {
+      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
+        setTokenSymbol(data.tokenSymbol)
       } else {
-        setTokenSymbol(data.tokenSymbol);
+        setTokenSymbol(tokenDefault[0].symbol)
       }
     }
-  }, [data, account]);
+  }, [data, tokenDefault])
   const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
     setPage((next) => Math.min(next + 1, data?.totalPages));
@@ -136,7 +132,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)] w-[80%] mx-auto">
+    <div className="py-8 min-h-[75vh] w-[80%] mx-auto">
       <NextSeo {...updateMeta} />
       <div className="flex justify-between ">
         <div className="flex items-center mb-6">
@@ -290,8 +286,7 @@ export default function DetailLiquidity() {
       {data && account && (
         <ModalAddLiquidity
           data={data}
-          account={account}
-          wallet={wallet}
+          tokenSymbol={tokenSymbol}
           isOpenAddLiquidity={isOpenAddLiquidity}
           setIsOpenLiquidity={setIsOpenAddLiquidity}
         />
@@ -299,8 +294,7 @@ export default function DetailLiquidity() {
       {data && account && (
         <ModalRemmoveLiquidity
           data={data}
-          account={account}
-          wallet={wallet}
+          tokenSymbol={tokenSymbol}
           isOpenRemoveLiquidity={isOpenRemoveLiquidity}
           setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         />

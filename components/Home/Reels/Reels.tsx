@@ -274,7 +274,7 @@ const Reels: React.FC<ReelsProps> = ({
           setIsOpenTransaction(false);
           if (result.hash) {
             toast.success(
-              <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
+              <TransitionURL type={"Buy NFT success"} transactionHash={result.hash} />,
               {
                 position: "top-right",
                 autoClose: 5000,

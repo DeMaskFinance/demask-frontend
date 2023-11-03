@@ -54,28 +54,31 @@ const ModalBuyNFT: React.FunctionComponent<
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const [amountBuy, setAmountBuy] = useState<number>(0);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+        const [feeTrading, setFeeTrading] = useState<string>('0');
         console.log(data);
         const { allowanceToken } =
-            useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
+            useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenBuyNFT);
         const handleClose = (e: any) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenBuyNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction)
+        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
         console.log(reserveNFT.toString());
         console.log(Number(reserveToken));
         useEffect(() => {
             if (inputNFT && data) {
                 setAmountBuy(getBuyPrice(Number(reserveNFT), data.reserveToken, +(inputNFT)))
-                setAmountBuyDec(getBuyPrice(Number(reserveNFT), data.reserveTokenDecimals, Number(inputNFT)) * Number(inputNFT) * 1.05)
+                setAmountBuyDec(getBuyPrice(Number(reserveNFT), Number(reserveToken), Number(inputNFT)) * Number(inputNFT) * 1.05)
+                setFeeTrading(getFeeBuy(Number(reserveNFT), Number(reserveToken), +(inputNFT)).toString());
             } else {
                 setAmountBuy(0);
                 setAmountBuyDec(0);
             }
-        }, [inputNFT, data])
-        console.log(amountBuyDec);
-        console.log(allowanceToken);
+        }, [inputNFT, data, reserveNFT, reserveToken])
+        // console.log(amountBuyDec);
+        // console.log('allowance', allowanceToken);
+        // console.log(isOpenTransaction);
 
         useEffect(() => {
             const checkApproveToken = async () => {
@@ -90,7 +93,7 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             };
             checkApproveToken();
-        }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
+        }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken, reserveNFT, reserveToken]);
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -98,8 +101,8 @@ const ModalBuyNFT: React.FunctionComponent<
                 return;
             }
             if (
-                Number(data.reserveNFT) > 1 &&
-                Number(data.reserveToken) > 0 &&
+                Number(reserveNFT) > 1 &&
+                Number(reserveToken) > 0 &&
                 Math.floor(amountBuyDec) > 0
             ) {
                 const providerChoice = getProvider(wallet);
@@ -130,22 +133,39 @@ const ModalBuyNFT: React.FunctionComponent<
                             { gasLimit: 8000000 }
                         );
                     }
-                    await provider.waitForTransaction(result.hash);
+                    const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setIsOpenBuyNFT(false);
-                    toast.success(
-                        <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
-                        {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: false,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        }
-                    );
+                    if (check.status === 1) {
+                        toast.success(
+                            <TransitionURL type={"Buy NFT success"} transactionHash={result.hash} />,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                            }
+                        );
+                    } else {
+                        toast.error(
+                            <TransitionURL type={"Buy NFT failed"} transactionHash={result.hash} />,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                            }
+                        );
+                    }
+
 
                     setInputNFT("");
                 } catch (error) {
@@ -154,6 +174,8 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             }
         };
+        console.log(inputNFT);
+        // setIsOpenTransaction(true)
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -178,7 +200,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             <p>Slippage tolerance</p>
                             <p>{slippage}%</p>
                         </div>
-                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least 12,000 NFT1 or the transaction will revert</p>
+                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {inputNFT} NFT1 or the transaction will revert</p>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
@@ -196,7 +218,9 @@ const ModalBuyNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Trading fee</p>
                                 <div className="flex gap-x-1">
-                                    <p>{formatNumber(getFeeBuy(Number(reserveNFT), Number(reserveToken), +(inputNFT)).toString())}</p>
+                                    {formatNumber(
+                                        divideByDecimal(feeTrading.toString(), data.tokenDecimals)
+                                    )}
                                 </div>
                             </div>
                         </div>

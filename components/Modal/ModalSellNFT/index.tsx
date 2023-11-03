@@ -8,7 +8,7 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
-import {  getFeeSell, getSellPrice } from "@/libs/utils/getPrice";
+import { getFeeSell, getSellPrice } from "@/libs/utils/getPrice";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
@@ -57,14 +57,14 @@ const ModalSellNFT: React.FunctionComponent<
         const [isSufficientTokenSell, setIsSufficientTokenSell] =
             useState<boolean>(false);
         console.log(data);
-        const { allowanceToken, bigNumberBalance } =
+        const { bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenSellNFT);
         const handleClose = (e: any) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenSellNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenSellNFT)
+        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT)
         const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
         console.log(reserveNFT.toString());
         console.log(Number(reserveToken));
@@ -78,9 +78,6 @@ const ModalSellNFT: React.FunctionComponent<
                 setAmountSellDec(0);
             }
         }, [inputNFT, reserveNFT, reserveToken])
-        console.log(amountSellDec);
-        console.log(allowanceToken);
-        console.log(feeTrading);
         useEffect(() => {
             const checkReservesNFT = () => {
                 if (Number(inputNFT) <= Number(balanceNFT)) {
@@ -98,6 +95,7 @@ const ModalSellNFT: React.FunctionComponent<
 
         }, [inputNFT, account, amountSellDec, reserveNFT, reserveToken]);
         const handleSellNFT = async (e: any) => {
+            console.log(amountSellDec);
             e.preventDefault();
             if (!account) {
                 setIsOpen(true);
@@ -139,22 +137,38 @@ const ModalSellNFT: React.FunctionComponent<
                             { gasLimit: 8000000 }
                         );
                     }
-                    await provider.waitForTransaction(result.hash);
+                    const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setIsOpenSellNFT(false);
-                    toast.success(
-                        <TransitionURL type={"Sell NFT"} transactionHash={result.hash} />,
-                        {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: false,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        }
-                    );
+                    if (check.status === 1) {
+                        toast.success(
+                            <TransitionURL type={"Sell NFT success"} transactionHash={result.hash} />,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                            }
+                        );
+                    } else {
+                        toast.error(
+                            <TransitionURL type={"Sell NFT failed"} transactionHash={result.hash} />,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                            }
+                        );
+                    }
                     setInputNFT("");
                 } catch (error) {
                     setIsOpenTransaction(false);

@@ -24,24 +24,40 @@ const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, a
   try {
     const result = await contract.getReward({ gasLimit: 8000000 });
     setIsOpenTransaction(true);
-    await provider.waitForTransaction(result.hash);
+    const check = await provider.waitForTransaction(result.hash);
     const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
     setReward(rewardDec);
     setIsOpenTransaction(false);
-    toast.success(
-      <TransitionURL type={"Reward"} transactionHash={result.hash} />,
-      {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    if (check.status === 1) {
+      toast.success(
+        <TransitionURL type={"Reward success"} transactionHash={result.hash} />,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    } else {
+      toast.error(
+        <TransitionURL type={"Reward failed"} transactionHash={result.hash} />,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    }
   } catch (error) {
     console.error(error);
     setIsOpenTransaction(false);

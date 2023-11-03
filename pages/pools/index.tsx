@@ -48,7 +48,7 @@ export default function Liquidity() {
   );
 
   return (
-    <div className="py-8 max-w-4xl mx-auto lg:min-h-[calc(100vh-300px)] min-h-[calc(100vh-151px)]">
+    <div className="py-8 max-w-4xl mx-auto min-h-[75vh]">
       <NextSeo {...updateMeta} />
       <div className="w-full">
         <h2 className="text-2xl text-black24">Your Liquidity</h2>

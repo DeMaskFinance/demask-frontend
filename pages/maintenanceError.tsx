@@ -42,7 +42,7 @@ function MaintenanceError() {
         };
     }, []);
     return (
-        <div className="flex flex-col items-center justify-center min-h-[83vh]">
+        <div className="flex flex-col items-center justify-center min-h-[75vh]">
             <h2 className="text-2xl font-semibold text-dark1">Maintenance</h2>
             <div className="my-8">
                 <LogoMaintenance width={350} height={288} className="w-full h-full" />

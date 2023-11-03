@@ -1,35 +1,28 @@
-import abiErc20 from "@/abi/abiErc20.json";
-import abiRouter from "@/abi/abiRouter.json";
 import Button from "@/components/Buttons/Button";
+import MediaNFT from "@/components/Common/MediaNFT";
 import { BackIcon, DownIcon, NFTIcon, TokenIconNotDefine } from "@/components/Icons";
+import ModalConfirmAddLiquidity from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
-import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useBalanceToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
 import { swapAPI } from "@/libs/service";
 import approveNFT from "@/libs/utils/approveNFT";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
 import { NextSeo } from "next-seo";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { toast } from "react-toastify";
 import { SEO } from '../../next-seo.config';
-import MediaNFT from "@/components/Common/MediaNFT";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -49,11 +42,11 @@ export default function AddLiquidity() {
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
+  const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] = useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
   const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
@@ -62,7 +55,6 @@ export default function AddLiquidity() {
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [symbolToken, setSymbolToken] = useState<string>('');
-  const [hash, setHash] = useState("");
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -120,21 +112,10 @@ export default function AddLiquidity() {
       data &&
       inputNFT
     ) {
-      console.log(data.reserveTokenDecimals);
-      console.log(data.reserveNFT);
-
-      // amountErcDesired = ethers.BigNumber.from(inputNFT)
-      //   .mul(data.reserveTokenDecimals)
-      //   .div(data.reserveNFT)
-      //   .mul(105)
-      //   .div(100);
-      //   console.log(amountErcDesired.toString());
       amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * 1.05;
       console.log(amountErcDesired);
 
     } else {
-      console.log(data?.tokenDecimals);
-
       amountErcDesired = handleBignumber(
         Number(inputToken),
         Number(data?.tokenDecimals)
@@ -155,7 +136,10 @@ export default function AddLiquidity() {
     }
   }, [inputNFT, inputToken, data]);
   console.log(amountErcDesired);
-
+  const handleOpen = () => {
+    document.body.style.overflowY = "hidden";
+    setIsOpen(true);
+  };
   useEffect(() => {
     if (tokenDefault && data) {
       if (data.tokenSymbol === "WETH" || data.tokenSymbol === "WBNB") {
@@ -183,127 +167,14 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   };
-  const addLiquidity = async () => {
-    if (!account) {
-      setIsOpen(true);
-      return;
-    }
-
-    if (inputNFT && !isSufficientNFT && !isSufficientToken && Math.floor(amountErcDesired) !== 0) {
-      const providerChoice = getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-
-      const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-
-      try {
-        let result;
-        let transactionHash;
-        setIsOpenTransaction(true);
-        if (tokenAddress === nativeAddress) {
-          result = await contract.addLiquidityETH(
-            nftAddress,
-            idNFT,
-            inputNFT,
-            0,
-            account,
-            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountErcDesired)) }
-          );
-          transactionHash = result.hash;
-        } else {
-          result = await contract.addLiquidity(
-            tokenAddress,
-            nftAddress,
-            idNFT,
-            exponentialToDecimal(Math.floor(amountErcDesired)),
-            inputNFT,
-            0,
-            account,
-            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-            { gasLimit: 8000000 }
-          );
-          transactionHash = result.hash;
-        }
-        await provider.waitForTransaction(transactionHash);
-        setHash(transactionHash)
-        setIsOpenTransaction(false);
-        setInputNFT('');
-        setInputToken('');
-        setAmountErcDesiredToDec('');
-        console.log(transactionHash);
-        if (transactionHash) {
-          toast.success(
-            <TransitionURL type={"Add Liquidity"} transactionHash={hash} />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              toastId: 'success1',
-              theme: "light",
-            }
-          );
-        }
-
-      } catch (error) {
-        setIsOpenTransaction(false);
-        console.error(error);
-      }
+  const handleAddLiquidity = () => {
+    if (inputNFT && !isSufficientNFT && !isSufficientToken) {
+      setIsOpenConfirmAddLiquidity(true);
     } else {
       setIsInputNFT(true);
     }
-  };
+  }
   console.log(allowanceToken);
-
-  const handleApproveToken = async () => {
-    if (account) {
-      const providerChoice = getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
-      let result;
-      try {
-        if (data.dmlAddress === null) {
-          result = await contract.approve(routerAddress, handleBignumber(
-            Number(inputToken),
-            Number(data?.tokenDecimals)
-          ));
-        } else {
-          result = await contract.approve(routerAddress, exponentialToDecimal(amountErcDesired));
-        }
-        setIsOpenTransaction(true);
-        await provider.waitForTransaction(result.hash);
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
-  useEffect(() => {
-    const handleCheckApproveToken = async () => {
-      if (tokenAddress === nativeAddress) {
-        setIsApprovedToken(true);
-      } else {
-        if (amountErcDesired && allowanceToken) {
-          if (Number(allowanceToken) < Number(amountErcDesired.toString())) {
-            setIsApprovedToken(false);
-          } else {
-            setIsApprovedToken(true);
-          }
-        }
-      }
-    };
-    handleCheckApproveToken();
-  }, [account, wallet, tokenAddress, inputToken, isOpenTransaction, amountErcDesired, allowanceToken]);
-  // console.log(amountErcDesired.toString());
-  // console.log(amountErcDesiredToDec);
-  // console.log(allowanceToken);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -329,7 +200,7 @@ export default function AddLiquidity() {
     <div className="px-4 py-8 lg:px-secondary md:px-14">
       <NextSeo {...updateMeta} />
       <div className="flex items-center mb-6">
-        <Link href="/liquidity">
+        <Link href="/pools">
           <BackIcon width={24} height={24} />
         </Link>
         <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
@@ -441,7 +312,7 @@ export default function AddLiquidity() {
                 )}
               </div>
             </div>
-            {!isApprovedNFT && (
+            {!isApprovedNFT && account && (
               <Button className="w-[126px] py-2" primary onClick={() =>
                 handleApproveNFT(
                   account,
@@ -455,19 +326,21 @@ export default function AddLiquidity() {
                 APPROVE NFT
               </Button>
             )}
-            {isApprovedNFT && !isApprovedToken && tokenAddress !== nativeAddress && (
-              <Button
-                className="w-[126px] py-2"
-                primary
-                onClick={handleApproveToken}
-              >
-                APPROVE TOKEN
-              </Button>
-            )}
-            {isApprovedNFT && isApprovedToken && (
-              <Button className="w-[126px] py-2" primary onClick={addLiquidity}>
+            {isApprovedNFT && account && (
+              <Button className="w-[126px] py-2" primary onClick={handleAddLiquidity}>
                 ADD LIQUIDITY
               </Button>
+            )}
+            {!account && (
+              !account && (
+                <Button
+                  className="w-[144px] py-2"
+                  primary
+                  onClick={handleOpen}
+                >
+                  CONNECT WALLET
+                </Button>
+              )
             )}
             {Math.floor(amountErcDesired) === 0 && inputNFT && (
               <p className="mt-3 ml-3 text-xs text-red" key="inputNFT">
@@ -477,7 +350,7 @@ export default function AddLiquidity() {
           </div>
           <div className="order-1 w-full lg:order-2">
             <div className="flex flex-col items-center w-full h-full ">
-              <MediaNFT data={data} isControls={true}/>
+              <MediaNFT data={data} isControls={true} />
               <p
                 className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
                 onClick={handleShowDetail}
@@ -515,6 +388,9 @@ export default function AddLiquidity() {
         isOpenSearchToken={isOpenSearchToken}
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+      {data && account && (
+        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
+      )}
     </div>
   );
 }

@@ -1,0 +1,327 @@
+import abiErc20 from "@/abi/abiErc20.json";
+import abiRouter from "@/abi/abiRouter.json";
+import { Button } from "@/components/Buttons";
+import TransitionURL from "@/components/Toast/TransionURL";
+import AccountContext from "@/context/AccountContext";
+import useDMLToken from "@/hooks/useDMLToken";
+import useInformationDML from "@/hooks/useInformationDML";
+import useInformationToken from "@/hooks/useInformationToken";
+import { getProvider } from "@/libs/connection/getProvider";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import formatNumber from "@/libs/utils/formatNumer";
+import handleBignumber from "@/libs/utils/handleBignumber";
+import { ethers } from "ethers";
+import { memo, useContext, useEffect, useState } from "react";
+import { CgClose } from "react-icons/cg";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ModalTransation } from "../ModalTransation";
+import { ModalWallet } from "../ModalWallet";
+import Wrapper from "../Wrapper";
+interface ModalConfirmAddLiquidityProps {
+    isOpenConfirmAddLiquidity: boolean;
+    tokenAddress: string;
+    data: any;
+    inputNFT: string;
+    inputToken: string;
+    symbolToken: string;
+    nftAddress: string;
+    idNFT: string;
+    isOpenTransaction: boolean,
+    setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
+    setInputNFT: React.Dispatch<React.SetStateAction<string>>;
+    setInputToken: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ModalConfirmAddLiquidity: React.FunctionComponent<
+    ModalConfirmAddLiquidityProps
+> = ({
+    isOpenConfirmAddLiquidity,
+    tokenAddress,
+    data,
+    inputToken,
+    inputNFT,
+    symbolToken,
+    nftAddress,
+    idNFT,
+    isOpenTransaction,
+    setIsOpenTransaction,
+    setIsOpenConfirmAddLiquidity,
+    setInputNFT,
+    setInputToken,
+}) => {
+        const [isOpen, setIsOpen] = useState<boolean>(false);
+        const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
+        const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
+        const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress, FACTORY: factoryAddress } = demask;
+        const [amountErcDesired, setAmountErcDesired] = useState<any>();
+        const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
+        const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
+        console.log(data);
+
+        const { allowanceToken, bigNumberBalance } =
+            useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
+        const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress, wallet, factoryAddress, isOpenTransaction, isOpenConfirmAddLiquidity);
+        useEffect(() => {
+            const handleCheckApproveToken = async () => {
+                if (tokenAddress === nativeAddress) {
+                    setIsApprovedToken(true);
+                } else {
+                    if (amountErcDesired && allowanceToken) {
+                        if (Number(allowanceToken) < Number(amountErcDesired.toString())) {
+                            setIsApprovedToken(false);
+                        } else {
+                            setIsApprovedToken(true);
+                        }
+                    }
+                }
+            };
+            handleCheckApproveToken();
+        }, [account, wallet, tokenAddress, inputToken, isOpenTransaction, amountErcDesired, allowanceToken]);
+        const { reserveNFT, reserveToken } = useInformationDML(
+            dmlToken,
+            wallet,
+            account,
+            isOpenTransaction,
+            false,
+            false,
+            isOpenConfirmAddLiquidity
+        );
+        console.log(dmlToken);
+        console.log(reserveNFT.toString());
+        console.log(Number(reserveToken));
+        console.log(isOpenConfirmAddLiquidity);
+        console.log(allowanceToken);
+        console.log(inputNFT);
+        console.log(inputToken);
+        console.log(amountErcDesiredToDec);
+        console.log(amountErcDesired);
+        console.log(inputToken);
+
+        useEffect(() => {
+            let amountErcDesired;
+            if (
+                dmlToken !== '0x0000000000000000000000000000000000000000' &&
+                data &&
+                inputNFT
+            ) {
+                amountErcDesired = Number(inputNFT) * +(reserveToken) / +(reserveNFT) * 1.05;
+                console.log(amountErcDesired);
+
+            } else {
+                amountErcDesired = handleBignumber(
+                    Number(inputToken),
+                    Number(data?.tokenDecimals)
+                );
+            }
+            setAmountErcDesired(amountErcDesired);
+            if (amountErcDesired) {
+                const amountErcDesiredToDec = divideByDecimal(
+                    amountErcDesired?.toString(),
+                    data?.tokenDecimals
+                );
+                setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+                if (Number(amountErcDesired) > Number(bigNumberBalance)) {
+                    setIsSufficientToken(true)
+                } else {
+                    setIsSufficientToken(false);
+                }
+            }
+        }, [inputNFT, inputToken, reserveToken, reserveNFT, dmlToken]);
+        const handleApproveToken = async () => {
+            if (account) {
+                const providerChoice = getProvider(wallet);
+                const provider = new ethers.providers.Web3Provider(providerChoice);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
+                let result;
+                try {
+                    if (dmlToken === '0x0000000000000000000000000000000000000000') {
+                        result = await contract.approve(routerAddress, handleBignumber(
+                            Number(inputToken),
+                            Number(data?.tokenDecimals)
+                        ));
+                    } else {
+                        result = await contract.approve(routerAddress, exponentialToDecimal(amountErcDesired));
+                    }
+                    setIsOpenTransaction(true);
+                    await provider.waitForTransaction(result.hash);
+                    setIsOpenTransaction(false);
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                setIsOpen(true);
+            }
+        };
+        const addLiquidity = async () => {
+            if (!account) {
+                setIsOpen(true);
+                return;
+            }
+
+            if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
+                const providerChoice = getProvider(wallet);
+                const provider = new ethers.providers.Web3Provider(providerChoice);
+                const signer = provider.getSigner();
+
+                const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+
+                try {
+                    let result;
+                    let transactionHash;
+                    setIsOpenTransaction(true);
+                    if (tokenAddress === nativeAddress) {
+                        result = await contract.addLiquidityETH(
+                            nftAddress,
+                            idNFT,
+                            inputNFT,
+                            0,
+                            account,
+                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountErcDesired)) }
+                        );
+                        transactionHash = result.hash;
+                    } else {
+                        result = await contract.addLiquidity(
+                            tokenAddress,
+                            nftAddress,
+                            idNFT,
+                            exponentialToDecimal(Math.floor(amountErcDesired)),
+                            inputNFT,
+                            0,
+                            account,
+                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                            { gasLimit: 8000000 }
+                        );
+                        transactionHash = result.hash;
+                    }
+                    const check = await provider.waitForTransaction(transactionHash);
+                    setIsOpenTransaction(false);
+                    setInputNFT('');
+                    setInputToken('');
+                    setAmountErcDesiredToDec('');
+                    setIsOpenConfirmAddLiquidity(false);
+                    console.log(transactionHash);
+                    if (check.status === 1) {
+                        toast.success(
+                            <TransitionURL type={"Add Liquidity success"} transactionHash={result.hash} />,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                toastId: 'success1',
+                                theme: "light",
+                            }
+                        );
+                    }else{
+                        toast.error(
+                            <TransitionURL type={"Add Liquidity failed"} transactionHash={result.hash} />,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: false,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                toastId: 'success1',
+                                theme: "light",
+                            }
+                        );
+                    }
+
+                } catch (error) {
+                    setIsOpenTransaction(false);
+                    console.error(error);
+                }
+            }
+        };
+        const handleClose = (e: any) => {
+            e.preventDefault();
+            document.body.style.overflowY = "auto";
+            setIsOpenConfirmAddLiquidity(false);
+        };
+
+
+
+        return (
+            <Wrapper isOpen={isOpenConfirmAddLiquidity} onClick={handleClose}>
+                <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+                    <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
+                        <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
+                            Create Pool
+                        </p>
+                        <div className="flex justify-between text-lg font-semibold text-dark2">
+                            <p>{inputNFT}</p>
+                            <p>{data.metadata.symbol}</p>
+                        </div>
+                        <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
+                            +
+                        </div>
+                        <div className="flex justify-between text-lg font-semibold text-dark2">
+                            <p>{formatNumber(
+                                amountErcDesiredToDec
+                            )}</p>
+                            <p>{symbolToken}</p>
+                        </div>
+                        <div className="flex justify-between my-8 text-lg font-semibold text-secondary1">
+                            <p>Fee</p>
+                            <p>5%</p>
+                        </div>
+                        {isSufficientToken && (
+                            <p className="text-xs text-red" key="inputNFT">
+                                Insufficient Token balance
+                            </p>
+                        )}
+                        {Math.floor(amountErcDesired) === 0 && (
+                            <p className="mt-2 text-xs text-red" key="inputNFT">
+                                Can't add liquidity
+                            </p>
+                        )}
+                        {/* {isSufficientNFT && (
+                                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+                                    Insufficient NFT balance
+                                </p>
+                            )} */}
+                        <div className="flex flex-col items-center mt-6">
+                            {isApprovedToken && (
+                                <button
+                                    type="button"
+                                    className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
+                                    onClick={addLiquidity}
+                                >
+                                    Create pool
+                                </button>
+                            )}
+                            {!isApprovedToken && tokenAddress !== nativeAddress && (
+                                <Button
+                                    className="w-[126px] py-2"
+                                    primary
+                                    onClick={handleApproveToken}
+                                >
+                                    Approve Token
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                    <button
+                        className="absolute top-0 right-0 p-2 text-lg"
+                        onClick={handleClose}
+                    >
+                        <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+                    </button>
+                </div>
+                <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+                <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+            </Wrapper>
+        );
+    };
+
+export default memo(ModalConfirmAddLiquidity);

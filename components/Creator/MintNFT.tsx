@@ -84,20 +84,37 @@ export default function MintNFT({
           const tx = await contract.mint(account, randomID, exponentialToDecimal(amount), data, url);
           transactionHash = tx.hash;
           console.log(transactionHash);
-
-          toast.success(
-            <TransitionURL type={"Mint"} transactionHash={transactionHash} />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
+          const check = await provider.waitForTransaction(transactionHash);
+          if(check.status===1){
+            toast.success(
+              <TransitionURL type={"Mint success"} transactionHash={transactionHash} />,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+          }else{
+            toast.error(
+              <TransitionURL type={"Mint failed"} transactionHash={transactionHash} />,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+          }
+          
           setTotalSupply(null);
           setName("");
           setDescription("");

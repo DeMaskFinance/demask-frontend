@@ -5,20 +5,24 @@ const useDMLToken = (
   nftAddress: string,
   idNFT: string,
   tokenAddress: string,
-  wallet: string
+  wallet: string,
+  factoryAddress:string,
+  isOpenTransaction?:boolean,
+  isOpenConfirmAddLiquidity?:boolean,
 ) => {
   const [dmlToken, setDmlToken] = useState<string>("");
 
   useEffect(() => {
     const fetchDataDML = async () => {
       try {
-        let dmlToken;
-        if (tokenAddress === "MATIC") {
-          const tokenWETH = process.env.NEXT_PUBLIC_WETH as string;
-          dmlToken = await getDMLToken(nftAddress, idNFT, tokenWETH, wallet);
-        } else {
-          dmlToken = await getDMLToken(nftAddress, idNFT, tokenAddress, wallet);
-        }
+        const dmlToken = await getDMLToken(nftAddress, idNFT, tokenAddress, wallet,factoryAddress);
+        console.log({
+          dmlToken,
+          nftAddress,
+          idNFT,
+          tokenAddress
+        });
+        
         setDmlToken(dmlToken);
       } catch (error) {
         console.error(error);
@@ -26,7 +30,7 @@ const useDMLToken = (
     };
 
     fetchDataDML();
-  }, [account, nftAddress, idNFT, tokenAddress, wallet]);
+  }, [account, nftAddress, idNFT, tokenAddress, wallet,isOpenTransaction,isOpenConfirmAddLiquidity]);
 
   return dmlToken;
 };

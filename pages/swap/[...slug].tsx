@@ -100,7 +100,7 @@ const Swap: React.FC = () => {
       }
     }
   }, [data, slug, tokenDefault])
-
+  
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
   console.log(data);
 
