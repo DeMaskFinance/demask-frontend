@@ -200,7 +200,9 @@ const ModalSellNFT: React.FunctionComponent<
                             <p>Slippage tolerance</p>
                             <p>{slippage}%</p>
                         </div>
-                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {inputNFT} NFT or the transaction will revert</p>
+                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {formatNumber(
+                                divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                            )} {symbolToken} or the transaction will revert</p>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
