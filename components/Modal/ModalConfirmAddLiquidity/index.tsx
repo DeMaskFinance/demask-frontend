@@ -33,6 +33,7 @@ interface ModalConfirmAddLiquidityProps {
     setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
     setInputToken: React.Dispatch<React.SetStateAction<string>>;
+    setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const ModalConfirmAddLiquidity: React.FunctionComponent<
@@ -51,6 +52,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     setIsOpenConfirmAddLiquidity,
     setInputNFT,
     setInputToken,
+    setIsOpenLiquidity
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
@@ -89,16 +91,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             false,
             isOpenConfirmAddLiquidity
         );
-        console.log(dmlToken);
-        console.log(reserveNFT.toString());
-        console.log(Number(reserveToken));
-        console.log(isOpenConfirmAddLiquidity);
-        console.log(allowanceToken);
-        console.log(inputNFT);
-        console.log(inputToken);
-        console.log(amountErcDesiredToDec);
-        console.log(amountErcDesired);
-        console.log(inputToken);
 
         useEffect(() => {
             let amountErcDesired;
@@ -204,7 +196,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                     setInputToken('');
                     setAmountErcDesiredToDec('');
                     setIsOpenConfirmAddLiquidity(false);
-                    console.log(transactionHash);
+                    setIsOpenLiquidity(false);
                     if (check.status === 1) {
                         toast.success(
                             <TransitionURL type={"Add Liquidity success"} transactionHash={result.hash} />,

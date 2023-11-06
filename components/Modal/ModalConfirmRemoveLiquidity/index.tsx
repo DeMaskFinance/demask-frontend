@@ -31,6 +31,7 @@ interface ModalConfirmRemoveLiquidityProps {
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenConfirmRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
     setInputLiquidity: React.Dispatch<React.SetStateAction<string>>;
+    setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const ModalConfirmRemoveLiquidity: React.FunctionComponent<
@@ -45,6 +46,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     setIsOpenTransaction,
     setIsOpenConfirmRemoveLiquidity,
     setInputLiquidity,
+    setIsOpenRemoveLiquidity
 }) => {
         const [isSufficientLiquidity, setIsSufficientLiquidity] = useState<boolean>(false);
         const [isApprovedLiquidity, setIsApprovedLiquidity] = useState<boolean>(false);
@@ -185,6 +187,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                     const check = await provider.waitForTransaction(transactionHash);
                     setIsOpenTransaction(false);
                     setInputLiquidity('');
+                    setIsOpenRemoveLiquidity(false);
                     if (check.status === 1) {
                         toast.success(
                             <TransitionURL

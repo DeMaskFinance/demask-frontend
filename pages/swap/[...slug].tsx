@@ -218,13 +218,10 @@ const Swap: React.FC = () => {
                     onChoiceChange={handleChoiceChange}
                   />
                 </div>
-                <div className="flex items-center gap-x-2">
-                  <div onClick={() => setIsOpenSetting(true)}>
-                    <AiFillSetting className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
-                  </div>
+                <div className="flex items-center gap-x-2">  
                   {data.dmlAddress ? (
                     <a
-                      href={`https://mumbai.polygonscan.com/address/${data.dmlAddress}`}
+                      href={`https://goerli.explorer.zksync.io/address/${data.dmlAddress}`}
                       target="_blank"
                       className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
                     >
@@ -238,6 +235,9 @@ const Swap: React.FC = () => {
                   ) : (
                     <div className="self-end w-10 h-5 mb-2 rounded-full animate-pulse bg-slate-200"></div>
                   )}
+                  <div onClick={() => setIsOpenSetting(true)}>
+                    <AiFillSetting className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
+                  </div>
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -397,7 +397,7 @@ const Swap: React.FC = () => {
                     <p className="mb-1 text-dark3">
                       Reverse Token:
                       {formatNumber(
-                        divideByDecimal(data.reserveToken, data.tokenDecimals)
+                        data.reserveToken
                       )}
                     </p>
                   ) : (

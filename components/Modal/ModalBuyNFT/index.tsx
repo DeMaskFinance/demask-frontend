@@ -79,7 +79,8 @@ const ModalBuyNFT: React.FunctionComponent<
         // console.log(amountBuyDec);
         // console.log('allowance', allowanceToken);
         // console.log(isOpenTransaction);
-
+        console.log(slippage);
+        
         useEffect(() => {
             const checkApproveToken = async () => {
                 if (tokenAddress !== nativeAddress) {
@@ -209,7 +210,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                 )}</p>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
-                                <p>Minimum received</p>
+                                <p>Maximum amount</p>
                                 <div className="flex gap-x-1">
                                     <p>{inputNFT}</p>
                                     <p>{data.metadata.symbol}</p>

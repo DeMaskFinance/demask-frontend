@@ -255,7 +255,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity}/>
+        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}/>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       </Wrapper>

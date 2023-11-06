@@ -45,6 +45,18 @@ export const AccountProvider = ({ children }) => {
       setTokenDefault(tokenzkSync);
     }
   }, [chainId]);
+  useEffect(() => {
+    let storedSlippage = localStorage.getItem("SLIPPAGE_DEMASK");
+    if (storedSlippage) {
+      setSlippage(Number(storedSlippage));
+    }
+  }, [slippage]);
+  useEffect(() => {
+    const storedTime = localStorage.getItem("TXDEADLINE_DEMASK");
+    if (storedTime) {
+      setTxDeadline(Number(storedTime));
+    }
+  }, [txDeadline]);
   const updateAccount = (newAccount) => {
     setAccount(newAccount);
     localStorage.setItem("ACCOUNT_DEMASK", newAccount);
@@ -67,6 +79,7 @@ export const AccountProvider = ({ children }) => {
     setTxDeadline(newTime);
     localStorage.setItem("TXDEADLINE_DEMASK", newTime);
   };
+  console.log("slippage", slippage);
   const provider = getProvider(wallet);
   const PORT = process.env.NEXT_PUBLIC_APP_PORT;
   useEffect(() => {
