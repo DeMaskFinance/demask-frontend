@@ -94,7 +94,8 @@ export default function DetailLiquidity() {
     if (account && dmlTokenLiquidity && wallet) {
       getRewardDML({
         wallet, dmlTokenLiquidity, account, data: {
-          dmlDecimals: data.dmlDecimals
+          dmlDecimals: data.dmlDecimals,
+          tokenAddress:data.tokenAddress,
         }, setReward, setIsOpenTransaction
       });
     } else {

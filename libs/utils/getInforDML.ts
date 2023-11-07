@@ -1,4 +1,4 @@
-import abiErc20 from "@/abi/abiErc20.json";
+import abiDML from "@/abi/abiDML.json";
 
 import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
@@ -7,14 +7,16 @@ const getInforDML = async (dmlToken: string,wallet:string) => {
   const providerChoice = getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
   const signer = provider.getSigner();
-  const contract = new ethers.Contract(dmlToken, abiErc20, signer);
+  const contract = new ethers.Contract(dmlToken, abiDML, signer);
   try {
     const reserves = await contract.getReserves();
     const decimals = await contract.decimals();
-    const idNFT = await contract.id();
-    const nftAddress = await contract.nft();
-    const reserveNFT = await contract.reservenft();
-    const reserveToken = await contract.reservetoken();
+    const idNFT = await contract.tokenId();
+    const nftAddress = await contract.NFT();
+    const reserveNFT = await contract.reserveNFT();
+    const reserveToken = await contract.reserveToken();
+    console.log(reserveToken);
+    
     const tokenAddress = await contract.token();
     return {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress};
   } catch (error) {

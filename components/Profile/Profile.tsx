@@ -5,6 +5,7 @@ import OptionNetwork from './OptionNetwork';
 import Pools from './Pools';
 import Referral from './Referral';
 import History from './History';
+import ProfileLaunchPad from './ProfileLaunchPad/ProfileLaunchPad';
 const Profile = () => {
     const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "nfts"));
     const TABS = [
@@ -24,9 +25,7 @@ const Profile = () => {
         },
         {
             title: "Launchpad",
-            panel: () => (
-                <div className='text-dark2'>Upcoming</div>
-            ),
+            panel: () => <ProfileLaunchPad />,
             key: "launchpad",
         },
         {

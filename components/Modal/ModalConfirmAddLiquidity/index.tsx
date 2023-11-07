@@ -33,7 +33,7 @@ interface ModalConfirmAddLiquidityProps {
     setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
     setInputToken: React.Dispatch<React.SetStateAction<string>>;
-    setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsOpenLiquidity?: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const ModalConfirmAddLiquidity: React.FunctionComponent<
@@ -196,7 +196,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                     setInputToken('');
                     setAmountErcDesiredToDec('');
                     setIsOpenConfirmAddLiquidity(false);
-                    setIsOpenLiquidity(false);
+                    if (setIsOpenLiquidity) {
+                        setIsOpenLiquidity(false);
+                      }
                     if (check.status === 1) {
                         toast.success(
                             <TransitionURL type={"Add Liquidity success"} transactionHash={result.hash} />,

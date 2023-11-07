@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import abiDML from "@/abi/abiDML.json";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
@@ -64,7 +65,7 @@ const ModalBuyNFT: React.FunctionComponent<
             setIsOpenBuyNFT(false);
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
-        console.log(reserveNFT.toString());
+        console.log('test', reserveNFT.toString());
         console.log(Number(reserveToken));
         useEffect(() => {
             if (inputNFT && data) {
@@ -80,7 +81,28 @@ const ModalBuyNFT: React.FunctionComponent<
         // console.log('allowance', allowanceToken);
         // console.log(isOpenTransaction);
         console.log(slippage);
-        
+        const getInforDML = async (dmlToken: string, wallet: string) => {
+            const providerChoice = getProvider(wallet);
+            const provider = new ethers.providers.Web3Provider(providerChoice);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract('0x47186b3546d6717412a6644da859fa567133bf4d', abiDML, signer);
+            console.log(contract);
+
+            try {
+                const reserves = await contract.getReserves();
+                const decimals = await contract.decimals();
+                const idNFT = await contract.tokenId();
+                const nftAddress = await contract.NFT();
+                const reserveNFT = await contract.reserveNFT();
+                const reserveToken = await contract.reserveToken();
+                console.log(reserveToken);
+                console.log(reserveNFT);
+
+                const tokenAddress = await contract.token();
+            } catch (error) {
+                console.error(error);
+            }
+        };
         useEffect(() => {
             const checkApproveToken = async () => {
                 if (tokenAddress !== nativeAddress) {
@@ -184,6 +206,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
                             Confirm Buy
                         </p>
+                        <button onClick={() => getInforDML('0xb811b464a92a94deeaf22c30a41202bea1fa8423', "Metamask")}>TEST</button>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
                             <p>{data.metadata.symbol}</p>

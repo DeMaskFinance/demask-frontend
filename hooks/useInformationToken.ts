@@ -19,7 +19,7 @@ const useInformationToken = (
   const [decimals, setDecimals] = useState("18");
   const [allowanceToken, setAllowanceToken] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(rpc);
-
+  const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(true);
   useEffect(() => {
     const getInformationToken = async () => {
       if (tokenAddress && account && nativeAddress) {
@@ -57,6 +57,7 @@ const useInformationToken = (
             );
             const currentAllowance = tokenAllowance.toString();
             setAllowanceToken(currentAllowance);
+            setIsLoadingApprove(false);
           } catch (error) {
             console.error(error);
           }
@@ -74,6 +75,7 @@ const useInformationToken = (
     bigNumberBalance,
     decimals,
     allowanceToken,
+    isLoadingApprove,
   };
 };
 

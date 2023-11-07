@@ -1,27 +1,31 @@
-import { useState, useRef, useEffect, useContext } from "react";
-import DatePicker from "react-datepicker";
-import Button from "../Buttons/Button";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ethers } from "ethers";
-import abiErc1155 from "@/abi/abiErc1155.json";
 import abiCreator from "@/abi/abiCreator.json";
+import { ethers } from "ethers";
+import { useContext, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Button from "../Buttons/Button";
 
-import TransitionURL from "../Toast/TransionURL";
-import checkIsERC20 from "@/libs/validation/checkIsERC20";
-import { Processing } from "../Loading";
-import { HiArrowRight } from "react-icons/hi";
-import getMetadataUrl from "@/libs/utils/getMetadata";
-import { BiLoaderAlt } from "react-icons/bi";
-import BigNumber from "bignumber.js";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ModalWallet } from "../Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
+import { getProvider } from "@/libs/connection/getProvider";
+import getMetadataUrl from "@/libs/utils/getMetadata";
 import { checkNetwork } from "@/libs/validation";
-import InputField from "./InputField";
+import checkIsERC20 from "@/libs/validation/checkIsERC20";
 import { useQuery } from "@tanstack/react-query";
+import BigNumber from "bignumber.js";
+import { BiLoaderAlt } from "react-icons/bi";
+import { HiArrowRight } from "react-icons/hi";
+import { Processing } from "../Loading";
+import { ModalWallet } from "../Modal/ModalWallet";
+import TransitionURL from "../Toast/TransionURL";
+import InputField from "./InputField";
 
 import { categoryAPI } from "@/libs/service/categoriesChartService";
+import handleBignumber from "@/libs/utils/handleBignumber";
+import { AiOutlineExclamation } from "react-icons/ai";
+import { ModalTransation } from "../Modal/ModalTransation";
+import { changeNetwork } from "@/libs/utils/changeNetwork";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -73,39 +77,53 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 }) => {
   const [initial, setInitial] = useState<any>();
   const [totalSale, setTotalSale] = useState<number | null>();
-  const [percentLock, setPercentLock] = useState<number | null>();
-
+  const [percentLock, setPercentLock] = useState<any>();
   const [priceListing, setPriceListing] = useState<any>();
   const [maxBuy, setMaxBuy] = useState<any>();
   const [isRefundType, setIsRefundType] = useState<boolean>(false);
   const [isWhiteList, setIsWhiteList] = useState<boolean>(false);
-
+  const [isVesting, setIsVesting] = useState<boolean>(false);
   const [tokenPayment, setTokenPayment] = useState<string>("");
   const [price, setPrice] = useState<any>();
   const [launchActive, setLaunchActive] = useState<string>("NOW");
   const [inforErc20, setInforErc20] = useState<any>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-
   const [durationLock, setDurationLock] = useState<Date | null>(null);
-
+  const [vestingTime, setVestingTime] = useState<any>(0);
   const [isError, setIsError] = useState(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount, wallet, demask } = useContext(AccountContext);
+  const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
+  const [softCap, setSoftCap] = useState<any>();
+  const [hardCap, setHardCap] = useState<any>();
+  const [tge, setTge] = useState<any>(0);
+  const [active, setActive] = useState<boolean>(false);
+  const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
+  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [validFee, setValidFee] = useState<boolean>(false);
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
     setIsError;
   };
-
+  const handleChangeRoyalFee = (e: any) => {
+    setRoyaltiesFee(Number(e.target.value))
+    if (e.target.value < 0 || e.target.value > 100) {
+      setValidFee(true);
+    } else {
+      setValidFee(false);
+    }
+  }
+  console.log(fileIPFS);
+  
   const { isLoading, refetch, data, isFetching } = useQuery({
-    queryKey: ["tokenPayment"],
+    queryKey: ["tokenPayment", tokenPayment],
     queryFn: async () => {
       const res = await categoryAPI(
-        `v2/token?chainId=80001&tokenAddress=${tokenPayment}`
+        `/token?chainId=280&tokenAddress=${tokenPayment}`
       );
       return res;
     },
@@ -113,49 +131,75 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     refetchInterval: 60000,
   });
 
+  const decimal = data?.tokenDecimals;
+
+  const checkSoftcap = Math.floor(
+    (softCap * (price * 1e18) * (percentLock * 10000)) /
+    (priceListing * 1e18 * 1000000)
+  );
+  console.log(checkSoftcap);
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
       setIsError(true);
-    } else {
+    }
+    {
       setIsError(false);
     }
   }, [startDate, endDate]);
-  interface LaunchPadProps {
-    initial: number;
-    price: number;
-    totalSale: number;
-  }
+
+  const getTimeLock = (startDate: any, endDate: any) => {
+    const timeDifference =
+      startDate?.getTime() / 1000 - endDate?.getTime() / 1000;
+
+    if (timeDifference < 0) {
+      return "Expires";
+    }
+    const minutes = Math.floor((timeDifference / 60) % 60);
+    const hours = Math.floor((timeDifference / (60 * 60)) % 24);
+    const days = Math.floor(timeDifference / (60 * 60 * 24));
+
+    // Format the result
+    const result = `${days}d${days > 1 ? "" : ""}: ${hours}h${hours > 1 ? "" : ""
+      }: ${minutes}m${minutes > 1 ? "" : ""}
+    `;
+
+    return result;
+  };
+
+  const getMinutes = (startDate: any, endDate: any) => {
+    const timeDifference = startDate - endDate;
+
+    const totalMinutes = Math.floor(timeDifference / (1000 * 60));
+
+    return totalMinutes;
+  };
+
   let transactionHash = "";
   const launchPadAction = async ({
     initial,
     priceLauchpad,
     startDate,
+    decimal,
     endDate,
+    royaltiesFee,
     url,
     data,
     durationLock,
-    totalSale,
     isRefundType,
     isWhiteList,
+    softCap,
+    hardCap,
+    vestingTime,
+    isVesting,
+    tge,
   }: any) => {
-    const totalSupply = initial + totalSale;
-    console.log(
-      initial,
-      priceLauchpad,
-      totalSale,
-      totalSupply,
-      startDate.getTime() / 1000,
-      url,
-      data,
-      endDate.getTime() / 1000
-    );
-
     const ethereum = (window as any).ethereum;
     if (typeof ethereum === "undefined") {
       alert("Please install MetaMask to launch pad NFTs.");
       return;
     }
-
+    console.log(royaltiesFee);
+    
     try {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -168,48 +212,75 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      const networkSwitched = await checkNetwork(providerChoice);
+      const networkSwitched = await changeNetwork(chainId, wallet, demask, setIsOpen);
       if (!networkSwitched) {
         return;
       }
-      console.log("check1");
 
       const checkAndLauchPadSubmit = async () => {
         const randomID = generateRandomNumber();
         const isExisting = await checkExists(randomID);
         if (isExisting) {
           checkAndLauchPadSubmit();
-          console.log("check2");
         } else {
           const startTimeTimestamp = startDate.getTime() / 1000;
           const endTimeTimestamp = endDate.getTime() / 1000;
-          const durationLockTimestamp = durationLock.getTime() / 1000;
+          const durationLockTimestamp = getMinutes(durationLock, endDate);
+          const vestingTimeConvert = isVesting
+            ? getMinutes(vestingTime, endDate)
+            : vestingTime;
+          console.log(
+            account,
+            tokenPayment,
+            randomID,
+            initial,
+            softCap,
+            hardCap,
+            percentLock * 10000,
+            handleBignumber(price, decimal),
+            handleBignumber(priceListing, decimal),
+            startTimeTimestamp.toFixed(0),
+            endTimeTimestamp.toFixed(0),
+            durationLockTimestamp.toFixed(0),
+            maxBuy,
+            vestingTimeConvert.toFixed(0),
+            tge * 10000,
+            isRefundType,
+            isWhiteList,
+            isVesting
+          );
+          setIsOpenTransaction(true);
+          const transaction = await contract.launchpadSubmit(
 
-          const transaction = await contract.launchpad_submit(
             [
               account,
+              tokenPayment,
               randomID,
               initial,
-              totalSale,
-              percentLock,
-              price,
-              priceListing,
-              tokenPayment,
-              startTimeTimestamp,
-              endTimeTimestamp,
-              durationLockTimestamp,
+              softCap,
+              hardCap,
+              percentLock * 10000,
+              handleBignumber(price, decimal),
+              handleBignumber(priceListing, decimal),
+              startTimeTimestamp.toFixed(0),
+              endTimeTimestamp.toFixed(0),
+              durationLockTimestamp.toFixed(0),
               maxBuy,
+              vestingTimeConvert.toFixed(0),
+              tge * 10000,
               isRefundType,
               isWhiteList,
-              50000,
+              isVesting,
             ],
+            exponentialToDecimal(royaltiesFee * 100),
             url,
             data
           );
+
           await transaction.wait();
           transactionHash = transaction.hash;
 
-          console.log(transactionHash);
+          setIsOpenTransaction(false);
 
           toast.success(
             <TransitionURL
@@ -243,6 +314,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           setTokenPayment("");
           setStartDate(null);
           setEndDate(null);
+          setActive(false);
+          setDurationLock(null);
         }
       };
       await checkAndLauchPadSubmit();
@@ -265,6 +338,19 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 
   const handleLauchpadSubmit = async () => {
     if (account) {
+      if (checkSoftcap <= 0) {
+        toast.error("Increase the number of softcap", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
       setIsProcess(true);
       const emptyInputFields = [];
       const requiredFields = [
@@ -276,8 +362,9 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         "maxBuy",
         "price",
         "percentLock",
-        "totalSale",
         "durationLock",
+        "hardCap",
+        "softCap",
       ];
       requiredFields.forEach((field) => {
         if (!eval(field)) {
@@ -297,6 +384,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           theme: "light",
         });
       }
+
       if (inforErc20.isERC20 === false) {
         emptyInputFields.push("NotErc20");
       }
@@ -307,10 +395,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       const priceLauchpad = new BigNumber(price)
         .times(new BigNumber(10).pow(Number(inforErc20.decimals)))
         .toFixed();
-      console.log(priceLauchpad);
 
-      if (emptyInputFields.length === 0) {
-        console.log("check 1");
+      if (emptyInputFields.length === 0 && !validFee) {
         const urlMetadata = getMetadataUrl({
           attributeItems,
           fileType,
@@ -320,24 +406,30 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           description,
           selectedCategory,
         });
-        console.log("pass URL meta");
 
         launchPadAction({
           initial,
+          decimal,
+          softCap,
+          hardCap,
+          vestingTime,
+          tge,
           priceLauchpad,
           startDate,
           endDate,
           data: "0x",
-          totalSale,
           maxBuy,
           priceListing,
           durationLock,
           percentLock,
           isRefundType,
           isWhiteList,
+          isVesting,
+          royaltiesFee,
           url: await urlMetadata,
         });
       } else {
+        console.log("error");
         setIsProcess(false);
       }
     } else {
@@ -357,13 +449,23 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       errorMsg: "Required",
     },
     {
-      id: "totalSale",
-      label: "TotalSale",
-      placeholder: "TotalSale",
+      id: "softCap",
+      label: "Softcap",
+      placeholder: "Softcap",
       type: "number",
-      value: totalSale,
-      onChange: (e: any) => setTotalSale(+e.target.value),
-      isError: emptyInputs.includes("totalSale"),
+      value: softCap,
+      onChange: (e: any) => setSoftCap(e.target.value),
+      isError: emptyInputs.includes("softCap"),
+      errorMsg: "Required",
+    },
+    {
+      id: "hardCap",
+      label: "Hardcap",
+      placeholder: "Hardcap",
+      type: "number",
+      value: hardCap,
+      onChange: (e: any) => setHardCap(e.target.value),
+      isError: emptyInputs.includes("hardCap"),
       errorMsg: "Required",
     },
 
@@ -377,7 +479,9 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       isError: emptyInputs.includes("percentLock"),
       errorMsg: "Required",
     },
+  ];
 
+  const listInputPrice = [
     {
       id: "price",
       label: "Price",
@@ -385,7 +489,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       type: "number",
       value: price,
       onChange: (e: any) => setPrice(e.target.value),
-      isError: emptyInputs.includes("totalSale"),
+      isError: emptyInputs.includes("price"),
       errorMsg: "Required",
     },
 
@@ -401,12 +505,30 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     },
   ];
 
-  const convertTime = (timestamp: any) => {
-    const secondsInADay = 60 * 60 * 24;
-    const days = Math.floor(timestamp / secondsInADay);
-    return days;
+  const listTokenPayment = [
+    {
+      name: "USDT",
+      token: "0x20b28B1e4665FFf290650586ad76E977EAb90c5D",
+    },
+    {
+      name: "USDC",
+      token: "0xcc38d1b55AE412f6019a98f349AC94F68F36392e",
+    },
+    {
+      name: "ETH",
+      token: "0x734aef51d427b2f745210ec4bf1062abd48eceb6",
+    },
+  ];
+
+  const handleVesting = () => {
+    setIsVesting(!isVesting);
+    if (!isVesting) {
+      setVestingTime(0);
+      setTge(0);
+    }
   };
 
+  useEffect(() => { }, [isOpenTransaction]);
   return (
     <div>
       {listInput.map((item) => (
@@ -431,9 +553,9 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span className="">Token Payment</span>
           <span className="text-red">*</span>
         </label>
-        <div>
+        <div className="relative">
           <input
-            placeholder="0x3248"
+            placeholder="Paste token or choose (USDT, USDC)"
             type="text"
             autoComplete="off"
             id="tokenPayment"
@@ -444,58 +566,139 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
                 : styles.inputItem
             }
             onChange={handleTokenPaymentChange}
+            onFocus={() => {
+              setActive(true);
+            }}
+          // onBlur={() => {
+          //   setActive(false);
+          // }}
           />
-          {isTokenPayment && (
-            <div className="absolute top-[50%] right-2 -translate-y-1/2">
-              <BiLoaderAlt className="animate-spin text-secondary5" />
-            </div>
-          )}
+
         </div>
-        {inforErc20.isERC20 ? (
-          <div className="mb-2">
-            <p>Name:{inforErc20.name}</p>
-            <p>Symbol:{inforErc20.symbol}</p>
-            <p>Total Supply:{inforErc20.totalSupply}</p>
+        {active && (
+          <div className="flex flex-col gap-2 p-2 mb-2 border-b border-l border-r rounded-xl">
+            {listTokenPayment.map((item) => (
+              <span
+                className={`border block text-center py-0.5 text-base text-black24 w-full px-1 rounded-lg cursor-pointer ${item.token === tokenPayment
+                  ? "bg-secondary5 text-white"
+                  : "hover:bg-secondary5 hover:text-white"
+                  }`}
+                onClick={() => {
+                  setTokenPayment(item.token);
+                }}
+              >
+                {item.name}
+              </span>
+            ))}
+          </div>
+        )}
+        {isLoading ? (
+          <div className="flex items-center justify-center p-2 mb-2 border-b border-l border-r rounded-xl">
+            <BiLoaderAlt className="text-xl animate-spin text-secondary5" />
           </div>
         ) : (
-          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalPayment">
-            Your token payment must be an ERC20 token
-          </p>
+          <>
+            {data && data.tokenName ? (
+              <div className="p-2 mb-2 border-b border-l border-r rounded-xl">
+                <p className="flex items-center gap-2">
+                  Name:{" "}
+                  <span className="font-semibold">
+                    {data?.tokenName || (
+                      <BiLoaderAlt className="animate-spin text-secondary5" />
+                    )}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  Symbol:{" "}
+                  <span className="font-semibold">
+                    {data.tokenSymbol || (
+                      <BiLoaderAlt className="animate-spin text-secondary5" />
+                    )}
+                  </span>
+                </p>
+                <p className="flex items-center gap-2">
+                  Total Supply:{" "}
+                  <span className="font-semibold">
+                    {data.tokenTotalSupply / 1e18 || (
+                      <BiLoaderAlt className="animate-spin text-secondary5" />
+                    )}
+                  </span>
+                </p>
+              </div>
+            ) : (
+              <p
+                className="mb-2 ml-3 -mt-1 text-xs text-red"
+                key="totalPayment"
+              >
+                Your token payment must be an ERC20 token
+              </p>
+            )}
+          </>
         )}
-        {emptyInputs.includes("totalSale") && (
+
+        {emptyInputs.includes("tokenPayment") && (
           <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalPayment">
             Required
           </p>
         )}
       </div>
 
+      {listInputPrice.map((item) => (
+        <>
+          <InputField
+            id={item.id}
+            label={item.label}
+            placeholder={item.label}
+            type={item.type}
+            value={item.value}
+            onChange={item.onChange}
+            isError={item.isError}
+            errorMsg={item.errorMsg}
+            emptyInputs={emptyInputs}
+            styles={styles}
+          />
+        </>
+      ))}
+      <div>
+        <label htmlFor="royaltiesFee" className={styles.title}>
+          <span>Royalties Fee</span>
+          <span className="text-red">*</span>
+        </label>
+
+        <input
+          placeholder="100"
+          type="number"
+          id="royaltiesFee"
+          autoComplete="off"
+          value={royaltiesFee || ""}
+          className={
+            emptyInputs.includes("royaltiesFee")
+              ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+              : styles.inputItem
+          }
+          onChange={(e) => handleChangeRoyalFee(e)}
+        />
+        {emptyInputs.includes("royaltiesFee") && (
+          <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
+            Required
+          </p>
+        )}
+        {validFee && (
+          <p className="mb-2 -mt-1 text-xs text-red" key="initial">
+            Royalties fee must be less than 0% and greater than 100%
+          </p>
+        )}
+      </div>
       <div>
         <label htmlFor="time" className={styles.title}>
           <span className="">Start & end time</span>
           <span className="text-red">*</span>
         </label>
-        {/* <div className="grid h-[34px] grid-cols-2 rounded-full w-[120px] mb-4 text-sm bg-dark2 text-white">
-          <button
-            type="button"
-            className={`${
-              launchActive === "NOW" ? "rounded-full bg-base2" : ""
-            }`}
-            onClick={() => changeLaunchStart("NOW")}
-          >
-            NOW
-          </button>
-          <button
-            type="button"
-            className={`${
-              launchActive === "CUSTOM" ? "rounded-full bg-base2" : ""
-            }`}
-            onClick={() => changeLaunchStart("CUSTOM")}
-          >
-            CUSTOM
-          </button>
-        </div> */}
+
         <div className="flex justify-between gap-x-4">
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            {/* @ts-ignore */}
+
             <DatePicker
               selected={startDate}
               onChange={handleDateChange}
@@ -511,6 +714,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </div>
           <HiArrowRight className="translate-y-[75%]" />
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            {/* @ts-ignore */}
+
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}
@@ -543,8 +748,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span className="">Duration Lock</span>
           <span className="text-red">*</span>
         </label>
-        <div className="flex gap-4">
+        <div className="flex items-baseline gap-4">
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+            {/* @ts-ignore */}
+
             <DatePicker
               selected={durationLock}
               onChange={(date) => setDurationLock(date)}
@@ -559,9 +766,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
               placeholderText="Forever"
             />
           </div>
-          {/* <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
-            {convertTime(durationLock && durationLock.getTime() / 1000)}
-          </div> */}
+          <span>{durationLock ? getTimeLock(durationLock, endDate) : ""}</span>
         </div>
       </div>
 
@@ -589,47 +794,134 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         styles={styles}
       />
 
+      <div className="flex items-center gap-2 mb-6">
+        <label className="relative inline-flex items-center gap-2 cursor-pointer">
+          <span
+            onClick={handleVesting}
+            className={"text-base font-semibold text-black24"}
+          >
+            Vesting
+          </span>
+          <div className="relative">
+            <input
+              type="checkbox"
+              value=""
+              className="outline-none sr-only peer"
+              checked={isVesting}
+            />
+            <div
+              onClick={handleVesting}
+              className={`w-11 h-6 rounded-full peer  ${isVesting ? "bg-secondary5" : "bg-gray-400"
+                } peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600`}
+            ></div>
+          </div>
+        </label>
+      </div>
+
+      {isVesting && (
+        <div className="p-4 mb-4 border rounded-md">
+          <InputField
+            id="tge"
+            label="TGE"
+            placeholder="1%"
+            type="number"
+            value={tge}
+            onChange={(e) => setTge(e.target.value)}
+            isError={emptyInputs.includes("tge")}
+            errorMsg="Required"
+            emptyInputs={emptyInputs}
+            styles={styles}
+            tooltip="Initial NFT quantity is unlocked"
+          />
+
+          <div className="relative">
+            <label htmlFor="vestingTime" className={styles.title}>
+              <div className="flex items-end gap-2">
+                <div className="pb-1 transition-all group">
+                  <span className="bg-yellow rounded-full block p-0.5 text-xs text-secondary3">
+                    <AiOutlineExclamation />
+                  </span>
+                  <p className="absolute z-10 hidden px-4 py-2 text-sm text-gray-500 transition-all bg-white border rounded-md font-base w-fit group-hover:block top-6">
+                    NFT unlock period after the end of the launchpad period.
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <span className="">Vesting time</span>
+                  <span className="text-red">*</span>
+                </div>
+              </div>
+            </label>
+            <div className="flex items-baseline gap-4">
+              <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+                {/* @ts-ignore */}
+                <DatePicker
+                  selected={vestingTime}
+                  onChange={(date) => setVestingTime(date)}
+                  timeIntervals={15}
+                  showTimeSelect
+                  selectsEnd
+                  startDate={endDate}
+                  endDate={vestingTime}
+                  minDate={new Date()}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
+                  placeholderText="Forever"
+                />
+              </div>
+              <span>
+                {vestingTime ? getTimeLock(vestingTime, endDate) : ""}
+              </span>
+            </div>
+            {emptyInputs.includes("vestingTime") && (
+              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="time">
+                You have to enter the time
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       <div>
         <label htmlFor="isRefundType" className={styles.title}>
           <span className="">Refund Type</span>
           <span className="text-red">*</span>
         </label>
 
-        <form className="flex gap-4 mb-4">
-          <div className="flex items-center border px-2 rounded-lg">
+        <div className="flex gap-4 mb-4">
+          <div className="flex items-center px-2 border rounded-lg">
             <input
               id="burn"
               onChange={() => {
                 setIsRefundType(true);
               }}
               type="radio"
-              name="bordered-radio"
+              name="refundtype"
             />
             <label
               htmlFor="burn"
-              className="w-full text-sm p-2 font-medium text-gray-600"
+              className="w-full p-2 text-sm font-medium text-gray-600"
             >
               Burn
             </label>
           </div>
 
-          <div className="flex items-center border px-2 rounded-lg">
+          <div className="flex items-center px-2 border rounded-lg">
             <input
               id="refund"
               onChange={() => {
                 setIsRefundType(false);
               }}
               type="radio"
-              name="bordered-radio"
+              name="refundtype"
             />
             <label
               htmlFor="refund"
-              className="w-full text-sm  p-2  font-medium text-gray-600"
+              className="w-full p-2 text-sm font-medium text-gray-600"
             >
               Refund
             </label>
           </div>
-        </form>
+        </div>
       </div>
 
       <div>
@@ -638,8 +930,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span className="text-red">*</span>
         </label>
 
-        <form className="flex gap-4 mb-4">
-          <div className="flex items-center border px-2 rounded-lg">
+        <div className="flex gap-4 mb-4">
+          <div className="flex items-center px-2 border rounded-lg">
             <input
               id="public"
               onChange={() => {
@@ -650,13 +942,13 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             />
             <label
               htmlFor="public"
-              className="w-full text-sm p-2 font-medium text-gray-600"
+              className="w-full p-2 text-sm font-medium text-gray-600"
             >
               Public
             </label>
           </div>
 
-          <div className="flex items-center border px-2 rounded-lg">
+          <div className="flex items-center px-2 border rounded-lg">
             <input
               id="private"
               onChange={() => {
@@ -667,12 +959,12 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             />
             <label
               htmlFor="private"
-              className="w-full text-sm  p-2  font-medium text-gray-600"
+              className="w-full p-2 text-sm font-medium text-gray-600"
             >
               Private
             </label>
           </div>
-        </form>
+        </div>
       </div>
 
       <div className="relative">
@@ -682,14 +974,21 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             className="w-[140px] py-2"
             primary
             onClick={handleLauchpadSubmit}
-            // onClick={handleLaunchPad}
+          // onClick={handleLaunchPad}
           >
             CREATE
           </Button>
           {isProcess && <Processing />}
         </div>
+
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
+
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+        isTransaction={true}
+      />
     </div>
   );
 };

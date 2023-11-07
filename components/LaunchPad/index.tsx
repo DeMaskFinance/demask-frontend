@@ -1,36 +1,39 @@
-import React, { useState } from "react";
-import { NextSeo } from "next-seo";
-import { SEO } from "../../next-seo.config";
 import TabLaunchPad from "@/components/LaunchPad/components/TabLauchPad";
-import PendingLaunchPad from "@/components/LaunchPad/components/PendingLaunchPad";
-import EndedLaunchPad from "@/components/LaunchPad/components/EndedLaunchPad";
-import { TabGroups } from "@/components/NavChoice";
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useQuery } from "@tanstack/react-query";
+import { NextSeo } from "next-seo";
+import Link from "next/link";
+import { useState } from "react";
+import { SEO } from "../../next-seo.config";
 
 const updateMeta = {
   ...SEO,
   title: "Launchpad",
 };
+
 export default function Launchpad() {
-  const [activeChoice, setActiveChoice] = useState(0);
+  const [activeChoice, setActiveChoice] = useState(1);
 
   const listTab = [
     {
       name: "Upcoming",
-      component: <TabLaunchPad query={"Upcoming"} />,
+      component: (
+        <TabLaunchPad
+          query={"Upcoming"}
+          desc={"There are currently no launchpads in the list."}
+        />
+      ),
       index: 0,
     },
     {
       name: "Active",
-      component: <TabLaunchPad query={"Active"} />,
+      component: <TabLaunchPad query={"Active"} desc="" />,
+      desc: "There are currently no active launchpads.",
       index: 1,
     },
 
     {
       name: "Ended",
-      component: <TabLaunchPad query={"Ended"} />,
-
+      component: <TabLaunchPad query={"Ended"} desc="" />,
+      desc: "",
       index: 2,
     },
   ];
@@ -39,15 +42,15 @@ export default function Launchpad() {
     <section className="launchpad">
       <NextSeo {...updateMeta} />
 
-      <div className="max-w-6xl mx-auto min-h-screen">
-        <div className="pt-12 flex rounded-lg overflow-hidden justify-center">
+      <div className="max-w-6xl min-h-screen mx-auto">
+        <div className="flex flex-col justify-between gap-4 pt-12 overflow-hidden rounded-lg lg:flex-row">
           <div
             className={`flex items-center p-1 gap-2 rounded-lg text-base text-center text-white  bg-dark3 w-max `}
           >
             {listTab.map((item, idx) => (
               <>
                 <button
-                  className={`py-2 px-3 lg:px-6 ${
+                  className={`lg:py-2 py-1 px-3 lg:px-6 ${
                     activeChoice === item.index ? "bg-secondary5" : ""
                   } rounded-lg text-sm`}
                   type="button"
@@ -60,6 +63,13 @@ export default function Launchpad() {
               </>
             ))}
           </div>
+
+          <Link
+            href={"/launchpad/create"}
+            className="flex px-2 py-1 text-sm text-white rounded-lg bg-secondary5 hover:bg-secondary4 lg:pt-3 w-fit"
+          >
+            Create Launchpad
+          </Link>
         </div>
         <div>{listTab[activeChoice].component}</div>
       </div>

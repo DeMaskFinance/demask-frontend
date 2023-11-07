@@ -10,9 +10,9 @@ export default function LaunchPad() {
   return (
     <section className="launchpad">
       <NextSeo {...updateMeta} />
-      {/* <Launchpad /> */}
+      
       <div className="min-h-[75vh]">
-        Comming soon
+        <Launchpad />
       </div>
     </section>
   );

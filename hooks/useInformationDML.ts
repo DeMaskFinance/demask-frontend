@@ -19,6 +19,8 @@ const useInformationDML = (
   const [reserveToken, setReserveToken] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [isLoadingInforDML, setIsLoadingInforDML] = useState<boolean>(false);
+  console.log(isOpenBuyNFT);
+  
   useEffect(() => {
     const fetchInforDML = async () => {
       setIsLoadingInforDML(true);
@@ -34,6 +36,8 @@ const useInformationDML = (
             tokenAddress,
           }: any = await getInfor(dmlToken, wallet);
           setReserves(reserves);
+          console.log(reserveNFT);
+          
           setDecimals(decimals);
           setIdNFT(idNFT);
           setNftAddress(nftAddress);

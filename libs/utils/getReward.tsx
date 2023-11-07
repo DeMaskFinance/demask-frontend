@@ -12,6 +12,7 @@ interface RewardDMLProps {
   account: string;
   data: {
     dmlDecimals: string;
+    tokenAddress:string;
   }
   setReward: any;
 }
@@ -20,9 +21,13 @@ const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, a
   const provider = new ethers.providers.Web3Provider(providerChoice);
   const signer = provider.getSigner();
   const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, signer);
-
+  console.log(data.tokenAddress);
+  
   try {
-    const result = await contract.getReward({ gasLimit: 8000000 });
+    const result = await contract.getReward(
+      [data.tokenAddress],
+      account
+    );
     setIsOpenTransaction(true);
     const check = await provider.waitForTransaction(result.hash);
     const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);

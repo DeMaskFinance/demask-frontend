@@ -2,14 +2,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_WETH", "type": "address" },
-      { "internalType": "address", "name": "_receiver", "type": "address" },
-      { "internalType": "address", "name": "_demask", "type": "address" },
-      {
-        "internalType": "uint256",
-        "name": "_feeLockDemask",
-        "type": "uint256"
-      },
-      { "internalType": "address", "name": "_referral", "type": "address" }
+      { "internalType": "address", "name": "_tokenList", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -45,31 +38,6 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "uri",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timeStamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "ChangeUriWithVote",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
         "name": "to",
         "type": "address"
       },
@@ -82,7 +50,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "id",
+        "name": "tokenId",
         "type": "uint256"
       },
       {
@@ -118,8 +86,20 @@
       },
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "launchpad",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenPayment",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "id",
+        "name": "tokenId",
         "type": "uint256"
       },
       {
@@ -131,7 +111,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "totalSell",
+        "name": "softcap",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "hardcap",
         "type": "uint256"
       },
       {
@@ -151,12 +137,6 @@
         "internalType": "uint256",
         "name": "priceListing",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "tokenPayment",
-        "type": "address"
       },
       {
         "indexed": false,
@@ -184,8 +164,32 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "timeStamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "TGE",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "vestingTime",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "bool",
-        "name": "refundType",
+        "name": "vestingStatus",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "burnType",
         "type": "bool"
       },
       {
@@ -205,46 +209,9 @@
         "internalType": "bytes",
         "name": "data",
         "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timeStamp",
-        "type": "uint256"
       }
     ],
     "name": "LaunchpadSubmit",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "totalMint",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timeStamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MintWithVote",
     "type": "event"
   },
   {
@@ -264,6 +231,37 @@
       }
     ],
     "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint96",
+        "name": "fee",
+        "type": "uint96"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "blockTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "SetTokenRoyalty",
     "type": "event"
   },
   {
@@ -301,6 +299,37 @@
       }
     ],
     "name": "TransferBatch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "oldOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "blockTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferOwnershipNFT",
     "type": "event"
   },
   {
@@ -360,163 +389,11 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "voter",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "option",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "count",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timeStamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "UserVote",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "endTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "totalMint",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "currentSupply",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "count",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timeStamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "VoteMintSubmit",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "uri",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "endTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "currentSupply",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "count",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timeStamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "VoteUriSubmit",
-    "type": "event"
+    "inputs": [],
+    "name": "Denominator",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -558,50 +435,12 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_id", "type": "uint256" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "burn",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_count", "type": "uint256" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" }
-    ],
-    "name": "change_uri_with_vote",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "claimReward",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "countVoteMint",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "countVoteUri",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "demask",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -622,19 +461,8 @@
   },
   {
     "inputs": [],
-    "name": "feeLockDemask",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_owner", "type": "address" }
-    ],
-    "name": "getList",
-    "outputs": [
-      { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
-    ],
+    "name": "getRouter",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -657,7 +485,7 @@
   },
   {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "isMint",
+    "name": "isMinted",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
@@ -667,9 +495,15 @@
       {
         "components": [
           { "internalType": "address", "name": "creator", "type": "address" },
-          { "internalType": "uint256", "name": "id", "type": "uint256" },
+          {
+            "internalType": "address",
+            "name": "tokenPayment",
+            "type": "address"
+          },
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
           { "internalType": "uint256", "name": "initial", "type": "uint256" },
-          { "internalType": "uint256", "name": "totalSell", "type": "uint256" },
+          { "internalType": "uint256", "name": "softcap", "type": "uint256" },
+          { "internalType": "uint256", "name": "hardcap", "type": "uint256" },
           {
             "internalType": "uint256",
             "name": "percentLock",
@@ -681,11 +515,6 @@
             "name": "priceListing",
             "type": "uint256"
           },
-          {
-            "internalType": "address",
-            "name": "tokenPayment",
-            "type": "address"
-          },
           { "internalType": "uint256", "name": "startTime", "type": "uint256" },
           { "internalType": "uint256", "name": "endTime", "type": "uint256" },
           {
@@ -694,22 +523,25 @@
             "type": "uint256"
           },
           { "internalType": "uint256", "name": "maxbuy", "type": "uint256" },
-          { "internalType": "bool", "name": "refundType", "type": "bool" },
-          { "internalType": "bool", "name": "whiteList", "type": "bool" },
           {
             "internalType": "uint256",
-            "name": "percentReferral",
+            "name": "vestingTime",
             "type": "uint256"
-          }
+          },
+          { "internalType": "uint256", "name": "TGE", "type": "uint256" },
+          { "internalType": "bool", "name": "burnType", "type": "bool" },
+          { "internalType": "bool", "name": "whiteList", "type": "bool" },
+          { "internalType": "bool", "name": "vestingStatus", "type": "bool" }
         ],
         "internalType": "struct LaunchPad.launchpad_data",
         "name": "launchpad_information",
         "type": "tuple"
       },
+      { "internalType": "uint96", "name": "royaltiesFee", "type": "uint96" },
       { "internalType": "string", "name": "_url", "type": "string" },
       { "internalType": "bytes", "name": "data", "type": "bytes" }
     ],
-    "name": "launchpad_submit",
+    "name": "launchpadSubmit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -717,22 +549,13 @@
   {
     "inputs": [
       { "internalType": "address", "name": "account", "type": "address" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint96", "name": "royaltiesFee", "type": "uint96" },
       { "internalType": "bytes", "name": "data", "type": "bytes" },
-      { "internalType": "string", "name": "_url", "type": "string" }
+      { "internalType": "string", "name": "url", "type": "string" }
     ],
     "name": "mint",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_count", "type": "uint256" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" }
-    ],
-    "name": "mint_with_vote",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -753,20 +576,6 @@
   },
   {
     "inputs": [],
-    "name": "receiver",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "referral",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -776,6 +585,19 @@
     "inputs": [],
     "name": "router",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "uint256", "name": "salePrice", "type": "uint256" }
+    ],
+    "name": "royaltyInfo",
+    "outputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -817,25 +639,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
-      { "internalType": "uint256", "name": "startVote", "type": "uint256" },
-      { "internalType": "uint256", "name": "endVote", "type": "uint256" },
-      { "internalType": "string", "name": "uri_", "type": "string" }
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "receiver", "type": "address" },
+      { "internalType": "uint96", "name": "royaltiesFee", "type": "uint96" }
     ],
-    "name": "submit_vote_change_uri",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_receiver", "type": "address" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
-      { "internalType": "uint256", "name": "startVote", "type": "uint256" },
-      { "internalType": "uint256", "name": "endVote", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalMint", "type": "uint256" }
-    ],
-    "name": "submit_vote_mint_token",
+    "name": "setTokenRoyalty",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -857,6 +665,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "tokenList",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint256", "name": "id", "type": "uint256" }],
     "name": "totalSupply",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -874,105 +689,20 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "option", "type": "uint256" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
-      { "internalType": "uint256", "name": "count", "type": "uint256" }
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
-    "name": "unlock",
+    "name": "transferOwnershipNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "option", "type": "uint256" },
-      { "internalType": "uint256", "name": "_count", "type": "uint256" },
-      { "internalType": "uint256", "name": "_id", "type": "uint256" }
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
     ],
-    "name": "unlock_vote",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "_id", "type": "uint256" }],
     "name": "uri",
     "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
-    ],
-    "name": "uservote",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_count", "type": "uint256" },
-      { "internalType": "uint256", "name": "_id", "type": "uint256" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "vote_mint_token",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_count", "type": "uint256" },
-      { "internalType": "uint256", "name": "_id", "type": "uint256" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "vote_uri_token",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
-    ],
-    "name": "votemint",
-    "outputs": [
-      { "internalType": "address", "name": "creator", "type": "address" },
-      { "internalType": "address", "name": "receiver", "type": "address" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
-      { "internalType": "uint256", "name": "startTime", "type": "uint256" },
-      { "internalType": "uint256", "name": "endTime", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalMint", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalVote", "type": "uint256" },
-      { "internalType": "uint256", "name": "currentSupply", "type": "uint256" },
-      { "internalType": "bool", "name": "statusUnlock", "type": "bool" },
-      { "internalType": "bool", "name": "statusMint", "type": "bool" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
-    ],
-    "name": "voteuri",
-    "outputs": [
-      { "internalType": "address", "name": "creator", "type": "address" },
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
-      { "internalType": "uint256", "name": "startTime", "type": "uint256" },
-      { "internalType": "uint256", "name": "endTime", "type": "uint256" },
-      { "internalType": "string", "name": "uri", "type": "string" },
-      { "internalType": "uint256", "name": "totalVote", "type": "uint256" },
-      { "internalType": "uint256", "name": "currentSupply", "type": "uint256" },
-      { "internalType": "bool", "name": "statusUnlock", "type": "bool" },
-      { "internalType": "bool", "name": "statusUri", "type": "bool" }
-    ],
     "stateMutability": "view",
     "type": "function"
   },
