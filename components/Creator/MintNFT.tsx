@@ -13,6 +13,7 @@ import AccountContext from "@/context/AccountContext";
 import { checkNetwork } from "@/libs/validation";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-[200px] py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -48,10 +49,21 @@ export default function MintNFT({
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [validFee, setValidFee] = useState<boolean>(false);
+  const [checkExit, setCheckExit] = useState<boolean>(false);
   const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
   console.log(fileIPFS);
-
+  useEffect(() => {
+    if (name || symbol || description || fileIPFS || totalSupply || royaltiesFee) {
+      setCheckExit(true)
+    } else {
+      setCheckExit(false)
+    }
+  }, [name, symbol, description, fileIPFS, totalSupply, royaltiesFee])
+  console.log(checkExit);
+  console.log(name, symbol, attributeItems, description, fileIPFS, totalSupply, royaltiesFee);
+  
+  usePreventUserFromErasingContent(checkExit);
   async function mintNFT({ amount, data, url, feeRoyal }: mintProps) {
     const ethereum = (window as any).ethereum;
     let transactionHash = "";

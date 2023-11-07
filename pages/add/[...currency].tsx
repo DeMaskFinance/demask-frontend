@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from '../../next-seo.config';
+import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -55,6 +56,7 @@ export default function AddLiquidity() {
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [symbolToken, setSymbolToken] = useState<string>('');
+  const [checkExit,setCheckExit] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -66,6 +68,7 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   }, [currency]);
+  usePreventUserFromErasingContent(checkExit);
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
     queryKey: ["liquidity", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
@@ -175,7 +178,13 @@ export default function AddLiquidity() {
     }
   }
   console.log(allowanceToken);
-
+  useEffect(()=>{
+    if(inputNFT){
+      setCheckExit(true)
+    }else{
+      setCheckExit(false)
+    }
+  },[inputNFT])
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress, routerAddress);

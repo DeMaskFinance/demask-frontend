@@ -26,6 +26,7 @@ import { AiOutlineExclamation } from "react-icons/ai";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 interface LauchPadProps {
   name: string;
   symbol: string;
@@ -104,6 +105,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [validFee, setValidFee] = useState<boolean>(false);
+  const [checkExit, setCheckExit] = useState<boolean>(false);
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
@@ -117,8 +119,16 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       setValidFee(false);
     }
   }
-  console.log(fileIPFS);
-  
+  usePreventUserFromErasingContent(checkExit);
+  useEffect(() => {
+    if (name || symbol || description || fileIPFS || initial || percentLock || softCap || hardCap || price || priceListing || maxBuy || royaltiesFee) {
+      setCheckExit(true)
+    } else {
+      setCheckExit(false)
+    }
+  }, [name || symbol, description, fileIPFS, initial, percentLock, softCap, hardCap, price, priceListing, maxBuy, royaltiesFee])
+
+
   const { isLoading, refetch, data, isFetching } = useQuery({
     queryKey: ["tokenPayment", tokenPayment],
     queryFn: async () => {
@@ -199,7 +209,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       return;
     }
     console.log(royaltiesFee);
-    
+
     try {
       const providerChoice = getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -532,7 +542,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   useEffect(() => { }, [isOpenTransaction]);
   return (
     <div>
-      {listInput.map((item,index) => (
+      {listInput.map((item, index) => (
         <div key={index}>
           <InputField
             id={item.id}

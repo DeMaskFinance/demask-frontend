@@ -31,6 +31,7 @@ import { AiFillSetting } from "react-icons/ai";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
+import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -67,6 +68,7 @@ const Swap: React.FC = () => {
   const [amountSell, setAmountSell] = useState<number>(0);
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
+  const [checkExit,setCheckExit] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -83,6 +85,9 @@ const Swap: React.FC = () => {
     },
     keepPreviousData: true,
   });
+  usePreventUserFromErasingContent(checkExit);
+  console.log(checkExit);
+  
   useEffect(() => {
     if (slug) {
       setNftAddress(slug[0]);
@@ -160,7 +165,13 @@ const Swap: React.FC = () => {
       setIsSufficientNFT(true);
     }
   }, []);
-
+  useEffect(()=>{
+    if(inputNFT){
+      setCheckExit(true)
+    }else{
+      setCheckExit(false)
+    }
+  },[inputNFT])
 
   const handleBuy = () => {
     if (inputNFT === "") {
@@ -338,6 +349,7 @@ const Swap: React.FC = () => {
                       onChange={(e) => {
                         setInputNFT(e.target.value);
                         setShowRequiredMessage(false);
+                        setCheckExit(true);
                       }}
                     />
                     <div
