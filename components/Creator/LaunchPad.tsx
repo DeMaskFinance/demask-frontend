@@ -316,6 +316,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           setEndDate(null);
           setActive(false);
           setDurationLock(null);
+          setRoyaltiesFee(null);
         }
       };
       await checkAndLauchPadSubmit();
@@ -531,8 +532,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   useEffect(() => { }, [isOpenTransaction]);
   return (
     <div>
-      {listInput.map((item) => (
-        <>
+      {listInput.map((item,index) => (
+        <div key={index}>
           <InputField
             id={item.id}
             label={item.label}
@@ -545,7 +546,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             emptyInputs={emptyInputs}
             styles={styles}
           />
-        </>
+        </div>
       ))}
 
       <div className="relative">
