@@ -3,13 +3,13 @@ import { Button } from "@/components/Buttons";
 import { DownIcon } from "@/components/Icons";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
+import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
-import { getBuyPrice, getFeeBuy } from "@/libs/utils/getPrice";
 import handleApproveToken from "@/libs/utils/handleApproveToken";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
@@ -19,7 +19,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import abiDML from "@/abi/abiDML.json";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
@@ -53,9 +52,6 @@ const ModalBuyNFT: React.FunctionComponent<
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-        const [amountBuy, setAmountBuy] = useState<number>(0);
-        const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
-        const [feeTrading, setFeeTrading] = useState<string>('0');
         console.log(data);
         const { allowanceToken } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenBuyNFT);
@@ -65,48 +61,14 @@ const ModalBuyNFT: React.FunctionComponent<
             setIsOpenBuyNFT(false);
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
-        console.log('test', reserveNFT.toString());
-        console.log(Number(reserveToken));
-        useEffect(() => {
-            if (inputNFT && data) {
-                setAmountBuy(getBuyPrice(Number(reserveNFT), data.reserveToken, +(inputNFT)))
-                setAmountBuyDec(getBuyPrice(Number(reserveNFT), Number(reserveToken), Number(inputNFT)) * Number(inputNFT) * 1.05)
-                setFeeTrading(getFeeBuy(Number(reserveNFT), Number(reserveToken), +(inputNFT)).toString());
-            } else {
-                setAmountBuy(0);
-                setAmountBuyDec(0);
-            }
-        }, [inputNFT, data, reserveNFT, reserveToken])
-        // console.log(amountBuyDec);
-        // console.log('allowance', allowanceToken);
-        // console.log(isOpenTransaction);
-        console.log(slippage);
-        const getInforDML = async (dmlToken: string, wallet: string) => {
-            const providerChoice = getProvider(wallet);
-            const provider = new ethers.providers.Web3Provider(providerChoice);
-            const signer = provider.getSigner();
-            const contract = new ethers.Contract('0x47186b3546d6717412a6644da859fa567133bf4d', abiDML, signer);
-            console.log(contract);
-
-            try {
-                const reserves = await contract.getReserves();
-                const decimals = await contract.decimals();
-                const idNFT = await contract.tokenId();
-                const nftAddress = await contract.NFT();
-                const reserveNFT = await contract.reserveNFT();
-                const reserveToken = await contract.reserveToken();
-                console.log(reserveToken);
-                console.log(reserveNFT);
-
-                const tokenAddress = await contract.token();
-            } catch (error) {
-                console.error(error);
-            }
-        };
+        const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress,0.05);
+        console.log(amountTokenBuy);
+        console.log(inputNFT);
+        
         useEffect(() => {
             const checkApproveToken = async () => {
                 if (tokenAddress !== nativeAddress) {
-                    if (Number(allowanceToken) < Number(amountBuyDec)) {
+                    if (Number(allowanceToken) < Number(amountTokenBuy)) {
                         setIsApprovedToken(false);
                     } else {
                         setIsApprovedToken(true);
@@ -116,7 +78,7 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             };
             checkApproveToken();
-        }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken, reserveNFT, reserveToken]);
+        }, [account, wallet, data, inputNFT, amountTokenBuy, isOpenTransaction, tokenAddress, allowanceToken]);
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -126,7 +88,7 @@ const ModalBuyNFT: React.FunctionComponent<
             if (
                 Number(reserveNFT) > 1 &&
                 Number(reserveToken) > 0 &&
-                Math.floor(amountBuyDec) > 0
+                Math.floor(amountTokenBuy) > 0
             ) {
                 const providerChoice = getProvider(wallet);
                 const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -136,24 +98,26 @@ const ModalBuyNFT: React.FunctionComponent<
                     let result;
                     setIsOpenTransaction(true);
                     if (tokenAddress === nativeAddress) {
-                        result = await contract.buyETH(
-                            nftAddress,
-                            idNFT,
-                            inputNFT,
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec)) }
-                        );
-                    } else {
-                        result = await contract.buy(
+                        result = await contract.buyERC20ERC1155(
                             tokenAddress,
                             nftAddress,
                             idNFT,
                             inputNFT,
-                            exponentialToDecimal(Math.floor(amountBuyDec)),
+                            exponentialToDecimal(Math.floor(amountTokenBuy)),
                             account,
                             Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000 }
+                            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountTokenBuy)) }
+                        );
+                    } else {
+                        result = await contract.buyERC20ERC1155(
+                            tokenAddress,
+                            nftAddress,
+                            idNFT,
+                            inputNFT,
+                            exponentialToDecimal(Math.floor(amountTokenBuy)),
+                            account,
+                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                            { gasLimit: 8000000, value: 0 }
                         );
                     }
                     const check = await provider.waitForTransaction(result.hash);
@@ -197,7 +161,6 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             }
         };
-        console.log(inputNFT);
         // setIsOpenTransaction(true)
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
@@ -206,7 +169,6 @@ const ModalBuyNFT: React.FunctionComponent<
                         <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
                             Confirm Buy
                         </p>
-                        <button onClick={() => getInforDML('0xb811b464a92a94deeaf22c30a41202bea1fa8423', "Metamask")}>TEST</button>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
                             <p>{data.metadata.symbol}</p>
@@ -216,7 +178,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{formatNumber(
-                                divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
+                                divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
                             )}</p>
                             <p>{symbolToken}</p>
                         </div>
@@ -229,7 +191,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
                                 <p>{formatNumber(
-                                    (Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                    (Number(divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
                                 )}</p>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
@@ -243,7 +205,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <p>Trading fee</p>
                                 <div className="flex gap-x-1">
                                     {formatNumber(
-                                        divideByDecimal(feeTrading.toString(), data.tokenDecimals)
+                                        divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals)
                                     )}
                                 </div>
                             </div>
@@ -267,7 +229,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                             account,
                                             wallet,
                                             tokenAddress,
-                                            amountBuyDec,
+                                            amountTokenBuy,
                                             routerAddress,
                                             setIsOpen,
                                             setIsOpenTransaction

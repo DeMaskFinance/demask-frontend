@@ -2,13 +2,14 @@ import abiRouter from "@/abi/abiRouter.json";
 import { DownIcon } from "@/components/Icons";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
+import useAmountOutMin from "@/hooks/useAmountOutMin";
+import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
-import { getFeeSell, getSellPrice } from "@/libs/utils/getPrice";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
@@ -17,7 +18,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import useNFTBalance from "@/hooks/useBalanceNFT";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
@@ -50,9 +50,6 @@ const ModalSellNFT: React.FunctionComponent<
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-        const [amountSell, setAmountSell] = useState<number>(0);
-        const [amountSellDec, setAmountSellDec] = useState<number>(0);
-        const [feeTrading, setFeeTrading] = useState<string>('0');
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
         const [isSufficientTokenSell, setIsSufficientTokenSell] =
             useState<boolean>(false);
@@ -65,19 +62,8 @@ const ModalSellNFT: React.FunctionComponent<
             setIsOpenSellNFT(false);
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT)
+        const {amountTokenSell,isLoadingSell,feeTradingSell} = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress,0.05);
         const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-        console.log(reserveNFT.toString());
-        console.log(Number(reserveToken));
-        useEffect(() => {
-            if (inputNFT && data) {
-                setAmountSell(getSellPrice(Number(reserveNFT), Number(reserveToken), Number(inputNFT)))
-                setAmountSellDec(getSellPrice(Number(reserveNFT), Number(reserveToken), Number(inputNFT)) * Number(inputNFT) * 0.95)
-                setFeeTrading(getFeeSell(Number(reserveNFT), Number(reserveToken), +(inputNFT)).toString());
-            } else {
-                setAmountSell(0);
-                setAmountSellDec(0);
-            }
-        }, [inputNFT, reserveNFT, reserveToken])
         useEffect(() => {
             const checkReservesNFT = () => {
                 if (Number(inputNFT) <= Number(balanceNFT)) {
@@ -87,13 +73,13 @@ const ModalSellNFT: React.FunctionComponent<
                 }
             };
             checkReservesNFT();
-            if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
+            if (Number(amountTokenSell.toFixed()) > Number(bigNumberBalance)) {
                 setIsSufficientTokenSell(false);
             } else {
                 setIsSufficientTokenSell(true);
             }
 
-        }, [inputNFT, account, amountSellDec, reserveNFT, reserveToken]);
+        }, [inputNFT, account, amountTokenSell]);
         const handleSellNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -105,7 +91,7 @@ const ModalSellNFT: React.FunctionComponent<
                 isSufficientTokenSell &&
                 Number(reserveNFT) > 0 &&
                 Number(reserveToken) > 0 &&
-                Math.floor(amountSellDec) > 0
+                Math.floor(amountTokenSell) > 0
             ) {
                 const providerChoice = getProvider(wallet);
                 const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -114,28 +100,17 @@ const ModalSellNFT: React.FunctionComponent<
                 try {
                     let result;
                     setIsOpenTransaction(true);
-                    if (tokenAddress === nativeAddress) {
-                        result = await contract.sellETH(
-                            nftAddress,
-                            idNFT,
-                            inputNFT,
-                            exponentialToDecimal(Math.floor(amountSellDec)),
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000 }
-                        );
-                    } else {
-                        result = await contract.sell(
-                            tokenAddress,
-                            nftAddress,
-                            idNFT,
-                            inputNFT,
-                            exponentialToDecimal(Math.floor(amountSellDec)),
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000 }
-                        );
-                    }
+                    // const valueToSend = tokenAddress === nativeAddress ? exponentialToDecimal(Math.floor(amountTokenSell)) : 0;
+                    result = await contract.sellERC20ERC1155(
+                        tokenAddress,
+                        nftAddress,
+                        idNFT,
+                        inputNFT,
+                        exponentialToDecimal(Math.floor(amountTokenSell)),
+                        account,
+                        Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                        { gasLimit: 8000000 }
+                    );
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setIsOpenSellNFT(false);
@@ -191,7 +166,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{formatNumber(
-                                divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                                divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
                             )}</p>
                             <p>{symbolToken}</p>
                         </div>
@@ -200,20 +175,20 @@ const ModalSellNFT: React.FunctionComponent<
                             <p>{slippage}%</p>
                         </div>
                         <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {formatNumber(
-                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                            divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
                         )} {symbolToken} or the transaction will revert</p>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
                                 <p>{formatNumber(
-                                    (Number(divideByDecimal(amountSellDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                    (Number(divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
                                 )}</p>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
                                 <div className="flex gap-x-1">
                                     <p>{formatNumber(
-                                        divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                                        divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
                                     )}</p>
                                     <p>{symbolToken}</p>
                                 </div>
@@ -222,7 +197,7 @@ const ModalSellNFT: React.FunctionComponent<
                                 <p>Trading fee</p>
                                 <div className="flex gap-x-1">
                                     <p>{formatNumber(
-                                        divideByDecimal(feeTrading.toString(), data.tokenDecimals)
+                                        divideByDecimal(feeTradingSell.toString(), data.tokenDecimals)
                                     )}</p>
                                 </div>
                             </div>
@@ -248,7 +223,7 @@ const ModalSellNFT: React.FunctionComponent<
                                     </p>
                                 )
                             }
-                            {Math.floor(amountSellDec) === 0 && inputNFT && (
+                            {Math.floor(amountTokenSell) === 0 && inputNFT && (
                                 <p className="text-xs text-red">
                                     Can't sell
                                 </p>

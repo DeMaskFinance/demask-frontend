@@ -7,14 +7,17 @@ const getAmountBuy = async (
   tokenAddress: string,
   nftAddress: string,
   idNFT: string,
-  amountNFT: string
+  amountNFT: string,
+  rpc:string,
+  routerAddress:string,
 ) => {
-  const provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai-bor.publicnode.com');
-  const routerAddress = process.env.NEXT_PUBLIC_ROUTER || "";
-  const contract = new ethers.Contract(routerAddress, abiRouter, provider);
+  const provider = new ethers.providers.JsonRpcProvider(rpc);
+  const contract = new ethers.Contract('0x4B5bc8d4C10cBc3B3627c081429b022000c07378', abiRouter, provider);
   try {
     const amountAFee = await contract.getAmountBuy(tokenAddress,nftAddress,idNFT,amountNFT);
-    return amountAFee[0].toString()
+    console.log(amountAFee);
+    
+    return amountAFee;
   } catch (error) {
     console.error(error);
   }

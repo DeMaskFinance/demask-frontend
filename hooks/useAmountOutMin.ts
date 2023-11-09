@@ -1,32 +1,27 @@
 import getAmountSell from '@/libs/utils/getAmountSell';
 import { useEffect, useState } from 'react';
-const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string, activeChoice:string) => {
-    const [amountTokenSell, setAmountTokenSell] = useState('0');
+const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string,account:string,rpc:string,routerAddress:string,slippage:number) => {
+    const [amountTokenSell, setAmountTokenSell] = useState(0);
+    const [feeTradingSell, setFeeTradingSell] = useState(0);
     const [isLoadingSell,setIsLoadingSell] = useState<boolean>(false);
     useEffect(() => {
       const getAmountOutMin = async () => {
         setIsLoadingSell(true);
         if (inputNFT && dmlToken !== '0x0000000000000000000000000000000000000000') {
-          let amountAFee;
-          if (tokenAddress === 'MATIC') {
-            const tokenWETH = process.env.NEXT_PUBLIC_WETH as string;
-            amountAFee = await getAmountSell(wallet, tokenWETH, nftAddress, idNFT, inputNFT);
-          } else {
-            amountAFee = await getAmountSell(wallet, tokenAddress, nftAddress, idNFT, inputNFT);
-          }
-  
-          const amountToken = Number(amountAFee) * 0.95;
-          setAmountTokenSell(amountToken.toString());
+          const amountAFee =await getAmountSell(wallet, tokenAddress, nftAddress, idNFT, inputNFT,rpc,routerAddress);
+          setAmountTokenSell(amountAFee[0] * (1-slippage));
+          setFeeTradingSell(amountAFee[1].toString());
         } else {
-          setAmountTokenSell('0');
+          setFeeTradingSell(0);
+          setAmountTokenSell(0);
         }
         setIsLoadingSell(false);
       };
       
       getAmountOutMin();
-    }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, activeChoice]);
+    }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, account]);
   
-  return {amountTokenSell,isLoadingSell};
+  return {amountTokenSell,isLoadingSell,feeTradingSell};
   };
   
   export default useAmountOutMin;

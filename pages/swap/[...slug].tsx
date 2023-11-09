@@ -32,6 +32,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import useAmountInMax from "@/hooks/useAmountInMax";
+import useAmountOutMin from "@/hooks/useAmountOutMin";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -64,10 +66,6 @@ const Swap: React.FC = () => {
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [amountBuy, setAmountBuy] = useState<number>(0);
-  const [amountSell, setAmountSell] = useState<number>(0);
-  const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
-  const [amountSellDec, setAmountSellDec] = useState<number>(0);
   const [checkExit,setCheckExit] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
@@ -78,6 +76,14 @@ const Swap: React.FC = () => {
 
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
+    queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
+    queryFn: async () => {
+      const res = await swapAPI(tokenAddress.toLocaleLowerCase(), chainId, nftAddress.toLowerCase(), idNFT);
+      return res;
+    },
+    keepPreviousData: true,
+  });
+  const { isLoading:isLoadingChart, data:dataChart, isFetching:isFetchingChart, isSuccess:isSuccessChart } = useQuery({
     queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
       const res = await swapAPI(tokenAddress.toLocaleLowerCase(), chainId, nftAddress.toLowerCase(), idNFT);
@@ -117,21 +123,13 @@ const Swap: React.FC = () => {
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
   console.log(isApprovedNFT);
-
-  useEffect(() => {
-    if (inputNFT && data) {
-      setAmountBuy(getBuyPrice(data.reserveNFT, data.reserveToken, +(inputNFT)))
-      setAmountSell(getSellPrice(data.reserveNFT, data.reserveToken, +(inputNFT)))
-      setAmountBuyDec(getBuyPrice(data.reserveNFT, data.reserveTokenDecimals, Number(inputNFT)) * Number(inputNFT) * 1.05)
-      setAmountSellDec(getSellPrice(data.reserveNFT, data.reserveTokenDecimals, +(inputNFT)) * Number(inputNFT) * 0.95)
-    } else {
-      setAmountBuy(0);
-      setAmountSell(0);
-      setAmountBuyDec(0);
-      setAmountSellDec(0);
-    }
-  }, [inputNFT, data])
-
+  console.log(inputNFT);
+  
+  const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress,0.05);
+  const {amountTokenSell,isLoadingSell,feeTradingSell} = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress,0.05);
+  console.log(amountTokenBuy);
+  console.log(amountTokenSell);
+  
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
@@ -149,17 +147,17 @@ const Swap: React.FC = () => {
       }
     };
     checkReservesNFT();
-    if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountTokenBuy.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-    if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountTokenSell.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientTokenSell(false);
     } else {
       setIsSufficientTokenSell(true);
     }
-  }, [inputNFT, activeChoice, account, amountBuyDec, amountSellDec, data]);
+  }, [inputNFT, activeChoice, account, amountTokenBuy, amountTokenSell, data]);
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -299,7 +297,7 @@ const Swap: React.FC = () => {
                       {inputNFT ? (
                         <span>
                           {formatNumber(
-                            divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
+                            divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
                           )}
                         </span>
                       ) : (
@@ -313,7 +311,7 @@ const Swap: React.FC = () => {
                       {inputNFT ? (
                         <span>
                           {formatNumber(
-                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                            divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
                           )}
                         </span>
                       ) : (
@@ -419,13 +417,13 @@ const Swap: React.FC = () => {
                     {activeChoice === "BUY" ? (
                       <div className={styles.inputItem}>
                         {formatNumber(
-                          divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
+                          divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
                         )}
                       </div>
                     ) : (
                       <div className={styles.inputItem}>
                         {formatNumber(
-                          divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                          divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
                         )}
                       </div>
                     )}
@@ -438,12 +436,12 @@ const Swap: React.FC = () => {
                   </div>
                 </div>
               </form>
-              {activeChoice === "BUY" && Math.floor(amountBuyDec) === 0 && inputNFT && (
+              {activeChoice === "BUY" && Math.floor(amountTokenBuy) === 0 && inputNFT && (
                 <p className="mt-0 mb-2 ml-3 text-xs text-red">
                   Can't buy
                 </p>
               )}
-              {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && inputNFT && (
+              {activeChoice === "SELL" && Math.floor(amountTokenSell) === 0 && inputNFT && (
                 <p className="mt-0 mb-2 ml-3 text-xs text-red">
                   Can't sell
                 </p>
@@ -499,11 +497,11 @@ const Swap: React.FC = () => {
               </div>
             </div>
             <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
-              {isLoading ? (
+              {isLoadingChart ? (
                 <div className="h-[355px]">
                   <ChartLoading />
                 </div>
-              ) : data && data?.mergedResults?.length > 0 ? (
+              ) : dataChart && dataChart?.mergedResults?.length > 0 ? (
                 <div className="">
                   <ChartSwap dataChart={data.mergedResults} />
                 </div>
