@@ -194,7 +194,7 @@ export default function CreateLaunchPad() {
           <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
           <div className="flex flex-col items-center w-full" ref={uploadRef}>
             <div
-              className="flex flex-col items-center w-full text-center border border-dashed h-fit border-1 border-dark2 rounded-2xl"
+              className={`flex flex-col items-center w-full text-center border border-dashed h-fit justify-center border-1 border-dark2 rounded-2xl`}
               ref={itemRef}
               onDragOver={handleDragOver}
               onDragLeave={handleLeave}
@@ -255,7 +255,7 @@ export default function CreateLaunchPad() {
                   />
                 </div>
               ) : (
-                <div onClick={handleClickFile} className="cursor-pointer">
+                <div onClick={handleClickFile} className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center">
                   <Image
                     src={images.pictureFrame}
                     alt="pictureframe"
@@ -263,7 +263,7 @@ export default function CreateLaunchPad() {
                     height={160}
                     className="object-cover mt-6 mb-4 w-[160px] h-40 rounded-[2rem] mx-auto"
                   />
-                  <p>Upload media</p>
+                  <p className="font-semibold text-dark1">Upload</p>
                   <input
                     ref={inputRef}
                     type="file"
@@ -271,10 +271,9 @@ export default function CreateLaunchPad() {
                     hidden
                     onChange={handleChangeFile}
                   />
-                  <p className="text-xs w-[254px] text-dark2 mb-6">
-                    Tap here to upload media from your device. Video, audio,
-                    gif, pdf, and images supported. Max size: 1GB.
-                  </p>
+                  <div className="text-sm w-[254px] text-dark3 mb-6 ">
+                    <span>Video, audio, gif, pdf, and images supported.</span> <span className="text-dark2">Max size: 1GB.</span>
+                  </div>
                 </div>
               )}
             </div>

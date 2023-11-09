@@ -65,7 +65,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
   return (
     <div className="">
       <Link
-        href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
+        href={`launchpad/${item.nftID}/${item.nftAddress}/${item.tokenPayment}`}
       >
         <div className="relative">
           <div className="">

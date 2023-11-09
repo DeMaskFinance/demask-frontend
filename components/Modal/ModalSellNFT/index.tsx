@@ -95,7 +95,6 @@ const ModalSellNFT: React.FunctionComponent<
 
         }, [inputNFT, account, amountSellDec, reserveNFT, reserveToken]);
         const handleSellNFT = async (e: any) => {
-            console.log(amountSellDec);
             e.preventDefault();
             if (!account) {
                 setIsOpen(true);

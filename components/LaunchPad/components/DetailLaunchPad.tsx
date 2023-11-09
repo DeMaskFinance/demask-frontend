@@ -18,6 +18,7 @@ import ProgressBar from "./ProgessLaunchPad";
 import { IoReloadOutline } from "react-icons/io5";
 import ModalAddAdminLaunchpad from "@/components/Modal/ModalLaunchpadProfile/ModalAddAdminLaunchpad";
 import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 
 export default function DetailLaunchPad() {
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -34,10 +35,10 @@ export default function DetailLaunchPad() {
 
   const [openModalWhitelist, setOpenModalWhitelist] = useState<boolean>(false);
   const { account, wallet, chainId, demask, tokenDefault } =
-  useContext(AccountContext);
+    useContext(AccountContext);
   const [errors, setErrors] = useState<string>("");
   const { isLoading, data, isRefetching, isSuccess, refetch } = useQuery({
-    queryKey: ["launchPad", idNFT, nftAddress, tokenAddress,chainId],
+    queryKey: ["launchPad", idNFT, nftAddress, tokenAddress, chainId],
     queryFn: async () => {
       const res = await LaunchPadAPI(
         tokenAddress.toLocaleLowerCase(),
@@ -52,7 +53,7 @@ export default function DetailLaunchPad() {
 
   console.log(data);
   const { isLoading: isLoadingToken, data: dataToken } = useQuery({
-    queryKey: ["tokenPayment", tokenAddress,chainId],
+    queryKey: ["tokenPayment", tokenAddress, chainId],
     queryFn: async () => {
       const res = await categoryAPI(
         `/token?chainId=${chainId}&tokenAddress=${tokenAddress}`
@@ -63,13 +64,13 @@ export default function DetailLaunchPad() {
     refetchInterval: 60000,
   });
 
-  useEffect(() => {}, [dataToken, idNFT]);
+  useEffect(() => { }, [dataToken, idNFT]);
 
   const softcap = data?.softcap;
   const hardcap = data?.hardcap;
   const totalSold = data?.totalSold;
 
-  
+
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -98,6 +99,7 @@ export default function DetailLaunchPad() {
   const { detail } = router.query;
 
   const [amount, setAmount] = useState(1);
+  console.log(data);
 
   useEffect(() => {
     if (detail) {
@@ -136,6 +138,7 @@ export default function DetailLaunchPad() {
       setErrors("");
     }
   }, [amount, startTime, endTime]);
+  console.log(allowanceToken);
 
   useEffect(() => {
     const checkApproveToken = async () => {
@@ -151,6 +154,9 @@ export default function DetailLaunchPad() {
     };
     checkApproveToken();
   }, [isApprovedToken, allowanceToken]);
+  console.log(isApprovedToken);
+  console.log(tokenAddress);
+  console.log(nativeAddress);
 
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
@@ -169,7 +175,7 @@ export default function DetailLaunchPad() {
 
       if (tokenAddress === nativeAddress) {
         setIsOpenTransaction(true);
-        result = await contract.buyETH(inputNFT);
+        result = await contract.buyETH(amount, { gasLimit: 8000000, value: exponentialToDecimal(Number(data.price) * Number(amount)) });
       } else {
         setIsOpenTransaction(true);
         result = await contract.buy(amount, { gasLimit: 8000000 });
@@ -339,9 +345,8 @@ export default function DetailLaunchPad() {
                 onClick={() => {
                   setIsOpenModal(!isOpenModal);
                 }}
-                className={`px-4 py-1 rounded-md mt-4 text-white  ${
-                  errors !== "" ? "bg-slate-400" : "bg-green"
-                }`}
+                className={`px-4 py-1 rounded-md mt-4 text-white  ${errors !== "" ? "bg-slate-400" : "bg-green"
+                  }`}
               >
                 Buy
               </button>

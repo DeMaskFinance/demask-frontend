@@ -22,7 +22,6 @@ const handleAddAdmin = async (
     const contract = new ethers.Contract(routerAddress, abiLaunchPad, signer);
     console.log(statuses, addresses);
     try {
-      console.log("ok");
       const result = await contract.addAdmin(addresses, statuses, {
         gasLimit: 8000000,
       });

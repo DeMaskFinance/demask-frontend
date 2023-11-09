@@ -25,6 +25,7 @@ const useInformationToken = (
       if (tokenAddress && account && nativeAddress) {
         if (tokenAddress === nativeAddress) {
           setDecimals("18");
+          setIsLoadingApprove(false);
           try {
             const balance = await provider.getBalance(account);
             const balanceInMatic = parseFloat(

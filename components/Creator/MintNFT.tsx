@@ -42,13 +42,16 @@ export default function MintNFT({
   setDescription,
   setSymbol,
   setSelectedFile,
+  setTotalSupply,
+  setRoyaltiesFee,
   fileType,
+  totalSupply,
+  royaltiesFee,
+  validFee
 }: any) {
-  const [totalSupply, setTotalSupply] = useState<number | null>();
-  const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
+  
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [validFee, setValidFee] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
@@ -60,8 +63,6 @@ export default function MintNFT({
       setCheckExit(false)
     }
   }, [name, symbol, description, fileIPFS, totalSupply, royaltiesFee])
-  console.log(checkExit);
-  console.log(name, symbol, attributeItems, description, fileIPFS, totalSupply, royaltiesFee);
   
   usePreventUserFromErasingContent(checkExit);
   async function mintNFT({ amount, data, url, feeRoyal }: mintProps) {
@@ -96,7 +97,6 @@ export default function MintNFT({
         if (isExisting) {
           checkAndMint();
         } else {
-          console.log(feeRoyal);
 
           const tx = await contract.mint(account, randomID, exponentialToDecimal(amount), exponentialToDecimal(feeRoyal * 100), data, url);
           transactionHash = tx.hash;
@@ -208,71 +208,9 @@ export default function MintNFT({
       document.body.style.overflowY = "hidden";
     }
   };
-  console.log(isProcess);
-  const handleChangeRoyalFee = (e: any) => {
-    setRoyaltiesFee(Number(e.target.value))
-    if (e.target.value < 0 || e.target.value > 100) {
-      setValidFee(true);
-    } else {
-      setValidFee(false);
-    }
-  }
-  console.log(royaltiesFee);
-  console.log(validFee);
-
+  
   return (
     <div className="">
-      <label htmlFor="totalSupply" className={styles.title}>
-        <span>Total Supply</span>
-        <span className="text-red">*</span>
-      </label>
-
-      <input
-        placeholder="10,000"
-        type="number"
-        id="totalSupply"
-        autoComplete="off"
-        value={totalSupply || ""}
-        className={
-          emptyInputs.includes("totalSupply")
-            ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-            : styles.inputItem
-        }
-        onChange={(e) => setTotalSupply(Number(e.target.value))}
-      />
-      {emptyInputs.includes("totalSupply") && (
-        <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
-          Required
-        </p>
-      )}
-      <label htmlFor="royaltiesFee" className={styles.title}>
-        <span>Royalties Fee</span>
-        <span className="text-red">*</span>
-      </label>
-
-      <input
-        placeholder="100"
-        type="number"
-        id="royaltiesFee"
-        autoComplete="off"
-        value={royaltiesFee || ""}
-        className={
-          emptyInputs.includes("royaltiesFee")
-            ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-            : styles.inputItem
-        }
-        onChange={(e) => handleChangeRoyalFee(e)}
-      />
-      {emptyInputs.includes("royaltiesFee") && (
-        <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
-          Required
-        </p>
-      )}
-      {validFee && (
-        <p className="mb-2 -mt-1 text-xs text-red" key="initial">
-          Royalties fee must be less than 0% and greater than 100%
-        </p>
-      )}
       <div className="relative">
         <div>
           <Button

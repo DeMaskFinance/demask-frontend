@@ -41,6 +41,9 @@ export default function Creator() {
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
   ]);
+  const [totalSupply, setTotalSupply] = useState<number | null>();
+  const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
+  const [validFee, setValidFee] = useState<boolean>(false);
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   let file: any;
@@ -183,6 +186,15 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
+  const handleChangeRoyalFee = (e: any) => {
+    setRoyaltiesFee(Number(e.target.value))
+    if (e.target.value < 0 || e.target.value > 100) {
+      setValidFee(true);
+    } else {
+      setValidFee(false);
+    }
+  }
+  console.log(selectedFile);
 
   return (
     <div className="flex flex-col gap-6 py-8 mx-auto lg:flex-row md:flex-row container-main">
@@ -190,11 +202,12 @@ export default function Creator() {
       {/* UpLoad File */}
       <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">
         <div className="sticky top-16">
-          <h2 className="text-2xl">Create A New Item</h2>
+          <h2 className="text-2xl font-semibold">Create An Collection</h2>
+          <h3 className="my-2 font-normal text-dark2">Deploy an ERC-1155 contract to create your NFT collection</h3>
           <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
           <div className="flex flex-col items-center w-full" ref={uploadRef}>
             <div
-              className="flex flex-col items-center w-full text-center border border-dashed h-fit border-1 border-dark2 rounded-2xl"
+              className={`flex flex-col items-center w-full text-center border border-dashed h-fit justify-center border-1 border-dark2 rounded-2xl`}
               ref={itemRef}
               onDragOver={handleDragOver}
               onDragLeave={handleLeave}
@@ -255,7 +268,7 @@ export default function Creator() {
                   />
                 </div>
               ) : (
-                <div onClick={handleClickFile} className="cursor-pointer">
+                <div onClick={handleClickFile} className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center">
                   <Image
                     src={images.pictureFrame}
                     alt="pictureframe"
@@ -263,7 +276,7 @@ export default function Creator() {
                     height={160}
                     className="object-cover mt-6 mb-4 w-[160px] h-40 rounded-[2rem] mx-auto"
                   />
-                  <p>Upload media</p>
+                  <p className="font-semibold text-dark1">Upload</p>
                   <input
                     ref={inputRef}
                     type="file"
@@ -271,10 +284,9 @@ export default function Creator() {
                     hidden
                     onChange={handleChangeFile}
                   />
-                  <p className="text-xs w-[254px] text-dark2 mb-6">
-                    Tap here to upload media from your device. Video, audio,
-                    gif, pdf, and images supported. Max size: 1GB.
-                  </p>
+                  <div className="text-sm w-[254px] text-dark3 mb-6 ">
+                    <span>Video, audio, gif, pdf, and images supported.</span> <span className="text-dark2">Max size: 1GB.</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -342,26 +354,78 @@ export default function Creator() {
             )}
           </div>
           <div>
-            <label htmlFor="description" className={styles.title}>
-              <span>Description</span>
+            <label htmlFor="totalSupply" className={styles.title}>
+              <span>Total Supply</span>
+              <span className="text-red">*</span>
             </label>
 
-            <textarea
-              placeholder="Write a description of your nft ..."
-              id="description"
-              value={description}
-              rows={4}
-              className={`${styles.inputItem} resize-none`}
-              onChange={(e) => {
-                setDescription(e.target.value);
-                handleTextareaResize(e);
-              }}
+            <input
+              placeholder="10,000"
+              type="number"
+              id="totalSupply"
+              autoComplete="off"
+              value={totalSupply || ""}
+              className={
+                emptyInputs.includes("totalSupply")
+                  ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                  : styles.inputItem
+              }
+              onChange={(e) => setTotalSupply(Number(e.target.value))}
             />
+            {emptyInputs.includes("totalSupply") && (
+              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
+                Required
+              </p>
+            )}
+            <label htmlFor="royaltiesFee" className={styles.title}>
+              <span>Royalties Fee</span>
+              <span className="text-red">*</span>
+            </label>
+
+            <input
+              placeholder="100"
+              type="number"
+              id="royaltiesFee"
+              autoComplete="off"
+              value={royaltiesFee || ""}
+              className={
+                emptyInputs.includes("royaltiesFee")
+                  ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                  : styles.inputItem
+              }
+              onChange={(e) => handleChangeRoyalFee(e)}
+            />
+            {emptyInputs.includes("royaltiesFee") && (
+              <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
+                Required
+              </p>
+            )}
+            {validFee && (
+              <p className="mb-2 -mt-1 text-xs text-red" key="initial">
+                Royalties fee must be less than 0% and greater than 100%
+              </p>
+            )}
+          </div>
+          <div>
+            <p className={styles.title}>Category</p>
+            {Category.map((item, index) => (
+              <Button
+                type="button"
+                active={selectedCategory.includes(item.value)}
+                outline
+                className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
+                key={item.id}
+                onClick={() => selectCategory(item.value)}
+              >
+                {item.value}
+              </Button>
+            ))}
           </div>
           <div>
             <label htmlFor="traits" className={styles.title}>
               <span>Traits</span>
             </label>
+            <p className="mb-4 text-sm font-normal text-dark2">Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page</p>
             {attributeItems.map((item) => (
               <div className="flex items-center gap-x-2" key={item.id}>
                 <input
@@ -404,19 +468,21 @@ export default function Creator() {
             + Add Property
           </Button>
           <div>
-            <p className={styles.title}>Category</p>
-            {Category.map((item, index) => (
-              <Button
-                type="button"
-                active={selectedCategory.includes(item.value)}
-                outline
-                className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
-                key={item.id}
-                onClick={() => selectCategory(item.value)}
-              >
-                {item.value}
-              </Button>
-            ))}
+            <label htmlFor="description" className={styles.title}>
+              <span>Description</span>
+            </label>
+
+            <textarea
+              placeholder="Write a description of your nft ..."
+              id="description"
+              value={description}
+              rows={3}
+              className={`${styles.inputItem} resize-none`}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                handleTextareaResize(e);
+              }}
+            />
           </div>
           <MintNFT
             name={name}
@@ -434,7 +500,12 @@ export default function Creator() {
             setAttributeItems={setAttributeItems}
             setSelectedCategory={setSelectedCategory}
             setSelectedFile={setSelectedFile}
+            setTotalSupply={setTotalSupply}
+            setRoyaltiesFee={setRoyaltiesFee}
             fileType={fileType}
+            totalSupply={totalSupply}
+            royaltiesFee={royaltiesFee}
+            validFee={validFee}
           />
         </form>
       </div>

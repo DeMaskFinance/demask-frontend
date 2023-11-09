@@ -10,9 +10,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiLoader } from "react-icons/bi";
 import { IoReloadOutline } from "react-icons/io5";
 
-export function CountdownTime({ blockNumber }: any) {
+export function CountdownTime({ blockNumber ,setCurrentTime}: any) {
   const [blockNumberTimer, setBlockNumberTimer] = useState(0);
-
+  
   const timer = () => {
     const currentTime = Math.floor(Date.now() / 1000);
     const reBase = Math.max(0, blockNumber - currentTime);
@@ -30,7 +30,8 @@ export function CountdownTime({ blockNumber }: any) {
   }, [blockNumber]);
 
   const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-
+  const currentTime = Math.floor(Date.now() / 1000);
+  setCurrentTime(currentTime);
   return (
     <div className="pb-4 h-14">
       <div>
