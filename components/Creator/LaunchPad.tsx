@@ -96,7 +96,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
+  const { account, updateAccount, wallet, demask, chainId, tokenDefault } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
   const [softCap, setSoftCap] = useState<any>();
   const [hardCap, setHardCap] = useState<any>();
@@ -284,7 +284,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             ],
             exponentialToDecimal(royaltiesFee * 100),
             url,
-            data,{ gasLimit: 8000000}
+            data, { gasLimit: 8000000 }
           );
 
           await transaction.wait();
@@ -516,20 +516,20 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     },
   ];
 
-  const listTokenPayment = [
-    {
-      name: "USDT",
-      token: "0x20b28B1e4665FFf290650586ad76E977EAb90c5D",
-    },
-    {
-      name: "USDC",
-      token: "0xcc38d1b55AE412f6019a98f349AC94F68F36392e",
-    },
-    {
-      name: "ETH",
-      token: "0x734aef51d427b2f745210ec4bf1062abd48eceb6",
-    },
-  ];
+  // const listTokenPayment = [
+  //   {
+  //     name: "USDT",
+  //     token: "0x20b28B1e4665FFf290650586ad76E977EAb90c5D",
+  //   },
+  //   {
+  //     name: "USDC",
+  //     token: "0xcc38d1b55AE412f6019a98f349AC94F68F36392e",
+  //   },
+  //   {
+  //     name: "ETH",
+  //     token: "0x734aef51d427b2f745210ec4bf1062abd48eceb6",
+  //   },
+  // ];
 
   const handleVesting = () => {
     setIsVesting(!isVesting);
@@ -588,17 +588,18 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         </div>
         {active && (
           <div className="flex flex-col gap-2 p-2 mb-2 border-b border-l border-r rounded-xl">
-            {listTokenPayment.map((item) => (
+            {tokenDefault.map((item:any, index:number) => (
               <span
+                key={index}
                 className={`border block text-center py-0.5 text-base text-black24 w-full px-1 rounded-lg cursor-pointer ${item.token === tokenPayment
                   ? "bg-secondary5 text-white"
                   : "hover:bg-secondary5 hover:text-white"
                   }`}
                 onClick={() => {
-                  setTokenPayment(item.token);
+                  setTokenPayment(item.address);
                 }}
               >
-                {item.name}
+                {item.symbol}
               </span>
             ))}
           </div>
@@ -708,8 +709,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 
         <div className="flex justify-between gap-x-4">
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
-            {/* @ts-ignore */}
-
             <DatePicker
               selected={startDate}
               onChange={handleDateChange}
@@ -725,8 +724,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </div>
           <HiArrowRight className="translate-y-[75%]" />
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
-            {/* @ts-ignore */}
-
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}

@@ -1,4 +1,5 @@
 import CountdownTime from "@/components/Common/CountdownTime";
+import MediaNFT from "@/components/Common/MediaNFT";
 import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
@@ -53,18 +54,12 @@ export default function CardLaunchpad({
         {data?.data?.map((item: any,index:number) => (
           <div key={index}>
             {
-              <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-b-lg">
+              <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-lg">
                 <Link
                   className="overflow-hidden transition-all h-52 group"
                   href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
                 >
-                  <Image
-                    className="relative z-0 object-cover w-full transition-all scale-105 h-52 group-hover:scale-110"
-                    src={item.metadata.image}
-                    alt=""
-                    width={600}
-                    height={600}
-                  />
+                  <MediaNFT data={item} isControls/>
                 </Link>
                 <div className="relative z-40 flex items-center justify-between px-5 pt-4 pb-2 overflow-hidden">
                   <Link

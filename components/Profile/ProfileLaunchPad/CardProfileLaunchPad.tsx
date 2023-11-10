@@ -14,6 +14,7 @@ import { convertTime } from '@/hooks/useConvertTime';
 import viewReward from '@/libs/utils/viewReward';
 import divideByDecimal from '@/libs/utils/divideByDecimal';
 import useBananceOfDML from '@/hooks/useBalanceOfDML';
+import MediaNFT from '@/components/Common/MediaNFT';
 export default function CardProfileLaunchPad({ item }: any) {
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -147,18 +148,12 @@ export default function CardProfileLaunchPad({ item }: any) {
         <div>
             <>
                 {
-                    <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-b-lg min-h-[428px]">
+                    <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-lg min-h-[428px]">
                         <Link
                             className="overflow-hidden transition-all h-52 group"
                             href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
                         >
-                            <Image
-                                className="relative z-0 object-cover w-full transition-all scale-105 h-52 group-hover:scale-110"
-                                src={item.metadata?.image}
-                                alt=""
-                                width={600}
-                                height={600}
-                            />
+                            <MediaNFT data={item} isControls/>
                         </Link>
                         <div className="relative z-40 flex items-center justify-between px-5 pt-4 pb-2 overflow-hidden">
                             <Link

@@ -1,3 +1,4 @@
+import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
@@ -50,18 +51,12 @@ export default function LaunchpadReleased() {
         {data?.data?.map((item: any) => (
           <>
             {
-              <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-b-lg">
+              <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-lg">
                 <Link
                   className="overflow-hidden transition-all h-52 group"
                   href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
                 >
-                  <Image
-                    className="relative z-0 object-cover w-full transition-all scale-105 h-52 group-hover:scale-110"
-                    src={item.metadata?.image}
-                    alt=""
-                    width={600}
-                    height={600}
-                  />
+                  <MediaNFT data={item} isControls/>
                 </Link>
                 <div className="relative z-40 flex items-center justify-between px-5 pt-4 pb-2 overflow-hidden">
                   <Link
