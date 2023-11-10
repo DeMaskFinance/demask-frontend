@@ -12,9 +12,14 @@ const useBananceOfDML = (
   const [balanceOfDML, setBalanceOfDML] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
   const [balanceDML, setBalanceDML] = useState("");
+  console.log({
+    account,
+    dmlToken
+  });
+  
   useEffect(() => {
     const getBalanceOf = async () => {
-      if (dmlToken && account && wallet) {
+      if (dmlToken!=='0x0000000000000000000000000000000000000000' && account && wallet) {
         try {
           const providerChoice = getProvider(wallet);
           const provider = new ethers.providers.Web3Provider(providerChoice);

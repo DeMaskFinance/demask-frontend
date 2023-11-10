@@ -13,6 +13,7 @@ import CountdownTime from '@/components/Common/CountdownTime';
 import { convertTime } from '@/hooks/useConvertTime';
 import viewReward from '@/libs/utils/viewReward';
 import divideByDecimal from '@/libs/utils/divideByDecimal';
+import useBananceOfDML from '@/hooks/useBalanceOfDML';
 export default function CardProfileLaunchPad({ item }: any) {
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -26,7 +27,9 @@ export default function CardProfileLaunchPad({ item }: any) {
     const [reward, setReward] = useState("");
     const { account, wallet } =
         useContext(AccountContext);
-    // const { item.dmlAddress } = useLaunchpadInfor(account, item.launchpad, wallet, isOpenTransaction);
+    // const { dml, balance } = useLaunchpadInfor(account, '0xb826e94ccd8d0a6280dde44cd1049b208379e8f5', wallet, isOpenTransaction);
+    // console.log(balance);
+    const { balanceDML, balanceOfDML } = useBananceOfDML(item.launchpad, item.dmlAddress, wallet, isOpenTransaction);
 
     console.log({
         du: item.durationLock,
@@ -64,7 +67,7 @@ export default function CardProfileLaunchPad({ item }: any) {
     }, []);
 
     const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-    const { days:daysCurrent, hours:hoursCurrent, minutes:minutesCurrent, seconds:secondsCurrent } = convertTime(blockNumberCurrent);
+    const { days: daysCurrent, hours: hoursCurrent, minutes: minutesCurrent, seconds: secondsCurrent } = convertTime(blockNumberCurrent);
     const handleTransaction = async (e: any, launchpadAddress: string, actionType: string, successMessage: string, errorMessage: string) => {
         e.preventDefault();
         console.log(launchpadAddress);
@@ -144,7 +147,7 @@ export default function CardProfileLaunchPad({ item }: any) {
         <div>
             <>
                 {
-                    <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-b-lg">
+                    <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-b-lg min-h-[428px]">
                         <Link
                             className="overflow-hidden transition-all h-52 group"
                             href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
@@ -179,7 +182,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                             >
                                 Add Admin
                             </button>
-                            {days === 0 && hours === 0 && minutes === 0 && seconds === 0 && item.dmlAddress !== '0x0000000000000000000000000000000000000000' && (
+                            {days === 0 && hours === 0 && minutes === 0 && seconds === 0 && Number(balanceDML) > 0 && item.dmlAddress !== '0x0000000000000000000000000000000000000000' && (
                                 <button
                                     onClick={(e) => {
                                         handleClaimDML(e, item.launchpad)
