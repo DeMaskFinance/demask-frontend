@@ -50,8 +50,8 @@ export default function CardLaunchpad({
       </div>
 
       <div className="grid grid-cols-1 gap-4 overflow-hidden lg:grid-cols-3 md:grid-cols-2">
-        {data?.data?.map((item: any) => (
-          <>
+        {data?.data?.map((item: any,index:number) => (
+          <div key={index}>
             {
               <div className="relative max-w-sm overflow-hidden bg-gray-800 rounded-b-lg">
                 <Link
@@ -120,7 +120,7 @@ export default function CardLaunchpad({
                 </span>
               </div>
             }
-          </>
+          </div>
         ))}
       </div>
       <ModalTransation

@@ -9,11 +9,11 @@ export default function CategoryProfileLaunchPad({
       <ul className="flex flex-col gap-2">
         {listCategories.map((item: any, idx: number) => (
           <li
-            className={`${
-              listLaunchpad === idx
+            key={idx}
+            className={`${listLaunchpad === idx
                 ? "bg-secondary5 text-white "
                 : "hover:bg-slate-200 hover:text-gray"
-            } px-2 py-1 rounded-md  transition-all`}
+              } px-2 py-1 rounded-md  transition-all`}
           >
             <button onClick={item.onClick} className="w-full text-left">
               {item.label}

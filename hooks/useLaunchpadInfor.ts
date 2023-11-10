@@ -10,6 +10,7 @@ const useLaunchpadInfor = (
   isOpenTransaction?: boolean
 ) => {
   const [dml, setDML] = useState("");
+  // const [totalSoldout, setTotalSoldout] = useState("");
   useEffect(() => {
     const getDmlLaunchpad = async () => {
       if (launchpadAddress && account && wallet) {
@@ -19,7 +20,9 @@ const useLaunchpadInfor = (
           const signer = provider.getSigner();
           const contract = new ethers.Contract(launchpadAddress, abiLaunchPad, signer);
           const result = await contract.dml();
+          const totalSoldout = await contract.totalSoldout();
           setDML(result);
+          // setTotalSoldout(totalSoldout.toString());
         } catch (error) {
           console.error(error);
         }

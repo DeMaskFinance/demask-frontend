@@ -36,7 +36,7 @@ export default function UserLaunchpad({
         className={`flex items-center mb-2 p-1 gap-2 rounded-lg text-base text-center text-white  bg-dark3 w-max `}
       >
         {listTab.map((item, idx) => (
-          <>
+          <div key={idx}>
             <button
               className={`lg:py-1 py-1 px-3 lg:px-4 ${
                 tab === item.index ? "bg-secondary5" : ""
@@ -48,7 +48,7 @@ export default function UserLaunchpad({
             >
               {item.name}
             </button>
-          </>
+          </div>
         ))}
       </div>
       {listTab[tab].component}

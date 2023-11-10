@@ -11,6 +11,8 @@ import ModalAddAdminLaunchpad from '@/components/Modal/ModalLaunchpadProfile/Mod
 import useLaunchpadInfor from '@/hooks/useLaunchpadInfor';
 import CountdownTime from '@/components/Common/CountdownTime';
 import { convertTime } from '@/hooks/useConvertTime';
+import viewReward from '@/libs/utils/viewReward';
+import divideByDecimal from '@/libs/utils/divideByDecimal';
 export default function CardProfileLaunchPad({ item }: any) {
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -20,23 +22,35 @@ export default function CardProfileLaunchPad({ item }: any) {
     const [currentTimer, setCurrentTimer] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [blockNumberTimer, setBlockNumberTimer] = useState(0);
-    const { account, wallet, chainId, demask, tokenDefault } =
+    const [blockNumberCurrent, setBlockNumberCurrent] = useState(0);
+    const [reward, setReward] = useState("");
+    const { account, wallet } =
         useContext(AccountContext);
-    console.log(item);
-
-    const { dml } = useLaunchpadInfor(account, item.launchpad, wallet, isOpenTransaction);
+    // const { item.dmlAddress } = useLaunchpadInfor(account, item.launchpad, wallet, isOpenTransaction);
 
     console.log({
         du: item.durationLock,
         end: item.endTime,
         name: item.metadata.name,
         item,
-        dml
     });
+    useEffect(() => {
+        const fetchDataReward = async () => {
+            if (account && wallet && item.dmlAddress !== '0x0000000000000000000000000000000000000000') {
+                const result = await viewReward(item.dmlAddress, account, wallet);
+                const rewardDec = divideByDecimal(result?.toString(), '18');
+                setReward(rewardDec);
+            }
+        };
+        fetchDataReward();
+    }, [item.dmlAddress, account, wallet]);
+
     const timer = () => {
         const currentTime = Math.floor(Date.now() / 1000);
         const reBase = Math.max(0, Number(item.durationLock) + Number(item.endTime) - currentTime);
+        const countDownCurrentTime = Math.max(0, Number(item.durationLock) + Number(item.endTime) - currentTime);
         setBlockNumberTimer(reBase);
+        setBlockNumberCurrent(countDownCurrentTime);
     };
 
     useEffect(() => {
@@ -50,7 +64,7 @@ export default function CardProfileLaunchPad({ item }: any) {
     }, []);
 
     const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-
+    const { days:daysCurrent, hours:hoursCurrent, minutes:minutesCurrent, seconds:secondsCurrent } = convertTime(blockNumberCurrent);
     const handleTransaction = async (e: any, launchpadAddress: string, actionType: string, successMessage: string, errorMessage: string) => {
         e.preventDefault();
         console.log(launchpadAddress);
@@ -124,7 +138,7 @@ export default function CardProfileLaunchPad({ item }: any) {
     };
 
     const handleWithdraw = (e: any, launchpadAddress: string) => {
-        handleTransaction(e, launchpadAddress, 'claimwithdraw', 'Claim withdraw success', 'Claim withdraw failed');
+        handleTransaction(e, launchpadAddress, 'withdraw', 'Withdraw success', 'Withdraw failed');
     };
     return (
         <div>
@@ -165,7 +179,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                             >
                                 Add Admin
                             </button>
-                            {days === 0 && hours === 0 && minutes === 0 && seconds === 0 && dml !== '0x0000000000000000000000000000000000000000' && (
+                            {days === 0 && hours === 0 && minutes === 0 && seconds === 0 && item.dmlAddress !== '0x0000000000000000000000000000000000000000' && (
                                 <button
                                     onClick={(e) => {
                                         handleClaimDML(e, item.launchpad)
@@ -179,26 +193,34 @@ export default function CardProfileLaunchPad({ item }: any) {
                             )}
                         </div>
                         <div className="flex justify-between px-5 pb-4">
-                            <button
-                                onClick={(e) => {
-                                    handleWithdraw(e, item.launchpad)
-                                }}
-                                className={`
+                            {
+                                item.dmlAddress !== '0x0000000000000000000000000000000000000000' && daysCurrent === 0 && hoursCurrent === 0 && minutesCurrent === 0 && secondsCurrent === 0 && item.totalSold >= item.softcap && (
+                                    <button
+                                        onClick={(e) => {
+                                            handleWithdraw(e, item.launchpad)
+                                        }}
+                                        className={`
                          text-red border border-red hover:border-secondary5 hover:text-secondary5
                      px-2 py-1 rounded-lg transition-all`}
-                            >
-                                Withdraw
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    handleClaimReward(e, item.launchpad)
-                                }}
-                                className={`
+                                    >
+                                        Withdraw
+                                    </button>
+                                )
+                            }
+                            {
+                                item.dmlAddress !== '0x0000000000000000000000000000000000000000' && Number(reward) > 0 && (
+                                    <button
+                                        onClick={(e) => {
+                                            handleClaimReward(e, item.launchpad)
+                                        }}
+                                        className={`
                          text-red border border-red hover:border-secondary5 hover:text-secondary5
                      px-2 py-1 rounded-lg transition-all`}
-                            >
-                                Claim Reward
-                            </button>
+                                    >
+                                        Claim Reward
+                                    </button>
+                                )
+                            }
                         </div>
                         {/* <span className="text-white absolute top-0 min-w-[32px] text-center text-sm block bg-secondary4 px-2 py-2 rounded-b-full">
                   {isRefetching ? (
