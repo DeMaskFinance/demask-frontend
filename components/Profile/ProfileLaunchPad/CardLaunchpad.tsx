@@ -1,3 +1,4 @@
+import CountdownTime from "@/components/Common/CountdownTime";
 import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
 import { ModalTransation } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
@@ -9,52 +10,6 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoader } from "react-icons/bi";
 import { IoReloadOutline } from "react-icons/io5";
-
-export function CountdownTime({ blockNumber ,setCurrentTime}: any) {
-  const [blockNumberTimer, setBlockNumberTimer] = useState(0);
-  
-  const timer = () => {
-    const currentTime = Math.floor(Date.now() / 1000);
-    const reBase = Math.max(0, blockNumber - currentTime);
-    setBlockNumberTimer(reBase);
-  };
-
-  useEffect(() => {
-    timer();
-    const id = setInterval(timer, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    timer();
-  }, [blockNumber]);
-
-  const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-  const currentTime = Math.floor(Date.now() / 1000);
-  setCurrentTime(currentTime);
-  return (
-    <div className="pb-4 h-14">
-      <div>
-        {minutes + seconds > 0 && (
-          <div className="flex gap-2 text-white">
-            <div className="flex justify-between w-full gap-4 px-5 mb-2">
-              <span className="px-2 py-1 border rounded-md">{days}d</span>
-              <span className="px-2 py-1 border rounded-md">{hours}h</span>
-
-              <span className="px-2 py-1 border rounded-md">
-                {minutes > 9 ? minutes : "0" + minutes}m
-              </span>
-              <span className="px-2 py-1 border rounded-md">
-                {seconds > 9 ? seconds : "0" + seconds}s
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 export default function CardLaunchpad({
   tab,
   data,
@@ -124,11 +79,10 @@ export default function CardLaunchpad({
                 <div className="flex justify-between px-5 pb-4">
                   <button
                     disabled={item.status === null ? true : item.status}
-                    className={`${
-                      item.status === null || item.status
-                        ? "text-slate-400 border-slate-400 border"
-                        : "text-red border border-red hover:border-secondary5 hover:text-secondary5"
-                    }  px-2 py-1 rounded-lg transition-all`}
+                    className={`${item.status === null || item.status
+                      ? "text-slate-400 border-slate-400 border"
+                      : "text-red border border-red hover:border-secondary5 hover:text-secondary5"
+                      }  px-2 py-1 rounded-lg transition-all`}
                     onClick={() => {
                       setIsOpenModal(true);
                       setAmount(item?.amount);
@@ -140,11 +94,10 @@ export default function CardLaunchpad({
                   </button>
                   <button
                     // disabled={item.status === null ? true : !item.status}
-                    className={`border ${
-                      !item.status
-                        ? "text-slate-400 border-slate-400 border"
-                        : "border-green hover:border-secondary5 hover:text-secondary5 text-green"
-                    }   px-2 py-1 rounded-lg transition-all`}
+                    className={`border ${!item.status
+                      ? "text-slate-400 border-slate-400 border"
+                      : "border-green hover:border-secondary5 hover:text-secondary5 text-green"
+                      }   px-2 py-1 rounded-lg transition-all`}
                     onClick={() => {
                       handleReleaseLaunchPad(
                         account,

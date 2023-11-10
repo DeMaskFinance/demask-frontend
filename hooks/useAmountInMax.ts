@@ -1,7 +1,7 @@
 import getAmountBuy from '@/libs/utils/getAmountBuy';
 import { useEffect, useState } from 'react';
 
-const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string,account:string,rpc:string,routerAddress:string,slippage:number) => {
+const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string,account:string,rpc:string,routerAddress:string) => {
   const [amountTokenBuy, setAmountTokenBuy] = useState(0);
   const [feeTradingBuy, setFeeTradingBuy] = useState(0);
   const [isLoadingBuy,setIsLoadingBuy] = useState<boolean>(false);
@@ -16,7 +16,7 @@ const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, n
         console.log(amountAFee);
         
         if(amountAFee){
-          setAmountTokenBuy(amountAFee[0] * (1+slippage));
+          setAmountTokenBuy(amountAFee[0].toString());
           setFeeTradingBuy(amountAFee[1].toString());
         }
       } else {
@@ -27,7 +27,7 @@ const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, n
     };
 
     getAmountInMax();
-  }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet,account,slippage]);
+  }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet,account]);
 
   return {amountTokenBuy,isLoadingBuy,feeTradingBuy};
 };

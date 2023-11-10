@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react'
-import { CountdownTime } from './CardLaunchpad';
+import React, { useContext, useState } from 'react';
 import { getProvider } from '@/libs/connection/getProvider';
 import AccountContext from '@/context/AccountContext';
 import { ethers } from 'ethers';
@@ -10,13 +9,14 @@ import { toast } from 'react-toastify';
 import TransitionURL from '@/components/Toast/TransionURL';
 import ModalAddAdminLaunchpad from '@/components/Modal/ModalLaunchpadProfile/ModalAddAdminLaunchpad';
 import useLaunchpadInfor from '@/hooks/useLaunchpadInfor';
+import CountdownTime from '@/components/Common/CountdownTime';
 export default function CardProfileLaunchPad({ item }: any) {
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [addressUser, setAddressUser] = useState<string>("");
     const [amountLeave, setAmountLeave] = useState(0);
     const [tokenLaunchpad, setTokenLaunchpad] = useState("");
-    const [currentTime, setCurrentTime] = useState("");
+    const [currentTimer, setCurrentTimer] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const { account, wallet, chainId, demask, tokenDefault } =
         useContext(AccountContext);
@@ -26,6 +26,7 @@ export default function CardProfileLaunchPad({ item }: any) {
     const {dml} = useLaunchpadInfor(account,item.launchpad,wallet,isOpenTransaction);
     console.log(dml);
     console.log(item);
+    console.log(currentTimer);
     
     const handleTransaction = async (e: any, launchpadAddress: string, actionType: string, successMessage: string, errorMessage: string) => {
         e.preventDefault();
@@ -128,7 +129,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                                 </h5>
                             </Link>
                         </div>
-                        <CountdownTime blockNumber={Number(item.durationLock) + Number(item.endTime)} setCurrentTime={setCurrentTime} />
+                        <CountdownTime blockNumber={Number(item.durationLock) + Number(item.endTime)} setCurrentTimer={setCurrentTimer} />
                         <div className="flex justify-between px-5 pb-4">
                             <button
                                 onClick={() => {
@@ -141,7 +142,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                             >
                                 Add Admin
                             </button>
-                            {Number(item.durationLock) + Number(item.endTime) < Number(currentTime) && (
+                            {Number(item.durationLock) + Number(item.endTime) < Number(currentTimer) && (
                                 <button
                                     onClick={(e) => {
                                         handleClaimDML(e, item.launchpad)

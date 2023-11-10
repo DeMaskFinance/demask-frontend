@@ -250,10 +250,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                             )}</p>
                             <p>{symbolToken}</p>
                         </div>
-                        <div className="flex justify-between my-8 text-lg font-semibold text-secondary1">
-                            <p>Fee</p>
-                            <p>5%</p>
-                        </div>
                         {isSufficientToken && (
                             <p className="text-xs text-red" key="inputNFT">
                                 Insufficient Token balance

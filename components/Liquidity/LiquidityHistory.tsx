@@ -13,6 +13,8 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
   isFetching,
   isLoading,
 }) => {
+  console.log(data);
+  
   return (
     <>
       {isLoading || isFetching ? (
@@ -37,13 +39,13 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
             >
               <div>{item.action}</div>
               <div>
-                <ModalNumber data={item.decimalsLiquidity} />
+                <ModalNumber data={item.liquidityDecimals} />
               </div>
               <div>
-                <ModalNumber data={item.amountnft} />
+                <ModalNumber data={item.amountNFT} />
               </div>
               <div>
-                <ModalNumber data={item.amounttoken} />
+                <ModalNumber data={item.amountToken} />
               </div>
               <p>{item.blockTime}</p>
             </div>

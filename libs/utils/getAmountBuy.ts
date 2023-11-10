@@ -12,7 +12,7 @@ const getAmountBuy = async (
   routerAddress:string,
 ) => {
   const provider = new ethers.providers.JsonRpcProvider(rpc);
-  const contract = new ethers.Contract('0x4B5bc8d4C10cBc3B3627c081429b022000c07378', abiRouter, provider);
+  const contract = new ethers.Contract(routerAddress, abiRouter, provider);
   try {
     const amountAFee = await contract.getAmountBuy(tokenAddress,nftAddress,idNFT,amountNFT);
     console.log(amountAFee);

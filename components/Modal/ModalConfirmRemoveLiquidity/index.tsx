@@ -84,7 +84,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         useEffect(() => {
             const checkApproveToken = async () => {
                 console.log(currentAllowance);
-                if (currentAllowance && Number(currentAllowance) < Number(handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals)))) {
+                if (currentAllowance && Number(currentAllowance) < Number(Number(handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals))).toFixed(0))) {
                     setIsApprovedLiquidity(false);
                 } else {
                     setIsApprovedLiquidity(true);
@@ -92,6 +92,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             };
             checkApproveToken();
         }, [account, wallet, inputLiquidity, currentAllowance, isOpenTransaction]);
+        console.log(currentAllowance);
+        console.log(Number(handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals))).toFixed(0));
+
         useEffect(() => {
             if (data && inputLiquidity) {
                 const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals));
@@ -109,12 +112,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                 setAmountTokenDec(resAmountTokenMinShow)
             }
         }, [inputLiquidity, reserveNFT, reserveToken])
-        console.log(amountTokenDec);
-        console.log(amountNFTMin);
-        console.log(isApprovedLiquidity);
-        console.log(totalSupply);
-        console.log(data);
-        console.log(inputLiquidity);
 
         console.log(handleBignumber(Number(inputLiquidity), 18));
         const handleApproveDML = async () => {
@@ -155,44 +152,29 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                 console.log(amountNFTMin);
 
                 try {
-                    let result;
                     let transactionHash;
                     setIsOpenTransaction(true);
-                    if (data.tokenAddress === nativeAddress) {
-                        result = await contract.removeLiquidityETH(
-                            data.nftAddress,
-                            data.nftID,
-                            Math.floor(Number(liquidity)).toString(),
-                            exponentialToDecimal(Number(amountTokenMin)),
-                            exponentialToDecimal(Number(amountNFTMin)),
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000 }
-                        );
-                        transactionHash = result.hash;
-                    } else {
-                        result = await contract.removeLiquidity(
-                            data.tokenAddress,
-                            data.nftAddress,
-                            data.nftID,
-                            Math.floor(Number(liquidity)).toString(),
-                            exponentialToDecimal(Number(amountTokenMin)),
-                            exponentialToDecimal(Number(amountNFTMin)),
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000 }
-                        );
-                        transactionHash = result.hash;
-                    }
-                    const check = await provider.waitForTransaction(transactionHash);
+                    const result = await contract.removeERC20ERC1155(
+                        data.tokenAddress,
+                        data.nftAddress,
+                        data.nftID,
+                        Math.floor(Number(liquidity)).toString(),
+                        exponentialToDecimal(Number(amountTokenMin)),
+                        exponentialToDecimal(Number(amountNFTMin)),
+                        account,
+                        Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                        { gasLimit: 8000000 }
+                    );
+                    const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setInputLiquidity('');
                     setIsOpenRemoveLiquidity(false);
+                    setIsOpenConfirmRemoveLiquidity(false);
                     if (check.status === 1) {
                         toast.success(
                             <TransitionURL
                                 type={"Remove Liquidity success"}
-                                transactionHash={transactionHash}
+                                transactionHash={result.hash}
                             />,
                             {
                                 position: "top-right",
@@ -209,7 +191,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                         toast.error(
                             <TransitionURL
                                 type={"Remove Liquidity failed"}
-                                transactionHash={transactionHash}
+                                transactionHash={result.hash}
                             />,
                             {
                                 position: "top-right",

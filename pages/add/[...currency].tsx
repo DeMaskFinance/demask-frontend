@@ -257,10 +257,6 @@ export default function AddLiquidity() {
               </div>
             </div>
             <div>
-              <p className={styles.title}>Fee</p>
-              <Button className="p-2 mb-4 text-white bg-secondary5">0.5%</Button>
-            </div>
-            <div>
               <p className={styles.title}>
                 <span className="">Deposit</span>
                 <span className="text-red">*</span>
