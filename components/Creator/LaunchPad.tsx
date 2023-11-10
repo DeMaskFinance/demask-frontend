@@ -284,7 +284,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             ],
             exponentialToDecimal(royaltiesFee * 100),
             url,
-            data
+            data,{ gasLimit: 8000000}
           );
 
           await transaction.wait();

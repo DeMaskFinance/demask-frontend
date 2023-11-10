@@ -27,8 +27,6 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     }, [blockNumber]);
 
     const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-    const currentTime = Math.floor(Date.now() / 1000);
-    setCurrentTimer(currentTime);
 
     return (
         <div className="pb-4 h-14">

@@ -25,7 +25,6 @@ const NFTs = () => {
         const data = await nftsUserService(account, chain, pageParam);
         return data;
     };
-    console.log(chain);
 
     const {
         data,
@@ -45,13 +44,11 @@ const NFTs = () => {
         }
     );
 
-    console.log(data);
     useEffect(() => {
         if (inView) {
             fetchNextPage();
         }
     }, [inView]);
-    console.log(data);
     const handleChoiceAction = (index: number, action: string) => {
         setSelectedItemIndex(index)
         setSelectedAction(action)

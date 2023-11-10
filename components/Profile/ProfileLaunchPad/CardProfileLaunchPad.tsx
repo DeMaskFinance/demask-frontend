@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getProvider } from '@/libs/connection/getProvider';
 import AccountContext from '@/context/AccountContext';
 import { ethers } from 'ethers';
@@ -10,6 +10,7 @@ import TransitionURL from '@/components/Toast/TransionURL';
 import ModalAddAdminLaunchpad from '@/components/Modal/ModalLaunchpadProfile/ModalAddAdminLaunchpad';
 import useLaunchpadInfor from '@/hooks/useLaunchpadInfor';
 import CountdownTime from '@/components/Common/CountdownTime';
+import { convertTime } from '@/hooks/useConvertTime';
 export default function CardProfileLaunchPad({ item }: any) {
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -18,16 +19,38 @@ export default function CardProfileLaunchPad({ item }: any) {
     const [tokenLaunchpad, setTokenLaunchpad] = useState("");
     const [currentTimer, setCurrentTimer] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [blockNumberTimer, setBlockNumberTimer] = useState(0);
     const { account, wallet, chainId, demask, tokenDefault } =
         useContext(AccountContext);
-        console.log(item);
-        console.log(item.launchpad);
-        
-    const {dml} = useLaunchpadInfor(account,item.launchpad,wallet,isOpenTransaction);
-    console.log(dml);
     console.log(item);
-    console.log(currentTimer);
-    
+
+    const { dml } = useLaunchpadInfor(account, item.launchpad, wallet, isOpenTransaction);
+
+    console.log({
+        du: item.durationLock,
+        end: item.endTime,
+        name: item.metadata.name,
+        item,
+        dml
+    });
+    const timer = () => {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const reBase = Math.max(0, Number(item.durationLock) + Number(item.endTime) - currentTime);
+        setBlockNumberTimer(reBase);
+    };
+
+    useEffect(() => {
+        timer();
+        const id = setInterval(timer, 1000);
+        return () => clearInterval(id);
+    }, []);
+
+    useEffect(() => {
+        timer();
+    }, []);
+
+    const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
+
     const handleTransaction = async (e: any, launchpadAddress: string, actionType: string, successMessage: string, errorMessage: string) => {
         e.preventDefault();
         console.log(launchpadAddress);
@@ -142,7 +165,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                             >
                                 Add Admin
                             </button>
-                            {Number(item.durationLock) + Number(item.endTime) < Number(currentTimer) && (
+                            {days === 0 && hours === 0 && minutes === 0 && seconds === 0 && dml !== '0x0000000000000000000000000000000000000000' && (
                                 <button
                                     onClick={(e) => {
                                         handleClaimDML(e, item.launchpad)

@@ -22,7 +22,7 @@ export default function CreatorLaunchpad({ tab }: any) {
     refetchInterval: 60000,
   });
 
-  // console.log(data);
+  console.log(data?.launchpadLists);
   
 
   return (

@@ -22,7 +22,7 @@ export default function ProfileLaunchPad() {
     queryKey: ["profileLaunchpad", listLaunchpad],
     queryFn: async () => {
       const res = await categoryAPI(
-        `/userLaunchpad?userAddress=${account}&chainId=80001&page=1&limit=10?status=all`
+        `/userLaunchpad?userAddress=${account}&chainId=${chainId}&page=1&limit=10?status=all`
       );
       return res;
     },

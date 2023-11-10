@@ -15,7 +15,7 @@ export default function LaunchpadReleased() {
     queryKey: ["profileLaunchpad"],
     queryFn: async () => {
       const res = await categoryAPI(
-        `userLaunchpadHistory?userAddress=${account}&chainId=80001&page=1&limit=10`
+        `userLaunchpadHistory?userAddress=${account}&chainId=${chainId}&page=1&limit=10`
       );
       return res;
     },
