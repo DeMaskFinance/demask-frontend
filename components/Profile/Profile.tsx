@@ -49,18 +49,16 @@ const Profile = () => {
     const selectedTab = TABS.find((item) => item.key === tab);
     return (
         <div className='my-6'>
-            <div className='flex items-center justify-between'>
-                <ul className='flex gap-4 text-xl text-dark2'>
+            <div className='flex items-center justify-center'>
+                <ul className='flex gap-4 p-2 text-sm text-white rounded-lg bg-dark3'>
                     {TABS.map((item, index) => (
-                        <li key={index} onClick={() => setTab(item.key)} className={`cursor-pointer ${tab === item.key ? "border-b-2  border-secondary2 text-secondary2" : ""} `}>
+                        <li key={index} onClick={() => setTab(item.key)} className={`cursor-pointer p-2 ${tab === item.key ? "rounded-lg bg-secondary5" : ""} `}>
                             <h2 className='font-semibold'>{item.title}</h2>
                         </li>
                     )
                     )}
                 </ul>
-                <div>
-                    <OptionNetwork/>
-                </div>
+                
             </div>
             <div className='mt-4'>{selectedTab ? selectedTab.panel() : null}</div>
         </div>

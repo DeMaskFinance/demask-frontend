@@ -1,6 +1,8 @@
 import { AvatarUser } from "@/components/Avatars";
+import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
 import { convertTime } from "@/hooks/useConvertTime";
+import formatNumber from "@/libs/utils/formatNumer";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
@@ -12,13 +14,14 @@ interface TabLaunchPadProps {
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
   const { account, wallet, chainId, demask, tokenDefault } =
     useContext(AccountContext);
+  console.log(item);
 
   const blockNumber =
     query === "Upcoming"
       ? item.startTime
       : query === "Active"
-      ? item.endTime
-      : "";
+        ? item.endTime
+        : "";
   const [blockNumberTimer, setBlockNumberTimer] = useState(0);
 
   const timer = () => {
@@ -63,139 +66,77 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
 
   const progess = (item.totalSold / item.hardcap) * 100;
   return (
-    <div className="">
+    <div className="h-full group">
       <Link
         href={`launchpad/${item.nftID}/${item.nftAddress}/${item.tokenPayment}`}
+        className="block h-full"
       >
-        <div className="relative">
-          <div className="">
-            {item.metadata.image && (
-              <Image
-                loading="lazy"
-                width={760}
-                height={760}
-                src={item.metadata.image}
-                alt="NFT Image"
-                className="object-cover w-full h-48 rounded-lg"
-              />
-            )}
-            {item.metadata.animation_url && !item.metadata.image && (
-              <video
-                src={item.metadata.animation_url}
-                autoPlay={false}
-                loop
-                muted
-                controls={false}
-                onMouseOver={(event) => (event.target as any).play()}
-                onMouseOut={(event) => (event.target as any).pause()}
-                className="object-cover w-full h-48 rounded-lg"
-              />
-            )}
-            {item.metadata.image && item.metadata.animation_url && (
-              <audio
-                autoPlay
-                loop
-                muted
-                controls
-                src={item.metadata.animation_url}
-                className="absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[80%] py-1 rounded-lg  object-cover"
-              >
-                Your browser does not support the
-                <code>audio</code> element.
-              </audio>
-            )}
-          </div>
-
-          <div>
-            <h6
-              title={item.metadata.name}
-              className="flex items-start gap-2 py-2 font-medium uppercase"
-            >
-              <span className="flex-wrap text-xl line-clamp-1">
-                {item.metadata.name}
-              </span>
-              <svg
-                className="flex-shrink-0"
-                width="25"
-                height="24"
-                viewBox="0 0 25 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  opacity="0.4"
-                  d="M17.3199 1.91H7.67995C5.55995 1.91 3.81995 3.65 3.81995 5.77V19.86C3.81995 21.66 5.10995 22.42 6.68995 21.55L11.5699 18.84C12.0899 18.55 12.9299 18.55 13.4399 18.84L18.3199 21.55C19.8999 22.43 21.1899 21.67 21.1899 19.86V5.77C21.1799 3.65 19.4499 1.91 17.3199 1.91Z"
-                  fill="#9075FE"
-                />
-                <path
-                  d="M11.59 13.251C11.4 13.251 11.21 13.181 11.06 13.031L9.55999 11.531C9.42051 11.3899 9.34229 11.1994 9.34229 11.001C9.34229 10.8026 9.42051 10.6121 9.55999 10.471C9.84999 10.181 10.33 10.181 10.62 10.471L11.59 11.441L15.06 7.97099C15.35 7.68099 15.83 7.68099 16.12 7.97099C16.41 8.26099 16.41 8.74099 16.12 9.03099L12.12 13.031C11.97 13.181 11.78 13.251 11.59 13.251Z"
-                  fill="#9075FE"
-                />
-              </svg>
-            </h6>
-            <div className="flex gap-2">
-              <span className="shrink-0">
-                <AvatarUser width={24} height={24} />
-              </span>
-              <span className="pb-1 -ml-2.5 block">
-                {item.creator?.slice(0, 4)}...
-                {item.creator?.slice(-4)}
-              </span>
+        <div className="flex flex-col justify-between h-full">
+          <div className="relative flex flex-col h-full">
+            <div className="h-[250px] ">
+              <MediaNFT data={item} isControls={false} hover />
             </div>
-            <div className="mt-2">
-              <div className="flex flex-col gap-2">
-                <div className="text-md">
-                  <p className="font-semibold">Price/Price listing</p>
-                  <p className="text-sm">
-                    {item.price / 1e18} - {item.priceListing / 1e18}
-                  </p>
-                </div>
 
-                <div className="text-md">
-                  <p className="font-semibold">Soft/Hard</p>
-                  <p className="text-sm">
-                    {item.softcap} - {item.hardcap}
-                  </p>
-                </div>
-
-                <div className="w-full bg-gray-200 rounded-full">
-                  <div
-                    className={`bg-green text-xs text-gray py-0.5 font-medium text-blue-100 ${
-                      progess > 0 ? "px-0.5" : "mx-2"
-                    } text-center leading-none rounded-full`}
-                    style={{
-                      width: `${progess}%`,
-                    }}
+            <div className="flex flex-col justify-between flex-grow">
+              <div>
+                <h6
+                  title={item.metadata.name}
+                  className="flex items-start gap-2 py-2 font-medium uppercase"
+                >
+                  <span className="flex-wrap text-xl line-clamp-1">
+                    {item.metadata.name}
+                  </span>
+                  <svg
+                    className="flex-shrink-0"
+                    width="25"
+                    height="24"
+                    viewBox="0 0 25 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    {progess.toFixed(0)}%
-                  </div>
+                    <path
+                      opacity="0.4"
+                      d="M17.3199 1.91H7.67995C5.55995 1.91 3.81995 3.65 3.81995 5.77V19.86C3.81995 21.66 5.10995 22.42 6.68995 21.55L11.5699 18.84C12.0899 18.55 12.9299 18.55 13.4399 18.84L18.3199 21.55C19.8999 22.43 21.1899 21.67 21.1899 19.86V5.77C21.1799 3.65 19.4499 1.91 17.3199 1.91Z"
+                      fill="#9075FE"
+                    />
+                    <path
+                      d="M11.59 13.251C11.4 13.251 11.21 13.181 11.06 13.031L9.55999 11.531C9.42051 11.3899 9.34229 11.1994 9.34229 11.001C9.34229 10.8026 9.42051 10.6121 9.55999 10.471C9.84999 10.181 10.33 10.181 10.62 10.471L11.59 11.441L15.06 7.97099C15.35 7.68099 15.83 7.68099 16.12 7.97099C16.41 8.26099 16.41 8.74099 16.12 9.03099L12.12 13.031C11.97 13.181 11.78 13.251 11.59 13.251Z"
+                      fill="#9075FE"
+                    />
+                  </svg>
+                </h6>
+                <div className="flex gap-2">
+                  <span className="shrink-0">
+                    <AvatarUser width={24} height={24} />
+                  </span>
+                  <span className="pb-1 -ml-2.5 block">
+                    {item.creator?.slice(0, 4)}...
+                    {item.creator?.slice(-4)}
+                  </span>
                 </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <p className="font-semibold">Liquidity</p>
-                    <p className="">{item.percentLock / 10000}%</p>
-                  </div>
-
-                  <div>
-                    <p className="font-semibold">Lockup time</p>
-                    <p>
-                      {convetTime(getMinutes(item.durationLock, item.endTime))}{" "}
-                      days
-                    </p>
+                <div className="mt-2">
+                  <div className="flex flex-col gap-2">
+                    <div className="line-clamp-3">
+                      {item.metadata.description}
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg bg-dark3 group-hover:bg-secondary3">
+                <span className="text-sm">Total raise </span>
+                <span>{formatNumber((item.priceListing / 1e18).toString())}</span>
+              </div>
             </div>
-
+          </div>
+          <div>
             {query !== "Ended" && (
               <div className="pt-2 mt-2 border-t">
-                <p>
-                  {query === "Active" ? "Sale Ends In:" : "Sale Starts In:"}
+                <p className="text-xs text-center text-dark3">
+                  {query === "Active" ? "Whitelist phase ends in:" : "Whitelist phase start in:"}
                 </p>
                 {minutes > 0 && seconds > 0 && (
-                  <div className="flex">
-                    <div className="gap-1 mb-2flex">
+                  <div className="flex justify-center mt-1 text-secondary2">
+                    <div className="flex gap-1 mb-2">
                       <span className="font-semibold">{days}d</span>:
                       <span className="font-semibold">{hours}h</span>:
                       <span className="font-semibold">

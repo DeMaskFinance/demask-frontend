@@ -92,7 +92,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [durationLock, setDurationLock] = useState<Date | null>(null);
   const [vestingTime, setVestingTime] = useState<any>(0);
-  const [isError, setIsError] = useState(false);
+  const [isErrorTime, setIsErrorTime] = useState(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isTokenPayment, setIsTokenPayment] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -109,7 +109,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     setLaunchActive("CUSTOM");
-    setIsError;
+    setIsErrorTime;
   };
   const handleChangeRoyalFee = (e: any) => {
     setRoyaltiesFee(Number(e.target.value))
@@ -140,7 +140,14 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 
     refetchInterval: 60000,
   });
+  const filterPassedTime = (time:any) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
 
+    // Ensure selected date is in the future and greater than startDate
+    {/* @ts-ignore */}
+    return currentDate.getTime() < selectedDate.getTime() && selectedDate.getTime() > startDate.getTime();
+  };
   const decimal = data?.tokenDecimals;
 
   const checkSoftcap = Math.floor(
@@ -150,10 +157,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   console.log(checkSoftcap);
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
-      setIsError(true);
+      setIsErrorTime(true);
     }
     {
-      setIsError(false);
+      setIsErrorTime(false);
     }
   }, [startDate, endDate]);
 
@@ -287,27 +294,44 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             data, { gasLimit: 8000000 }
           );
 
-          await transaction.wait();
-          transactionHash = transaction.hash;
-
+          const check = await provider.waitForTransaction(transaction.hash);
           setIsOpenTransaction(false);
 
-          toast.success(
-            <TransitionURL
-              type={"Launchpad"}
-              transactionHash={transactionHash}
-            />,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
+          if(check.status === 1) {
+            toast.success(
+              <TransitionURL
+                type={"Launchpad success"}
+                transactionHash={transactionHash}
+              />,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+          }else{
+            toast.error(
+              <TransitionURL
+                type={"Launchpad failed"}
+                transactionHash={transactionHash}
+              />,
+              {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
+          }
           setName("");
           setDescription("");
           setSymbol("");
@@ -327,6 +351,8 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           setActive(false);
           setDurationLock(null);
           setRoyaltiesFee(null);
+          setSoftCap(null);
+          setHardCap(null);
         }
       };
       await checkAndLauchPadSubmit();
@@ -360,6 +386,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           progress: undefined,
           theme: "light",
         });
+        return;
       }
 
       setIsProcess(true);
@@ -516,21 +543,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     },
   ];
 
-  // const listTokenPayment = [
-  //   {
-  //     name: "USDT",
-  //     token: "0x20b28B1e4665FFf290650586ad76E977EAb90c5D",
-  //   },
-  //   {
-  //     name: "USDC",
-  //     token: "0xcc38d1b55AE412f6019a98f349AC94F68F36392e",
-  //   },
-  //   {
-  //     name: "ETH",
-  //     token: "0x734aef51d427b2f745210ec4bf1062abd48eceb6",
-  //   },
-  // ];
-
   const handleVesting = () => {
     setIsVesting(!isVesting);
     if (!isVesting) {
@@ -566,7 +578,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         </label>
         <div className="relative">
           <input
-            placeholder="Paste token or choose (USDT, USDC)"
+            placeholder="Paste token or choose"
             type="text"
             autoComplete="off"
             id="tokenPayment"
@@ -588,7 +600,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         </div>
         {active && (
           <div className="flex flex-col gap-2 p-2 mb-2 border-b border-l border-r rounded-xl">
-            {tokenDefault.map((item:any, index:number) => (
+            {tokenDefault.map((item: any, index: number) => (
               <span
                 key={index}
                 className={`border block text-center py-0.5 text-base text-black24 w-full px-1 rounded-lg cursor-pointer ${item.token === tokenPayment
@@ -724,6 +736,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </div>
           <HiArrowRight className="translate-y-[75%]" />
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
+      
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}
@@ -732,14 +745,16 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
               selectsEnd
               startDate={startDate}
               endDate={endDate}
-              minDate={new Date()}
+              /* @ts-ignore */
+              minDate={startDate ? new Date(Math.max(startDate, new Date())) : new Date()}
+              filterTime={filterPassedTime}
               dateFormat="MMMM d, yyyy h:mm aa"
               className="w-full h-full py-3 pl-2 border-none rounded-lg text-customDate"
               placeholderText="Forever"
             />
           </div>
         </div>
-        {isError && (
+        {isErrorTime && (
           <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
             Start time should be earlier than End time
           </p>
@@ -778,7 +793,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
         </div>
       </div>
 
-      {isError && (
+      {isErrorTime && (
         <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
           Start time should be earlier than End time
         </p>

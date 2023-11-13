@@ -8,6 +8,7 @@ import { AvatarUser } from '@/components/Avatars';
 import { IoCopyOutline } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import Profile from '@/components/Profile/Profile';
+import OptionNetwork from '@/components/Profile/OptionNetwork';
 const updateMeta = {
     ...SEO,
     title: 'Profile',
@@ -42,16 +43,16 @@ function ProfilePage() {
                 {account ? (
                     <div>
                         <section>
-                            <div className='h-[320px] bg-dark3 rounded-xl'>
-                                <img src='/images/thumbDemask.png' alt='thumb' className='object-cover w-full h-full rounded-xl'/>
-                            </div>
-                            <div className='flex items-end mt-2'>
+                            <div className='flex items-center justify-center mt-2'>
                                 <AvatarUser width={96} height={96} />
                                 <div>
                                     <p className='text-2xl font-semibold'>Unnamed</p>
                                     <div className='flex items-center gap-x-1'>
                                         <span className='text-secondary1'>{`${account.slice(0, 6)}...${account.slice(-4)}`}</span>
                                         <button onClick={copyToClipboard}><IoCopyOutline /></button>
+                                    </div>
+                                    <div>
+                                        <OptionNetwork />
                                     </div>
                                 </div>
                             </div>

@@ -25,7 +25,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
         <React.Fragment key={item.id}>
           <li className="relative text-base hover:text-secondary5 active:text-secondary3">
             <ActiveLink href={item?.url as string}>
-              <p>{item.name}</p>
+              <p className="text-dark3">{item.name}</p>
             </ActiveLink>
           </li>
         </React.Fragment>

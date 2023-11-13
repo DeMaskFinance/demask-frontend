@@ -3,7 +3,7 @@ import Tippy from "@tippyjs/react/headless";
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
-import { BscIcon, EtherIcon, PolygonIcon, ZkSyncIcon } from '../Icons';
+import { AllIcon, BscIcon, EtherIcon, PolygonIcon, ZkSyncIcon } from '../Icons';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 interface MenuNetworkProps {
 
@@ -22,7 +22,7 @@ interface networkProps {
 const network = [
     {
         name: "All",
-        logo: EtherIcon,
+        logo: AllIcon,
         chain: "All",
     },
     {

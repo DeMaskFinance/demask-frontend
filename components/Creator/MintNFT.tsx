@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
-import Button from "../Buttons/Button";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ethers } from "ethers";
 import abiDemask from "@/abi/abiCreator.json";
-import TransitionURL from "../Toast/TransionURL";
-import { Processing } from "../Loading";
-import getMetadataUrl from "@/libs/utils/getMetadata";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ModalWallet } from "../Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
-import { checkNetwork } from "@/libs/validation";
+import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import { getProvider } from "@/libs/connection/getProvider";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import getMetadataUrl from "@/libs/utils/getMetadata";
+import { ethers } from "ethers";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Button from "../Buttons/Button";
+import { Processing } from "../Loading";
+import { ModalWallet } from "../Modal/ModalWallet";
+import TransitionURL from "../Toast/TransionURL";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-[200px] py-2 pl-2 mb-4 border rounded-lg border-dark3",

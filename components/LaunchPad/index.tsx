@@ -14,7 +14,7 @@ export default function Launchpad() {
 
   const listTab = [
     {
-      name: "Upcoming",
+      name: "Coming",
       component: (
         <TabLaunchPad
           query={"Upcoming"}
@@ -43,16 +43,16 @@ export default function Launchpad() {
       <NextSeo {...updateMeta} />
 
       <div className="max-w-6xl min-h-screen mx-auto">
-        <div className="flex flex-col justify-between gap-4 pt-12 overflow-hidden rounded-lg lg:flex-row">
+        <h1 className="pt-10 pb-6 text-2xl font-semibold text-center text-dark0">Launchpad</h1>
+        <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
           <div
             className={`flex items-center p-1 gap-2 rounded-lg text-base text-center text-white  bg-dark3 w-max `}
           >
             {listTab.map((item, idx) => (
               <>
                 <button
-                  className={`lg:py-2 py-1 px-3 lg:px-6 ${
-                    activeChoice === item.index ? "bg-secondary5" : ""
-                  } rounded-lg text-sm`}
+                  className={`lg:py-2 py-1 px-3 lg:px-6 ${activeChoice === item.index ? "bg-secondary5" : ""
+                    } rounded-lg text-sm`}
                   type="button"
                   onClick={() => {
                     setActiveChoice(idx);
@@ -66,7 +66,7 @@ export default function Launchpad() {
 
           <Link
             href={"/launchpad/create"}
-            className="flex px-2 py-1 text-sm text-white rounded-lg bg-secondary5 hover:bg-secondary4 lg:pt-3 w-fit"
+            className="flex px-2 py-1 text-sm text-white rounded-lg bg-dark3 hover:bg-secondary3 lg:pt-3 w-fit"
           >
             Create Launchpad
           </Link>

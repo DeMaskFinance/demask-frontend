@@ -3,9 +3,10 @@ import Image from 'next/image'
 import React from 'react'
 interface MediaNFTProps {
     data: any,
-    isControls:boolean
+    isControls:boolean,
+    hover?:boolean
 }
-const MediaNFT: React.FC<MediaNFTProps> = ({ data,isControls }) => {
+const MediaNFT: React.FC<MediaNFTProps> = ({ data,isControls,hover }) => {
     return (
         <>
             {data?.metadata && (
@@ -28,6 +29,12 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data,isControls }) => {
                             loop
                             muted
                             controls={isControls}
+                            {...(hover
+                                ? {
+                                    onMouseOver: (event) => (event.target as any).play(),
+                                    onMouseOut: (event) => (event.target as any).pause(),
+                                  }
+                                : {})}
                             className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
                         />
                     )}

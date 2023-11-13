@@ -66,10 +66,10 @@ const ModalBuyNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-        console.log(amountTokenBuy);
-        console.log(inputNFT);
-        console.log(reserveNFT.toString());
-        console.log(reserveToken.toString());
+        // console.log(amountTokenBuy);
+        // console.log(inputNFT);
+        // console.log(reserveNFT.toString());
+        // console.log(reserveToken.toString());
         useEffect(() => {
             if (inputNFT && data && amountTokenBuy) {
                 setAmountBuyDec(amountTokenBuy * (1 + 0.05));
