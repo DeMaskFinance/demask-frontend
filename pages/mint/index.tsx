@@ -422,7 +422,24 @@ export default function Creator() {
             ))}
           </div>
           <div>
-            <label htmlFor="traits" className={styles.title}>
+            <label htmlFor="description" className={styles.title}>
+              <span>Description</span>
+            </label>
+
+            <textarea
+              placeholder="Write a description of your nft ..."
+              id="description"
+              value={description}
+              rows={3}
+              className={`${styles.inputItem} resize-none`}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                handleTextareaResize(e);
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="traits" className='block mb-1 text-base font-semibold text-black24'>
               <span>Traits</span>
             </label>
             <p className="mb-4 text-sm font-normal text-dark2">Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page</p>
@@ -460,30 +477,12 @@ export default function Creator() {
           )}
           <Button
             type="button"
-            className="h-[34px] w-[150px] text-sm mb-4"
-            primary
+            className="h-[37px] w-[150px] text-sm mb-4 text-secondary2 font-semibold border-secondary2 border-2 transition-all duration-300 ease-linear hover:bg-secondary2 hover:text-white"
             onClick={handleAddAttribute}
             disabled={!isValidBtn}
           >
             + Add Property
           </Button>
-          <div>
-            <label htmlFor="description" className={styles.title}>
-              <span>Description</span>
-            </label>
-
-            <textarea
-              placeholder="Write a description of your nft ..."
-              id="description"
-              value={description}
-              rows={3}
-              className={`${styles.inputItem} resize-none`}
-              onChange={(e) => {
-                setDescription(e.target.value);
-                handleTextareaResize(e);
-              }}
-            />
-          </div>
           <MintNFT
             name={name}
             symbol={symbol}

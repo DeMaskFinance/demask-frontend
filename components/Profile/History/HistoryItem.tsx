@@ -18,15 +18,15 @@ const HistoryItem = ({ item }: any) => {
                 </div>
                 {item?.tokenSymbol ? (
                     <>
-                        <span>{item?.tokenSymbol}/{item?.metadata.symbol}</span>
+                        <span>{item?.tokenSymbol}/{item?.metadata?.symbol}</span>
                     </>
                 ) : (
-                    <span>{item?.metadata.symbol}</span>
+                    <span>{item?.metadata?.symbol}</span>
                 )}
             </td>
 
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
-                {item.chainId === 280 && (
+                {item.chainId === '280' && (
                     <>
                         <span><ZkSyncIcon /></span>
                         <span className="ml-1">ZkSync</span></>

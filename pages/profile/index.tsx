@@ -9,6 +9,12 @@ import { IoCopyOutline } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import Profile from '@/components/Profile/Profile';
 import OptionNetwork from '@/components/Profile/OptionNetwork';
+import abiDemask from "@/abi/abiCreator.json";
+import {
+    usePrepareContractWrite,
+    useContractWrite,
+    useWaitForTransaction,
+} from 'wagmi'
 const updateMeta = {
     ...SEO,
     title: 'Profile',
@@ -36,10 +42,38 @@ function ProfilePage() {
             }
         );
     }
+    const {
+        config,
+        error: prepareError,
+        isError: isPrepareError,
+    } = usePrepareContractWrite({
+        address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
+        abi: abiDemask,
+        functionName: 'mint',
+    })
+    const { data, error, isError, write } = useContractWrite(config)
+
+    const { isLoading, isSuccess } = useWaitForTransaction({
+        hash: data?.hash,
+    })
     return (
         <div>
             <NextSeo {...updateMeta} />
             <div className='max-w-6xl pt-6 mx-auto min-h-[75vh]'>
+                <button onClick={() => write?.()}>
+                    {isLoading ? 'Minting...' : 'Mint'}
+                </button>
+                {isSuccess && (
+                    <div>
+                        Successfully minted your NFT!
+                        <div>
+                            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+                        </div>
+                    </div>
+                )}
+                {(isPrepareError || isError) && (
+                    <div>Error: {(prepareError || error)?.message}</div>
+                )}
                 {account ? (
                     <div>
                         <section>

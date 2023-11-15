@@ -128,7 +128,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
   return (
     <>
       <li className="list-none">
-        <div className="relative overflow-hidden">
+        <div className="relative">
           <div
             ref={inputRef}
             className={`flex ${isFocused} text-secondary5  rounded-lg`}
@@ -142,9 +142,9 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
               onClick={() => {
                 setClick(true);
               }}
-              className={`border hide-clear rounded-3xl relative pr-1 placeholder:text-dark2 transition-all ${active
+              className={`border hide-clear rounded-xl relative pr-1 placeholder:text-dark2 transition-all ${active
                 ? "lg:w-[350px] 3xl:w-[450px] w-screen lg:h-[32px] h-[40px]  border-secondary5 pl-2 lg:pl-10"
-                : "w-screen lg:w-[32px] shadow-slate-100 border-dark3 shadow pl-2 lg:h-[32px] h-[40px]  bg-transparent transition-all"
+                : "w-screen lg:w-[32px]  border-dark3 shadow pl-2 lg:h-[32px] h-[40px]  bg-transparent transition-all"
                 } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
             />

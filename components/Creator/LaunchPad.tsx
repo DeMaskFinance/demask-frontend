@@ -190,8 +190,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 
     return totalMinutes;
   };
-
-  let transactionHash = "";
   const launchPadAction = async ({
     initial,
     priceLauchpad,
@@ -215,7 +213,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       alert("Please install MetaMask to launch pad NFTs.");
       return;
     }
-    console.log(royaltiesFee);
 
     try {
       const providerChoice = getProvider(wallet);
@@ -301,7 +298,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             toast.success(
               <TransitionURL
                 type={"Launchpad success"}
-                transactionHash={transactionHash}
+                transactionHash={transaction.hash}
               />,
               {
                 position: "top-right",
@@ -318,7 +315,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
             toast.error(
               <TransitionURL
                 type={"Launchpad failed"}
-                transactionHash={transactionHash}
+                transactionHash={transaction.hash}
               />,
               {
                 position: "top-right",
@@ -509,7 +506,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 
     {
       id: "percentLock",
-      label: "Percent Lock",
+      label: "Percent Lock (%)",
       placeholder: "Percent Lock",
       type: "number",
       value: percentLock,
@@ -685,7 +682,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       ))}
       <div>
         <label htmlFor="royaltiesFee" className={styles.title}>
-          <span>Royalties Fee</span>
+          <span>Royalties Fee (%)</span>
           <span className="text-red">*</span>
         </label>
 

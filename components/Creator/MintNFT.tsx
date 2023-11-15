@@ -211,10 +211,11 @@ export default function MintNFT({
   return (
     <div className="">
       <div className="relative">
+        <h2 className={styles.title}>Initialization</h2>
         <div>
           <Button
             type="button"
-            className="w-[140px] py-2"
+            className="w-[150px] py-2"
             primary
             onClick={handleSubmit}
           >

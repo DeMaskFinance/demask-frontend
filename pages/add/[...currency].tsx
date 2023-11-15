@@ -154,7 +154,6 @@ export default function AddLiquidity() {
   }, [data, tokenDefault, chainId])
 
   useEffect(() => {
-    console.log(tokenAddress);
     if (tokenAddress) {
       const icon = (tokenDefault || []).find((item: any) => item.address.toLowerCase() === tokenAddress);
       setTokenSymbolIcon(icon);
@@ -206,7 +205,7 @@ export default function AddLiquidity() {
   };
 
   return (
-    <div className="px-4 py-8 lg:px-secondary md:px-14">
+    <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh]">
       <NextSeo {...updateMeta} />
       <div className="flex items-center mb-6">
         <Link href="/pools">
