@@ -13,7 +13,6 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
     { id: 2, name: "Launchpad", url: "/launchpad" },
     { id: 3, name: "Swap", url: `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}` },
     { id: 4, name: "Pools", url: "/pools" },
-    { id: 5, name: "Docs", url: "https://docs.demask.finance/" },
   ];
   const handleFocus = () => {
     setIsFocused(true);
@@ -30,7 +29,11 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           </li>
         </React.Fragment>
       ))}
-
+      <li>
+        <a href="https://docs.demask.finance/" target="_blank" rel="noopener noreferrer" className="text-base text-dark3">
+          <p>Docs</p>
+        </a>
+      </li>
       <Search isFocused={isFocused} handleFocus={handleFocus} />
     </ul>
   );

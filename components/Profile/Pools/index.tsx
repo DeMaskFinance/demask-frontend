@@ -115,7 +115,7 @@ export default function Pools() {
                         </div>
                     </div>
                     <div className="flex justify-center w-full mx-auto text-sm">
-            <div className="flex flex-col gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
+            <div className="flex gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
                 <div className="flex gap-1 lg:gap-10 md:gap-8">
                     <button
                         onClick={prevPage}

@@ -42,38 +42,19 @@ function ProfilePage() {
             }
         );
     }
-    const {
-        config,
-        error: prepareError,
-        isError: isPrepareError,
-    } = usePrepareContractWrite({
-        address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
+    const { data, isLoading, isSuccess, write } = useContractWrite({
+        address: '0x136224962545b06E63f5762449F3a6cD22421B89',
         abi: abiDemask,
         functionName: 'mint',
-    })
-    const { data, error, isError, write } = useContractWrite(config)
-
-    const { isLoading, isSuccess } = useWaitForTransaction({
-        hash: data?.hash,
     })
     return (
         <div>
             <NextSeo {...updateMeta} />
             <div className='max-w-6xl pt-6 mx-auto min-h-[75vh]'>
-                <button onClick={() => write?.()}>
-                    {isLoading ? 'Minting...' : 'Mint'}
-                </button>
-                {isSuccess && (
-                    <div>
-                        Successfully minted your NFT!
-                        <div>
-                            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
-                        </div>
-                    </div>
-                )}
-                {(isPrepareError || isError) && (
-                    <div>Error: {(prepareError || error)?.message}</div>
-                )}
+                {/* <button onClick={() => write()}>Feed</button>
+                {isLoading && <div>Check Wallet</div>}
+                {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>} */}
+
                 {account ? (
                     <div>
                         <section>

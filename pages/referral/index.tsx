@@ -95,7 +95,7 @@ export default function Referral() {
         }
     }, [account, sponsors, sponsor, isOpenTransaction])
     return (
-        <div className='min-h-[75vh]'>
+        <div className='min-h-[75vh] pt-5'>
             {account ? (
                 <div><p>{sponsor}</p>
                     <div>

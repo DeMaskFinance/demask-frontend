@@ -140,13 +140,13 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
 
     refetchInterval: 60000,
   });
-  const filterPassedTime = (time:any) => {
+  const filterPassedTime = (time: any) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
 
     // Ensure selected date is in the future and greater than startDate
-    {/* @ts-ignore */}
-    return currentDate.getTime() < selectedDate.getTime() && selectedDate.getTime() > startDate.getTime();
+    {/* @ts-ignore */ }
+    return currentDate?.getTime() < selectedDate?.getTime() && selectedDate?.getTime() > startDate?.getTime();
   };
   const decimal = data?.tokenDecimals;
 
@@ -158,8 +158,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
       setIsErrorTime(true);
-    }
-    {
+    } else {
       setIsErrorTime(false);
     }
   }, [startDate, endDate]);
@@ -294,7 +293,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           const check = await provider.waitForTransaction(transaction.hash);
           setIsOpenTransaction(false);
 
-          if(check.status === 1) {
+          if (check.status === 1) {
             toast.success(
               <TransitionURL
                 type={"Launchpad success"}
@@ -311,7 +310,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
                 theme: "light",
               }
             );
-          }else{
+          } else {
             toast.error(
               <TransitionURL
                 type={"Launchpad failed"}
@@ -733,7 +732,7 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           </div>
           <HiArrowRight className="translate-y-[75%]" />
           <div className="mb-4 border rounded-lg border-dark2 w-[45%]">
-      
+
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}
@@ -789,12 +788,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           <span>{durationLock ? getTimeLock(durationLock, endDate) : ""}</span>
         </div>
       </div>
-
-      {isErrorTime && (
-        <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="price">
-          Start time should be earlier than End time
-        </p>
-      )}
       {emptyInputs.includes("durationLock") && (
         <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="time">
           You have to enter the time

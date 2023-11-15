@@ -42,7 +42,7 @@ export default function Launchpad() {
     <section className="launchpad">
       <NextSeo {...updateMeta} />
 
-      <div className="max-w-6xl min-h-screen mx-auto">
+      <div className="max-w-6xl min-h-screen pb-20 mx-auto lg:pb-0">
         <h1 className="pt-10 pb-6 text-2xl font-semibold text-center text-dark0">Launchpad</h1>
         <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
           <div

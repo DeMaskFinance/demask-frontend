@@ -93,23 +93,7 @@ export default function Header() {
         if (headerRef.current) {
           const headerClassList = headerRef.current.classList;
           headerClassList.toggle("translate-y-0", isScrolledUp);
-          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);
-          if (isScrolledUp) {
-            headerClassList.add("border-b", "border-solid", "border-gray-300");
-          } else {
-            headerClassList.remove(
-              "border-b",
-              "border-solid",
-              "border-gray-300"
-            );
-          }
-          if (currentScrollPos === 0) {
-            headerClassList.remove(
-              "border-b",
-              "border-solid",
-              "border-gray-300"
-            );
-          }
+          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);       
         }
 
         prevScrollPos = currentScrollPos;
@@ -130,7 +114,7 @@ export default function Header() {
     <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 transition-all duration-500 ease-in-outshadow-md bg-secondary1 lg:shadow-none h-header lg:px-primary md:px-14"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 transition-all duration-500 ease-in-outshadow-md bg-secondary1 h-header lg:px-primary md:px-14"
       >
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">

@@ -8,7 +8,7 @@ const HistoryItem = ({ item }: any) => {
 
     return (
         <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
-            <td className="flex justify-start md:basis-1/6 w-[140px]">
+            <td className="flex justify-start items-center md:basis-1/6 w-[140px]">
                 {item.action}
             </td>
 

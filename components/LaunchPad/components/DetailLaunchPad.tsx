@@ -19,6 +19,7 @@ import { IoReloadOutline } from "react-icons/io5";
 import ModalAddAdminLaunchpad from "@/components/Modal/ModalLaunchpadProfile/ModalAddAdminLaunchpad";
 import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import MediaNFT from "@/components/Common/MediaNFT";
 
 export default function DetailLaunchPad() {
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -181,24 +182,40 @@ export default function DetailLaunchPad() {
         result = await contract.buy(amount, { gasLimit: 8000000 });
       }
 
-      await provider.waitForTransaction(result.hash);
+      const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
       setIsOpenModal(false);
       refetch();
 
-      toast.success(
-        <TransitionURL type={"Buy NFT"} transactionHash={result.hash} />,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      if (check.status === 1) {
+        toast.success(
+          <TransitionURL type={"Buy NFT success"} transactionHash={result.hash} />,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      } else {
+        toast.error(
+          <TransitionURL type={"Buy NFT failed"} transactionHash={result.hash} />,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      }
 
       setAmount(0);
     } catch (error) {
@@ -250,13 +267,7 @@ export default function DetailLaunchPad() {
                   </div>
 
                   <div className="p-4 rounded-md">
-                    <Image
-                      className="w-full h-[500px] rounded-lg object-none"
-                      src={data?.metadata?.image}
-                      width={10000}
-                      height={10000}
-                      alt=""
-                    />
+                    <MediaNFT data={data} isControls/>
                   </div>
                   <div className="p-4 rounded-lg h-fit">
                     <div>
