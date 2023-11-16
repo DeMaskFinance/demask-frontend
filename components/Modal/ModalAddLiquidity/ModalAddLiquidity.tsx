@@ -43,10 +43,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] = useState<boolean>(false);
-  const { demask, tokenDefault, account, wallet } = useContext(AccountContext);
+  const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-  console.log(routerAddress)
-  console.log(data);
 
   const handleClose = (e: any) => {
     e.preventDefault();
@@ -67,7 +65,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
     if (Number(e.target.value) > Number(balanceNFT)) {
-      console.log("Insufficient NFT balance");
       setIsSufficientNFT(true);
     } else {
       setIsSufficientNFT(false);
@@ -76,7 +73,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
-      console.log("Insufficient Token balance");
       setIsSufficientToken(true);
     } else {
       setIsSufficientToken(false);
@@ -91,14 +87,9 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       data &&
       inputNFT
     ) {
-      console.log(data.reserveToken);
-      console.log(data.reserveNFT);
-      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * 1.05;
-      console.log(amountErcDesired);
+      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * (1 + (slippage / 100));
 
     } else {
-      console.log(data?.dmlDecimals);
-
       amountErcDesired = handleBignumber(
         Number(inputToken),
         Number(data?.dmlDecimals)
@@ -133,8 +124,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     };
     checkApproveNFT();
   }, [account, data.nftAddress, wallet, isOpenTransaction]);
-  console.log(data);
-  console.log(inputNFT);
 
   const handleAddLiquidity = () => {
     if (inputNFT && !isSufficientNFT && !isSufficientToken) {
@@ -271,7 +260,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={data.tokenAddress} nftAddress={data.nftAddress} idNFT={data.nftID} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={tokenSymbol} setInputNFT={setInputNFT} setIsOpenLiquidity={setIsOpenLiquidity}/>
+      <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={data.tokenAddress} nftAddress={data.nftAddress} idNFT={data.nftID} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={tokenSymbol} setInputNFT={setInputNFT} setIsOpenLiquidity={setIsOpenLiquidity} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
     </Wrapper>
 

@@ -56,7 +56,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         const [amountTokenDec, setAmountTokenDec] = useState("");
         const [amountNFTMin, setAmountNFTMin] = useState("");
         const [isOpen, setIsOpen] = useState<boolean>(false);
-        const { demask, tokenDefault, account, wallet } = useContext(AccountContext);
+        const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress, FACTORY: factoryAddress } = demask;
 
         const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress, wallet, isOpenTransaction);
@@ -102,8 +102,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                 const amountToken = Number(amountLIQUIDITY) * Number(reserveToken) / Number(totalSupply);
                 const resAmountToken = Number(amountLIQUIDITY) * Number(reserveToken) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(reserveNFT) % Number(totalSupply)) * (Number(reserveToken) - Number(amountToken.toFixed(0))) / ((Number(reserveNFT) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
                 const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(), data.dmlDecimals)
-                const resAmountNFTMin = Math.floor(Number(resAmountNFT * 0.95));
-                const resAmountTokenMin = Math.floor(Number(resAmountToken * 0.95));
+                const resAmountNFTMin = Math.floor(Number(resAmountNFT * (1 - (slippage / 100))));
+                const resAmountTokenMin = Math.floor(Number(resAmountToken * (1 - (slippage / 100))));
                 setAmountNFT(resAmountNFT.toString());
                 setAmountToken(resAmountToken.toString());
                 setAmountNFTMin(resAmountNFTMin.toString());
@@ -162,7 +162,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                         exponentialToDecimal(Number(amountTokenMin)),
                         exponentialToDecimal(Number(amountNFTMin)),
                         account,
-                        Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                        Math.floor((new Date().getTime() + slippage * 60000) / 1000),
                         { gasLimit: 8000000 }
                     );
                     const check = await provider.waitForTransaction(result.hash);

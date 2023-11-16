@@ -24,6 +24,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from '../../next-seo.config';
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import ModalSetting from "@/components/Modal/ModalSetting";
+import { AiFillSetting } from "react-icons/ai";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -40,6 +42,7 @@ export default function AddLiquidity() {
   const [inputNFT, setInputNFT] = useState<string>("");
   const [inputToken, setInputToken] = useState<string>("");
   const [idNFT, setIdNFT] = useState("");
+  const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -50,13 +53,13 @@ export default function AddLiquidity() {
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] = useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, tokenDefault, slippage } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [symbolToken, setSymbolToken] = useState<string>('');
-  const [checkExit,setCheckExit] = useState<boolean>(false);
+  const [checkExit, setCheckExit] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -115,7 +118,7 @@ export default function AddLiquidity() {
       data &&
       inputNFT
     ) {
-      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * 1.05;
+      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * (1 + (slippage / 100));
       console.log(amountErcDesired);
 
     } else {
@@ -177,13 +180,13 @@ export default function AddLiquidity() {
     }
   }
   console.log(allowanceToken);
-  useEffect(()=>{
-    if(inputNFT){
+  useEffect(() => {
+    if (inputNFT) {
       setCheckExit(true)
-    }else{
+    } else {
       setCheckExit(false)
     }
-  },[inputNFT])
+  }, [inputNFT])
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(account, wallet, nftAddress, routerAddress);
@@ -207,11 +210,16 @@ export default function AddLiquidity() {
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />
-      <div className="flex items-center mb-6">
-        <Link href="/pools">
-          <BackIcon width={24} height={24} />
-        </Link>
-        <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex">
+          <Link href="/pools">
+            <BackIcon width={24} height={24} />
+          </Link>
+          <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
+        </div>
+        <div onClick={() => setIsOpenSetting(true)}>
+          <AiFillSetting className="w-5 h-5 cursor-pointer fill-dark2 hover:rotate-90 hover:fill-secondary5" />
+        </div>
       </div>
       {isSuccess ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
@@ -374,6 +382,7 @@ export default function AddLiquidity() {
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
       />
+      <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
         <ModalDetail

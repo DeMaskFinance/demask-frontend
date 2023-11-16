@@ -35,6 +35,7 @@ import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromEras
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import { swapChartAPI } from "@/libs/service/swapService";
+import FormatNumber from "@/components/Common/FormatNumber";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -51,6 +52,7 @@ const Swap: React.FC = () => {
   const [idNFT, setIdNFT] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+  const [amountSellDec, setAmountSellDec] = useState<number>(0);
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
@@ -66,7 +68,7 @@ const Swap: React.FC = () => {
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const { account, wallet, chainId, demask, tokenDefault, slippage } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, tokenDefault, slippage, txDeadline } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
@@ -94,7 +96,6 @@ const Swap: React.FC = () => {
     keepPreviousData: true,
   });
   usePreventUserFromErasingContent(checkExit);
-  console.log(checkExit);
 
   useEffect(() => {
     if (slug) {
@@ -115,7 +116,6 @@ const Swap: React.FC = () => {
   }, [data, slug, tokenDefault])
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-  console.log(dataChart);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -126,17 +126,19 @@ const Swap: React.FC = () => {
   }, [account, nftAddress, wallet, isOpenTransaction]);
 
   const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-  const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, 0.05);
-  console.log(amountBuyDec);
-  console.log(amountTokenBuy);
+  const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
   
+
+
   useEffect(() => {
-    if (inputNFT && data && amountTokenBuy) {
-      setAmountBuyDec(amountTokenBuy * (1 + 0.05));
+    if (inputNFT && data && amountTokenBuy && amountTokenSell) {
+      setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
+      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)));
     } else {
       setAmountBuyDec(0);
+      setAmountSellDec(0);
     }
-  }, [inputNFT, data, slippage, amountTokenBuy])
+  }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice])
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -160,12 +162,12 @@ const Swap: React.FC = () => {
     } else {
       setIsSufficientTokenBuy(true);
     }
-    if (Number(amountTokenSell.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientTokenSell(false);
     } else {
       setIsSufficientTokenSell(true);
     }
-  }, [inputNFT, activeChoice, account, amountBuyDec, amountTokenSell, data]);
+  }, [inputNFT, activeChoice, account, amountBuyDec, amountSellDec, data]);
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -315,11 +317,11 @@ const Swap: React.FC = () => {
                     </div>
                   )}
                   {activeChoice === "SELL" && (
-                    <div className="text-4xl text-secondary3">
+                    <div className="text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
                         <span>
                           {formatNumber(
-                            divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
+                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
                           )}
                         </span>
                       ) : (
@@ -381,9 +383,11 @@ const Swap: React.FC = () => {
                   {data.dmlAddress !== null &&
                     ((!isSufficientTokenBuy &&
                       activeChoice === "BUY" &&
+                      account &&
                       data.reserveToken) ||
                       (!isSufficientTokenSell &&
                         activeChoice === "SELL" &&
+                        account &&
                         data.reserveToken)) && (
                       <p
                         className="mt-0 mb-2 ml-3 text-xs text-red"
@@ -409,27 +413,21 @@ const Swap: React.FC = () => {
 
                 <div className="">
                   {data.reserveToken ? (
-                    <p className="mb-1 text-dark3">
-                      Reverse Token:
-                      {formatNumber(
-                        data.reserveToken
-                      )}
-                    </p>
+                    <div className="flex mb-1 text-dark3">
+                      <p>Reverse Token:</p>
+                      <FormatNumber number={data.reserveToken} />
+                    </div>
                   ) : (
                     <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                   )}
                   <div className="relative">
                     {activeChoice === "BUY" ? (
                       <div className={styles.inputItem}>
-                        {formatNumber(
-                          divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
-                        )}
+                        <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
                       </div>
                     ) : (
                       <div className={styles.inputItem}>
-                        {formatNumber(
-                          divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
-                        )}
+                        <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                       </div>
                     )}
                     <div
@@ -446,7 +444,7 @@ const Swap: React.FC = () => {
                   Can't buy
                 </p>
               )}
-              {activeChoice === "SELL" && Math.floor(amountTokenSell) === 0 && inputNFT && (
+              {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && inputNFT && (
                 <p className="mt-0 mb-2 ml-3 text-xs text-red">
                   Can't sell
                 </p>

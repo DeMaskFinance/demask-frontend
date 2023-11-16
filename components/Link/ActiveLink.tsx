@@ -8,14 +8,14 @@ const styles = {
 }
 interface Props extends LinkProps {
   children: any;
-  href:string | URL 
+  href:string 
 }
 
 const ActiveLink = ({ href, children, ...props }: Props) => {
   const router = useRouter();
  
   let className = children.props.className || '';
-  if (router.asPath === href) {
+  if (router.asPath.includes(href)) {
     className = `${className} ${styles.active}`;
   }
 

@@ -56,7 +56,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
-        const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
+        const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress, FACTORY: factoryAddress } = demask;
         const [amountErcDesired, setAmountErcDesired] = useState<any>();
         const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
@@ -99,8 +99,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 data &&
                 inputNFT
             ) {
-                amountErcDesired = Number(inputNFT) * +(reserveToken) / +(reserveNFT) * 1.05;
-                console.log(amountErcDesired);
+                amountErcDesired = Number(inputNFT) * +(reserveToken) / +(reserveNFT) * (1 + (slippage / 100));
 
             } else {
                 amountErcDesired = handleBignumber(
@@ -172,7 +171,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         inputNFT,
                         0,
                         account,
-                        Math.floor((new Date().getTime() + 20 * 60000) / 1000),
+                        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: 8000000, value: valueToSend }
                     );
                     const check = await provider.waitForTransaction(result.hash);

@@ -43,15 +43,6 @@ const ModalLaunchPadProfile: React.FunctionComponent<
   const { account, wallet, chainId, demask, tokenDefault } =
     useContext(AccountContext);
 
-  console.log({
-    account,
-    wallet,
-    amount,
-    tokenLaunchpad,
-    setIsOpenModal,
-    isOpenTransation,
-  });
-
   useEffect(() => {}, [isOpenTransation]);
 
   return (

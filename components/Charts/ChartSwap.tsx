@@ -31,7 +31,8 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
   }
   // console.log(averagePrice);
   // console.log(volume);
-
+  // console.log(dataChart);
+  
   const options = {
     title: {
       text: "",
@@ -111,7 +112,7 @@ const ChartSwap: React.FunctionComponent<ChartSwapProps> = ({ dataChart }) => {
 
         let tooltipContent = `<b>${formattedDate}</b><br>`;
         this.points?.forEach((point) => {
-          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>$${formatToUnit((point.y)?.toString()||"")}</b><br>`;
+          tooltipContent += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>$${formatNumber((point.y)?.toString()||"")}</b><br>`;
         });
         return tooltipContent;
       },

@@ -41,7 +41,7 @@ const ModalSetting: React.FunctionComponent<
         }, [txDeadline]);
         console.log(slippageTo);
         console.log(time);
-        
+
         const Slippage = [
             0.1, 0.5, 1
         ]
@@ -81,7 +81,15 @@ const ModalSetting: React.FunctionComponent<
                                     updateSlippage(item)
                                 }}>{item}</Button>
                             ))}
-                            <input type="text" value={slippageTo} className='w-10 p-1 mr-2 border rounded-xl border-dark3' onChange={(e) => handleChangeSlippage(e)} />
+                            <input type="text" value={slippageTo} className='w-10 p-1 mr-2 border rounded-xl border-dark3' 
+                            onChange={(e) => handleChangeSlippage(e)} 
+                            onBlur={() => {
+                                if (slippageTo > 100) {
+                                    setSlippageTo(0.5);
+                                    updateSlippage(0.5);
+                                }
+                            }}
+                            />
                             <span>%</span>
                         </div>
                         {(slippageTo > 5 || slippageTo === 0) && (
@@ -101,10 +109,23 @@ const ModalSetting: React.FunctionComponent<
                                 </div>
                             </Tippy>
                         </div>
-                        <input pattern="^[0-9]+$" value={time} type="text" className={styles.inputItem} onChange={(e) => {
-                            setTime(Number(e.target.value))
-                            updateTxDeadline(Number(e.target.value))
-                        }} />
+                        <input
+                            pattern="^[0-9]+$"
+                            value={time}
+                            type="text"
+                            className={styles.inputItem}
+                            onChange={(e) => {
+                                const inputValue = Number(e.target.value);
+                                setTime(inputValue);
+                                updateTxDeadline(inputValue);
+                            }}
+                            onBlur={() => {
+                                if (time < 20) {
+                                    setTime(20);
+                                    updateTxDeadline(20);
+                                }
+                            }}
+                        />
                     </div>
                     <button
                         className="absolute top-0 right-0 p-2 text-lg"

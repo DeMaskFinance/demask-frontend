@@ -48,7 +48,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] = useState<boolean>(false);
-    const { demask, tokenDefault, account, wallet } = useContext(AccountContext);
+    const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
     const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
     const handleClose = (e: any) => {
       e.preventDefault();
@@ -95,8 +95,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         const amountToken = Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals) / Number(totalSupply);
         const resAmountToken = Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals) / Number(totalSupply) + (Number(amountLIQUIDITY) * Number(data.reserveNFT) % Number(totalSupply)) * (Number(data.reserveTokenDecimals) - Number(amountToken.toFixed(0))) / ((Number(data.reserveNFT) - Math.floor(Number(resAmountNFT))) * Number(totalSupply));
         const resAmountTokenMinShow = divideByDecimal(resAmountToken.toString(), data.dmlDecimals)
-        const resAmountNFTMin = Math.floor(Number(resAmountNFT * 0.95));
-        const resAmountTokenMin = Math.floor(Number(resAmountToken * 0.95));
+        const resAmountNFTMin = Math.floor(Number(resAmountNFT * (1 - (slippage / 100))));
+        const resAmountTokenMin = Math.floor(Number(resAmountToken * (1 - (slippage / 100))));
         setAmountNFT(resAmountNFT.toString());
         setAmountToken(resAmountToken.toString());
         setAmountNFTMin(resAmountNFTMin.toString());
@@ -106,7 +106,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       }
     }, [inputLiquidity, data])
     // console.log(amountNFT);
-    console.log(amountTokenMin);
+    // console.log(amountTokenMin);
     // console.log(amountTokenDec);
     // console.log(amountNFTMin);
     // console.log(isApprovedLiquidity);
@@ -133,11 +133,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         setIsOpenConfirmRemoveLiquidity(true);
       }
     }
-    console.log(data);
-    console.log(isSufficientLiquidity);
-    console.log(inputLiquidity);
-    console.log(isOpenConfirmRemoveLiquidity);
-    
+
     return (
       <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
         <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -255,7 +251,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}/>
+        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} />
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       </Wrapper>

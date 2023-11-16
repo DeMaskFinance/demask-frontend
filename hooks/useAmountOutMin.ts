@@ -1,6 +1,6 @@
 import getAmountSell from '@/libs/utils/getAmountSell';
 import { useEffect, useState } from 'react';
-const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string,account:string,rpc:string,routerAddress:string,slippage:number) => {
+const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, nftAddress:string, idNFT:string, wallet:string,account:string,rpc:string,routerAddress:string) => {
     const [amountTokenSell, setAmountTokenSell] = useState(0);
     const [feeTradingSell, setFeeTradingSell] = useState(0);
     const [isLoadingSell,setIsLoadingSell] = useState<boolean>(false);
@@ -9,7 +9,7 @@ const useAmountOutMin = (inputNFT:string, dmlToken:string, tokenAddress:string, 
         setIsLoadingSell(true);
         if (inputNFT && dmlToken !== '0x0000000000000000000000000000000000000000') {
           const amountAFee =await getAmountSell(wallet, tokenAddress, nftAddress, idNFT, inputNFT,rpc,routerAddress);
-          setAmountTokenSell(amountAFee[0] * (1-slippage));
+          setAmountTokenSell(amountAFee[0].toString());
           setFeeTradingSell(amountAFee[1].toString());
         } else {
           setFeeTradingSell(0);

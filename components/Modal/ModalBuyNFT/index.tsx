@@ -54,9 +54,8 @@ const ModalBuyNFT: React.FunctionComponent<
         const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
             useState<boolean>(false);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
-        const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
+        const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-        console.log(data);
         const { allowanceToken, bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenBuyNFT);
         const handleClose = (e: any) => {
@@ -66,19 +65,21 @@ const ModalBuyNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-        // console.log(amountTokenBuy);
+        console.log(amountTokenBuy);
+        console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
+
         // console.log(inputNFT);
         // console.log(reserveNFT.toString());
         // console.log(reserveToken.toString());
         useEffect(() => {
             if (inputNFT && data && amountTokenBuy) {
-                setAmountBuyDec(amountTokenBuy * (1 + 0.05));
+                setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
             } else {
                 setAmountBuyDec(0);
             }
         }, [inputNFT, data, slippage, amountTokenBuy])
         console.log(amountBuyDec);
-        
+
         useEffect(() => {
             const checkReservesNFT = () => {
                 if (data && Number(inputNFT) < Number(reserveNFT)) {
@@ -94,7 +95,6 @@ const ModalBuyNFT: React.FunctionComponent<
                 setIsSufficientTokenBuy(true);
             }
         }, [inputNFT, account, amountBuyDec, data, reserveNFT]);
-        console.log(isSufficientNFT);
 
         useEffect(() => {
             const checkApproveToken = async () => {
@@ -130,29 +130,19 @@ const ModalBuyNFT: React.FunctionComponent<
                 try {
                     let result;
                     setIsOpenTransaction(true);
-                    if (tokenAddress === nativeAddress) {
-                        result = await contract.buyERC20ERC1155(
-                            tokenAddress,
-                            nftAddress,
-                            idNFT,
-                            inputNFT,
-                            exponentialToDecimal(Math.floor(amountBuyDec)),
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(amountBuyDec)) }
-                        );
-                    } else {
-                        result = await contract.buyERC20ERC1155(
-                            tokenAddress,
-                            nftAddress,
-                            idNFT,
-                            inputNFT,
-                            exponentialToDecimal(Math.floor(amountBuyDec)),
-                            account,
-                            Math.floor((new Date().getTime() + 20 * 60000) / 1000),
-                            { gasLimit: 8000000, value: 0 }
-                        );
-                    }
+                    const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
+
+                    result = await contract.buyERC20ERC1155(
+                        tokenAddress,
+                        nftAddress,
+                        idNFT,
+                        inputNFT,
+                        exponentialToDecimal(Math.floor(amountBuyDec)),
+                        account,
+                        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+                        { gasLimit: 8000000, value: value }
+                    );
+
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setIsOpenBuyNFT(false);
