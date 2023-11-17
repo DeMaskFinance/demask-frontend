@@ -5,9 +5,10 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
+import FormatNumber from "../Common/FormatNumber";
 interface LiquidytiesItemProps {
   liquidity: any;
-  tokenDefault:[any]
+  tokenDefault: [any]
 }
 
 const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
@@ -32,7 +33,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     if (account) {
       if (liquidity.tokenSymbol === "WETH" || liquidity.tokenSymbol === "WBNB") {
         setTokenSymbol(tokenDefault[0].symbol);
-      }  else {
+      } else {
         setTokenSymbol(liquidity.tokenSymbol);
       }
     }
@@ -47,7 +48,9 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         </div>
         <div className="flex items-center">
           Reward:
-          {reward ? (<span className="ml-2">{formatNumber(reward)}</span>) : (<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)}
+          {reward ? (<div className="ml-2">
+            <FormatNumber number={reward} />
+          </div>) : (<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)}
           <span>{tokenSymbol}</span>
         </div>
       </div>

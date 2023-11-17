@@ -14,9 +14,10 @@ import { Button } from '../Buttons';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import { CgClose } from 'react-icons/cg';
 import { searchNFTService } from '@/libs/service/searchService';
-import { ZkSyncIcon } from '../Icons';
+import { ActiveIcon, AddIcon, SwapIconProfile, ZkSyncIcon } from '../Icons';
+import MediaNFT from '../Common/MediaNFT';
 const NFTs = () => {
-    const { account } = useContext(AccountContext);
+    const { account, chainId } = useContext(AccountContext);
     const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
     const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
     const [selectedAction, setSelectedAction] = useState<string>('Add');
@@ -44,6 +45,9 @@ const NFTs = () => {
         }
     );
 
+    // console.log({
+    //     data
+    // });
     useEffect(() => {
         if (inView) {
             fetchNextPage();
@@ -65,53 +69,11 @@ const NFTs = () => {
                                 {page.userNFTLists.map((item: any, index: number) => (
                                     <div key={index} className='relative overflow-hidden'>
                                         <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
-                                            <div className="relative pb-[100%] h-0">
-                                                {item.metadata.image && mediaType.image.some(extension => item.metadata.image.endsWith(extension)) && (
-                                                    <Image
-                                                        loading="lazy"
-                                                        width={760}
-                                                        height={760}
-                                                        src={item.metadata.image}
-                                                        alt="NFT Image"
-                                                        placeholder="blur"
-                                                        blurDataURL={`${images.blur}`}
-                                                        className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
-                                                    />
-                                                )}
-                                                {item.metadata.animation_url &&
-                                                    !item.metadata.image && mediaType.video.some(extension => item.metadata.animation_url.endsWith(extension)) && (
-                                                        <video
-                                                            src={item.metadata.animation_url}
-                                                            autoPlay={false}
-                                                            loop
-                                                            muted
-                                                            controls={false}
-                                                            onMouseOver={(event) =>
-                                                                (event.target as any).play()
-                                                            }
-                                                            onMouseOut={(event) =>
-                                                                (event.target as any).pause()
-                                                            }
-                                                            className="absolute object-cover w-0 h-0 max-w-full max-h-full min-w-full min-h-full rounded-lg"
-                                                        />
-                                                    )}
-                                                {item.metadata.image &&
-                                                    item.metadata.animation_url && mediaType.audio.some(extension => item.metadata.animation_url.endsWith(extension)) && (
-                                                        <audio
-                                                            autoPlay
-                                                            loop
-                                                            muted
-                                                            controls
-                                                            src={item.metadata.animation_url}
-                                                            className="absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[80%] py-1 rounded-lg  object-cover"
-                                                        >
-                                                            Your browser does not support the
-                                                            <code>audio</code> element.
-                                                        </audio>
-                                                    )}
+                                            <div className="relative pb-[100%] h-[240px]">
+                                                <MediaNFT data={item} isControls={false} hover />
                                             </div>
                                             <div>
-                                                <div className="flex justify-between pb-1 my-2">
+                                                <div className="flex mt-2">
                                                     <div>
                                                         <h6
                                                             title={item.metadata.name}
@@ -122,8 +84,23 @@ const NFTs = () => {
                                                             </span>
                                                         </h6>
                                                     </div>
-                                                    <div className="flex items-end gap-x-1">
-                                                        <p>Balance: </p>
+                                                    {/* <ActiveIcon width={24} height={24} className="mr-4 fill-yellow" /> */}
+                                                </div>
+                                                <div className='my-1'>
+                                                    {chainId === '280' && (
+                                                        <div className='flex'>
+                                                            <ZkSyncIcon width={14} height={7} className='fill-secondary3' />
+                                                            <p className='text-[10px] font-semibold text-secondary3'>ZKsync Era</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className='flex justify-between'>
+                                                    <p>Floor price</p>
+                                                    <p>Balance</p>
+                                                </div>
+                                                <div className='flex justify-between font-semibold text-dark2'>
+                                                    100 ETH
+                                                    <div>
                                                         {item.nftBalance ? (
                                                             <ModalNumber data={item.nftBalance} />
                                                         ) : (
@@ -131,25 +108,25 @@ const NFTs = () => {
                                                         )}
                                                     </div>
                                                 </div>
-                                                <div className='flex justify-between'>
-                                                    <Button primary className='p-2' onClick={() => handleChoiceAction(index, 'Add')}>
-                                                        Add
+                                                <div className='flex justify-between mt-2'>
+                                                    <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Add')}>
+                                                        <p>Add</p>
+                                                        <div>
+                                                            <AddIcon width={24} height={24}/>
+                                                        </div>
                                                     </Button>
-                                                    <Button primary className='p-2' onClick={() => handleChoiceAction(index, 'Swap')}>
-                                                        Swap
+                                                    <Button  className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Swap')}>
+                                                        <p>Swap</p>
+                                                        <div>
+                                                            <SwapIconProfile width={24} height={24}/>
+                                                        </div>
                                                     </Button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='absolute top-[13px] left-[13px] rounded-tl-lg text-white text-sm bg-secondary5'>
-                                            {item.chainId === 280 && (
-                                                <>
-                                                    <span><ZkSyncIcon className='p-1 fill-white' /></span>
-                                                </>
-                                            )}
-                                        </div>
+
                                         {item && (
-                                            <TransionDML item={item} chainId={item.chainId} selectedAction={selectedAction} index={index} selectedItemIndex={selectedItemIndex} setSelectedItemIndex={setSelectedItemIndex} />
+                                            <TransionDML item={item} chainId={chainId} selectedAction={selectedAction} index={index} selectedItemIndex={selectedItemIndex} setSelectedItemIndex={setSelectedItemIndex} />
                                         )}
                                     </div>
                                 ))}

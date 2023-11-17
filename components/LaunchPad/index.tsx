@@ -25,7 +25,7 @@ export default function Launchpad() {
     },
     {
       name: "Active",
-      component: <TabLaunchPad query={"Active"} desc="" />,
+      component: <TabLaunchPad query={"Active"} desc="There are currently no active launchpads." />,
       desc: "There are currently no active launchpads.",
       index: 1,
     },

@@ -1,4 +1,5 @@
 import { AvatarUser } from "@/components/Avatars";
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
 import { convertTime } from "@/hooks/useConvertTime";
@@ -14,7 +15,7 @@ interface TabLaunchPadProps {
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
   const { account, wallet, chainId, demask, tokenDefault } =
     useContext(AccountContext);
-  console.log(item);
+  // console.log(item);
 
   const blockNumber =
     query === "Upcoming"
@@ -122,9 +123,9 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                   </div>
                 </div>
               </div>
-              <div className="p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg bg-dark3 group-hover:bg-secondary3">
+              <div className="flex items-center p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg gap-x-1 bg-dark3 group-hover:bg-secondary3">
                 <span className="text-sm">Total raise </span>
-                <span>{formatNumber((item.priceListing / 1e18).toString())}</span>
+                <FormatNumber number={(item.priceListing / 1e18).toString()}/>
               </div>
             </div>
           </div>

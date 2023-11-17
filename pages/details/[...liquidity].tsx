@@ -25,6 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import MediaNFT from "@/components/Common/MediaNFT";
+import FormatNumber from "@/components/Common/FormatNumber";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
@@ -166,9 +167,9 @@ export default function DetailLiquidity() {
             <div className="flex justify-between font-medium max-w-[500px]">
               <div>
                 <p className="text-dark1">Liquidity</p>
-                <p className="text-xl text-secondary3">
-                  {formatNumber(balanceOfDML)}
-                </p>
+                <div className="text-xl text-secondary3">
+                  <FormatNumber number={balanceOfDML}/>
+                </div>
               </div>
               <div>
                 <p className="text-dark1">Reward</p>

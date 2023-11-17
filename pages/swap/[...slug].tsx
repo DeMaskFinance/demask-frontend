@@ -303,13 +303,9 @@ const Swap: React.FC = () => {
                 </div>
                 <div className="">
                   {activeChoice === "BUY" && (
-                    <div className="text-lg font-semibold lg:text-3xl text-secondary3">
+                    <div className="flex text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
-                        <span>
-                          {formatNumber(
-                            divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
-                          )}
-                        </span>
+                        <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)}/>
                       ) : (
                         <span>0</span>
                       )}
@@ -317,13 +313,9 @@ const Swap: React.FC = () => {
                     </div>
                   )}
                   {activeChoice === "SELL" && (
-                    <div className="text-lg font-semibold lg:text-3xl text-secondary3">
+                    <div className="flex text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
-                        <span>
-                          {formatNumber(
-                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
-                          )}
-                        </span>
+                        <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)}/>
                       ) : (
                         <span>0</span>
                       )}

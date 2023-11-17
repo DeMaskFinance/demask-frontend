@@ -1,9 +1,9 @@
-import formatNumber from "@/libs/utils/formatNumer";
+import AccountContext from "@/context/AccountContext";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { getBuyPrice } from "@/libs/utils/getPrice";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInView } from "react-intersection-observer";
 import { Pagination } from "swiper";
 import "swiper/css";
@@ -11,10 +11,8 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AvatarUser } from "../Avatars";
 import { ActiveIcon } from "../Icons";
-import useSvgComponents from "../Picture/Picture";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
-import AccountContext from "@/context/AccountContext";
+import useSvgComponents from "../Picture/Picture";
 interface NFTItemsProps {
   nftItem: any;
 }
