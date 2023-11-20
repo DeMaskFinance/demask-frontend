@@ -12,7 +12,7 @@ export default function History() {
     const [page, setPage] = useState(1);
     const [pageNumberInput, setPageNumberInput] = useState("");
     const { account, chainId } = useContext(AccountContext);
-    const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
+    const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } = useQuery({
         queryKey: ["historyUser", chainId],
         queryFn: async () => {
             const res = await historyUserService(account.toLowerCase(), chainId, page);
@@ -84,7 +84,7 @@ export default function History() {
         <div>
             {(isLoading || isFetching) ? (
                 <SkeletonTable length={4} />
-            ) : (
+            ) : (isSuccess && data.userTransactionList.length > 0) ? (
                 <div className="transactionList">
                     <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home">
                         <div className="px-6 pt-6 pb-0 overflow-x-scroll">
@@ -183,6 +183,10 @@ export default function History() {
                             </div>
                         </div>
                     </div>
+                </div>
+            ) : (
+                <div>
+                    <p>No data available.</p>
                 </div>
             )}
         </div>

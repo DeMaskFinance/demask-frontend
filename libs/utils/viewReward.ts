@@ -11,7 +11,6 @@ const viewReward = async (
     const provider = new ethers.providers.Web3Provider(providerChoice);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(dmlToken, abiDML, signer);
-    console.log(contract);
 
     try {
       const result = await contract.viewReward(account);

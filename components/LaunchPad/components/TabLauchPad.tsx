@@ -4,6 +4,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import ActiveLaunchItem from "./TabLaunchPadItem";
 import { useInView } from "react-intersection-observer";
+import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import AccountContext from "@/context/AccountContext";
 
 type TabLaunchPadProps = {
@@ -13,8 +14,13 @@ type TabLaunchPadProps = {
 const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const fetchDataPage = async (pageParam = 1, chainId: string | string[], query: string) => {
-    const data = await categoryAPI(`launchpad?chainId=${chainId}&status=${query}&page=${pageParam}&limit=12`);
+  const [choice] = useQueryParam('choice', withDefault(StringParam, 'Active'));
+  console.log(
+    choice
+  );
+  
+  const fetchDataPage = async (pageParam = 1, chainId: string | string[], choice: string) => {
+    const data = await categoryAPI(`launchpad?chainId=${chainId}&status=${choice}&page=${pageParam}&limit=8`);
     return data;
   };
 
@@ -25,30 +31,24 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
     isSuccess,
     isLoading,
     isFetching,
+    hasNextPage
   } = useInfiniteQuery(
-    ["Homepage", chainId, query],
-    ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, query),
+    ["Homepage", chainId, choice],
+    ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, choice),
     {
       getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPage
+        page?.currentPage === page?.totalPages
           ? undefined
           : page?.currentPage + 1,
     }
   );
-  // console.log({
-  //   isLoading,
-  //   isFetchingNextPage,
-  //   isFetching,
-  //   query,
-  //   data
-  // });
-  
+ 
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView]);
-
+  
   return (
     <>
       <div className="mb-8 containe">
@@ -59,6 +59,9 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
         ) : (
           <>
             <div className="mt-4">
+            <div onClick={()=>fetchNextPage()}>
+                click
+              </div>
               {isSuccess && data?.pages[0]?.data.length > 0 ? (
                 data.pages.map((page, pageIndex) => (
                   <Fragment key={pageIndex}>
@@ -78,7 +81,6 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                 <p>{desc}</p>
               )}
             </div>
-
             <div ref={ref} style={{ height: "1px" }} ></div>
           </>
         )}

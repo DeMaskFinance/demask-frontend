@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { useQueryParam, StringParam, withDefault } from 'use-query-params';
-import NFTs from './NFTs';
-import OptionNetwork from './OptionNetwork';
-import Pools from './Pools';
-import Referral from './Referral';
-import History from './History';
-import ProfileLaunchPad from './ProfileLaunchPad/ProfileLaunchPad';
 import Tippy from "@tippyjs/react/headless";
-import "tippy.js/dist/tippy.css"; // optional
+import { useEffect, useState } from 'react';
 import { BsCaretDownFill } from 'react-icons/bs';
+import "tippy.js/dist/tippy.css"; // optional
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import History from './History';
+import Inventory from './Inventory';
+import Pools from './Pools';
+import ProfileLaunchPad from './ProfileLaunchPad/ProfileLaunchPad';
+import Referral from './Referral';
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -22,7 +21,7 @@ const Profile = () => {
         {
             title: "Inventory",
             panel: () => (
-                <NFTs />
+                <Inventory />
             ),
             key: "nfts",
         },

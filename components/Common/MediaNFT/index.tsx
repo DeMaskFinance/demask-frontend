@@ -10,7 +10,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data,isControls,hover }) => {
     return (
         <>
             {data?.metadata && (
-                <div className="relative h-[inherit]">
+                <div className="relative h-[inherit] w-full">
                     {data.metadata?.image && (
                         <Image
                             src={data.metadata.image}

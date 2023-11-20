@@ -7,7 +7,7 @@ const nftsUserService = async (
 ) => {
   try {
     const res = await request.get(
-      `userInventory?userAddress=${account}&chainId=${chainId}&page=${page}`
+      `userInventory?userAddress=${account}&chainId=${chainId}&page=${page}&limit=8`
     );
     return res.data;
   } catch (error) {

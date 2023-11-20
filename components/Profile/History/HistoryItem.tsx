@@ -16,13 +16,15 @@ const HistoryItem = ({ item }: any) => {
                 <div className="w-8 h-8 mr-1">
                     <MediaNFT data={item} isControls={false} />
                 </div>
-                {item?.tokenSymbol ? (
-                    <>
-                        <span>{item?.tokenSymbol}/{item?.metadata?.symbol}</span>
-                    </>
-                ) : (
-                    <span>{item?.metadata?.symbol}</span>
-                )}
+                <div className="max-w-[120px] truncate">
+                    {item?.tokenSymbol ? (
+                        <>
+                            <span>{item?.tokenSymbol}/{item?.metadata?.symbol}</span>
+                        </>
+                    ) : (
+                        <span>{item?.metadata?.symbol}</span>
+                    )}
+                </div>
             </td>
 
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">

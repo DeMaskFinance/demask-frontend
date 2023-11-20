@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useState } from "react";
 import { SEO } from "../../next-seo.config";
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 const updateMeta = {
   ...SEO,
@@ -11,7 +12,7 @@ const updateMeta = {
 
 export default function Launchpad() {
   const [activeChoice, setActiveChoice] = useState(1);
-
+  const [tab, setTab] = useQueryParam("choice", withDefault(StringParam, "Coming"));
   const listTab = [
     {
       name: "Coming",
@@ -37,6 +38,8 @@ export default function Launchpad() {
       index: 2,
     },
   ];
+  const selectedTab = listTab.find((item) => item.name === tab);
+  console.log(selectedTab);
 
   return (
     <section className="launchpad">
@@ -49,29 +52,28 @@ export default function Launchpad() {
             className={`flex items-center p-1 gap-2 rounded-lg text-base text-center text-white  bg-dark3 w-max `}
           >
             {listTab.map((item, idx) => (
-              <>
-                <button
-                  className={`lg:py-2 py-1 px-3 lg:px-6 ${activeChoice === item.index ? "bg-secondary5" : ""
-                    } rounded-lg text-sm`}
-                  type="button"
-                  onClick={() => {
-                    setActiveChoice(idx);
-                  }}
-                >
-                  {item.name}
-                </button>
-              </>
+              <button
+                key={idx}
+                className={`lg:py-2 py-1 px-3 lg:px-6 ${tab === item.name ? "bg-secondary5" : ""
+                  } rounded-lg text-sm`}
+                type="button"
+                onClick={() => {
+                  setTab(item.name)
+                }}
+              >
+                {item.name}
+              </button>
             ))}
           </div>
 
-          <Link
+          {/* <Link
             href={"/launchpad/create"}
             className="flex px-2 py-1 text-sm text-white rounded-lg bg-dark3 hover:bg-secondary3 lg:pt-3 w-fit"
           >
             Create Launchpad
-          </Link>
+          </Link> */}
         </div>
-        <div>{listTab[activeChoice].component}</div>
+        <div>{selectedTab?.component}</div>
       </div>
     </section>
   );

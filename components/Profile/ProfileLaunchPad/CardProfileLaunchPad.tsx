@@ -153,7 +153,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                             className="overflow-hidden transition-all h-52 group"
                             href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
                         >
-                            <MediaNFT data={item} isControls/>
+                            <MediaNFT data={item} isControls={false}/>
                         </Link>
                         <div className="relative z-40 flex items-center justify-between px-5 pt-4 pb-2 overflow-hidden">
                             <Link

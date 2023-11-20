@@ -14,7 +14,7 @@ export default function CreatorLaunchpad({ tab }: any) {
     queryKey: ["creator", account, chainId],
     queryFn: async () => {
       const res = await categoryAPI(
-        `/userCreatedLaunchpad?userAddress=${account}&chainId=${chainId}&page=1&limit=50`
+        `/userCreatedLaunchpad?userAddress=${account}&chainId=${chainId}`
       );
       return res;
     },

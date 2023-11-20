@@ -3,20 +3,18 @@ import { nftsUserService } from '@/libs/service/profileService';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { useInView } from "react-intersection-observer";
-import SkeletonCategory from '../Skeleton/SkeletonCategory';
 import Image from 'next/image';
 import images from '@/public/images';
 import { mediaType } from '@/libs/constants';
-import { AvatarUser } from '../Avatars';
-import ModalNumber from '../Modal/ModalLength/ModalNumber';
 import Link from 'next/link';
-import { Button } from '../Buttons';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
-import { CgClose } from 'react-icons/cg';
-import { searchNFTService } from '@/libs/service/searchService';
-import { ActiveIcon, AddIcon, SwapIconProfile, ZkSyncIcon } from '../Icons';
-import MediaNFT from '../Common/MediaNFT';
-const NFTs = () => {
+import SkeletonCategory from '@/components/Skeleton/SkeletonCategory';
+import MediaNFT from '@/components/Common/MediaNFT';
+import { AddIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
+import ModalNumber from '@/components/Modal/ModalLength/ModalNumber';
+import { Button } from '@/components/Buttons';
+import TransionDML from './TransitionDML';
+const Inventory = () => {
     const { account, chainId } = useContext(AccountContext);
     const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
     const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
@@ -39,15 +37,16 @@ const NFTs = () => {
         ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chain, account),
         {
             getNextPageParam: (page) =>
-                page?.currentPage === page?.totalPage
+                page?.currentPage === page?.totalPages
                     ? undefined
                     : page?.currentPage + 1,
         }
     );
 
-    // console.log({
-    //     data
-    // });
+    console.log({
+        data,
+        chain
+    });
     useEffect(() => {
         if (inView) {
             fetchNextPage();
@@ -59,14 +58,14 @@ const NFTs = () => {
     }
     return (
         <div>
-            {(isLoading || isFetchingNextPage || isFetching) ? (
+            {(isLoading) ? (
                 <SkeletonCategory />
             ) : (
-                (isSuccess && data?.pages[0]?.userNFTLists?.length > 0) ? (
+                (isSuccess && data?.pages[0]?.data?.length > 0) ? (
                     <div className='grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2'>
                         {data.pages.map((page, pageIndex) => (
                             <Fragment key={pageIndex}>
-                                {page.userNFTLists.map((item: any, index: number) => (
+                                {page.data.map((item: any, index: number) => (
                                     <div key={index} className='relative overflow-hidden'>
                                         <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
                                             <div className="relative pb-[100%] h-[240px]">
@@ -137,55 +136,8 @@ const NFTs = () => {
                     <p>No data available.</p>
                 )
             )}
-            <div ref={ref} style={{ height: "1px" }} />
+            <div ref={ref} style={{ height: "1px" }}></div>
         </div>
     )
 }
-const TransionDML = (
-    props: {
-        item: any,
-        chainId: string,
-        selectedAction: string,
-        index: number,
-        selectedItemIndex: number | null,
-        setSelectedItemIndex: any
-    }
-) => {
-    console.log(props);
-
-    const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-        queryKey: ["dml", props],
-        queryFn: async () => {
-            const res = await searchNFTService(props.item.nftAddress, props.item.nftID, props.chainId);
-            return res;
-        },
-        keepPreviousData: true,
-    });
-    console.log(data);
-
-    return (
-        <div className={`absolute border p-2 top-0 left-0 w-full h-full bg-white rounded-md transition-all ease-linear duration-150 ${props.selectedItemIndex === props.index ? 'translate-y-0' : 'translate-y-full'}`}>
-            {props.selectedAction}
-            {(isLoading || isFetching) ? (
-                <p>Loading...</p>
-            ) : isSuccess && data.length > 0 ? (
-                data.map((dmlItem: any, index: number) => (
-                    <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'>
-                        <span>{dmlItem.metadata.symbol}</span>
-                        <span className="block overflow-hidden leading-3">/</span>
-                        <span>{dmlItem.tokenSymbol}</span>
-                    </Link>
-                ))
-            ) : (
-                <p>No data available.</p>
-            )}
-            <button
-                className="absolute top-0 right-0 p-2 text-lg"
-                onClick={() => props.setSelectedItemIndex(null)}
-            >
-                <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
-            </button>
-        </div>
-    )
-}
-export default NFTs
+export default Inventory;
