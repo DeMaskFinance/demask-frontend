@@ -36,6 +36,7 @@ import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import { swapChartAPI } from "@/libs/service/swapService";
 import FormatNumber from "@/components/Common/FormatNumber";
+import { BiLoaderAlt } from "react-icons/bi";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -68,6 +69,7 @@ const Swap: React.FC = () => {
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
+  const [isCalculating, setIsCalculating] = useState(false);
   const { account, wallet, chainId, demask, tokenDefault, slippage, txDeadline } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
@@ -125,9 +127,9 @@ const Swap: React.FC = () => {
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
 
-  const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
+  const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-  
+
 
 
   useEffect(() => {
@@ -139,6 +141,9 @@ const Swap: React.FC = () => {
       setAmountSellDec(0);
     }
   }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice])
+  console.log(isCalculating);
+  console.log(isLoadingSell);
+  console.log(isLoadingBuy);
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -305,7 +310,7 @@ const Swap: React.FC = () => {
                   {activeChoice === "BUY" && (
                     <div className="flex text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
-                        <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)}/>
+                        <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
                       ) : (
                         <span>0</span>
                       )}
@@ -315,7 +320,7 @@ const Swap: React.FC = () => {
                   {activeChoice === "SELL" && (
                     <div className="flex text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
-                        <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)}/>
+                        <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                       ) : (
                         <span>0</span>
                       )}
@@ -364,7 +369,8 @@ const Swap: React.FC = () => {
                   {data.dmlAddress !== null &&
                     !isSufficientNFT &&
                     balanceNFT &&
-                    data.reserveNFT && (
+                    data.reserveNFT &&
+                    account && (
                       <p
                         className="mt-0 mb-2 ml-3 text-xs text-red"
                         key="NFTbalance"
@@ -431,16 +437,32 @@ const Swap: React.FC = () => {
                   </div>
                 </div>
               </form>
-              {activeChoice === "BUY" && Math.floor(amountBuyDec) === 0 && inputNFT && (
-                <p className="mt-0 mb-2 ml-3 text-xs text-red">
-                  Can't buy
-                </p>
-              )}
-              {activeChoice === "SELL" && Math.floor(amountSellDec) === 0 && inputNFT && (
-                <p className="mt-0 mb-2 ml-3 text-xs text-red">
-                  Can't sell
-                </p>
-              )}
+              {(inputNFT && activeChoice === "BUY") ? (
+                !isLoadingBuy ? (
+                  Math.floor(amountBuyDec) === 0 ? (
+                    <p className="mt-0 mb-2 ml-3 text-xs text-red">
+                      Can't buy
+                    </p>
+                  ) : (
+                    null
+                  )
+                ) : (
+                  <BiLoaderAlt className="animate-spin text-secondary5" />
+                )
+              ) : null}
+              {(inputNFT && activeChoice === "SELL") ? (
+                !isLoadingSell ? (
+                  Math.floor(amountSellDec) === 0 ? (
+                    <p className="mt-0 mb-2 ml-3 text-xs text-red">
+                      Can't sell
+                    </p>
+                  ) : (
+                    null
+                  )
+                ) : (
+                  <BiLoaderAlt className="animate-spin text-secondary5" />
+                )
+              ) : null}
               <div className="flex justify-center w-full">
                 {isApprovedNFT && activeChoice === "BUY" && account && (
                   <button

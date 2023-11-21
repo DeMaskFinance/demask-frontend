@@ -23,7 +23,6 @@ const ModalSetting: React.FunctionComponent<
 }) => {
 
         const { updateSlippage, updateTxDeadline, txDeadline, slippage } = useContext(AccountContext);
-        console.log(slippage);
         const [slippageTo, setSlippageTo] = useState<number>(3);
         const [time, setTime] = useState<number>(txDeadline);
         useEffect(() => {
@@ -39,8 +38,6 @@ const ModalSetting: React.FunctionComponent<
                 setTime(Number(storedTime));
             }
         }, [txDeadline]);
-        console.log(slippageTo);
-        console.log(time);
 
         const Slippage = [
             0.1, 0.5, 1
@@ -55,8 +52,6 @@ const ModalSetting: React.FunctionComponent<
             setSlippageTo(Number(e.target.value));
             updateSlippage(Number(e.target.value));
         }
-        console.log(slippageTo);
-        console.log(time);
 
         return (
             <Wrapper isOpen={isOpenSetting} onClick={handleClose}>
