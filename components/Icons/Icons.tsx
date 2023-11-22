@@ -65,10 +65,14 @@ export const PolygonIcon: React.FunctionComponent<IconProps> = ({
   );
 };
 export const ZkSyncIcon: React.FunctionComponent<IconProps> = ({
-  className
+  className,
+  width,
+  height,
 }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 8" fill="#636977" className={className}>
+    <svg xmlns="http://www.w3.org/2000/svg" className={className}
+      width={width}
+      height={height} viewBox="0 0 16 8" fill="#636977" >
       <path fillRule="evenodd" clipRule="evenodd" d="M15.0502 4.00286L11.0482 0.0188599V2.93486L7.07617 5.85686H11.0482V7.98686L15.0502 4.00286Z" />
       <path fillRule="evenodd" clipRule="evenodd" d="M0.949219 4.003L4.95122 7.987V5.089L8.92322 2.143H4.95122V0.0130005L0.949219 4.003Z" />
     </svg>

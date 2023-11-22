@@ -34,7 +34,7 @@ const getMetadataUrl = async ({
     category: selectedCategory,
   };
   if (fileType.startsWith("video/")) {
-    initialMetadata.animation_url = await fileIPFS; // Sử dụng fileIPFS cho thuộc tính animation_url
+    initialMetadata.animation_url = await fileIPFS; // use fileIPFS for animation_url
   } else if (fileType.startsWith("audio/")) {
     const imagePath = "/images/audio.svg";
     const response = await fetch(imagePath);

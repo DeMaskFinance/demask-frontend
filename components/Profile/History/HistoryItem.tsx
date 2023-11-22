@@ -1,3 +1,4 @@
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { ZkSyncIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -29,18 +30,19 @@ const HistoryItem = ({ item }: any) => {
 
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
                 {item.chainId === '280' && (
-                    <>
-                        <span><ZkSyncIcon /></span>
-                        <span className="ml-1">ZkSync</span></>
+                    <div className="flex items-center justify-center px-2 py-1 text-sm min-w-max bg-dark4 rounded-2xl text-dark1">
+                        <ZkSyncIcon width={16} height={16} className="mr-1" />
+                        zkSync
+                    </div>
                 )}
             </td>
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
-                {formatToUnit(item.amountNFT)}
+                <FormatNumber number={item.amountNFT} />
             </td>
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
-                {formatToUnit(item.price)}
+                <FormatNumber number={item.price} />
             </td>
-            <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
+            <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] text-secondary4">
                 <a href={`https://goerli.explorer.zksync.io/tx/${item.transactionHash}`} target="_blank" rel="noopener noreferrer">{`${item.transactionHash.slice(0, 5)}...${item.transactionHash.slice(-4)}`}</a>
             </td>
         </tr>

@@ -87,9 +87,9 @@ const Inventory = () => {
                                                 </div>
                                                 <div className='my-1'>
                                                     {chainId === '280' && (
-                                                        <div className='flex'>
-                                                            <ZkSyncIcon width={14} height={7} className='fill-secondary3' />
-                                                            <p className='text-[10px] font-semibold text-secondary3'>ZKsync Era</p>
+                                                        <div className='flex items-center gap-x-1'>
+                                                            <ZkSyncIcon width={18} height={7} className='fill-secondary3' />
+                                                            <p className='text-[11px] font-semibold text-secondary3'>zKsync Era</p>
                                                         </div>
                                                     )}
                                                 </div>

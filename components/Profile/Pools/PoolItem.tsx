@@ -1,3 +1,4 @@
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import AccountContext from "@/context/AccountContext";
@@ -19,12 +20,14 @@ const PoolItem = ({ item }: any) => {
         <div>
             <Link href={`/details/${item.dmlAddress}`}>
                 <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
-                    <td className="relative flex items-center justify-start py-2 hover:text-secondary3 md:basis-1/6 w-[140px]">
-                        {formatNumber(balanceOfDML)}
+                    <td className="relative flex items-center justify-start py-2  md:basis-1/6 w-[140px]">
+                        <FormatNumber number={balanceOfDML} />
                     </td>
 
-                    <td className="flex items-center justify-start py-2 md:basis-3/6 w-[200px]">
-                        {`${item.dmlAddress.slice(0, 6)}...${item.dmlAddress.slice(-4)}`}
+                    <td className="flex items-center justify-start py-2 md:basis-3/6 w-[200px] ">
+                        <a href={`https://goerli.explorer.zksync.io/address/${item.dmlAddress}`} target="_blank" rel="noopener noreferrer">
+                            {`${item.dmlAddress.slice(0, 6)}...${item.dmlAddress.slice(-4)}`}
+                        </a>
                     </td>
 
                     <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
@@ -34,7 +37,7 @@ const PoolItem = ({ item }: any) => {
                     </td>
                     <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] gap-x-2">
                         <div className="w-8 h-8">
-                            <MediaNFT data={item} isControls={false}/>
+                            <MediaNFT data={item} isControls={false} />
                         </div>
                         <div className="flex items-center">
                             <span>{item.metadata.symbol}</span>

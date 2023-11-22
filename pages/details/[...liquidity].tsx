@@ -1,5 +1,7 @@
 import { Button } from "@/components/Buttons";
-import { BackIcon } from "@/components/Icons";
+import FormatNumber from "@/components/Common/FormatNumber";
+import MediaNFT from "@/components/Common/MediaNFT";
+import { BackIcon, EtherIcon } from "@/components/Icons";
 import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -14,18 +16,14 @@ import formatNumber from "@/libs/utils/formatNumer";
 import getRewardDML from "@/libs/utils/getReward";
 import viewReward from "@/libs/utils/viewReward";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
+import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
-import MediaNFT from "@/components/Common/MediaNFT";
-import FormatNumber from "@/components/Common/FormatNumber";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
@@ -96,7 +94,7 @@ export default function DetailLiquidity() {
       getRewardDML({
         wallet, dmlTokenLiquidity, account, data: {
           dmlDecimals: data.dmlDecimals,
-          tokenAddress:data.tokenAddress,
+          tokenAddress: data.tokenAddress,
         }, setReward, setIsOpenTransaction
       });
     } else {
@@ -168,14 +166,16 @@ export default function DetailLiquidity() {
               <div>
                 <p className="text-dark1">Liquidity</p>
                 <div className="text-xl text-secondary3">
-                  <FormatNumber number={balanceOfDML}/>
+                  <FormatNumber number={balanceOfDML} />
                 </div>
               </div>
               <div>
                 <p className="text-dark1">Reward</p>
-                <div className="text-xl text-secondary3">
-                  <span className="mr-2">{formatNumber(reward)}</span>
-                  <span>{tokenSymbol}</span>
+                <div className="flex items-center text-xl text-secondary3">
+                  <FormatNumber number={reward} />
+                  <span className="mb-1 ml-1">
+                    <EtherIcon width={18} height={18} className="fill-secondary3" />
+                  </span>
                 </div>
               </div>
               <div>
@@ -260,7 +260,7 @@ export default function DetailLiquidity() {
 
         {account && data?.metadata && (
           <div className="justify-end max-w-[700px] mb-6 mx-auto">
-            <MediaNFT data={data} isControls={true}/>
+            <MediaNFT data={data} isControls={true} />
             <div className="w-full">
               <p
                 className="block mx-auto mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"

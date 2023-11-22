@@ -47,7 +47,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             <div className="z-50 flex flex-col justify-center h-full">
                 <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
                     <h2 className='text-xl font-semibold text-dark1'>Check your network</h2>
-                    <h3 className='my-4 font-medium text-dark2'>Currently Demask only supported in {PORT === '3000' ? 'Zksync Testnet' : 'BNB Smart Chain Testnet, Polygon Testnet'}</h3>
+                    <h3 className='my-4 font-medium text-dark2'>Currently Demask only supported in {PORT === '3000' ? 'zkSync Testnet' : 'BNB Smart Chain Testnet, Polygon Testnet'}</h3>
                     <h2 className='font-medium text-yellow'>Warning</h2>
                     <div className='flex my-4 gap-x-3'>
                         <WarningIcon />

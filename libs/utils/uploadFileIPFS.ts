@@ -28,6 +28,6 @@ export async function uploadFileToIPFS(file: any) {
       throw error;
     }
   } else {
-    alert("Bạn chưa chọn file");
+    console.log("No file");
   }
 }

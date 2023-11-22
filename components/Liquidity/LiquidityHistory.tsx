@@ -1,6 +1,7 @@
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
+import FormatNumber from "../Common/FormatNumber";
 
 interface LiquiditiesHistoryProps {
   data: any;
@@ -42,7 +43,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
                 <ModalNumber data={item.liquidityDecimals} />
               </div>
               <div>
-                <ModalNumber data={item.amountNFT} />
+                <FormatNumber number={item.amountNFT} />
               </div>
               <div>
                 <ModalNumber data={item.amountToken} />

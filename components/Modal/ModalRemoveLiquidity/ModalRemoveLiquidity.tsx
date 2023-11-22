@@ -5,7 +5,6 @@ import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
 import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useContext, useEffect, useState } from "react";
@@ -16,6 +15,7 @@ import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -154,7 +154,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <div>
                     <div className="flex justify-between mb-4 text-dark2">
                       <p className="font-semibold">Liquidity</p>
-                      <p>Balance: {formatNumber(balanceOfDML)}</p>
+                      <div className="flex">Balance: <FormatNumber number={balanceOfDML}/></div>
                     </div>
                     <input
                       className={styles.inputItem}
@@ -201,7 +201,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                     </div>
                     <div className={styles.inputItem}>
                       <div className="flex justify-between">
-                        <p>{amountTokenDec}</p>
+                        <FormatNumber number={amountTokenDec}/>
                         <p className="text-dark3">{tokenSymbol}</p>
                       </div>
                     </div>

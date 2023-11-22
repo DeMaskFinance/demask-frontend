@@ -59,9 +59,6 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
         ) : (
           <>
             <div className="mt-4">
-            <div onClick={()=>fetchNextPage()}>
-                click
-              </div>
               {isSuccess && data?.pages[0]?.data.length > 0 ? (
                 data.pages.map((page, pageIndex) => (
                   <Fragment key={pageIndex}>

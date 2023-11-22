@@ -10,7 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AvatarUser } from "../Avatars";
-import { ActiveIcon } from "../Icons";
+import { ActiveIcon, EtherIcon } from "../Icons";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
 import useSvgComponents from "../Picture/Picture";
 interface NFTItemsProps {
@@ -102,13 +102,13 @@ const NFTItems: React.FunctionComponent<NFTItemsProps> = ({ nftItem }) => {
                 href={`/swap/${nftItem.nftAddress}/${nftItem.tokenAddress}/${nftItem.nftID}`}
                 className="flex items-center gap-2 text-sm font-semibold whitespace-pre lg:text-lg md:text-md"
               >
-                <div className="flex gap-x-1">
+                <div className="flex items-center gap-x-1">
                   <ModalNumber data={(divideByDecimal(getBuyPrice(nftItem.reserveNFT, nftItem.reserveTokenDecimals, 1).toString(), nftItem.tokenDecimals))} />
                   <span>
-                    {symbolTokenSwap}
+                    <EtherIcon width={18} height={18} className="fill-white" />
                   </span>
                 </div>
-                <svgComponents.buttonSwap />
+                {/* <svgComponents.buttonSwap /> */}
               </Link>
             )}
           </div>

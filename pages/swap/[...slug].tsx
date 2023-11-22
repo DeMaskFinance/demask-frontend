@@ -3,7 +3,7 @@ import { ChartLoading } from "@/components/Charts";
 import ChartNoTransfers from "@/components/Charts/ChartNoTransfers";
 import ChartSwap from "@/components/Charts/ChartSwap";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { ActiveIcon, PoolIcon } from "@/components/Icons";
+import { ActiveIcon, EtherIcon, PoolIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -296,9 +296,12 @@ const Swap: React.FC = () => {
                     </span>
                   </div>
                   {account && activeChoice === "BUY" && (
-                    <p className="text-secondary3">
-                      Balance:{formatNumber(balanceToken)} {symbolToken}
-                    </p>
+                    <div className="flex items-center text-secondary3">
+                      Balance:{formatNumber(balanceToken)} 
+                      <span className="mb-1 ml-1">
+                        <EtherIcon width={16} height={16} className="fill-secondary4" />
+                      </span>
+                    </div>
                   )}
                   {account && activeChoice === "SELL" && (
                     <p className="text-secondary3">
@@ -308,23 +311,27 @@ const Swap: React.FC = () => {
                 </div>
                 <div className="">
                   {activeChoice === "BUY" && (
-                    <div className="flex text-lg font-semibold lg:text-3xl text-secondary3">
+                    <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
                         <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
                       ) : (
                         <span>0</span>
                       )}
-                      <span className="ml-2">{symbolToken}</span>
+                      <span className="mb-1 ml-2">
+                        <EtherIcon width={20} height={20} className="fill-secondary4" />
+                      </span>
                     </div>
                   )}
                   {activeChoice === "SELL" && (
-                    <div className="flex text-lg font-semibold lg:text-3xl text-secondary3">
+                    <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
                         <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                       ) : (
                         <span>0</span>
                       )}
-                      <span className="ml-2">{symbolToken}</span>
+                      <span className="mb-1 ml-2">
+                        <EtherIcon width={20} height={20} className="fill-secondary4" />
+                      </span>
                     </div>
                   )}
                 </div>

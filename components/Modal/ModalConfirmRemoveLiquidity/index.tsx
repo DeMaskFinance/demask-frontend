@@ -18,9 +18,9 @@ import Wrapper from "../Wrapper";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { BiLoaderAlt } from "react-icons/bi";
-import formatNumber from "@/libs/utils/formatNumer";
 import TransitionURL from "@/components/Toast/TransionURL";
 import { toast } from "react-toastify";
+import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalConfirmRemoveLiquidityProps {
     isOpenConfirmRemoveLiquidity: boolean;
     data: any;
@@ -232,7 +232,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             +
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>{formatNumber(amountTokenDec)}</p>
+                            <FormatNumber number={amountTokenDec}/>
                             <p>{symbolToken}</p>
                         </div>
                         <div className="flex justify-between my-2 text-xs font-semibold text-secondary1">
@@ -244,9 +244,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                                 <span className="overflow-hidden">/</span>
                                 <span>{symbolToken}</span>
                             </div>
-                            <div>
-                                {formatNumber(inputLiquidity)}
-                            </div>
+                            <FormatNumber number={inputLiquidity}/>
                         </div>
                         <div className="flex flex-col items-center mt-6">
                             {!isApprovedLiquidity && account && (

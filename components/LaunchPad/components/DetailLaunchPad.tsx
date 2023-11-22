@@ -228,19 +228,9 @@ export default function DetailLaunchPad() {
 
   return (
     <div>
-      <h1 className="text-2xl font-medium">Detail Launchpad</h1>
+      <h1 className="text-2xl font-medium text-dark0">Detail Launchpad</h1>
       <div className="flex flex-col gap-4 mt-8 lg:flex-row">
         <div className="p-4 border rounded-lg lg:w-3/4">
-          <div className="flex justify-end w-full mb-2">
-            {/* <button
-              onClick={() => {
-                refetch();
-              }}
-              className="flex items-center gap-2 px-2 py-1 text-white border rounded-lg bg-secondary3 hover:bg-secondary5"
-            >
-              <IoReloadOutline /> Refetch
-            </button> */}
-          </div>
           {isLoading ? (
             <div className="h-[800px]">
               <div className="flex gap-8">
