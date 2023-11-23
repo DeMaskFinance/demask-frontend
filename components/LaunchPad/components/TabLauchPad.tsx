@@ -14,7 +14,7 @@ type TabLaunchPadProps = {
 const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const [choice] = useQueryParam('choice', withDefault(StringParam, 'Active'));
+  const [choice] = useQueryParam('choice', withDefault(StringParam, 'Upcoming'));
   console.log(
     choice
   );
@@ -66,6 +66,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                       {page?.data?.map((item: any, itemIndex: number) => (
                         <li
                           title={item?.metadata?.name}
+                          key={itemIndex}
                           className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
                         >
                           <ActiveLaunchItem item={item} query={query} />

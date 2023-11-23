@@ -12,10 +12,10 @@ const updateMeta = {
 
 export default function Launchpad() {
   const [activeChoice, setActiveChoice] = useState(1);
-  const [tab, setTab] = useQueryParam("choice", withDefault(StringParam, "Coming"));
+  const [tab, setTab] = useQueryParam("choice", withDefault(StringParam, "Upcoming"));
   const listTab = [
     {
-      name: "Coming",
+      name: "Upcoming",
       component: (
         <TabLaunchPad
           query={"Upcoming"}

@@ -11,7 +11,7 @@ const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
     btnWallet:
-        "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2",
+        "flex items-center justify-center py-1 pl-2 lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2",
 };
 interface networkProps {
     name: string;
@@ -35,7 +35,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
         }
     }, [chainId]);
 
-    
+
     const LogoComponent: any = filterNetwork?.logo;
     return (
         <Tippy
@@ -69,12 +69,12 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
             )}
         >
             <button className={`${style.btnWallet} flex`}>
-                <p className="hidden lg:block">{filterNetwork?.name}</p>
                 <LogoComponent
                     width={24}
                     height={24}
                     className=" fill-white group-hover:fill-secondary5"
                 />
+                <p className="hidden lg:block">{filterNetwork?.name}</p>
                 <span className="lg:hidden">
                     <BsCaretDownFill />
                 </span>

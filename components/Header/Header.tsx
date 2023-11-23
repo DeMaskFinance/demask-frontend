@@ -30,7 +30,7 @@ const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
   btnWallet:
-    "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2",
+    "flex items-center justify-center py-1 pl-2 lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2",
 };
 
 export default function Header() {
@@ -93,7 +93,7 @@ export default function Header() {
         if (headerRef.current) {
           const headerClassList = headerRef.current.classList;
           headerClassList.toggle("translate-y-0", isScrolledUp);
-          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);       
+          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);
         }
 
         prevScrollPos = currentScrollPos;
@@ -119,7 +119,7 @@ export default function Header() {
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">
             <Link href="/" className={`p-2 border border-secondary1 rounded-xl block hover:border-white ${router.pathname === '/' ? "bg-white" : ""}`}>
-              <LogoDeMask width={94} height={24} className={`${router.pathname === '/' ? "fill-[#7413DC]" : "fill-white"}`}/>
+              <LogoDeMask width={94} height={24} className={`${router.pathname === '/' ? "fill-[#7413DC]" : "fill-white"}`} />
             </Link>
             <p className="text-xs font-semibold text-dark3 lg:hidden">{version}</p>
           </div>
@@ -194,22 +194,16 @@ export default function Header() {
                 )}
               >
                 <button className={style.btnWallet}>
-                  {`${account.slice(0, 2)}...${account.slice(-4)}`}
                   <ProfileIcon
                     width={24}
                     height={24}
                     className="fill-white"
                   />
+                  {`${account.slice(0, 2)}...${account.slice(-4)}`}
                 </button>
               </Tippy>
             ) : (
               <button className={style.btnWallet} onClick={handleOpen}>
-                <p>
-                  CONNECT{" "}
-                  <span className="hidden lg:inline-block md:inline-block">
-                    WALLET
-                  </span>
-                </p>
                 <Image
                   className="hidden group-hover:block"
                   src={Icons.wallet}
@@ -220,6 +214,12 @@ export default function Header() {
                   src={Icons.walletHover}
                   alt="wallet connect hover"
                 />
+                <p>
+                  CONNECT{" "}
+                  <span className="hidden lg:inline-block md:inline-block">
+                    WALLET
+                  </span>
+                </p>
               </button>
             )}
           </div>

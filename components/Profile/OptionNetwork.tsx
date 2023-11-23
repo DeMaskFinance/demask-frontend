@@ -26,7 +26,7 @@ const network = [
         chain: "All",
     },
     {
-        name: "zkSync Era Testnet",
+        name: "zkSync Testnet",
         logo: ZkSyncIcon,
         chain: "280",
     },

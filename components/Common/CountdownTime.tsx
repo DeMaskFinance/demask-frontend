@@ -2,11 +2,11 @@ import { convertTime } from "@/hooks/useConvertTime";
 import React, { useEffect, useState } from "react";
 interface CountdownTimeProps {
     blockNumber: number,
-    setCurrentTimer?: any
+    query?:string,
 }
 const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     blockNumber,
-    setCurrentTimer
+    query
 }) => {
     const [blockNumberTimer, setBlockNumberTimer] = useState(0);
 
@@ -27,26 +27,33 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     }, [blockNumber]);
 
     const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-
+    console.log(query);
+    console.log({ days, hours, minutes, seconds });
+    
     return (
-        <div className="pb-4 h-14">
-            <div>
-                {minutes + seconds > 0 && (
-                    <div className="flex gap-2 text-white">
-                        <div className="flex justify-between w-full gap-4 px-5 mb-2">
-                            <span className="px-2 py-1 border rounded-md">{days}d</span>
-                            <span className="px-2 py-1 border rounded-md">{hours}h</span>
-
-                            <span className="px-2 py-1 border rounded-md">
-                                {minutes > 9 ? minutes : "0" + minutes}m
-                            </span>
-                            <span className="px-2 py-1 border rounded-md">
-                                {seconds > 9 ? seconds : "0" + seconds}s
-                            </span>
+        <div>
+            {query !== "Ended" && (
+                <div className="">
+                    <p className="text-xs text-center text-dark3">
+                        {query === "Active" ? "Whitelist phase ends in:" : "Whitelist phase start in:"}
+                    </p>
+                    {minutes > 0 && seconds > 0 && (
+                        <div className="flex justify-center mt-1 text-secondary2">
+                            <div className="flex gap-1 mb-2">
+                                <span className="font-semibold">{days}d</span>:
+                                <span className="font-semibold">{hours}h</span>:
+                                <span className="font-semibold">
+                                    {minutes > 9 ? minutes : "0" + minutes}m
+                                </span>
+                                :
+                                <span className="font-semibold">
+                                    {seconds > 9 ? seconds : "0" + seconds}s
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

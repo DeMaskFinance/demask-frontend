@@ -1,4 +1,5 @@
 import { AvatarUser } from "@/components/Avatars";
+import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
@@ -13,9 +14,6 @@ interface TabLaunchPadProps {
   query: string;
 }
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
-  const { account, wallet, chainId, demask, tokenDefault } =
-    useContext(AccountContext);
-  // console.log(item);
 
   const blockNumber =
     query === "Upcoming"
@@ -23,49 +21,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
       : query === "Active"
         ? item.endTime
         : "";
-  const [blockNumberTimer, setBlockNumberTimer] = useState(0);
 
-  const timer = () => {
-    const currentTime = Math.floor(Date.now() / 1000);
-    const reBase = Math.max(0, blockNumber - currentTime);
-    setBlockNumberTimer(reBase);
-  };
-  useEffect(() => {
-    timer();
-    const id = setInterval(timer, 1000);
-    return () => clearInterval(id);
-  }, [blockNumber]);
-
-  useEffect(() => {
-    timer();
-  }, [blockNumber]);
-
-  const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-
-  const convetTime = (timestamp: any) => {
-    const date = new Date(timestamp * 1000);
-
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; // Month is zero-indexed, so add 1
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-
-    console.log(timestamp);
-    return day;
-  };
-
-  const getMinutes = (startDate: any, endDate: any) => {
-    const timeDifference = startDate + endDate;
-
-    // Convert the time difference to minutes
-    const totalMinutes = Math.floor(timeDifference / (1000 * 60));
-
-    return totalMinutes;
-  };
-
-  const progess = (item.totalSold / item.hardcap) * 100;
   return (
     <div className="h-full group">
       <Link
@@ -125,33 +81,12 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
               </div>
               <div className="flex items-center p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg gap-x-1 bg-dark3 group-hover:bg-secondary3">
                 <span className="text-sm">Total raise </span>
-                <FormatNumber number={(item.priceListing / 1e18).toString()}/>
+                <FormatNumber number={(item.priceListing / 1e18).toString()} />
               </div>
             </div>
           </div>
-          <div>
-            {query !== "Ended" && (
-              <div className="pt-2 mt-2 border-t">
-                <p className="text-xs text-center text-dark3">
-                  {query === "Active" ? "Whitelist phase ends in:" : "Whitelist phase start in:"}
-                </p>
-                {minutes > 0 && seconds > 0 && (
-                  <div className="flex justify-center mt-1 text-secondary2">
-                    <div className="flex gap-1 mb-2">
-                      <span className="font-semibold">{days}d</span>:
-                      <span className="font-semibold">{hours}h</span>:
-                      <span className="font-semibold">
-                        {minutes > 9 ? minutes : "0" + minutes}m
-                      </span>
-                      :
-                      <span className="font-semibold">
-                        {seconds > 9 ? seconds : "0" + seconds}s
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+          <div className="pt-2 mt-2 border-t">
+            <CountdownTime query={query} blockNumber={blockNumber} />
           </div>
         </div>
       </Link>

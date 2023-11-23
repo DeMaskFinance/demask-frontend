@@ -164,7 +164,7 @@ export default function CardProfileLaunchPad({ item }: any) {
                                 </h5>
                             </Link>
                         </div>
-                        <CountdownTime blockNumber={Number(item.durationLock) + Number(item.endTime)} setCurrentTimer={setCurrentTimer} />
+                        <CountdownTime blockNumber={Number(item.durationLock) + Number(item.endTime)} />
                         <div className="flex justify-between px-5 pb-4">
                             <button
                                 onClick={() => {

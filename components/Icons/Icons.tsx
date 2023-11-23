@@ -664,3 +664,17 @@ export const URLTransactionIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 }
+export const ZkSyncIconTable: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+      <div className={`flex items-center gap-x-[1px] justify-center float-right px-2 py-1 text-sm rounded-lg bg-dark4 text-dark1 ${className}`}>
+          <ZkSyncIcon 
+              width={width}
+              height={height} />
+          zkSync
+      </div>
+  );
+};

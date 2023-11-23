@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
@@ -20,6 +20,14 @@ import ModalAddAdminLaunchpad from "@/components/Modal/ModalLaunchpadProfile/Mod
 import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import MediaNFT from "@/components/Common/MediaNFT";
+import { AvatarUser } from "@/components/Avatars";
+import { EtherIcon, ZkSyncIconTable } from "@/components/Icons";
+import Rule from "./Rule";
+import Box from "./Box";
+import Timeline from "./Timeline";
+import FormatNumber from "@/components/Common/FormatNumber";
+import { Button } from "@/components/Buttons";
+import CountdownTime from "@/components/Common/CountdownTime";
 
 export default function DetailLaunchPad() {
   const [nftAddress, setNftAddress] = useState<string>("");
@@ -27,7 +35,7 @@ export default function DetailLaunchPad() {
   const [idNFT, setIdNFT] = useState<string>("");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
+  const [status, setStatus] = useQueryParam("status", withDefault(StringParam, "rule"));
   const [amountBuyDec, setAmountBuyDec] = useState<number>(1);
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -158,7 +166,29 @@ export default function DetailLaunchPad() {
   console.log(isApprovedToken);
   console.log(tokenAddress);
   console.log(nativeAddress);
-
+  const TABS = [
+    {
+      title: "Rule Introduction",
+      panel: () => (
+        <Rule />
+      ),
+      key: "rule",
+    },
+    {
+      title: "Box Information",
+      panel: () => (
+        <Box data={data} />
+      ),
+      key: "box",
+    },
+    {
+      title: "Timeline",
+      panel: () => (
+        <Timeline />
+      ),
+      key: "timeline",
+    }
+  ];
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -223,14 +253,24 @@ export default function DetailLaunchPad() {
       console.error(error);
     }
   };
-
+  const handleOpen = () => {
+    document.body.style.overflowY = "hidden";
+    setIsOpen(true);
+  };
   const listInfo = DetailLaunchPadInfo(data);
+  const selectedTab = TABS.find((item) => item.key === status);
+  const blockNumber =
+    data?.status === "Upcoming"
+      ? data.startTime
+      : data?.status === "Active"
+        ? data.endTime
+        : "";
+  console.log(blockNumber);
 
   return (
     <div>
-      <h1 className="text-2xl font-medium text-dark0">Detail Launchpad</h1>
-      <div className="flex flex-col gap-4 mt-8 lg:flex-row">
-        <div className="p-4 border rounded-lg lg:w-3/4">
+      <div className="">
+        <div className="p-4 border rounded-lg shadow-swiper">
           {isLoading ? (
             <div className="h-[800px]">
               <div className="flex gap-8">
@@ -241,159 +281,167 @@ export default function DetailLaunchPad() {
             data &&
             data?.metadata && (
               <>
-                <div className="flex flex-col justify-between gap-8">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl text-semibold">
-                      {data?.metadata.name}{" "}
-                    </h2>
-
-                    <span className="block px-2 py-1 text-sm text-white rounded-md w-fit bg-secondary5">
-                      {data?.status}
-                    </span>
+                <div className="flex justify-between mb-6">
+                  <h1 className="text-2xl font-medium text-dark0">Detail Launchpad</h1>
+                  <CountdownTime query={data.status} blockNumber={blockNumber} />
+                </div>
+                <div className="block lg:flex gap-x-8">
+                  <div className="w-full lg:w-[50%]">
+                    <MediaNFT data={data} isControls />
                   </div>
-
-                  <div>
-                    <p className="">{data?.metadata?.description}</p>
-                  </div>
-
-                  <div className="p-4 rounded-md">
-                    <MediaNFT data={data} isControls/>
-                  </div>
-                  <div className="p-4 rounded-lg h-fit">
-                    <div>
-                      <div className="">
-                        {listInfo?.map((item, index) => (
-                          <div
-                            className="flex justify-between py-2 border-b"
-                            key={index}
-                          >
-                            <p className="text-sm font-semibold text-gray-700">
-                              {item.name}
-                            </p>
-                            <p className="text-sm text-gray-700">
-                              {item.value}
-                            </p>
+                  <div className=" w-full lg:w-[50%] mt-4 lg:mt-0">
+                    <h1 className="text-2xl font-semibold text-dark1">{data.metadata.name}</h1>
+                    <div className="flex items-center my-3 font-semibold text-dark3">
+                      <AvatarUser width={32} height={32} />
+                      <p>{`${data.creator.slice(0, 4)}...${data.creator.slice(-4)}`}</p>
+                    </div>
+                    <div className="flex items-center text-3xl font-semibold text-secondary3">
+                      <FormatNumber number={(data.price / 1e18).toString()} />
+                      <EtherIcon width={20} height={20} className="mb-2 fill-secondary3" />
+                    </div>
+                    <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-dark1">
+                      <div>
+                        <p>Supported</p>
+                        <ZkSyncIconTable className="float-left mt-1" />
+                      </div>
+                      <div>
+                        <p>Total sales</p>
+                        <div className="mt-1 font-semibold">
+                          <FormatNumber number={data.totalSold} />
+                        </div>
+                      </div>
+                      <div>
+                        <p>Soft Cap</p>
+                        <div className="mt-1 font-semibold">
+                          <FormatNumber number={data.softcap} />
+                        </div>
+                      </div>
+                      <div>
+                        <p>Hard Cap</p>
+                        <div className="mt-1 font-semibold">
+                          <FormatNumber number={data.hardcap} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full lg:w-[80%]">
+                      <p className="mb-2">Type</p>
+                      <div className="flex items-center justify-between p-2 rounded-lg bg-dark4">
+                        <div className="flex items-center gap-x-2">
+                          <div className="w-8 h-8">
+                            <MediaNFT data={data} isControls />
                           </div>
-                        ))}
+                          <p className="font-semibold text-dark1">{data.metadata.name}</p>
+                        </div>
+                        <div className="text-sm font-semibold text-secondary4">
+                          {data.totalSold}/{data.hardcap}
+                        </div>
+                      </div>
+                      <div className="my-3">
+                        <p className="mb-2">Progress</p>
+                        <ProgressBar
+                          softcap={softcap}
+                          hardcap={hardcap}
+                          amount={totalSold}
+                          isRefetching={isRefetching}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mt-6">
+                      <p className="mb-4">Buying Phase</p>
+                      <div className="">
+                        {account ? (
+                          <>
+                            <div className="flex mb-4 gap-x-4">
+                              <button
+                                disabled={errors !== "" ? true : false}
+                                onClick={() => {
+                                  setIsOpenModal(!isOpenModal);
+                                }}
+                                className={`px-4 rounded-md text-white  ${errors !== "" ? "bg-slate-400" : "bg-secondary3"
+                                  }`}
+                              >
+                                Buy
+                              </button>
+                              <input
+                                onChange={(e) => setAmount(parseFloat(e.target.value))}
+                                type="number"
+                                // disabled={errors !== "" ? true : false}
+                                className="px-2 border rounded-md outline-none"
+                                value={amount}
+                              />
+
+                            </div>
+                            {(data?.isAdmin || data?.creator === account) &&
+                              !data?.whiteList && (
+                                <button
+                                  onClick={() => {
+                                    setOpenModalWhitelist(!openModalWhitelist);
+                                  }}
+                                  className={`px-4 py-1 rounded-md text-white  ${"bg-secondary3"}`}
+                                >
+                                  Add Whitelist
+                                </button>
+                              )}
+                          </>
+                        ) : (
+                          <Button
+                            className="w-[144px] py-2"
+                            primary
+                            onClick={handleOpen}
+                          >
+                            CONNECT WALLET
+                          </Button>
+                        )}
+
+                        <ModalAddAdminLaunchpad
+                          isOpenTransation={isOpenTransaction}
+                          isOpenModal={openModalWhitelist}
+                          setIsOpenModal={setOpenModalWhitelist}
+                          setIsOpenTransaction={setIsOpenTransaction}
+                          tokenLaunchpad={tokenLaunchpad}
+                          action={"whitelist"}
+                        />
+
+                        <ModalLaunchPad
+                          setIsOpenTransaction={setIsOpenTransaction}
+                          isOpenTransation={isOpenTransaction}
+                          setIsOpenModal={setIsOpenModal}
+                          isOpenModal={isOpenModal}
+                          account={account}
+                          wallet={wallet}
+                          tokenAddress={tokenAddress}
+                          inputNFT={inputNFT}
+                          routerAddress={tokenLaunchpad}
+                          setIsOpen={setIsOpen}
+                          checkApproveToken={isApprovedToken}
+                          setCheckApproveToken={setIsApprovedToken}
+                          nativeAddress={nativeAddress}
+                          handleBuyNFT={handleBuyNFT}
+                          isLoadingApprove={isLoadingApprove}
+                          refetch={refetch}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
               </>
             )
           )}
         </div>
-
-        <div className="p-4 border rounded-lg lg:w-2/4 h-fit">
-          <div>
-            <div>
-              <ProgressBar
-                softcap={softcap}
-                hardcap={hardcap}
-                amount={totalSold}
-                isRefetching={isRefetching}
-              />
-
-              <div className="flex justify-between px-6 mt-2 text-sm">
-                <span className="w-fit">Softcap</span>
-                <span className="w-fit">Sold</span>
-                <span className="w-fit">Hardcap</span>
-              </div>
-            </div>
-            <div className="mt-4 ">
-              <div className="items-center w-full mb-4 ml-auto">
-                <h2 className="mb-2 ml-auto text-xl">
-                  {amount * (data?.price / 1e18)} {dataToken?.tokenSymbol}
-                </h2>
-              </div>
-
-              <div className="flex gap-4 py-4">
-                <div>
-                  <span className="px-2 border rounded-md bg-slate-200 text-black24">
-                    {data?.vestingStatus ? "Vesting" : "100%"}
-                  </span>
-                </div>
-
-                <div>
-                  {data?.whiteList ? (
-                    <span className="px-2 text-white rounded-md bg-green">
-                      Whitelist
-                    </span>
-                  ) : (
-                    <span className="px-2 border rounded-md bg-slate-200 text-black24">
-                      No whitelist
-                    </span>
-                  )}
-                </div>
-              </div>
-              <label className="block">Amount NFT</label>
-              <input
-                onChange={(e) => setAmount(parseFloat(e.target.value))}
-                type="number"
-                // disabled={errors !== "" ? true : false}
-                className="px-2 border rounded-md outline-none"
-                value={amount}
-              />
-
-              <p className="text-red">{errors}</p>
-            </div>
-
-            <div className="flex gap-8">
-              <button
-                disabled={errors !== "" ? true : false}
-                onClick={() => {
-                  setIsOpenModal(!isOpenModal);
-                }}
-                className={`px-4 py-1 rounded-md mt-4 text-white  ${errors !== "" ? "bg-slate-400" : "bg-green"
-                  }`}
-              >
-                Buy
-              </button>
-
-              {(data?.isAdmin || data?.creator === account) &&
-                !data?.whiteList && (
-                  <button
-                    onClick={() => {
-                      setOpenModalWhitelist(!openModalWhitelist);
-                    }}
-                    className={`px-4 py-1 rounded-md mt-4 text-white  ${"bg-secondary5"}`}
-                  >
-                    Add Whitelist
-                  </button>
-                )}
-
-              <ModalAddAdminLaunchpad
-                isOpenTransation={isOpenTransaction}
-                isOpenModal={openModalWhitelist}
-                setIsOpenModal={setOpenModalWhitelist}
-                setIsOpenTransaction={setIsOpenTransaction}
-                tokenLaunchpad={tokenLaunchpad}
-                action={"whitelist"}
-              />
-
-              <ModalLaunchPad
-                setIsOpenTransaction={setIsOpenTransaction}
-                isOpenTransation={isOpenTransaction}
-                setIsOpenModal={setIsOpenModal}
-                isOpenModal={isOpenModal}
-                account={account}
-                wallet={wallet}
-                tokenAddress={tokenAddress}
-                inputNFT={inputNFT}
-                routerAddress={tokenLaunchpad}
-                setIsOpen={setIsOpen}
-                checkApproveToken={isApprovedToken}
-                setCheckApproveToken={setIsApprovedToken}
-                nativeAddress={nativeAddress}
-                handleBuyNFT={handleBuyNFT}
-                isLoadingApprove={isLoadingApprove}
-                refetch={refetch}
-              />
-            </div>
-          </div>
-        </div>
+        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+      </div>
+      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0">
+        <ul className='flex gap-4 p-2 mx-auto text-sm text-white rounded-lg bg-dark3 w-fit'>
+          {TABS.map((item, index) => (
+            <li key={index} onClick={() => setStatus(item.key)} className={`cursor-pointer p-2 ${status === item.key ? "rounded-lg bg-secondary5" : ""} `}>
+              <h2 className='font-semibold'>{item.title}</h2>
+            </li>
+          )
+          )}
+        </ul>
+        <div className='mt-5 lg:pb-0'>{selectedTab ? selectedTab.panel() : null}</div>
       </div>
     </div>
   );

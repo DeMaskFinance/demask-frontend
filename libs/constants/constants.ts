@@ -58,7 +58,7 @@ const tokenBsc = [
 ];
 const tokenzkSync = [
   {
-    name: "zkSync Era Testnet",
+    name: "zkSync Testnet",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
     logo: ZkSyncIcon,
@@ -124,8 +124,8 @@ const Zksync_DEMASK = {
   USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
   USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
   urltxHash:"https://goerli.explorer.zksync.io/tx/",
-  chainName:"zkSync Era Testnet",
-  NAME:"zkSync Era Testnet",
+  chainName:"zkSync Testnet",
+  NAME:"zkSync Testnet",
   CURRENCY:"ETH"
 };
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
@@ -135,7 +135,7 @@ let network: NetworkItem[] = [];
 if (PORT === '3000') {
   network = [
     {
-      name: "zkSync Era Testnet",
+      name: "zkSync Testnet",
       logo: ZkSyncIcon,
       chain: "280",
     },
