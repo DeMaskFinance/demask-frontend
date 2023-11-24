@@ -18,18 +18,17 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   };
 
   return (
-    <div className={`flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max ${isOverview?'lg:hidden':""}`}>
+    <div className={`flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max ${isOverview ? 'lg:hidden' : ""}`}>
       {choices.map((choice) => (
         <button
           key={choice}
           type="button"
-          className={`py-2 px-3 lg:px-6 rounded-lg text-sm ${
-            activeChoice === "BUY" && activeChoice === choice
+          className={`py-2 px-3 lg:px-6 rounded-lg text-sm ${activeChoice === "BUY" && activeChoice === choice
               ? "bg-green"
-              : activeChoice === choice
-              ? "bg-secondary5"
-              : ""
-          }`}
+              : activeChoice === "SELL" && activeChoice === choice ? 'bg-red' : activeChoice === choice
+                ? "bg-secondary5"
+                : ""
+            }`}
           onClick={() => handleButtonClick(choice)}
         >
           {choice}

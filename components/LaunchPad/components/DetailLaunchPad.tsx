@@ -358,7 +358,7 @@ export default function DetailLaunchPad() {
                                 onClick={() => {
                                   setIsOpenModal(!isOpenModal);
                                 }}
-                                className={`px-4 rounded-md text-white  ${errors !== "" ? "bg-slate-400" : "bg-secondary3"
+                                className={`px-4 py-1 rounded-md text-white  ${errors !== "" ? "bg-slate-400" : "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear"
                                   }`}
                               >
                                 Buy
@@ -372,7 +372,7 @@ export default function DetailLaunchPad() {
                               />
 
                             </div>
-                            {(data?.isAdmin || data?.creator === account) &&
+                            {/* {(data?.isAdmin || data?.creator === account) &&
                               !data?.whiteList && (
                                 <button
                                   onClick={() => {
@@ -382,7 +382,7 @@ export default function DetailLaunchPad() {
                                 >
                                   Add Whitelist
                                 </button>
-                              )}
+                              )} */}
                           </>
                         ) : (
                           <Button

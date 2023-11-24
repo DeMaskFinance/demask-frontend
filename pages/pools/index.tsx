@@ -9,6 +9,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
+import ChartKline from "@/components/Charts/ChartSwapKLine";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',
@@ -106,6 +107,7 @@ export default function Liquidity() {
           + Add Liquidity
         </Button>
       </div>
+      {/* <ChartKline /> */}
     </div>
   );
 }

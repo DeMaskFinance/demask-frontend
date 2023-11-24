@@ -17,7 +17,7 @@ interface ModalWalletProps {
 }
 const styles = {
   walletItem:
-    "flex items-center px-6 py-4 gap-x-4 hover:bg-dark4 rounded-lg cursor-pointer",
+    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 rounded-lg cursor-pointer",
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {

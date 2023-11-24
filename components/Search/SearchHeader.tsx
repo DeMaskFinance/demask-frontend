@@ -11,6 +11,7 @@ import { NFTTopService } from "@/libs/service";
 import Image from "next/image";
 import AccountContext from "@/context/AccountContext";
 import MediaNFT from "../Common/MediaNFT";
+import { CgClose } from "react-icons/cg";
 
 interface SearchProps {
   isFocused: boolean;
@@ -57,20 +58,20 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
         }
       },
     });
-    
+
   const { isLoading: topNftLoading,
     data: topNftData,
     isFetching: topNftFetching,
     refetch: topNftRefetch,
     isPreviousData: isTopNftPreviousData, } = useQuery({
-      queryKey: ["topNftSearch",chainId],
+      queryKey: ["topNftSearch", chainId],
       queryFn: async () => {
-        const res = await NFTTopService(1,chainId);
+        const res = await NFTTopService(1, chainId);
         return res;
       },
       keepPreviousData: true,
     });
-    
+
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -101,7 +102,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
     }
     router.replace(`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`)
   };
-  
+
   const handleRemoveItem = (index: number) => {
     const updatedHistory = [...searchHistory];
     updatedHistory.splice(index, 1);
@@ -134,7 +135,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
             className={`flex ${isFocused} text-secondary5  rounded-lg`}
           >
             <input
-              type="search"
               value={searchTerm}
               onChange={handleSearch}
               ref={searchRef}
@@ -148,6 +148,11 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                 } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
             />
+            {searchTerm && (
+              <div className="absolute right-2 top-[50%] -translate-y-1/2 cursor-pointer" onClick={() => setSearchTerm('')}>
+                <CgClose className="text-lg text-gray-500 transition-colors duration-100 ease-linear hover:text-red" />
+              </div>
+            )}
             <div onClick={handleActive}>
               <SearchIcon
                 width={32}
@@ -185,7 +190,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                           >
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                <MediaNFT data={item} isControls={false}/>
+                                <MediaNFT data={item} isControls={false} />
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">
@@ -241,7 +246,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                <MediaNFT data={item} isControls={false}/>
+                                <MediaNFT data={item} isControls={false} />
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">
@@ -289,7 +294,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
                           <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                <MediaNFT data={item} isControls={false}/>
+                                <MediaNFT data={item} isControls={false} />
                               </div>
                               <div className="flex flex-col items-baseline">
                                 <span className="block text-sm font-semibold">

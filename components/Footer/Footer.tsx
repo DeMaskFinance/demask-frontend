@@ -21,7 +21,7 @@ export default function Footer() {
             <li>
               <Link href='/' className="text-dark1">About</Link>
             </li>
-            <li>
+            <li className="transition-all duration-100 hover:text-secondary5">
               <a
                 href="https://github.com/DeMaskFinance/demask_brand/tree/master"
                 rel="noreferrer noopener"
@@ -30,7 +30,7 @@ export default function Footer() {
                 Brand
               </a>
             </li>
-            <li>
+            <li className="transition-all duration-100 hover:text-secondary5">
               <a
                 href="https://cryptoviet.info/he-sinh-thai-cryptoviet/demask"
                 rel="noreferrer noopener"
@@ -44,7 +44,7 @@ export default function Footer() {
             <li>
               <Link href='/' className="text-dark1">Developer</Link>
             </li>
-            <li>
+            <li className="transition-all duration-100 hover:text-secondary5">
               <a
                 href="https://github.com/DeMaskFinance"
                 rel="noreferrer noopener"
@@ -53,7 +53,7 @@ export default function Footer() {
                 Github
               </a>
             </li>
-            <li>
+            <li className="transition-all duration-100 hover:text-secondary5">
               <a
                 href=" https://docs.demask.finance/"
                 rel="noreferrer noopener"

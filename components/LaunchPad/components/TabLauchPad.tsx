@@ -14,7 +14,7 @@ type TabLaunchPadProps = {
 const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const [choice] = useQueryParam('choice', withDefault(StringParam, 'Upcoming'));
+  const [choice] = useQueryParam('choice', withDefault(StringParam, 'Active'));
   console.log(
     choice
   );

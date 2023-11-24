@@ -26,9 +26,9 @@ const Referral = () => {
                 <p>Invite your friend to DEMASK, if they sign up</p>
                 <h1 className='font-semibold'>Refer Friends To Earn</h1>
                 <p>Experience a new way of earning rewards by inviting your friends to join DeMask & earn up to 10% commission every time they trade on DeMask.</p>
-                <div className=''>
-                    <div className='w-[75%] mr-4 p-2 mb-4 border rounded-lg border-dark3'>{`${account.slice(0, 8)}...${account.slice(-4)}`}</div>
-                    <Button className='p-2' primary onClick={copyToClipboard}>COPY CODE</Button>
+                <div className='flex mb-4'>
+                    <div className='w-[75%] mr-4 p-2 border rounded-lg border-dark3'>{`${account.slice(0, 8)}...${account.slice(-4)}`}</div>
+                    <Button className='px-2' primary onClick={copyToClipboard}>COPY CODE</Button>
                 </div>
                 {/* <h2 className='font-semibold'>Share the referral link</h2> */}
                 {/* <p>You can also share your referral link by copying and sending it.</p>
