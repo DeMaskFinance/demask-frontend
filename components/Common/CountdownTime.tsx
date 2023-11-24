@@ -27,8 +27,6 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     }, [blockNumber]);
 
     const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-    console.log(query);
-    console.log({ days, hours, minutes, seconds });
     
     return (
         <div>

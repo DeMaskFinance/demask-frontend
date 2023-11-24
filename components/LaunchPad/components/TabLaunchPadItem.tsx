@@ -25,7 +25,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
   return (
     <div className="h-full group">
       <Link
-        href={`launchpad/${item.nftID}/${item.nftAddress}/${item.tokenPayment}`}
+        href={`launchpad/${item.launchpad}`}
         className="block h-full"
       >
         <div className="flex flex-col justify-between h-full">

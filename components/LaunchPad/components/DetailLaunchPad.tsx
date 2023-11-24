@@ -28,11 +28,10 @@ import Timeline from "./Timeline";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { Button } from "@/components/Buttons";
 import CountdownTime from "@/components/Common/CountdownTime";
+import { BiLoaderAlt } from "react-icons/bi";
 
 export default function DetailLaunchPad() {
-  const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const [idNFT, setIdNFT] = useState<string>("");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [status, setStatus] = useQueryParam("status", withDefault(StringParam, "rule"));
@@ -47,20 +46,18 @@ export default function DetailLaunchPad() {
     useContext(AccountContext);
   const [errors, setErrors] = useState<string>("");
   const { isLoading, data, isRefetching, isSuccess, refetch } = useQuery({
-    queryKey: ["launchPad", idNFT, nftAddress, tokenAddress, chainId],
+    queryKey: ["launchPad", tokenAddress, chainId],
     queryFn: async () => {
       const res = await LaunchPadAPI(
         tokenAddress.toLocaleLowerCase(),
-        nftAddress.toLowerCase(),
-        idNFT,
         chainId,
-        account
       );
       return res;
     },
   });
 
   console.log(data);
+  console.log(tokenAddress);
   const { isLoading: isLoadingToken, data: dataToken } = useQuery({
     queryKey: ["tokenPayment", tokenAddress, chainId],
     queryFn: async () => {
@@ -73,7 +70,7 @@ export default function DetailLaunchPad() {
     refetchInterval: 60000,
   });
 
-  useEffect(() => { }, [dataToken, idNFT]);
+  useEffect(() => { }, [dataToken]);
 
   const softcap = data?.softcap;
   const hardcap = data?.hardcap;
@@ -108,16 +105,13 @@ export default function DetailLaunchPad() {
   const { detail } = router.query;
 
   const [amount, setAmount] = useState(1);
-  console.log(data);
 
   useEffect(() => {
     if (detail) {
-      setIdNFT(detail[0]);
-      setNftAddress(detail[1]);
-      setTokenAddress(detail[2]);
+      setTokenAddress(detail[0]);
     }
   }, [detail]);
-
+  
   useEffect(() => {
     if (data && data?.price) {
       setAmountBuyDec((data?.price / 1e18) * amount);
@@ -147,7 +141,6 @@ export default function DetailLaunchPad() {
       setErrors("");
     }
   }, [amount, startTime, endTime]);
-  console.log(allowanceToken);
 
   useEffect(() => {
     const checkApproveToken = async () => {
@@ -163,9 +156,6 @@ export default function DetailLaunchPad() {
     };
     checkApproveToken();
   }, [isApprovedToken, allowanceToken]);
-  console.log(isApprovedToken);
-  console.log(tokenAddress);
-  console.log(nativeAddress);
   const TABS = [
     {
       title: "Rule Introduction",
@@ -265,7 +255,6 @@ export default function DetailLaunchPad() {
       : data?.status === "Active"
         ? data.endTime
         : "";
-  console.log(blockNumber);
 
   return (
     <div>
@@ -441,7 +430,13 @@ export default function DetailLaunchPad() {
           )
           )}
         </ul>
-        <div className='mt-5 lg:pb-0'>{selectedTab ? selectedTab.panel() : null}</div>
+        {isLoading ? (
+          <div><BiLoaderAlt className="animate-spin text-secondary5" /></div>
+        ) : (isSuccess && data) && (
+          <div className='mt-5 lg:pb-0'>
+            {selectedTab ? selectedTab.panel() : null}
+          </div>
+        )}
       </div>
     </div>
   );

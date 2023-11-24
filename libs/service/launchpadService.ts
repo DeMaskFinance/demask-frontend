@@ -2,14 +2,17 @@ import request from "../utils/httpRequest";
 
 export const LaunchPadAPI = async (
   tokenAddress: string,
-  nftAddress: string,
-  idNFT: string,
   chainId:string,
   account?: string
 ) => {
   try {
+    console.log({
+      tokenAddress,
+      chainId,
+    });
+    
     const res = await request.get(
-      `launchpad-detail?chainId=${chainId}&id=${idNFT}&nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&userAddress=${account}`
+      `launchpad-detail?chainId=${chainId}&launchpad=${tokenAddress}`
     );
     return res.data;
   } catch (error) {

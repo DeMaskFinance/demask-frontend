@@ -15,9 +15,6 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
   const [choice] = useQueryParam('choice', withDefault(StringParam, 'Active'));
-  console.log(
-    choice
-  );
   
   const fetchDataPage = async (pageParam = 1, chainId: string | string[], choice: string) => {
     const data = await categoryAPI(`launchpad?chainId=${chainId}&status=${choice}&page=${pageParam}&limit=8`);

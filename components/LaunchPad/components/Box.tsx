@@ -1,9 +1,10 @@
+import FormatNumber from '@/components/Common/FormatNumber';
 import MediaNFT from '@/components/Common/MediaNFT';
 import React from 'react'
 
 const Box = ({ data }: any) => {
     console.log(data);
-
+    const remaining = Number(data?.hardcap) - Number(data?.totalSold);
     return (
         <div>
             <table className="w-full md:text-sm text-left border-collapse text-[10px]">
@@ -34,10 +35,12 @@ const Box = ({ data }: any) => {
                             </div>
                         </td>
                         <td className="min-w-max">
-                            <div className='flex items-center justify-end '>123,55</div>
+                            <div className='flex items-center justify-end '><FormatNumber number={data.totalSold} /></div>
                         </td>
                         <td className="">
-                            <div className='flex items-center justify-end '>173</div>
+                            <div className='flex items-center justify-end '>
+                                <FormatNumber number={remaining.toString()} />
+                            </div>
                         </td>
                     </tr>
                 </tbody>
