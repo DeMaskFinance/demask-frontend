@@ -84,7 +84,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                 {query === 'Upcoming' ? (
                   <p>0</p>
                 ) : (
-                  <FormatNumber number={(item.priceListing / 1e18).toString()} />
+                  <FormatNumber number={(item.priceListing / 1e18 * item.totalSold).toString()} />
                 )}
               </div>
             </div>
