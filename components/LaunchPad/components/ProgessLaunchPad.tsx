@@ -1,15 +1,15 @@
 import React from "react";
 import { BiLoader } from "react-icons/bi";
-
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/themes/light.css';
 const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
   const calculatePercentage = (value: any, total: any) => {
     return (value / total) * 100;
   };
 
   const percentage = calculatePercentage(amount, parseInt(hardcap));
-  console.log(percentage);
   const percentageSoftcap = calculatePercentage(softcap, parseInt(hardcap));
-  console.log(percentageSoftcap);
 
   const total = (percentage / 100) * 67.777777;
   const progressStyle = {
@@ -30,8 +30,21 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
           {/* {percentage} */}
 
         </div>
-        <div className={`absolute w-1 h-1 bg-red`} style={{ left: `${percentageSoftcap}%` }}>
-          <div className="absolute text-xs text-dark1 w-max top-2 -translate-x-2/4">Softcap line ({percentageSoftcap.toFixed(2)}%)</div>
+        <div className={`absolute w-1 h-1 bg-secondary3`} style={{ left: `${percentageSoftcap}%` }}>
+          <Tippy content={
+            <div>
+              <span className='text-[10px] font-normal text-dark0'>
+                ({percentageSoftcap.toFixed(2)}%)
+              </span>
+            </div>
+          }
+            theme='light'
+            placement="bottom"
+          >
+            <div className=''>
+              <div className="absolute text-xs text-dark1 w-max cursor-pointer -top-[18px] -translate-x-2/4">Softcap</div>
+            </div>
+          </Tippy>
         </div>
       </div>
       <div className="flex justify-between mt-2 mb-3 text-xs text-dark1">

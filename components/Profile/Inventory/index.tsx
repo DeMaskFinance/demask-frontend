@@ -14,6 +14,7 @@ import { AddIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
 import ModalNumber from '@/components/Modal/ModalLength/ModalNumber';
 import { Button } from '@/components/Buttons';
 import TransionDML from './TransitionDML';
+import FormatNumber from '@/components/Common/FormatNumber';
 const Inventory = () => {
     const { account, chainId } = useContext(AccountContext);
     const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
@@ -98,10 +99,12 @@ const Inventory = () => {
                                                     <p>Balance</p>
                                                 </div>
                                                 <div className='flex justify-between font-semibold text-dark2'>
-                                                    100 ETH
+                                                    <div>
+                                                        <FormatNumber number={item.floorPrice} />
+                                                    </div>
                                                     <div>
                                                         {item.nftBalance ? (
-                                                            <ModalNumber data={item.nftBalance} />
+                                                            <FormatNumber number={item.nftBalance} />
                                                         ) : (
                                                             <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                                                         )}
@@ -111,13 +114,13 @@ const Inventory = () => {
                                                     <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Add')}>
                                                         <p>Add</p>
                                                         <div>
-                                                            <AddIcon width={24} height={24}/>
+                                                            <AddIcon width={24} height={24} />
                                                         </div>
                                                     </Button>
-                                                    <Button  className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Swap')}>
+                                                    <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Swap')}>
                                                         <p>Swap</p>
                                                         <div>
-                                                            <SwapIconProfile width={24} height={24}/>
+                                                            <SwapIconProfile width={24} height={24} />
                                                         </div>
                                                     </Button>
                                                 </div>

@@ -23,7 +23,8 @@ export default function LaunchpadReleased() {
 
     refetchInterval: 60000,
   });
-
+  console.log(data);
+  
   return (
     <>
       <div className="flex items-center justify-between pb-4">

@@ -10,6 +10,7 @@ import { useInView } from "react-intersection-observer";
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import ChartKline from "@/components/Charts/ChartSwapKLine";
+import Image from "next/image";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',

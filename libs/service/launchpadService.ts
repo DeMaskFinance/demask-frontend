@@ -3,7 +3,6 @@ import request from "../utils/httpRequest";
 export const LaunchPadAPI = async (
   tokenAddress: string,
   chainId:string,
-  account?: string
 ) => {
   try {
     console.log({

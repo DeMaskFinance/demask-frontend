@@ -2,7 +2,7 @@ import { convertTime } from "@/hooks/useConvertTime";
 import React, { useEffect, useState } from "react";
 interface CountdownTimeProps {
     blockNumber: number,
-    query?:string,
+    query?: string,
 }
 const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     blockNumber,
@@ -27,7 +27,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     }, [blockNumber]);
 
     const { days, hours, minutes, seconds } = convertTime(blockNumberTimer);
-    
+
     return (
         <div>
             {query !== "Ended" && (
@@ -35,7 +35,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
                     <p className="text-xs text-center text-dark3">
                         {query === "Active" ? "Whitelist phase ends in:" : "Whitelist phase start in:"}
                     </p>
-                    {minutes > 0 && seconds > 0 && (
+                    { minutes > 0 && seconds > 0 && (
                         <div className="flex justify-center mt-1 text-secondary2">
                             <div className="flex gap-1 mb-2">
                                 <span className="font-semibold">{days}d</span>:

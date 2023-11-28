@@ -82,9 +82,12 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
               <div className="flex items-center p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg gap-x-1 bg-dark3 group-hover:bg-secondary3">
                 <span className="text-sm">Total raise </span>
                 {query === 'Upcoming' ? (
-                  <p>0</p>
+                  <p>0 ETH</p>
                 ) : (
-                  <FormatNumber number={(item.priceListing / 1e18 * item.totalSold).toString()} />
+                  <div className="flex gap-x-1">
+                    <FormatNumber number={(item.priceListing / 1e18 * item.totalSold).toString()} />
+                    ETH
+                  </div>
                 )}
               </div>
             </div>

@@ -48,7 +48,7 @@ export default function MintNFT({
   royaltiesFee,
   validFee
 }: any) {
-  
+
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
@@ -62,7 +62,7 @@ export default function MintNFT({
       setCheckExit(false)
     }
   }, [name, symbol, description, fileIPFS, totalSupply, royaltiesFee])
-  
+
   usePreventUserFromErasingContent(checkExit);
   async function mintNFT({ amount, data, url, feeRoyal }: mintProps) {
     const ethereum = (window as any).ethereum;
@@ -148,7 +148,6 @@ export default function MintNFT({
     }
     setIsProcess(false);
   }
-  console.log(isProcess);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -162,10 +161,10 @@ export default function MintNFT({
       if (symbol === "") {
         emptyInputFields.push("symbol");
       }
-      if (totalSupply === undefined) {
+      if (totalSupply === 0 || totalSupply === undefined) {
         emptyInputFields.push("totalSupply");
       }
-      if (royaltiesFee === undefined) {
+      if (royaltiesFee === null || royaltiesFee === 0 || royaltiesFee === undefined) {
         emptyInputFields.push("royaltiesFee");
       }
       if (fileIPFS === null) {
@@ -207,20 +206,24 @@ export default function MintNFT({
       document.body.style.overflowY = "hidden";
     }
   };
-  
+
   return (
     <div className="">
       <div className="relative">
         <h2 className={styles.title}>Initialization</h2>
         <div>
-          <Button
-            type="button"
-            className="w-[150px] py-2"
-            primary
-            onClick={handleSubmit}
-          >
-            CREATE
-          </Button>
+          {
+            !isProcess && (
+              <Button
+                type="button"
+                className="w-[150px] py-2"
+                primary
+                onClick={handleSubmit}
+              >
+                CREATE
+              </Button>
+            )
+          }
           {isProcess && <Processing />}
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

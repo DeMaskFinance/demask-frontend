@@ -16,8 +16,8 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   const { ref, inView } = useInView();
   const [choice] = useQueryParam('choice', withDefault(StringParam, 'Active'));
   
-  const fetchDataPage = async (pageParam = 1, chainId: string | string[], choice: string) => {
-    const data = await categoryAPI(`launchpad?chainId=${chainId}&status=${choice}&page=${pageParam}&limit=8`);
+  const fetchDataPage = async (pageParam = 1, chainId: string | string[], query: string) => {
+    const data = await categoryAPI(`launchpad?chainId=${chainId}&status=${query}&page=${pageParam}&limit=8`);
     return data;
   };
 
@@ -30,8 +30,8 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
     isFetching,
     hasNextPage
   } = useInfiniteQuery(
-    ["Homepage", chainId, choice],
-    ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, choice),
+    ["LaunchpadTab", chainId, query],
+    ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, query),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages

@@ -194,8 +194,7 @@ export default function Creator() {
       setValidFee(false);
     }
   }
-  console.log(selectedFile);
-
+  
   return (
     <div className="flex flex-col gap-6 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8">
       <NextSeo {...updateMeta} />

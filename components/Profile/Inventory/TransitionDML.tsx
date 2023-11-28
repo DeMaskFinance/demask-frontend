@@ -1,6 +1,8 @@
+import AccountContext from "@/context/AccountContext";
 import { searchNFTService } from "@/libs/service/searchService";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useContext } from "react";
 import { CgClose } from "react-icons/cg";
 
 interface TransionDMLProps {
@@ -21,7 +23,8 @@ const TransionDML: React.FC<TransionDMLProps> = (
         setSelectedItemIndex
     }
 ) => {
-
+    const { demask } = useContext(AccountContext);
+    const { NATIVE_ADDRESS: nativeAddress } = demask;
     const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
         queryKey: ["dml", item],
         queryFn: async () => {
@@ -46,7 +49,9 @@ const TransionDML: React.FC<TransionDMLProps> = (
                     </Link>
                 ))
             ) : (
-                <p>No data available.</p>
+                <Link href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                    <p>Go to Add Liquidity.</p>
+                </Link>
             )}
             <button
                 className="absolute top-0 right-0 p-2 text-lg"

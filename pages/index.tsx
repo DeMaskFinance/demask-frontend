@@ -18,7 +18,7 @@ const Home = () => {
   const { chainId } = useContext(AccountContext);
   const updateMeta = {
     ...SEO,
-    title: 'Home',
+    title: 'App',
   };
   
   const handleChoiceChange = (choice: string) => {
@@ -92,7 +92,7 @@ const Home = () => {
           )}
         </>
       ) : (
-        <div className="py-4 mx-auto leading-7 container-main">
+        <div className="py-4 mx-auto leading-7 container-main min-h-[95vh]">
           <div className="flex flex-col items-center lg:mt-8">
             {data?.pages[0] ? (
               <div className="flex flex-col items-center mx-auto">

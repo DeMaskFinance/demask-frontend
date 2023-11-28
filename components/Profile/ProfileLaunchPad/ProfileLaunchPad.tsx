@@ -29,43 +29,17 @@ export default function ProfileLaunchPad() {
 
     refetchInterval: 60000,
   });
-
-  const listCategories = [
-    {
-      label: "User",
-      onClick: () => {
-        setListLaunchpad(0);
-      },
-      component: (
-        <UserLaunchpad
+  console.log(data);
+  
+  return (
+    <div className="">
+      <UserLaunchpad
           data={data}
           listLaunchpad={listLaunchpad}
           refetch={refetch}
           isRefetching={isRefetching}
           isLoading={isLoading}
         />
-      ),
-    },
-
-    {
-      label: "Creator",
-      onClick: () => {
-        setListLaunchpad(1);
-      },
-      component: <CreatorLaunchpad tab={listLaunchpad} data={data} />,
-    },
-  ];
-
-  return (
-    <div className="flex flex-col gap-2 lg:flex-row md:flex-row">
-      <CategoryProfileLaunchPad
-        listCategories={listCategories}
-        listLaunchpad={listLaunchpad}
-      />
-
-      <div className="p-2 border rounded-md lg:w-4/5">
-        {listCategories[listLaunchpad].component}
-      </div>
     </div>
   );
 }
