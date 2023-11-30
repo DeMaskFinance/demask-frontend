@@ -152,8 +152,17 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                 console.log(amountNFTMin);
 
                 try {
-                    let transactionHash;
                     setIsOpenTransaction(true);
+                    const estimatedGas = await contract.estimateGas.removeERC20ERC1155(
+                        data.tokenAddress,
+                        data.nftAddress,
+                        data.nftID,
+                        Math.floor(Number(liquidity)).toString(),
+                        exponentialToDecimal(Number(amountTokenMin)),
+                        exponentialToDecimal(Number(amountNFTMin)),
+                        account,
+                        Math.floor((new Date().getTime() + slippage * 60000) / 1000)
+                    );
                     const result = await contract.removeERC20ERC1155(
                         data.tokenAddress,
                         data.nftAddress,
@@ -163,7 +172,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                         exponentialToDecimal(Number(amountNFTMin)),
                         account,
                         Math.floor((new Date().getTime() + slippage * 60000) / 1000),
-                        { gasLimit: 8000000 }
+                        { gasLimit: estimatedGas }
                     );
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);

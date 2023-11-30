@@ -85,7 +85,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                   <p>0 ETH</p>
                 ) : (
                   <div className="flex gap-x-1">
-                    <FormatNumber number={(item.priceListing / 1e18 * item.totalSold).toString()} />
+                    <FormatNumber number={(item.price / 1e18 * item.totalSold).toString()} />
                     ETH
                   </div>
                 )}

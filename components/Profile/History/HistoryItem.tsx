@@ -1,8 +1,6 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { ZkSyncIcon } from "@/components/Icons";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import formatToUnit from "@/libs/utils/formatToUnit";
+import { ZkSyncIcon, ZkSyncIconTable } from "@/components/Icons";
 
 const HistoryItem = ({ item }: any) => {
     console.log(item);
@@ -30,10 +28,7 @@ const HistoryItem = ({ item }: any) => {
 
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
                 {item.chainId === '280' && (
-                    <div className="flex items-center justify-center px-2 py-1 text-sm min-w-max bg-dark4 rounded-2xl text-dark1">
-                        <ZkSyncIcon width={16} height={16} className="mr-1" />
-                        zkSync
-                    </div>
+                    <ZkSyncIconTable width={18} height={18}/>
                 )}
             </td>
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">

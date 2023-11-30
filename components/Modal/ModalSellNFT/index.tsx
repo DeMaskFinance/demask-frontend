@@ -113,6 +113,15 @@ const ModalSellNFT: React.FunctionComponent<
                 try {
                     let result;
                     setIsOpenTransaction(true);
+                    const estimatedGas = await contract.estimateGas.sellERC20ERC1155(
+                        tokenAddress,
+                        nftAddress,
+                        idNFT,
+                        inputNFT,
+                        exponentialToDecimal(Math.floor(amountSellDec)),
+                        account,
+                        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
+                    );
                     result = await contract.sellERC20ERC1155(
                         tokenAddress,
                         nftAddress,
@@ -121,7 +130,7 @@ const ModalSellNFT: React.FunctionComponent<
                         exponentialToDecimal(Math.floor(amountSellDec)),
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-                        { gasLimit: 8000000 }
+                        { gasLimit: estimatedGas }
                     );
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);

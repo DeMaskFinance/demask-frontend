@@ -19,6 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import Web3 from "web3";
+import ModalDocument from "../ModalLength/ModalDocument";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
@@ -131,7 +133,16 @@ const ModalBuyNFT: React.FunctionComponent<
                     let result;
                     setIsOpenTransaction(true);
                     const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
-
+                    const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
+                        tokenAddress,
+                        nftAddress,
+                        idNFT,
+                        inputNFT,
+                        exponentialToDecimal(Math.floor(amountBuyDec)),
+                        account,
+                        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+                        { value: value }
+                    );
                     result = await contract.buyERC20ERC1155(
                         tokenAddress,
                         nftAddress,
@@ -140,7 +151,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         exponentialToDecimal(Math.floor(amountBuyDec)),
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-                        { gasLimit: 8000000, value: value }
+                        { gasLimit: estimatedGas, value: value }
                     );
 
                     const check = await provider.waitForTransaction(result.hash);
@@ -175,8 +186,6 @@ const ModalBuyNFT: React.FunctionComponent<
                             }
                         );
                     }
-
-
                     setInputNFT("");
                 } catch (error) {
                     setIsOpenTransaction(false);
@@ -194,7 +203,9 @@ const ModalBuyNFT: React.FunctionComponent<
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
-                            <p>{data.metadata.symbol}</p>
+                            <div className="max-w-[260px]">
+                                <ModalDocument data={data.metadata.symbol} />
+                            </div>
                         </div>
                         <div>
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
@@ -221,7 +232,9 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <p>Maximum amount</p>
                                 <div className="flex gap-x-1">
                                     <p>{inputNFT}</p>
-                                    <p>{data.metadata.symbol}</p>
+                                    <div className="max-w-[60px]">
+                                        <ModalDocument data={data.metadata.symbol} />
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">

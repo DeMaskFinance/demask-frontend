@@ -15,6 +15,7 @@ import ModalNumber from '@/components/Modal/ModalLength/ModalNumber';
 import { Button } from '@/components/Buttons';
 import TransionDML from './TransitionDML';
 import FormatNumber from '@/components/Common/FormatNumber';
+import ModalDocument from '@/components/Modal/ModalLength/ModalDocument';
 const Inventory = () => {
     const { account, chainId } = useContext(AccountContext);
     const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
@@ -72,15 +73,15 @@ const Inventory = () => {
                                             <div className="relative pb-[100%] h-[240px]">
                                                 <MediaNFT data={item} isControls={false} hover />
                                             </div>
-                                            <div>
-                                                <div className="flex mt-2">
-                                                    <div>
+                                            <div className='w-full'>
+                                                <div className="flex w-full mt-2">
+                                                    <div className='w-full'>
                                                         <h6
                                                             title={item.metadata.name}
                                                             className="flex items-start gap-2 font-medium uppercase"
                                                         >
-                                                            <span className="flex-wrap text-xl line-clamp-1">
-                                                                {item.metadata.name}
+                                                            <span className="flex-wrap text-xl line-clamp-1 max-w-[100%]">
+                                                                <ModalDocument data={item.metadata.name}/>
                                                             </span>
                                                         </h6>
                                                     </div>

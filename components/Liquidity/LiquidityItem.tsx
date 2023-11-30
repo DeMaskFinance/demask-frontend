@@ -6,6 +6,7 @@ import formatNumber from "@/libs/utils/formatNumer";
 import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
 import FormatNumber from "../Common/FormatNumber";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
 interface LiquidytiesItemProps {
   liquidity: any;
   tokenDefault: [any]
@@ -42,7 +43,9 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     <Link href={`/details/${liquidity.dmlAddress}`}>
       <div className="box-border flex justify-between p-2 mb-3 rounded cursor-pointer lg:mb-6 text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
         <div className="flex items-center leading-[13px]">
-          <span>{liquidity.nftSymbol}</span>
+          <div className="max-w-[180px]">
+            <ModalDocument data={liquidity.nftSymbol}/>
+          </div>
           <span className="overflow-hidden">/</span>
           <span>{tokenSymbol}</span>
         </div>

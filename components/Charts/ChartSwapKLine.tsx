@@ -2,23 +2,40 @@ import { useEffect } from 'react';
 import { init, dispose } from 'klinecharts';
 
 const ChartKline = () => {
+    function genData(timestamp = new Date().getTime(), length = 800) {
+        let basePrice = 5000
+        timestamp = Math.floor(timestamp / 1000 / 60) * 60 * 1000 - length * 60 * 1000
+        const dataList = []
+        for (let i = 0; i < length; i++) {
+            const prices = []
+            for (let j = 0; j < 4; j++) {
+                prices.push(basePrice + Math.random() * 60 - 30)
+            }
+            prices.sort()
+            const open = +(prices[Math.round(Math.random() * 3)].toFixed(2))
+            const high = +(prices[3].toFixed(2))
+            const low = +(prices[0].toFixed(2))
+            const close = +(prices[Math.round(Math.random() * 3)].toFixed(2))
+            const volume = Math.round(Math.random() * 100) + 10
+            const turnover = (open + high + low + close) / 4 * volume
+            dataList.push({ timestamp, open, high, low, close, volume, turnover })
+
+            basePrice = close
+            timestamp += 60 * 1000
+        }
+        return dataList
+    }
     useEffect(() => {
         // initialize the chart
         const chart = init('chart');
-
+        chart?.createIndicator('VOL')
         // add data to the chart
-        chart?.applyNewData([
-            { close: 4976.16, high: 4977.99, low: 4970.12, open: 4972.89, timestamp: 1587660000000, volume: 204 },
-            { close: 4977.33, high: 4979.94, low: 4971.34, open: 4973.20, timestamp: 1587660060000, volume: 194 },
-            { close: 4977.93, high: 4977.93, low: 4974.20, open: 4976.53, timestamp: 1587660120000, volume: 197 },
-            { close: 4961.56, high: 4972.61, low: 4961.28, open: 4961.28, timestamp: 1587660240000, volume: 184 },
-            { close: 4964.19, high: 4964.74, low: 4961.42, open: 4961.64, timestamp: 1587660300000, volume: 191 },
-            { close: 4968.93, high: 4972.70, low: 4964.55, open: 4966.96, timestamp: 1587660360000, volume: 105 },
-            { close: 4979.31, high: 4979.61, low: 4973.99, open: 4977.06, timestamp: 1587660420000, volume: 35 },
-            { close: 4977.02, high: 4981.66, low: 4975.14, open: 4981.66, timestamp: 1587660480000, volume: 135 },
-            { close: 4985.09, high: 4988.62, low: 4980.30, open: 4986.72, timestamp: 1597660540000, volume: 76 }
-        ]);
+        chart?.applyNewData(genData())
+        const paneId = 'main'; // Id của pane (khu vực) cần xóa chỉ báo
+        const indicatorName = 'VOL'; // Tên của chỉ báo cần xóa
 
+        // Gọi phương thức removeIndicator
+        chart?.removeIndicator(paneId, indicatorName);
         return () => {
             // destroy chart
             dispose('chart');

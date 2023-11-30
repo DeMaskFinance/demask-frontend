@@ -1,3 +1,4 @@
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import AccountContext from "@/context/AccountContext";
 import { searchNFTService } from "@/libs/service/searchService";
 import { useQuery } from "@tanstack/react-query";
@@ -43,7 +44,9 @@ const TransionDML: React.FC<TransionDMLProps> = (
             ) : isSuccess && data.length > 0 ? (
                 data.map((dmlItem: any, index: number) => (
                     <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'>
-                        <span>{dmlItem.metadata.symbol}</span>
+                        <div className="max-w-[80%]">
+                            <ModalDocument data={dmlItem.metadata.symbol}/>
+                        </div>
                         <span className="block overflow-hidden leading-3">/</span>
                         <span>{dmlItem.tokenSymbol}</span>
                     </Link>

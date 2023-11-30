@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import ModalDocument from "../ModalLength/ModalDocument";
 interface ModalConfirmAddLiquidityProps {
     isOpenConfirmAddLiquidity: boolean;
     tokenAddress: string;
@@ -163,6 +164,17 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 try {
                     setIsOpenTransaction(true);
                     const valueToSend = tokenAddress === nativeAddress ? exponentialToDecimal(Math.floor(amountErcDesired)) : 0;
+                    const estimatedGas = await contract.estimateGas.addERC20ERC1155(
+                        tokenAddress,
+                        nftAddress,
+                        idNFT,
+                        exponentialToDecimal(Math.floor(amountErcDesired)),
+                        inputNFT,
+                        0,
+                        account,
+                        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+                        { value: valueToSend }
+                    );
                     const result = await contract.addERC20ERC1155(
                         tokenAddress,
                         nftAddress,
@@ -172,7 +184,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         0,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-                        { gasLimit: 8000000, value: valueToSend }
+                        { gasLimit: estimatedGas, value: valueToSend }
                     );
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
@@ -238,7 +250,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
-                            <p>{data.metadata.symbol}</p>
+                            <div className="max-w-[60%]">
+                                <ModalDocument data={data.metadata.symbol}/>
+                            </div>
                         </div>
                         <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
                             +

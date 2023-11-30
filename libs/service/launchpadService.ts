@@ -3,6 +3,7 @@ import request from "../utils/httpRequest";
 export const LaunchPadAPI = async (
   tokenAddress: string,
   chainId:string,
+  account:string,
 ) => {
   try {
     console.log({
@@ -11,7 +12,7 @@ export const LaunchPadAPI = async (
     });
     
     const res = await request.get(
-      `launchpad-detail?chainId=${chainId}&launchpad=${tokenAddress}`
+      `launchpad-detail?chainId=${chainId}&launchpad=${tokenAddress}&userAddress=${account}`
     );
     return res.data;
   } catch (error) {

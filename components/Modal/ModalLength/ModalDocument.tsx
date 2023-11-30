@@ -8,25 +8,33 @@ const ModalDocument = ({ data }: { data: string }) => {
             const parts = data.split(':');
             const prefix = parts[0].slice(0, 3) + "..." + parts[0].slice(-2);
             const result = prefix + ":" + parts[1];
+            console.log({
+                result
+            });
+            
             setDocument(result);
         } else {
             setDocument(data);
         }
     }, [data])
-    useEffect(() => {
-        if (containerRef.current) {
-            const container = containerRef.current;
-            // setOffsetWidth(container.offsetWidth);
-            // setScrollWidth(container.scrollWidth);
-            if (container.offsetWidth < container.scrollWidth) {
-                setIsTruncated(true);
-                setDocument(data);
-            } else {
-                setIsTruncated(false);
-            }
-        }
-    }, [data]);
-
+    console.log({
+        data,
+        document
+    });
+    // useEffect(() => {
+    //     if (containerRef.current) {
+    //         const container = containerRef.current;
+    //         // setOffsetWidth(container.offsetWidth);
+    //         // setScrollWidth(container.scrollWidth);
+    //         if (container.offsetWidth < container.scrollWidth) {
+    //             setIsTruncated(true);
+    //             setDocument(data);
+    //         } else {
+    //             setIsTruncated(false);
+    //         }
+    //     }
+    // }, [data]);
+    
     return (
         <>
             <h2 ref={containerRef} className='truncate document__truncate'>
