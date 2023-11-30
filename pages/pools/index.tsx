@@ -108,7 +108,7 @@ export default function Liquidity() {
           + Add Liquidity
         </Button>
       </div>
-      <ChartKline />
+      {/* <ChartKline /> */}
     </div>
   );
 }
