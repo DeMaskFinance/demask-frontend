@@ -133,9 +133,9 @@ const Swap: React.FC = () => {
 
   const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-
-
-
+  console.log(amountTokenBuy);
+  console.log(amountTokenSell);
+  
   useEffect(() => {
     if (inputNFT && data && amountTokenBuy && amountTokenSell) {
       setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
@@ -145,9 +145,6 @@ const Swap: React.FC = () => {
       setAmountSellDec(0);
     }
   }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice])
-  console.log(isCalculating);
-  console.log(isLoadingSell);
-  console.log(isLoadingBuy);
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -314,7 +311,7 @@ const Swap: React.FC = () => {
                   {activeChoice === "BUY" && (
                     <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
-                        <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
+                        <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
                       ) : (
                         <span>0</span>
                       )}
@@ -326,7 +323,7 @@ const Swap: React.FC = () => {
                   {activeChoice === "SELL" && (
                     <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
                       {inputNFT ? (
-                        <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
+                        <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
                       ) : (
                         <span>0</span>
                       )}
@@ -429,11 +426,11 @@ const Swap: React.FC = () => {
                   <div className="relative">
                     {activeChoice === "BUY" ? (
                       <div className={styles.inputItem}>
-                        <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
+                        <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
                       </div>
                     ) : (
                       <div className={styles.inputItem}>
-                        <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
+                        <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
                       </div>
                     )}
                     <div

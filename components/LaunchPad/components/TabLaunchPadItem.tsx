@@ -62,15 +62,6 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                     />
                   </svg>
                 </h6>
-                <div className="flex gap-2">
-                  <span className="shrink-0">
-                    <AvatarUser width={24} height={24} />
-                  </span>
-                  <span className="pb-1 -ml-2.5 block">
-                    {item.creator?.slice(0, 4)}...
-                    {item.creator?.slice(-4)}
-                  </span>
-                </div>
                 <div className="mt-2">
                   <div className="flex flex-col gap-2">
                     <div className="line-clamp-3">

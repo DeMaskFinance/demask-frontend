@@ -212,7 +212,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{formatNumber(
-                                divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)
+                                divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
                             )}</p>
                             <p>{symbolToken}</p>
                         </div>
@@ -225,7 +225,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
                                 <p>{formatNumber(
-                                    (Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                    (Number(divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
                                 )}</p>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
