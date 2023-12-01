@@ -6,7 +6,7 @@ const Box = ({ data }: any) => {
     console.log(data);
     const remaining = Number(data?.hardcap) - Number(data?.totalSold);
     return (
-        <div>
+        <div className='overflow-y-auto'>
             <table className="w-full md:text-sm text-left border-collapse text-[10px]">
                 <thead className="sticky top-0 z-10 m-1 ">
                     <tr className="mx-2 text-[18px] text-dark0">

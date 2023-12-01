@@ -148,7 +148,7 @@ export default function DetailLaunchPad() {
     {
       title: "Rule Introduction",
       panel: () => (
-        <Rule />
+        <Rule data={data} />
       ),
       key: "rule",
     },
@@ -277,10 +277,6 @@ export default function DetailLaunchPad() {
                     <div className="relative text-2xl font-semibold text-dark1">
                       <ModalDocument data={data.metadata.name} />
                     </div>
-                    <div className="flex my-3 font-semibold datas-center text-dark3">
-                      <AvatarUser width={32} height={32} />
-                      {/* <p>{`${data.creator.slice(0, 4)}...${data.creator.slice(-4)}`}</p> */}
-                    </div>
                     <div className="flex items-center text-3xl font-semibold datas-center text-secondary3">
                       <FormatNumber number={(data.price / 1e18).toString()} />
                       <EtherIcon width={20} height={20} className="mb-2 fill-secondary3" />
@@ -312,16 +308,16 @@ export default function DetailLaunchPad() {
                     <div className="w-full lg:w-[80%]">
                       <p className="mb-2">Type</p>
                       <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4">
-                        <div className="flex datas-center gap-x-2">
+                        <div className="flex item-center gap-x-2">
                           <div className="w-8 h-8">
                             <MediaNFT data={data} isControls />
                           </div>
-                          <div className="relative font-semibold text-dark1 max-w-[250px]">
+                          <div className="relative font-semibold text-dark1 max-w-[250px] flex items-center">
                             <ModalDocument data={data.metadata.name} />
                           </div>
                         </div>
-                        <div className="text-sm font-semibold text-secondary4">
-                          {data.totalSold}/{data.hardcap}
+                        <div className="flex items-center text-sm font-semibold text-secondary4">
+                          <FormatNumber number={data.totalSold} />/<FormatNumber number={data.hardcap} />
                         </div>
                       </div>
                       <div className="my-3">

@@ -227,7 +227,7 @@ const Swap: React.FC = () => {
         <SkeletonReels />
       ) : isSuccess ? (
         <div className="flex flex-col-reverse gap-x-10 md:flex-row">
-          <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
+          <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
             <div className="w-full">
               <ChartKline />
             </div>
@@ -536,7 +536,7 @@ const Swap: React.FC = () => {
                 </div>
               )}
             </div> */}
-            <div className="flex flex-col justify-center mt-6 max-w-[760px] max-h-[760px]">
+            <div className="flex flex-col justify-center mt-6 max-w-[500px] max-h-[500px]">
               <MediaNFT data={data} isControls={true} />
               <p
                 className="mx-auto mt-1 cursor-pointer text-secondary5 hover:text-secondary3"

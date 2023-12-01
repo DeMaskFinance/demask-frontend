@@ -26,7 +26,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
     }, [page, refetch]);
     return (
         <div className='w-full mt-[15px]'>
-            <div className="w-full px-2 py-3 border rounded-lg border-dark3">
+            <div className="w-full overflow-y-auto border rounded-lg border-dark3">
                 <table className="w-full md:text-sm text-left border-collapse text-[10px]">
                     <thead className="sticky top-0 z-10 m-1 ">
                         <tr className="mx-2 text-[16px] text-dark0">

@@ -3,6 +3,7 @@ import { BiLoader } from "react-icons/bi";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
+import FormatNumber from "@/components/Common/FormatNumber";
 const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
   const calculatePercentage = (value: any, total: any) => {
     return (value / total) * 100;
@@ -10,12 +11,6 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
 
   const percentage = calculatePercentage(amount, parseInt(hardcap));
   const percentageSoftcap = calculatePercentage(softcap, parseInt(hardcap));
-
-  const total = (percentage / 100) * 67.777777;
-  const progressStyle = {
-    width: `${total}%`,
-    margin: `0 15%`,
-  };
 
   const isSoldOut = parseInt(amount) >= parseInt(hardcap);
 
@@ -27,8 +22,6 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
           className={`absolute z-2 ${isSoldOut ? "bg-gray-400" : "bg-secondary5"
             } h-1 rounded-lg w-[${percentage}%] text-sm text-white flex text-center justify-center items-center`}
         >
-          {/* {percentage} */}
-
         </div>
         <div className={`absolute w-1 h-1 bg-secondary3`} style={{ left: `${percentageSoftcap}%` }}>
           <Tippy content={
@@ -49,7 +42,7 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
       </div>
       <div className="flex justify-between mt-2 mb-3 text-xs text-dark1">
         <p className="">{percentage.toFixed(2)}%</p>
-        <p>{amount}/{hardcap}</p>
+        <div className="flex items-center">{amount}/<FormatNumber number={hardcap} /></div>
       </div>
     </div>
   );
