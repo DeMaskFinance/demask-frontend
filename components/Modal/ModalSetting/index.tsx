@@ -27,7 +27,6 @@ const ModalSetting: React.FunctionComponent<
         const [time, setTime] = useState<number>(txDeadline);
         useEffect(() => {
             let storedSlippage = localStorage.getItem("SLIPPAGE_DEMASK");
-            console.log(storedSlippage);
             if (storedSlippage) {
                 setSlippageTo(Number(storedSlippage));
             }

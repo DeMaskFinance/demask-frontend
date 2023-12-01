@@ -37,6 +37,10 @@ import useAmountOutMin from "@/hooks/useAmountOutMin";
 import { swapChartAPI } from "@/libs/service/swapService";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { BiLoaderAlt } from "react-icons/bi";
+import ChartKline from "@/components/Charts/ChartSwapKLine";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import HistoryItem from "@/components/Swap/History/HistoryItem";
+import HistorySwap from "@/components/Swap/History";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -217,22 +221,19 @@ const Swap: React.FC = () => {
     setIsOpen(true);
   };
   return (
-    <div className="py-8 mx-auto swap max-w-[1592px]">
+    <div className="py-8 mx-auto max-w-screen-3xl swap">
       <NextSeo {...updateMeta} />
       {(isLoading || isFetching) ? (
         <SkeletonReels />
       ) : isSuccess ? (
-        <div className="flex flex-col gap-x-10 lg:flex-row md:flex-row">
-          <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col max-w-[760px] max-h-[760px] items-center mb-4 ">
-            <MediaNFT data={data} isControls={true} />
-            <p
-              className="mt-1 text-sm cursor-pointer text-secondary5 hover:text-secondary3"
-              onClick={handleShowDetail}
-            >
-              See detail
-            </p>
+        <div className="flex flex-col-reverse gap-x-10 md:flex-row">
+          <div className="lg:w-[60%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
+            <div className="w-full">
+              <ChartKline />
+            </div>
+            <HistorySwap data={data} />
           </div>
-          <div className="lg:w-[40%] md:w-2/4 w-full">
+          <div className="lg:w-[40%] md:w-2/4 w-full flex-col-reverse lg:flex-col flex">
             <div className="px-2 py-2 border rounded-lg border-dark3">
               <div className="flex justify-between gap-4 mb-2 text-dark1">
                 <div className="flex flex-col items-center ">
@@ -297,7 +298,7 @@ const Swap: React.FC = () => {
                   </div>
                   {account && activeChoice === "BUY" && (
                     <div className="flex items-center text-secondary3">
-                      Balance:{formatNumber(balanceToken)} 
+                      Balance:{formatNumber(balanceToken)}
                       <span className="mb-1 ml-1">
                         <EtherIcon width={16} height={16} className="fill-secondary4" />
                       </span>
@@ -520,7 +521,7 @@ const Swap: React.FC = () => {
                 }
               </div>
             </div>
-            <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
+            {/* <div className="py-1 mt-4 overflow-hidden border rounded-lg border-dark3">
               {isLoadingChart ? (
                 <div className="h-[355px]">
                   <ChartLoading />
@@ -534,6 +535,15 @@ const Swap: React.FC = () => {
                   <ChartNoTransfers />
                 </div>
               )}
+            </div> */}
+            <div className="flex flex-col justify-center mt-6 max-w-[760px] max-h-[760px]">
+              <MediaNFT data={data} isControls={true} />
+              <p
+                className="mx-auto mt-1 cursor-pointer text-secondary5 hover:text-secondary3"
+                onClick={handleShowDetail}
+              >
+                See detail
+              </p>
             </div>
           </div>
         </div>
