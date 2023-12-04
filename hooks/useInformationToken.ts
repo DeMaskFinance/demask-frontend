@@ -46,19 +46,21 @@ const useInformationToken = (
           try {
             const bigNumberBalance = await contract.balanceOf(account);
             setBigNumberBalance(bigNumberBalance.toString());
-            const decimals = await contract.decimals();
-            const decimalsInt = Number(decimals);
-            const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
-            const balance = bigNumberBalance.div(divisor);
-            setBalanceToken(balance.toString());
-            // setDecimals(decimals);
+            setIsLoadingApprove(false);
             const tokenAllowance = await contract.allowance(
               account,
               routerAddress
             );
             const currentAllowance = tokenAllowance.toString();
             setAllowanceToken(currentAllowance);
-            setIsLoadingApprove(false);
+            const decimals = await contract.decimals();
+            const decimalsInt = Number(decimals);
+            const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
+            const balance = bigNumberBalance.div(divisor);
+            setBalanceToken(balance.toString());
+            // setDecimals(decimals);
+            
+            
           } catch (error) {
             console.error(error);
           }
@@ -69,7 +71,7 @@ const useInformationToken = (
     };
 
     getInformationToken();
-  }, [tokenAddress, account, wallet, isOpenTransaction, isOpenBuyNFT,isOpenSellNFT]);
+  }, [tokenAddress, account, wallet, isOpenTransaction, isOpenBuyNFT,isOpenSellNFT,routerAddress]);
 
   return {
     balanceToken,

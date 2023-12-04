@@ -69,7 +69,6 @@ export default function DetailLaunchPad() {
       return res;
     },
   });
-  console.log(data);
 
   const softcap = data?.softcap;
   const hardcap = data?.hardcap;
@@ -95,6 +94,13 @@ export default function DetailLaunchPad() {
       nativeAddress,
       isOpenTransaction
     );
+  console.log({
+    allowanceToken,
+    isLoadingApprove,
+    tokenLaunchpad,
+    data,
+    tokenAddress
+  });
 
   const currentTime = Math.floor(new Date().getTime() / 1000);
   const startTime = data?.startTime;
@@ -167,6 +173,11 @@ export default function DetailLaunchPad() {
       key: "timeline",
     }
   ];
+  console.log({
+    tokenAddress,
+    nativeAddress
+  });
+  
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -181,14 +192,16 @@ export default function DetailLaunchPad() {
     const contract = new ethers.Contract(tokenLaunchpad, abiLaunchPad, signer);
     try {
       let result;
-
-      if (tokenAddress === nativeAddress) {
-        setIsOpenTransaction(true);
-        result = await contract.buyETH(amount, { gasLimit: 8000000, value: exponentialToDecimal(Number(data.price) * Number(amount)) });
-      } else {
-        setIsOpenTransaction(true);
-        result = await contract.buy(amount, { gasLimit: 8000000 });
-      }
+      // const valueToSend = tokenAddress === nativeAddress ? exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) : 0;
+      // console.log({
+      //   amount,
+      //   valueToSend
+      // });
+      setIsOpenTransaction(true);
+      const estimatedGas = await contract.estimateGas.buy(amount, { value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
+      console.log(estimatedGas);
+      
+      result = await contract.buy(amount, { gasLimit: estimatedGas, value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
 
       const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);

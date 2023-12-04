@@ -4,6 +4,7 @@ import Wrapper from "../Wrapper";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "../ModalTransation";
 import { useEffect } from "react";
+import FormatNumber from "@/components/Common/FormatNumber";
 
 interface ModalLaunchPadProps {
   isOpenTransation: boolean;
@@ -46,7 +47,7 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
     setIsOpenModal(false);
   };
 
-  useEffect(() => {}, [isOpenTransation]);
+  useEffect(() => { }, [isOpenTransation]);
 
   return (
     <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
@@ -57,7 +58,9 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
           </h3>
           <div className="h-32 p-2 mx-auto text-center border rounded-lg">
             <p>Total buy</p>
-            <span className="block py-4 text-xl font-semibold">{inputNFT}</span>
+            <div className="block py-4 text-xl font-semibold">
+              <FormatNumber number={inputNFT.toString()} />
+            </div>
           </div>
 
           <div className="flex justify-center mt-4">
