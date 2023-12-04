@@ -42,7 +42,7 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
       </div>
       <div className="flex justify-between mt-2 mb-3 text-xs text-dark1">
         <p className="">{percentage.toFixed(2)}%</p>
-        <div className="flex items-center">{amount}/<FormatNumber number={hardcap} /></div>
+        <div className="flex items-center"><FormatNumber number={(amount / 1e18).toString()} />/<FormatNumber number={(hardcap / 1e18).toString()} /></div>
       </div>
     </div>
   );

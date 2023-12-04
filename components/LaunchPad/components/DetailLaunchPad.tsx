@@ -37,6 +37,7 @@ import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [isMaxBuy, setIsMaxBuy] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isOpenModalRefund, setIsOpenModalRefund] = useState<boolean>(false);
   const [status, setStatus] = useQueryParam("status", withDefault(StringParam, "rule"));
@@ -94,13 +95,6 @@ export default function DetailLaunchPad() {
       nativeAddress,
       isOpenTransaction
     );
-  console.log({
-    allowanceToken,
-    isLoadingApprove,
-    tokenLaunchpad,
-    data,
-    tokenAddress
-  });
 
   const currentTime = Math.floor(new Date().getTime() / 1000);
   const startTime = data?.startTime;
@@ -129,7 +123,7 @@ export default function DetailLaunchPad() {
     // else if (!checkBalance) {
     //   setErrors("Expire date");
     // }
-    else if (amount > data?.maxbuy) {
+    else if (amount > (data?.purchaseLimit - data.amount)) {
       setErrors("Amount express");
     } else {
       setErrors("");
@@ -173,11 +167,7 @@ export default function DetailLaunchPad() {
       key: "timeline",
     }
   ];
-  console.log({
-    tokenAddress,
-    nativeAddress
-  });
-  
+
   const handleBuyNFT = async (e: any) => {
     e.preventDefault();
     if (!account) {
@@ -198,10 +188,10 @@ export default function DetailLaunchPad() {
       //   valueToSend
       // });
       setIsOpenTransaction(true);
-      const estimatedGas = await contract.estimateGas.buy(amount, { value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
-      console.log(estimatedGas);
-      
-      result = await contract.buy(amount, { gasLimit: estimatedGas, value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
+      // const estimatedGas = await contract.estimateGas.buy(150, { value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
+      // console.log(estimatedGas);
+
+      result = await contract.buy(exponentialToDecimal(amount), { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
 
       const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
@@ -256,6 +246,7 @@ export default function DetailLaunchPad() {
       : data?.status === "Active"
         ? data.endTime
         : "";
+  console.log(isMaxBuy);
 
   return (
     <div>
@@ -294,6 +285,10 @@ export default function DetailLaunchPad() {
                       <FormatNumber number={(data.price / 1e18).toString()} />
                       <EtherIcon width={20} height={20} className="mb-2 fill-secondary3" />
                     </div>
+                    <div className="p-2 border rounded-lg text-dark1 border-dark2 w-fit">
+                      <p className="mb-2 font-normal">Your NFT Balance</p>
+                      <p className="font-semibold">{data?.amount}</p>
+                    </div>
                     <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-dark1">
                       <div>
                         <p>Supported</p>
@@ -301,20 +296,23 @@ export default function DetailLaunchPad() {
                       </div>
                       <div>
                         <p>Total raise</p>
-                        <div className="mt-1 font-semibold">
+                        <div className="flex items-center mt-1 font-semibold gap-x-1">
                           <FormatNumber number={(data.price / 1e18 * data.totalSold).toString()} />
+                          <EtherIcon width={16} height={16} className="mb-1 fill-dark1" />
                         </div>
                       </div>
                       <div>
                         <p>Soft Cap</p>
-                        <div className="mt-1 font-semibold">
-                          <FormatNumber number={data.softcap} />
+                        <div className="flex items-center mt-1 font-semibold gap-x-1">
+                          <FormatNumber number={(data.softcap / 1e18).toString()} />
+                          <EtherIcon width={16} height={16} className="mb-1 fill-dark1" />
                         </div>
                       </div>
                       <div>
                         <p>Hard Cap</p>
-                        <div className="mt-1 font-semibold">
-                          <FormatNumber number={data.hardcap} />
+                        <div className="flex items-center mt-1 font-semibold gap-x-1">
+                          <FormatNumber number={(data.hardcap / 1e18).toString()} />
+                          <EtherIcon width={16} height={16} className="mb-1 fill-dark1" />
                         </div>
                       </div>
                     </div>
@@ -330,7 +328,7 @@ export default function DetailLaunchPad() {
                           </div>
                         </div>
                         <div className="flex items-center text-sm font-semibold text-secondary4">
-                          <FormatNumber number={data.totalSold} />/<FormatNumber number={data.hardcap} />
+                          <FormatNumber number={(data.price / 1e18 * data.totalSold).toString()} />/<FormatNumber number={(data.hardcap / 1e18).toString()} />
                         </div>
                       </div>
                       <div className="my-3">
@@ -338,7 +336,7 @@ export default function DetailLaunchPad() {
                         <ProgressBar
                           softcap={softcap}
                           hardcap={hardcap}
-                          amount={totalSold}
+                          amount={totalSold * data.price}
                           isRefetching={isRefetching}
                         />
                       </div>
@@ -349,14 +347,30 @@ export default function DetailLaunchPad() {
                         {account ? (
                           <>
                             <div className="mb-4 gap-x-4">
-                              <p className="mb-2">Buying Phase</p>
+                              <p className="">Buying Phase</p>
+                              <p className="text-dark2 text-[10px] font-medium mb-2">The maximum amount of NFTs you can buy is <span className="text-xs font-semibold text-secondary5">{Number(data.purchaseLimit - data.amount)}</span></p>
                               <input
-                                onChange={(e) => setAmount(parseFloat(e.target.value))}
+                                onChange={(e) => {
+                                  setAmount(parseFloat(e.target.value))
+                                  if (Number(e.target.value) > Number(data.purchaseLimit - data.amount)) {
+                                    setIsMaxBuy(true);
+                                  } else {
+                                    setIsMaxBuy(false);
+                                  }
+                                }}
                                 type="number"
                                 // disabled={errors !== "" ? true : false}
                                 className="px-2 mb-2 border rounded-md outline-none"
                                 value={amount}
                               /><br />
+                              {isMaxBuy && (
+                                <p
+                                  className="mt-0 mb-2 ml-2 text-xs text-red"
+                                  key="maxBuy"
+                                >
+                                  Exceed the quantity that can be purchased({Number(data.purchaseLimit - data.amount)})
+                                </p>
+                              )}
                               <button
                                 disabled={errors !== "" ? true : false}
                                 onClick={() => {
@@ -368,49 +382,70 @@ export default function DetailLaunchPad() {
                                 Buy
                               </button>
                             </div>
-                            <div >
-                              <p className="mb-2">Claiming & Refunding Phase</p>
-                              <div className="flex gap-x-2">
-                                {
-                                  Number(data.amount) < Number(data.softcap) && (
+                            {data.status === 'Ended' && (
+                              <div >
+                                <p className="mb-2">Claiming & Refunding Phase</p>
+                                <div className="flex gap-x-2">
+                                  {
+                                    Number(data.amount) < Number(data.softcap) && (
+                                      <button
+                                        // disabled={data.status === null ? true : data.status}
+                                        className={`${Number(data.amount) >= Number(data.softcap)
+                                          ? "text-white  bg-dark4"
+                                          : "text-red border border-red hover:border-red hover:text-white hover:bg-red"
+                                          }  px-6 py-2 rounded-lg transition-all text-sm font-medium`}
+                                        onClick={() => {
+                                          setIsOpenModalRefund(true);
+                                          setAmount(data?.amount);
+                                          setAmountLeave(data?.amount);
+                                        }}
+                                      >
+                                        Refund
+                                      </button>
+                                    )
+                                  }
+                                  {data.isClaim && (
                                     <button
-                                      // disabled={data.status === null ? true : data.status}
-                                      className={`${Number(data.amount) >= Number(data.softcap)
+                                      // disabled={data.status === null ? true : !data.status}
+                                      className={`border ${!data.status
                                         ? "text-white  bg-dark4"
-                                        : "text-red border border-red hover:border-red hover:text-white hover:bg-red"
-                                        }  px-6 py-2 rounded-lg transition-all text-sm font-medium`}
+                                        : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
+                                        } px-6 py-2 rounded-lg transition-all text-sm font-medium`}
                                       onClick={() => {
-                                        setIsOpenModalRefund(true);
-                                        setAmount(data?.amount);
-                                        setAmountLeave(data?.amount);
+                                        handleReleaseLaunchPad(
+                                          account,
+                                          wallet,
+                                          data.launchpad,
+                                          setIsOpenModal,
+                                          setIsOpenTransaction
+                                        );
                                       }}
                                     >
-                                      Refund
+                                      Claim
                                     </button>
-                                  )
-                                }
-                                {data.status === 'Ended' && data.isClaim && (
-                                  <button
-                                    // disabled={data.status === null ? true : !data.status}
-                                    className={`border ${!data.status
-                                      ? "text-white  bg-dark4"
-                                      : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
-                                      } px-6 py-2 rounded-lg transition-all text-sm font-medium`}
-                                    onClick={() => {
-                                      handleReleaseLaunchPad(
-                                        account,
-                                        wallet,
-                                        data.launchpad,
-                                        setIsOpenModal,
-                                        setIsOpenTransaction
-                                      );
-                                    }}
-                                  >
-                                    Claim
-                                  </button>
-                                )}
+                                  )}
+                                </div>
                               </div>
-                            </div>
+                            )}
+                            <ModalLaunchPad
+                              setIsOpenTransaction={setIsOpenTransaction}
+                              isOpenTransation={isOpenTransaction}
+                              setIsOpenModal={setIsOpenModal}
+                              isOpenModal={isOpenModal}
+                              account={account}
+                              wallet={wallet}
+                              tokenAddress={tokenAddress}
+                              inputNFT={inputNFT}
+                              routerAddress={tokenLaunchpad}
+                              setIsOpen={setIsOpen}
+                              checkApproveToken={isApprovedToken}
+                              setCheckApproveToken={setIsApprovedToken}
+                              nativeAddress={nativeAddress}
+                              handleBuyNFT={handleBuyNFT}
+                              isLoadingApprove={isLoadingApprove}
+                              refetch={refetch}
+                              data={data}
+                            />
                           </>
                         ) : (
                           <Button
@@ -423,33 +458,14 @@ export default function DetailLaunchPad() {
                         )}
                       </div>
                     </div>
-
                   </div>
                 </div>
-
               </>
             )
           )}
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-        <ModalLaunchPad
-          setIsOpenTransaction={setIsOpenTransaction}
-          isOpenTransation={isOpenTransaction}
-          setIsOpenModal={setIsOpenModal}
-          isOpenModal={isOpenModal}
-          account={account}
-          wallet={wallet}
-          tokenAddress={tokenAddress}
-          inputNFT={inputNFT}
-          routerAddress={tokenLaunchpad}
-          setIsOpen={setIsOpen}
-          checkApproveToken={isApprovedToken}
-          setCheckApproveToken={setIsApprovedToken}
-          nativeAddress={nativeAddress}
-          handleBuyNFT={handleBuyNFT}
-          isLoadingApprove={isLoadingApprove}
-          refetch={refetch}
-        />
+
         <ModalLaunchPadProfile
           isOpenModal={isOpenModalRefund}
           setIsOpenModal={setIsOpenModalRefund}

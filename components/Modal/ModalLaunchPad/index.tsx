@@ -23,6 +23,7 @@ interface ModalLaunchPadProps {
   setIsOpenModal: any;
   isOpenModal: boolean;
   refetch: any;
+  data:any;
 }
 
 const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
@@ -40,6 +41,7 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
   handleBuyNFT,
   isLoadingApprove,
   refetch,
+  data
 }) => {
   const handleClose = (e: any) => {
     e.preventDefault();
@@ -61,6 +63,7 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
             <div className="block py-4 text-xl font-semibold">
               <FormatNumber number={inputNFT.toString()} />
             </div>
+            <p>Max buy : {data.purchaseLimit}</p>
           </div>
 
           <div className="flex justify-center mt-4">

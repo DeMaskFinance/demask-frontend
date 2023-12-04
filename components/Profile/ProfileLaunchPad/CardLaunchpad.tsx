@@ -1,20 +1,9 @@
-import CountdownTime from "@/components/Common/CountdownTime";
-import MediaNFT from "@/components/Common/MediaNFT";
 import TabLaunchPadItem from "@/components/LaunchPad/components/TabLaunchPadItem";
-import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
-import { convertTime } from "@/hooks/useConvertTime";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
-import handleLeaveLaunchPad from "@/libs/utils/handleLeaveLaunchpad";
-import handleReleaseLaunchPad from "@/libs/utils/handleReleaseLaunchPad";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "next/link";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { BiLoader } from "react-icons/bi";
-import { IoReloadOutline } from "react-icons/io5";
+import { Fragment, useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 export default function CardLaunchpad() {
   const { account, wallet, chainId, demask, tokenDefault } =
