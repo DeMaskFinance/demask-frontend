@@ -39,7 +39,7 @@ const Box = ({ data }: any) => {
                         </td>
                         <td className="">
                             <div className='flex items-center justify-end '>
-                                <FormatNumber number={remaining.toString()} />
+                                <FormatNumber number={(remaining / 1e18).toString()} />
                             </div>
                         </td>
                     </tr>

@@ -3,10 +3,11 @@ import Image from 'next/image'
 import React from 'react'
 interface MediaNFTProps {
     data: any,
-    isControls:boolean,
-    hover?:boolean
+    isControls: boolean,
+    hover?: boolean,
+    launchpad?: boolean
 }
-const MediaNFT: React.FC<MediaNFTProps> = ({ data,isControls,hover }) => {
+const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad }) => {
     return (
         <>
             {data?.metadata && (
@@ -33,19 +34,19 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data,isControls,hover }) => {
                                 ? {
                                     onMouseOver: (event) => (event.target as any).play(),
                                     onMouseOut: (event) => (event.target as any).pause(),
-                                  }
+                                }
                                 : {})}
                             className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
                         />
                     )}
-                    {data.metadata?.image && data.metadata?.animation_url && (
+                    {data.metadata?.image && data.metadata?.animation_url && !launchpad && (
                         <audio
                             autoPlay
                             loop
                             muted
                             controls
                             src={data.metadata.animation_url}
-                            className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg  object-cover ${isControls?'':'hidden'}`}
+                            className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg  object-cover ${isControls ? '' : 'hidden'}`}
                         >
                             Your browser does not support the
                             <code>audio</code> element.

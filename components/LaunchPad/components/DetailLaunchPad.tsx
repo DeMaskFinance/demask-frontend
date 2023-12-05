@@ -21,7 +21,7 @@ import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { AvatarUser } from "@/components/Avatars";
-import { EtherIcon, ZkSyncIconTable } from "@/components/Icons";
+import { EtherIcon, LaunchpadStatus, ZkSyncIconTable } from "@/components/Icons";
 import Rule from "./Rule";
 import Box from "./Box";
 import Timeline from "./Timeline";
@@ -274,8 +274,14 @@ export default function DetailLaunchPad() {
                   </div>
                 </div>
                 <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper">
-                  <div className="w-full lg:w-[50%]">
+                  <div className="w-full lg:w-[50%] relative">
                     <MediaNFT data={data} isControls />
+                    <div className="absolute top-0 right-0 ">
+                      <LaunchpadStatus width={100} height={80} className={`${data.status === "Active" ? 'fill-secondary5' : data.status === "Upcoming" ? 'fill-dark3' : 'fill-green'}`} />
+                      <p className="absolute top-[50%] right-[50%] translate-x-[50%] text-sm -translate-y-[80%] text-white font-semibold">
+                        {data.status === "Active" ? 'Sale' : data.status === "Upcoming" ? 'Soon' : 'Failed'}
+                      </p>
+                    </div>
                   </div>
                   <div className=" w-full lg:w-[50%] mt-4 lg:mt-0">
                     <div className="relative text-2xl font-semibold text-dark1">
@@ -321,7 +327,7 @@ export default function DetailLaunchPad() {
                       <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4">
                         <div className="flex item-center gap-x-2">
                           <div className="w-8 h-8">
-                            <MediaNFT data={data} isControls />
+                            <MediaNFT data={data} isControls launchpad={true}/>
                           </div>
                           <div className="relative font-semibold text-dark1 max-w-[250px] flex items-center">
                             <ModalDocument data={data.metadata.name} />
