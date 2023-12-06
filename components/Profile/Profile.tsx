@@ -6,8 +6,8 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import History from './History';
 import Inventory from './Inventory';
 import Pools from './Pools';
-import ProfileLaunchPad from './ProfileLaunchPad/ProfileLaunchPad';
 import Referral from './Referral';
+import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -34,7 +34,7 @@ const Profile = () => {
         },
         {
             title: "Launchpad",
-            panel: () => <ProfileLaunchPad />,
+            panel: () => <UserLaunchpad />,
             key: "launchpad",
         },
         {

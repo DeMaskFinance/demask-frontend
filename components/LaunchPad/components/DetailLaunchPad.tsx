@@ -33,6 +33,7 @@ import Link from "next/link";
 import handleReleaseLaunchPad from "@/libs/utils/handleReleaseLaunchPad";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
+import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalClaimLaunchpad";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -48,6 +49,7 @@ export default function DetailLaunchPad() {
   const [inputNFT, setInpuNFT] = useState<any>(1);
   const [amountLeave, setAmountLeave] = useState(0);
   const [amount, setAmount] = useState(1);
+  const [isOpenConfirmClaim, setIsOpenConfirmClaim] = useState(false);
   const { account, wallet, chainId, demask, tokenDefault } =
     useContext(AccountContext);
   const [errors, setErrors] = useState<string>("");
@@ -246,7 +248,6 @@ export default function DetailLaunchPad() {
       : data?.status === "Active"
         ? data.endTime
         : "";
-  console.log(isMaxBuy);
 
   return (
     <div>
@@ -265,11 +266,11 @@ export default function DetailLaunchPad() {
                 <div className="flex justify-between mb-6">
                   <h1 className="text-2xl font-medium text-dark0">Detail Launchpad</h1>
                   <div className="flex justify-between datas-center gap-x-1">
-                    <div className="text-[10px] border border-secondary2  text-secondary2 transition-all duration-150 hover:text-white hover:bg-secondary2 rounded-lg h-6 px-2 datas-end leading-6">
+                    {/* <div className="text-[10px] border border-secondary2  text-secondary2 transition-all duration-150 hover:text-white hover:bg-secondary2 rounded-lg h-6 px-2 datas-end leading-6">
                       <Link href={`/launchpad?choice=${data.status}`}>
                         {data.status}
                       </Link>
-                    </div>
+                    </div> */}
                     <CountdownTime query={data.status} blockNumber={blockNumber} />
                   </div>
                 </div>
@@ -277,9 +278,9 @@ export default function DetailLaunchPad() {
                   <div className="w-full lg:w-[50%] relative">
                     <MediaNFT data={data} isControls />
                     <div className="absolute top-0 right-0 ">
-                      <LaunchpadStatus width={100} height={80} className={`${data.status === "Active" ? 'fill-secondary5' : data.status === "Upcoming" ? 'fill-dark3' : 'fill-green'}`} />
+                      <LaunchpadStatus width={100} height={80} className={`${data.status === "Active" ? 'fill-secondary5' : data.status === "Upcoming" ? 'fill-dark3' : data.isSuccess ? 'fill-green' : 'fill-red'}`} />
                       <p className="absolute top-[50%] right-[50%] translate-x-[50%] text-sm -translate-y-[80%] text-white font-semibold">
-                        {data.status === "Active" ? 'Sale' : data.status === "Upcoming" ? 'Soon' : 'Failed'}
+                        {data.status === "Active" ? 'Sale' : data.status === "Upcoming" ? 'Soon' : data.isSuccess ? 'Success' : 'Failed'}
                       </p>
                     </div>
                   </div>
@@ -291,10 +292,12 @@ export default function DetailLaunchPad() {
                       <FormatNumber number={(data.price / 1e18).toString()} />
                       <EtherIcon width={20} height={20} className="mb-2 fill-secondary3" />
                     </div>
-                    <div className="p-2 border rounded-lg text-dark1 border-dark2 w-fit">
-                      <p className="mb-2 font-normal">Your NFT Balance</p>
-                      <p className="font-semibold">{data?.amount}</p>
-                    </div>
+                    {account && (
+                      <div className="p-2 border rounded-lg text-dark1 border-dark2 w-fit">
+                        <p className="mb-2 font-normal">Your NFT Balance</p>
+                        <p className="font-semibold">{data?.amount}</p>
+                      </div>
+                    )}
                     <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-dark1">
                       <div>
                         <p>Supported</p>
@@ -327,7 +330,7 @@ export default function DetailLaunchPad() {
                       <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4">
                         <div className="flex item-center gap-x-2">
                           <div className="w-8 h-8">
-                            <MediaNFT data={data} isControls launchpad={true}/>
+                            <MediaNFT data={data} isControls launchpad={true} />
                           </div>
                           <div className="relative font-semibold text-dark1 max-w-[250px] flex items-center">
                             <ModalDocument data={data.metadata.name} />
@@ -338,7 +341,7 @@ export default function DetailLaunchPad() {
                         </div>
                       </div>
                       <div className="my-3">
-                        <p className="mb-2">Progress</p>
+                        <p className="mb-4">Progress</p>
                         <ProgressBar
                           softcap={softcap}
                           hardcap={hardcap}
@@ -352,65 +355,11 @@ export default function DetailLaunchPad() {
                       <div className="">
                         {account ? (
                           <>
-                            <div className="mb-4 gap-x-4">
-                              <p className="">Buying Phase</p>
-                              <p className="text-dark2 text-[10px] font-medium mb-2">The maximum amount of NFTs you can buy is <span className="text-xs font-semibold text-secondary5">{Number(data.purchaseLimit - data.amount)}</span></p>
-                              <input
-                                onChange={(e) => {
-                                  setAmount(parseFloat(e.target.value))
-                                  if (Number(e.target.value) > Number(data.purchaseLimit - data.amount)) {
-                                    setIsMaxBuy(true);
-                                  } else {
-                                    setIsMaxBuy(false);
-                                  }
-                                }}
-                                type="number"
-                                // disabled={errors !== "" ? true : false}
-                                className="px-2 mb-2 border rounded-md outline-none"
-                                value={amount}
-                              /><br />
-                              {isMaxBuy && (
-                                <p
-                                  className="mt-0 mb-2 ml-2 text-xs text-red"
-                                  key="maxBuy"
-                                >
-                                  Exceed the quantity that can be purchased({Number(data.purchaseLimit - data.amount)})
-                                </p>
-                              )}
-                              <button
-                                disabled={errors !== "" ? true : false}
-                                onClick={() => {
-                                  setIsOpenModal(!isOpenModal);
-                                }}
-                                className={`px-6 py-2 rounded-md text-sm text-white  ${errors !== "" ? "bg-slate-400" : "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear"
-                                  }`}
-                              >
-                                Buy
-                              </button>
-                            </div>
-                            {data.status === 'Ended' && (
+                            {data.status === 'Ended' ? (
                               <div >
                                 <p className="mb-2">Claiming & Refunding Phase</p>
                                 <div className="flex gap-x-2">
-                                  {
-                                    Number(data.amount) < Number(data.softcap) && (
-                                      <button
-                                        // disabled={data.status === null ? true : data.status}
-                                        className={`${Number(data.amount) >= Number(data.softcap)
-                                          ? "text-white  bg-dark4"
-                                          : "text-red border border-red hover:border-red hover:text-white hover:bg-red"
-                                          }  px-6 py-2 rounded-lg transition-all text-sm font-medium`}
-                                        onClick={() => {
-                                          setIsOpenModalRefund(true);
-                                          setAmount(data?.amount);
-                                          setAmountLeave(data?.amount);
-                                        }}
-                                      >
-                                        Refund
-                                      </button>
-                                    )
-                                  }
-                                  {data.isClaim && (
+                                  {data.isClaim ? (
                                     <button
                                       // disabled={data.status === null ? true : !data.status}
                                       className={`border ${!data.status
@@ -418,19 +367,65 @@ export default function DetailLaunchPad() {
                                         : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
                                         } px-6 py-2 rounded-lg transition-all text-sm font-medium`}
                                       onClick={() => {
-                                        handleReleaseLaunchPad(
-                                          account,
-                                          wallet,
-                                          data.launchpad,
-                                          setIsOpenModal,
-                                          setIsOpenTransaction
-                                        );
+                                        setIsOpenConfirmClaim(true);
                                       }}
                                     >
                                       Claim
                                     </button>
+                                  ) : (
+                                    <button
+                                      // disabled={data.status === null ? true : data.status}
+                                      className={`${Number(data.amount) >= Number(data.softcap)
+                                        ? "text-white  bg-dark4"
+                                        : "text-red border border-red hover:border-red hover:text-white hover:bg-red"
+                                        }  px-6 py-2 rounded-lg transition-all text-sm font-medium`}
+                                      onClick={() => {
+                                        setIsOpenModalRefund(true);
+                                        setAmount(data?.amount);
+                                        setAmountLeave(data?.amount);
+                                      }}
+                                    >
+                                      Refund
+                                    </button>
                                   )}
                                 </div>
+                              </div>
+                            ) : (
+                              <div className="mb-4 gap-x-4">
+                                <p className="">Buying Phase</p>
+                                <p className="text-dark2 text-[10px] font-medium mb-2">The maximum amount of NFTs you can buy is <span className="text-xs font-semibold text-secondary5">{Number(data.purchaseLimit - data.amount)}</span></p>
+                                <input
+                                  onChange={(e) => {
+                                    setAmount(parseFloat(e.target.value))
+                                    if (Number(e.target.value) > Number(data.purchaseLimit - data.amount)) {
+                                      setIsMaxBuy(true);
+                                    } else {
+                                      setIsMaxBuy(false);
+                                    }
+                                  }}
+                                  type="number"
+                                  // disabled={errors !== "" ? true : false}
+                                  className="px-2 mb-2 border rounded-md outline-none"
+                                  value={amount}
+                                /><br />
+                                {isMaxBuy && (
+                                  <p
+                                    className="mt-0 mb-2 ml-2 text-xs text-red"
+                                    key="maxBuy"
+                                  >
+                                    Exceed the quantity that can be purchased({Number(data.purchaseLimit - data.amount)})
+                                  </p>
+                                )}
+                                <button
+                                  disabled={errors !== "" ? true : false}
+                                  onClick={() => {
+                                    setIsOpenModal(!isOpenModal);
+                                  }}
+                                  className={`px-6 py-2 rounded-md text-sm text-white  ${errors !== "" ? "bg-slate-400" : "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear"
+                                    }`}
+                                >
+                                  Buy
+                                </button>
                               </div>
                             )}
                             <ModalLaunchPad
@@ -451,6 +446,12 @@ export default function DetailLaunchPad() {
                               isLoadingApprove={isLoadingApprove}
                               refetch={refetch}
                               data={data}
+                            />
+                            <ModalClaimLaunchpad
+                              data={data}
+                              isOpenConfirmClaim={isOpenConfirmClaim}
+                              setIsOpenConfirmClaim={setIsOpenConfirmClaim}
+
                             />
                           </>
                         ) : (

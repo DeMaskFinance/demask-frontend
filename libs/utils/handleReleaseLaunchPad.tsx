@@ -18,7 +18,10 @@ const handleReleaseLaunchPad = async (
     const signer = provider.getSigner();
     const contract = new ethers.Contract(routerAddress, abiLaunchPad, signer);
     try {
-      const result = await contract.release({ gasLimit: 8000000 });
+      const gasLimit = await contract.estimateGas.balanceOf(account);
+      console.log(gasLimit);
+      
+      const result = await contract.release({ gasLimit });
       setIsOpenTransaction(true);
       const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
@@ -26,7 +29,7 @@ const handleReleaseLaunchPad = async (
       if (check.status) {
         toast.success(
           <TransitionURL
-            type={"Release launchpad"}
+            type={"Claim launchpad success"}
             transactionHash={result.hash}
           />,
           {

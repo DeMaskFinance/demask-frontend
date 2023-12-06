@@ -135,7 +135,8 @@ const Swap: React.FC = () => {
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
   console.log(amountTokenBuy);
   console.log(amountTokenSell);
-  
+  console.log(data);
+
   useEffect(() => {
     if (inputNFT && data && amountTokenBuy && amountTokenSell) {
       setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
@@ -226,7 +227,9 @@ const Swap: React.FC = () => {
         <div className="flex flex-col-reverse gap-x-10 md:flex-row">
           <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
             <div className="w-full">
-              <ChartKline />
+              {data && (
+                <ChartKline dmlAddress={data.dmlAddress} />
+              )}
             </div>
             <HistorySwap data={data} />
           </div>
@@ -533,7 +536,7 @@ const Swap: React.FC = () => {
                 </div>
               )}
             </div> */}
-            <div className="flex flex-col justify-center mt-6 max-w-[500px] max-h-[500px]">
+            <div className="flex flex-col justify-center mt-6 max-w-[500px] max-h-[500px] h-[500px]">
               <MediaNFT data={data} isControls={true} />
               <p
                 className="mx-auto mt-1 cursor-pointer text-secondary5 hover:text-secondary3"

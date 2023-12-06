@@ -26,26 +26,44 @@ const handleLeaveLaunchPad = async (
       setIsOpenTransaction(true);
       setIsOpen(false);
 
-      await provider.waitForTransaction(result.hash);
+      const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
       refetch();
-
-      toast.success(
-        <TransitionURL
-          type={"Leave launchpad"}
-          transactionHash={result.hash}
-        />,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      if(check.status){
+        toast.success(
+          <TransitionURL
+            type={"Refund launchpad success"}
+            transactionHash={result.hash}
+          />,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      }else{
+        toast.error(
+          <TransitionURL
+            type={"Failed transaction"}
+            transactionHash={result.hash}
+          />,
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      }
     } catch (error) {
       console.error(error);
     }

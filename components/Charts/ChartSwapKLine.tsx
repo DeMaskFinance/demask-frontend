@@ -1,10 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { init, dispose } from 'klinecharts';
+import AccountContext from '@/context/AccountContext';
+import { useQuery } from '@tanstack/react-query';
+import { categoryAPI } from '@/libs/service/categoriesChartService';
+import ChartLoading from './ChartLoading';
+import ChartNoTransfers from './ChartNoTransfers';
 
-const ChartKline = () => {
+const ChartKline = ({ dmlAddress }: any) => {
     const [currentHour, setCurrentHour] = useState(0);
     const [currentMinute, setCurrentMinute] = useState(0);
     const [currentSecond, setCurrentSecond] = useState(0);
+    const { chainId } = useContext(AccountContext);
+    const [newData, setNewData] = useState([]);
+    const { data, isLoading } = useQuery({
+        queryKey: ["chart", chainId, dmlAddress],
+        queryFn: async () => {
+            const res = await categoryAPI(`chart?chainId=${chainId}&dmlAddress=${dmlAddress}`);
+            return res;
+        },
+    });
+    useEffect(() => {
+        if (data) {
+            const convertedData = data.map((item: any) => ({
+                close: parseFloat(item.closePrice),
+                high: parseFloat(item.highPrice),
+                low: parseFloat(item.lowPrice),
+                open: parseFloat(item.openPrice),
+                timestamp: parseInt(item.dayStartTimestamp) * 1000,
+                volume: parseFloat(item.volume),
+            }));
+            setNewData(convertedData);
+        }
+    }, [data]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -47,7 +74,7 @@ const ChartKline = () => {
         const chart = init('chart');
         chart?.createIndicator('VOL')
         // add data to the chart
-        chart?.applyNewData(genData())
+        chart?.applyNewData(newData)
         chart?.setStyles({
             candle: {
                 tooltip: {
@@ -100,23 +127,35 @@ const ChartKline = () => {
             // destroy chart
             dispose('chart');
         };
-    }, []);
+    }, [newData]);
 
     return (
-        <div className='w-full mt-6 lg:mt-0'>
-            <div id="chart" className='w-full h-[600px]' />
-            <div className='flex justify-between text-[12px] text-[#222] font-medium'>
-                <ul className='flex mt-2 gap-x-3'>
-                    <li className='cursor-pointer hover:text-secondary4'>1H</li>
-                    <li className='cursor-pointer hover:text-secondary4'>1D</li>
-                    <li className='cursor-pointer hover:text-secondary4'>1W</li>
-                    <li className='cursor-pointer hover:text-secondary4'>1Y</li>
-                    <li className='cursor-pointer hover:text-secondary4'>All</li>
-                </ul>
-                <div>
-                    {currentHour}:{currentMinute}:{currentSecond}(UTC)
+        <div>
+            {isLoading ? (
+                <div className="h-[355px]">
+                    <ChartLoading />
                 </div>
-            </div>
+            ) : data && newData?.length > 0 ? (
+                <div className='w-full mt-6 lg:mt-0'>
+                    <div id="chart" className='w-full h-[600px]' />
+                    <div className='flex justify-between text-[12px] text-[#222] font-medium'>
+                        <ul className='flex mt-2 gap-x-3'>
+                            <li className='cursor-pointer hover:text-secondary4'>1H</li>
+                            <li className='cursor-pointer hover:text-secondary4'>1D</li>
+                            <li className='cursor-pointer hover:text-secondary4'>1W</li>
+                            <li className='cursor-pointer hover:text-secondary4'>1Y</li>
+                            <li className='cursor-pointer hover:text-secondary4'>All</li>
+                        </ul>
+                        <div>
+                            {currentHour}:{currentMinute}:{currentSecond}(UTC)
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="h-[355px]">
+                    <ChartNoTransfers />
+                </div>
+            )}
         </div>
     );
 };

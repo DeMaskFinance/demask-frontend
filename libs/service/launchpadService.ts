@@ -6,11 +6,6 @@ export const LaunchPadAPI = async (
   account:string,
 ) => {
   try {
-    console.log({
-      tokenAddress,
-      chainId,
-    });
-    
     const res = await request.get(
       `launchpad-detail?chainId=${chainId}&launchpad=${tokenAddress}&userAddress=${account}`
     );
