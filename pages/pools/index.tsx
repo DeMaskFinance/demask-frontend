@@ -11,6 +11,7 @@ import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import ChartKline from "@/components/Charts/ChartSwapKLine";
 import Image from "next/image";
+import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',
@@ -109,6 +110,7 @@ export default function Liquidity() {
         </Button>
       </div>
       {/* <ChartKline /> */}
+      {/* <ChartTradingViewSwap/> */}
     </div>
   );
 }

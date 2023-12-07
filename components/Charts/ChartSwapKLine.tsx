@@ -33,7 +33,7 @@ const ChartKline = ({ dmlAddress }: any) => {
         }
     }, [data]);
     // console.log(newData);
-    
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             const currentTime = new Date();
@@ -74,8 +74,9 @@ const ChartKline = ({ dmlAddress }: any) => {
         // initialize the chart
         const chart = init('chart');
         chart?.createIndicator('VOL')
+        chart?.setPriceVolumePrecision(8, 2);
         // add data to the chart
-        chart?.applyNewData(newData)
+        chart?.applyNewData(newData);
         chart?.setStyles({
             candle: {
                 tooltip: {
@@ -122,7 +123,7 @@ const ChartKline = ({ dmlAddress }: any) => {
                     downColor: '#222',
                     noChangeColor: '#222'
                 },
-            }
+            },
         })
         return () => {
             // destroy chart
