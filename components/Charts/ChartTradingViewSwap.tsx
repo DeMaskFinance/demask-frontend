@@ -39,11 +39,6 @@ const ChartTradingViewSwap = () => {
             });
             const volumeSeries = chart.addHistogramSeries({
                 priceScaleId: 'left',
-                overlay:true,
-                scaleMargins: {
-                    top:0.8,
-                    bottom:0
-                }
             });
 
             candlestickSeries.setData([
@@ -79,16 +74,16 @@ const ChartTradingViewSwap = () => {
             });
         }
 
-        return () => {
-            // Remove chart when component unmounts
-            if (chartContainerRef.current) {
-                chartContainerRef.current.innerHTML = '';
-            }
-        };
+        // return () => {
+        //     // Remove chart when component unmounts
+        //     if (chartContainerRef.current) {
+        //         chartContainerRef.current.innerHTML = '';
+        //     }
+        // };
     }, []);
     return (
         <div>
-            <div ref={chartContainerRef} id="chart" />
+            {/* <div ref={chartContainerRef} id="chart" /> */}
         </div>
     )
 }
