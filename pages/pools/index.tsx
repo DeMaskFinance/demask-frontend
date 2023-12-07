@@ -110,7 +110,7 @@ export default function Liquidity() {
         </Button>
       </div>
       {/* <ChartKline /> */}
-      {/* <ChartTradingViewSwap/> */}
+      <ChartTradingViewSwap/>
     </div>
   );
 }
