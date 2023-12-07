@@ -84,7 +84,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
             </div>
           </div>
           <div className="pt-2 mt-2 border-t">
-            <CountdownTime query={query} blockNumber={blockNumber} />
+            <CountdownTime query={query} blockNumber={blockNumber} isSuccess={item.isSuccess}/>
           </div>
         </div>
       </Link>

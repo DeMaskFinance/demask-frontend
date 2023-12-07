@@ -55,12 +55,14 @@ const ModalClaimLaunchpad: React.FunctionComponent<
                 const gasUse = await provider.getGasPrice();
                 const gasUseInEther = web3.utils.fromWei(gasUse.toString(), 'ether');
                 const gasLimitEther = web3.utils.fromWei(result.toString(), 'ether');
+                const test = web3.utils.fromWei((Number(gasUse) * Number(result)).toString(), 'ether');
                 setGasFee(gasUse.toString());
                 console.log({
                     result: result.toString(),
                     gasUse: gasUse.toString(),
                     gasUseETH: gasUseInEther,
-                    gasLimitETH: gasLimitEther
+                    gasLimitETH: gasLimitEther,
+                    test: test.toString(),
                 });
 
             }
@@ -82,8 +84,8 @@ const ModalClaimLaunchpad: React.FunctionComponent<
                             Fee Transaction: {gasFee}
                         </p>
                         <button
-                            // disabled={data.status === null ? true : !data.status}
-                            className={`border ${!data.status
+                            disabled={release.toString() === '0'}
+                            className={`border ${release.toString() === '0'
                                 ? "text-white  bg-dark4"
                                 : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
                                 } px-6 mx-auto mt-2 py-2 rounded-lg transition-all text-sm font-medium`}

@@ -72,7 +72,8 @@ export default function DetailLaunchPad() {
       return res;
     },
   });
-
+  console.log(data);
+  
   const softcap = data?.softcap;
   const hardcap = data?.hardcap;
   const totalSold = data?.totalSold;
@@ -271,7 +272,7 @@ export default function DetailLaunchPad() {
                         {data.status}
                       </Link>
                     </div> */}
-                    <CountdownTime query={data.status} blockNumber={blockNumber} />
+                    <CountdownTime query={data.status} blockNumber={blockNumber} isSuccess={data.isSuccess}/>
                   </div>
                 </div>
                 <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper">

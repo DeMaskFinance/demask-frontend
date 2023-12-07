@@ -32,7 +32,8 @@ const ChartKline = ({ dmlAddress }: any) => {
             setNewData(convertedData);
         }
     }, [data]);
-
+    // console.log(newData);
+    
     useEffect(() => {
         const intervalId = setInterval(() => {
             const currentTime = new Date();

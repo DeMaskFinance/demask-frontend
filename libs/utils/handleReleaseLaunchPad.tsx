@@ -19,7 +19,7 @@ const handleReleaseLaunchPad = async (
     const contract = new ethers.Contract(routerAddress, abiLaunchPad, signer);
     try {
       const gasLimit = await contract.estimateGas.balanceOf(account);
-      console.log(gasLimit);
+      console.log(gasLimit.toString());
       
       const result = await contract.release({ gasLimit });
       setIsOpenTransaction(true);

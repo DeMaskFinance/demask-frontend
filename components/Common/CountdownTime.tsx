@@ -4,13 +4,16 @@ import React, { useEffect, useState } from "react";
 interface CountdownTimeProps {
     blockNumber: number,
     query?: string,
+    isSuccess?: boolean,
 }
 const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     blockNumber,
-    query
+    query,
+    isSuccess
 }) => {
     const [blockNumberTimer, setBlockNumberTimer] = useState(0);
-
+    console.log(isSuccess);
+    
     const timer = () => {
         const currentTime = Math.floor(Date.now() / 1000);
         const reBase = Math.max(0, blockNumber - currentTime);
@@ -62,9 +65,9 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
                     <p className="text-xs text-center text-dark3">
                         This phase has:
                     </p>
-                    <div className="text-[10px] w-[50px] border border-secondary2  text-secondary2 transition-all duration-150 hover:text-white hover:bg-secondary2 rounded-lg h-6 px-2 datas-end leading-6">
+                    <div className={`text-[10px] border  transition-all duration-150  rounded-lg h-6 px-2 datas-end leading-6 ${isSuccess ? 'border-green  text-green w-[61px] hover:text-white hover:bg-green' : 'border-red w-[50px]  text-red hover:text-white hover:bg-red'}`}>
                         <Link href={`/launchpad?choice=${query}`}>
-                            {query}
+                            {isSuccess ? 'Success' : 'Failed'}
                         </Link>
                     </div>
                 </div>
