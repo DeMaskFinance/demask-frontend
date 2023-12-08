@@ -20,6 +20,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ModalDocument from "../ModalLength/ModalDocument";
+import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalConfirmAddLiquidityProps {
     isOpenConfirmAddLiquidity: boolean;
     tokenAddress: string;
@@ -258,9 +259,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                             +
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>{formatNumber(
-                                amountErcDesiredToDec
-                            )}</p>
+                            <FormatNumber number={amountErcDesiredToDec}/>
                             <p>{symbolToken}</p>
                         </div>
                         {isSufficientToken && (

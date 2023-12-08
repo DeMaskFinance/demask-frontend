@@ -76,7 +76,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             clearInterval(intervalId);
         };
     }, []);
-    console.log(newData);
+    // console.log(newData);
     // console.log(volume);
 
     useEffect(() => {

@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
@@ -186,25 +187,23 @@ const ModalSellNFT: React.FunctionComponent<
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>{formatNumber(
-                                divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
-                            )}</p>
+                            <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)}/>
                             <p>{symbolToken}</p>
                         </div>
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
                             <p>Slippage tolerance</p>
                             <p>{slippage}%</p>
                         </div>
-                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {formatNumber(
-                            divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
-                        )} {symbolToken} or the transaction will revert</p>
+                        <div className="flex flex-wrap mt-2 mb-6 text-sm text-dark2 gap-x-1">
+                            <span>Output is estimated. You will receive at least</span>
+                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} /> {symbolToken}</span>
+                            <span> or the transaction will revert</span>
+                        </div>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
                                 <div className="flex items-center">
-                                    <p>{formatNumber(
-                                        (Number(divideByDecimal(amountSellDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
-                                    )}</p>
+                                    <FormatNumber number={(Number(divideByDecimal(amountSellDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
@@ -213,9 +212,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
                                 <div className="flex items-center">
-                                    <p>{formatNumber(
-                                        divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
-                                    )}</p>
+                                    <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
@@ -223,10 +220,11 @@ const ModalSellNFT: React.FunctionComponent<
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Trading fee</p>
-                                <div className="flex gap-x-1">
-                                    <p>{formatNumber(
-                                        divideByDecimal(feeTradingSell.toString(), data.tokenDecimals)
-                                    )}</p>
+                                <div className="flex items-center">
+                                    <FormatNumber number={divideByDecimal(feeTradingSell.toString(), data.tokenDecimals)} />
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
                                 </div>
                             </div>
                             {

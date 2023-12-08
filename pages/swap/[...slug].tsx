@@ -219,6 +219,8 @@ const Swap: React.FC = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
+  console.log(data);
+
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
       <NextSeo {...updateMeta} />
@@ -374,7 +376,7 @@ const Swap: React.FC = () => {
                       onClick={handleSearchNFT}
                     >
                       <div className="w-16 text-center">
-                        <h2 className="truncate">{data.metadata?.symbol}</h2>
+                        <h2 className="truncate">{data.metadata?.symbol ? data.metadata?.symbol : data.metadata?.name}</h2>
                       </div>
                     </div>
                   </div>
