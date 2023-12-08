@@ -41,6 +41,7 @@ import ChartKline from "@/components/Charts/ChartSwapKLine";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import HistoryItem from "@/components/Swap/History/HistoryItem";
 import HistorySwap from "@/components/Swap/History";
+import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -228,7 +229,10 @@ const Swap: React.FC = () => {
           <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
             <div className="w-full">
               {data && (
-                <ChartKline dmlAddress={data.dmlAddress} />
+                <div>
+                  {/* <ChartKline dmlAddress={data.dmlAddress} /> */}
+                  <ChartTradingViewSwap dmlAddress={data.dmlAddress} />
+                </div>
               )}
             </div>
             <HistorySwap data={data} />

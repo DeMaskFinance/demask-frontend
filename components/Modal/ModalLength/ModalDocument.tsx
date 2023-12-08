@@ -4,7 +4,7 @@ const ModalDocument = ({ data }: { data: string }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isTruncated, setIsTruncated] = useState<boolean>(false);
     useEffect(() => {
-        if (data.includes(':')) {
+        if (data?.includes(':')) {
             const parts = data.split(':');
             const prefix = parts[0].slice(0, 3) + "..." + parts[0].slice(-2);
             const result = prefix + ":" + parts[1];

@@ -74,7 +74,7 @@ const ChartKline = ({ dmlAddress }: any) => {
         // initialize the chart
         const chart = init('chart');
         chart?.createIndicator('VOL')
-        chart?.setPriceVolumePrecision(8, 2);
+        chart?.setPriceVolumePrecision(4, 2);
         // add data to the chart
         chart?.applyNewData(newData);
         chart?.setStyles({

@@ -1,5 +1,5 @@
 import abiRouter from "@/abi/abiRouter.json";
-import { DownIcon } from "@/components/Icons";
+import { DownIcon, EtherIcon } from "@/components/Icons";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
@@ -187,7 +187,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{formatNumber(
-                                divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
+                                divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)
                             )}</p>
                             <p>{symbolToken}</p>
                         </div>
@@ -201,17 +201,24 @@ const ModalSellNFT: React.FunctionComponent<
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
-                                <p>{formatNumber(
-                                    (Number(divideByDecimal(amountSellDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
-                                )}</p>
+                                <div className="flex items-center">
+                                    <p>{formatNumber(
+                                        (Number(divideByDecimal(amountSellDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                    )}</p>
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
+                                </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
-                                <div className="flex gap-x-1">
+                                <div className="flex items-center">
                                     <p>{formatNumber(
                                         divideByDecimal(amountSellDec.toString(), data.tokenDecimals)
                                     )}</p>
-                                    <p>{symbolToken}</p>
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">

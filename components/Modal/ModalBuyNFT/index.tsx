@@ -1,6 +1,6 @@
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
-import { DownIcon } from "@/components/Icons";
+import { DownIcon, EtherIcon } from "@/components/Icons";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
@@ -114,12 +114,12 @@ const ModalBuyNFT: React.FunctionComponent<
             checkApproveToken();
         }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
         const gasPriceGwei = ethers.utils.formatUnits(250000000, 'gwei');
-        const test = web3.utils.fromWei((Number(0.25) * Number(8000000)).toString(), 'gwei');
+        const test = web3.utils.fromWei((Number(250000000) * Number(8000000)).toString(), 'ether');
         console.log({
             gasPriceGwei,
             test
         });
-        
+
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -151,27 +151,27 @@ const ModalBuyNFT: React.FunctionComponent<
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { value: value }
                     );
-                    // const gasUse = await provider.getGasPrice();
-                    // const gasPriceGwei = ethers.utils.formatUnits(gasUse, 'gwei');
-                    // const gasPrice = await ethers.getDefaultProvider().getGasPrice();
-                    // const test = web3.utils.fromWei((Number(gasPriceGwei) * Number(8000000)).toString(), 'gwei');
-                    // const gasUseInEther = web3.utils.fromWei(gasUse.toString(), 'ether');
-                    // const gasLimitEther = web3.utils.fromWei(estimatedGas.toString(), 'ether');
-                    // const gasCostInWei = gasUse.mul(estimatedGas);
-                    // const gasCostInEth = ethers.utils.formatEther(gasCostInWei);
-                    // const aTest = gasPrice.mul(estimatedGas);
-                    // const aEth = ethers.utils.formatEther(aTest);
-                    // console.log({
-                    //     gasLimit: estimatedGas.toString(),
-                    //     limit: gasLimitEther.toString(),
-                    //     gasUse: gasUse.toString(),
-                    //     use: gasUseInEther.toString(),
-                    //     test: test.toString(),
-                    //     costETH: gasCostInEth.toString(),
-                    //     gasPrice: gasPrice.toString(),
-                    //     ETHdefault: aEth.toString(),
-                    //     gasPriceGwei:gasPriceGwei.toString(),
-                    // });
+                    const gasUse = await provider.getGasPrice();
+                    const gasPriceGwei = ethers.utils.formatUnits(gasUse, 'gwei');
+                    const gasPrice = await ethers.getDefaultProvider().getGasPrice();
+                    const test = web3.utils.fromWei((Number(gasPriceGwei) * Number(estimatedGas)).toString(), 'gwei');
+                    const gasUseInEther = web3.utils.fromWei(gasUse.toString(), 'ether');
+                    const gasLimitEther = web3.utils.fromWei(estimatedGas.toString(), 'ether');
+                    const gasCostInWei = gasUse.mul(estimatedGas);
+                    const gasCostInEth = ethers.utils.formatEther(gasCostInWei);
+                    const aTest = gasPrice.mul(estimatedGas);
+                    const aEth = ethers.utils.formatEther(aTest);
+                    console.log({
+                        gasLimit: estimatedGas.toString(),
+                        limit: gasLimitEther.toString(),
+                        gasUse: gasUse.toString(),
+                        use: gasUseInEther.toString(),
+                        test: test.toString(),
+                        costETH: gasCostInEth.toString(),
+                        gasPrice: gasPrice.toString(),
+                        ETHdefault: aEth.toString(),
+                        gasPriceGwei: gasPriceGwei.toString(),
+                    });
 
                     result = await contract.buyERC20ERC1155(
                         tokenAddress,
@@ -232,19 +232,19 @@ const ModalBuyNFT: React.FunctionComponent<
                             Confirm Buy
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>{inputNFT}</p>
-                            <div className="max-w-[260px]">
-                                <ModalDocument data={data.metadata.symbol} />
-                            </div>
+                            <p>{formatNumber(
+                                divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
+                            )}</p>
+                            <p>{symbolToken}</p>
                         </div>
                         <div>
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <p>{formatNumber(
-                                divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
-                            )}</p>
-                            <p>{symbolToken}</p>
+                            <p>{inputNFT}</p>
+                            <div className="max-w-[260px]">
+                                <ModalDocument data={data.metadata.symbol} />
+                            </div>
                         </div>
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
                             <p>Slippage tolerance</p>
@@ -254,25 +254,37 @@ const ModalBuyNFT: React.FunctionComponent<
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
-                                <p>{formatNumber(
-                                    (Number(divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
-                                )}</p>
+                                <div className="flex items-center">
+                                    <p>{formatNumber(
+                                        (Number(divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                    )}</p>
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
+                                </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Maximum amount</p>
                                 <div className="flex gap-x-1">
-                                    <p>{inputNFT}</p>
-                                    <div className="max-w-[60px]">
-                                        <ModalDocument data={data.metadata.symbol} />
-                                    </div>
+                                <div className="flex items-center">
+                                    <p>{formatNumber(
+                                        (Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()
+                                    )}</p>
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
+                                </div>
                                 </div>
                             </div>
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Trading fee</p>
-                                <div className="flex gap-x-1">
+                                <div className="flex items-center">
                                     {formatNumber(
                                         divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals)
                                     )}
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
                                 </div>
                             </div>
                             {

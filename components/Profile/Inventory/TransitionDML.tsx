@@ -35,6 +35,7 @@ const TransionDML: React.FC<TransionDMLProps> = (
         keepPreviousData: true,
     });
     console.log(data);
+    console.log(selectedAction);
 
     return (
         <div className={`absolute border p-2 top-0 left-0 w-full h-full bg-white rounded-md transition-all ease-linear duration-150 ${selectedItemIndex === index ? 'translate-y-0' : 'translate-y-full'}`}>
@@ -43,18 +44,42 @@ const TransionDML: React.FC<TransionDMLProps> = (
                 <p>Loading...</p>
             ) : isSuccess && data.length > 0 ? (
                 data.map((dmlItem: any, index: number) => (
-                    <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'>
-                        <div className="max-w-[80%]">
-                            {dmlItem.metadata.symbol}
-                        </div>
-                        <span className="block overflow-hidden leading-3">/</span>
-                        <span>{dmlItem.tokenSymbol}</span>
-                    </Link>
+                    <div>
+                        {dmlItem.dmlAddress ? (
+                            <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'>
+                                <div className="max-w-[80%]">
+                                    <ModalDocument data={dmlItem.metadata.symbol} />
+                                </div>
+                                <span className="block overflow-hidden leading-3">/</span>
+                                <span>{dmlItem.tokenSymbol}</span>
+                            </Link>
+                        ) : (
+                            <div>
+                                {selectedAction === "Add" ? (
+                                    <Link href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                                        <p>Go to Add Liquidity.</p>
+                                    </Link>
+                                ) : (
+                                    <Link href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                                        <p>Go to Swap NFT.</p>
+                                    </Link>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 ))
             ) : (
-                <Link href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
-                    <p>Go to Add Liquidity.</p>
-                </Link>
+                <div>
+                    {selectedAction === "Add" ? (
+                        <Link href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                            <p>Go to Add Liquidity.</p>
+                        </Link>
+                    ) : (
+                        <Link href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                            <p>Go to Swap NFT.</p>
+                        </Link>
+                    )}
+                </div>
             )}
             <button
                 className="absolute top-0 right-0 p-2 text-lg"
