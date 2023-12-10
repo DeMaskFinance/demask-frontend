@@ -478,7 +478,7 @@ const Swap: React.FC = () => {
                 )
               ) : null}
               <div className="flex justify-center w-full">
-                {isApprovedNFT && activeChoice === "BUY" && account && (
+                {activeChoice === "BUY" && account && (
                   <button
                     type="button"
                     className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
@@ -496,7 +496,7 @@ const Swap: React.FC = () => {
                     SELL NFT
                   </button>
                 )}
-                {!isApprovedNFT && account && (
+                {!isApprovedNFT && account && activeChoice === "SELL" && (
                   <Button
                     className="w-[126px] py-2"
                     primary

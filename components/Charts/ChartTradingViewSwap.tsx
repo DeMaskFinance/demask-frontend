@@ -34,7 +34,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
     const { chainId } = useContext(AccountContext);
     const [newData, setNewData] = useState([]);
     const [volume, setVolume] = useState<BarData[]>([]);
-    const [legendData, setLegendData] = useState<any>(null);
+    const [legendData, setLegendData] = useState<any>(newData[newData.length - 1]);
     const { data, isLoading } = useQuery({
         queryKey: ["chart", chainId, dmlAddress],
         queryFn: async () => {
@@ -42,6 +42,11 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             return res;
         },
     });
+    console.log(volume[volume.length - 1]);
+    console.log(legendData);
+    useEffect(() => {
+        setLegendData(volume[volume.length - 1]);
+    }, [volume]);
     useEffect(() => {
         if (data) {
             const convertedData = data.map((item: any) => ({
@@ -143,14 +148,14 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                         const close = candleData.close;
                         const high = candleData.high;
                         const low = candleData.low;
-                        const volume = VolumeData?.value;
+                        const value = VolumeData?.value;
                         const time = VolumeData?.time;
                         setLegendData({
                             open,
                             close,
                             high,
                             low,
-                            volume,
+                            value,
                             time
                         })
                     }
@@ -196,7 +201,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                                 Close: <FormatNumber number={legendData?.close} />
                             </span>
                             <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Vol: <FormatNumber number={legendData?.volume} />
+                                Vol: <FormatNumber number={legendData?.value} />
                             </span>
                             <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
                                 Time: {legendData?.time}

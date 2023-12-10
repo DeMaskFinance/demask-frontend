@@ -67,7 +67,7 @@ const Inventory = () => {
                     <div className='grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2'>
                         {data?.pages.map((page, pageIndex) => (
                             <Fragment key={pageIndex}>
-                                {page.data?.map((item: any, index: number) => (
+                                {page?.data?.map((item: any, index: number) => (
                                     <div key={index} className='relative overflow-hidden'>
                                         <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
                                             <div className="relative pb-[100%] h-[240px]">
