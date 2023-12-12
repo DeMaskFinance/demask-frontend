@@ -401,7 +401,7 @@ export default function Creator() {
             )}
             {validFee && (
               <p className="mb-2 -mt-1 text-xs text-red" key="initial">
-                Royalties fee must be less than 0% and greater than 100%
+                Royalty fee must be greater than 0% and less than or equal to 100%
               </p>
             )}
           </div>

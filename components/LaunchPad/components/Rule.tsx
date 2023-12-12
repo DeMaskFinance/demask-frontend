@@ -1,4 +1,5 @@
 import { TeleIcon, TwitterIcon } from '@/components/Icons';
+import formatNumber from '@/libs/utils/formatNumer';
 import React from 'react'
 import { FiShare } from "react-icons/fi";
 const Rule = ({ data }: any) => {
@@ -22,13 +23,13 @@ const Rule = ({ data }: any) => {
             Buyers: 'Buyers: Everyone'
         },
         {
-            Amount: `Amount: ${data?.hardcap} NFTs`
+            Amount: `Amount: ${formatNumber(data?.hardcap.toString())} NFTs`
         },
         {
             Currency: 'Currency: ETH'
         },
         {
-            Price: `Price: ${data?.price} ETH/NFT`
+            Price: `Price: ${formatNumber((data?.price / 1e18).toString())} ETH/NFT`
         },
         {
             SaleDate: `Sale Date: ${startDate} - ${endDate}`

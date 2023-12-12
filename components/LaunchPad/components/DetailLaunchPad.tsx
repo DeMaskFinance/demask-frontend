@@ -1,39 +1,32 @@
-import AccountContext from "@/context/AccountContext";
-import { LaunchPadAPI } from "@/libs/service/launchpadService";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
-import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
-import { ModalWallet } from "@/components/Modal/ModalWallet";
-import TransitionURL from "@/components/Toast/TransionURL";
-import useInformationToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { ethers } from "ethers";
-import { toast } from "react-toastify";
-import ProgressBar from "./ProgessLaunchPad";
-import { IoReloadOutline } from "react-icons/io5";
-import ModalAddAdminLaunchpad from "@/components/Modal/ModalLaunchpadProfile/ModalAddAdminLaunchpad";
-import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import MediaNFT from "@/components/Common/MediaNFT";
-import { AvatarUser } from "@/components/Avatars";
-import { EtherIcon, LaunchpadStatus, ZkSyncIconTable } from "@/components/Icons";
-import Rule from "./Rule";
-import Box from "./Box";
-import Timeline from "./Timeline";
-import FormatNumber from "@/components/Common/FormatNumber";
 import { Button } from "@/components/Buttons";
 import CountdownTime from "@/components/Common/CountdownTime";
-import { BiLoaderAlt } from "react-icons/bi";
-import Link from "next/link";
-import handleReleaseLaunchPad from "@/libs/utils/handleReleaseLaunchPad";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
+import FormatNumber from "@/components/Common/FormatNumber";
+import MediaNFT from "@/components/Common/MediaNFT";
+import { EtherIcon, LaunchpadStatus, ZkSyncIconTable } from "@/components/Icons";
 import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalClaimLaunchpad";
+import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
+import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import { ModalWallet } from "@/components/Modal/ModalWallet";
+import TransitionURL from "@/components/Toast/TransionURL";
+import AccountContext from "@/context/AccountContext";
+import useInformationToken from "@/hooks/useInformationToken";
+import { getProvider } from "@/libs/connection/getProvider";
+import { LaunchPadAPI } from "@/libs/service/launchpadService";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { toast } from "react-toastify";
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import Box from "./Box";
+import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
+import ProgressBar from "./ProgessLaunchPad";
+import Rule from "./Rule";
+import Timeline from "./Timeline";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -45,7 +38,6 @@ export default function DetailLaunchPad() {
   const [amountBuyDec, setAmountBuyDec] = useState<number>(1);
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [checkApproveToken, setCheckApproveToken] = useState<boolean>(false);
   const [inputNFT, setInpuNFT] = useState<any>(1);
   const [amountLeave, setAmountLeave] = useState(0);
   const [amount, setAmount] = useState(1);
@@ -267,11 +259,6 @@ export default function DetailLaunchPad() {
                 <div className="flex justify-between mb-6">
                   <h1 className="text-2xl font-medium text-dark0">Detail Launchpad</h1>
                   <div className="flex justify-between datas-center gap-x-1">
-                    {/* <div className="text-[10px] border border-secondary2  text-secondary2 transition-all duration-150 hover:text-white hover:bg-secondary2 rounded-lg h-6 px-2 datas-end leading-6">
-                      <Link href={`/launchpad?choice=${data.status}`}>
-                        {data.status}
-                      </Link>
-                    </div> */}
                     <CountdownTime query={data.status} blockNumber={blockNumber} isSuccess={data.isSuccess}/>
                   </div>
                 </div>

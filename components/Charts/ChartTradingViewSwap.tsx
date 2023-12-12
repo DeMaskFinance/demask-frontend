@@ -207,7 +207,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                         </div>
                     </div>
                     <div ref={chartContainerRef} id="chart" className='w-full h-[350px] lg:h-[550px]' />
-                    <div className='flex justify-between text-[12px] text-[#222] font-medium'>
+                    <div className='flex justify-between text-[12px] text-[#222] font-medium items-center'>
                         <ul className='flex mt-2 gap-x-3'>
                             <li className='cursor-pointer hover:text-secondary4'>1H</li>
                             <li className='cursor-pointer hover:text-secondary4'>1D</li>

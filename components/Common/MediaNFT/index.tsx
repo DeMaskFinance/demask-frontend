@@ -27,6 +27,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad 
                         <video
                             src={data.metadata.animation_url}
                             autoPlay
+                            playsInline
                             loop
                             muted
                             controls={isControls}

@@ -120,7 +120,6 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
-      {/* <ToastContainer /> */}
     </Wrapper>
   );
 };

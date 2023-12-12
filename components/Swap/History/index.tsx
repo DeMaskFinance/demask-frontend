@@ -36,9 +36,9 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
         tab: 'buy'
     }, { tab: 'sell' }, { tab: 'add' }, { tab: 'remove' }];
     return (
-        <div className='w-full mt-[15px]'>
-            <div className="w-full py-2 overflow-y-auto border rounded-lg border-dark3">
-                <div className='flex items-center sticky left-2 gap-2 p-1 mb-2 text-base text-center text-white rounded-lg bg-dark3 w-max'>
+        <div className='w-full mt-[15px] mb-14 lg:mb-0'>
+            <div className="w-full p-2 py-2 overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible">
+                <div className='sticky left-0 flex items-center gap-2 p-1 mb-2 text-base text-center text-white rounded-lg lg:left-2 bg-dark3 w-max'>
                     {options.map((item, idx) => (
                         <button
                             key={idx}
@@ -53,28 +53,31 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                         </button>
                     ))}
                 </div>
-                <table className="w-full md:text-sm text-left border-collapse text-[10px]">
-                    <thead className="sticky top-0 z-10 m-1 ">
-                        <tr className="mx-2 text-[16px] text-dark0">
-                            <th scope="col" className="sticky left-0 px-3 py-3 bg-white rounded-lg">Time</th>
-                            <th scope="col">
-                                <div className="flex items-center justify-end pl-5 min-w-max">Type</div>
+                <table className="w-full text-left border-collapse">
+                    <thead className="">
+                        <tr className="flex pb-2 text-sm border-b lg:text-base md:text-base">
+                            <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                                <p className='lg:w-full md:w-[175px] w-[200px]'>Time</p>
                             </th>
-                            <th scope="col">
-                                <div className="flex items-center justify-end pl-0 min-w-max">NFT amount</div>
+                            <th className="flex lg:w-full md:w-full w-[140px]">
+                                Type
                             </th>
-                            <th scope="col">
-                                <div className="flex items-center justify-end pl-2 min-w-max">Token amount</div>
+                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                                NFT amount
                             </th>
-                            <th scope="col">
-                                <div className="flex items-center justify-end pl-24 min-w-max">From</div>
+                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                                Token amount
                             </th>
-                            <th scope="col">
-                                <div className="flex items-center justify-end pl-24 pr-2 min-w-max">Tx</div>
+                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                                From
+                            </th>
+                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                                Tx
                             </th>
                         </tr>
                     </thead>
-                    <tbody className=" text-base font-normal  max-md:text-[12px] bg-transparent border-gray-700 cursor-pointer">
+
+                    <tbody className="flex flex-col">
                         <HistoryItem data={dataHistory} isFetching={isFetching} isLoading={isLoading} demask={demask} />
                     </tbody>
                 </table>
