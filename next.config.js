@@ -14,7 +14,7 @@ const nextConfig = {
       {
         source: '/',
         destination: `/swap/${process.env.NEXT_PUBLIC_CREATOR_Zksync}/${process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync}/${process.env.NEXT_PUBLIC_IDNFT_Zksync}`,
-        permanent: false,
+        permanent: true,
       },
     ]
   },
