@@ -213,7 +213,7 @@ export default function AddLiquidity() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex">
           <Link href="/pools">
-            <BackIcon width={24} height={24} />
+            <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5"/>
           </Link>
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>

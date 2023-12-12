@@ -22,6 +22,7 @@ import Wrapper from "../Wrapper";
 import Web3 from "web3";
 import ModalDocument from "../ModalLength/ModalDocument";
 import FormatNumber from "@/components/Common/FormatNumber";
+import useInforFee from "@/hooks/useInforFee";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
@@ -57,6 +58,7 @@ const ModalBuyNFT: React.FunctionComponent<
         const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
             useState<boolean>(false);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+        const [gasLimit, setGasLimit] = useState<string>('0');
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const { allowanceToken, bigNumberBalance } =
@@ -68,13 +70,18 @@ const ModalBuyNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-        const web3 = new Web3;
-        console.log(amountTokenBuy);
-        console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
 
-        // console.log(inputNFT);
-        // console.log(reserveNFT.toString());
-        // console.log(reserveToken.toString());
+        // console.log(amountTokenBuy);
+        // console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
+        const { tip, gasUse } = useInforFee(account, wallet);
+        const providerChoice = getProvider(wallet);
+        const provider = new ethers.providers.Web3Provider(providerChoice);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+        console.log({
+            tip,
+            gasUse
+        });
         useEffect(() => {
             if (inputNFT && data && amountTokenBuy) {
                 setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
@@ -98,7 +105,27 @@ const ModalBuyNFT: React.FunctionComponent<
             } else {
                 setIsSufficientTokenBuy(true);
             }
+            // const getFeeGas = async () => {
+            //     if (inputNFT) {
+            //         const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
+            //         const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
+            //             tokenAddress,
+            //             nftAddress,
+            //             idNFT,
+            //             inputNFT,
+            //             exponentialToDecimal(Math.floor(amountBuyDec)),
+            //             account,
+            //             Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+            //             { value: value }
+            //         );
+            //         console.log(estimatedGas);
+
+            //         setGasLimit(estimatedGas.toString());
+            //     }
+            // }
+            // getFeeGas();
         }, [inputNFT, account, amountBuyDec, data, reserveNFT]);
+        console.log(gasLimit);
 
         useEffect(() => {
             const checkApproveToken = async () => {
@@ -114,11 +141,12 @@ const ModalBuyNFT: React.FunctionComponent<
             };
             checkApproveToken();
         }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
-        const gasPriceGwei = ethers.utils.formatUnits(250000000, 'gwei');
-        const test = web3.utils.fromWei((Number(250000000) * Number(8000000)).toString(), 'ether');
+
+        const test1 = ethers.utils.formatUnits((748302 * (250000000 + 1500000000)).toString(), 'ether');
+        const test2 = ethers.utils.formatUnits((748302 * (250000000)).toString(), 'ether');
         console.log({
-            gasPriceGwei,
-            test
+            test1,
+            test2
         });
 
         const handleBuyNFT = async (e: any) => {
@@ -134,10 +162,7 @@ const ModalBuyNFT: React.FunctionComponent<
                 isSufficientNFT &&
                 isSufficientTokenBuy
             ) {
-                const providerChoice = getProvider(wallet);
-                const provider = new ethers.providers.Web3Provider(providerChoice);
-                const signer = provider.getSigner();
-                const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+
                 try {
                     let result;
                     setIsOpenTransaction(true);
@@ -152,28 +177,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { value: value }
                     );
-                    // const gasUse = await provider.getGasPrice();
-                    // const gasPriceGwei = ethers.utils.formatUnits(gasUse, 'gwei');
-                    // const gasPrice = await ethers.getDefaultProvider().getGasPrice();
-                    // const test = web3.utils.fromWei((Number(gasPriceGwei) * Number(estimatedGas)).toString(), 'gwei');
-                    // const gasUseInEther = web3.utils.fromWei(gasUse.toString(), 'ether');
-                    // const gasLimitEther = web3.utils.fromWei(estimatedGas.toString(), 'ether');
-                    // const gasCostInWei = gasUse.mul(estimatedGas);
-                    // const gasCostInEth = ethers.utils.formatEther(gasCostInWei);
-                    // const aTest = gasPrice.mul(estimatedGas);
-                    // const aEth = ethers.utils.formatEther(aTest);
-                    // console.log({
-                    //     gasLimit: estimatedGas.toString(),
-                    //     limit: gasLimitEther.toString(),
-                    //     gasUse: gasUse.toString(),
-                    //     use: gasUseInEther.toString(),
-                    //     test: test.toString(),
-                    //     costETH: gasCostInEth.toString(),
-                    //     gasPrice: gasPrice.toString(),
-                    //     ETHdefault: aEth.toString(),
-                    //     gasPriceGwei: gasPriceGwei.toString(),
-                    // });
-
+                                  
                     result = await contract.buyERC20ERC1155(
                         tokenAddress,
                         nftAddress,
@@ -224,7 +228,7 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             }
         };
-        // setIsOpenTransaction(true)
+
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">

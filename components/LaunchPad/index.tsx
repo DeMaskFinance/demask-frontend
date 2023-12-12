@@ -11,7 +11,6 @@ const updateMeta = {
 };
 
 export default function Launchpad() {
-  const [activeChoice, setActiveChoice] = useState(1);
   const [tab, setTab] = useQueryParam("choice", withDefault(StringParam, "Active"));
   const listTab = [
     {
@@ -39,7 +38,6 @@ export default function Launchpad() {
     },
   ];
   const selectedTab = listTab.find((item) => item.name === tab);
-  console.log(selectedTab);
 
   return (
     <section className="launchpad">

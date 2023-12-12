@@ -42,8 +42,8 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             return res;
         },
     });
-    console.log(volume[volume.length - 1]);
-    console.log(legendData);
+    // console.log(volume[volume.length - 1]);
+    // console.log(legendData);
     useEffect(() => {
         setLegendData(volume[volume.length - 1]);
     }, [volume]);
@@ -81,8 +81,6 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             clearInterval(intervalId);
         };
     }, []);
-    // console.log(newData);
-    // console.log(volume);
 
     useEffect(() => {
         if (chartContainerRef.current) {
@@ -173,11 +171,11 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
     return (
         <div>
             {isLoading ? (
-                <div className="h-[355px]">
+                <div className="h-[355px] p-4 border rounded-lg lg:mt-0 border-dark3">
                     <ChartLoading />
                 </div>
             ) : data && newData?.length > 0 ? (
-                <div className='w-full mt-6 lg:mt-0'>
+                <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
                     <div
                         id="legend"
                         className="secondary heading-XXS"
@@ -187,7 +185,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                             fontFamily: "unset",
                         }}
                     >
-                        <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs">
+                        <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap">
                             <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
                                 Open: <FormatNumber number={legendData?.open} />
                             </span>
@@ -208,7 +206,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                             </span>
                         </div>
                     </div>
-                    <div ref={chartContainerRef} id="chart" className='w-full h-[550px]' />
+                    <div ref={chartContainerRef} id="chart" className='w-full h-[350px] lg:h-[550px]' />
                     <div className='flex justify-between text-[12px] text-[#222] font-medium'>
                         <ul className='flex mt-2 gap-x-3'>
                             <li className='cursor-pointer hover:text-secondary4'>1H</li>
@@ -223,7 +221,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                     </div>
                 </div>
             ) : (
-                <div className="h-[355px]">
+                <div className="h-[355px] p-4 border rounded-lg lg:mt-0 border-dark3">
                     <ChartNoTransfers />
                 </div>
             )}

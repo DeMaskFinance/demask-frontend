@@ -5,16 +5,12 @@ const useAmountInMax = (inputNFT:string, dmlToken:string, tokenAddress:string, n
   const [amountTokenBuy, setAmountTokenBuy] = useState(0);
   const [feeTradingBuy, setFeeTradingBuy] = useState(0);
   const [isLoadingBuy,setIsLoadingBuy] = useState<boolean>(false);
-  console.log('test');
-  console.log(inputNFT);
   
   useEffect(() => {
     const getAmountInMax = async () => {
       setIsLoadingBuy(true);
       if (inputNFT && dmlToken !== '0x0000000000000000000000000000000000000000') {
         const amountAFee =await getAmountBuy(wallet, tokenAddress, nftAddress, idNFT, inputNFT,rpc,routerAddress);
-        console.log(amountAFee);
-        
         if(amountAFee){
           setAmountTokenBuy(amountAFee[0].toString());
           setFeeTradingBuy(amountAFee[1].toString());

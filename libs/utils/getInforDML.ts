@@ -15,8 +15,6 @@ const getInforDML = async (dmlToken: string,wallet:string) => {
     const nftAddress = await contract.NFT();
     const reserveNFT = await contract.reserveNFT();
     const reserveToken = await contract.reserveToken();
-    console.log(reserveToken);
-    
     const tokenAddress = await contract.token();
     return {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress};
   } catch (error) {

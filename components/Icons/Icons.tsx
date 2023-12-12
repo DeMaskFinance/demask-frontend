@@ -124,21 +124,10 @@ export const BackIcon: React.FunctionComponent<IconProps> = ({
   height,
 }) => {
   return (
-    <svg
-      className={className}
-      width={width}
-      height={height}
-      viewBox="0 0 24 25"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M9 11.5L5 15.5M5 15.5L9 19.5M5 15.5H16C17.0609 15.5 18.0783 15.0786 18.8284 14.3284C19.5786 13.5783 20 12.5609 20 11.5C20 10.4391 19.5786 9.42172 18.8284 8.67157C18.0783 7.92143 17.0609 7.5 16 7.5H15"
-        stroke="#9075FE"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" width={width}
+      height={height} className={className} viewBox="0 0 32 32" fill="#A3A9B9">
+      <rect width="32" height="32" rx="8" />
+      <path d="M11.3333 13.3333L6 18.6667M6 18.6667L11.3333 24M6 18.6667H20.6667C22.0812 18.6667 23.4377 18.1048 24.4379 17.1046C25.4381 16.1044 26 14.7478 26 13.3333C26 11.9188 25.4381 10.5623 24.4379 9.5621C23.4377 8.5619 22.0812 8 20.6667 8H19.3333" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 };
