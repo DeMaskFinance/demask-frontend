@@ -37,6 +37,7 @@ interface ModalBuyNFTProps {
     setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
     setHash: React.Dispatch<React.SetStateAction<string>>;
+    setRoyaltiesPercent: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const ModalBuyNFT: React.FunctionComponent<
@@ -56,7 +57,8 @@ const ModalBuyNFT: React.FunctionComponent<
     setInputNFT,
     setIsOpenError,
     setIsOpenSuccess,
-    setHash
+    setHash,
+    setRoyaltiesPercent
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
@@ -89,12 +91,12 @@ const ModalBuyNFT: React.FunctionComponent<
         //     gasUse
         // });
         useEffect(() => {
-            if (inputNFT && data && amountTokenBuy) {
-                setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
+            if (inputNFT && data && amountTokenBuy && royaltiesPercent) {
+                setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
             } else {
                 setAmountBuyDec(0);
             }
-        }, [inputNFT, data, slippage, amountTokenBuy])
+        }, [inputNFT, data, slippage, amountTokenBuy, royaltiesPercent])
 
         useEffect(() => {
             const checkReservesNFT = () => {
@@ -204,6 +206,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         setIsOpenError(false);
                     }
                     setInputNFT("");
+                    setRoyaltiesPercent(null);
                 } catch (error) {
                     setIsOpenTransaction(false);
                     console.error(error);

@@ -78,6 +78,8 @@ const Swap: React.FC = () => {
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [royaltiesPercent, setRoyaltiesPercent] = useState<number | null>(null);
+  const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
+  const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
   const [validFee, setValidFee] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
@@ -133,17 +135,23 @@ const Swap: React.FC = () => {
     royaltyView,
     royaltiesPercent,
     amountTokenBuy,
-    amountBuyDec
+    amountBuyDec,
+    amountTokenSell,
+    amountSellDec
   });
   useEffect(() => {
-    if (inputNFT && data && amountTokenBuy && amountTokenSell) {
+    if (inputNFT && data && amountTokenBuy && amountTokenSell && royaltiesPercent) {
       setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
       setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) + amountTokenSell * Number(royaltiesPercent) / 100);
+      setRoyaltiesFeeBuy(amountTokenBuy * Number(royaltiesPercent) / 100);
+      setRoyaltiesFeeSell(amountTokenSell * Number(royaltiesPercent) / 100);
     } else {
       setAmountBuyDec(0);
       setAmountSellDec(0);
+      setRoyaltiesFeeBuy(0);
+      setRoyaltiesFeeSell(0);
     }
-  }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice])
+  }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice, royaltiesPercent])
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -450,7 +458,11 @@ const Swap: React.FC = () => {
                   <div className="">
                     <label htmlFor="royaltiesPercent" className='mb-1 text-dark3'>
                       <div className="flex mb-1 text-sm">Royalties Fee:
-                        <FormatNumber number={(amountBuyDec / 1e18).toString()} />
+                        {activeChoice === "BUY" ? (
+                          <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
+                        ) : (
+                          <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
+                        )}
                       </div>
                     </label>
                     <div className="relative">
@@ -494,11 +506,11 @@ const Swap: React.FC = () => {
                     <div className="relative">
                       {activeChoice === "BUY" ? (
                         <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                          <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
+                          <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
                         </div>
                       ) : (
                         <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                          <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
+                          <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                         </div>
                       )}
                       <div
@@ -510,7 +522,7 @@ const Swap: React.FC = () => {
                   </div>
 
                 </form>
-                {(inputNFT && activeChoice === "BUY") ? (
+                {(inputNFT && activeChoice === "BUY") && royaltiesPercent ? (
                   !isLoadingBuy ? (
                     Math.floor(amountBuyDec) === 0 ? (
                       <p className="mt-0 mb-2 ml-3 text-xs text-red">
@@ -523,7 +535,7 @@ const Swap: React.FC = () => {
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   )
                 ) : null}
-                {(inputNFT && activeChoice === "SELL") ? (
+                {(inputNFT && activeChoice === "SELL") && royaltiesPercent ? (
                   !isLoadingSell ? (
                     Math.floor(amountSellDec) === 0 ? (
                       <p className="mt-0 mb-2 ml-3 text-xs text-red">
@@ -623,10 +635,10 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} setRoyaltiesPercent={setRoyaltiesPercent} />
       )}
       {data && account && (
-        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
+        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} setRoyaltiesPercent={setRoyaltiesPercent} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
