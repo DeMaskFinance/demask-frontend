@@ -1,3 +1,4 @@
+import FormatNumber from '@/components/Common/FormatNumber';
 import { TeleIcon, TwitterIcon } from '@/components/Icons';
 import formatNumber from '@/libs/utils/formatNumer';
 import React from 'react'
@@ -17,33 +18,59 @@ const Rule = ({ data }: any) => {
     const endDate = new Date(Number(data.endTime * 1000)).toLocaleString('en-US', options);
     const ruleInfor = [
         {
-            projectName: `Project Name: ${data?.launchpadInfo?.projectName}`
+          projectName: () => (
+            <p>Project Name: {data?.launchpadInfo?.projectName}</p>
+          )
         },
         {
-            Buyers: 'Buyers: Everyone'
+          Buyers: () => (
+            <p>Buyers: Everyone</p>
+          )
         },
         {
-            Amount: `Amount: ${formatNumber(data?.hardcap.toString())} NFTs`
+          Amount: () => (
+            <div className='flex'>
+              Hard Cap:
+              <FormatNumber number={(data?.hardcap / 1e18).toString()} />
+              <p className='ml-1'>ETH</p>
+            </div>
+          )
         },
         {
-            Currency: 'Currency: ETH'
+          Currency: () => (
+            <p>Currency: ETH</p>
+          )
         },
         {
-            Price: `Price: ${formatNumber((data?.price / 1e18).toString())} ETH/NFT`
+          Price: () => (
+            <div className='flex'>
+              Price:
+              <FormatNumber number={(data?.price / 1e18).toString()} />
+              <p className='ml-1'>ETH/NFT</p>
+            </div>
+          )
         },
         {
-            SaleDate: `Sale Date: ${startDate} - ${endDate}`
+          SaleDate: () => (
+            <p>Sale Date: {startDate} - {endDate}</p>
+          )
         },
         {
-            Member: `Member: ${data?.launchpadInfo?.teamDescription}`
+          Member: () => (
+            <p>Member: {data?.launchpadInfo?.teamDescription}</p>
+          )
         },
         {
-            Purpose: `Purpose: ${data?.launchpadInfo?.purpose}`
+          Purpose: () => (
+            <p>Purpose: {data?.launchpadInfo?.purpose}</p>
+          )
         },
         {
-            Reward: 'Reward: NFTs will be airdroped after the sale end'
+          Reward: () => (
+            <p>Reward: NFTs will be airdropped after the sale ends</p>
+          )
         },
-    ]
+      ];
     return (
         <div>
             {data && (
@@ -52,7 +79,7 @@ const Rule = ({ data }: any) => {
                         {ruleInfor.map((item, index) => (
                             <li className='mb-[1px] flex' key={index}>
                                 ▪️
-                                <p className='ml-1'>{Object.values(item)[0]}</p>
+                                <div className="ml-1">{Object.values(item)[0]()}</div>
                             </li>
                         ))}
                     </ul>

@@ -28,7 +28,7 @@ const useRoyalty = (
             idToken,
             inputNFT
           );
-          setRoyaltyView(res);
+          setRoyaltyView(res[0][0]);
         } catch (error) {
           console.error(error);
         }

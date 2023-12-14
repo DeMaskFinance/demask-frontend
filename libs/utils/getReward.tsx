@@ -12,17 +12,19 @@ interface RewardDMLProps {
   account: string;
   data: {
     dmlDecimals: string;
-    tokenAddress:string;
+    tokenAddress: string;
   }
   setReward: any;
+  setIsOpenSuccessCollect: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenErrorCollect: React.Dispatch<React.SetStateAction<boolean>>;
+  setHash: React.Dispatch<React.SetStateAction<string>>
 }
-const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, data, setReward }: RewardDMLProps) => {
+const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, data, setReward, setIsOpenErrorCollect, setIsOpenSuccessCollect, setHash }: RewardDMLProps) => {
   const providerChoice = getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
   const signer = provider.getSigner();
   const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, signer);
-  console.log(data.tokenAddress);
-  
+
   try {
     const result = await contract.getReward(
       [data.tokenAddress],
@@ -32,36 +34,13 @@ const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, a
     const check = await provider.waitForTransaction(result.hash);
     const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
+    setHash(result.hash);
     setReward(rewardDec);
     setIsOpenTransaction(false);
     if (check.status === 1) {
-      toast.success(
-        <TransitionURL type={"Reward success"} transactionHash={result.hash} />,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      setIsOpenSuccessCollect(true);
     } else {
-      toast.error(
-        <TransitionURL type={"Reward failed"} transactionHash={result.hash} />,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      setIsOpenErrorCollect(true);
     }
   } catch (error) {
     console.error(error);

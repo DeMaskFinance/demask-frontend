@@ -15,8 +15,6 @@ const getAmountBuy = async (
   const contract = new ethers.Contract(routerAddress, abiRouter, provider);
   try {
     const amountAFee = await contract.getAmountBuy(tokenAddress,nftAddress,idNFT,amountNFT);
-    console.log(amountAFee);
-    
     return amountAFee;
   } catch (error) {
     console.error(error);

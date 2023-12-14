@@ -5,7 +5,7 @@ import ModalConfirmAddLiquidity from "@/components/Modal/ModalConfirmAddLiquidit
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
@@ -60,6 +60,9 @@ export default function AddLiquidity() {
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [symbolToken, setSymbolToken] = useState<string>('');
   const [checkExit, setCheckExit] = useState<boolean>(false);
+  const [hash, setHash] = useState<string>('');
+  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+  const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -213,7 +216,7 @@ export default function AddLiquidity() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex">
           <Link href="/pools">
-            <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5"/>
+            <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
           </Link>
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>
@@ -402,8 +405,10 @@ export default function AddLiquidity() {
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       {data && account && (
-        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
+        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}/>
       )}
+      <ModalSuccess isOpenSuccess={isOpenSuccess} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccess} />
+      <ModalError isOpenError={isOpenError} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenError} />
     </div>
   );
 }

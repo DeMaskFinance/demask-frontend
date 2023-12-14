@@ -123,6 +123,7 @@ const Zksync_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_Zksync,
   USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
   USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
+  ROYALTY:process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Zksync,
   urltxHash:"https://goerli.explorer.zksync.io/tx/",
   chainName:"zkSync Testnet",
   NAME:"zkSync Testnet",

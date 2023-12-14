@@ -6,7 +6,7 @@ import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
-import { ModalTransation } from "@/components/Modal/ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
@@ -42,6 +42,13 @@ export default function DetailLiquidity() {
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
+  const [hash, setHash] = useState<string>('');
+  const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(false);
+  const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
+  const [isOpenSuccessRemove, setIsOpenSuccessRemove] = useState<boolean>(false);
+  const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
+  const [isOpenSuccessCollect, setIsOpenSuccessCollect] = useState<boolean>(false);
+  const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
   const [page, setPage] = useState(1);
@@ -95,7 +102,7 @@ export default function DetailLiquidity() {
         wallet, dmlTokenLiquidity, account, data: {
           dmlDecimals: data.dmlDecimals,
           tokenAddress: data.tokenAddress,
-        }, setReward, setIsOpenTransaction
+        }, setReward, setIsOpenTransaction,setIsOpenSuccessCollect,setIsOpenErrorCollect,setHash
       });
     } else {
       console.log("No account and DML");
@@ -286,21 +293,32 @@ export default function DetailLiquidity() {
         />
       )}
       {data && account && (
-        <ModalAddLiquidity
-          data={data}
-          tokenSymbol={tokenSymbol}
-          isOpenAddLiquidity={isOpenAddLiquidity}
-          setIsOpenLiquidity={setIsOpenAddLiquidity}
-        />
+        <>
+          <ModalAddLiquidity
+            data={data}
+            tokenSymbol={tokenSymbol}
+            isOpenAddLiquidity={isOpenAddLiquidity}
+            setIsOpenLiquidity={setIsOpenAddLiquidity}
+            setHash={setHash} setIsOpenSuccess={setIsOpenSuccessAdd} setIsOpenError={setIsOpenErrorAdd}
+          />
+          <ModalSuccess isOpenSuccess={isOpenSuccessAdd} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccessAdd} />
+          <ModalError isOpenError={isOpenErrorAdd} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenErrorAdd} /></>
       )}
       {data && account && (
-        <ModalRemmoveLiquidity
-          data={data}
-          tokenSymbol={tokenSymbol}
-          isOpenRemoveLiquidity={isOpenRemoveLiquidity}
-          setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
-        />
+        <>
+          <ModalRemmoveLiquidity
+            data={data}
+            tokenSymbol={tokenSymbol}
+            isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+            setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
+            setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}
+          />
+          <ModalSuccess isOpenSuccess={isOpenSuccessRemove} transactionHash={hash} type="Remove Liquidity Success" setIsOpenSuccess={setIsOpenSuccessRemove} />
+          <ModalError isOpenError={isOpenErrorRemove} transactionHash={hash} type="Remove Liquidity Failed" setIsOpenError={setIsOpenErrorRemove} />
+        </>
       )}
+      <ModalSuccess isOpenSuccess={isOpenSuccessCollect} transactionHash={hash} type="Collect Reward Success" setIsOpenSuccess={setIsOpenSuccessCollect} />
+      <ModalError isOpenError={isOpenErrorCollect} transactionHash={hash} type="Collect Reward Failed" setIsOpenError={setIsOpenErrorCollect} />
       <ModalTransation isOpenTransation={isOpenTransation} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
     </div>
   );

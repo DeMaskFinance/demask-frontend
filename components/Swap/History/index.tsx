@@ -10,12 +10,12 @@ interface HistorySwapProps {
 }
 const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
     const [page, setPage] = useState(1);
-    const [tab, setTab] = useQueryParam("historyType", withDefault(StringParam, "all"));
+    const [tab, setTab] = useQueryParam("historyType", withDefault(StringParam, "All"));
     const { account, wallet, chainId, demask } = useContext(AccountContext);
     const { isLoading, data: dataHistory, isFetching, refetch, isPreviousData } = useQuery({
-        queryKey: ["historySwap", chainId],
+        queryKey: ["historySwap", chainId, tab],
         queryFn: async () => {
-            const res = await categoryAPI(`transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}`);
+            const res = await categoryAPI(`transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${tab}`);
             return res;
         },
 
@@ -31,10 +31,10 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
         refetch();
     }, [page, refetch]);
     const options = [{
-        tab: 'all'
+        tab: 'All'
     }, {
-        tab: 'buy'
-    }, { tab: 'sell' }, { tab: 'add' }, { tab: 'remove' }];
+        tab: 'Buy'
+    }, { tab: 'Sell' }, { tab: 'Add' }, { tab: 'Remove' }];
     return (
         <div className='w-full mt-[15px] mb-14 lg:mb-0'>
             <div className="w-full p-2 py-2 overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible">
@@ -49,7 +49,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                                 setTab(item.tab)
                             }}
                         >
-                            {item.tab && item.tab.charAt(0).toUpperCase() + item.tab.slice(1)}
+                            {item.tab}
                         </button>
                     ))}
                 </div>

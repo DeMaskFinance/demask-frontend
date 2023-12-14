@@ -10,7 +10,7 @@ import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
-import { ModalError, ModalTransation } from "@/components/Modal/ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonReels } from "@/components/Skeleton";
@@ -22,7 +22,6 @@ import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformationToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { swapAPI } from "@/libs/service";
-import { swapChartAPI } from "@/libs/service/swapService";
 import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -36,6 +35,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
 import Link from "next/link";
+import useRoyalty from "@/hooks/useRoyalty";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -60,6 +60,11 @@ const Swap: React.FC = () => {
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
+  const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
+  const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
+  const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
+  const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
+  const [hash, setHash] = useState<string>('');
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
@@ -72,7 +77,7 @@ const Swap: React.FC = () => {
   const { account, wallet, chainId, demask, tokenDefault, slippage, txDeadline } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
-  const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
+  const [royaltiesPercent, setRoyaltiesPercent] = useState<number | null>(null);
   const [validFee, setValidFee] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
@@ -80,6 +85,7 @@ const Swap: React.FC = () => {
   };
   const { balanceToken, bigNumberBalance, allowanceToken } =
     useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
+  const royaltyView = useRoyalty(account, nftAddress, idNFT, wallet, '5', demask.ROYALTY);
 
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
@@ -111,10 +117,6 @@ const Swap: React.FC = () => {
   }, [data, slug, tokenDefault])
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-  console.log({
-    showRequiredRoyalties,
-    royaltiesFee
-  });
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -126,14 +128,17 @@ const Swap: React.FC = () => {
 
   const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-  console.log(amountTokenBuy);
-  console.log(amountTokenSell);
-  console.log(data);
-
+  console.log({
+    demask: demask.ROYALTY,
+    royaltyView,
+    royaltiesPercent,
+    amountTokenBuy,
+    amountBuyDec
+  });
   useEffect(() => {
     if (inputNFT && data && amountTokenBuy && amountTokenSell) {
-      setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
-      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)));
+      setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
+      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) + amountTokenSell * Number(royaltiesPercent) / 100);
     } else {
       setAmountBuyDec(0);
       setAmountSellDec(0);
@@ -169,10 +174,14 @@ const Swap: React.FC = () => {
     }
   }, [inputNFT, activeChoice, account, amountBuyDec, amountSellDec, data]);
   const handleChangeRoyalFee = (e: any) => {
-    setRoyaltiesFee(Number(e.target.value))
+    if (royaltyView === "0x0000000000000000") {
+      setRoyaltiesPercent(0.5);
+    } else {
+      setRoyaltiesPercent(Number(e.target.value));
+    }
     setShowRequiredRoyalties(false);
     setCheckExit(true);
-    if (e.target.value < 0 || e.target.value > 100) {
+    if (e.target.value < 0.5 || e.target.value > 100) {
       setValidFee(true);
     } else {
       setValidFee(false);
@@ -195,7 +204,7 @@ const Swap: React.FC = () => {
     if (inputNFT === "") {
       setShowRequiredMessage(true);
     }
-    if (royaltiesFee === 0) {
+    if (royaltiesPercent === 0) {
       setShowRequiredRoyalties(true);
     } else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null && Math.floor(amountBuyDec) !== 0) {
       setIsOpenBuyNFT(true);
@@ -224,7 +233,6 @@ const Swap: React.FC = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  console.log(data);
 
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
@@ -250,8 +258,8 @@ const Swap: React.FC = () => {
               </div>
               <HistorySwap data={data} />
             </div>
-            <div className="lg:w-[40%] md:w-2/4 w-full flex-col-reverse lg:flex-col flex">
-              <div className="px-2 py-2 border rounded-lg border-dark3">
+            <div className="lg:w-[40%] md:w-2/4 w-full flex-col-reverse lg:flex-col flex gap-y-1 lg:gap-y-12">
+              <div className="px-2 py-2 border rounded-lg shadow-home">
                 <div className="flex justify-between gap-4 mb-2 text-dark1">
                   <div className="flex flex-col items-center ">
                     <TabGroups
@@ -352,13 +360,23 @@ const Swap: React.FC = () => {
 
                 <form className="mt-1">
                   <div>
-                    {data.reserveNFT ? (
-                      <p className="mb-1 text-dark3">
-                        Reverse NFT:{formatNumber(data.reserveNFT)}
-                      </p>
-                    ) : (
-                      <div className="w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
-                    )}
+                    <div className="flex justify-between">
+                      {data.reserveNFT ? (
+                        <p className="mb-1 text-sm text-dark3">
+                          Reverse NFT:{formatNumber(data.reserveNFT)}
+                        </p>
+                      ) : (
+                        <div className="w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
+                      )}
+                      {data.reserveToken ? (
+                        <div className="flex mb-1 text-sm text-dark3">
+                          <p>Reverse Token:</p>
+                          <FormatNumber number={data.reserveToken} />
+                        </div>
+                      ) : (
+                        <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
+                      )}
+                    </div>
                     <div className="relative">
                       <input
                         type="number"
@@ -429,45 +447,19 @@ const Swap: React.FC = () => {
                       </p>
                     )}
                   </div>
-
                   <div className="">
-                    {data.reserveToken ? (
-                      <div className="flex mb-1 text-dark3">
-                        <p>Reverse Token:</p>
-                        <FormatNumber number={data.reserveToken} />
+                    <label htmlFor="royaltiesPercent" className='mb-1 text-dark3'>
+                      <div className="flex mb-1 text-sm">Royalties Fee:
+                        <FormatNumber number={(amountBuyDec / 1e18).toString()} />
                       </div>
-                    ) : (
-                      <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
-                    )}
-                    <div className="relative">
-                      {activeChoice === "BUY" ? (
-                        <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                          <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
-                        </div>
-                      ) : (
-                        <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                          <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
-                        </div>
-                      )}
-                      <div
-                        className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
-                        onClick={handleSearchToken}
-                      >
-                        {symbolToken}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="">
-                    <label htmlFor="royaltiesFee" className='mb-1 text-dark3'>
-                      <span>Royalties Fee:0.05</span>
                     </label>
                     <div className="relative">
                       <input
                         placeholder="0.5"
                         type="number"
-                        id="royaltiesFee"
+                        id="royaltiesPercent"
                         autoComplete="off"
-                        value={royaltiesFee || ""}
+                        value={royaltiesPercent || ""}
                         className={
                           showRequiredRoyalties
                             ? "w-full py-2 pl-2 mb-2 rounded-lg border-2 border-red"
@@ -491,10 +483,32 @@ const Swap: React.FC = () => {
                     )}
                     {validFee && (
                       <p className="mb-2 ml-2 -mt-1 text-xs text-red" key="initial">
-                        Royalty fee must be greater than 0% and less than or equal to 100%
+                        Royalty fee must be greater than 0.5% and less than or equal to 100%
                       </p>
                     )}
                   </div>
+                  <div className="">
+                    <div className="mb-1 text-sm text-dark3">
+                      Total Proceeds:
+                    </div>
+                    <div className="relative">
+                      {activeChoice === "BUY" ? (
+                        <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
+                          <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
+                        </div>
+                      ) : (
+                        <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
+                          <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
+                        </div>
+                      )}
+                      <div
+                        className="absolute px-2 py-1 right-1 top-2"
+                      >
+                        <EtherIcon width={16} height={16} className="fill-dark2" />
+                      </div>
+                    </div>
+                  </div>
+
                 </form>
                 {(inputNFT && activeChoice === "BUY") ? (
                   !isLoadingBuy ? (
@@ -572,7 +586,7 @@ const Swap: React.FC = () => {
                   }
                 </div>
               </div>
-              <div className="flex flex-col justify-center mt-0 lg:mt-6 max-w-[500px] max-h-[500px] h-[500px]">
+              <div className="flex flex-col justify-center ">
                 <MediaNFT data={data} isControls={true} />
                 <p
                   className="mx-auto mt-1 mb-5 cursor-pointer text-secondary5 hover:text-secondary3"
@@ -609,15 +623,17 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
       )}
       {data && account && (
-        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} />
+        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      {/* <ModalSuccess isOpenSuccess={true} setIsOpenSuccess={setIsOpen} type="Buy NFT Success" transactionHash="123"/> */}
-      {/* <ModalError isOpenError={true} setIsOpenError={setIsOpen} type="Buy NFT" transactionHash="123"/> */}
+      <ModalSuccess isOpenSuccess={isOpenSuccessBuy} transactionHash={hash} type="Buy NFT Success" setIsOpenSuccess={setIsOpenSuccessBuy} />
+      <ModalError isOpenError={isOpenErrorBuy} transactionHash={hash} type="Buy NFT Failed" setIsOpenError={setIsOpenErrorBuy} />
+      <ModalSuccess isOpenSuccess={isOpenSuccessSell} transactionHash={hash} type="Sell NFT Success" setIsOpenSuccess={setIsOpenSuccessSell} />
+      <ModalError isOpenError={isOpenErrorSell} transactionHash={hash} type="Sell NFT Failed" setIsOpenError={setIsOpenErrorSell} />
     </div>
   );
 };

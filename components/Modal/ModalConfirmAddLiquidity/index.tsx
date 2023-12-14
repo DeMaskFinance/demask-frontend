@@ -16,7 +16,7 @@ import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ModalTransation } from "../ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ModalDocument from "../ModalLength/ModalDocument";
@@ -35,6 +35,9 @@ interface ModalConfirmAddLiquidityProps {
     setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
     setInputToken: React.Dispatch<React.SetStateAction<string>>;
+    setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>; 
+    setHash: React.Dispatch<React.SetStateAction<string>>;
     setIsOpenLiquidity?: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
@@ -54,7 +57,10 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     setIsOpenConfirmAddLiquidity,
     setInputNFT,
     setInputToken,
-    setIsOpenLiquidity
+    setIsOpenLiquidity,
+    setHash,
+    setIsOpenSuccess,
+    setIsOpenError
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
@@ -63,7 +69,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         const [amountErcDesired, setAmountErcDesired] = useState<any>();
         const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
         const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-        console.log(data);
 
         const { allowanceToken, bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
@@ -188,6 +193,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         { gasLimit: estimatedGas, value: valueToSend }
                     );
                     const check = await provider.waitForTransaction(result.hash);
+                    setHash(result.hash);
                     setIsOpenTransaction(false);
                     setInputNFT('');
                     setInputToken('');
@@ -197,35 +203,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         setIsOpenLiquidity(false);
                     }
                     if (check.status === 1) {
-                        toast.success(
-                            <TransitionURL type={"Add Liquidity success"} transactionHash={result.hash} />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                toastId: 'success1',
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenSuccess(true);
                     } else {
-                        toast.error(
-                            <TransitionURL type={"Add Liquidity failed"} transactionHash={result.hash} />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                toastId: 'success1',
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenError(true);
                     }
 
                 } catch (error) {
@@ -252,14 +232,14 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
                             <div className="max-w-[60%]">
-                                <ModalDocument data={data.metadata.symbol}/>
+                                <ModalDocument data={data.metadata.symbol} />
                             </div>
                         </div>
                         <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
                             +
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <FormatNumber number={amountErcDesiredToDec}/>
+                            <FormatNumber number={amountErcDesiredToDec} />
                             <p>{symbolToken}</p>
                         </div>
                         {isSufficientToken && (

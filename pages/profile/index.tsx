@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
 import AccountContext from '@/context/AccountContext';
@@ -6,10 +6,11 @@ import { ModalWallet } from '@/components/Modal/ModalWallet';
 import { Button } from '@/components/Buttons';
 import { AvatarUser } from '@/components/Avatars';
 import { IoCopyOutline } from "react-icons/io5";
-import { toast } from 'react-toastify';
 import Profile from '@/components/Profile/Profile';
 import OptionNetwork from '@/components/Profile/OptionNetwork';
 import abiDemask from "@/abi/abiCreator.json";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import {
     usePrepareContractWrite,
     useContractWrite,
@@ -21,6 +22,7 @@ const updateMeta = {
 };
 function ProfilePage() {
     const { account, wallet, demask, chainId, tokenDefault } = useContext(AccountContext);
+    const [isCopy, setIsCopy] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const handleOpen = () => {
         document.body.style.overflowY = "hidden";
@@ -28,20 +30,17 @@ function ProfilePage() {
     };
     const copyToClipboard = () => {
         navigator.clipboard.writeText(account)
-        toast.success(
-            'Copied',
-            {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            }
-        );
+        setIsCopy(true);
     }
+    useEffect(() => {
+        if (isCopy) {
+            const timeoutId = setTimeout(() => {
+                setIsCopy(false);
+            }, 800);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [isCopy]);
     const { data, isLoading, isSuccess, write } = useContractWrite({
         address: '0x136224962545b06E63f5762449F3a6cD22421B89',
         abi: abiDemask,
@@ -64,7 +63,12 @@ function ProfilePage() {
                                     <p className='text-2xl font-semibold'>Unnamed</p>
                                     <div className='flex items-center gap-x-1'>
                                         <span className='text-secondary1'>{`${account.slice(0, 6)}...${account.slice(-4)}`}</span>
-                                        <button onClick={copyToClipboard}><IoCopyOutline /></button>
+                                        <Tippy
+                                            theme='light'
+                                            visible={isCopy}
+                                            content={<span>Copied</span>}>
+                                            <button onClick={copyToClipboard}><IoCopyOutline /></button>
+                                        </Tippy>
                                     </div>
                                     <div>
                                         <OptionNetwork />

@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import React, { useContext, useEffect, useState } from 'react'
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import abiReferral from "@/abi/abiReferral.json";
-import { ModalTransation } from '@/components/Modal/ModalTransation';
+import { ModalError, ModalSuccess, ModalTransation } from '@/components/Modal/ModalTransation';
 import TransitionURL from '@/components/Toast/TransionURL';
 import { toast } from "react-toastify";
 export default function Referral() {
@@ -17,6 +17,9 @@ export default function Referral() {
     const [sponsors, setSponsors] = useState<string>('');
     const [spender, setSpender] = useState<string>('');
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+    const [hash, setHash] = useState<string>('');
+    const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+    const [isOpenError, setIsOpenError] = useState<boolean>(false);
     const handleOpen = () => {
         document.body.style.overflowY = "hidden";
         setIsOpen(true);
@@ -45,37 +48,13 @@ export default function Referral() {
             const contract = new ethers.Contract(demask.REFERRAL, abiReferral, signer);
             setIsOpenTransaction(true);
             const result = await contract.referee(sponsor);
-            console.log(result.hash);
+            setHash(result.hash);
             const check = await provider.waitForTransaction(result.hash);
             setIsOpenTransaction(false);
             if (check.status === 1) {
-                toast.success(
-                    <TransitionURL type={"Referral success"} transactionHash={result.hash} />,
-                    {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    }
-                );
-            }else{
-                toast.error(
-                    <TransitionURL type={"Referral failed"} transactionHash={result.hash} />,
-                    {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    }
-                );
+                setIsOpenSuccess(true);
+            } else {
+                setIsOpenError(true);
             }
         }
     }
@@ -118,6 +97,8 @@ export default function Referral() {
             )}
             <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
             <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+            <ModalSuccess isOpenSuccess={isOpenSuccess} transactionHash={hash} type="Set Sponsor Success" setIsOpenSuccess={setIsOpenSuccess} />
+            <ModalError isOpenError={isOpenError} transactionHash={hash} type="Set Sponsor Failed" setIsOpenError={setIsOpenError} />
         </div>
     )
 }

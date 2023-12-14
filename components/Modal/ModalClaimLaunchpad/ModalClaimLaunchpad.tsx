@@ -14,6 +14,9 @@ interface ModalConfirmClaimProps {
     data: any,
     isOpenConfirmClaim: boolean;
     setIsOpenConfirmClaim: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+    setHash: React.Dispatch<React.SetStateAction<string>>;
 }
 const ModalClaimLaunchpad: React.FunctionComponent<
     ModalConfirmClaimProps
@@ -21,6 +24,9 @@ const ModalClaimLaunchpad: React.FunctionComponent<
     data,
     isOpenConfirmClaim,
     setIsOpenConfirmClaim,
+    setIsOpenError,
+    setIsOpenSuccess,
+    setHash
 }) => {
         const web3 = new Web3;
         const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -95,7 +101,10 @@ const ModalClaimLaunchpad: React.FunctionComponent<
                                     wallet,
                                     data.launchpad,
                                     setIsOpenConfirmClaim,
-                                    setIsOpenTransaction
+                                    setIsOpenTransaction,
+                                    setIsOpenError,
+                                    setIsOpenSuccess,
+                                    setHash
                                 );
                             }}
                         >

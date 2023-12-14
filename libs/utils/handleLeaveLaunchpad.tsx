@@ -1,9 +1,6 @@
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
-import { exponentialToDecimal } from "./convertExponential";
-import { toast } from "react-toastify";
-import TransitionURL from "@/components/Toast/TransionURL";
 
 const handleLeaveLaunchPad = async (
   account: string,
@@ -12,7 +9,10 @@ const handleLeaveLaunchPad = async (
   routerAddress: string,
   setIsOpen: any,
   setIsOpenTransaction: any,
-  refetch: any
+  refetch: any,
+  setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>,
+  setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>,
+  setHash: React.Dispatch<React.SetStateAction<string>>,
 ) => {
   if (account) {
     const providerChoice = getProvider(wallet);
@@ -25,45 +25,15 @@ const handleLeaveLaunchPad = async (
       });
       setIsOpenTransaction(true);
       setIsOpen(false);
-
+      setHash(result.hash)
       const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
-      refetch();
-      if(check.status){
-        toast.success(
-          <TransitionURL
-            type={"Refund launchpad success"}
-            transactionHash={result.hash}
-          />,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-      }else{
-        toast.error(
-          <TransitionURL
-            type={"Failed transaction"}
-            transactionHash={result.hash}
-          />,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
+      if (check.status === 1) {
+        setIsOpenSuccess(true);
+      } else {
+        setIsOpenError(true);
       }
+      refetch();
     } catch (error) {
       console.error(error);
     }

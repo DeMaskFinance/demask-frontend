@@ -1,28 +1,26 @@
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
+import FormatNumber from "@/components/Common/FormatNumber";
 import { DownIcon, EtherIcon } from "@/components/Icons";
 import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
+import useInforFee from "@/hooks/useInforFee";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveToken from "@/libs/utils/handleApproveToken";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import Web3 from "web3";
-import ModalDocument from "../ModalLength/ModalDocument";
-import FormatNumber from "@/components/Common/FormatNumber";
-import useInforFee from "@/hooks/useInforFee";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
@@ -32,9 +30,13 @@ interface ModalBuyNFTProps {
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
+    royaltiesPercent: number | null,
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenBuyNFT: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
+    setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+    setHash: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalBuyNFT: React.FunctionComponent<
@@ -48,9 +50,13 @@ const ModalBuyNFT: React.FunctionComponent<
     nftAddress,
     idNFT,
     isOpenTransaction,
+    royaltiesPercent,
     setIsOpenTransaction,
     setIsOpenBuyNFT,
     setInputNFT,
+    setIsOpenError,
+    setIsOpenSuccess,
+    setHash
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
@@ -72,16 +78,16 @@ const ModalBuyNFT: React.FunctionComponent<
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
 
         // console.log(amountTokenBuy);
-        // console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
+        console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
         const { tip, gasUse } = useInforFee(account, wallet);
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-        console.log({
-            tip,
-            gasUse
-        });
+        // console.log({
+        //     tip,
+        //     gasUse
+        // });
         useEffect(() => {
             if (inputNFT && data && amountTokenBuy) {
                 setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)));
@@ -89,7 +95,6 @@ const ModalBuyNFT: React.FunctionComponent<
                 setAmountBuyDec(0);
             }
         }, [inputNFT, data, slippage, amountTokenBuy])
-        console.log(amountBuyDec);
 
         useEffect(() => {
             const checkReservesNFT = () => {
@@ -125,7 +130,6 @@ const ModalBuyNFT: React.FunctionComponent<
             // }
             // getFeeGas();
         }, [inputNFT, account, amountBuyDec, data, reserveNFT]);
-        console.log(gasLimit);
 
         useEffect(() => {
             const checkApproveToken = async () => {
@@ -144,10 +148,10 @@ const ModalBuyNFT: React.FunctionComponent<
 
         const test1 = ethers.utils.formatUnits((748302 * (250000000 + 1500000000)).toString(), 'ether');
         const test2 = ethers.utils.formatUnits((748302 * (250000000)).toString(), 'ether');
-        console.log({
-            test1,
-            test2
-        });
+        // console.log({
+        //     test1,
+        //     test2
+        // });
 
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
@@ -173,53 +177,31 @@ const ModalBuyNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountBuyDec)),
+                        royaltiesPercent! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { value: value }
                     );
-                                  
+
                     result = await contract.buyERC20ERC1155(
                         tokenAddress,
                         nftAddress,
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountBuyDec)),
+                        royaltiesPercent! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: estimatedGas, value: value }
                     );
-
+                    setHash(result.hash)
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setIsOpenBuyNFT(false);
                     if (check.status === 1) {
-                        toast.success(
-                            <TransitionURL type={"Buy NFT success"} transactionHash={result.hash} />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenSuccess(true);
                     } else {
-                        toast.error(
-                            <TransitionURL type={"Buy NFT failed"} transactionHash={result.hash} />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenError(false);
                     }
                     setInputNFT("");
                 } catch (error) {

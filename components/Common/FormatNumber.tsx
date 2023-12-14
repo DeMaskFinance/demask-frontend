@@ -1,10 +1,6 @@
 
-import React from 'react';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import formatNumber from '@/libs/utils/formatNumer';
-import { exponentialToDecimal, toFixed } from '@/libs/utils/convertExponential';
 const FormatNumber = ({ number }: { number: string }) => {
   const roundedNumber = Number(number);
   const decimalPlaces = Math.max(0, -Math.floor(Math.log10(Math.abs(roundedNumber)) - 3));

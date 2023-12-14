@@ -1,4 +1,3 @@
-import { Reels } from "@/components/Home";
 import NFTItems from "@/components/Home/NFTItems";
 import SocialBar from "@/components/Home/SocialBar";
 import { LayoutSecondary } from "@/components/Layouts";
@@ -20,7 +19,7 @@ const Home = () => {
     ...SEO,
     title: 'App',
   };
-  
+
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -30,8 +29,8 @@ const Home = () => {
   }, [mode]);
 
   const { ref, inView } = useInView();
-  const fetchDataPage = async (pageParam = 1,chainId:string | string[]) => {
-    const data = await homeService.home(pageParam,chainId);
+  const fetchDataPage = async (pageParam = 1, chainId: string | string[]) => {
+    const data = await homeService.home(pageParam, chainId);
     return data;
   };
 
@@ -43,8 +42,8 @@ const Home = () => {
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["Homepage",chainId],
-    ({ pageParam = 1 }) => fetchDataPage(pageParam,chainId),
+    ["Homepage", chainId],
+    ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPage
@@ -72,95 +71,78 @@ const Home = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-  
+
   return (
     <div className="">
       <NextSeo {...updateMeta} />
-      {modeInitial === "REELS" ? (
-        <>
+      <div className="py-4 mx-auto leading-7 container-main min-h-[95vh]">
+        <div className="flex flex-col items-center lg:mt-8">
           {data?.pages[0] ? (
-            <Reels
-              data={data}
-              isFetching={isFetching}
-              isLoading={isLoading}
-              isSuccess={isSuccess}
-              fetchNextPage={fetchNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-            />
+            <div className="flex flex-col items-center mx-auto">
+              <h1 className="px-0 text-2xl font-medium text-center lg:text-3xl text-dark1 lg:px-10 md:px-8">
+                Discover{" "}
+                <span className="text-secondary4">
+                  {data?.pages[0].totalRecords}
+                </span>{" "}
+                curated crypto collectibles to buy and hold, enriching your
+                creative workflow.
+              </h1>
+              <h2 className="mt-2 font-medium text-center lg:text-xl text-md text-dark2">
+                Embrace the role of a{" "}
+                <Link href={"/create"} className="text-secondary4">
+                  Creator
+                </Link>{" "}
+                now and join a growing community of{" "}
+                <span className="text-secondary4">
+                  {data?.pages[0].totalCreators}
+                </span>{" "}
+                designers and makers from around the world.
+              </h2>
+            </div>
           ) : (
-            <SkeletonReels />
+            <div className="flex flex-col items-center w-full">
+              <p className="w-[65%] h-6 rounded-full animate-pulse bg-slate-200"></p>
+              <p className="h-6 mt-4 rounded-full w-60 animate-pulse bg-slate-200"></p>
+            </div>
           )}
-        </>
-      ) : (
-        <div className="py-4 mx-auto leading-7 container-main min-h-[95vh]">
-          <div className="flex flex-col items-center lg:mt-8">
-            {data?.pages[0] ? (
-              <div className="flex flex-col items-center mx-auto">
-                <h1 className="px-0 text-2xl font-medium text-center lg:text-3xl text-dark1 lg:px-10 md:px-8">
-                  Discover{" "}
-                  <span className="text-secondary4">
-                    {data?.pages[0].totalRecords}
-                  </span>{" "}
-                  curated crypto collectibles to buy and hold, enriching your
-                  creative workflow.
-                </h1>
-                <h2 className="mt-2 font-medium text-center lg:text-xl text-md text-dark2">
-                  Embrace the role of a{" "}
-                  <Link href={"/create"} className="text-secondary4">
-                    Creator
-                  </Link>{" "}
-                  now and join a growing community of{" "}
-                  <span className="text-secondary4">
-                    {data?.pages[0].totalCreators}
-                  </span>{" "}
-                  designers and makers from around the world.
-                </h2>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center w-full">
-                <p className="w-[65%] h-6 rounded-full animate-pulse bg-slate-200"></p>
-                <p className="h-6 mt-4 rounded-full w-60 animate-pulse bg-slate-200"></p>
-              </div>
-            )}
-            <div className="my-6 lg:my-8">
-              <TabGroups
-                choices={["All", "Category", "Lastest"]}
-                activeChoice={activeChoice}
-                onChoiceChange={handleChoiceChange}
-              />
-            </div>
-          </div>
-          <div className="flex w-full gap-10 mx-auto lg:flex-row md:flex-row">
-            <div className="lg:w-[70%] md:w-[70%] w-full">
-              {isSuccess && data?.pages[0] ? (
-                data?.pages.map((page, index) => (
-                  <Fragment key={index}>
-                    {page?.records?.map((nftItem: any, index: number) => (
-                      <NFTItems nftItem={nftItem} key={index} />
-                    ))}
-                  </Fragment>
-                ))
-              ) : (
-                <>
-                  <SkeletonNewFeeds />
-                  <SkeletonNewFeeds />
-                  <SkeletonNewFeeds />
-                </>
-              )}
-              <div ref={ref} style={{ height: "1px" }} />
-              {(isLoading || isFetchingNextPage || isFetching) && (
-                <>
-                  <SkeletonNewFeeds />
-                  <SkeletonNewFeeds />
-                  <SkeletonNewFeeds />
-                </>
-              )}
-            </div>
-
-            <SocialBar />
+          <div className="my-6 lg:my-8">
+            <TabGroups
+              choices={["All", "Category", "Lastest"]}
+              activeChoice={activeChoice}
+              onChoiceChange={handleChoiceChange}
+            />
           </div>
         </div>
-      )}
+        <div className="flex w-full gap-10 mx-auto lg:flex-row md:flex-row">
+          <div className="lg:w-[70%] md:w-[70%] w-full">
+            {isSuccess && data?.pages[0] ? (
+              data?.pages.map((page, index) => (
+                <Fragment key={index}>
+                  {page?.records?.map((nftItem: any, index: number) => (
+                    <NFTItems nftItem={nftItem} key={index} />
+                  ))}
+                </Fragment>
+              ))
+            ) : (
+              <>
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+              </>
+            )}
+            <div ref={ref} style={{ height: "1px" }} />
+            {(isLoading || isFetchingNextPage || isFetching) && (
+              <>
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+                <SkeletonNewFeeds />
+              </>
+            )}
+          </div>
+
+          <SocialBar />
+        </div>
+      </div>
     </div>
   );
 };

@@ -293,41 +293,41 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
           const check = await provider.waitForTransaction(transaction.hash);
           setIsOpenTransaction(false);
 
-          if (check.status === 1) {
-            toast.success(
-              <TransitionURL
-                type={"Launchpad success"}
-                transactionHash={transaction.hash}
-              />,
-              {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
-            );
-          } else {
-            toast.error(
-              <TransitionURL
-                type={"Launchpad failed"}
-                transactionHash={transaction.hash}
-              />,
-              {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
-            );
-          }
+          // if (check.status === 1) {
+          //   toast.success(
+          //     <TransitionURL
+          //       type={"Launchpad success"}
+          //       transactionHash={transaction.hash}
+          //     />,
+          //     {
+          //       position: "top-right",
+          //       autoClose: 5000,
+          //       hideProgressBar: false,
+          //       closeOnClick: false,
+          //       pauseOnHover: true,
+          //       draggable: true,
+          //       progress: undefined,
+          //       theme: "light",
+          //     }
+          //   );
+          // } else {
+          //   toast.error(
+          //     <TransitionURL
+          //       type={"Launchpad failed"}
+          //       transactionHash={transaction.hash}
+          //     />,
+          //     {
+          //       position: "top-right",
+          //       autoClose: 5000,
+          //       hideProgressBar: false,
+          //       closeOnClick: false,
+          //       pauseOnHover: true,
+          //       draggable: true,
+          //       progress: undefined,
+          //       theme: "light",
+          //     }
+          //   );
+          // }
           setName("");
           setDescription("");
           setSymbol("");
@@ -370,105 +370,105 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
   };
 
   const handleLauchpadSubmit = async () => {
-    if (account) {
-      if (checkSoftcap <= 0) {
-        toast.error("Increase the number of softcap", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        return;
-      }
+    // if (account) {
+    //   if (checkSoftcap <= 0) {
+    //     toast.error("Increase the number of softcap", {
+    //       position: "top-right",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     return;
+    //   }
 
-      setIsProcess(true);
-      const emptyInputFields = [];
-      const requiredFields = [
-        "name",
-        "symbol",
-        "initial",
-        "tokenPayment",
-        "priceListing",
-        "maxBuy",
-        "price",
-        "percentLock",
-        "durationLock",
-        "hardCap",
-        "softCap",
-      ];
-      requiredFields.forEach((field) => {
-        if (!eval(field)) {
-          emptyInputFields.push(field);
-        }
-      });
-      if (fileIPFS === null) {
-        emptyInputFields.push("fileIPFS");
-        toast.error("File not found.Try again!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+    //   setIsProcess(true);
+    //   const emptyInputFields = [];
+    //   const requiredFields = [
+    //     "name",
+    //     "symbol",
+    //     "initial",
+    //     "tokenPayment",
+    //     "priceListing",
+    //     "maxBuy",
+    //     "price",
+    //     "percentLock",
+    //     "durationLock",
+    //     "hardCap",
+    //     "softCap",
+    //   ];
+    //   requiredFields.forEach((field) => {
+    //     if (!eval(field)) {
+    //       emptyInputFields.push(field);
+    //     }
+    //   });
+    //   if (fileIPFS === null) {
+    //     emptyInputFields.push("fileIPFS");
+    //     toast.error("File not found.Try again!", {
+    //       position: "top-right",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //   }
 
-      if (inforErc20.isERC20 === false) {
-        emptyInputFields.push("NotErc20");
-      }
-      if (startDate === null || endDate === null) {
-        emptyInputFields.push("wrongtime");
-      }
-      setEmptyInputs(emptyInputFields);
-      const priceLauchpad = new BigNumber(price)
-        .times(new BigNumber(10).pow(Number(inforErc20.decimals)))
-        .toFixed();
+    //   if (inforErc20.isERC20 === false) {
+    //     emptyInputFields.push("NotErc20");
+    //   }
+    //   if (startDate === null || endDate === null) {
+    //     emptyInputFields.push("wrongtime");
+    //   }
+    //   setEmptyInputs(emptyInputFields);
+    //   const priceLauchpad = new BigNumber(price)
+    //     .times(new BigNumber(10).pow(Number(inforErc20.decimals)))
+    //     .toFixed();
 
-      if (emptyInputFields.length === 0 && !validFee) {
-        const urlMetadata = getMetadataUrl({
-          attributeItems,
-          fileType,
-          fileIPFS,
-          name,
-          symbol,
-          description,
-          selectedCategory,
-        });
+    //   if (emptyInputFields.length === 0 && !validFee) {
+    //     const urlMetadata = getMetadataUrl({
+    //       attributeItems,
+    //       fileType,
+    //       fileIPFS,
+    //       name,
+    //       symbol,
+    //       description,
+    //       selectedCategory,
+    //     });
 
-        launchPadAction({
-          initial,
-          decimal,
-          softCap,
-          hardCap,
-          vestingTime,
-          tge,
-          priceLauchpad,
-          startDate,
-          endDate,
-          data: "0x",
-          maxBuy,
-          priceListing,
-          durationLock,
-          percentLock,
-          isRefundType,
-          isWhiteList,
-          isVesting,
-          royaltiesFee,
-          url: await urlMetadata,
-        });
-      } else {
-        console.log("error");
-        setIsProcess(false);
-      }
-    } else {
-      setIsOpen(true);
-    }
+    //     launchPadAction({
+    //       initial,
+    //       decimal,
+    //       softCap,
+    //       hardCap,
+    //       vestingTime,
+    //       tge,
+    //       priceLauchpad,
+    //       startDate,
+    //       endDate,
+    //       data: "0x",
+    //       maxBuy,
+    //       priceListing,
+    //       durationLock,
+    //       percentLock,
+    //       isRefundType,
+    //       isWhiteList,
+    //       isVesting,
+    //       royaltiesFee,
+    //       url: await urlMetadata,
+    //     });
+    //   } else {
+    //     console.log("error");
+    //     setIsProcess(false);
+    //   }
+    // } else {
+    //   setIsOpen(true);
+    // }
   };
 
   const listInput = [

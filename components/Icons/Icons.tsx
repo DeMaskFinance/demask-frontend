@@ -294,7 +294,7 @@ export const AllIcon: React.FunctionComponent<IconProps> = ({
       width='20'
       height='20' viewBox="0 0 22 22" fill="#636977">
       <mask id="mask0_4140_7227" maskUnits="userSpaceOnUse" x="0" y="0" width="22" height="22">
-        <path d="M8.5 2.5V8.5H2.5C2.23478 8.5 1.98043 8.60536 1.79289 8.79289C1.60536 8.98043 1.5 9.23478 1.5 9.5V19.5C1.5 19.7652 1.60536 20.0196 1.79289 20.2071C1.98043 20.3946 2.23478 20.5 2.5 20.5H12.5C12.7652 20.5 13.0196 20.3946 13.2071 20.2071C13.3946 20.0196 13.5 19.7652 13.5 19.5V13.5H19.5C19.7652 13.5 20.0196 13.3946 20.2071 13.2071C20.3946 13.0196 20.5 12.7652 20.5 12.5V2.5C20.5 2.23478 20.3946 1.98043 20.2071 1.79289C20.0196 1.60536 19.7652 1.5 19.5 1.5H9.5C9.23478 1.5 8.98043 1.60536 8.79289 1.79289C8.60536 1.98043 8.5 2.23478 8.5 2.5Z" stroke="white" fill="#555555" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M8.5 2.5V8.5H2.5C2.23478 8.5 1.98043 8.60536 1.79289 8.79289C1.60536 8.98043 1.5 9.23478 1.5 9.5V19.5C1.5 19.7652 1.60536 20.0196 1.79289 20.2071C1.98043 20.3946 2.23478 20.5 2.5 20.5H12.5C12.7652 20.5 13.0196 20.3946 13.2071 20.2071C13.3946 20.0196 13.5 19.7652 13.5 19.5V13.5H19.5C19.7652 13.5 20.0196 13.3946 20.2071 13.2071C20.3946 13.0196 20.5 12.7652 20.5 12.5V2.5C20.5 2.23478 20.3946 1.98043 20.2071 1.79289C20.0196 1.60536 19.7652 1.5 19.5 1.5H9.5C9.23478 1.5 8.98043 1.60536 8.79289 1.79289C8.60536 1.98043 8.5 2.23478 8.5 2.5Z" stroke="white" fill="#555555" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </mask>
       <g mask="url(#mask0_4140_7227)">
         <path d="M-1 -1H23V23H-1V-1Z" />
@@ -618,7 +618,7 @@ export const SuccessIcon: React.FunctionComponent<IconProps> = ({
     <svg xmlns="http://www.w3.org/2000/svg" className={className}
       width={width}
       height={height} viewBox="0 0 120 120" fill="none">
-      <path d="M35 60L38.125 63.125M110 35L60 85L56.875 81.875M10 60L35 85L85 35" stroke="#2DC8A8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M35 60L38.125 63.125M110 35L60 85L56.875 81.875M10 60L35 85L85 35" stroke="#2DC8A8" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

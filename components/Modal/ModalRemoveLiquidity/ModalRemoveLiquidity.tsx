@@ -21,6 +21,9 @@ interface ModalRemoveLiquidityProps {
   data: any;
   tokenSymbol: string;
   setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+  setHash: React.Dispatch<React.SetStateAction<string>>
 }
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
@@ -33,6 +36,9 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   data,
   tokenSymbol,
   setIsOpenRemoveLiquidity,
+  setHash,
+  setIsOpenSuccess,
+  setIsOpenError
 }) => {
     const [inputLiquidity, setInputLiquidity] = useState<any>("");
     const [activeChoice, setActiveChoice] = useState<string>("0%");
@@ -105,14 +111,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         setAmountTokenDec(resAmountTokenMinShow)
       }
     }, [inputLiquidity, data])
-    // console.log(amountNFT);
-    // console.log(amountTokenMin);
-    // console.log(amountTokenDec);
-    // console.log(amountNFTMin);
-    // console.log(isApprovedLiquidity);
-    // console.log(isApprovedNFT);
-    // console.log(totalSupply);
-    // console.log(handleBignumber(Number(inputLiquidity), 18));
     useEffect(() => {
       const checkApproveNFT = async () => {
         const result = await approveNFT(
@@ -251,7 +249,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} />
+        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}/>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       </Wrapper>

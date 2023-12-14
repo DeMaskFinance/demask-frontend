@@ -1,6 +1,5 @@
 import AccountContext from "@/context/AccountContext";
 import isValidEthereumAddress from "@/hooks/useCheckValidAddress";
-import handleAddAdmin from "@/libs/utils/handleAddAdmin";
 import { useContext, useEffect, useState } from "react";
 import {
   AiFillCheckCircle,
@@ -12,7 +11,6 @@ import { HiUser } from "react-icons/hi";
 import { ToastContainer } from "react-toastify";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
-import handleWhiteList from "@/libs/utils/handleAddWhiteListLaunchpad";
 
 interface ModalAddAdminLaunchpadProps {
   isOpenTransation: any;
@@ -84,16 +82,16 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
 
   return (
     <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
-      <div className="relative bg-white z-50 flex flex-col  justify-center rounded-md cursor-default h-fit">
+      <div className="relative z-50 flex flex-col justify-center bg-white rounded-md cursor-default h-fit">
         <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[550px] rounded-lg p-4 relative">
-          <h3 className="text-xl text-center pt-4 pb-8">Add Admin</h3>
-          <div className="mx-auto border text-center p-2 rounded-lg">
+          <h3 className="pt-4 pb-8 text-xl text-center">Add Admin</h3>
+          <div className="p-2 mx-auto text-center border rounded-lg">
             <p>Address wallet User</p>
 
-            <div className="flex gap-2 items-center w-full mx-auto relative justify-center">
+            <div className="relative flex items-center justify-center w-full gap-2 mx-auto">
               <input
                 type="Text"
-                className="w-full text-base border py-2  outline-none rounded-md mt-2 text-center block"
+                className="block w-full py-2 mt-2 text-base text-center border rounded-md outline-none"
                 value={tempAddress}
                 onChange={(e) => setTempAddress(e.target.value)}
               />
@@ -103,7 +101,7 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
             )}
             <div className="flex justify-between">
               <div className="flex items-center gap-2 mb-6">
-                <label className="relative gap-2 mt-2 inline-flex items-center cursor-pointer">
+                <label className="relative inline-flex items-center gap-2 mt-2 cursor-pointer">
                   <span
                     onClick={handleStatus}
                     className={"text-base font-semibold text-black24"}
@@ -114,7 +112,7 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
                     <input
                       type="checkbox"
                       value=""
-                      className="sr-only peer outline-none"
+                      className="outline-none sr-only peer"
                       checked={tempStatus}
                     />
                     <div
@@ -128,7 +126,7 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
               </div>
               <div className="flex justify-end py-2">
                 <button
-                  className="border px-2 h-fit py-1 bg-secondary4 text-white rounded-md"
+                  className="px-2 py-1 text-white border rounded-md h-fit bg-secondary4"
                   onClick={addAddressToList}
                 >
                   Add Address (+1)
@@ -138,15 +136,15 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
             <div className="flex justify-between">
               <div className="flex flex-col">
                 {adminAddresses.map((item: any, idx: number) => (
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <span onClick={() => removeAddressFromList(idx)}>
                       <AiOutlineClose className="mb-0.5 cursor-pointer hover:text-rose-500 text-red" />
                     </span>
-                    <span className="flex text-black24 items-center">
+                    <span className="flex items-center text-black24">
                       <HiUser className="mb-0.5" />
                       {idx + 1}:
                     </span>
-                    <span className="flex gap-1 items-center">
+                    <span className="flex items-center gap-1">
                       {item.address}
 
                       {item.status ? (
@@ -161,7 +159,7 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
             </div>
           </div>
 
-          <div className="mt-4 flex justify-center">
+          {/* <div className="flex justify-center mt-4">
             <button
               onClick={() => {
                 action === "addAdmin"
@@ -186,11 +184,11 @@ const ModalAddAdminLaunchpad: React.FunctionComponent<
                       setIsOpenTransaction
                     );
               }}
-              className="border px-2 py-1 rounded-md text-green border-green"
+              className="px-2 py-1 border rounded-md text-green border-green"
             >
               Confirm
             </button>
-          </div>
+          </div> */}
         </div>
         <button
           className="absolute top-0 right-0 p-2 text-lg"

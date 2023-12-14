@@ -1,13 +1,14 @@
 import { version } from "@/libs/constants";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../Buttons";
 import { EmailIcon } from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import useSvgComponents from "../Picture/Picture";
+import AccountContext from "@/context/AccountContext";
 export default function Footer() {
   const svgComponents = useSvgComponents();
-
+  const { demask} = useContext(AccountContext);
   const [activeChoice, setActiveChoice] = useState<string>("Light");
 
   const handleChoiceChange = (choice: string) => {
@@ -19,7 +20,7 @@ export default function Footer() {
         <div className="flex gap-x-[120px]">
           <ul className="flex font-semibold gap-x-8 text-dark2">
             <li>
-              <Link href='/' className="text-dark1">About</Link>
+              <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`} className="text-dark1">About</Link>
             </li>
             <li className="transition-all duration-100 hover:text-secondary5">
               <a
@@ -42,7 +43,7 @@ export default function Footer() {
           </ul>
           <ul className="flex font-semibold gap-x-8 text-dark2">
             <li>
-              <Link href='/' className="text-dark1">Developer</Link>
+              <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`} className="text-dark1">Developer</Link>
             </li>
             <li className="transition-all duration-100 hover:text-secondary5">
               <a
@@ -86,14 +87,14 @@ export default function Footer() {
             <Button third className="flex items-center px-6 py-2 transition-all duration-200 ease-in-out border hover:border-secondary5 gap-x-1 hover:bg-white hover:text-secondary5 group">
               <span>Contact Us</span>
               <span>
-                <EmailIcon width={24} height={24} className="group-hover:fill-secondary5"/>
+                <EmailIcon width={24} height={24} className="group-hover:fill-secondary5" />
               </span>
             </Button>
           </a>
         </div>
       </div>
       <div>
-        <Link href="/">
+        <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}>
           <LogoDeMask width={245}
             height={56} />
         </Link>

@@ -1,6 +1,6 @@
 import abiRouter from "@/abi/abiRouter.json";
+import FormatNumber from "@/components/Common/FormatNumber";
 import { DownIcon, EtherIcon } from "@/components/Icons";
-import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useNFTBalance from "@/hooks/useBalanceNFT";
@@ -9,16 +9,13 @@ import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
@@ -28,9 +25,13 @@ interface ModalSellNFTProps {
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
+    royaltiesPercent: number | null,
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenSellNFT: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
+    setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+    setHash: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalSellNFT: React.FunctionComponent<
@@ -44,9 +45,13 @@ const ModalSellNFT: React.FunctionComponent<
     nftAddress,
     idNFT,
     isOpenTransaction,
+    royaltiesPercent,
     setIsOpenTransaction,
     setIsOpenSellNFT,
     setInputNFT,
+    setIsOpenError,
+    setIsOpenSuccess,
+    setHash
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
@@ -65,10 +70,6 @@ const ModalSellNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT)
         const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-        console.log({
-            amountSellDec,
-            amountTokenSell
-        });
 
         const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
         useEffect(() => {
@@ -120,6 +121,7 @@ const ModalSellNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountSellDec)),
+                        royaltiesPercent! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
                     );
@@ -129,41 +131,19 @@ const ModalSellNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountSellDec)),
+                        royaltiesPercent! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: estimatedGas }
                     );
+                    setHash(result.hash);
                     const check = await provider.waitForTransaction(result.hash);
                     setIsOpenTransaction(false);
                     setIsOpenSellNFT(false);
                     if (check.status === 1) {
-                        toast.success(
-                            <TransitionURL type={"Sell NFT success"} transactionHash={result.hash} />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenSuccess(true);
                     } else {
-                        toast.error(
-                            <TransitionURL type={"Sell NFT failed"} transactionHash={result.hash} />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenError(true);
                     }
                     setInputNFT("");
                 } catch (error) {
@@ -187,7 +167,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)}/>
+                            <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
                             <p>{symbolToken}</p>
                         </div>
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">

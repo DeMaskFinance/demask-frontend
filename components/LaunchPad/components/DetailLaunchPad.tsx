@@ -27,6 +27,7 @@ import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
 import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
+import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -41,6 +42,13 @@ export default function DetailLaunchPad() {
   const [inputNFT, setInpuNFT] = useState<any>(1);
   const [amountLeave, setAmountLeave] = useState(0);
   const [amount, setAmount] = useState(1);
+  const [hash, setHash] = useState<string>('');
+  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+  const [isOpenError, setIsOpenError] = useState<boolean>(false);
+  const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
+  const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
+  const [isOpenSuccessRefund, setIsOpenSuccessRefund] = useState<boolean>(false);
+  const [isOpenErrorRefund, setIsOpenErrorRefund] = useState<boolean>(false);
   const [isOpenConfirmClaim, setIsOpenConfirmClaim] = useState(false);
   const { account, wallet, chainId, demask, tokenDefault } =
     useContext(AccountContext);
@@ -65,12 +73,9 @@ export default function DetailLaunchPad() {
     },
   });
   console.log(data);
-  
   const softcap = data?.softcap;
   const hardcap = data?.hardcap;
   const totalSold = data?.totalSold;
-
-
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -187,40 +192,16 @@ export default function DetailLaunchPad() {
       // console.log(estimatedGas);
 
       result = await contract.buy(exponentialToDecimal(amount), { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
-
+      setHash(result.hash);
       const check = await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
       setIsOpenModal(false);
       refetch();
 
       if (check.status === 1) {
-        toast.success(
-          <TransitionURL type={"Buy NFT success"} transactionHash={result.hash} />,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
+        setIsOpenSuccessBuy(true);
       } else {
-        toast.error(
-          <TransitionURL type={"Buy NFT failed"} transactionHash={result.hash} />,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
+        setIsOpenErrorBuy(true);
       }
 
       setAmount(0);
@@ -259,7 +240,7 @@ export default function DetailLaunchPad() {
                 <div className="flex justify-between mb-6">
                   <h1 className="text-2xl font-medium text-dark0">Detail Launchpad</h1>
                   <div className="flex justify-between datas-center gap-x-1">
-                    <CountdownTime query={data.status} blockNumber={blockNumber} isSuccess={data.isSuccess}/>
+                    <CountdownTime query={data.status} blockNumber={blockNumber} isSuccess={data.isSuccess} />
                   </div>
                 </div>
                 <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper">
@@ -380,7 +361,19 @@ export default function DetailLaunchPad() {
                               </div>
                             ) : (
                               <div className="mb-4 gap-x-4">
-                                <p className="">Buying Phase</p>
+                                <div className="flex items-center">
+                                  <p className="">Buying Phase</p>
+                                  <div className="flex items-center text-xs">
+                                    (
+                                    {inputNFT ? (
+                                      <FormatNumber number={inputNFT.toString()} />
+                                    ) : (
+                                      0
+                                    )}
+                                    <EtherIcon width={12} height={12} className="mb-[2px] fill-gray-600" />
+                                    )
+                                  </div>
+                                </div>
                                 <p className="text-dark2 text-[10px] font-medium mb-2">The maximum amount of NFTs you can buy is <span className="text-xs font-semibold text-secondary5">{Number(data.purchaseLimit - data.amount)}</span></p>
                                 <input
                                   onChange={(e) => {
@@ -393,7 +386,7 @@ export default function DetailLaunchPad() {
                                   }}
                                   type="number"
                                   // disabled={errors !== "" ? true : false}
-                                  className="px-2 mb-2 border rounded-md outline-none"
+                                  className="px-2 py-2 mb-2 border rounded-md outline-none"
                                   value={amount}
                                 /><br />
                                 {isMaxBuy && (
@@ -439,7 +432,7 @@ export default function DetailLaunchPad() {
                               data={data}
                               isOpenConfirmClaim={isOpenConfirmClaim}
                               setIsOpenConfirmClaim={setIsOpenConfirmClaim}
-
+                              setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}
                             />
                           </>
                         ) : (
@@ -460,7 +453,12 @@ export default function DetailLaunchPad() {
           )}
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-
+        <ModalSuccess isOpenSuccess={isOpenSuccess} transactionHash={hash} type="Claim NFT Success" setIsOpenSuccess={setIsOpenSuccess} />
+        <ModalError isOpenError={isOpenError} transactionHash={hash} type="Claim NFT Failed" setIsOpenError={setIsOpenError} />
+        <ModalSuccess isOpenSuccess={isOpenSuccessBuy} transactionHash={hash} type="Buy NFT Success" setIsOpenSuccess={setIsOpenSuccessBuy} />
+        <ModalError isOpenError={isOpenErrorBuy} transactionHash={hash} type="Buy NFT Failed" setIsOpenError={setIsOpenErrorBuy} />
+        <ModalSuccess isOpenSuccess={isOpenSuccessRefund} transactionHash={hash} type="Refund NFT Success" setIsOpenSuccess={setIsOpenSuccessRefund} />
+        <ModalError isOpenError={isOpenErrorRefund} transactionHash={hash} type="Refund NFT Failed" setIsOpenError={setIsOpenErrorRefund} />
         <ModalLaunchPadProfile
           isOpenModal={isOpenModalRefund}
           setIsOpenModal={setIsOpenModalRefund}
@@ -472,6 +470,7 @@ export default function DetailLaunchPad() {
           amountLeave={amountLeave}
           tokenLaunchpad={tokenLaunchpad}
           refetch={refetch}
+          setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRefund} setIsOpenError={setIsOpenErrorRefund}
         />
       </div>
       <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0">

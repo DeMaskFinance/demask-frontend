@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { TeleIcon, TwitterIcon } from "../Icons";
 import { TabGroups } from "../NavChoice";
 import Image from "next/image";
@@ -7,12 +7,14 @@ import useSvgComponents from "../Picture/Picture";
 import { LogoDeMask } from "../Logo/Logo";
 import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
 import { version } from "@/libs/constants";
+import AccountContext from "@/context/AccountContext";
 const styles = {
   btnActive: "rounded-lg bg-secondary5 px-2",
 };
 export default function FooterSecondary() {
   const [mode, setMode] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>(mode);
+  const { demask } = useContext(AccountContext);
   useEffect(() => {
     setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
   }, [activeChoice]);
@@ -44,7 +46,7 @@ export default function FooterSecondary() {
       >
         <div className="flex items-center gap-x-8">
           <div className="">
-            <Link href="/">
+            <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}>
               <LogoDeMask width={94} height={24} />
             </Link>
           </div>

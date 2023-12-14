@@ -13,6 +13,7 @@ import Button from "../Buttons/Button";
 import { Processing } from "../Loading";
 import { ModalWallet } from "../Modal/ModalWallet";
 import TransitionURL from "../Toast/TransionURL";
+import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-[200px] py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -212,21 +213,18 @@ export default function MintNFT({
       <div className="relative">
         <h2 className={styles.title}>Initialization</h2>
         <div>
-          {
-            !isProcess && (
-              <Button
-                type="button"
-                className="w-[150px] py-2"
-                primary
-                onClick={handleSubmit}
-              >
-                CREATE
-              </Button>
-            )
-          }
-          {isProcess && <Processing />}
+          <Button
+            type="button"
+            className="w-[150px] py-2"
+            primary
+            onClick={handleSubmit}
+          >
+            CREATE
+          </Button>
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+        <ModalTransation isOpenTransation={isProcess} setIsOpenTransaction={setIsProcess} isTransaction={true} />
+        {/* <ModalSuccess isOpenSuccess={true} type="" setIsOpenSuccess={setIsOpen} transactionHash="123" isMint /> */}
       </div>
     </div>
   );

@@ -31,7 +31,10 @@ interface ModalConfirmRemoveLiquidityProps {
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenConfirmRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
     setInputLiquidity: React.Dispatch<React.SetStateAction<string>>;
-    setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+    setHash: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ModalConfirmRemoveLiquidity: React.FunctionComponent<
@@ -46,7 +49,10 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     setIsOpenTransaction,
     setIsOpenConfirmRemoveLiquidity,
     setInputLiquidity,
-    setIsOpenRemoveLiquidity
+    setIsOpenRemoveLiquidity,
+    setHash,
+    setIsOpenSuccess,
+    setIsOpenError
 }) => {
         const [isSufficientLiquidity, setIsSufficientLiquidity] = useState<boolean>(false);
         const [isApprovedLiquidity, setIsApprovedLiquidity] = useState<boolean>(false);
@@ -175,44 +181,15 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                         { gasLimit: estimatedGas }
                     );
                     const check = await provider.waitForTransaction(result.hash);
+                    setHash(result.hash);
                     setIsOpenTransaction(false);
                     setInputLiquidity('');
                     setIsOpenRemoveLiquidity(false);
                     setIsOpenConfirmRemoveLiquidity(false);
                     if (check.status === 1) {
-                        toast.success(
-                            <TransitionURL
-                                type={"Remove Liquidity success"}
-                                transactionHash={result.hash}
-                            />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenSuccess(true);
                     } else {
-                        toast.error(
-                            <TransitionURL
-                                type={"Remove Liquidity failed"}
-                                transactionHash={result.hash}
-                            />,
-                            {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: false,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                            }
-                        );
+                        setIsOpenError(true);
                     }
                 } catch (error) {
                     setIsOpenTransaction(false);
@@ -241,7 +218,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             +
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <FormatNumber number={amountTokenDec}/>
+                            <FormatNumber number={amountTokenDec} />
                             <p>{symbolToken}</p>
                         </div>
                         <div className="flex justify-between my-2 text-xs font-semibold text-secondary1">
@@ -253,7 +230,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                                 <span className="overflow-hidden">/</span>
                                 <span>{symbolToken}</span>
                             </div>
-                            <FormatNumber number={inputLiquidity}/>
+                            <FormatNumber number={inputLiquidity} />
                         </div>
                         <div className="flex flex-col items-center mt-6">
                             {!isApprovedLiquidity && account && (

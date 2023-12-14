@@ -19,6 +19,9 @@ interface ModalLaunchPadProfileProps {
   amountLeave: any;
   tokenLaunchpad: string;
   refetch: any;
+  setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+  setHash: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalLaunchPadProfile: React.FunctionComponent<
@@ -34,6 +37,9 @@ const ModalLaunchPadProfile: React.FunctionComponent<
   amountLeave,
   tokenLaunchpad,
   refetch,
+  setIsOpenError,
+  setIsOpenSuccess,
+  setHash
 }) => {
     const handleClose = (e: any) => {
       e.preventDefault();
@@ -98,7 +104,10 @@ const ModalLaunchPadProfile: React.FunctionComponent<
                     tokenLaunchpad,
                     setIsOpenModal,
                     setIsOpenTransaction,
-                    refetch
+                    refetch,
+                    setIsOpenError,
+                    setIsOpenSuccess,
+                    setHash
                   );
                 }}
                 className="px-2 py-1 border rounded-md text-green border-green"
