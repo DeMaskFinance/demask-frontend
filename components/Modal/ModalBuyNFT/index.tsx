@@ -66,7 +66,10 @@ const ModalBuyNFT: React.FunctionComponent<
         const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
             useState<boolean>(false);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+        const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
         const [gasLimit, setGasLimit] = useState<string>('0');
+        const [preFectch, setPreFetch] = useState<boolean>(false);
+        const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const { allowanceToken, bigNumberBalance } =
@@ -76,11 +79,17 @@ const ModalBuyNFT: React.FunctionComponent<
             document.body.style.overflowY = "auto";
             setIsOpenBuyNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT)
-        const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-
+        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT, true, true, updatePrice)
+        const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
+        console.log({
+            reserveNFT,
+            reserveToken,
+            amountTokenBuy,
+            feeTradingBuy,
+            updatePrice
+        });
+        
         // console.log(amountTokenBuy);
-        console.log(exponentialToDecimal(Math.floor(amountBuyDec)));
         const { tip, gasUse } = useInforFee(account, wallet);
         const providerChoice = getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -93,10 +102,28 @@ const ModalBuyNFT: React.FunctionComponent<
         useEffect(() => {
             if (inputNFT && data && amountTokenBuy && royaltiesPercent) {
                 setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
+                setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(royaltiesPercent) / 100));
             } else {
                 setAmountBuyDec(0);
+                setTotalProcessBuy(0);
             }
         }, [inputNFT, data, slippage, amountTokenBuy, royaltiesPercent])
+        useEffect(() => {
+            const load = setInterval(() => {
+                if (isOpenBuyNFT) {
+                    setPreFetch(true);
+                } else {
+                    setPreFetch(false);
+                }
+            }, 20000)
+            return () => {
+                clearInterval(load)
+            }
+        }, [isOpenBuyNFT])
+        console.log({
+            isOpenBuyNFT,
+            preFectch
+        });
 
         useEffect(() => {
             const checkReservesNFT = () => {
@@ -222,7 +249,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             Confirm Buy
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals).toString()} />
+                            <FormatNumber number={divideByDecimal(totalProcessBuy.toString(), data.tokenDecimals).toString()} />
                             <p>{symbolToken}</p>
                         </div>
                         <div>
@@ -234,11 +261,22 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <ModalDocument data={data.metadata.symbol} />
                             </div>
                         </div>
+                        {
+                            preFectch && (
+                                <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+                                    <p className="text-xs">Price Updated</p>
+                                    <Button primary className="px-6 py-2 bg-secondary5" onClick={() => {
+                                        setUpdatePrice(true);
+                                        setPreFetch(false);
+                                    }}>Accept</Button>
+                                </div>
+                            )
+                        }
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
                             <p>Slippage tolerance</p>
                             <p>{slippage}%</p>
                         </div>
-                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {inputNFT} NFT1 or the transaction will revert</p>
+                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {inputNFT} NFT or the transaction will revert</p>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>

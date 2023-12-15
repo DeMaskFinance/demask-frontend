@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="flex gap-x-[120px]">
           <ul className="flex font-semibold gap-x-8 text-dark2">
             <li>
-              <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`} className="text-dark1">About</Link>
+              <Link href='https://demask.finance/' target="_blank" className="text-dark1">About</Link>
             </li>
             <li className="transition-all duration-100 hover:text-secondary5">
               <a
@@ -43,7 +43,7 @@ export default function Footer() {
           </ul>
           <ul className="flex font-semibold gap-x-8 text-dark2">
             <li>
-              <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`} className="text-dark1">Developer</Link>
+              <Link href='https://demask.finance/' target="_blank" className="text-dark1">Developer</Link>
             </li>
             <li className="transition-all duration-100 hover:text-secondary5">
               <a
@@ -94,7 +94,7 @@ export default function Footer() {
         </div>
       </div>
       <div>
-        <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}>
+        <Link href='https://demask.finance/' target="_blank">
           <LogoDeMask width={245}
             height={56} />
         </Link>

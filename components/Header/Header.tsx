@@ -118,7 +118,7 @@ export default function Header() {
       >
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">
-            <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`} className={`p-2 border border-secondary1 rounded-xl block hover:border-white ${router.pathname === '/' ? "bg-white" : ""}`}>
+            <Link href='https://demask.finance/' target="_blank" className={`p-2 border border-secondary1 rounded-xl block hover:border-white ${router.pathname === '/' ? "bg-white" : ""}`}>
               <LogoDeMask width={94} height={24} className={`${router.pathname === '/' ? "fill-[#7413DC]" : "fill-white"}`} />
             </Link>
             <p className="text-xs font-semibold text-dark3 lg:hidden">{version}</p>

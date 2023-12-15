@@ -59,6 +59,9 @@ const ModalSellNFT: React.FunctionComponent<
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const [amountSellDec, setAmountSellDec] = useState<number>(0);
+        const [totalProcessSell, setTotalProcessSell] = useState<number>(0);
+        const [preFectch, setPreFetch] = useState<boolean>(false);
+        const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
         const [isSufficientTokenSell, setIsSufficientTokenSell] =
             useState<boolean>(false);
@@ -70,8 +73,8 @@ const ModalSellNFT: React.FunctionComponent<
             document.body.style.overflowY = "auto";
             setIsOpenSellNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT)
-        const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
+        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT, true, true, updatePrice)
+        const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress,updatePrice);
 
         const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
         useEffect(() => {
@@ -93,12 +96,13 @@ const ModalSellNFT: React.FunctionComponent<
         useEffect(() => {
             if (inputNFT && data && amountTokenSell && royaltiesPercent) {
                 setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(royaltiesPercent) / 100);
+                setTotalProcessSell(amountTokenSell - amountTokenSell * Number(royaltiesPercent) / 100);
             } else {
                 setAmountSellDec(0);
             }
         }, [inputNFT, data, slippage, amountTokenSell, royaltiesPercent])
         console.log(amountSellDec);
-        
+
         const handleSellNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -172,7 +176,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
-                            <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
+                            <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
                             <p>{symbolToken}</p>
                         </div>
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">

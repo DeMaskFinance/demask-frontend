@@ -123,7 +123,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
 
           <div className="flex items-center justify-between w-full text-center">
             <div className="gap-2">
-              <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}>
+              <Link href='https://demask.finance/' target="_blank">
                 <LogoDeMask width={94} height={24} />
                 {/* <Image
                   src={"/logoHeader.svg"}
@@ -301,7 +301,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
             </li>
           </div>
         </div>
-        <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}>
+        <Link href='https://demask.finance/' target="_blank">
           {/* <LogoDemask width={94} height={24} /> */}
           <Image src={"/logoHeader.svg"} alt="" width={94} height={24}></Image>
         </Link>

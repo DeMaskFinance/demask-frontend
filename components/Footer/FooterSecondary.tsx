@@ -46,7 +46,7 @@ export default function FooterSecondary() {
       >
         <div className="flex items-center gap-x-8">
           <div className="">
-            <Link href={`/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}>
+            <Link href='https://demask.finance/' target="_blank">
               <LogoDeMask width={94} height={24} />
             </Link>
           </div>

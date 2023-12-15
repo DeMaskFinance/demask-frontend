@@ -2,7 +2,7 @@ import { Button } from "@/components/Buttons";
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { ActiveIcon, BackIcon, EtherIcon, PoolIcon } from "@/components/Icons";
+import { ActiveIcon, BackIcon, EtherIcon, PoolIcon, SettingIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -52,6 +52,8 @@ const Swap: React.FC = () => {
   const [idNFT, setIdNFT] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+  const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
+  const [totalProcessSell, setTotalProcessSell] = useState<number>(0);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -137,12 +139,15 @@ const Swap: React.FC = () => {
     amountTokenBuy,
     amountBuyDec,
     amountTokenSell,
-    amountSellDec
+    amountSellDec,
+    totalProcessBuy
   });
   useEffect(() => {
     if (inputNFT && data && amountTokenBuy && amountTokenSell && royaltiesPercent) {
       setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
-      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) + amountTokenSell * Number(royaltiesPercent) / 100);
+      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(royaltiesPercent) / 100);
+      setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(royaltiesPercent) / 100));
+      setTotalProcessSell(amountTokenSell - amountTokenSell * Number(royaltiesPercent) / 100);
       setRoyaltiesFeeBuy(amountTokenBuy * Number(royaltiesPercent) / 100);
       setRoyaltiesFeeSell(amountTokenSell * Number(royaltiesPercent) / 100);
     } else {
@@ -150,6 +155,8 @@ const Swap: React.FC = () => {
       setAmountSellDec(0);
       setRoyaltiesFeeBuy(0);
       setRoyaltiesFeeSell(0);
+      setTotalProcessBuy(0);
+      setTotalProcessSell(0);
     }
   }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice, royaltiesPercent])
 
@@ -267,7 +274,7 @@ const Swap: React.FC = () => {
               <HistorySwap data={data} />
             </div>
             <div className="lg:w-[40%] md:w-2/4 w-full flex-col-reverse lg:flex-col flex gap-y-1 lg:gap-y-12">
-              <div className="px-2 py-2 border rounded-lg shadow-home">
+              <div className="p-6 border rounded-lg shadow-home">
                 <div className="flex justify-between gap-4 mb-2 text-dark1">
                   <div className="flex flex-col items-center ">
                     <TabGroups
@@ -279,7 +286,7 @@ const Swap: React.FC = () => {
                   <div className="flex items-center gap-x-2">
                     <Link
                       href={`/add/${nftAddress}/${tokenAddress}/${idNFT}`}
-                      className="flex justify-end font-medium transition-all duration-150 ease-linear text-dark2 group"
+                      className="flex justify-end px-4 py-2 font-medium transition-all duration-150 ease-linear rounded-lg bg-dark4 text-dark2 group"
                     >
                       <PoolIcon
                         width={24}
@@ -289,7 +296,7 @@ const Swap: React.FC = () => {
                       <p className="group-hover:text-secondary3">Pool</p>
                     </Link>
                     <div onClick={() => setIsOpenSetting(true)}>
-                      <AiFillSetting className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
+                      <SettingIcon width={20} height={20} className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
                     </div>
                   </div>
                 </div>
@@ -325,15 +332,15 @@ const Swap: React.FC = () => {
                       </span>
                     </div>
                     {account && activeChoice === "BUY" && (
-                      <div className="flex items-center text-secondary3">
+                      <div className="flex items-center text-dark2">
                         Balance:{formatNumber(balanceToken)}
                         <span className="mb-1 ml-1">
-                          <EtherIcon width={16} height={16} className="fill-secondary4" />
+                          <EtherIcon width={16} height={16} className="fill-dark2" />
                         </span>
                       </div>
                     )}
                     {account && activeChoice === "SELL" && (
-                      <p className="text-secondary3">
+                      <p className="text-dark2">
                         Balance:{formatNumber(balanceNFT)} NFT
                       </p>
                     )}
@@ -366,7 +373,7 @@ const Swap: React.FC = () => {
                   </div>
                 </div>
 
-                <form className="mt-1">
+                <form className="mt-5">
                   <div>
                     <div className="flex justify-between">
                       {data.reserveNFT ? (
@@ -506,11 +513,11 @@ const Swap: React.FC = () => {
                     <div className="relative">
                       {activeChoice === "BUY" ? (
                         <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                          <FormatNumber number={divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)} />
+                          <FormatNumber number={divideByDecimal(totalProcessBuy.toString(), data.tokenDecimals)} />
                         </div>
                       ) : (
                         <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                          <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
+                          <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
                         </div>
                       )}
                       <div

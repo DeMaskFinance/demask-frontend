@@ -12,7 +12,6 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     isSuccess
 }) => {
     const [blockNumberTimer, setBlockNumberTimer] = useState(0);
-    console.log(isSuccess);
     
     const timer = () => {
         const currentTime = Math.floor(Date.now() / 1000);

@@ -187,6 +187,9 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                     >
                         <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap">
                             <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
+                                Price: <FormatNumber number={data[data.length - 1].closePrice} />
+                            </span>
+                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
                                 Open: <FormatNumber number={legendData?.open} />
                             </span>
                             <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
