@@ -6,7 +6,7 @@ import { ActiveIcon, BackIcon, EtherIcon, PoolIcon, SettingIcon } from "@/compon
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
+import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
@@ -21,6 +21,7 @@ import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformationToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import useRoyalty from "@/hooks/useRoyalty";
 import { swapAPI } from "@/libs/service";
 import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
@@ -28,14 +29,12 @@ import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { AiFillSetting } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
-import Link from "next/link";
-import useRoyalty from "@/hooks/useRoyalty";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -130,18 +129,10 @@ const Swap: React.FC = () => {
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
 
-  const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-  const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress);
-  console.log({
-    demask: demask.ROYALTY,
-    royaltyView,
-    royaltiesPercent,
-    amountTokenBuy,
-    amountBuyDec,
-    amountTokenSell,
-    amountSellDec,
-    totalProcessBuy
-  });
+  const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
+  const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
+  console.log(data);
+  
   useEffect(() => {
     if (inputNFT && data && amountTokenBuy && amountTokenSell && royaltiesPercent) {
       setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
@@ -251,7 +242,17 @@ const Swap: React.FC = () => {
 
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
-      <NextSeo {...updateMeta} />
+      <NextSeo
+        title={`${data?.metadata?.name}`}
+        description={`${data?.metadata?.name}`}
+        openGraph={{
+          images: [
+            {
+              url: data?.metadata?.image || "https://demask.infura-ipfs.io/ipfs/QmfAAXAgAWFqkAovUa4u8iwtr4zYCCdqs35Fu3kAt2n4DH",
+            },
+          ],
+        }}
+      />
       {(isLoading || isFetching) ? (
         <SkeletonReels />
       ) : isSuccess ? (
@@ -620,7 +621,7 @@ const Swap: React.FC = () => {
       ) : (
         <SkeletonReels />
       )}
-      <ModalSearchNFT
+      <ModalSearchNFTSwap
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
       />

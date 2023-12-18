@@ -46,7 +46,7 @@ const TransionDML: React.FC<TransionDMLProps> = (
                 data.map((dmlItem: any, index: number) => (
                     <div>
                         {dmlItem.dmlAddress ? (
-                            <Link href={`/details/${dmlItem.dmlAddress}`} key={index} className='relative flex items-center mt-2'>
+                            <Link href={`/${selectedAction === 'Add' ? 'add' : 'swap'}/${item.nftAddress}/${nativeAddress}/${item.nftID}`} key={index} className='relative flex items-center mt-2'>
                                 <div className="max-w-[80%]">
                                     <ModalDocument data={dmlItem.metadata.symbol} />
                                 </div>

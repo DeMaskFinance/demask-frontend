@@ -16,12 +16,13 @@ const handleApproveNFT = async (
     const signer = provider.getSigner();
     const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
     try {
-      const result = await contract.setApprovalForAll(routerAddress, true);
       setIsOpenTransaction(true);
+      const result = await contract.setApprovalForAll(routerAddress, true);
       await provider.waitForTransaction(result.hash);
       setIsOpenTransaction(false);
     } catch (error) {
       console.error(error);
+      setIsOpenTransaction(false);
     }
   } else {
     setIsOpen(true);

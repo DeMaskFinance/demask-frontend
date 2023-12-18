@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import { Button } from "@/components/Buttons";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
@@ -65,7 +66,6 @@ const ModalSellNFT: React.FunctionComponent<
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
         const [isSufficientTokenSell, setIsSufficientTokenSell] =
             useState<boolean>(false);
-        console.log(data);
         const { bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenSellNFT);
         const handleClose = (e: any) => {
@@ -74,7 +74,7 @@ const ModalSellNFT: React.FunctionComponent<
             setIsOpenSellNFT(false);
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT, true, true, updatePrice)
-        const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress,updatePrice);
+        const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
 
         const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
         useEffect(() => {
@@ -99,10 +99,21 @@ const ModalSellNFT: React.FunctionComponent<
                 setTotalProcessSell(amountTokenSell - amountTokenSell * Number(royaltiesPercent) / 100);
             } else {
                 setAmountSellDec(0);
+                setTotalProcessSell(0);
             }
         }, [inputNFT, data, slippage, amountTokenSell, royaltiesPercent])
-        console.log(amountSellDec);
-
+        useEffect(() => {
+            const load = setInterval(() => {
+                if (isOpenSellNFT) {
+                    setPreFetch(true);
+                } else {
+                    setPreFetch(false);
+                }
+            }, 20000)
+            return () => {
+                clearInterval(load)
+            }
+        }, [isOpenSellNFT])
         const handleSellNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -179,20 +190,31 @@ const ModalSellNFT: React.FunctionComponent<
                             <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
                             <p>{symbolToken}</p>
                         </div>
+                        {
+                            preFectch && (
+                                <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+                                    <p className="text-xs">Price Updated</p>
+                                    <Button primary className="px-6 py-2 bg-secondary5" onClick={() => {
+                                        setUpdatePrice(!updatePrice);
+                                        setPreFetch(false);
+                                    }}>Accept</Button>
+                                </div>
+                            )
+                        }
                         <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
                             <p>Slippage tolerance</p>
                             <p>{slippage}%</p>
                         </div>
                         <div className="flex flex-wrap mt-2 mb-6 text-sm text-dark2 gap-x-1">
                             <span>Output is estimated. You will receive at least</span>
-                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} /> {symbolToken}</span>
+                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} /> {symbolToken}</span>
                             <span> or the transaction will revert</span>
                         </div>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Price</p>
                                 <div className="flex items-center">
-                                    <FormatNumber number={(Number(divideByDecimal(amountSellDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()} />
+                                    <FormatNumber number={(Number(divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
@@ -201,7 +223,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
                                 <div className="flex items-center">
-                                    <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
+                                    <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>

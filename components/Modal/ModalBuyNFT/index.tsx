@@ -81,13 +81,6 @@ const ModalBuyNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT, true, true, updatePrice)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
-        console.log({
-            reserveNFT,
-            reserveToken,
-            amountTokenBuy,
-            feeTradingBuy,
-            updatePrice
-        });
         
         // console.log(amountTokenBuy);
         const { tip, gasUse } = useInforFee(account, wallet);
@@ -120,10 +113,6 @@ const ModalBuyNFT: React.FunctionComponent<
                 clearInterval(load)
             }
         }, [isOpenBuyNFT])
-        console.log({
-            isOpenBuyNFT,
-            preFectch
-        });
 
         useEffect(() => {
             const checkReservesNFT = () => {
@@ -266,7 +255,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
                                     <p className="text-xs">Price Updated</p>
                                     <Button primary className="px-6 py-2 bg-secondary5" onClick={() => {
-                                        setUpdatePrice(true);
+                                        setUpdatePrice(!updatePrice);
                                         setPreFetch(false);
                                     }}>Accept</Button>
                                 </div>

@@ -9,8 +9,6 @@ const approveNFT = async (
   routerAddress: string
 ) => {
   if (account && nftAddress && wallet) {
-    console.log(nftAddress);
-
     const providerChoice = getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
     const signer = provider.getSigner();
@@ -20,8 +18,6 @@ const approveNFT = async (
         account,
         routerAddress
       );
-      console.log(isApprovedNFT);
-
       return isApprovedNFT;
     } catch (error) {
       console.error(error);
