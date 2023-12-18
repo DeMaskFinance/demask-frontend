@@ -140,7 +140,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               Remove
               {data && (
                 <div className="flex items-center leading-[16px] ml-1">
-                  <span> {data.metadata.symbol}</span>
+                  <span> {data?.metadata?.symbol}</span>
                   <span className="overflow-hidden">/</span>
                   <span>{tokenSymbol}</span>
                 </div>

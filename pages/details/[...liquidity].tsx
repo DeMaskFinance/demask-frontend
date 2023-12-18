@@ -102,14 +102,12 @@ export default function DetailLiquidity() {
         wallet, dmlTokenLiquidity, account, data: {
           dmlDecimals: data.dmlDecimals,
           tokenAddress: data.tokenAddress,
-        }, setReward, setIsOpenTransaction,setIsOpenSuccessCollect,setIsOpenErrorCollect,setHash
+        }, setReward, setIsOpenTransaction, setIsOpenSuccessCollect, setIsOpenErrorCollect, setHash
       });
     } else {
       console.log("No account and DML");
     }
   };
-  // console.log(account);
-  // console.log(dmlTokenLiquidity);
   useEffect(() => {
     if (tokenDefault && data) {
       if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
@@ -141,61 +139,86 @@ export default function DetailLiquidity() {
   return (
     <div className="py-8 min-h-[75vh] w-[80%] mx-auto">
       <NextSeo {...updateMeta} />
-      <div className="flex justify-between ">
-        <div className="flex items-center mb-6">
-          <Link href="/pools" className="p-1 rounded-lg hover:bg-secondary2 group">
-            <BackIcon width={24} height={24} />
-          </Link>
-          {account && data && (
-            <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
-              <span>{data.metadata.symbol}</span>
-              <span className="block overflow-hidden leading-[18px]">/</span>
-              <span>{tokenSymbol}</span>
-            </div>
-          )}
-          {isLoading && (
-            <p className="w-[110px] h-6 rounded-full animate-pulse bg-slate-200"></p>
-          )}
-        </div>
-        <div className="flex justify-end mb-8 gap-x-4">
-          <button className={style.btnWallet} onClick={handleAddLiquidity}>
-            ADD
-          </button>
-          <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
-            REMOVE
-          </button>
-        </div>
-      </div>
-      <div className="flex flex-col-reverse lg:flex-row">
+
+      <div className="flex flex-col-reverse lg:flex-row gap-x-10">
         <div className="grow">
+          <div className="flex justify-between ">
+            <div className="flex items-center mb-6">
+              <Link href="/pools" className="p-1 rounded-lg hover:bg-secondary2 group">
+                <BackIcon width={24} height={24} />
+              </Link>
+              {account && data && (
+                <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
+                  <span>{data?.metadata?.symbol}</span>
+                  <span className="block overflow-hidden leading-[18px]">/</span>
+                  <span>{tokenSymbol}</span>
+                </div>
+              )}
+              {isLoading && (
+                <p className="w-[110px] h-6 rounded-full animate-pulse bg-slate-200"></p>
+              )}
+            </div>
+            <div className="flex justify-end mb-8 gap-x-4">
+              <button className={style.btnWallet} onClick={handleAddLiquidity}>
+                ADD
+              </button>
+              <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
+                REMOVE
+              </button>
+            </div>
+          </div>
           <div className="h-full ">
-            <div className="flex justify-between font-medium max-w-[500px]">
+            <div className="flex justify-between w-full p-2 font-medium border rounded-lg border-dark4">
               <div>
-                <p className="text-dark1">Liquidity</p>
-                <div className="text-xl text-secondary3">
+                <p className="mb-2 text-dark1">Liquidity</p>
+                <div className="font-light text-dark3">
                   <FormatNumber number={balanceOfDML} />
                 </div>
               </div>
               <div>
-                <p className="text-dark1">Reward</p>
-                <div className="flex items-center text-xl text-secondary3">
-                  <FormatNumber number={reward} />
+                <p className="mb-2 text-dark1">TVL</p>
+                <div className="flex font-light text-dark3">
+                  <FormatNumber number={'100'} />
                   <span className="mb-1 ml-1">
-                    <EtherIcon width={18} height={18} className="fill-secondary3" />
+                    <EtherIcon width={18} height={18} className="fill-dark3" />
                   </span>
                 </div>
               </div>
               <div>
+                <p className="mb-2 text-dark1">Collection</p>
+                <div className="flex text-dark3 gap-x-1">
+                  <div className="w-7 h-7">
+                    <MediaNFT data={data} isControls={false} />
+                  </div>
+                  <p className="font-light">{data?.metadata?.name}</p>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-dark1">Smart Contract</p>
+                <div className="text-dark3">
+                  <p className="font-light">{data.dmlAddress?.slice(0, 4)}...
+                    {data.dmlAddress?.slice(-4)}</p>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-dark1">Reward</p>
+                <div className="flex items-center font-light text-dark3">
+                  <FormatNumber number={reward} />
+                  <span className="mb-1 ml-1">
+                    <EtherIcon width={18} height={18} className="fill-dark3" />
+                  </span>
+                </div>
+              </div>
+              <div className="self-end">
                 <Button
-                  primary
-                  className="p-2 text-sm"
+                  className="p-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg bg-green hover:bg-white hover:text-green boder-white hover:border-green"
                   onClick={handleGetReward}
                 >
                   {account ? "COLLECT" : "CONNECT WALLET"}
                 </Button>
               </div>
             </div>
-            <div className="p-2 mt-6 ">
+            <div className="p-2 mt-6 shadow-home">
               <Button primary className="px-6 py-2 text-lg">History</Button>
               {account && isSuccess && data.liquidityHistory.length > 0 ? (
                 <div className="w-[100vw] lg:w-[40vw] 3xl:w-[36vw] overflow-hidden mt-6">
@@ -283,7 +306,7 @@ export default function DetailLiquidity() {
       {data && (
         <ModalDetail
           nameNFT={data.metadata.name}
-          symbolNFT={data.metadata.symbol}
+          symbolNFT={data?.metadata?.symbol}
           category={data.metadata.category}
           attributes={data.metadata.attributes}
           description={data.metadata.description}

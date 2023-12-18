@@ -72,23 +72,19 @@ const Swap: React.FC = () => {
   const [isSufficientTokenSell, setIsSufficientTokenSell] =
     useState<boolean>(false);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
-  const [showRequiredRoyalties, setShowRequiredRoyalties] = useState(false);
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const { account, wallet, chainId, demask, tokenDefault, slippage, txDeadline } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
-  const [royaltiesPercent, setRoyaltiesPercent] = useState<number | null>(null);
   const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
   const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
-  const [validFee, setValidFee] = useState<boolean>(false);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
   const { balanceToken, bigNumberBalance, allowanceToken } =
     useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
-  const royaltyView = useRoyalty(account, nftAddress, idNFT, wallet, '5', demask.ROYALTY);
 
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
@@ -132,15 +128,15 @@ const Swap: React.FC = () => {
   const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
   console.log(data);
-  
+
   useEffect(() => {
-    if (inputNFT && data && amountTokenBuy && amountTokenSell && royaltiesPercent) {
-      setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
-      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(royaltiesPercent) / 100);
-      setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(royaltiesPercent) / 100));
-      setTotalProcessSell(amountTokenSell - amountTokenSell * Number(royaltiesPercent) / 100);
-      setRoyaltiesFeeBuy(amountTokenBuy * Number(royaltiesPercent) / 100);
-      setRoyaltiesFeeSell(amountTokenSell * Number(royaltiesPercent) / 100);
+    if (inputNFT && data && amountTokenBuy && amountTokenSell) {
+      setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(data.royaltyFee) / 100);
+      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(data.royaltyFee) / 100);
+      setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(data.royaltyFee) / 100));
+      setTotalProcessSell(amountTokenSell - amountTokenSell * Number(data.royaltyFee) / 100);
+      setRoyaltiesFeeBuy(amountTokenBuy * Number(data.royaltyFee) / 100);
+      setRoyaltiesFeeSell(amountTokenSell * Number(data.royaltyFee) / 100);
     } else {
       setAmountBuyDec(0);
       setAmountSellDec(0);
@@ -149,7 +145,7 @@ const Swap: React.FC = () => {
       setTotalProcessBuy(0);
       setTotalProcessSell(0);
     }
-  }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice, royaltiesPercent])
+  }, [inputNFT, slippage, amountTokenBuy, amountTokenSell, activeChoice])
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -179,20 +175,7 @@ const Swap: React.FC = () => {
       setIsSufficientTokenSell(true);
     }
   }, [inputNFT, activeChoice, account, amountBuyDec, amountSellDec, data]);
-  const handleChangeRoyalFee = (e: any) => {
-    if (royaltyView === "0x0000000000000000") {
-      setRoyaltiesPercent(0.5);
-    } else {
-      setRoyaltiesPercent(Number(e.target.value));
-    }
-    setShowRequiredRoyalties(false);
-    setCheckExit(true);
-    if (e.target.value < 0.5 || e.target.value > 100) {
-      setValidFee(true);
-    } else {
-      setValidFee(false);
-    }
-  }
+
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -210,9 +193,7 @@ const Swap: React.FC = () => {
     if (inputNFT === "") {
       setShowRequiredMessage(true);
     }
-    if (royaltiesPercent === 0) {
-      setShowRequiredRoyalties(true);
-    } else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null && Math.floor(amountBuyDec) !== 0) {
+    else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null && Math.floor(amountBuyDec) !== 0) {
       setIsOpenBuyNFT(true);
     }
   };
@@ -239,20 +220,11 @@ const Swap: React.FC = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
+  console.log(data);
 
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
-      <NextSeo
-        title={`${data?.metadata?.name}`}
-        description={`${data?.metadata?.name}`}
-        openGraph={{
-          images: [
-            {
-              url: data?.metadata?.image || "https://demask.infura-ipfs.io/ipfs/QmfAAXAgAWFqkAovUa4u8iwtr4zYCCdqs35Fu3kAt2n4DH",
-            },
-          ],
-        }}
-      />
+      <NextSeo {...updateMeta} />
       {(isLoading || isFetching) ? (
         <SkeletonReels />
       ) : isSuccess ? (
@@ -463,53 +435,23 @@ const Swap: React.FC = () => {
                       </p>
                     )}
                   </div>
-                  <div className="">
-                    <label htmlFor="royaltiesPercent" className='mb-1 text-dark3'>
-                      <div className="flex mb-1 text-sm">Royalties Fee:
-                        {activeChoice === "BUY" ? (
-                          <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
-                        ) : (
-                          <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
-                        )}
+
+                  <div className="mt-4">
+                    <div className="flex justify-between">
+                      <div className="mb-1 text-sm text-dark3">
+                        Total Proceeds:
                       </div>
-                    </label>
-                    <div className="relative">
-                      <input
-                        placeholder="0.5"
-                        type="number"
-                        id="royaltiesPercent"
-                        autoComplete="off"
-                        value={royaltiesPercent || ""}
-                        className={
-                          showRequiredRoyalties
-                            ? "w-full py-2 pl-2 mb-2 rounded-lg border-2 border-red"
-                            : styles.inputItem
-                        }
-                        onChange={(e) => handleChangeRoyalFee(e)}
-                      />
-                      <div
-                        className="absolute px-2 py-1 text-sm transition duration-150 ease-out border rounded-lg cursor-pointer text-dark3 bg-dark4 hover:text-white hover:bg-secondary5 active:bg-secondary3 right-1 top-1 border-dark4 "
-                      >
-                        %
+                      <div className="">
+                        <label htmlFor="data.royaltyFee" className='mb-1 text-dark3'>
+                          <div className="flex mb-1 text-sm">Royalties Fee:
+                            {activeChoice === "BUY" ? (
+                              <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
+                            ) : (
+                              <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
+                            )}
+                          </div>
+                        </label>
                       </div>
-                    </div>
-                    {showRequiredRoyalties && (
-                      <p
-                        className="mt-0 mb-2 ml-3 text-xs text-red"
-                        key="emptyRoyalties"
-                      >
-                        Required
-                      </p>
-                    )}
-                    {validFee && (
-                      <p className="mb-2 ml-2 -mt-1 text-xs text-red" key="initial">
-                        Royalty fee must be greater than 0.5% and less than or equal to 100%
-                      </p>
-                    )}
-                  </div>
-                  <div className="">
-                    <div className="mb-1 text-sm text-dark3">
-                      Total Proceeds:
                     </div>
                     <div className="relative">
                       {activeChoice === "BUY" ? (
@@ -530,7 +472,7 @@ const Swap: React.FC = () => {
                   </div>
 
                 </form>
-                {(inputNFT && activeChoice === "BUY") && royaltiesPercent ? (
+                {(inputNFT && activeChoice === "BUY") ? (
                   !isLoadingBuy ? (
                     Math.floor(amountBuyDec) === 0 ? (
                       <p className="mt-0 mb-2 ml-3 text-xs text-red">
@@ -543,7 +485,7 @@ const Swap: React.FC = () => {
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   )
                 ) : null}
-                {(inputNFT && activeChoice === "SELL") && royaltiesPercent ? (
+                {(inputNFT && activeChoice === "SELL") ? (
                   !isLoadingSell ? (
                     Math.floor(amountSellDec) === 0 ? (
                       <p className="mt-0 mb-2 ml-3 text-xs text-red">
@@ -629,7 +571,7 @@ const Swap: React.FC = () => {
       {data?.metadata && (
         <ModalDetail
           nameNFT={data.metadata.name}
-          symbolNFT={data.metadata.symbol}
+          symbolNFT={data?.metadata?.symbol}
           category={data.metadata.category}
           attributes={data.metadata.attributes}
           description={data.metadata.description}
@@ -643,10 +585,10 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} setRoyaltiesPercent={setRoyaltiesPercent} />
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
       )}
       {data && account && (
-        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} royaltiesPercent={royaltiesPercent} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} setRoyaltiesPercent={setRoyaltiesPercent} />
+        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />

@@ -157,7 +157,7 @@ export default function Header() {
                 } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
-                <Search isFocused={isFocused} handleFocus={handleFocus} showSearch={showSearch} />
+                <Search isFocused={isFocused} handleFocus={handleFocus} setShowSearch={setShowSearch} />
               </div>
 
               <button

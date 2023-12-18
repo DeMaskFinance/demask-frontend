@@ -30,14 +30,12 @@ interface ModalBuyNFTProps {
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
-    royaltiesPercent: number | null,
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenBuyNFT: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
     setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
     setHash: React.Dispatch<React.SetStateAction<string>>;
-    setRoyaltiesPercent: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const ModalBuyNFT: React.FunctionComponent<
@@ -51,14 +49,12 @@ const ModalBuyNFT: React.FunctionComponent<
     nftAddress,
     idNFT,
     isOpenTransaction,
-    royaltiesPercent,
     setIsOpenTransaction,
     setIsOpenBuyNFT,
     setInputNFT,
     setIsOpenError,
     setIsOpenSuccess,
     setHash,
-    setRoyaltiesPercent
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
@@ -70,6 +66,7 @@ const ModalBuyNFT: React.FunctionComponent<
         const [gasLimit, setGasLimit] = useState<string>('0');
         const [preFectch, setPreFetch] = useState<boolean>(false);
         const [updatePrice, setUpdatePrice] = useState<boolean>(false);
+        const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const { allowanceToken, bigNumberBalance } =
@@ -81,7 +78,7 @@ const ModalBuyNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT, true, true, updatePrice)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
-        
+
         // console.log(amountTokenBuy);
         const { tip, gasUse } = useInforFee(account, wallet);
         const providerChoice = getProvider(wallet);
@@ -93,14 +90,16 @@ const ModalBuyNFT: React.FunctionComponent<
         //     gasUse
         // });
         useEffect(() => {
-            if (inputNFT && data && amountTokenBuy && royaltiesPercent) {
-                setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(royaltiesPercent) / 100);
-                setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(royaltiesPercent) / 100));
+            if (inputNFT && data && amountTokenBuy) {
+                setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(data.royaltyFee) / 100);
+                setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(data.royaltyFee) / 100));
+                setRoyaltiesFeeBuy(amountTokenBuy * Number(data.royaltyFee) / 100);
             } else {
                 setAmountBuyDec(0);
                 setTotalProcessBuy(0);
+                setRoyaltiesFeeBuy(0);
             }
-        }, [inputNFT, data, slippage, amountTokenBuy, royaltiesPercent])
+        }, [inputNFT, data, slippage, amountTokenBuy])
         useEffect(() => {
             const load = setInterval(() => {
                 if (isOpenBuyNFT) {
@@ -195,7 +194,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountBuyDec)),
-                        royaltiesPercent! * 10000,
+                        data.royaltyFee! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { value: value }
@@ -207,7 +206,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountBuyDec)),
-                        royaltiesPercent! * 10000,
+                        data.royaltyFee! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: estimatedGas, value: value }
@@ -222,7 +221,6 @@ const ModalBuyNFT: React.FunctionComponent<
                         setIsOpenError(false);
                     }
                     setInputNFT("");
-                    setRoyaltiesPercent(null);
                 } catch (error) {
                     setIsOpenTransaction(false);
                     console.error(error);
@@ -247,7 +245,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
                             <div className="max-w-[260px]">
-                                <ModalDocument data={data.metadata.symbol} />
+                                <ModalDocument data={data?.metadata?.symbol} />
                             </div>
                         </div>
                         {
@@ -291,6 +289,15 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <p>Trading fee</p>
                                 <div className="flex items-center">
                                     <FormatNumber number={divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals).toString()} />
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex justify-between text-sm text-dark1">
+                                <p>Royalties Fee</p>
+                                <div className="flex items-center">
+                                    <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>

@@ -16,10 +16,10 @@ import { CgClose } from "react-icons/cg";
 interface SearchProps {
   isFocused: boolean;
   handleFocus: any;
-  showSearch?: boolean;
+  setShowSearch: any;
 }
 
-const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSearch }) => {
+const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLParagraphElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -89,6 +89,8 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, handleFocus, showSe
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata.name);
+    setShowSearch(false);
+    document.body.style.overflowY = "auto";
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata.name &&

@@ -232,7 +232,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
                             <div className="max-w-[60%]">
-                                <ModalDocument data={data.metadata.symbol} />
+                                <ModalDocument data={data?.metadata?.symbol} />
                             </div>
                         </div>
                         <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">

@@ -212,7 +212,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             {reserveToken ? (<p>{amountNFTMin}</p>) : (
                                 <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
                             )}
-                            <p>{data.metadata.symbol}</p>
+                            <p>{data?.metadata?.symbol}</p>
                         </div>
                         <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
                             +
@@ -226,7 +226,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-sm font-semibold text-dark2">
                             <div className="flex items-center leading-[13px]">
-                                <span>{data.metadata.symbol}</span>
+                                <span>{data?.metadata?.symbol}</span>
                                 <span className="overflow-hidden">/</span>
                                 <span>{symbolToken}</span>
                             </div>

@@ -17,7 +17,8 @@ import TransionDML from './TransitionDML';
 import FormatNumber from '@/components/Common/FormatNumber';
 import ModalDocument from '@/components/Modal/ModalLength/ModalDocument';
 const Inventory = () => {
-    const { account, chainId } = useContext(AccountContext);
+    const { account, chainId, demask } = useContext(AccountContext);
+    const { NATIVE_ADDRESS: nativeAddress } = demask;
     const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
     const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
     const [selectedAction, setSelectedAction] = useState<string>('Add');
@@ -81,7 +82,7 @@ const Inventory = () => {
                                                             className="flex items-start gap-2 font-medium uppercase"
                                                         >
                                                             <span className="flex-wrap text-xl line-clamp-1 max-w-[100%]">
-                                                                <ModalDocument data={item.metadata.name}/>
+                                                                <ModalDocument data={item.metadata.name} />
                                                             </span>
                                                         </h6>
                                                     </div>
@@ -112,25 +113,25 @@ const Inventory = () => {
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between mt-2'>
-                                                    <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Add')}>
-                                                        <p>Add</p>
-                                                        <div>
-                                                            <AddIcon width={24} height={24} />
-                                                        </div>
-                                                    </Button>
-                                                    <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Swap')}>
-                                                        <p>Swap</p>
-                                                        <div>
-                                                            <SwapIconProfile width={24} height={24} />
-                                                        </div>
-                                                    </Button>
+                                                    <Link href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                                                        <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2'>
+                                                            <p>Add</p>
+                                                            <div>
+                                                                <AddIcon width={24} height={24} />
+                                                            </div>
+                                                        </Button>
+                                                    </Link>
+                                                    <Link href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
+                                                        <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Swap')}>
+                                                            <p>Swap</p>
+                                                            <div>
+                                                                <SwapIconProfile width={24} height={24} />
+                                                            </div>
+                                                        </Button>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {item && (
-                                            <TransionDML item={item} chainId={chainId} selectedAction={selectedAction} index={index} selectedItemIndex={selectedItemIndex} setSelectedItemIndex={setSelectedItemIndex} />
-                                        )}
                                     </div>
                                 ))}
                             </Fragment>

@@ -26,14 +26,12 @@ interface ModalSellNFTProps {
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
-    royaltiesPercent: number | null,
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
     setIsOpenSellNFT: React.Dispatch<React.SetStateAction<boolean>>;
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
     setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
     setHash: React.Dispatch<React.SetStateAction<string>>;
-    setRoyaltiesPercent: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const ModalSellNFT: React.FunctionComponent<
@@ -47,14 +45,12 @@ const ModalSellNFT: React.FunctionComponent<
     nftAddress,
     idNFT,
     isOpenTransaction,
-    royaltiesPercent,
     setIsOpenTransaction,
     setIsOpenSellNFT,
     setInputNFT,
     setIsOpenError,
     setIsOpenSuccess,
     setHash,
-    setRoyaltiesPercent
 }) => {
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
@@ -64,6 +60,7 @@ const ModalSellNFT: React.FunctionComponent<
         const [preFectch, setPreFetch] = useState<boolean>(false);
         const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
+        const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
         const [isSufficientTokenSell, setIsSufficientTokenSell] =
             useState<boolean>(false);
         const { bigNumberBalance } =
@@ -94,14 +91,16 @@ const ModalSellNFT: React.FunctionComponent<
 
         }, [inputNFT, account, amountSellDec]);
         useEffect(() => {
-            if (inputNFT && data && amountTokenSell && royaltiesPercent) {
-                setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(royaltiesPercent) / 100);
-                setTotalProcessSell(amountTokenSell - amountTokenSell * Number(royaltiesPercent) / 100);
+            if (inputNFT && data && amountTokenSell) {
+                setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(data.royaltyFee) / 100);
+                setTotalProcessSell(amountTokenSell - amountTokenSell * Number(data.royaltyFee) / 100);
+                setRoyaltiesFeeSell(amountTokenSell * Number(data.royaltyFee) / 100);
             } else {
                 setAmountSellDec(0);
                 setTotalProcessSell(0);
+                setRoyaltiesFeeSell(0);
             }
-        }, [inputNFT, data, slippage, amountTokenSell, royaltiesPercent])
+        }, [inputNFT, data, slippage, amountTokenSell, data.royaltyFee])
         useEffect(() => {
             const load = setInterval(() => {
                 if (isOpenSellNFT) {
@@ -140,7 +139,7 @@ const ModalSellNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountSellDec)),
-                        royaltiesPercent! * 10000,
+                        data.royaltyFee! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
                     );
@@ -150,7 +149,7 @@ const ModalSellNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountSellDec)),
-                        royaltiesPercent! * 10000,
+                        data.royaltyFee! * 10000,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: estimatedGas }
@@ -165,7 +164,6 @@ const ModalSellNFT: React.FunctionComponent<
                         setIsOpenError(true);
                     }
                     setInputNFT("");
-                    setRoyaltiesPercent(null);
                 } catch (error) {
                     setIsOpenTransaction(false);
                     console.error(error);
@@ -181,7 +179,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <p>{inputNFT}</p>
-                            <p>{data.metadata.symbol}</p>
+                            <p>{data?.metadata?.symbol}</p>
                         </div>
                         <div>
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
@@ -233,6 +231,15 @@ const ModalSellNFT: React.FunctionComponent<
                                 <p>Trading fee</p>
                                 <div className="flex items-center">
                                     <FormatNumber number={divideByDecimal(feeTradingSell.toString(), data.tokenDecimals)} />
+                                    <p>
+                                        <EtherIcon width={14} height={14} className="fill-dark2" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex justify-between text-sm text-dark1">
+                                <p>Royalties Fee</p>
+                                <div className="flex items-center">
+                                    <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>

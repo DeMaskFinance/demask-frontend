@@ -390,7 +390,7 @@ export default function AddLiquidity() {
       {data?.metadata && (
         <ModalDetail
           nameNFT={data.metadata.name}
-          symbolNFT={data.metadata.symbol}
+          symbolNFT={data?.metadata?.symbol}
           category={data.metadata.category}
           attributes={data.metadata.attributes}
           description={data.metadata.description}
