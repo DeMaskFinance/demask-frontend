@@ -15,7 +15,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
   isLoading,
 }) => {
   console.log(data);
-  
+
   return (
     <>
       {isLoading || isFetching ? (
@@ -35,10 +35,10 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item: any, index: number) => (
             <div
-              className="grid gap-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 font-medium mb-2"
+              className="grid gap-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 mb-2"
               key={index}
             >
-              <div>{item.action}</div>
+              <div className={`${item.action === "Add" ? "text-green" : "text-red"}`}>{item.action}</div>
               <div>
                 <ModalNumber data={item.liquidityDecimals} />
               </div>

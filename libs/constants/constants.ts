@@ -89,7 +89,7 @@ const BSC_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
   USDT: process.env.NEXT_PUBLIC_USDT_BSC,
   USDC: process.env.NEXT_PUBLIC_USDC_BSC,
-  urltxHash:"https://testnet.bscscan.com/tx/",
+  urltxHash:"https://testnet.bscscan.com/",
   chainName:"BNB Smart Chain Testnet",
   NAME:"BNB Smart Chain Testnet",
   CURRENCY:"tBNB"
@@ -106,7 +106,7 @@ const MUMBAI_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT,
   USDT: process.env.NEXT_PUBLIC_USDT,
   USDC: process.env.NEXT_PUBLIC_USDC,
-  urltxHash:"https://mumbai.polygonscan.com/tx/",
+  urltxHash:"https://mumbai.polygonscan.com/",
   chainName: "Mumbai",
   NAME:"MUMBAI",
   CURRENCY:"MATIC",
@@ -124,7 +124,7 @@ const Zksync_DEMASK = {
   USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
   USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
   ROYALTY:process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Zksync,
-  urltxHash:"https://goerli.explorer.zksync.io/tx/",
+  urltxHash:"https://goerli.explorer.zksync.io/",
   chainName:"zkSync Testnet",
   NAME:"zkSync Testnet",
   CURRENCY:"ETH"

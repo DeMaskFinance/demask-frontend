@@ -1,4 +1,4 @@
-import abiDemask from "@/abi/abiCreator.json";
+import { default as abiCreator, default as abiDemask } from "@/abi/abiCreator.json";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { getProvider } from "@/libs/connection/getProvider";
@@ -10,10 +10,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../Buttons/Button";
-import { Processing } from "../Loading";
-import { ModalWallet } from "../Modal/ModalWallet";
-import TransitionURL from "../Toast/TransionURL";
 import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
+import { ModalWallet } from "../Modal/ModalWallet";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-[200px] py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -51,8 +49,11 @@ export default function MintNFT({
 }: any) {
 
   const [isProcess, setIsProcess] = useState<boolean>(false);
+  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
+  const [idNFT, setIdNFT] = useState<number>(0);
+  const [hash, setHash] = useState<string>('');
   const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
   const contractAddress = demask.CREATOR; // Creator
   console.log(fileIPFS);
@@ -78,7 +79,6 @@ export default function MintNFT({
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(contractAddress, abiDemask, signer);
-      console.log(contract);
 
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
@@ -97,39 +97,15 @@ export default function MintNFT({
         if (isExisting) {
           checkAndMint();
         } else {
-
+          setIdNFT(randomID);
           const tx = await contract.mint(account, randomID, exponentialToDecimal(amount), exponentialToDecimal(feeRoyal * 100), data, url);
           transactionHash = tx.hash;
-          console.log(transactionHash);
+          setHash(transactionHash);
           const check = await provider.waitForTransaction(transactionHash);
           if (check.status === 1) {
-            toast.success(
-              <TransitionURL type={"Mint success"} transactionHash={transactionHash} />,
-              {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
-            );
+            setIsOpenSuccess(true);
           } else {
-            toast.error(
-              <TransitionURL type={"Mint failed"} transactionHash={transactionHash} />,
-              {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
-            );
+            setIsOpenSuccess(false)
           }
 
           setTotalSupply(null);
@@ -224,7 +200,11 @@ export default function MintNFT({
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isProcess} setIsOpenTransaction={setIsProcess} isTransaction={true} />
-        {/* <ModalSuccess isOpenSuccess={true} type="" setIsOpenSuccess={setIsOpen} transactionHash="123" isMint /> */}
+        {
+          isOpenSuccess && (
+            <ModalSuccess isOpenSuccess={isOpenSuccess} type="" setIsOpenSuccess={setIsOpenSuccess} transactionHash={hash} isMint idNFT={idNFT} />
+          )
+        }
       </div>
     </div>
   );

@@ -6,6 +6,11 @@ import { useContext } from "react";
 import AccountContext from "@/context/AccountContext";
 import MediaNFT from "@/components/Common/MediaNFT";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { searchNFTService } from "@/libs/service/searchService";
+import { BiLoaderAlt } from "react-icons/bi";
+import Link from "next/link";
+import useMetadata from "@/hooks/useMetadata";
 
 interface ModalSuccessProps {
     isOpenSuccess: boolean;
@@ -14,11 +19,15 @@ interface ModalSuccessProps {
     transactionHash: string;
     isTransaction?: boolean;
     isMint?: boolean;
-    linkMedia?: string;
+    idNFT?: number;
 }
 
-const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSuccess, setIsOpenSuccess, type, transactionHash, isMint, linkMedia }) => {
-    const { demask } = useContext(AccountContext);
+const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSuccess, setIsOpenSuccess, type, transactionHash, isMint, idNFT }) => {
+    const { demask, chainId, wallet } = useContext(AccountContext);
+    const { metadata, isLoadingMeta } = useMetadata('0x59620b99146c56785b067f84237fa80d89588228', idNFT, wallet);
+    const dataMeta = {
+        metadata
+    }
     const handleClose = (e: any) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
@@ -30,16 +39,17 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                 <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
                     {isMint ? (
                         <div className="flex flex-col items-center">
-                            <div className="w-40 h-40 mx-auto mt-10 mb-6">
-                                <Image
-                                    src='https://demask.infura-ipfs.io/ipfs/QmW47qHGtQr9SGeVKUSWgjfFC43RvauVSCYJC89KjQh8US'
-                                    alt="test"
-                                    width={680}
-                                    height={576}
-                                    sizes="(max-width: 770px) 100vw"
-                                    className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
-                                />
-                            </div>
+                            {isLoadingMeta ? (
+                                <div className="flex items-center justify-center w-40 h-40 mx-auto mt-10 mb-6">
+                                    <BiLoaderAlt className="mb-6 text-5xl animate-spin text-secondary5" />
+                                </div>
+                            ) : (metadata) ? (
+                                <div className="w-40 h-40 mx-auto mt-10 mb-6">
+                                    <MediaNFT data={dataMeta} isControls />
+                                </div>
+                            ) : (
+                                null
+                            )}
                             <p className="font-semibold text-green">Your collection has been created</p>
                             <a href={`${demask.urltxHash}${transactionHash}`} target="_blank" className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group">
                                 <p>View on zkSync Era</p>
@@ -48,8 +58,10 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                                 </p>
                             </a>
                             <div className="flex items-center mt-6 gap-x-4">
-                                <Button className='px-6 py-2 font-semibold text-white bg-dark3' onClick={handleClose}>View collection</Button>
-                                <Button primary className='px-6 py-2 '>Create an NFT</Button>
+                                <Link href='/profile?tab=nfts'>
+                                    <Button className='px-6 py-2 font-semibold text-white bg-dark3' >View collection</Button>
+                                </Link>
+                                <Button primary className='px-6 py-2 ' onClick={handleClose}>Create an NFT</Button>
                             </div>
                         </div>
                     ) : (

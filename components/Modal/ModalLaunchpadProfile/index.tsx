@@ -7,6 +7,7 @@ import handleLeaveLaunchPad from "@/libs/utils/handleLeaveLaunchpad";
 import { useContext, useEffect } from "react";
 import AccountContext from "@/context/AccountContext";
 import { ToastContainer } from "react-toastify";
+import { Button } from "@/components/Buttons";
 
 interface ModalLaunchPadProfileProps {
   isOpenTransation: boolean;
@@ -54,11 +55,11 @@ const ModalLaunchPadProfile: React.FunctionComponent<
 
     return (
       <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
-        <div className="relative z-50 flex flex-col justify-center bg-white cursor-default h-fit">
-          <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
-            <h3 className="pt-4 pb-8 text-xl text-center">Confirm refund</h3>
-            <div className="h-32 p-2 mx-auto text-center border rounded-lg">
-              <p>Amount refund</p>
+        <div className="relative z-50 flex flex-col justify-center bg-white rounded-lg cursor-default h-fit">
+          <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[350px] p-4 relative rounded-lg">
+            <h3 className="flex items-center mb-4 text-xl font-semibold text-dark1">Confirm refund</h3>
+            <div className="h-32 p-2 mx-auto text-center">
+              <p className="font-semibold text-dark2">Amount refund</p>
               <div className="relative flex items-center justify-center gap-2 mx-auto w-fit">
                 <input
                   type="number"
@@ -92,7 +93,9 @@ const ModalLaunchPadProfile: React.FunctionComponent<
             </div>
 
             <div className="flex justify-center mt-4">
-              <button
+              <Button
+                primary
+                className="px-6 py-2"
                 disabled={
                   amount > parseInt(amountLeave) || amount.toString() === "" || amount.toString() === "0"
                 }
@@ -110,10 +113,9 @@ const ModalLaunchPadProfile: React.FunctionComponent<
                     setHash
                   );
                 }}
-                className="px-2 py-1 border rounded-md text-green border-green"
               >
                 Confirm
-              </button>
+              </Button>
             </div>
           </div>
           <button

@@ -33,7 +33,7 @@ const updateMeta = {
   title: 'Detail Liquidity',
 };
 export default function DetailLiquidity() {
-  const { account, wallet, chainId, tokenDefault } = useContext(AccountContext);
+  const { account, wallet, chainId, tokenDefault, demask } = useContext(AccountContext);
   const router = useRouter();
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
@@ -53,6 +53,7 @@ export default function DetailLiquidity() {
     useState<boolean>(false);
   const [page, setPage] = useState(1);
   const [tokenSymbol, setTokenSymbol] = useState("");
+  console.log(demask);
 
   useEffect(() => {
     if (liquidity) {
@@ -142,10 +143,10 @@ export default function DetailLiquidity() {
 
       <div className="flex flex-col-reverse lg:flex-row gap-x-10">
         <div className="grow">
-          <div className="flex justify-between ">
-            <div className="flex items-center mb-6">
-              <Link href="/pools" className="p-1 rounded-lg hover:bg-secondary2 group">
-                <BackIcon width={24} height={24} />
+          <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
+            <div className="flex items-center mb-2 lg:mb-0">
+              <Link href="/pools" className="p-1 rounded-lg group">
+                <BackIcon width={24} height={24} className="hover:fill-secondary2" />
               </Link>
               {account && data && (
                 <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
@@ -158,7 +159,7 @@ export default function DetailLiquidity() {
                 <p className="w-[110px] h-6 rounded-full animate-pulse bg-slate-200"></p>
               )}
             </div>
-            <div className="flex justify-end mb-8 gap-x-4">
+            <div className="flex justify-end gap-x-4">
               <button className={style.btnWallet} onClick={handleAddLiquidity}>
                 ADD
               </button>
@@ -167,8 +168,21 @@ export default function DetailLiquidity() {
               </button>
             </div>
           </div>
+          {account && data?.metadata && (
+            <div className=" max-w-[700px] mb-6 mx-auto lg:hidden">
+              <MediaNFT data={data} isControls={true} />
+              <div className="w-full">
+                <p
+                  className="block mx-auto mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
+                  onClick={handleShowDetail}
+                >
+                  Show detail
+                </p>
+              </div>
+            </div>
+          )}
           <div className="h-full ">
-            <div className="flex justify-between w-full p-2 font-medium border rounded-lg border-dark4">
+            <div className="flex flex-wrap justify-between w-full p-2 font-medium border rounded-lg border-dark4 gap-y-4">
               <div>
                 <p className="mb-2 text-dark1">Liquidity</p>
                 <div className="font-light text-dark3">
@@ -190,14 +204,14 @@ export default function DetailLiquidity() {
                   <div className="w-7 h-7">
                     <MediaNFT data={data} isControls={false} />
                   </div>
-                  <p className="font-light">{data?.metadata?.name}</p>
+                  <p className="font-light truncate max-w-[150px]">{data?.metadata?.name}</p>
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-dark1">Smart Contract</p>
                 <div className="text-dark3">
-                  <p className="font-light">{data.dmlAddress?.slice(0, 4)}...
-                    {data.dmlAddress?.slice(-4)}</p>
+                  <a target="_blank" href={`${demask.urltxHash}address/${data?.dmlAddress}`} className="font-light underline hover:text-secondary5 decoration-1">{data?.dmlAddress?.slice(0, 4)}...
+                    {data?.dmlAddress?.slice(-4)}</a>
                 </div>
               </div>
               <div>
@@ -218,23 +232,27 @@ export default function DetailLiquidity() {
                 </Button>
               </div>
             </div>
-            <div className="p-2 mt-6 shadow-home">
-              <Button primary className="px-6 py-2 text-lg">History</Button>
+            <div className="mb-20 lg:mb-0">
               {account && isSuccess && data.liquidityHistory.length > 0 ? (
-                <div className="w-[100vw] lg:w-[40vw] 3xl:w-[36vw] overflow-hidden mt-6">
-                  <div className="overflow-x-auto">
-                    <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-medium mb-2">
-                      <p>Action</p>
-                      <p>Liquidity</p>
-                      <p>NFT</p>
-                      <p>Token</p>
-                      <p>Time</p>
+                <div>
+                  <div className="p-2 mt-6 overflow-y-scroll shadow-home">
+                    <Button className="px-6 py-2 text-lg text-white bg-secondary5">History</Button>
+                    <div className="w-[100vw] lg:w-[40vw] 3xl:w-[36vw] overflow-hidden mt-6">
+                      <div className="">
+                        <div className="grid gap-x-4 lg:grid-cols-[80px,repeat(3,2fr),3fr] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold mb-2">
+                          <p>Action</p>
+                          <p>Liquidity</p>
+                          <p>NFT</p>
+                          <p>Token</p>
+                          <p>Time</p>
+                        </div>
+                        <LiquiditiesHistory
+                          data={data}
+                          isFetching={isFetching}
+                          isLoading={isLoading}
+                        />
+                      </div>
                     </div>
-                    <LiquiditiesHistory
-                      data={data}
-                      isFetching={isFetching}
-                      isLoading={isLoading}
-                    />
                   </div>
                   <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
                     <button
@@ -277,7 +295,7 @@ export default function DetailLiquidity() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center mt-6 gap-x-2">
+                <div className="flex items-center mt-8 gap-x-2">
                   <BsClock className="w-5 h-5" />
                   <p className="text-sm font-medium text-dark1">
                     No events in this time range
@@ -289,7 +307,7 @@ export default function DetailLiquidity() {
         </div>
 
         {account && data?.metadata && (
-          <div className="justify-end max-w-[700px] mb-6 mx-auto">
+          <div className="justify-end max-w-[700px] mb-6 mx-auto hidden lg:block">
             <MediaNFT data={data} isControls={true} />
             <div className="w-full">
               <p

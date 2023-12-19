@@ -9,7 +9,7 @@ export const searchTokenService = async (tokenAddress:string,chainId:string|stri
         
     }
 }
-export const searchNFTService = async (nftAddress:string,nftID:string,chainId:string|string[]) =>{
+export const searchNFTService = async (chainId:string|string[],nftAddress:string,nftID:string) =>{
     try {
         const res = await request.get(`search?chainId=${chainId}&nftAddress=${nftAddress}&id=${nftID}`);
         return res.data;

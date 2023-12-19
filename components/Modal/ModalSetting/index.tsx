@@ -57,69 +57,70 @@ const ModalSetting: React.FunctionComponent<
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
                     <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
                         <h2 className="flex items-center mb-3 text-xl font-semibold text-dark1">
-                            Settings
+                            Settings swap & liquidity
                         </h2>
-                        <h2 className="text-lg font-semibold">SWAPS & LIQUIDITY</h2>
-                        <div className="flex items-center my-2 gap-x-2">
-                            <h2 className="font-semibold text-dark1">Slippage Tolerance</h2>
-                            <Tippy interactive content={<span>Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.</span>}>
-                                <div>
-                                    <TokenIconNotDefine width={16} height={16} />
-                                </div>
-                            </Tippy>
-                        </div>
-                        <div>
-                            {Slippage.map((item, index) => (
-                                <Button key={index} primary className='w-10 py-1 mr-2' onClick={() => {
-                                    setSlippageTo(item)
-                                    updateSlippage(item)
-                                }}>{item}</Button>
-                            ))}
-                            <input type="text" value={slippageTo} className='w-10 p-1 mr-2 border rounded-xl border-dark3' 
-                            onChange={(e) => handleChangeSlippage(e)} 
-                            onBlur={() => {
-                                if (slippageTo > 100) {
-                                    setSlippageTo(0.5);
-                                    updateSlippage(0.5);
-                                }
-                            }}
+                        <div className="flex flex-col items-center">
+                            <div className="flex items-center my-2 gap-x-2">
+                                <h2 className="font-semibold text-dark2">Slippage Tolerance</h2>
+                                <Tippy interactive content={<span>Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.</span>}>
+                                    <div>
+                                        <TokenIconNotDefine width={16} height={16} />
+                                    </div>
+                                </Tippy>
+                            </div>
+                            <div>
+                                {Slippage.map((item, index) => (
+                                    <Button key={index} className='w-10 py-2 mr-2 font-semibold border border-dark4 text-dark3' onClick={() => {
+                                        setSlippageTo(item)
+                                        updateSlippage(item)
+                                    }}>{item}</Button>
+                                ))}
+                                <input type="text" value={slippageTo} className='w-10 h-full mr-2 font-semibold border rounded-lg border-dark4 text-dark3'
+                                    onChange={(e) => handleChangeSlippage(e)}
+                                    onBlur={() => {
+                                        if (slippageTo > 100) {
+                                            setSlippageTo(0.5);
+                                            updateSlippage(0.5);
+                                        }
+                                    }}
+                                />
+                                <span>%</span>
+                            </div>
+                            {(slippageTo > 5 || slippageTo === 0) && (
+                                <p
+                                    className="mt-2 mb-2 text-xs text-yellow"
+                                    key="NFTbalance"
+                                >
+                                    Your transaction may be frontrun
+                                </p>
+                            )}
+                            <div className="flex items-center my-2 gap-x-2">
+                                <h2 className="font-semibold text-dark1">Tx deadline (mins)
+                                </h2>
+                                <Tippy interactive content={<span>Your transaction will revert if it is left confirming for longer than this time.</span>}>
+                                    <div>
+                                        <TokenIconNotDefine width={16} height={16} />
+                                    </div>
+                                </Tippy>
+                            </div>
+                            <input
+                                pattern="^[0-9]+$"
+                                value={time}
+                                type="text"
+                                className='w-1/2 p-2 mb-4 border rounded-xl border-dark4'
+                                onChange={(e) => {
+                                    const inputValue = Number(e.target.value);
+                                    setTime(inputValue);
+                                    updateTxDeadline(inputValue);
+                                }}
+                                onBlur={() => {
+                                    if (time < 20) {
+                                        setTime(20);
+                                        updateTxDeadline(20);
+                                    }
+                                }}
                             />
-                            <span>%</span>
                         </div>
-                        {(slippageTo > 5 || slippageTo === 0) && (
-                            <p
-                                className="mt-2 mb-2 text-xs text-yellow"
-                                key="NFTbalance"
-                            >
-                                Your transaction may be frontrun
-                            </p>
-                        )}
-                        <div className="flex items-center my-2 gap-x-2">
-                            <h2 className="font-semibold text-dark1">Tx deadline (mins)
-                            </h2>
-                            <Tippy interactive content={<span>Your transaction will revert if it is left confirming for longer than this time.</span>}>
-                                <div>
-                                    <TokenIconNotDefine width={16} height={16} />
-                                </div>
-                            </Tippy>
-                        </div>
-                        <input
-                            pattern="^[0-9]+$"
-                            value={time}
-                            type="text"
-                            className={styles.inputItem}
-                            onChange={(e) => {
-                                const inputValue = Number(e.target.value);
-                                setTime(inputValue);
-                                updateTxDeadline(inputValue);
-                            }}
-                            onBlur={() => {
-                                if (time < 20) {
-                                    setTime(20);
-                                    updateTxDeadline(20);
-                                }
-                            }}
-                        />
                     </div>
                     <button
                         className="absolute top-0 right-0 p-2 text-lg"

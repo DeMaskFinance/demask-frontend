@@ -3,8 +3,6 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { ZkSyncIcon, ZkSyncIconTable } from "@/components/Icons";
 
 const HistoryItem = ({ item }: any) => {
-    console.log(item);
-
     return (
         <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
             <td className="flex justify-start items-center md:basis-1/6 w-[140px]">

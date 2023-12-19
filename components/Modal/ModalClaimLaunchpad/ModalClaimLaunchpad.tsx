@@ -83,33 +83,36 @@ const ModalClaimLaunchpad: React.FunctionComponent<
                         <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
                             Confirm claim
                         </p>
-                        <p>
-                            Amount: {Number(data.vesting) > 0 ? release.toString() : data.amount}
-                        </p>
-                        <p>
-                            Fee Transaction: {gasFee}
-                        </p>
-                        <button
-                            disabled={release.toString() === '0'}
-                            className={`border ${release.toString() === '0'
-                                ? "text-white  bg-dark4"
-                                : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
-                                } px-6 mx-auto mt-2 py-2 rounded-lg transition-all text-sm font-medium`}
-                            onClick={() => {
-                                handleReleaseLaunchPad(
-                                    account,
-                                    wallet,
-                                    data.launchpad,
-                                    setIsOpenConfirmClaim,
-                                    setIsOpenTransaction,
-                                    setIsOpenError,
-                                    setIsOpenSuccess,
-                                    setHash
-                                );
-                            }}
-                        >
-                            Claim
-                        </button>
+                        <div className='flex flex-col items-center'>
+                            <div>
+                                <p className='font-semibold text-dark2'>Amount</p>
+                                <p className='text-xl text-center text-dark3'>{Number(data.vesting) > 0 ? release.toString() : data.amount}</p>
+                            </div>
+                            {/* <p>
+                                Fee Transaction: {gasFee}
+                            </p> */}
+                            <button
+                                disabled={release.toString() === '0'}
+                                className={`border ${release.toString() === '0'
+                                    ? "text-white  bg-dark4"
+                                    : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
+                                    } px-6 mx-auto mt-2 py-2 rounded-lg transition-all text-sm font-medium`}
+                                onClick={() => {
+                                    handleReleaseLaunchPad(
+                                        account,
+                                        wallet,
+                                        data.launchpad,
+                                        setIsOpenConfirmClaim,
+                                        setIsOpenTransaction,
+                                        setIsOpenError,
+                                        setIsOpenSuccess,
+                                        setHash
+                                    );
+                                }}
+                            >
+                                Claim
+                            </button>
+                        </div>
                     </div>
 
                     <button
