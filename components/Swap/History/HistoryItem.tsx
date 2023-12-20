@@ -57,7 +57,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                 </td>
                                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                                     <div className="flex items-center justify-end md:gap-2 text-secondary5">
-                                        <Link href={`https://goerli.explorer.zksync.io/address/${item.sender}`} target="_blank" rel="noopener noreferrer" className="text-secondary5">
+                                        <Link href={`${demask.urltxHash}address/${item.sender}`} target="_blank" rel="noopener noreferrer" className="text-secondary5">
                                             {item.sender.slice(0, 4) + "..." + item.sender.slice(-4)}
                                         </Link>
                                     </div>
@@ -66,7 +66,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                     <div className="flex justify-end pr-2 text-secondary5">
                                         <Link
                                             target="_blank"
-                                            href={`${demask.urltxHash}${item.transactionHash}`}
+                                            href={`${demask.urltxHash}tx/${item.transactionHash}`}
                                             className="relative group"
                                         >
                                             {item.transactionHash.slice(0, 4) + "..." + item.transactionHash.slice(-4)}

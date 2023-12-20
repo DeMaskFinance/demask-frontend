@@ -24,7 +24,8 @@ interface ModalSuccessProps {
 
 const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSuccess, setIsOpenSuccess, type, transactionHash, isMint, idNFT }) => {
     const { demask, chainId, wallet } = useContext(AccountContext);
-    const { metadata, isLoadingMeta } = useMetadata('0x59620b99146c56785b067f84237fa80d89588228', idNFT, wallet);
+    const { metadata, isLoadingMeta } = useMetadata(demask.CREATOR, idNFT, wallet);
+    
     const dataMeta = {
         metadata
     }
@@ -51,8 +52,8 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                                 null
                             )}
                             <p className="font-semibold text-green">Your collection has been created</p>
-                            <a href={`${demask.urltxHash}${transactionHash}`} target="_blank" className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group">
-                                <p>View on zkSync Era</p>
+                            <a href={`${demask.urltxHash}tx/${transactionHash}`} target="_blank" className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group">
+                                <p>View on {demask.chainName}</p>
                                 <p>
                                     <URLTransactionIcon width={16} height={16} className="group-hover:fill-secondary5" />
                                 </p>
@@ -70,8 +71,8 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                             <div className="flex flex-col items-center">
                                 <SuccessIcon width={120} height={120} />
                                 <p className="mt-6 mb-2 font-semibold text-green">Transaction Submitted</p>
-                                <a href={`${demask.urltxHash}${transactionHash}`} target="_blank" className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group">
-                                    <p>View on zkSync Era</p>
+                                <a href={`${demask.urltxHash}tx/${transactionHash}`} target="_blank" className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group">
+                                    <p>View on {demask.chainName}</p>
                                     <p>
                                         <URLTransactionIcon width={16} height={16} className="group-hover:fill-secondary5" />
                                     </p>

@@ -3,8 +3,10 @@ import React, { createContext, useEffect, useState } from "react";
 import {
   MUMBAI_DEMASK,
   BSC_DEMASK,
+  Goerli_DEMASK,
   tokenBsc,
   tokenMatic,
+  tokenGoerli,
   Zksync_DEMASK,
   tokenzkSync,
   network,
@@ -43,6 +45,9 @@ export const AccountProvider = ({ children }) => {
     } else if (chainId === "280") {
       setDemask(Zksync_DEMASK);
       setTokenDefault(tokenzkSync);
+    } else if (chainId === "5") {
+      setDemask(Goerli_DEMASK);
+      setTokenDefault(tokenGoerli);
     }
   }, [chainId]);
   useEffect(() => {
@@ -93,7 +98,7 @@ export const AccountProvider = ({ children }) => {
         }
       };
       const handleChainChanged = (networkId) => {
-        if (PORT === "3000" && networkId === "280") {
+        if (PORT === "3000" && (networkId === "280" || networkId === "5")) {
           updateChainId(networkId);
         } else if (
           PORT === "1307" &&

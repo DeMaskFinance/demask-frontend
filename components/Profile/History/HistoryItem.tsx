@@ -1,8 +1,11 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { ZkSyncIcon, ZkSyncIconTable } from "@/components/Icons";
+import AccountContext from "@/context/AccountContext";
+import { useContext } from "react";
 
 const HistoryItem = ({ item }: any) => {
+    const { demask } = useContext(AccountContext);
     return (
         <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
             <td className="flex justify-start items-center md:basis-1/6 w-[140px]">
@@ -36,7 +39,7 @@ const HistoryItem = ({ item }: any) => {
                 <FormatNumber number={item.price} />
             </td>
             <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] text-secondary4">
-                <a href={`https://goerli.explorer.zksync.io/tx/${item.transactionHash}`} target="_blank" rel="noopener noreferrer">{`${item.transactionHash.slice(0, 5)}...${item.transactionHash.slice(-4)}`}</a>
+                <a href={`${demask.urltxHash}tx/${item.transactionHash}`} target="_blank" rel="noopener noreferrer">{`${item.transactionHash.slice(0, 5)}...${item.transactionHash.slice(-4)}`}</a>
             </td>
         </tr>
     )

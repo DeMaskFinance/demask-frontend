@@ -183,7 +183,6 @@ export default function MintNFT({
       document.body.style.overflowY = "hidden";
     }
   };
-
   return (
     <div className="">
       <div className="relative">

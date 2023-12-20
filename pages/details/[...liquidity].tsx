@@ -145,9 +145,9 @@ export default function DetailLiquidity() {
         <div className="grow">
           <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
             <div className="flex items-center mb-2 lg:mb-0">
-              <Link href="/pools" className="p-1 rounded-lg group">
+              <div onClick={() => router.back()} className="p-1 rounded-lg group">
                 <BackIcon width={24} height={24} className="hover:fill-secondary2" />
-              </Link>
+              </div>
               {account && data && (
                 <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
                   <span>{data?.metadata?.symbol}</span>

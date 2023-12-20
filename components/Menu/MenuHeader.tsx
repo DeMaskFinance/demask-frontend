@@ -34,7 +34,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           <p>Docs</p>
         </a>
       </li>
-      {/* <Search isFocused={isFocused} handleFocus={handleFocus} /> */}
+      <Search isFocused={isFocused} handleFocus={handleFocus} />
     </ul>
   );
 };

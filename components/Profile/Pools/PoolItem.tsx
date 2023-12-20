@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useContext } from "react";
 
 const PoolItem = ({ item }: any) => {
-    const { account, wallet } = useContext(AccountContext);
+    const { account, wallet, demask } = useContext(AccountContext);
     const { balanceOfDML, totalSupply, balanceDML } = useBananceOfDML(account, item.dmlAddress, wallet);
     // console.log(totalSupply.toString());
     // console.log(balanceDML.toString());
@@ -23,7 +23,7 @@ const PoolItem = ({ item }: any) => {
                     </td>
 
                     <td className="flex items-center justify-start py-2 md:basis-3/6 w-[200px] ">
-                        <a href={`https://goerli.explorer.zksync.io/address/${item.dmlAddress}`} target="_blank" rel="noopener noreferrer">
+                        <a href={`${demask.urltxHash}address/${item.dmlAddress}`} target="_blank" rel="noopener noreferrer">
                             {`${item.dmlAddress.slice(0, 6)}...${item.dmlAddress.slice(-4)}`}
                         </a>
                     </td>

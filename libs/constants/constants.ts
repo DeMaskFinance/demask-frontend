@@ -5,7 +5,8 @@ import {
   PolygonIcon,
   BscIcon,
   EtherIcon,
-  ZkSyncIcon
+  ZkSyncIcon,
+  GoerliIcon
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -55,6 +56,15 @@ const tokenBsc = [
     address: process.env.NEXT_PUBLIC_USDC_BSC,
     logo: USDCIcon,
   },
+];
+const tokenGoerli = [
+  {
+    name: "Goerli",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
+    logo: BscIcon,
+    symbolNative: "ETH"
+  }
 ];
 const tokenzkSync = [
   {
@@ -129,6 +139,24 @@ const Zksync_DEMASK = {
   NAME:"zkSync Testnet",
   CURRENCY:"ETH"
 };
+const Goerli_DEMASK = {
+  RPC: process.env.NEXT_PUBLIC_RPC_Goerli,
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_Goerli,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_Goerli,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_Goerli,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_Goerli,
+  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_Goerli,
+  WETH: process.env.NEXT_PUBLIC_WETH_Goerli,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_Goerli,
+  USDT: process.env.NEXT_PUBLIC_USDT_Goerli,
+  USDC: process.env.NEXT_PUBLIC_USDC_Goerli,
+  ROYALTY:process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Goerli,
+  urltxHash:"https://goerli.etherscan.io/",
+  chainName:"Goerli Testnet",
+  NAME:"Goerli Testnet",
+  CURRENCY:"ETH"
+};
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
@@ -139,6 +167,11 @@ if (PORT === '3000') {
       name: "zkSync Testnet",
       logo: ZkSyncIcon,
       chain: "280",
+    },
+    {
+      name: "Goerli Testnet",
+      logo: GoerliIcon,
+      chain: "5",
     },
     {
       name: "Ethereum",
@@ -219,8 +252,10 @@ export {
   BSC_DEMASK,
   MUMBAI_DEMASK,
   Zksync_DEMASK,
+  Goerli_DEMASK,
   tokenBsc,
   tokenzkSync,
+  tokenGoerli,
   Category,
   version
 };

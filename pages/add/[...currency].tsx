@@ -144,7 +144,6 @@ export default function AddLiquidity() {
       }
     }
   }, [inputNFT, inputToken, data]);
-  console.log(amountErcDesired);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -182,7 +181,6 @@ export default function AddLiquidity() {
       setIsInputNFT(true);
     }
   }
-  console.log(allowanceToken);
   useEffect(() => {
     if (inputNFT) {
       setCheckExit(true)
@@ -215,9 +213,9 @@ export default function AddLiquidity() {
       <NextSeo {...updateMeta} />
       <div className="flex items-center justify-between mb-6">
         <div className="flex">
-          <Link href="/pools">
+          <div onClick={() => router.back()}>
             <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
-          </Link>
+          </div>
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>
         <div onClick={() => setIsOpenSetting(true)}>
@@ -236,7 +234,7 @@ export default function AddLiquidity() {
                 <div className="flex justify-between cursor-pointer text-dark3">
                   <div className="flex gap-x-2 text-secondary5">
                     <NFTIcon width={24} height={24} className="fill-secondary5" />
-                    <p>{data.metadata.name}</p>
+                    <p>{data?.metadata?.name}</p>
                   </div>
                   <DownIcon width={24} height={24} />
                 </div>
@@ -357,7 +355,7 @@ export default function AddLiquidity() {
                 </Button>
               )
             )}
-            {Math.floor(amountErcDesired) === 0 && inputNFT && (
+            {Math.floor(amountErcDesired) === 0 && inputNFT && inputToken === '0' && (
               <p className="mt-3 ml-3 text-xs text-red" key="inputNFT">
                 Can't add liquidity
               </p>
@@ -389,7 +387,7 @@ export default function AddLiquidity() {
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
         <ModalDetail
-          nameNFT={data.metadata.name}
+          nameNFT={data?.metadata?.name}
           symbolNFT={data?.metadata?.symbol}
           category={data.metadata.category}
           attributes={data.metadata.attributes}
@@ -405,7 +403,7 @@ export default function AddLiquidity() {
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       {data && account && (
-        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}/>
+        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
       )}
       <ModalSuccess isOpenSuccess={isOpenSuccess} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccess} />
       <ModalError isOpenError={isOpenError} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenError} />

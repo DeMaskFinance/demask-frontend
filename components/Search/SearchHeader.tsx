@@ -16,7 +16,7 @@ import { CgClose } from "react-icons/cg";
 interface SearchProps {
   isFocused: boolean;
   handleFocus: any;
-  setShowSearch: any;
+  setShowSearch?: any;
 }
 
 const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) => {
