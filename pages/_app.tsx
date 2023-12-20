@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "@/components/Layouts";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Roboto_Mono } from "next/font/google";
 import MaintenanceError from "./maintenanceError";
 import {
   EthereumClient,
@@ -28,6 +28,12 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   adjustFontFallback: false
+});
+const roboto = Roboto_Mono({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  display: "swap",
+  adjustFontFallback: false,
 });
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -90,7 +96,7 @@ export default function App({
         <QueryParamProvider adapter={NextAdapterPages}>
           <style jsx global>{`
           html {
-            font-family: ${poppins.style.fontFamily};
+            font-family: ${roboto.style.fontFamily};
           }
         `}</style>
           <WagmiConfig config={wagmiConfig}>
