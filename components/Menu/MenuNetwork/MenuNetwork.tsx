@@ -1,5 +1,6 @@
 import AccountContext from '@/context/AccountContext';
 import { network } from "@/libs/constants";
+import { changeNetwork } from '@/libs/utils/changeNetwork';
 import Tippy from "@tippyjs/react/headless";
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
@@ -20,10 +21,15 @@ interface networkProps {
 }
 const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
-    const { updateChainId, chainId } = useContext(AccountContext);
+    const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+    const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
     const handleChangeNetwork = (chain: string) => {
         if (chain !== '1') {
-            updateChainId(chain);
+            if (account && wallet) {
+                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId)
+            } else {
+                updateChainId(chain);
+            }
         }
     };
     useEffect(() => {

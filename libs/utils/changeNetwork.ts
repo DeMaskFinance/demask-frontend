@@ -6,6 +6,7 @@ export const changeNetwork = async (
   wallet: string,
   demask: any,
   setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
+  updateChainId: any
 ) => {
   try {
     const provider = getProvider(wallet);
@@ -16,11 +17,8 @@ export const changeNetwork = async (
           method: "wallet_switchEthereumChain",
           params: [{ chainId: Web3.utils.toHex(chainId) }],
         });
-        console.log("reload");
-
-        // refresh
-        // window.location.reload();
         setIsWrongNetwork(false);
+        updateChainId(chainId);
         document.body.style.overflowY = "auto";
       } catch (errors: any) {
         // This error code indicates that the chain has not been added to MetaMask

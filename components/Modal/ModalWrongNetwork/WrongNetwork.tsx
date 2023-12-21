@@ -6,12 +6,20 @@ import { CgClose } from 'react-icons/cg';
 import { getProvider } from '@/libs/connection/getProvider';
 import AccountContext from '@/context/AccountContext';
 import { changeNetwork } from '@/libs/utils/changeNetwork';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 interface WrongNetworkProps {
 }
 const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
-    const { account, wallet, chainId, demask, tokenDefault, updateAccount } = useContext(AccountContext);
+    const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateChainId } = useContext(AccountContext);
+    // const searchParams = useSearchParams();
+    // const chainParam = searchParams.get('chain');
+    const router = useRouter();
+    const { chain } = router.query;
+    console.log(chain);
+
     useEffect(() => {
         if (account && wallet) {
             const checkNetwork = async () => {
@@ -21,7 +29,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                     setIsWrongNetwork(true);
                     document.body.style.overflowY = "hidden";
                 } else {
-                    setIsWrongNetwork(false)
+                    setIsWrongNetwork(false);
                     document.body.style.overflowY = "auto";
                 }
             }
@@ -40,7 +48,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     //     document.body.style.overflowY = "auto";
     // }
     console.log(isWrongNetwork);
-    
+
     const PORT = process.env.NEXT_PUBLIC_APP_PORT;
     return (
         <Wrapper isOpen={isWrongNetwork}>
@@ -54,7 +62,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                         <p className=' text-yellow'>Please switch your network to continue</p>
                     </div>
                     <div className='flex justify-between px-0 lg:px-6'>
-                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId, wallet, demask, setIsWrongNetwork)}>Switch Network</button>
+                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId, wallet, demask, setIsWrongNetwork, updateChainId)}>Switch Network</button>
                         <button className='p-2 text-sm font-medium text-white rounded-lg bg-red' onClick={disconnectWallet}>Disconnect wallet</button>
                     </div>
                     <button

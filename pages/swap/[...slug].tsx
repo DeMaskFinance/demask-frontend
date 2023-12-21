@@ -228,7 +228,7 @@ const Swap: React.FC = () => {
       {(isLoading || isFetching) ? (
         <SkeletonReels />
       ) : isSuccess ? (
-        <div>
+        <div className="min-h-[80vh]">
           <div className="flex mb-6 gap-x-2">
             <div onClick={() => router.back()}>
               <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
@@ -449,6 +449,7 @@ const Swap: React.FC = () => {
                             ) : (
                               <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
                             )}
+                            <p>({data?.royaltyFee}%)</p>
                           </div>
                         </label>
                       </div>
