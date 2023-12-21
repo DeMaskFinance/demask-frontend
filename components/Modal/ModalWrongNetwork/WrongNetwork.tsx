@@ -7,6 +7,7 @@ import { getProvider } from '@/libs/connection/getProvider';
 import AccountContext from '@/context/AccountContext';
 import { changeNetwork } from '@/libs/utils/changeNetwork';
 import { useSearchParams } from 'next/navigation';
+import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
 
 interface WrongNetworkProps {
@@ -14,18 +15,22 @@ interface WrongNetworkProps {
 const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateChainId } = useContext(AccountContext);
-    // const searchParams = useSearchParams();
-    // const chainParam = searchParams.get('chain');
+    const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
     const router = useRouter();
     const { chain } = router.query;
-    console.log(chain);
+
+
+    console.log({
+        chain,
+        chainId
+    });
 
     useEffect(() => {
-        if (account && wallet) {
+        if (account && wallet && router.isReady) {
             const checkNetwork = async () => {
                 const provider = getProvider(wallet);
                 const networkId = await provider.request({ method: "net_version" });
-                if (networkId !== chainId) {
+                if (networkId !== chain) {
                     setIsWrongNetwork(true);
                     document.body.style.overflowY = "hidden";
                 } else {
@@ -35,7 +40,9 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             }
             checkNetwork();
         }
-    }, [chainId, account, wallet])
+    }, [chain, account, wallet, router.isReady])
+    console.log(chain);
+
     const disconnectWallet = () => {
         localStorage.removeItem("ACCOUNT_DEMASK");
         // localStorage.removeItem("WALLET_DEMASK");
@@ -62,7 +69,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                         <p className=' text-yellow'>Please switch your network to continue</p>
                     </div>
                     <div className='flex justify-between px-0 lg:px-6'>
-                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId, wallet, demask, setIsWrongNetwork, updateChainId)}>Switch Network</button>
+                        <button className='p-2 text-sm font-medium text-white rounded-lg bg-secondary2' onClick={() => changeNetwork(chainId, wallet, demask, setIsWrongNetwork, updateChainId, setTab)}>Switch Network</button>
                         <button className='p-2 text-sm font-medium text-white rounded-lg bg-red' onClick={disconnectWallet}>Disconnect wallet</button>
                     </div>
                     <button

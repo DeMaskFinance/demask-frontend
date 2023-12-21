@@ -173,12 +173,12 @@ if (PORT === '3000') {
       logo: GoerliIcon,
       chain: "5",
     },
-    {
-      name: "Ethereum",
-      logo: EtherIcon,
-      chain: "1",
-      disable: true,
-    },
+    // {
+    //   name: "Ethereum",
+    //   logo: EtherIcon,
+    //   chain: "1",
+    //   disable: true,
+    // },
   ];
 } else if (PORT === '1307') {
   network = [

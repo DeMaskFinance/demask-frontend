@@ -2,7 +2,7 @@ import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
 import { SuccessIcon, URLTransactionIcon } from "@/components/Icons";
 import { Button } from "@/components/Buttons";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AccountContext from "@/context/AccountContext";
 import MediaNFT from "@/components/Common/MediaNFT";
 import Image from "next/image";
@@ -19,16 +19,26 @@ interface ModalSuccessProps {
     transactionHash: string;
     isTransaction?: boolean;
     isMint?: boolean;
-    idNFT?: number;
+    metadataLink?: string;
 }
 
-const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSuccess, setIsOpenSuccess, type, transactionHash, isMint, idNFT }) => {
+const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSuccess, setIsOpenSuccess, type, transactionHash, isMint, metadataLink }) => {
     const { demask, chainId, wallet } = useContext(AccountContext);
-    const { metadata, isLoadingMeta } = useMetadata(demask.CREATOR, idNFT, wallet);
+    const [metadataRes, setMetadataRes] = useState<any>();
+    const [isLoadingMeta, setIsLoadingMeta] = useState(false);
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoadingMeta(true);
+            const res = await fetch(metadataLink!);
+            const metadata = await res.json();
+            setMetadataRes({
+                metadata
+            });
+            setIsLoadingMeta(false);
+        }
+        fetchData();
+    }, [metadataLink])
     
-    const dataMeta = {
-        metadata
-    }
     const handleClose = (e: any) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
@@ -44,9 +54,9 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                                 <div className="flex items-center justify-center w-40 h-40 mx-auto mt-10 mb-6">
                                     <BiLoaderAlt className="mb-6 text-5xl animate-spin text-secondary5" />
                                 </div>
-                            ) : (metadata) ? (
+                            ) : (metadataRes) ? (
                                 <div className="w-40 h-40 mx-auto mt-10 mb-6">
-                                    <MediaNFT data={dataMeta} isControls />
+                                    <MediaNFT data={metadataRes} isControls />
                                 </div>
                             ) : (
                                 null

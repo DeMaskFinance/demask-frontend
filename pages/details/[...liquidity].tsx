@@ -53,7 +53,6 @@ export default function DetailLiquidity() {
     useState<boolean>(false);
   const [page, setPage] = useState(1);
   const [tokenSymbol, setTokenSymbol] = useState("");
-  console.log(demask);
 
   useEffect(() => {
     if (liquidity) {
@@ -87,9 +86,11 @@ export default function DetailLiquidity() {
     fetchDataReward();
 
   }, [dmlTokenLiquidity, account, data]);
-  console.log(data);
+  // console.log(data);
 
-  const { balanceOfDML } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
+  const { balanceOfDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
+  // console.log(balanceOfDML,totalSupply);
+  
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -185,14 +186,15 @@ export default function DetailLiquidity() {
             <div className="flex flex-wrap justify-between w-full p-2 font-medium border rounded-lg border-dark4 gap-y-4">
               <div>
                 <p className="mb-2 text-dark1">Liquidity</p>
-                <div className="font-light text-dark3">
+                <div className="flex font-light text-dark3">
                   <FormatNumber number={balanceOfDML} />
+                  <div>({(Number(balanceOfDML) / Number(data?.reserveToken)).toFixed(2)})%</div>
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-dark1">TVL</p>
-                <div className="flex font-light text-dark3">
-                  <FormatNumber number={'100'} />
+                <div className="flex items-center font-light text-dark3">
+                  <FormatNumber number={data?.reserveToken} />
                   <span className="mb-1 ml-1">
                     <EtherIcon width={18} height={18} className="fill-dark3" />
                   </span>

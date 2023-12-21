@@ -3,13 +3,14 @@ import { Button } from "@/components/Buttons";
 import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { EtherIcon, LaunchpadStatus, ZkSyncIconTable } from "@/components/Icons";
+import { EtherIcon, LaunchpadStatus } from "@/components/Icons";
+import { LogoIconTable } from "@/components/Logo/Logo";
 import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalClaimLaunchpad";
 import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
 import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import TransitionURL from "@/components/Toast/TransionURL";
 import AccountContext from "@/context/AccountContext";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
@@ -20,14 +21,12 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { toast } from "react-toastify";
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Box from "./Box";
 import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
 import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
-import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -270,7 +269,7 @@ export default function DetailLaunchPad() {
                     <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-dark1">
                       <div>
                         <p>Supported</p>
-                        <ZkSyncIconTable width={14} height={14} className="float-left mt-1 gap-x-1" />
+                        <LogoIconTable width={18} height={18} chainId={chainId} className="float-left mt-1 gap-x-1"/>
                       </div>
                       <div>
                         <p>Total raise</p>

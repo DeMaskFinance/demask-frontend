@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Button from "../Buttons/Button";
 import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
 import { ModalWallet } from "../Modal/ModalWallet";
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-[200px] py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -54,7 +55,9 @@ export default function MintNFT({
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [idNFT, setIdNFT] = useState<number>(0);
   const [hash, setHash] = useState<string>('');
-  const { account, updateAccount, wallet, demask, chainId } = useContext(AccountContext);
+  const [metadataIPFS, setMetadataIPFS] = useState<string>('');
+  const { account, updateAccount, wallet, demask, chainId, updateChainId } = useContext(AccountContext);
+  const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
   const contractAddress = demask.CREATOR; // Creator
   console.log(fileIPFS);
   useEffect(() => {
@@ -87,13 +90,14 @@ export default function MintNFT({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      const networkSwitched = await changeNetwork(chainId, wallet, demask, setIsOpen);
+      const networkSwitched = await changeNetwork(chainId, wallet, demask, setIsOpen, updateChainId, setTab);
       if (!networkSwitched) {
         return;
       }
       const checkAndMint = async () => {
         const randomID = generateRandomNumber();
         const isExisting = await checkExists(randomID);
+        setMetadataIPFS(url);
         if (isExisting) {
           checkAndMint();
         } else {
@@ -125,6 +129,7 @@ export default function MintNFT({
     }
     setIsProcess(false);
   }
+  console.log(metadataIPFS);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -201,7 +206,7 @@ export default function MintNFT({
         <ModalTransation isOpenTransation={isProcess} setIsOpenTransaction={setIsProcess} isTransaction={true} />
         {
           isOpenSuccess && (
-            <ModalSuccess isOpenSuccess={isOpenSuccess} type="" setIsOpenSuccess={setIsOpenSuccess} transactionHash={hash} isMint idNFT={idNFT} />
+            <ModalSuccess isOpenSuccess={isOpenSuccess} type="" setIsOpenSuccess={setIsOpenSuccess} transactionHash={hash} isMint metadataLink={metadataIPFS} />
           )
         }
       </div>

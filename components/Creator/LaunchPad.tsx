@@ -225,10 +225,10 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      const networkSwitched = await changeNetwork(chainId, wallet, demask, setIsOpen);
-      if (!networkSwitched) {
-        return;
-      }
+      // const networkSwitched = await changeNetwork(chainId, wallet, demask, setIsOpen);
+      // if (!networkSwitched) {
+      //   return;
+      // }
 
       const checkAndLauchPadSubmit = async () => {
         const randomID = generateRandomNumber();

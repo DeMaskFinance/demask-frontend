@@ -6,16 +6,28 @@ import NavFooter from "../Footer/NavFooter";
 import AccountContext from "@/context/AccountContext";
 import { useRouter } from "next/router";
 export default function Layout({ children }: PropsWithChildren) {
-  const { chainId } = useContext(AccountContext);
+  const { chainId, updateChainId } = useContext(AccountContext);
   const router = useRouter();
   useEffect(() => {
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, chain: chainId },
-    });
-  }, [chainId, router.asPath]);
- console.log(router);
- 
+    if (router.isReady) {
+      if (!router.query.chain) {
+        router.push({
+          pathname: router.pathname,
+          query: { ...router.query, chain: chainId },
+        });
+      } else {
+        console.log("NOOO");
+        updateChainId(router.query.chain);
+      }
+    }
+    // updateChainId(router.query.chain);
+  }, [chainId, router.asPath, router.isReady]);
+  // useEffect(() => {
+  //   if (router.query.chain) {
+  //     updateChainId(router.query.chain);
+  //   }
+  // }, [router.query.chain]);
+
   return (
     <div className="box-border w-full overflow-hidden">
       <Header />

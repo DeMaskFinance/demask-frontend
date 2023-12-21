@@ -8,6 +8,7 @@ import { checkNetwork } from "@/libs/validation/checkNetwork";
 import AccountContext from "@/context/AccountContext";
 import Wrapper from "../Wrapper";
 import { useWeb3Modal } from '@web3modal/react'
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
 import { ethers } from "ethers";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
@@ -26,6 +27,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { open, close } = useWeb3Modal();
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -86,7 +88,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         break;
       default:
         const provider = getProvider(walletName);
-        const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId);
+        const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId, setTab);
         console.log(networkSwitched);
 
         if (!networkSwitched) {

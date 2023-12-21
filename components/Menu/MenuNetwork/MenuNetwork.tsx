@@ -5,6 +5,7 @@ import Tippy from "@tippyjs/react/headless";
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 interface MenuNetworkProps {
 
 }
@@ -23,12 +24,14 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
+    const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
     const handleChangeNetwork = (chain: string) => {
         if (chain !== '1') {
             if (account && wallet) {
-                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId)
+                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId,setTab)
             } else {
                 updateChainId(chain);
+                setTab(chain);
             }
         }
     };

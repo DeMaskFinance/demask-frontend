@@ -47,7 +47,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const { isLoading: isLoadingNFT, data: dataNFT, isFetching: isFetchingNFT, isSuccess: isSuccessNFT } = useQuery({
     queryKey: ["searchNFT", nftAddress, chainId, idNFT],
     queryFn: async () => {
-      const res = await searchNFTService(nftAddress.toLowerCase(), idNFT, chainId)
+      const res = await searchNFTService(chainId, nftAddress.toLowerCase(), idNFT)
       return res;
     },
   });
@@ -108,7 +108,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   }
-  
+
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -206,7 +206,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               onClick={handleChangeRouteNFT}
             >
               <div className="w-8 h-8">
-                <MediaNFT data={dataNFT[0]} isControls={false}/>
+                <MediaNFT data={dataNFT[0]} isControls={false} />
               </div>
               <div>
                 <h2 className="font-medium group-hover:text-secondary5">
