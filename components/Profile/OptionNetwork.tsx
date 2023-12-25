@@ -3,7 +3,7 @@ import Tippy from "@tippyjs/react/headless";
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
-import { AllIcon, BscIcon, EtherIcon, PolygonIcon, ZkSyncIcon } from '../Icons';
+import { AllIcon, BscIcon, EtherIcon, GoerliIcon, PolygonIcon, ZkSyncIcon } from '../Icons';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 interface MenuNetworkProps {
 
@@ -31,28 +31,27 @@ const network = [
         chain: "280",
     },
     {
-        name: "Ethereum",
-        logo: EtherIcon,
-        chain: "1",
-        disable: true,
+        name: "Goerli Testnet",
+        logo: GoerliIcon,
+        chain: "5",
     },
 ];
 const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
-    const [chain, setChain] = useQueryParam("chain", withDefault(StringParam, "All"));
+    const [chainOption, setChainOption] = useQueryParam("chainOption", withDefault(StringParam, "All"));
     const handleChangeNetwork = (chain: string) => {
-        if (chain !== "1") {
-            setChain(chain);
+        if (chainOption !== "1") {
+            setChainOption(chain);
         }
     };
     useEffect(() => {
-        if (chain) {
-            const foundNetwork = network.find((item) => item.chain === chain);
+        if (chainOption) {
+            const foundNetwork = network.find((item) => item.chain === chainOption);
             setFilterNetwork(foundNetwork);
         } else {
             setFilterNetwork(network[1]);
         }
-    }, [chain]);
+    }, [chainOption]);
 
     const LogoComponent: any = filterNetwork?.logo;
     return (
@@ -70,23 +69,23 @@ const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                     </p>
                     <ul className="flex flex-col mt-2 font-normal gap-y-3">
                         {network.map((item, index) => (
-                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center ${item.disable ? 'hover:cursor-no-drop' : ''}`} onClick={() => handleChangeNetwork(item.chain)}>
-                                <div className='flex gap-x-2'>
+                            <li key={index} className={`${style.itemSub} gap-x-2 group justify-between items-center}`} onClick={() => handleChangeNetwork(item.chain)}>
+                                <div className='flex items-center gap-x-2'>
                                     <item.logo width={24}
                                         height={24}
                                         className={`fill-dark2  group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
                                     <p className={`${filterNetwork?.chain === item.chain && "text-secondary2 font-medium"}`}>{item.name}</p>
                                 </div>
-                                {item.disable && (
+                                {/* {item.disable && (
                                     <p className='right-0 text-xs'>Upcoming</p>
-                                )}
+                                )} */}
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
         >
-            <button className={`${style.btnWallet} flex`}>
+            <button className={`${style.btnWallet} flex items-center`}>
                 <p className="hidden lg:block">{filterNetwork?.name}</p>
                 <LogoComponent
                     width={24}
