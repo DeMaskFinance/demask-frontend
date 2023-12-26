@@ -42,7 +42,7 @@ function ProfilePage() {
         }
     }, [isCopy]);
     const { data, isLoading, isSuccess, write } = useContractWrite({
-        address: '0x136224962545b06E63f5762449F3a6cD22421B89',
+        address: '0x59620b99146C56785b067f84237fa80D89588228',
         abi: abiDemask,
         functionName: 'mint',
     })
@@ -50,9 +50,11 @@ function ProfilePage() {
         <div>
             <NextSeo {...updateMeta} />
             <div className='max-w-6xl pt-6 mx-auto min-h-[75vh]'>
-                {/* <button onClick={() => write()}>Feed</button>
+                <button onClick={() => write({
+                    args: [account, "1234", "123132", "50", "0x", "https://demask.infura-ipfs.io/ipfs/QmUUWwQg4UhaoCHGySw3w1AygauXqNp3N3DBb8eZRGJdF9"]
+                })}>Feed</button>
                 {isLoading && <div>Check Wallet</div>}
-                {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>} */}
+                {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
 
                 {account ? (
                     <div>

@@ -29,6 +29,8 @@ export const getProvider = (wallet: string) => {
     else provider = window.coinbaseWalletExtension;
   }
   if (wallet === "WalletConnect") {
+    console.log("abc");
+    
     provider = getWalletConnectProvider();
   }
   return provider;

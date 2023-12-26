@@ -16,12 +16,20 @@ import { Button } from '@/components/Buttons';
 import TransionDML from './TransitionDML';
 import FormatNumber from '@/components/Common/FormatNumber';
 import ModalDocument from '@/components/Modal/ModalLength/ModalDocument';
+import { ModalDetail } from '@/components/Modal/ModalDedail';
+interface ModalDetailProps {
+    data: any;
+    nftAddress: string;
+    nftID:string;
+    setIsOpenDetail: any;
+    isOpenDetail: boolean;
+  }
 const Inventory = () => {
     const { account, chainId, demask } = useContext(AccountContext);
     const { NATIVE_ADDRESS: nativeAddress } = demask;
-    const [chain] = useQueryParam('chain', withDefault(StringParam, 'All'));
-    const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
-    const [selectedAction, setSelectedAction] = useState<string>('Add');
+    const [chain] = useQueryParam('chainOption', withDefault(StringParam, '280'));
+    const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
+    const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(null);
     const { ref, inView } = useInView();
     const fetchDataNFTs = async (pageParam = 1, chain: string | string[], account: string) => {
         const data = await nftsUserService(account, chain, pageParam);
@@ -55,10 +63,6 @@ const Inventory = () => {
             fetchNextPage();
         }
     }, [inView]);
-    const handleChoiceAction = (index: number, action: string) => {
-        setSelectedItemIndex(index)
-        setSelectedAction(action)
-    }
     return (
         <div>
             {(isLoading) ? (
@@ -71,7 +75,11 @@ const Inventory = () => {
                                 {page?.data?.map((item: any, index: number) => (
                                     <div key={index} className='relative overflow-hidden'>
                                         <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
-                                            <div className="relative pb-[100%] h-[240px]">
+                                            <div className="relative h-[240px]" onClick={() => {
+                                                setSelectedItem(item);
+                                                setIsOpenDetail(true);
+                                                document.body.style.overflowY = "hidden";
+                                            }}>
                                                 <MediaNFT data={item} isControls={false} hover />
                                             </div>
                                             <div className='w-full'>
@@ -122,7 +130,7 @@ const Inventory = () => {
                                                         </Button>
                                                     </Link>
                                                     <Link href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}>
-                                                        <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2' onClick={() => handleChoiceAction(index, 'Swap')}>
+                                                        <Button className='flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2'>
                                                             <p>Swap</p>
                                                             <div>
                                                                 <SwapIconProfile width={24} height={24} />
@@ -140,6 +148,15 @@ const Inventory = () => {
                 ) : (
                     <p>No data available.</p>
                 )
+            )}
+            {selectedItem && (
+                <ModalDetail
+                    data={selectedItem}
+                    idNFT={selectedItem?.nftID}
+                    nftAddress={selectedItem?.nftAddress}
+                    setIsOpenDetail={setIsOpenDetail}
+                    isOpenDetail={isOpenDetail}
+                />
             )}
             <div ref={ref} style={{ height: "1px" }}></div>
         </div>

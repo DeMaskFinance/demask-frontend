@@ -1,6 +1,6 @@
 import Button from "@/components/Buttons/Button";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { BackIcon, DownIcon, NFTIcon, SettingIcon, TokenIconNotDefine } from "@/components/Icons";
+import { BackIcon, DownIcon, NFTIcon, RefetchIcon, SettingIcon, TokenIconNotDefine } from "@/components/Icons";
 import ModalConfirmAddLiquidity from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
@@ -24,6 +24,8 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from '../../next-seo.config';
+import Tippy from "@tippyjs/react";
+import FormatNumber from "@/components/Common/FormatNumber";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -164,8 +166,13 @@ export default function AddLiquidity() {
   }, [currency, chainId, tokenAddress])
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputToken(e.target.value);
-    if (Number(e.target.value) > Number(balanceToken)) {
+    const inputValue = e.target.value;
+    const isValidInput = /^[0-9]*[.,]?[0-9]*$/.test(inputValue);
+    if (!isValidInput) {
+      return;
+    }
+    setInputToken(inputValue);
+    if (Number(inputValue) > Number(balanceToken)) {
       console.log("Insufficient Token balance");
       setIsSufficientToken(true);
     } else {
@@ -205,7 +212,10 @@ export default function AddLiquidity() {
     setIsOpenSearchToken(true);
     document.body.style.overflowY = "hidden";
   };
-
+  const actions = [
+    { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
+    { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
+  ]
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />
@@ -216,8 +226,12 @@ export default function AddLiquidity() {
           </div>
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>
-        <div onClick={() => setIsOpenSetting(true)}>
-          <SettingIcon width={20} height={20} className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
+        <div className="flex items-center gap-x-2">
+          {actions.map((action, index) => (
+            <Tippy key={index} content={<div>{action.content}</div>} theme='dark' placement="bottom">
+              <div onClick={action.onClick}>{action.icon}</div>
+            </Tippy>
+          ))}
         </div>
       </div>
       {isSuccess ? (
@@ -298,7 +312,12 @@ export default function AddLiquidity() {
                 {(data.dmlAddress === null) ? (
                   <input
                     className={styles.inputItem}
-                    type="number"
+                    pattern="^[0-9]*[.,]?[0-9]*$"
+                    spellCheck="false"
+                    minLength={1}
+                    maxLength={79}
+                    type="text"
+                    inputMode="decimal"
                     placeholder="Input amount Token"
                     value={inputToken}
                     onChange={handleGetToken}
@@ -307,7 +326,7 @@ export default function AddLiquidity() {
                   <div>
                     {data ? (
                       <div className={styles.inputItem}>
-                        {amountErcDesiredToDec}
+                        <FormatNumber number={amountErcDesiredToDec}/>
                       </div>
                     ) : (
                       <div className={styles.inputItem}>

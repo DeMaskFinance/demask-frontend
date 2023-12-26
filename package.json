@@ -11,6 +11,7 @@
     "redeploy": "git pull origin && npm run build && pm2 start npm --name demask-app -- start"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^1.3.2",
     "@tanstack/react-query": "^4.29.25",
     "@tippyjs/react": "^4.2.6",
     "@types/aos": "^3.0.4",

@@ -40,7 +40,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
             >
               <div className={`${item.action === "Add" ? "text-green" : "text-red"}`}>{item.action}</div>
               <div>
-                <ModalNumber data={item.liquidityDecimals} />
+                <ModalNumber data={item.liquidity} />
               </div>
               <div>
                 <FormatNumber number={item.amountNFT} />

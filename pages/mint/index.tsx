@@ -187,14 +187,19 @@ export default function Creator() {
     }
   }, [selectedFile]);
   const handleChangeRoyalFee = (e: any) => {
-    setRoyaltiesFee(e.target.value)
+    const inputValue = e.target.value;
+    const isValidInput = /^[0-9]*[.,]?[0-9]*$/.test(inputValue);
+    if (!isValidInput) {
+      return;
+    }
+    setRoyaltiesFee(inputValue);
     if (e.target.value < 0 || e.target.value > 100) {
       setValidFee(true);
     } else {
       setValidFee(false);
     }
   }
-  
+
   return (
     <div className="flex flex-col gap-6 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8">
       <NextSeo {...updateMeta} />
@@ -380,13 +385,16 @@ export default function Creator() {
               <span>Royalties Fee</span>
               <span className="text-red">*</span>
             </label>
-
             <input
               placeholder="100"
               pattern="^[0-9]*[.,]?[0-9]*$"
               type="text"
               id="royaltiesFee"
               autoComplete="off"
+              spellCheck="false"
+              minLength={1}
+              maxLength={79}
+              inputMode="decimal"
               value={royaltiesFee || ""}
               className={
                 emptyInputs.includes("royaltiesFee")
@@ -442,7 +450,7 @@ export default function Creator() {
             <label htmlFor="traits" className='block mb-1 text-base font-semibold text-black24'>
               <span>Traits</span>
             </label>
-            <p className="mb-4 text-sm font-normal text-dark2">Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page</p>
+            <p className="mb-4 text-sm font-normal text-dark2">Traits describe attributes of your items. They appear as filters inside your collection page and are also listed out inside your item page</p>
             {attributeItems.map((item) => (
               <div className="flex items-center gap-x-2" key={item.id}>
                 <input

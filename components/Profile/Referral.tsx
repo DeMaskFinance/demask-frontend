@@ -26,7 +26,7 @@ const Referral = () => {
                 <h1 className='font-semibold'>Refer Friends To Earn</h1>
                 <p>Experience a new way of earning rewards by inviting your friends to join DeMask & earn up to 10% commission every time they trade on DeMask.</p>
                 <div className='flex mb-4'>
-                    <div className='w-[75%] mr-4 p-2 border rounded-lg border-dark3'>{`${account.slice(0, 8)}...${account.slice(-4)}`}</div>
+                    <div className='w-[75%] mr-4 p-2 border rounded-lg border-dark3 text-secondary5'>https://test.demask.finance...{`${account.slice(-4)}`}&chain={chainId}</div>
                     <Tippy theme='light'
                         visible={isCopy}
                         content={<span>Copied</span>}>

@@ -12,6 +12,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
 import { ethers } from "ethers";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -70,18 +71,30 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           return false;
         }
       case "WalletConnect":
-        const providerWallet = getProvider(walletName);
-        // const providerTest = new ethers.providers.Web3Provider(providerWallet);
-        // alert(providerTest)
-        console.log(providerWallet);
+        // const providerWallet = getProvider(walletName);
+        const providerWalletTest = await EthereumProvider.init({
+          projectId: "1af0159e7a959f2fff3f96c541aef2cb", // REQUIRED your projectId
+          chains: [1, 97, 80001, 280], // REQUIRED chain ids
+          showQrModal: true, // REQUIRED set to "true" to use @walletconnect/modal
+          methods: ["eth_sendTransaction"],
+          events: ["eth_transactionHash"],
+          // optionalEvents, // OPTIONAL ethereum events
+          rpcMap: {
+            "1": "https://mainnet.eth.aragon.network",
+            "80001": "https://polygon-mumbai-bor.publicnode.com",
+            "97": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+            "56": "https://bsc-dataseed.binance.org/",
+            "280": "https://testnet.era.zksync.dev",
+          },
+        })
         // console.log(new Web3(providerWallet));
         // console.log(providerTest)
 
         updateWallet(walletName);
         try {
-          await open();
-          console.log(address);
-
+          // await open();
+          // console.log(address);
+          await providerWalletTest.connect();
         } catch (error) {
           console.log(error);
         }

@@ -26,7 +26,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     });
 
     useEffect(() => {
-        if (account && wallet && router.isReady) {
+        if (account && wallet && router.isReady && chain) {
             const checkNetwork = async () => {
                 const provider = getProvider(wallet);
                 const networkId = await provider.request({ method: "net_version" });
@@ -34,7 +34,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                     networkId,
                     chain
                 });
-                
+
                 if (networkId !== chain) {
                     setIsWrongNetwork(true);
                     document.body.style.overflowY = "hidden";
@@ -44,6 +44,8 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                 }
             }
             checkNetwork();
+        } else {
+            setIsWrongNetwork(false);
         }
     }, [chain, account, wallet, router.isReady])
     console.log({

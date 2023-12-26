@@ -2,7 +2,7 @@ import { Button } from "@/components/Buttons";
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { ActiveIcon, BackIcon, EtherIcon, PoolIcon, SettingIcon } from "@/components/Icons";
+import { ActiveIcon, BackIcon, EtherIcon, PoolIcon, RefetchIcon, SettingIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -35,6 +35,7 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
+import Tippy from "@tippyjs/react";
 const styles = {
   inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
   btnActive: "rounded-full bg-base2",
@@ -221,7 +222,11 @@ const Swap: React.FC = () => {
     setIsOpen(true);
   };
   console.log(data);
-
+  const actions = [
+    { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
+    { icon: <PoolIcon width={24} height={24} className="group-hover:fill-secondary3" />, content: 'Pool', link: `/add/${nftAddress}/${tokenAddress}/${idNFT}` },
+    { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
+  ]
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
       <NextSeo {...updateMeta} />
@@ -257,20 +262,17 @@ const Swap: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center gap-x-2">
-                    <Link
-                      href={`/add/${nftAddress}/${tokenAddress}/${idNFT}`}
-                      className="flex justify-end px-4 py-2 font-medium transition-all duration-150 ease-linear rounded-lg bg-dark4 text-dark2 group"
-                    >
-                      <PoolIcon
-                        width={24}
-                        height={24}
-                        className="group-hover:fill-secondary3"
-                      />
-                      <p className="group-hover:text-secondary3">Pool</p>
-                    </Link>
-                    <div onClick={() => setIsOpenSetting(true)}>
-                      <SettingIcon width={20} height={20} className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
-                    </div>
+                    {actions.map((action, index) => (
+                      <Tippy key={index} content={<div>{action.content}</div>} theme='dark' placement="bottom">
+                        {action.link ? (
+                          <Link href={action.link} className="group">
+                            {action.icon}
+                          </Link>
+                        ) : (
+                          <div onClick={action.onClick}>{action.icon}</div>
+                        )}
+                      </Tippy>
+                    ))}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">

@@ -86,35 +86,35 @@ export const AccountProvider = ({ children }) => {
   };
   const provider = getProvider(wallet);
   const PORT = process.env.NEXT_PUBLIC_APP_PORT;
-  useEffect(() => {
-    if (window.ethereum) {
-      const handleAccountsChanged = (accounts) => {
-        if (accounts.length > 0) {
-          updateAccount(accounts[0]);
-        } else if (accounts.length === 0) {
-          localStorage.removeItem("ACCOUNT_DEMASK");
-          localStorage.removeItem("WALLET_DEMASK");
-          updateAccount("");
-        }
-      };
-      const handleChainChanged = (networkId) => {
-        if (PORT === "3000" && (networkId === "280" || networkId === "5")) {
-          updateChainId(networkId);
-        } else if (
-          PORT === "1307" &&
-          (networkId === "97" || networkId === "80001")
-        ) {
-          updateChainId(networkId);
-        }
-      };
-      provider?.on("accountsChanged", handleAccountsChanged);
-      provider?.on("networkChanged", handleChainChanged);
-      return () => {
-        provider?.removeAllListeners("accountsChanged", handleAccountsChanged);
-        provider?.removeAllListeners("networkChanged", handleChainChanged);
-      };
-    }
-  }, [provider]);
+  // useEffect(() => {
+  //   if (window.ethereum) {
+  //     const handleAccountsChanged = (accounts) => {
+  //       if (accounts.length > 0) {
+  //         updateAccount(accounts[0]);
+  //       } else if (accounts.length === 0) {
+  //         localStorage.removeItem("ACCOUNT_DEMASK");
+  //         localStorage.removeItem("WALLET_DEMASK");
+  //         updateAccount("");
+  //       }
+  //     };
+  //     const handleChainChanged = (networkId) => {
+  //       if (PORT === "3000" && (networkId === "280" || networkId === "5")) {
+  //         updateChainId(networkId);
+  //       } else if (
+  //         PORT === "1307" &&
+  //         (networkId === "97" || networkId === "80001")
+  //       ) {
+  //         updateChainId(networkId);
+  //       }
+  //     };
+  //     provider?.on("accountsChanged", handleAccountsChanged);
+  //     provider?.on("networkChanged", handleChainChanged);
+  //     return () => {
+  //       provider?.removeAllListeners("accountsChanged", handleAccountsChanged);
+  //       provider?.removeAllListeners("networkChanged", handleChainChanged);
+  //     };
+  //   }
+  // }, [provider]);
   return (
     <AccountContext.Provider
       value={{

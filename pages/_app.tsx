@@ -14,12 +14,17 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { arbitrum, mainnet, polygon } from "wagmi/chains";
+import { arbitrum, mainnet, polygon, zkSyncTestnet } from "wagmi/chains";
 import Script from "next/script";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NextAdapterPages from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
+import '@rainbow-me/rainbowkit/styles.css';
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit'
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -45,7 +50,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const chains = [arbitrum, mainnet, polygon];
+const chains = [arbitrum, mainnet, polygon, zkSyncTestnet];
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
@@ -100,19 +105,21 @@ export default function App({
           }
         `}</style>
           <WagmiConfig config={wagmiConfig}>
-            {isMaintenanceMode ? (
-              <Layout>
-                <MaintenanceError />
-              </Layout>
-            ) : Component.PageLayout ? (
-              <Component.PageLayout>
-                <Component {...pageProps} />
-              </Component.PageLayout>
-            ) : (
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            )}
+            <RainbowKitProvider chains={chains}>
+              {isMaintenanceMode ? (
+                <Layout>
+                  <MaintenanceError />
+                </Layout>
+              ) : Component.PageLayout ? (
+                <Component.PageLayout>
+                  <Component {...pageProps} />
+                </Component.PageLayout>
+              ) : (
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              )}
+            </RainbowKitProvider>
           </WagmiConfig>
 
           <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{

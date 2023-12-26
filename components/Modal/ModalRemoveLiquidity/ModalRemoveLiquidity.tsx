@@ -16,6 +16,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import FormatNumber from "@/components/Common/FormatNumber";
+import formatNumber from "@/libs/utils/formatNumer";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -79,19 +80,26 @@ const ModalRemoveLiquidity: React.FunctionComponent<
 
     useEffect(() => {
       if (balanceOfDML) {
+        let liquidityPercentage = 0;
         if (activeChoice === '25%') {
-          setInputLiquidity(((Number(balanceOfDML)) * 0.25).toString())
+          liquidityPercentage = 0.25;
         } else if (activeChoice === '50%') {
-          setInputLiquidity(((Number(balanceOfDML)) * 0.5).toString())
+          liquidityPercentage = 0.5;
         } else if (activeChoice === '75%') {
-          setInputLiquidity(((Number(balanceOfDML)) * 0.7).toString())
+          liquidityPercentage = 0.75;
         } else if (activeChoice === '100%') {
-          setInputLiquidity(((Number(balanceOfDML)) * 1).toString())
+          liquidityPercentage = 1;
         }
-        setShowRequiredMessage(false)
+        const calculatedLiquidity = (Number(balanceOfDML) * liquidityPercentage).toLocaleString('en-US', {
+          minimumFractionDigits: 18,
+          maximumFractionDigits: 18,
+        });
+  
+        setInputLiquidity(calculatedLiquidity);
+        setShowRequiredMessage(false);
         setIsSufficientLiquidity(false);
       }
-    }, [activeChoice])
+    }, [balanceOfDML, activeChoice]);
     const totalSupply = useTotalSupply(account, wallet, data.dmlAddress, isOpenTransaction);
 
     useEffect(() => {
@@ -156,6 +164,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                     </div>
                     <input
                       className={styles.inputItem}
+                      inputMode="decimal"
                       type="number"
                       placeholder="Input amount Liquidity"
                       value={inputLiquidity}

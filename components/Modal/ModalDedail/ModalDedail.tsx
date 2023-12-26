@@ -22,7 +22,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenDetail(false);
   };
-  const formattedDescription = data.metadata.description?.split("\n")?.map((line: number, index: number) => (
+  const formattedDescription = data?.metadata?.description?.split("\n")?.map((line: number, index: number) => (
     <React.Fragment key={index}>
       {line}
       <br />
@@ -48,7 +48,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
               </button>
             </div>
             <div className="flex gap-x-4">
-              <div className="max-w-[240px] max-h-[240px]">
+              <div className="w-[240px] h-[240px]">
                 <MediaNFT data={data} isControls />
               </div>
               <ul>
