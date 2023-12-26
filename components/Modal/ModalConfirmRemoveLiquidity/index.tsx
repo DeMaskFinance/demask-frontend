@@ -221,9 +221,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             <FormatNumber number={amountTokenDec} />
                             <p>{symbolToken}</p>
                         </div>
-                        <div className="flex justify-between my-2 text-xs font-semibold text-secondary1">
-                            <p>Output is estimate if the price changes by more than 0.5% your transaction will revert.</p>
-                        </div>
                         <div className="flex justify-between text-sm font-semibold text-dark2">
                             <div className="flex items-center leading-[13px]">
                                 <span>{data?.metadata?.symbol}</span>

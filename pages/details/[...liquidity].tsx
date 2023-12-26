@@ -90,7 +90,7 @@ export default function DetailLiquidity() {
 
   const { balanceOfDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
   // console.log(balanceOfDML,totalSupply);
-  
+
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -325,12 +325,9 @@ export default function DetailLiquidity() {
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data && (
         <ModalDetail
-          nameNFT={data.metadata.name}
-          symbolNFT={data?.metadata?.symbol}
-          category={data.metadata.category}
-          attributes={data.metadata.attributes}
-          description={data.metadata.description}
-          uri={data.uri}
+          data={data}
+          idNFT={data.nftID}
+          nftAddress={data.nftAddress}
           setIsOpenDetail={setIsOpenDetail}
           isOpenDetail={isOpenDetail}
         />

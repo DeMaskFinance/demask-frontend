@@ -19,7 +19,7 @@ const HistoryItem = ({ item }: any) => {
                 <div className="max-w-[120px] truncate">
                     {item?.tokenSymbol ? (
                         <>
-                            <span>{item?.tokenSymbol}/{item?.metadata?.symbol}</span>
+                            <span>{item?.metadata?.symbol}/{item?.tokenSymbol}</span>
                         </>
                     ) : (
                         <span>{item?.metadata?.symbol}</span>

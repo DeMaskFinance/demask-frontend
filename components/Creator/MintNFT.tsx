@@ -191,7 +191,6 @@ export default function MintNFT({
   return (
     <div className="">
       <div className="relative">
-        <h2 className={styles.title}>Initialization</h2>
         <div>
           <Button
             type="button"

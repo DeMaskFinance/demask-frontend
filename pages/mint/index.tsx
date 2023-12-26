@@ -187,7 +187,7 @@ export default function Creator() {
     }
   }, [selectedFile]);
   const handleChangeRoyalFee = (e: any) => {
-    setRoyaltiesFee(Number(e.target.value))
+    setRoyaltiesFee(e.target.value)
     if (e.target.value < 0 || e.target.value > 100) {
       setValidFee(true);
     } else {
@@ -383,7 +383,8 @@ export default function Creator() {
 
             <input
               placeholder="100"
-              type="number"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              type="text"
               id="royaltiesFee"
               autoComplete="off"
               value={royaltiesFee || ""}
@@ -401,7 +402,7 @@ export default function Creator() {
             )}
             {validFee && (
               <p className="mb-2 -mt-1 text-xs text-red" key="initial">
-                Royalty fee must be greater than 0% and less than or equal to 100%
+                Royalty fee must be less than or equal to 100%
               </p>
             )}
           </div>

@@ -1,24 +1,19 @@
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
 import React, { memo } from "react";
+import MediaNFT from "@/components/Common/MediaNFT";
 interface ModalDetailProps {
-  nameNFT: string;
-  symbolNFT: string;
-  category: string[];
-  attributes: string[];
-  description: string;
-  uri: string;
+  data: any;
+  nftAddress: string;
+  idNFT:string;
   setIsOpenDetail: any;
   isOpenDetail: boolean;
 }
 
 const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
-  nameNFT,
-  symbolNFT,
-  category,
-  attributes,
-  description,
-  uri,
+  data,
+  nftAddress,
+  idNFT,
   setIsOpenDetail,
   isOpenDetail,
 }) => {
@@ -27,76 +22,119 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenDetail(false);
   };
-  const formattedDescription = description?.split("\n")?.map((line, index) => (
+  const formattedDescription = data.metadata.description?.split("\n")?.map((line: number, index: number) => (
     <React.Fragment key={index}>
       {line}
       <br />
     </React.Fragment>
   ));
+  console.log({
+    data,
+    idNFT
+  });
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
         <div className="z-50 flex flex-col justify-center max-h-[80vh] cursor-default">
-          <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative overflow-y-scroll">
-            <p className="py-2 text-xl font-medium">Show Details</p>
-            <ul>
-              {nameNFT && (
+          <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[550px] rounded-lg p-8 relative overflow-y-scroll">
+            <div className="flex justify-between mb-4">
+              <p className="py-2 text-xl font-medium">NFT Details</p>
+              <button
+                className="text-lg "
+                onClick={handleClose}
+              >
+                <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+              </button>
+            </div>
+            <div className="flex gap-x-4">
+              <div className="max-w-[240px] max-h-[240px]">
+                <MediaNFT data={data} isControls />
+              </div>
+              <ul>
+                {data?.metadata?.name && (
+                  <li className="mb-4">
+                    <p className="font-medium text-dark2">Name</p>
+                    <div className="flex justify-between gap-x-1">
+                      <div className="w-6 h-6">
+                        <MediaNFT data={data} isControls />
+                      </div>
+                      <a href={data?.metadata?.uri} rel="noreferrer noopener"
+                        target="_blank" className="text-secondary5 ">{data?.metadata?.name}</a>
+                    </div>
+                  </li>
+                )}
+                {data?.metadata?.symbol && (
+                  <li className="mb-4">
+                    <p className="font-medium text-dark2">Symbol</p>
+                    <p className="text-sm font-light text-dark3">{data?.metadata?.symbol}</p>
+                  </li>
+                )}
                 <li className="mb-4">
-                  <p>NFT Name</p>
-                  <a href={uri} rel="noreferrer noopener"
-                    target="_blank" className="text-secondary5 ">{nameNFT}</a>
+                  <p className="font-medium text-dark2">Type</p>
+                  <p className="text-sm font-light text-dark3">ERC-1155</p>
                 </li>
-              )}
-              {symbolNFT && (
                 <li className="mb-4">
-                  <p>Symbol</p>
-                  <p className="text-dark3">{symbolNFT}</p>
+                  <p className="font-medium text-dark2">Contract Address</p>
+                  <p className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</p>
                 </li>
+              </ul>
+            </div>
+            <div className="mt-4">
+              {data.metadata?.description && (
+                <div className="mb-4">
+                  <p className="font-medium text-dark2">Description</p>
+                  <p className="text-sm font-light text-dark3">{formattedDescription}</p>
+                </div>
               )}
-              {description && (
-                <li className="mb-4">
-                  <p>Description</p>
-                  <p className="text-dark3">{formattedDescription}</p>
-                </li>
-              )}
-              {attributes && (
-                <li className="mb-4">
-                  <p>Attributes</p>
-                  <div className="text-dark3">
-                    {attributes.map((item: any, index) => (
+              <div className="mb-4">
+                <p className="font-medium text-dark2">Attributes</p>
+                {data.metadata?.attributes.length > 0 ? (
+                  <div className="text-sm font-light text-dark3">
+                    {data.metadata?.attributes.map((item: any, index: number) => (
                       <ul className="flex gap-x-4" key={index}>
                         <li>{item.trait_type}</li>
                         <li>{item.value}</li>
                       </ul>
                     ))}
                   </div>
-                </li>
-              )}
-              {category && (
-                <li>
-                  <p>Category</p>
-                  <div className="flex gap-x-4">
-                    {category.map((item, index) => (
-                      <p className="text-dark3" key={index}>
-                        {item}
-                      </p>
-                    ))}
-                  </div>
-                </li>
-              )}
-            </ul>
-
-            <button
-              className="absolute top-0 right-0 p-2 text-lg"
-              onClick={handleClose}
-            >
-              <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
-            </button>
+                ) : (
+                  <p className="text-sm font-light text-dark3">None</p>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-y-4">
+                <div className="">
+                  <p className="mb-1 font-medium text-dark2">Category</p>
+                  {data.metadata?.category.length > 0 ? (
+                    <div className="flex gap-x-4">
+                      {data.metadata?.category.map((item: any, index: number) => (
+                        <p className="px-4 py-1 text-sm font-medium border rounded-lg text-dark2 border-dark3" key={index}>
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>None</p>
+                  )}
+                </div>
+                <div>
+                  <p className="font-medium text-dark2">Token ID</p>
+                  <p className="text-sm font-light text-dark3">{idNFT}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-dark2">Royalty Fee (%)</p>
+                  <p className="text-sm font-light text-dark3">{data?.royaltyFee}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-dark2">Last Updated</p>
+                  <p className="text-sm font-light text-dark3">20 minutes ago</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </Wrapper>
+    </Wrapper >
   );
 };
 

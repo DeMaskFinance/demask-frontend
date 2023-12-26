@@ -571,13 +571,10 @@ const Swap: React.FC = () => {
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
         <ModalDetail
-          nameNFT={data.metadata.name}
-          symbolNFT={data?.metadata?.symbol}
-          category={data.metadata.category}
-          attributes={data.metadata.attributes}
-          description={data.metadata.description}
+          data={data}
+          idNFT={idNFT}
+          nftAddress={nftAddress}
           setIsOpenDetail={setIsOpenDetail}
-          uri={data.uri}
           isOpenDetail={isOpenDetail}
         />
       )}

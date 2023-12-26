@@ -1,16 +1,18 @@
 import Button from "@/components/Buttons/Button";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { BackIcon, DownIcon, NFTIcon, TokenIconNotDefine } from "@/components/Icons";
+import { BackIcon, DownIcon, NFTIcon, SettingIcon, TokenIconNotDefine } from "@/components/Icons";
 import ModalConfirmAddLiquidity from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
+import ModalSetting from "@/components/Modal/ModalSetting";
 import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useBalanceToken from "@/hooks/useInformationToken";
+import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { swapAPI } from "@/libs/service";
 import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
@@ -18,14 +20,10 @@ import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from '../../next-seo.config';
-import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
-import ModalSetting from "@/components/Modal/ModalSetting";
-import { AiFillSetting } from "react-icons/ai";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -219,7 +217,7 @@ export default function AddLiquidity() {
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>
         <div onClick={() => setIsOpenSetting(true)}>
-          <AiFillSetting className="w-5 h-5 cursor-pointer fill-dark2 hover:rotate-90 hover:fill-secondary5" />
+          <SettingIcon width={20} height={20} className="w-5 h-5 cursor-pointer hover:rotate-90 hover:fill-secondary5" />
         </div>
       </div>
       {isSuccess ? (
@@ -387,12 +385,9 @@ export default function AddLiquidity() {
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
         <ModalDetail
-          nameNFT={data?.metadata?.name}
-          symbolNFT={data?.metadata?.symbol}
-          category={data.metadata.category}
-          attributes={data.metadata.attributes}
-          description={data.metadata.description}
-          uri={data.uri}
+          data={data}
+          idNFT={idNFT}
+          nftAddress={nftAddress}
           setIsOpenDetail={setIsOpenDetail}
           isOpenDetail={isOpenDetail}
         />

@@ -21,11 +21,6 @@ interface networkProps {
 }
 const network = [
     {
-        name: "All",
-        logo: AllIcon,
-        chain: "All",
-    },
-    {
         name: "zkSync Testnet",
         logo: ZkSyncIcon,
         chain: "280",
@@ -38,7 +33,7 @@ const network = [
 ];
 const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
-    const [chainOption, setChainOption] = useQueryParam("chainOption", withDefault(StringParam, "All"));
+    const [chainOption, setChainOption] = useQueryParam("chainOption", withDefault(StringParam, "280"));
     const handleChangeNetwork = (chain: string) => {
         if (chainOption !== "1") {
             setChainOption(chain);
@@ -86,12 +81,12 @@ const OptionNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
             )}
         >
             <button className={`${style.btnWallet} flex items-center`}>
-                <p className="hidden lg:block">{filterNetwork?.name}</p>
                 <LogoComponent
                     width={24}
                     height={24}
                     className=" fill-white group-hover:fill-secondary5"
                 />
+                <p className="hidden lg:block">{filterNetwork?.name}</p>
                 <span className="lg:hidden">
                     <BsCaretDownFill />
                 </span>

@@ -30,6 +30,11 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             const checkNetwork = async () => {
                 const provider = getProvider(wallet);
                 const networkId = await provider.request({ method: "net_version" });
+                console.log({
+                    networkId,
+                    chain
+                });
+                
                 if (networkId !== chain) {
                     setIsWrongNetwork(true);
                     document.body.style.overflowY = "hidden";
@@ -41,7 +46,10 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             checkNetwork();
         }
     }, [chain, account, wallet, router.isReady])
-    console.log(chain);
+    console.log({
+        chain,
+        isWrongNetwork
+    });
 
     const disconnectWallet = () => {
         localStorage.removeItem("ACCOUNT_DEMASK");
