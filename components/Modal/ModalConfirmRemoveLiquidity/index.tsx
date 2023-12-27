@@ -121,7 +121,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
 
         console.log(handleBignumber(Number(inputLiquidity), 18));
         const handleApproveDML = async () => {
-            const providerChoice = getProvider(wallet);
+            const providerChoice = await getProvider(wallet);
             const provider = new ethers.providers.Web3Provider(providerChoice);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(data.dmlAddress, abiDML, signer);
@@ -148,7 +148,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
 
         const removeLiquidity = async () => {
             if (inputLiquidity && !isSufficientLiquidity && Number(amountTokenMin) > 0) {
-                const providerChoice = getProvider(wallet);
+                const providerChoice = await getProvider(wallet);
                 const provider = new ethers.providers.Web3Provider(providerChoice);
                 const signer = provider.getSigner();
                 const contract = new ethers.Contract(routerAddress, abiRouter, signer);

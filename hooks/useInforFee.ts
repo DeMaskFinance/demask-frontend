@@ -10,7 +10,7 @@ const useInforFee = (account: string, wallet: string): {tip: string, gasUse: str
     const fetchInformationFee = async () => {
       if (account && wallet) {
         try {
-          const providerChoice = getProvider(wallet);
+          const providerChoice = await getProvider(wallet);
           const provider = new ethers.providers.Web3Provider(providerChoice);
           const feeData = await provider.getFeeData();
           setTip(feeData?.maxPriorityFeePerGas?.toString() || "");

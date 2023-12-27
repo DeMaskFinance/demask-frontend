@@ -11,7 +11,7 @@ export function useAccount() {
   //   const fetchAccount = async () => {
   //     const wallet = localStorage.getItem("WALLET_DEMASK");
   //     if (wallet) {
-  //       const providerChoice = getProvider(wallet);
+  //       const providerChoice = await getProvider(wallet);
   //       const provider = new ethers.providers.Web3Provider(providerChoice);
   //       const signer = provider.getSigner();
   //       const address = await signer.getAddress();

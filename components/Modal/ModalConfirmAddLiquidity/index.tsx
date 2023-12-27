@@ -130,7 +130,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         }, [inputNFT, inputToken, reserveToken, reserveNFT, dmlToken]);
         const handleApproveToken = async () => {
             if (account) {
-                const providerChoice = getProvider(wallet);
+                const providerChoice = await getProvider(wallet);
                 const provider = new ethers.providers.Web3Provider(providerChoice);
                 const signer = provider.getSigner();
                 const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
@@ -161,7 +161,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             }
 
             if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
-                const providerChoice = getProvider(wallet);
+                const providerChoice = await getProvider(wallet);
                 const provider = new ethers.providers.Web3Provider(providerChoice);
                 const signer = provider.getSigner();
 

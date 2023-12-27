@@ -28,7 +28,7 @@ export default function Referral() {
     useEffect(() => {
         const getSponsor = async () => {
             if (account && wallet && sponsor) {
-                const providerChoice = getProvider(wallet);
+                const providerChoice = await getProvider(wallet);
                 const provider = new ethers.providers.Web3Provider(providerChoice);
                 const signer = provider.getSigner();
                 const contract = new ethers.Contract(demask.REFERRAL, abiReferral, signer);
@@ -42,7 +42,7 @@ export default function Referral() {
     }, [account, wallet, isOpenTransaction])
     const handleSponsor = async () => {
         if (messageError === '') {
-            const providerChoice = getProvider(wallet);
+            const providerChoice = await getProvider(wallet);
             const provider = new ethers.providers.Web3Provider(providerChoice);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(demask.REFERRAL, abiReferral, signer);

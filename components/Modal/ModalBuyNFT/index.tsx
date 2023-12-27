@@ -81,10 +81,7 @@ const ModalBuyNFT: React.FunctionComponent<
 
         // console.log(amountTokenBuy);
         const { tip, gasUse } = useInforFee(account, wallet);
-        const providerChoice = getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+
         // console.log({
         //     tip,
         //     gasUse
@@ -187,6 +184,10 @@ const ModalBuyNFT: React.FunctionComponent<
                 try {
                     let result;
                     setIsOpenTransaction(true);
+                    const providerChoice = await getProvider(wallet);
+                    const provider = new ethers.providers.Web3Provider(providerChoice);
+                    const signer = provider.getSigner();
+                    const contract = new ethers.Contract(routerAddress, abiRouter, signer);
                     const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
                     const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
                         tokenAddress,

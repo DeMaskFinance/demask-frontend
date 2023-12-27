@@ -26,9 +26,9 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     });
 
     useEffect(() => {
-        if (account && wallet && router.isReady && chain) {
+        if (account && wallet && router.isReady && chain && wallet !== "WalletConnect") {
             const checkNetwork = async () => {
-                const provider = getProvider(wallet);
+                const provider = await getProvider(wallet);
                 const networkId = await provider.request({ method: "net_version" });
                 console.log({
                     networkId,

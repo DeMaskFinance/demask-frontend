@@ -54,25 +54,23 @@ export default function Header() {
     // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
   };
+  
+
   const provider = getProvider(wallet);
-
-
   useEffect(() => {
     const getAddress = async () => {
+      const provider = await getProvider(wallet);
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
-        console.log(test.provider.selectedAddress);
-        // const selectedAddress1 = await test.getSigner().getAddress();
-        // console.log(selectedAddress1);
-        const web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        const selectedAddress = accounts[0];
-        console.log('web3' + selectedAddress);
+        // console.log(test.provider.selectedAddress);
+        // const web3 = new Web3(provider);
+        // const accounts = await web3.eth.getAccounts();
+        // const selectedAddress = accounts[0];
+        // console.log('web3' + selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
           console.log(provider);
           console.log(provider.selectedAddress);
           console.log(provider.chainId);
-          console.log("abc");
           const web3 = new Web3(provider);
           const accounts = await web3.eth.getAccounts();
           const selectedAddress = accounts[0];

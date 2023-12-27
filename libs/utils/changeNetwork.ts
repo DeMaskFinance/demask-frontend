@@ -10,7 +10,7 @@ export const changeNetwork = async (
   setTab?: any
 ) => {
   try {
-    const provider = getProvider(wallet);
+    const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
     if (networkId !== chainId) {
       try {

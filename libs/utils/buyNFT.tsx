@@ -54,7 +54,7 @@ const handleBuyNFT = async ({
       Number(reserves[1].toString()) > 1 &&
       Number(reserves[0].toString()) > 0
     ) {
-      const providerChoice = getProvider(wallet);
+      const providerChoice = await getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);

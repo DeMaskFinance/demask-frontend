@@ -21,7 +21,7 @@ const useBananceOfDML = (
     const getBalanceOf = async () => {
       if (dmlToken!=='0x0000000000000000000000000000000000000000' && account && wallet) {
         try {
-          const providerChoice = getProvider(wallet);
+          const providerChoice = await getProvider(wallet);
           const provider = new ethers.providers.Web3Provider(providerChoice);
           const signer = provider.getSigner();
           const contract = new ethers.Contract(dmlToken, abiDML, signer);

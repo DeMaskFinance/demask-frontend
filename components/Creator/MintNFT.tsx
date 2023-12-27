@@ -78,7 +78,7 @@ export default function MintNFT({
     }
 
     try {
-      const providerChoice = getProvider(wallet);
+      const providerChoice = await getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(contractAddress, abiDemask, signer);

@@ -21,7 +21,7 @@ const updateMeta = {
     title: 'Profile',
 };
 function ProfilePage() {
-    const { account, wallet, demask, chainId, tokenDefault } = useContext(AccountContext);
+    const { account } = useContext(AccountContext);
     const [isCopy, setIsCopy] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const handleOpen = () => {
@@ -50,12 +50,6 @@ function ProfilePage() {
         <div>
             <NextSeo {...updateMeta} />
             <div className='max-w-6xl pt-6 mx-auto min-h-[75vh]'>
-                <button onClick={() => write({
-                    args: [account, "1234", "123132", "50", "0x", "https://demask.infura-ipfs.io/ipfs/QmUUWwQg4UhaoCHGySw3w1AygauXqNp3N3DBb8eZRGJdF9"]
-                })}>Feed</button>
-                {isLoading && <div>Check Wallet</div>}
-                {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-
                 {account ? (
                     <div>
                         <section>

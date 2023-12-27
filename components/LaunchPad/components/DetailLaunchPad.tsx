@@ -174,7 +174,7 @@ export default function DetailLaunchPad() {
       return;
     }
 
-    const providerChoice = getProvider(wallet);
+    const providerChoice = await getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
     const signer = provider.getSigner();
 
