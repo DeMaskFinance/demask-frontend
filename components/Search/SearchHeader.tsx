@@ -66,7 +66,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
     isPreviousData: isTopNftPreviousData, } = useQuery({
       queryKey: ["topNftSearch", chainId],
       queryFn: async () => {
-        const res = await NFTTopService(1, chainId);
+        const res = await NFTTopService(chainId);
         return res;
       },
       keepPreviousData: true,
