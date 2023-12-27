@@ -16,6 +16,7 @@ import {
     useContractWrite,
     useWaitForTransaction,
 } from 'wagmi'
+import Copy from '@/components/Common/Copy';
 const updateMeta = {
     ...SEO,
     title: 'Profile',
@@ -28,19 +29,7 @@ function ProfilePage() {
         document.body.style.overflowY = "hidden";
         setIsOpen(true);
     };
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(account)
-        setIsCopy(true);
-    }
-    useEffect(() => {
-        if (isCopy) {
-            const timeoutId = setTimeout(() => {
-                setIsCopy(false);
-            }, 800);
-
-            return () => clearTimeout(timeoutId);
-        }
-    }, [isCopy]);
+    
     const { data, isLoading, isSuccess, write } = useContractWrite({
         address: '0x59620b99146C56785b067f84237fa80D89588228',
         abi: abiDemask,
@@ -59,16 +48,11 @@ function ProfilePage() {
                                     <p className='text-2xl font-semibold'>Unnamed</p>
                                     <div className='flex items-center gap-x-1'>
                                         <span className='text-secondary1'>{`${account.slice(0, 6)}...${account.slice(-4)}`}</span>
-                                        <Tippy
-                                            theme='light'
-                                            visible={isCopy}
-                                            content={<span>Copied</span>}>
-                                            <button onClick={copyToClipboard}><IoCopyOutline /></button>
-                                        </Tippy>
-                                    </div>
-                                    <div>
+                                        <Copy content={account}/>
+                                    </div> 
+                                    {/* <div>
                                         <OptionNetwork />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </section>

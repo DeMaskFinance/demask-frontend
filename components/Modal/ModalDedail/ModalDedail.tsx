@@ -1,11 +1,13 @@
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
 import MediaNFT from "@/components/Common/MediaNFT";
+import Copy from "@/components/Common/Copy";
+import AccountContext from "@/context/AccountContext";
 interface ModalDetailProps {
   data: any;
   nftAddress: string;
-  idNFT:string;
+  idNFT: string;
   setIsOpenDetail: any;
   isOpenDetail: boolean;
 }
@@ -17,6 +19,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   setIsOpenDetail,
   isOpenDetail,
 }) => {
+  const { demask } = useContext(AccountContext);
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -55,12 +58,12 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 {data?.metadata?.name && (
                   <li className="mb-4">
                     <p className="font-medium text-dark2">Name</p>
-                    <div className="flex justify-between gap-x-1">
+                    <div className="flex gap-x-2">
                       <div className="w-6 h-6">
                         <MediaNFT data={data} isControls />
                       </div>
                       <a href={data?.metadata?.uri} rel="noreferrer noopener"
-                        target="_blank" className="text-secondary5 ">{data?.metadata?.name}</a>
+                        target="_blank" className="text-dark3 ">{data?.metadata?.name}</a>
                     </div>
                   </li>
                 )}
@@ -76,7 +79,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 </li>
                 <li className="mb-4">
                   <p className="font-medium text-dark2">Contract Address</p>
-                  <p className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</p>
+                  <a target="_blank" rel="noopener noreferrer" href={`${demask.urltxHash}address/${nftAddress}`} className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</a>
                 </li>
               </ul>
             </div>
@@ -119,7 +122,10 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 </div>
                 <div>
                   <p className="font-medium text-dark2">Token ID</p>
-                  <p className="text-sm font-light text-dark3">{idNFT}</p>
+                  <div className="flex items-center gap-x-1">
+                    <a target="_blank" rel="noopener noreferrer" href={data.uri} className="text-sm font-light cursor-pointer text-secondary5">{idNFT}</a>
+                    <Copy content={idNFT}/>
+                  </div>
                 </div>
                 <div>
                   <p className="font-medium text-dark2">Royalty Fee (%)</p>

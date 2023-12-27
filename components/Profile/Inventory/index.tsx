@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import SkeletonCategory from '@/components/Skeleton/SkeletonCategory';
 import MediaNFT from '@/components/Common/MediaNFT';
-import { AddIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
+import { AddIcon, GoerliIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
 import ModalNumber from '@/components/Modal/ModalLength/ModalNumber';
 import { Button } from '@/components/Buttons';
 import TransionDML from './TransitionDML';
@@ -20,14 +20,13 @@ import { ModalDetail } from '@/components/Modal/ModalDedail';
 interface ModalDetailProps {
     data: any;
     nftAddress: string;
-    nftID:string;
+    nftID: string;
     setIsOpenDetail: any;
     isOpenDetail: boolean;
-  }
+}
 const Inventory = () => {
     const { account, chainId, demask } = useContext(AccountContext);
     const { NATIVE_ADDRESS: nativeAddress } = demask;
-    const [chain] = useQueryParam('chainOption', withDefault(StringParam, '280'));
     const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(null);
     const { ref, inView } = useInView();
@@ -44,8 +43,8 @@ const Inventory = () => {
         isLoading,
         isFetching,
     } = useInfiniteQuery(
-        ["NFTsUser", chain, account],
-        ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chain, account),
+        ["NFTsUser", chainId, account],
+        ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
         {
             getNextPageParam: (page) =>
                 page?.currentPage === page?.totalPages
@@ -53,11 +52,6 @@ const Inventory = () => {
                     : page?.currentPage + 1,
         }
     );
-
-    console.log({
-        data,
-        chain
-    });
     useEffect(() => {
         if (inView) {
             fetchNextPage();
@@ -97,10 +91,15 @@ const Inventory = () => {
                                                     {/* <ActiveIcon width={24} height={24} className="mr-4 fill-yellow" /> */}
                                                 </div>
                                                 <div className='my-1'>
-                                                    {chainId === '280' && (
+                                                    {chainId === '280' ? (
                                                         <div className='flex items-center gap-x-1'>
                                                             <ZkSyncIcon width={18} height={7} className='fill-secondary3' />
                                                             <p className='text-[11px] font-semibold text-secondary3'>zKsync Era</p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className='flex items-center gap-x-1'>
+                                                            <GoerliIcon width={18} height={7} className='fill-secondary3' />
+                                                            <p className='text-[11px] font-semibold text-secondary3'>Goerli Testnet</p>
                                                         </div>
                                                     )}
                                                 </div>

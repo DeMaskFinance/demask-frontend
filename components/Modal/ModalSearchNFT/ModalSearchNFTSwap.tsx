@@ -65,12 +65,14 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     isPreviousData: isTopNftPreviousData, } = useQuery({
       queryKey: ["topNFT", chainId],
       queryFn: async () => {
-        const res = await NFTTopService(1, chainId);
+        const res = await NFTTopService(chainId);
         return res;
       },
 
       keepPreviousData: true,
     });
+    console.log(topNftData);
+    
   const handleSelectNFT = (item: any) => {
     const { currency } = router.query;
     const { slug } = router.query;
@@ -147,9 +149,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                   <div className="mt-3">
                     {topNftData && topNftData.nftDataList.length > 0 ? (
                       <div>
-                        <div className="block mb-2">
+                        <div className="block mb-2 max-h-[250px] overflow-y-scroll">
                           <span className="text-base">NFTs Top</span>
-                          {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
+                          {topNftData.nftDataList.map((item: any, index: number) => (
                             <div
                               key={index}
                               onClick={() => handleSelectNFT(item)}

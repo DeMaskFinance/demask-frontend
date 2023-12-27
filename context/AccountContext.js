@@ -84,7 +84,7 @@ export const AccountProvider = ({ children }) => {
     setTxDeadline(newTime);
     localStorage.setItem("TXDEADLINE_DEMASK", newTime);
   };
-  
+  const PORT = process.env.NEXT_PUBLIC_APP_PORT;
   useEffect(() => {
     const initProvider = async () => {
       if (window.ethereum) {

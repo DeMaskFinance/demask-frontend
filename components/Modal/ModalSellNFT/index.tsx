@@ -70,7 +70,7 @@ const ModalSellNFT: React.FunctionComponent<
             document.body.style.overflowY = "auto";
             setIsOpenSellNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT, true, true, updatePrice)
+        const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, false, isOpenSellNFT, true, true, updatePrice)
         const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
 
         const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
@@ -130,6 +130,7 @@ const ModalSellNFT: React.FunctionComponent<
                 const provider = new ethers.providers.Web3Provider(providerChoice);
                 const signer = provider.getSigner();
                 const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+                const fee = data.royaltyFee === 0 ? '5000' : data.royaltyFee! * 10000;
                 try {
                     let result;
                     setIsOpenTransaction(true);
@@ -139,7 +140,7 @@ const ModalSellNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountSellDec)),
-                        data.royaltyFee! * 10000,
+                        fee,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
                     );
@@ -149,7 +150,7 @@ const ModalSellNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountSellDec)),
-                        data.royaltyFee! * 10000,
+                        fee,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: estimatedGas }
@@ -276,10 +277,11 @@ const ModalSellNFT: React.FunctionComponent<
                         <div className="flex flex-col items-center mt-6">
                             <button
                                 type="button"
-                                className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
+                                disabled={isLoadingInforDML}
+                                className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                 onClick={handleSellNFT}
                             >
-                                Sell NFT
+                                SELL NFT
                             </button>
                         </div>
                     </div>

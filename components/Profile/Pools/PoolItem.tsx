@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useContext } from "react";
 
 const PoolItem = ({ item }: any) => {
+    console.log(item);
+    
     const { account, wallet, demask } = useContext(AccountContext);
     const { balanceOfDML, totalSupply, balanceDML } = useBananceOfDML(account, item.dmlAddress, wallet);
     // console.log(totalSupply.toString());

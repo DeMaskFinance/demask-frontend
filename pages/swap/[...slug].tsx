@@ -251,8 +251,8 @@ const Swap: React.FC = () => {
               </div>
               <HistorySwap data={data} />
             </div>
-            <div className="lg:w-[40%] md:w-2/4 w-full flex-col-reverse lg:flex-col flex gap-y-1 lg:gap-y-12">
-              <div className="p-6 border rounded-lg shadow-home">
+            <div className="lg:w-[40%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
+              <div className="w-full p-6 border rounded-lg shadow-home">
                 <div className="flex justify-between gap-4 mb-2 text-dark1">
                   <div className="flex flex-col items-center ">
                     <TabGroups
@@ -274,6 +274,17 @@ const Swap: React.FC = () => {
                       </Tippy>
                     ))}
                   </div>
+                </div>
+                <div className="flex flex-col justify-center my-6">
+                  <div className="mx-auto w-40 3xl:w-[320px]">
+                    <MediaNFT data={data} isControls={true} />
+                  </div>
+                  <p
+                    className="mx-auto mt-1 cursor-pointer text-dark3 hover:text-secondary3"
+                    onClick={handleShowDetail}
+                  >
+                    See detail
+                  </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">
@@ -550,15 +561,6 @@ const Swap: React.FC = () => {
                     )
                   }
                 </div>
-              </div>
-              <div className="flex flex-col justify-center ">
-                <MediaNFT data={data} isControls={true} />
-                <p
-                  className="mx-auto mt-1 mb-5 cursor-pointer text-secondary5 hover:text-secondary3"
-                  onClick={handleShowDetail}
-                >
-                  See detail
-                </p>
               </div>
             </div>
           </div>

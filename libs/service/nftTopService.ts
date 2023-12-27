@@ -1,9 +1,9 @@
 import  axios  from 'axios';
 import request from "../utils/httpRequest";
 
-export const NFTTopService = async (page:number,chainId:string|string[]) =>{
+export const NFTTopService = async (chainId:string|string[]) =>{
     try {
-        const res = await request.get(`topNFT-list?chainId=${chainId}&page=${page}`)
+        const res = await request.get(`topNFT-list?chainId=${chainId}`)
         return res.data;
     } catch (error) {
         console.error(error);

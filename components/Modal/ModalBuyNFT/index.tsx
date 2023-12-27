@@ -76,7 +76,7 @@ const ModalBuyNFT: React.FunctionComponent<
             document.body.style.overflowY = "auto";
             setIsOpenBuyNFT(false);
         };
-        const { reserveNFT, reserveToken } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT, true, true, updatePrice)
+        const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT, true, true, updatePrice)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
 
         // console.log(amountTokenBuy);
@@ -166,7 +166,8 @@ const ModalBuyNFT: React.FunctionComponent<
         //     test1,
         //     test2
         // });
-
+        console.log(isLoadingInforDML);
+        
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -188,6 +189,7 @@ const ModalBuyNFT: React.FunctionComponent<
                     const provider = new ethers.providers.Web3Provider(providerChoice);
                     const signer = provider.getSigner();
                     const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+                    const fee = data.royaltyFee === 0 ? '5000' : data.royaltyFee! * 10000;
                     const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
                     const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
                         tokenAddress,
@@ -195,7 +197,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountBuyDec)),
-                        data.royaltyFee! * 10000,
+                        fee,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { value: value }
@@ -207,7 +209,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         idNFT,
                         inputNFT,
                         exponentialToDecimal(Math.floor(amountBuyDec)),
-                        data.royaltyFee! * 10000,
+                        fee,
                         account,
                         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
                         { gasLimit: estimatedGas, value: value }
@@ -253,7 +255,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             preFectch && (
                                 <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
                                     <p className="text-xs">Price Updated</p>
-                                    <Button primary className="px-6 py-2 bg-secondary5" onClick={() => {
+                                    <Button disabled={isLoadingInforDML} primary className="px-6 py-2 bg-secondary5" onClick={() => {
                                         setUpdatePrice(!updatePrice);
                                         setPreFetch(false);
                                     }}>Accept</Button>
@@ -331,7 +333,8 @@ const ModalBuyNFT: React.FunctionComponent<
                             {isApprovedToken ? (
                                 <button
                                     type="button"
-                                    className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
+                                    disabled={isLoadingInforDML}
+                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={handleBuyNFT}
                                 >
                                     BUY NFT

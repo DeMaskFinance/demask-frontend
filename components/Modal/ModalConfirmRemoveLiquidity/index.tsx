@@ -62,6 +62,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         const [amountTokenDec, setAmountTokenDec] = useState("");
         const [amountNFTMin, setAmountNFTMin] = useState("");
         const [isOpen, setIsOpen] = useState<boolean>(false);
+        const [preFectch, setPreFetch] = useState<boolean>(false);
+        const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress, FACTORY: factoryAddress } = demask;
 
@@ -75,7 +77,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             routerAddress,
         );
         console.log(currentAllowance);
-        const { reserveNFT, reserveToken } = useInformationDML(
+        const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
             data.dmlAddress,
             wallet,
             account,
@@ -83,10 +85,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             false,
             false,
             false,
-            isOpenConfirmRemoveLiquidity
+            isOpenConfirmRemoveLiquidity,
+            updatePrice
         );
-        console.log(reserveNFT.toString());
-        console.log(Number(reserveToken));
         useEffect(() => {
             const checkApproveToken = async () => {
                 console.log(currentAllowance);
@@ -200,7 +201,18 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             }
         }
 
-
+        useEffect(() => {
+            const load = setInterval(() => {
+                if (isOpenConfirmRemoveLiquidity) {
+                    setPreFetch(true);
+                } else {
+                    setPreFetch(false);
+                }
+            }, 20000)
+            return () => {
+                clearInterval(load)
+            }
+        }, [isOpenConfirmRemoveLiquidity])
         return (
             <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -221,14 +233,22 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             <FormatNumber number={amountTokenDec} />
                             <p>{symbolToken}</p>
                         </div>
-                        <div className="flex justify-between text-sm font-semibold text-dark2">
-                            <div className="flex items-center leading-[13px]">
-                                <span>{data?.metadata?.symbol}</span>
-                                <span className="overflow-hidden">/</span>
-                                <span>{symbolToken}</span>
-                            </div>
-                            <FormatNumber number={inputLiquidity} />
+                        {
+                            preFectch && (
+                                <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+                                    <p className="text-xs">Price Updated</p>
+                                    <Button disabled={isLoadingInforDML} primary className="px-6 py-2 bg-secondary5" onClick={() => {
+                                        setUpdatePrice(!updatePrice);
+                                        setPreFetch(false);
+                                    }}>Accept</Button>
+                                </div>
+                            )
+                        }
+                        <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
+                            <p>Slippage tolerance</p>
+                            <p>{slippage}%</p>
                         </div>
+                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {amountNFTMin} NFT or the transaction will revert</p>
                         <div className="flex flex-col items-center mt-6">
                             {!isApprovedLiquidity && account && (
                                 <Button
@@ -240,13 +260,14 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                                 </Button>
                             )}
                             {(isApprovedLiquidity) && (
-                                <Button
-                                    className="p-2 w-[126px] mx-auto"
-                                    primary
+                                <button
+                                    type="button"
+                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    disabled={isLoadingInforDML}
                                     onClick={removeLiquidity}
                                 >
                                     CONFIRM
-                                </Button>
+                                </button>
                             )}
                         </div>
                     </div>

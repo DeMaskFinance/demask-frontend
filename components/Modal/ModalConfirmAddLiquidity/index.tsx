@@ -36,7 +36,7 @@ interface ModalConfirmAddLiquidityProps {
     setInputNFT: React.Dispatch<React.SetStateAction<string>>;
     setInputToken: React.Dispatch<React.SetStateAction<string>>;
     setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>; 
+    setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
     setHash: React.Dispatch<React.SetStateAction<string>>;
     setIsOpenLiquidity?: React.Dispatch<React.SetStateAction<boolean>>,
 }
@@ -69,7 +69,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         const [amountErcDesired, setAmountErcDesired] = useState<any>();
         const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
         const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-
+        const [preFectch, setPreFetch] = useState<boolean>(false);
+        const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const { allowanceToken, bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
         const dmlToken = useDMLToken(account, nftAddress, idNFT, tokenAddress, wallet, factoryAddress, isOpenTransaction, isOpenConfirmAddLiquidity);
@@ -89,14 +90,28 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             };
             handleCheckApproveToken();
         }, [account, wallet, tokenAddress, inputToken, isOpenTransaction, amountErcDesired, allowanceToken]);
-        const { reserveNFT, reserveToken } = useInformationDML(
+        useEffect(() => {
+            const load = setInterval(() => {
+                if (isOpenConfirmAddLiquidity) {
+                    setPreFetch(true);
+                } else {
+                    setPreFetch(false);
+                }
+            }, 20000)
+            return () => {
+                clearInterval(load)
+            }
+        }, [isOpenConfirmAddLiquidity])
+        const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
             dmlToken,
             wallet,
             account,
             isOpenTransaction,
             false,
             false,
-            isOpenConfirmAddLiquidity
+            isOpenConfirmAddLiquidity,
+            true,
+            updatePrice
         );
 
         useEffect(() => {
@@ -257,11 +272,28 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                                     Insufficient NFT balance
                                 </p>
                             )} */}
+                        {
+                            preFectch && (
+                                <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+                                    <p className="text-xs">Price Updated</p>
+                                    <Button disabled={isLoadingInforDML} primary className="px-6 py-2 bg-secondary5" onClick={() => {
+                                        setUpdatePrice(!updatePrice);
+                                        setPreFetch(false);
+                                    }}>Accept</Button>
+                                </div>
+                            )
+                        }
+                        <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
+                            <p>Slippage tolerance</p>
+                            <p>{slippage}%</p>
+                        </div>
+                        <p className="mt-2 mb-6 text-sm text-dark2">Output is estimated. You will receive at least {inputNFT} NFT or the transaction will revert</p>
                         <div className="flex flex-col items-center mt-6">
                             {isApprovedToken && (
                                 <button
                                     type="button"
-                                    className="py-2 w-[144px] bg-secondary2 rounded-lg text-sm text-white mx-auto block"
+                                    disabled={isLoadingInforDML}
+                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={addLiquidity}
                                 >
                                     Create pool
