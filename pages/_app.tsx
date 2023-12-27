@@ -20,11 +20,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NextAdapterPages from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
-import '@rainbow-me/rainbowkit/styles.css';
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit'
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -105,21 +100,19 @@ export default function App({
           }
         `}</style>
           <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider chains={chains}>
-              {isMaintenanceMode ? (
-                <Layout>
-                  <MaintenanceError />
-                </Layout>
-              ) : Component.PageLayout ? (
-                <Component.PageLayout>
-                  <Component {...pageProps} />
-                </Component.PageLayout>
-              ) : (
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              )}
-            </RainbowKitProvider>
+            {isMaintenanceMode ? (
+              <Layout>
+                <MaintenanceError />
+              </Layout>
+            ) : Component.PageLayout ? (
+              <Component.PageLayout>
+                <Component {...pageProps} />
+              </Component.PageLayout>
+            ) : (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )}
           </WagmiConfig>
 
           <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
