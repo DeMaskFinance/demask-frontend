@@ -16,7 +16,8 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
     isFetching,
     demask
 }) => {
-
+    console.log(data);
+    
     return (
         <>
             {isLoading || isFetching ? (
@@ -26,7 +27,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                     {data &&
                         data?.data?.map((item: any, idx: number) => (
                             <tr
-                                key={idx} className="flex px-2 text-sm border-b rounded-lg hover:cursor-pointer lg:text-base md:text-base text-dark2 group hover:bg-slate-100">
+                                key={idx} className="flex px-2 text-xs border-b rounded-lg hover:cursor-pointer text-dark2 group hover:bg-slate-100">
                                 <td className="py-2 lg:w-full md:w-[175px] w-[200px]">
                                     <div
                                         className="flex items-center justify-start transition-all w-[inherit]"
@@ -34,10 +35,10 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                         {item.blockTime}
                                     </div>
                                 </td>
-                                <td className="py-2 flex items-center lg:w-full md:w-full w-[140px]">
+                                <td className="py-2 flex items-center md:w-[70%] w-[100px]">
                                     <div className="flex items-center justify-end text-green">
                                         <span
-                                            className={`border text-sm ${item.action === "Buy" || item.action === "Add"
+                                            className={`border text-xs ${item.action === "Buy" || item.action === "Add"
                                                 ? "border-green text-green"
                                                 : "border-red text-red"
                                                 } p-1 rounded-lg`}
@@ -46,8 +47,14 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                         </span>
                                     </div>
                                 </td>
-                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
+                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[100px]">
                                     <FormatNumber number={item.amountNFT} />
+                                </td>
+                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
+                                    <div className="flex items-center justify-center md:gap-2">
+                                        <FormatNumber number={item.price} />
+                                        <EtherIcon width={18} height={18} className="fill-dark2" />
+                                    </div>
                                 </td>
                                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                                     <div className="flex items-center justify-end md:gap-2">
