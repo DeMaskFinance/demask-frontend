@@ -27,7 +27,6 @@ interface ModalConfirmAddLiquidityProps {
     data: any;
     inputNFT: string;
     inputToken: string;
-    symbolToken: string;
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
@@ -49,7 +48,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     data,
     inputToken,
     inputNFT,
-    symbolToken,
     nftAddress,
     idNFT,
     isOpenTransaction,
@@ -255,7 +253,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <FormatNumber number={amountErcDesiredToDec} />
-                            <p>{symbolToken}</p>
+                            <p>{data?.tokenSymbol}</p>
                         </div>
                         {isSufficientToken && (
                             <p className="text-xs text-red" key="inputNFT">

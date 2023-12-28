@@ -52,7 +52,6 @@ export default function DetailLiquidity() {
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
   const [page, setPage] = useState(1);
-  const [tokenSymbol, setTokenSymbol] = useState("");
 
   useEffect(() => {
     if (liquidity) {
@@ -110,15 +109,7 @@ export default function DetailLiquidity() {
       console.log("No account and DML");
     }
   };
-  useEffect(() => {
-    if (tokenDefault && data) {
-      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
-        setTokenSymbol(data.tokenSymbol)
-      } else {
-        setTokenSymbol(tokenDefault[0].symbol)
-      }
-    }
-  }, [data, tokenDefault])
+
   const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
     setPage((next) => Math.min(next + 1, data?.totalPages));
@@ -153,7 +144,7 @@ export default function DetailLiquidity() {
                 <div className="text-2xl text-dark1 font-medium ml-[18px] flex items-center">
                   <span>{data?.metadata?.symbol}</span>
                   <span className="block overflow-hidden leading-[18px]">/</span>
-                  <span>{tokenSymbol}</span>
+                  <span>{data.tokenSymbol}</span>
                 </div>
               )}
               {isLoading && (
@@ -174,7 +165,7 @@ export default function DetailLiquidity() {
               <MediaNFT data={data} isControls={true} />
               <div className="w-full">
                 <p
-                  className="block mx-auto mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
+                  className="block mx-auto mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
                   onClick={handleShowDetail}
                 >
                   Show detail
@@ -313,7 +304,7 @@ export default function DetailLiquidity() {
             <MediaNFT data={data} isControls={true} />
             <div className="w-full">
               <p
-                className="block mx-auto mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
+                className="block mx-auto mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
                 onClick={handleShowDetail}
               >
                 Show detail
@@ -336,7 +327,6 @@ export default function DetailLiquidity() {
         <>
           <ModalAddLiquidity
             data={data}
-            tokenSymbol={tokenSymbol}
             isOpenAddLiquidity={isOpenAddLiquidity}
             setIsOpenLiquidity={setIsOpenAddLiquidity}
             setHash={setHash} setIsOpenSuccess={setIsOpenSuccessAdd} setIsOpenError={setIsOpenErrorAdd}
@@ -348,7 +338,6 @@ export default function DetailLiquidity() {
         <>
           <ModalRemmoveLiquidity
             data={data}
-            tokenSymbol={tokenSymbol}
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}

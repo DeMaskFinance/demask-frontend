@@ -58,7 +58,6 @@ export default function AddLiquidity() {
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
-  const [symbolToken, setSymbolToken] = useState<string>('');
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [hash, setHash] = useState<string>('');
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -148,15 +147,6 @@ export default function AddLiquidity() {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  useEffect(() => {
-    if (tokenDefault && data) {
-      if (data.tokenSymbol === "WETH" || data.tokenSymbol === "WBNB") {
-        setSymbolToken(tokenDefault[0].symbol)
-      } else {
-        setSymbolToken(data.tokenSymbol)
-      }
-    }
-  }, [data, tokenDefault, chainId])
 
   useEffect(() => {
     if (tokenAddress) {
@@ -270,7 +260,7 @@ export default function AddLiquidity() {
                         <TokenIconNotDefine width={24} height={24} className="fill-secondary5" />
                       </div>
                     )}
-                    {symbolToken}
+                    {data?.tokenSymbol}
                   </div>
                   <DownIcon width={24} height={24} />
                 </div>
@@ -382,7 +372,7 @@ export default function AddLiquidity() {
             <div className="flex flex-col items-center w-full h-full ">
               <MediaNFT data={data} isControls={true} />
               <p
-                className="mt-2 text-sm text-secondary5 hover:cursor-pointer hover:text-secondary3"
+                className="mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3"
                 onClick={handleShowDetail}
               >
                 Show detail
@@ -417,7 +407,7 @@ export default function AddLiquidity() {
       />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       {data && account && (
-        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
+        <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
       )}
       <ModalSuccess isOpenSuccess={isOpenSuccess} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccess} />
       <ModalError isOpenError={isOpenError} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenError} />

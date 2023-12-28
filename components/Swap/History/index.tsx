@@ -21,8 +21,6 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
 
         keepPreviousData: true,
     });
-    console.log(data);
-    console.log(dataHistory);
 
     const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
     const nextPage = () =>
@@ -43,7 +41,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                         <button
                             key={idx}
                             className={`py-2 px-4 ${tab === item.tab ? "bg-secondary5" : ""
-                                } rounded-lg text-sm`}
+                                } rounded-lg text-xs`}
                             type="button"
                             onClick={() => {
                                 setTab(item.tab)

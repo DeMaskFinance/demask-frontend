@@ -20,7 +20,6 @@ import formatNumber from "@/libs/utils/formatNumer";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
-  tokenSymbol: string;
   setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,7 +34,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
 > = ({
   isOpenRemoveLiquidity,
   data,
-  tokenSymbol,
   setIsOpenRemoveLiquidity,
   setHash,
   setIsOpenSuccess,
@@ -150,7 +148,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 <div className="flex items-center leading-[16px] ml-1">
                   <span> {data?.metadata?.symbol}</span>
                   <span className="overflow-hidden">/</span>
-                  <span>{tokenSymbol}</span>
+                  <span>{data.tokenSymbol}</span>
                 </div>
               )}
             </p>
@@ -209,7 +207,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                     <div className={styles.inputItem}>
                       <div className="flex justify-between">
                         <FormatNumber number={amountTokenDec}/>
-                        <p className="text-dark3">{tokenSymbol}</p>
+                        <p className="text-dark3">{data.tokenSymbol}</p>
                       </div>
                     </div>
                     {Number(amountTokenMin) < 1 && inputLiquidity && (
@@ -258,7 +256,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} symbolToken={tokenSymbol} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}/>
+        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}/>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       </Wrapper>

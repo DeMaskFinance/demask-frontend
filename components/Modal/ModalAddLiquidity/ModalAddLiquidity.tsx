@@ -18,7 +18,6 @@ import Wrapper from "../Wrapper";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: any;
-  tokenSymbol: string;
   setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,7 +30,6 @@ const styles = {
 const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   isOpenAddLiquidity,
   data,
-  tokenSymbol,
   setIsOpenLiquidity,
   setHash,
   setIsOpenSuccess,
@@ -148,7 +146,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
               <div className="flex items-center leading-[16px] ml-1">
                 <span> {data?.metadata?.symbol}</span>
                 <span className="overflow-hidden">/</span>
-                <span>{tokenSymbol}</span>
+                <span>{data?.tokenSymbol}</span>
               </div>
             )}
           </p>
@@ -266,7 +264,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={data.tokenAddress} nftAddress={data.nftAddress} idNFT={data.nftID} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} symbolToken={tokenSymbol} setInputNFT={setInputNFT} setIsOpenLiquidity={setIsOpenLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
+      <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={data.tokenAddress} nftAddress={data.nftAddress} idNFT={data.nftID} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} setInputNFT={setInputNFT} setIsOpenLiquidity={setIsOpenLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
     </Wrapper>
 

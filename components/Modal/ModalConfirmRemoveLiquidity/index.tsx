@@ -25,7 +25,6 @@ interface ModalConfirmRemoveLiquidityProps {
     isOpenConfirmRemoveLiquidity: boolean;
     data: any;
     inputLiquidity: string;
-    symbolToken: string;
     isOpenTransaction: boolean;
     totalSupply: string;
     setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
@@ -43,7 +42,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     isOpenConfirmRemoveLiquidity,
     data,
     inputLiquidity,
-    symbolToken,
     isOpenTransaction,
     totalSupply,
     setIsOpenTransaction,
@@ -231,7 +229,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <FormatNumber number={amountTokenDec} />
-                            <p>{symbolToken}</p>
+                            <p>{data.tokenSymbol}</p>
                         </div>
                         {
                             preFectch && (

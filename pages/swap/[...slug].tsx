@@ -280,10 +280,10 @@ const Swap: React.FC = () => {
                     <MediaNFT data={data} isControls={true} />
                   </div>
                   <p
-                    className="mx-auto mt-1 cursor-pointer text-dark3 hover:text-secondary3"
+                    className="mx-auto mt-1 text-xs cursor-pointer text-dark3 hover:text-secondary3"
                     onClick={handleShowDetail}
                   >
-                    See detail
+                    Show detail
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
