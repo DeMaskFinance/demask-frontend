@@ -3,15 +3,12 @@ import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
-import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
-import ChartKline from "@/components/Charts/ChartSwapKLine";
-import Image from "next/image";
-import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',

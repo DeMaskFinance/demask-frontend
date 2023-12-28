@@ -21,6 +21,7 @@ import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import { BiLoaderAlt } from "react-icons/bi";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
@@ -109,7 +110,7 @@ const ModalBuyNFT: React.FunctionComponent<
                 clearInterval(load)
             }
         }, [isOpenBuyNFT])
-
+        
         useEffect(() => {
             const checkReservesNFT = () => {
                 if (data && Number(inputNFT) < Number(reserveNFT)) {
@@ -281,7 +282,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <p>Maximum amount</p>
                                 <div className="flex gap-x-1">
                                     <div className="flex items-center">
-                                        <FormatNumber number={(Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()} />
+                                        <FormatNumber number={(Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals))).toString()} />
                                         <p>
                                             <EtherIcon width={14} height={14} className="fill-dark2" />
                                         </p>
@@ -334,10 +335,13 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <button
                                     type="button"
                                     disabled={isLoadingInforDML}
-                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={handleBuyNFT}
                                 >
                                     BUY NFT
+                                    {isLoadingInforDML && (
+                                        <BiLoaderAlt className="text-white animate-spin" />
+                                    )}
                                 </button>
                             ) : (
                                 <Button

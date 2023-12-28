@@ -223,7 +223,7 @@ export default function Header() {
           </div>
         </div>
       </header>
-      <div className="absolute z-[200]">
+      <div className="absolute z-[50]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <WrongNetwork />

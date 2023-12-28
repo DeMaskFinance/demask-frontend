@@ -260,11 +260,14 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             {(isApprovedLiquidity) && (
                                 <button
                                     type="button"
-                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     disabled={isLoadingInforDML}
                                     onClick={removeLiquidity}
                                 >
                                     CONFIRM
+                                    {isLoadingInforDML && (
+                                        <BiLoaderAlt className="text-white animate-spin" />
+                                    )}
                                 </button>
                             )}
                         </div>

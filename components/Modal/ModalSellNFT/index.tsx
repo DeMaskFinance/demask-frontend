@@ -17,6 +17,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { Button } from "@/components/Buttons";
+import { BiLoaderAlt } from "react-icons/bi";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
@@ -222,7 +223,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
                                 <div className="flex items-center">
-                                    <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
+                                    <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
@@ -278,10 +279,13 @@ const ModalSellNFT: React.FunctionComponent<
                             <button
                                 type="button"
                                 disabled={isLoadingInforDML}
-                                className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                 onClick={handleSellNFT}
                             >
                                 SELL NFT
+                                {isLoadingInforDML && (
+                                    <BiLoaderAlt className="text-white animate-spin" />
+                                )}
                             </button>
                         </div>
                     </div>

@@ -17,7 +17,6 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const handleFocus = () => {
     setIsFocused(true);
   };
-  console.log(demask);
   
   return (
     <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">

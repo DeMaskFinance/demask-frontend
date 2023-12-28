@@ -8,6 +8,7 @@ interface MediaNFTProps {
     launchpad?: boolean
 }
 const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad }) => {
+    
     return (
         <>
             {data?.metadata && (
@@ -21,6 +22,9 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad 
                             sizes="(max-width: 770px) 100vw"
                             className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
                             blurDataURL={`${images.blur}`}
+                            onError={(event: any) => {
+                                event.target.srcset = "https://images.unsplash.com/photo-1511285605577-4d62fb50d2f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=876&q=80";
+                            }}
                         />
                     )}
                     {!data.metadata?.image && data.metadata?.animation_url && (
@@ -38,6 +42,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad 
                                 }
                                 : {})}
                             className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
+                            poster="/Placeholder.png"
                         />
                     )}
                     {data.metadata?.image && data.metadata?.animation_url && !launchpad && (
