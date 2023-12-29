@@ -279,7 +279,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <button
                                 type="button"
                                 disabled={isLoadingInforDML}
-                                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                 onClick={handleSellNFT}
                             >
                                 SELL NFT

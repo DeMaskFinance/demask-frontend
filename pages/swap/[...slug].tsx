@@ -234,11 +234,14 @@ const Swap: React.FC = () => {
         <SkeletonReels />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex mb-6 gap-x-2">
+          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
             <div onClick={() => router.back()}>
               <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
             </div>
-            <h1 className="text-xl font-semibold text-dark0">Detail Swap</h1>
+            <div className="w-[30px] h-[30px]">
+              <MediaNFT data={data} isControls={false} />
+            </div>
+            <p>{data?.metadata.name}</p>
           </div>
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
             <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
@@ -331,31 +334,15 @@ const Swap: React.FC = () => {
                       </p>
                     )}
                   </div>
-                  <div className="">
-                    {activeChoice === "BUY" && (
-                      <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
-                        {inputNFT ? (
-                          <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
-                        ) : (
-                          <span>0</span>
-                        )}
-                        <span className="mb-1 ml-2">
-                          <EtherIcon width={20} height={20} className="fill-secondary4" />
-                        </span>
-                      </div>
+                  <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
+                    {inputNFT ? (
+                      <FormatNumber number={divideByDecimal((activeChoice === "BUY" ? amountTokenBuy : amountTokenSell).toString(), data.tokenDecimals)} />
+                    ) : (
+                      <span>0</span>
                     )}
-                    {activeChoice === "SELL" && (
-                      <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
-                        {inputNFT ? (
-                          <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
-                        ) : (
-                          <span>0</span>
-                        )}
-                        <span className="mb-1 ml-2">
-                          <EtherIcon width={20} height={20} className="fill-secondary4" />
-                        </span>
-                      </div>
-                    )}
+                    <span className="mb-1 ml-2">
+                      <EtherIcon width={20} height={20} className="fill-secondary4" />
+                    </span>
                   </div>
                 </div>
 
@@ -516,7 +503,7 @@ const Swap: React.FC = () => {
                   {activeChoice === "BUY" && account && (
                     <button
                       type="button"
-                      className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
+                      className="py-2 w-[144px] bg-green hover:text-green hover:bg-white hover:border-green border rounded-lg text-sm text-white"
                       onClick={handleBuy}
                     >
                       BUY NFT
