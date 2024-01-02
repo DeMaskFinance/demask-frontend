@@ -269,7 +269,9 @@ export default function DetailLaunchPad() {
                     <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-dark1">
                       <div>
                         <p>Supported</p>
-                        <LogoIconTable width={18} height={18} chainId={chainId} className="float-left mt-1 gap-x-1"/>
+                        <div className="flex justify-start">
+                          <LogoIconTable width={18} height={18} chainId={chainId} className="float-left mt-1 gap-x-1" />
+                        </div>
                       </div>
                       <div>
                         <p>Total raise</p>

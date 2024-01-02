@@ -44,6 +44,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   //   }
   // }, [isConnected, address]);
   const connectWallet = async (walletName: string) => {
+
     switch (walletName) {
       case "Binance":
         if (window.BinanceChain) {
@@ -88,7 +89,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
       default:
         const provider = await getProvider(walletName);
         const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId, setTab);
-        console.log(networkSwitched);
 
         if (!networkSwitched) {
           return;
@@ -160,14 +160,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
             />
             <p>Binance wallet</p>
           </div>
-          {/* {isConnected ? (
-            <>
-              <p>{address}</p>
-              <button onClick={() => disconnect}>Disconnect</button>
-            </>
-          ) : (
-            <button onClick={() => console.log("abc")}>Disconnect</button>
-          )} */}
         </div>
         <button
           className="absolute top-0 right-0 p-6 text-lg"

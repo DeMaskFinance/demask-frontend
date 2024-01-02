@@ -241,7 +241,7 @@ const Swap: React.FC = () => {
             <div className="w-[30px] h-[30px]">
               <MediaNFT data={data} isControls={false} />
             </div>
-            <p>{data?.metadata.name}</p>
+            <p>{data?.metadata?.name}</p>
           </div>
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
             <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">

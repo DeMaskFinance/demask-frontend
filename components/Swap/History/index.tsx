@@ -54,10 +54,10 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                 <table className="w-full text-left border-collapse">
                     <thead className="">
                         <tr className="flex pb-2 text-sm border-b ">
-                            <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                            <th className="flex justify-center lg:w-full md:w-full w-[200px]">
                                 <p className='lg:w-full md:w-[175px] w-[200px]'>Time</p>
                             </th>
-                            <th className="flex md:w-[70%] w-[100px]">
+                            <th className="flex justify-center md:w-[70%] w-[100px]">
                                 Type
                             </th>
                             <th className="flex justify-center lg:w-full md:w-full w-[100px]">
@@ -66,13 +66,13 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                             <th className="flex justify-center lg:w-full md:w-full w-[140px]">
                                 Price
                             </th>
-                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                                Token amount
+                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                                Total
                             </th>
-                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
                                 From
                             </th>
-                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
                                 Tx
                             </th>
                         </tr>

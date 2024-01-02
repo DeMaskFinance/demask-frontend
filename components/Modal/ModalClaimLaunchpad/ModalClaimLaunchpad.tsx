@@ -33,7 +33,6 @@ const ModalClaimLaunchpad: React.FunctionComponent<
         const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { release } = useLaunchpadInfor(account, data.launchpad, wallet, isOpenTransaction);
-        const [gasFee, setGasFee] = useState<string>('');
         console.log(data);
         console.log(release.toString());
 
@@ -42,39 +41,6 @@ const ModalClaimLaunchpad: React.FunctionComponent<
             document.body.style.overflowY = "auto";
             setIsOpenConfirmClaim(false);
         };
-        useEffect(() => {
-            const getFeeGas = async () => {
-                const providerChoice = await getProvider(wallet);
-                const provider = new ethers.providers.Web3Provider(providerChoice);
-                const signer = provider.getSigner();
-                const contract = new ethers.Contract(
-                    data.launchpad,
-                    abiLaunchPad,
-                    signer
-                );
-                const gasLimit = 8000000;
-                const result = await contract.estimateGas.balanceOf(account);;
-                // var result = web3.eth.estimateGas({
-                //     to: data.launchpad, 
-                //     data: "0x08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000305472616e7366657248656c7065723a205452414e534645525f46524f4d5f4e46545f455243313135355f4641494c454400000000000000000000000000000000"
-                //  });
-                const gasUse = await provider.getGasPrice();
-                const gasUseInEther = web3.utils.fromWei(gasUse.toString(), 'ether');
-                const gasLimitEther = web3.utils.fromWei(result.toString(), 'ether');
-                const test = web3.utils.fromWei((Number(gasUse) * Number(result)).toString(), 'ether');
-                setGasFee(gasUse.toString());
-                console.log({
-                    result: result.toString(),
-                    gasUse: gasUse.toString(),
-                    gasUseETH: gasUseInEther,
-                    gasLimitETH: gasLimitEther,
-                    test: test.toString(),
-                });
-
-            }
-            getFeeGas();
-        }, [])
-        console.log(gasFee);
 
         return (
             <Wrapper isOpen={isOpenConfirmClaim} onClick={handleClose}>
