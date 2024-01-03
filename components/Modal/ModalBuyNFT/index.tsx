@@ -27,7 +27,6 @@ interface ModalBuyNFTProps {
     tokenAddress: string;
     data: any;
     inputNFT: string;
-    symbolToken: string;
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
@@ -46,7 +45,6 @@ const ModalBuyNFT: React.FunctionComponent<
     tokenAddress,
     data,
     inputNFT,
-    symbolToken,
     nftAddress,
     idNFT,
     isOpenTransaction,
@@ -231,7 +229,8 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             }
         };
-
+        console.log(data);
+        
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -241,7 +240,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <FormatNumber number={divideByDecimal(totalProcessBuy.toString(), data.tokenDecimals).toString()} />
-                            <p>{symbolToken}</p>
+                            <p>{data?.tokenSymbol}</p>
                         </div>
                         <div>
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />

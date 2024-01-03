@@ -11,6 +11,7 @@ import { useInView } from "react-intersection-observer";
 import { SEO } from '../../next-seo.config';
 import { useSelector } from "react-redux";
 import { selectProfile } from "@/store/profileSlice";
+import Web3 from "web3";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',
@@ -50,7 +51,6 @@ export default function Liquidity() {
           : undefined,
     }
   );
-
   return (
     <div className="py-8 max-w-4xl mx-auto min-h-[75vh]">
       <NextSeo {...updateMeta} />

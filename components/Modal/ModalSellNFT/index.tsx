@@ -23,7 +23,6 @@ interface ModalSellNFTProps {
     tokenAddress: string;
     data: any;
     inputNFT: string;
-    symbolToken: string;
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
@@ -42,7 +41,6 @@ const ModalSellNFT: React.FunctionComponent<
     tokenAddress,
     data,
     inputNFT,
-    symbolToken,
     nftAddress,
     idNFT,
     isOpenTransaction,
@@ -188,7 +186,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
-                            <p>{symbolToken}</p>
+                            <p>{data?.tokenSymbol}</p>
                         </div>
                         {
                             preFectch && (
@@ -207,7 +205,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </div>
                         <div className="flex flex-wrap mt-2 mb-6 text-sm text-dark2 gap-x-1">
                             <span>Output is estimated. You will receive at least</span>
-                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} /> {symbolToken}</span>
+                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} /> {data.metadata?.symbol}</span>
                             <span> or the transaction will revert</span>
                         </div>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">

@@ -1,18 +1,13 @@
+import AccountContext from "@/context/AccountContext";
+import { getProvider } from "@/libs/connection/getProvider";
+import { changeNetwork } from "@/libs/utils/changeNetwork";
 import images from "@/public/images";
 import Image from "next/image";
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { getProvider } from "@/libs/connection/getProvider";
-import Web3 from "web3";
-import { checkNetwork } from "@/libs/validation/checkNetwork";
-import AccountContext from "@/context/AccountContext";
-import Wrapper from "../Wrapper";
-import { useWeb3Modal } from '@web3modal/react'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
-import { ethers } from "ethers";
-import { changeNetwork } from "@/libs/utils/changeNetwork";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import Web3 from "web3";
+import Wrapper from "../Wrapper";
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -24,25 +19,12 @@ const styles = {
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet, updateChainId } = useContext(AccountContext);
-  const [walletWeb3, setWalletWeb3] = useState("");
-  const { open, close } = useWeb3Modal();
-  const { address, isConnecting, isDisconnected, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
   const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);
   };
-  // useEffect(() => {
-  //   if (isConnected) {
-  //     // Thực hiện các hành động sau khi kết nối thành công
-  //     updateAccount(address);
-  //     updateWallet("WalletConnect");
-  //     document.body.style.overflowY = "auto";
-  //     setIsOpen(false);
-  //   }
-  // }, [isConnected, address]);
   const connectWallet = async (walletName: string) => {
 
     switch (walletName) {
@@ -74,8 +56,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
       case "WalletConnect":
         const providerWallet = await getProvider(walletName);
         try {
-          // await open();
-          // console.log(address);
           await providerWallet.connect();
           const accounts = await providerWallet.accounts;
           updateAccount(accounts[0]);
@@ -106,12 +86,19 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
                 console.error(error);
               }
             });
+          const msg = `0x${Buffer.from("DEMASK", 'utf8').toString('hex')}`;
+          const signedData = await provider?.request({
+            method: "personal_sign",
+            params: [
+              JSON.stringify(msg),
+              accounts[0],
+            ],
+          });
+          console.log(signedData);
           updateAccount(accounts[0]);
           updateWallet(walletName);
-          setWalletWeb3(walletName);
           document.body.style.overflowY = "auto";
           setIsOpen(false);
-          console.log(accounts);
         } catch (error: any) {
           console.log(error);
         }

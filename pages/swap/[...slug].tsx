@@ -48,7 +48,6 @@ const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const [symbolToken, setSymbolToken] = useState<string>('');
   const [idNFT, setIdNFT] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
@@ -106,15 +105,6 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
-  useEffect(() => {
-    if (tokenDefault && data) {
-      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
-        setSymbolToken(data.tokenSymbol)
-      } else {
-        setSymbolToken(tokenDefault[0].symbol)
-      }
-    }
-  }, [data, slug, tokenDefault])
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
@@ -213,10 +203,6 @@ const Swap: React.FC = () => {
     setIsOpenDetail(true);
     document.body.style.overflowY = "hidden";
   };
-  const handleSearchToken = () => {
-    setIsOpenSearchToken(true);
-    document.body.style.overflowY = "hidden";
-  };
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -291,35 +277,7 @@ const Swap: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="font-semibold">
-                    <div className="flex text-xl text-dark1">
-                      {symbolToken && isSuccess ? (
-                        <div className="relative flex items-center">
-                          {data.metadata?.symbol ? (
-                            <div className="max-w-[96px]">
-                              <ModalDocument data={data.metadata?.symbol} />
-                            </div>
-                          ) : (
-                            <span>{idNFT}</span>
-                          )}
-                          <span className="block overflow-hidden leading-4">/</span>
-                          <span>{symbolToken}</span>
-                        </div>
-                      ) : (
-                        <div className="w-20 h-5 rounded-full animate-pulse bg-slate-200"></div>
-                      )}
-                      <span className="ml-1">
-                        <ActiveIcon
-                          width={24}
-                          height={24}
-                          className={
-                            data.dmlAddress ===
-                              null
-                              ? "fill-red"
-                              : ""
-                          }
-                        />
-                      </span>
-                    </div>
+                    
                     {account && activeChoice === "BUY" && (
                       <div className="flex items-center text-dark2">
                         Balance:{formatNumber(balanceToken)}
@@ -574,10 +532,10 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
       )}
       {data && account && (
-        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
+        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />

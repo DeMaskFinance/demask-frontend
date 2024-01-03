@@ -11,6 +11,7 @@ import ChartLoading from './ChartLoading';
 import ChartNoTransfers from './ChartNoTransfers';
 import FormatNumber from '../Common/FormatNumber';
 import AccountContext from '@/context/AccountContext';
+import { EtherIcon } from '../Icons';
 interface BarData {
     time: string;
     value: number;
@@ -182,11 +183,41 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 </div>
             ) : data && newData?.length > 0 ? (
                 <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
+                    <div className='flex-wrap hidden mb-2 text-xs border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
+                        <div className='flex p-4 border-r border-dark3'>
+                            <p>24h Change:</p>
+                            <p className='text-red'>1.27%</p>
+                        </div>
+                        <div className='flex p-4 border-r border-dark3'>
+                            <p>Mkt.cap:</p>
+                            <div className='flex items-center'>
+                                <p>123</p>
+                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                            </div>
+                        </div>
+                        <div className='flex p-4 border-r border-dark3 gap-x-1'>
+                            <p>Supply</p>
+                            <p>125</p>
+                        </div>
+                        <div className='flex p-4 border-r border-dark3 gap-x-1'>
+                            <p>Liquidity</p>
+                            <div className='flex items-center'>
+                                <p>123</p>
+                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                            </div>
+                        </div>
+                        <div className='flex p-4 gap-x-1'>
+                            <p>LP fees earned:</p>
+                            <div className='flex items-center'>
+                                <p>123</p>
+                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                            </div>
+                        </div>
+                    </div>
                     <div
                         id="legend"
                         className="secondary heading-XXS"
                         style={{
-                            marginLeft: "1rem",
                             marginBottom: "0.5rem",
                             fontFamily: "unset",
                         }}
