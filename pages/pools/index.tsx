@@ -9,6 +9,8 @@ import { useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
 import { SEO } from '../../next-seo.config';
+import { useSelector } from "react-redux";
+import { selectProfile } from "@/store/profileSlice";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',
@@ -23,7 +25,9 @@ export default function Liquidity() {
     const idNFT = demask.IDNFT;
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
-  const { ref, inView } = useInView();
+  // const { profile, isLoggedIn } = useSelector(selectProfile);
+  // console.log(profile, isLoggedIn);
+
   const fetchDataListLiquidity = async (accountUser: string, pageParam = 1, chainId: string | string[]) => {
     const data = await liquidityListAPI(accountUser.toLowerCase(), pageParam, chainId);
     return data;
