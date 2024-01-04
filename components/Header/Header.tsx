@@ -174,12 +174,13 @@ export default function Header() {
                 interactive
                 render={(attrs) => (
                   <div
-                    className="w-[200px] px-2 h-[100px] border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1"
+                    className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1"
                     tabIndex={-1}
                     {...attrs}
                   >
                     <ul className="pb-2 mt-2">
                       <Link href='/profile' className={`${style.itemSub}`}>Profile</Link>
+                      <Link href='profile/edit' className={`${style.itemSub}`}>Edit profile</Link>
                       <li
                         className={`${style.itemSub} justify-between mb-2`}
                         onClick={disconnectWallet}

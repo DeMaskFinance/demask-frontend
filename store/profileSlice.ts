@@ -4,13 +4,15 @@ interface ProfileState {
   isLoggedIn: boolean;
   user: string;
   profile: {
+    name?: string;
     username?: string;
-    address?: string;
     email?: string;
     avatar?: string;
-    cover?: string;
     socials?: Socials;
     about?: string;
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date | null;
   };
 }
 const profileSlice = createSlice({
