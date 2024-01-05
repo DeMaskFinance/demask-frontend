@@ -4,4 +4,5 @@ interface Socials {
     telegram: string;
     discord: string;
     website: string;
+    github: string;
   }
