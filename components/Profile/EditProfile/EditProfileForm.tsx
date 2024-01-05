@@ -12,112 +12,112 @@ const styles = {
     inputItem: "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3",
     btnActive: "rounded-full bg-base2",
 };
+const validationSchema = yup.object().shape({
+    name: yup.string().nullable().notRequired().max(50),
+    username: yup
+        .string()
+        .nullable()
+        .notRequired()
+        .max(50)
+        .matches(/^[\w\d_]+$/, {
+            message:
+                'Username must only contain alphanumeric characters and symbol "_"',
+            excludeEmptyString: true,
+        }),
+    about: yup.string().max(200),
+    twitter: yup
+        .string()
+        .max(200)
+        .matches(/^(https:\/\/twitter.com\/).+$/, {
+            message: "Invalid twitter url",
+            excludeEmptyString: true,
+        }),
+    facebook: yup
+        .string()
+        .max(200)
+        .matches(/^(https:\/\/facebook.com\/).+$/, {
+            message: "Invalid facebook url",
+            excludeEmptyString: true,
+        }),
+    discord: yup
+        .string()
+        .max(200)
+        .matches(/^(https:\/\/discord.com\/).+$/, {
+            message: "Invalid discord url",
+            excludeEmptyString: true,
+        }),
+    telegram: yup
+        .string()
+        .max(200)
+        .matches(/^(https:\/\/t.me\/).+$/, {
+            message: "Invalid telegram url",
+            excludeEmptyString: true,
+        }),
+    website: yup.string().url().nullable(),
+    gmail: yup.string().matches(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/, "Gmail must be a valid email"),
+});
+const initialValues = {
+    name: '',
+    username: '',
+    about: '',
+    twitter: '',
+    facebook: '',
+    discord: '',
+    telegram: '',
+    website: '',
+    gmail: '',
+};
 export default function EditProfileForm() {
     const { profile } = useSelector(selectProfile);
-    const validationSchema = yup.object().shape({
-        name: yup.string().nullable().notRequired().max(1, "Loi"),
-        username: yup
-            .string()
-            .nullable()
-            .notRequired()
-            .max(50)
-            .matches(/^[\w\d_]+$/, {
-                message:
-                    'Username must only contain alphanumeric characters and symbol "_"',
-                excludeEmptyString: true,
-            }),
-        about: yup.string().max(200),
-        twitter: yup
-            .string()
-            .max(200)
-            .matches(/^(https:\/\/twitter.com\/).+$/, {
-                message: "Invalid twitter url",
-                excludeEmptyString: true,
-            }),
-        facebook: yup
-            .string()
-            .max(200)
-            .matches(/^(https:\/\/facebook.com\/).+$/, {
-                message: "Invalid facebook url",
-                excludeEmptyString: true,
-            }),
-        discord: yup
-            .string()
-            .max(200)
-            .matches(/^(https:\/\/discord.com\/).+$/, {
-                message: "Invalid discord url",
-                excludeEmptyString: true,
-            }),
-        telegram: yup
-            .string()
-            .max(200)
-            .matches(/^(https:\/\/t.me\/).+$/, {
-                message: "Invalid telegram url",
-                excludeEmptyString: true,
-            }),
-        website: yup.string().url().nullable(),
-        gmail: yup.string().matches(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/, "Gmail must be a valid email"),
-    });
-    const initialValues = {
-        name: '',
-        username: '',
-        about: '',
-        twitter: '',
-        facebook: '',
-        discord: '',
-        telegram: '',
-        website: '',
-        gmail: '',
-    };
     const socialList = [
         {
             icon: <GmailIcon width={24} height={24} />,
             title: "Gmail",
             name: "gmail",
             placeHolder: "Enter your gmail",
-            value: profile.email,
+            value: profile?.email,
         },
         {
             icon: <WebsiteIcon width={24} height={24} />,
             title: "Website",
             name: "website",
             placeHolder: "https://",
-            value: profile.socials?.website,
+            value: profile?.socials?.website,
         },
         {
             icon: <TwitterIcon width={24} height={24} />,
             title: "Twitter",
             name: "twitter",
             placeHolder: "https://twitter.com/",
-            value: profile.socials?.twitter,
+            value: profile?.socials?.twitter,
         },
         {
             icon: <FacebookIcon width={24} height={24} />,
             title: "Facebook",
             name: "facbook",
             placeHolder: "https://facebook.com/",
-            value: profile.socials?.facebook,
+            value: profile?.socials?.facebook,
         },
         {
             icon: <TeleIcon width={24} height={24} className='fill-dark2' />,
             title: "Telegram",
             name: "telegram",
             placeHolder: "https://t.me/",
-            value: profile.socials?.telegram,
+            value: profile?.socials?.telegram,
         },
         {
             icon: <DiscordIcon width={24} height={24} />,
             title: "Discord",
             name: "discord",
             placeHolder: "https://discord.com/",
-            value: profile.socials?.discord,
+            value: profile?.socials?.discord,
         },
         {
             icon: <GithubIcon width={24} height={24} />,
             title: "Github",
             name: "github",
             placeHolder: "https://github.com/",
-            value: profile.socials?.github,
+            value: profile?.socials?.github,
         },
     ]
     const onSubmit = (values: any) => {
@@ -134,18 +134,18 @@ export default function EditProfileForm() {
                 <Form className='mx-auto max-w-[600px]'>
                     <div className='flex flex-col'>
                         <label htmlFor="name" className={styles.title}>Name</label>
-                        <Field type="text" id="name" name="name" value={profile.name} placeholder="Enter your name" className={styles.inputItem} />
+                        <Field type="text" id="name" name="name" value={profile?.name} placeholder="Enter your name" className={styles.inputItem} />
                         <ErrorMessage name="name" component="div" className="mt-2 text-xs text-red" />
                     </div>
 
                     <div className='flex flex-col'>
                         <label htmlFor="username" className={styles.title}>Username</label>
-                        <Field type="text" id="username" name="username" value={profile.username} placeholder="Enter your username" className={styles.inputItem} />
+                        <Field type="text" id="username" name="username" value={profile?.username} placeholder="Enter your username" className={styles.inputItem} />
                         <ErrorMessage name="username" component="div" className="text-red-500" />
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor="about" className={styles.title}>About</label>
-                        <Field as="textarea" type="text" id="about" name="about" value={profile.about} placeholder="Tell about yourself" className={styles.inputItem} />
+                        <Field as="textarea" type="text" id="about" name="about" value={profile?.about} placeholder="Tell about yourself" className={styles.inputItem} />
                         <ErrorMessage name="about" component="div" className="text-red-500" />
                     </div>
                     <p className={styles.title}>Social link</p>

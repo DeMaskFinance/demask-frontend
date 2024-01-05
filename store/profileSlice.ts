@@ -9,6 +9,7 @@ interface ProfileState {
     email?: string;
     avatar?: string;
     socials?: Socials;
+    cover?: string;
     about?: string;
     id?: string;
     createdAt?: Date;

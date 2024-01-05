@@ -275,52 +275,20 @@ const Swap: React.FC = () => {
                     Show detail
                   </p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-semibold">
-                    
-                    {account && activeChoice === "BUY" && (
-                      <div className="flex items-center text-dark2">
-                        Balance:{formatNumber(balanceToken)}
-                        <span className="mb-1 ml-1">
-                          <EtherIcon width={16} height={16} className="fill-dark2" />
-                        </span>
-                      </div>
-                    )}
-                    {account && activeChoice === "SELL" && (
-                      <p className="text-dark2">
-                        Balance:{formatNumber(balanceNFT)} NFT
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
-                    {inputNFT ? (
-                      <FormatNumber number={divideByDecimal((activeChoice === "BUY" ? amountTokenBuy : amountTokenSell).toString(), data.tokenDecimals)} />
-                    ) : (
-                      <span>0</span>
-                    )}
-                    <span className="mb-1 ml-2">
-                      <EtherIcon width={20} height={20} className="fill-secondary4" />
-                    </span>
-                  </div>
-                </div>
-
                 <form className="mt-5">
                   <div>
-                    <div className="flex justify-between">
-                      {data.reserveNFT ? (
-                        <p className="mb-1 text-sm text-dark3">
-                          Reverse NFT:{formatNumber(data.reserveNFT)}
+                    <div className="">
+                      {account && activeChoice === "BUY" && (
+                        <p className="flex items-center mb-1 text-sm text-dark3">
+                          Your balance:{formatNumber(balanceToken)}
+                          <EtherIcon width={16} height={16} className="fill-dark2" />
                         </p>
-                      ) : (
-                        <div className="w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                       )}
-                      {data.reserveToken ? (
+                      {account && activeChoice === "SELL" && (
                         <div className="flex mb-1 text-sm text-dark3">
-                          <p>Reverse Token:</p>
-                          <FormatNumber number={data.reserveToken} />
+                          <p>Your balance:</p>
+                          {formatNumber(balanceNFT)}
                         </div>
-                      ) : (
-                        <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
                       )}
                     </div>
                     <div className="relative">

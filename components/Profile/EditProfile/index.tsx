@@ -1,20 +1,50 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import EditProfileForm from './EditProfileForm'
 import { AvatarUser } from '@/components/Avatars'
 import { EditIcon } from '@/components/Icons'
+import { useDispatch, useSelector } from 'react-redux';
+import { selectProfile, userData } from '@/store/profileSlice';
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
+  const inputCover = useRef(null);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [coverLoading, setCoverLoading] = useState(false);
+  const { user, profile } = useSelector(selectProfile);
+  const dispatch = useDispatch();
+  const handleUploadCover = async (file: any) => {
+    try {
+      setCoverLoading(true);
+      const userInfor = { cover: '1234567' };
+      dispatch(userData({ profile: userInfor }))
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCoverLoading(false);
+    }
+  }
+  const handleUploadAvatar = async (file: any) => {
+    try {
+      setAvatarLoading(true);
+      const userInfor = { avatar: '12' };
+      dispatch(userData({ profile: userInfor }))
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setAvatarLoading(false);
+    }
+  }
+  console.log(profile);
+
   return (
     <div className=''>
-      <div className='relative'>
-        <div className='w-full h-[240px] bg-dark4 rounded-b-lg'>
-
+      <div className='relative cursor-pointer group'>
+        <div className='w-full h-[240px] bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
         </div>
-        <div className='absolute top-0 left-0 flex-col items-center justify-center w-full h-full text-white rounded-full group-hover:flex'
+        <div className='absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex'
           onClick={() => {
-            if (inputAvatar.current) {
-              (inputAvatar.current as HTMLInputElement).click();
+            if (inputCover.current) {
+              (inputCover.current as HTMLInputElement).click();
             }
           }}
         >
@@ -48,6 +78,19 @@ export default function EditProfile() {
                 if (file) {
                   console.log(file);
 
+                }
+              }
+            }}
+            className='hidden'
+          />
+        </div>
+        <div>
+          <input type="file" ref={inputCover} accept="image/png,image/jpeg,image/gif"
+            onChange={async (e) => {
+              if (e.target.files) {
+                const file = e.target.files[0];
+                if (file) {
+                  console.log(file);
                 }
               }
             }}
