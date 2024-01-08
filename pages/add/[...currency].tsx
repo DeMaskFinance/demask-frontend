@@ -62,6 +62,7 @@ export default function AddLiquidity() {
   const [hash, setHash] = useState<string>('');
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
+  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>('');
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   useEffect(() => {
     if (currency) {
@@ -206,6 +207,11 @@ export default function AddLiquidity() {
     { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
     { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
   ]
+  const activeNFTPercent = [
+    { text: '25%', percent: 0.25 },
+    { text: '50%', percent: 0.5 },
+    { text: '75%', percent: 0.75 },
+    { text: 'MAX', percent: 1 },]
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />
@@ -276,13 +282,26 @@ export default function AddLiquidity() {
                   <p>NFT</p>
                   <p>Balance: {balanceNFT}</p>
                 </div>
-                <input
-                  className={styles.inputItem}
-                  type="number"
-                  placeholder="Input amount NFT"
-                  value={inputNFT}
-                  onChange={handleGetNFT}
-                />
+                <div className={`relative p-2 border rounded-lg border-dark3 ${!inputNFT && isInputNFT && 'border-red'}`}>
+                  <input
+                    className='border-none outline-none placeholder:text-sm'
+                    type="number"
+                    placeholder="Input amount NFT"
+                    value={inputNFT}
+                    onChange={handleGetNFT}
+                  />
+                  <div className="flex justify-end mt-8">
+                    {activeNFTPercent.map((item, index) => (
+                      <button type="button" className={`ml-3 text-[10px] text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
+                        onClick={() => {
+                          setInputNFT((Math.floor(item.percent * Number(balanceNFT))).toString())
+                          setActiveChoiceNFT(item.text);
+                        }}
+                      >{item.text}</button>
+                    ))}
+                  </div>
+                </div>
+
                 {isSufficientNFT && (
                   <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
                     Insufficient NFT balance
@@ -316,7 +335,7 @@ export default function AddLiquidity() {
                   <div>
                     {data ? (
                       <div className={styles.inputItem}>
-                        <FormatNumber number={amountErcDesiredToDec}/>
+                        <FormatNumber number={amountErcDesiredToDec} />
                       </div>
                     ) : (
                       <div className={styles.inputItem}>

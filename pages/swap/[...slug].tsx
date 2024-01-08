@@ -31,7 +31,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
@@ -173,7 +173,10 @@ const Swap: React.FC = () => {
       setIsSufficientTokenSell(true);
     }
   }, [inputNFT, activeChoice, account, amountBuyDec, amountSellDec, data]);
-
+  useEffect(() => {
+    setInputNFT('');
+    setActiveChoiceNFT('');
+  }, [activeChoice])
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -344,7 +347,11 @@ const Swap: React.FC = () => {
                         {activeNFTPercent.map((item, index) => (
                           <button type="button" className={`ml-3 text-[10px] text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
                             onClick={() => {
-                              setInputNFT((Math.floor(item.percent * data.reserveNFT)).toString())
+                              if (activeChoice === "BUY") {
+                                setInputNFT((Math.floor(item.percent * data.reserveNFT)).toString())
+                              } else {
+                                setInputNFT((Math.floor(item.percent * Number(balanceNFT))).toString())
+                              }
                               setActiveChoiceNFT(item.text);
                             }}
                           >{item.text}</button>
