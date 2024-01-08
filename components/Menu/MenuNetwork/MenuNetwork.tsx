@@ -2,6 +2,7 @@ import AccountContext from '@/context/AccountContext';
 import { network } from "@/libs/constants";
 import { changeNetwork } from '@/libs/utils/changeNetwork';
 import Tippy from "@tippyjs/react/headless";
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
@@ -25,10 +26,11 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+    const router = useRouter();
     const handleChangeNetwork = (chain: string) => {
         if (chain !== '1') {
             if (account && wallet) {
-                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId,setTab)
+                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab)
             } else {
                 updateChainId(chain);
                 setTab(chain);
@@ -36,13 +38,13 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
         }
     };
     useEffect(() => {
-        if (chainId) {
-            const foundNetwork = network.find((item) => item.chain === chainId);
+        if (router.query.chain) {
+            const foundNetwork = network.find((item) => item.chain === router.query.chain);
             setFilterNetwork(foundNetwork);
         } else {
             setFilterNetwork(network[1]);
         }
-    }, [chainId]);
+    }, [router.query.chain, router.isReady]);
 
 
     const LogoComponent: any = filterNetwork?.logo;

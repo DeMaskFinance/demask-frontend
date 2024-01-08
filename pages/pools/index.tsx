@@ -5,7 +5,7 @@ import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
 import { SEO } from '../../next-seo.config';

@@ -54,7 +54,6 @@ const validationSchema = yup.object().shape({
             excludeEmptyString: true,
         }),
     website: yup.string().url().nullable(),
-    gmail: yup.string().matches(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/, "Gmail must be a valid email"),
 });
 const initialValues = {
     name: '',
@@ -70,13 +69,6 @@ const initialValues = {
 export default function EditProfileForm() {
     const { profile } = useSelector(selectProfile);
     const socialList = [
-        {
-            icon: <GmailIcon width={24} height={24} />,
-            title: "Gmail",
-            name: "gmail",
-            placeHolder: "Enter your gmail",
-            value: profile?.email,
-        },
         {
             icon: <WebsiteIcon width={24} height={24} />,
             title: "Website",

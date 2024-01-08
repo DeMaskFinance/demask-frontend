@@ -34,8 +34,8 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
         tab: 'Buy'
     }, { tab: 'Sell' }, { tab: 'Add' }, { tab: 'Remove' }];
     return (
-        <div className='w-full mt-[15px] mb-14 lg:mb-0'>
-            <div className="w-full p-2 py-2 overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible">
+        <div className='w-full mt-[15px]  mb-14 lg:mb-0'>
+            <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible">
                 <div className='sticky left-0 flex items-center gap-2 p-1 mb-2 text-base text-center text-white rounded-lg lg:left-2 bg-dark3 w-max'>
                     {options.map((item, idx) => (
                         <button
@@ -63,10 +63,10 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                             <th className="flex justify-center lg:w-full md:w-full w-[100px]">
                                 NFT amount
                             </th>
-                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                                 Price
                             </th>
-                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                                 Total
                             </th>
                             <th className="flex justify-center lg:w-full md:w-full w-[140px]">

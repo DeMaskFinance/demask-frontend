@@ -50,13 +50,13 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                 <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[100px]">
                                     <FormatNumber number={item.amountNFT} />
                                 </td>
-                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
-                                    <div className="flex items-center justify-center md:gap-2">
+                                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                                    <div className="flex items-center justify-between md:gap-2">
                                         <FormatNumber number={item.price} />
                                         <EtherIcon width={18} height={18} className="fill-dark2" />
                                     </div>
                                 </td>
-                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
+                                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                                     <div className="flex items-center justify-end md:gap-2">
                                         <FormatNumber number={item.amountTokenETH} />
                                         <EtherIcon width={18} height={18} className="fill-dark2" />

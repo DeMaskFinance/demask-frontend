@@ -16,6 +16,7 @@ import { categoryAPI } from "@/libs/service/categoriesChartService";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
+  setActiveChoiceNFT: any;
 }
 const styles = {
   inputItem:
@@ -24,6 +25,7 @@ const styles = {
 const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   isOpenSearchNFT,
   setIsOpenSearchNFT,
+  setActiveChoiceNFT
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   let debouncedSearchNFT = useDebounce(searchTerm);
@@ -71,8 +73,8 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
 
       keepPreviousData: true,
     });
-    console.log(topNftData);
-    
+  console.log(topNftData);
+
   const handleSelectNFT = (item: any) => {
     const { currency } = router.query;
     const { slug } = router.query;
@@ -88,6 +90,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     }
     router.push(newURL);
     document.body.style.overflowY = "auto";
+    setActiveChoiceNFT('');
     setIsOpenSearchNFT(false);
   }
 
@@ -120,7 +123,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                       <div key={index}>
                         <div
                           className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group gap-x-2"
-                          onClick={()=>handleSelectNFT(item)}
+                          onClick={() => handleSelectNFT(item)}
                         >
                           <div className="w-8 h-8">
                             <MediaNFT data={item} isControls={false} />

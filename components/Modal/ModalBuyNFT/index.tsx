@@ -107,7 +107,7 @@ const ModalBuyNFT: React.FunctionComponent<
             return () => {
                 clearInterval(load)
             }
-        }, [isOpenBuyNFT])
+        }, [isOpenBuyNFT, preFectch])
 
         useEffect(() => {
             const checkReservesNFT = () => {
@@ -123,25 +123,6 @@ const ModalBuyNFT: React.FunctionComponent<
             } else {
                 setIsSufficientTokenBuy(true);
             }
-            // const getFeeGas = async () => {
-            //     if (inputNFT) {
-            //         const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
-            //         const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
-            //             tokenAddress,
-            //             nftAddress,
-            //             idNFT,
-            //             inputNFT,
-            //             exponentialToDecimal(Math.floor(amountBuyDec)),
-            //             account,
-            //             Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-            //             { value: value }
-            //         );
-            //         console.log(estimatedGas);
-
-            //         setGasLimit(estimatedGas.toString());
-            //     }
-            // }
-            // getFeeGas();
         }, [inputNFT, account, amountBuyDec, data, reserveNFT]);
 
         useEffect(() => {
@@ -230,7 +211,7 @@ const ModalBuyNFT: React.FunctionComponent<
             }
         };
         console.log(data);
-        
+
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -333,8 +314,8 @@ const ModalBuyNFT: React.FunctionComponent<
                             {isApprovedToken ? (
                                 <button
                                     type="button"
-                                    disabled={isLoadingInforDML}
-                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    disabled={isLoadingInforDML || preFectch}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML || preFectch ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={handleBuyNFT}
                                 >
                                     BUY NFT

@@ -100,7 +100,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             return () => {
                 clearInterval(load)
             }
-        }, [isOpenConfirmAddLiquidity])
+        }, [isOpenConfirmAddLiquidity, preFectch])
         const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
             dmlToken,
             wallet,
@@ -291,8 +291,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                             {isApprovedToken && (
                                 <button
                                     type="button"
-                                    disabled={isLoadingInforDML}
-                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    disabled={isLoadingInforDML || preFectch}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML || preFectch ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={addLiquidity}
                                 >
                                     Create pool

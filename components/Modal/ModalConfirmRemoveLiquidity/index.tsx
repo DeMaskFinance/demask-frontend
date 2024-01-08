@@ -210,7 +210,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             return () => {
                 clearInterval(load)
             }
-        }, [isOpenConfirmRemoveLiquidity])
+        }, [isOpenConfirmRemoveLiquidity, preFectch])
         return (
             <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
                 <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -260,8 +260,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                             {(isApprovedLiquidity) && (
                                 <button
                                     type="button"
-                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
-                                    disabled={isLoadingInforDML}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML || preFectch ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    disabled={isLoadingInforDML || preFectch}
                                     onClick={removeLiquidity}
                                 >
                                     CONFIRM

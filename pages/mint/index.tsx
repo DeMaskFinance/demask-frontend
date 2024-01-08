@@ -111,7 +111,7 @@ export default function Creator() {
         alert("Lỗi định dạng file");
       }
     } else {
-      alert("Bạn chưa chọn file");
+      console.log("No file");
     }
   }
   const handleChangeAttributeType = (

@@ -12,6 +12,7 @@ import ChartNoTransfers from './ChartNoTransfers';
 import FormatNumber from '../Common/FormatNumber';
 import AccountContext from '@/context/AccountContext';
 import { EtherIcon } from '../Icons';
+import { formatPercent } from '@/libs/utils/formatToUnit';
 interface BarData {
     time: string;
     value: number;
@@ -40,9 +41,9 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
     // console.log(data);
 
     // console.log(volume[volume.length - 1]);
-    console.log({
-        legendData,
-    });
+    // console.log({
+    //     legendData,
+    // });
     useEffect(() => {
         setLegendData(volume[volume.length - 1]);
     }, [volume]);
@@ -141,11 +142,6 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 if (param.time) {
                     const candleData: any = param.seriesData.get(candlestickSeries);
                     const VolumeData: any = param.seriesData.get(volumeSeries);
-                    console.log({
-                        candleData,
-                        VolumeData
-                    });
-
                     if (candleData && VolumeData) {
                         const open = candleData.open;
                         const close = candleData.close;
@@ -174,6 +170,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             }
         };
     }, [data, volume, newData]);
+    console.log(data);
 
     return (
         <div>
@@ -185,13 +182,14 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
                     <div className='flex-wrap hidden mb-2 text-xs border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
                         <div className='flex p-4 border-r border-dark3'>
-                            <p>24h Change:</p>
-                            <p className='text-red'>1.27%</p>
+                            <p>Price:</p>
+                            <FormatNumber number={data[data.length - 1].closePrice} />
+                            ({formatPercent(data[data.length - 1].changePrice)}%)
                         </div>
                         <div className='flex p-4 border-r border-dark3'>
-                            <p>Mkt.cap:</p>
+                            <p>Volume:</p>
                             <div className='flex items-center'>
-                                <p>123</p>
+                                <FormatNumber number={data[data.length - 1].volume} />
                                 <EtherIcon width={12} height={12} className='fill-dark2' />
                             </div>
                         </div>
@@ -201,13 +199,6 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                         </div>
                         <div className='flex p-4 border-r border-dark3 gap-x-1'>
                             <p>Liquidity</p>
-                            <div className='flex items-center'>
-                                <p>123</p>
-                                <EtherIcon width={12} height={12} className='fill-dark2' />
-                            </div>
-                        </div>
-                        <div className='flex p-4 gap-x-1'>
-                            <p>LP fees earned:</p>
                             <div className='flex items-center'>
                                 <p>123</p>
                                 <EtherIcon width={12} height={12} className='fill-dark2' />
@@ -227,29 +218,22 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                                 <span className='text-xs text-dark3'>Time:</span>
                                 <span>{legendData?.time}</span>
                             </div>
-                            <div className="flex">
-                                <span className={`text-xs text-dark3`}>
-                                    Price:</span>
-                                <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
-                                    <FormatNumber number={data[data.length - 1].closePrice} />
-                                </div>
-                            </div>
                             <div className="flex ">
-                                <span className='text-xs text-dark3'>Open:</span>
+                                <span className='text-xs text-dark3'>O:</span>
                                 <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
                                     <FormatNumber number={legendData?.open} />
                                 </div>
                             </div>
                             <div className="flex ">
-                                <span>
-                                    Low:</span>
+                                <span className='text-xs text-dark3'>
+                                    L:</span>
                                 <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
                                     <FormatNumber number={legendData?.low} />
                                 </div>
                             </div>
                             <div className="flex ">
                                 <span className='text-xs text-dark3'>
-                                    High:
+                                    H:
                                 </span>
                                 <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
                                     <FormatNumber number={legendData?.high} />
@@ -257,7 +241,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                             </div>
                             <div className="flex text-xs ">
                                 <span className='text-xs text-dark3'>
-                                    Close:
+                                    C:
                                 </span>
                                 <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
                                     <FormatNumber number={legendData?.close} />
