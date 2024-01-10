@@ -84,48 +84,6 @@ export const AccountProvider = ({ children }) => {
     setTxDeadline(newTime);
     localStorage.setItem("TXDEADLINE_DEMASK", newTime);
   };
-  const PORT = process.env.NEXT_PUBLIC_APP_PORT;
-  useEffect(() => {
-    const initProvider = async () => {
-      if (window.ethereum) {
-        try {
-          const provider = await getProvider(wallet);
-  
-          const handleAccountsChanged = (accounts) => {
-            if (accounts.length > 0) {
-              updateAccount(accounts[0]);
-            } else if (accounts.length === 0) {
-              localStorage.removeItem("ACCOUNT_DEMASK");
-              localStorage.removeItem("WALLET_DEMASK");
-              updateAccount("");
-            }
-          };
-  
-          const handleChainChanged = (networkId) => {
-            if (
-              (PORT === "3000" && (networkId === "280" || networkId === "5")) ||
-              (PORT === "1307" &&
-                (networkId === "97" || networkId === "80001"))
-            ) {
-              updateChainId(networkId);
-            }
-          };
-  
-          provider.on("accountsChanged", handleAccountsChanged);
-          provider.on("chainChanged", handleChainChanged);
-  
-          return () => {
-            provider.removeListener("accountsChanged", handleAccountsChanged);
-            provider.removeListener("chainChanged", handleChainChanged);
-          };
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-    };
-  
-    initProvider();
-  }, [wallet]);
   return (
     <AccountContext.Provider
       value={{

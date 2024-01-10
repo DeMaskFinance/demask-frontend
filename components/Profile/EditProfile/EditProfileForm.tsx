@@ -4,8 +4,8 @@ import * as yup from 'yup';
 import { DiscordIcon, FacebookIcon, GithubIcon, GmailIcon, TeleIcon, TwitterIcon, WebsiteIcon } from '@/components/Icons';
 import { Button } from '@/components/Buttons';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
-import { selectProfile } from '@/store/profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectProfile, userData } from '@/store/profileSlice';
 import { useMutation } from '@tanstack/react-query';
 import * as userService from "@/libs/service/userService";
 const styles = {
@@ -25,49 +25,41 @@ const validationSchema = yup.object().shape({
                 'Username must only contain alphanumeric characters and symbol "_"',
             excludeEmptyString: true,
         }),
-    about: yup.string().max(200),
+    about: yup.string().max(200).nullable(),
     twitter: yup
         .string()
         .max(200)
         .matches(/^(https:\/\/twitter.com\/).+$/, {
             message: "Invalid twitter url",
             excludeEmptyString: true,
-        }),
+        }).nullable(),
     facebook: yup
         .string()
         .max(200)
         .matches(/^(https:\/\/facebook.com\/).+$/, {
             message: "Invalid facebook url",
             excludeEmptyString: true,
-        }),
+        }).nullable(),
     discord: yup
         .string()
         .max(200)
         .matches(/^(https:\/\/discord.com\/).+$/, {
             message: "Invalid discord url",
             excludeEmptyString: true,
-        }),
+        }).nullable(),
     telegram: yup
         .string()
         .max(200)
         .matches(/^(https:\/\/t.me\/).+$/, {
             message: "Invalid telegram url",
             excludeEmptyString: true,
-        }),
+        }).nullable(),
     website: yup.string().url().nullable(),
 });
-const initialValues = {
-    name: '',
-    userName: '',
-    about: '',
-    twitter: '',
-    facebook: '',
-    discord: '',
-    telegram: '',
-    website: '',
-};
+
 export default function EditProfileForm() {
     const { profile } = useSelector(selectProfile);
+    const dispatch = useDispatch();
     const mutation = useMutation(userService.updateUserInfor);
     const socialList = [
         {
@@ -113,6 +105,16 @@ export default function EditProfileForm() {
             value: profile?.socials?.github,
         },
     ]
+    const initialValues = {
+        name: profile?.name,
+        userName: profile?.userName,
+        about: profile?.about,
+        twitter: profile?.socials?.twitter,
+        facebook: profile?.socials?.facebook,
+        discord: profile?.socials?.discord,
+        telegram: profile?.socials?.telegram,
+        website: profile?.socials?.website,
+    };
     const onSubmit = (values: any) => {
         // Handle form submission
         console.log('Form submitted with values:', values);
@@ -129,6 +131,9 @@ export default function EditProfileForm() {
                 github: values.github,
             }
         });
+        console.log(mutation.data.data);
+
+        dispatch(userData({ profile: mutation.data.data }));
     };
     console.log(profile);
 
@@ -139,21 +144,29 @@ export default function EditProfileForm() {
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
             >
-                <Form className='mx-auto max-w-[600px]'>
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                }) => (<Form className='mx-auto max-w-[600px]'>
                     <div className='flex flex-col'>
                         <label htmlFor="name" className={styles.title}>Name</label>
-                        <Field type="text" id="name" name="name" value={profile?.name} placeholder="Enter your name" className={styles.inputItem} />
+                        <Field type="text" id="name" name="name" value={values.name} onChange={handleChange} placeholder="Enter your name" className={styles.inputItem} />
                         <ErrorMessage name="name" component="div" className="mt-2 text-xs text-red" />
                     </div>
 
                     <div className='flex flex-col'>
                         <label htmlFor="userName" className={styles.title}>Username</label>
-                        <Field type="text" id="userName" name="userName" value={profile?.userName} placeholder="Enter your userName" className={styles.inputItem} />
+                        <Field type="text" id="userName" name="userName" value={values.userName} onChange={handleChange} placeholder="Enter your userName" className={styles.inputItem} />
                         <ErrorMessage name="userName" component="div" className="text-red-500" />
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor="about" className={styles.title}>About</label>
-                        <Field as="textarea" type="text" id="about" name="about" value={profile?.about} placeholder="Tell about yourself" className={styles.inputItem} />
+                        <Field as="textarea" type="text" id="about" name="about" value={values.about} placeholder="Tell about yourself" className={styles.inputItem} />
                         <ErrorMessage name="about" component="div" className="text-red-500" />
                     </div>
                     <p className={styles.title}>Social link</p>
@@ -164,7 +177,7 @@ export default function EditProfileForm() {
                                     {item.icon}
                                     {item.title}
                                 </div>
-                                <Field type="text" value={item.value} id={item.name} name={item.name} placeholder={item.placeHolder} className={styles.inputItem} />
+                                <Field type="text" value={(values as any)[item.name]} id={item.name} name={item.name} placeholder={item.placeHolder} className={styles.inputItem} />
                             </div>
                             <ErrorMessage name={item.name} component="div" className="mt-2 text-xs text-red" />
                         </div>
@@ -178,7 +191,7 @@ export default function EditProfileForm() {
                             Save
                         </Button>
                     </div>
-                </Form>
+                </Form>)}
             </Formik>
         </div>
     )

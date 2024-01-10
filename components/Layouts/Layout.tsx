@@ -6,10 +6,11 @@ import NavFooter from "../Footer/NavFooter";
 import AccountContext from "@/context/AccountContext";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { selectProfile, userData } from "@/store/profileSlice";
+import { logout, selectProfile, userData } from "@/store/profileSlice";
 import * as userService from "@/libs/service/userService";
+import { getProvider } from "@/libs/connection/getProvider";
 export default function Layout({ children }: PropsWithChildren) {
-  const { chainId, updateChainId } = useContext(AccountContext);
+  const { chainId, updateChainId, updateAccount, wallet } = useContext(AccountContext);
   const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
@@ -25,12 +26,6 @@ export default function Layout({ children }: PropsWithChildren) {
       }
     }
   }, [chainId, router.asPath, router.isReady]);
-  console.log({
-    user,
-    accessToken,
-    isLoggedIn,
-    profile
-  });
 
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
@@ -39,6 +34,52 @@ export default function Layout({ children }: PropsWithChildren) {
       })
     }
   }, [user, accessToken, isLoggedIn])
+  const PORT = process.env.NEXT_PUBLIC_APP_PORT;
+  useEffect(() => {
+    const initProvider = async () => {
+      if (window.ethereum) {
+        try {
+          const provider = await getProvider(wallet);
+
+          const handleAccountsChanged = (account: []) => {
+            // if (accounts.length > 0) {
+            //   updateAccount(accounts[0]);
+            // } else if (accounts.length === 0) {
+            //   localStorage.removeItem("ACCOUNT_DEMASK");
+            //   localStorage.removeItem("WALLET_DEMASK");
+            //   updateAccount("");
+            // }
+            localStorage.removeItem("ACCOUNT_DEMASK");
+            localStorage.removeItem("WALLET_DEMASK");
+            updateAccount("");
+            dispatch(logout());
+          };
+
+          const handleChainChanged = (networkId: string) => {
+            if (
+              (PORT === "3000" && (networkId === "280" || networkId === "5")) ||
+              (PORT === "1307" &&
+                (networkId === "97" || networkId === "80001"))
+            ) {
+              updateChainId(networkId);
+            }
+          };
+
+          provider.on("accountsChanged", handleAccountsChanged);
+          provider.on("chainChanged", handleChainChanged);
+
+          return () => {
+            provider.removeListener("accountsChanged", handleAccountsChanged);
+            provider.removeListener("chainChanged", handleChainChanged);
+          };
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    };
+
+    initProvider();
+  }, [wallet]);
   return (
     <div className="box-border w-full overflow-hidden">
       <Header />
