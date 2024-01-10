@@ -1,5 +1,5 @@
 import Tippy from "@tippyjs/react/headless";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from 'react-icons/bs';
 import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
@@ -8,6 +8,13 @@ import Inventory from './Inventory';
 import Pools from './Pools';
 import Referral from './Referral';
 import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
+import { AvatarUser } from "../Avatars";
+import Copy from "../Common/Copy";
+import AccountContext from "@/context/AccountContext";
+import { EditIcon } from "../Icons";
+import Link from "next/link";
+import { useSelector } from "react-redux";
+import { selectProfile } from "@/store/profileSlice";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -15,8 +22,10 @@ const style = {
         "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
 };
 const Profile = () => {
+    const { account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "nfts"));
     const [visible, setVisible] = useState(true);
+    const {profile} = useSelector(selectProfile);
     const TABS = [
         {
             title: "Inventory",
@@ -67,8 +76,25 @@ const Profile = () => {
         };
     }, [tab]);
     return (
-        <div className='my-6'>
-            <div className='flex items-center justify-start lg:justify-center'>
+        <div className='pt-6 my-6'>
+            <section>
+                <div className='flex items-center justify-center mt-2'>
+                    <AvatarUser width={96} height={96} />
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                            <p className='text-2xl font-semibold'>{profile?.name}</p>
+                            <Link href='/profile/edit'>
+                                <EditIcon width={24} height={24} className="fill-dark3" />
+                            </Link>
+                        </div>
+                        <div className='flex items-center gap-x-2'>
+                            <span className='text-secondary1'>{`${account.slice(0, 6)}...${account.slice(-4)}`}</span>
+                            <Copy content={account} />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div className='flex items-center justify-start mt-6 lg:justify-center'>
                 {/* PC */}
                 <ul className='hidden gap-4 p-2 text-sm text-white rounded-lg lg:flex bg-dark3 '>
                     {TABS.map((item, index) => (

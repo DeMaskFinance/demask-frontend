@@ -71,7 +71,6 @@ export default function DetailLaunchPad() {
       return res;
     },
   });
-  console.log(data);
   const softcap = data?.softcap;
   const hardcap = data?.hardcap;
   const totalSold = data?.totalSold;

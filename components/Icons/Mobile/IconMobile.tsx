@@ -1,8 +1,3 @@
-interface IconProps {
-    className?: string;
-    width?: number;
-    height?: number;
-}
 export const OverviewIcon: React.FunctionComponent<IconProps> = ({
     className,
     width,

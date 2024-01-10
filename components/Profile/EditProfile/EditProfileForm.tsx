@@ -6,7 +6,8 @@ import { Button } from '@/components/Buttons';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { selectProfile } from '@/store/profileSlice';
-
+import { useMutation } from '@tanstack/react-query';
+import * as userService from "@/libs/service/userService";
 const styles = {
     title: "block my-4 text-base font-semibold text-black24",
     inputItem: "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3",
@@ -14,7 +15,7 @@ const styles = {
 };
 const validationSchema = yup.object().shape({
     name: yup.string().nullable().notRequired().max(50),
-    username: yup
+    userName: yup
         .string()
         .nullable()
         .notRequired()
@@ -57,17 +58,17 @@ const validationSchema = yup.object().shape({
 });
 const initialValues = {
     name: '',
-    username: '',
+    userName: '',
     about: '',
     twitter: '',
     facebook: '',
     discord: '',
     telegram: '',
     website: '',
-    gmail: '',
 };
 export default function EditProfileForm() {
     const { profile } = useSelector(selectProfile);
+    const mutation = useMutation(userService.updateUserInfor);
     const socialList = [
         {
             icon: <WebsiteIcon width={24} height={24} />,
@@ -115,7 +116,22 @@ export default function EditProfileForm() {
     const onSubmit = (values: any) => {
         // Handle form submission
         console.log('Form submitted with values:', values);
+        mutation.mutate({
+            userName: values.userName,
+            name: values.name,
+            about: values.about,
+            socials: {
+                facebook: values.facebook,
+                twitter: values.twitter,
+                telegram: values.telegram,
+                discord: values.discord,
+                website: values.website,
+                github: values.github,
+            }
+        });
     };
+    console.log(profile);
+
     return (
         <div>
             <Formik
@@ -131,9 +147,9 @@ export default function EditProfileForm() {
                     </div>
 
                     <div className='flex flex-col'>
-                        <label htmlFor="username" className={styles.title}>Username</label>
-                        <Field type="text" id="username" name="username" value={profile?.username} placeholder="Enter your username" className={styles.inputItem} />
-                        <ErrorMessage name="username" component="div" className="text-red-500" />
+                        <label htmlFor="userName" className={styles.title}>Username</label>
+                        <Field type="text" id="userName" name="userName" value={profile?.userName} placeholder="Enter your userName" className={styles.inputItem} />
+                        <ErrorMessage name="userName" component="div" className="text-red-500" />
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor="about" className={styles.title}>About</label>

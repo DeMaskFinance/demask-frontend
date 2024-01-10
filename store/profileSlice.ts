@@ -3,18 +3,7 @@ interface ProfileState {
   accessToken: string;
   isLoggedIn: boolean;
   user: string;
-  profile: {
-    name?: string;
-    username?: string;
-    email?: string;
-    avatar?: string;
-    socials?: Socials;
-    cover?: string;
-    about?: string;
-    id?: string;
-    createdAt?: Date;
-    updatedAt?: Date | null;
-  };
+  profile: UserInterface;
 }
 const profileSlice = createSlice({
   name: "profile",
@@ -30,9 +19,10 @@ const profileSlice = createSlice({
       state.accessToken = accessToken;
       state.user = user?.toLowerCase();
       state.isLoggedIn = true;
-      localStorage.setItem("profile", JSON.stringify(payload));
+      localStorage.setItem("PROFILE", JSON.stringify(payload));
     },
     logout: (state) => {
+      localStorage.removeItem("PROFILE");
       state.accessToken = "";
       state.user = "";
       state.isLoggedIn = false;

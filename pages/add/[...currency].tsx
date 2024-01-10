@@ -108,7 +108,6 @@ export default function AddLiquidity() {
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
     if (Number(e.target.value) > Number(balanceNFT)) {
-      console.log("Insufficient NFT balance");
       setIsSufficientNFT(true);
     } else {
       setIsSufficientNFT(false);

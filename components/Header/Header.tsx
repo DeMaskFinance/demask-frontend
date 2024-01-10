@@ -23,6 +23,10 @@ import Search from "../Search/SearchHeader";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import { version } from "@/libs/constants";
 import { useRouter } from "next/router";
+import useInformationToken from "@/hooks/useInformationToken";
+import formatNumber from "@/libs/utils/formatNumer";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/profileSlice";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -30,7 +34,7 @@ const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
   btnWallet:
-    "flex items-center justify-center py-1 pl-2 lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2",
+    "flex items-center justify-center py-1 pl-2 cursor-pointer lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2 group",
 };
 
 export default function Header() {
@@ -38,7 +42,10 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const { account, updateAccount, wallet, chainId, demask } = useContext(AccountContext);
-
+  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+  const { balanceToken } =
+    useInformationToken(account, nativeAddress, wallet, routerAddress, rpc, nativeAddress, true);
+  const dispatch = useDispatch();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -53,8 +60,8 @@ export default function Header() {
     localStorage.removeItem("ACCOUNT_DEMASK");
     // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
+    dispatch(logout());
   };
-  
 
   const provider = getProvider(wallet);
   useEffect(() => {
@@ -62,11 +69,6 @@ export default function Header() {
       const provider = await getProvider(wallet);
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
-        // console.log(test.provider.selectedAddress);
-        // const web3 = new Web3(provider);
-        // const accounts = await web3.eth.getAccounts();
-        // const selectedAddress = accounts[0];
-        // console.log('web3' + selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
           console.log(provider);
           console.log(provider.selectedAddress);
@@ -192,14 +194,31 @@ export default function Header() {
                   </div>
                 )}
               >
-                <button className={style.btnWallet}>
-                  <ProfileIcon
-                    width={24}
-                    height={24}
-                    className="fill-white"
-                  />
-                  {`${account.slice(0, 2)}...${account.slice(-4)}`}
-                </button>
+                <div>
+                  <div className={style.btnWallet}>
+                    <ProfileIcon
+                      width={24}
+                      height={24}
+                      className="fill-white"
+                    />
+                    {`${account.slice(0, 2)}...${account.slice(-4)}`}
+                    <div className="items-center hidden pl-2 transition duration-150 ease-out border-l border-white lg:flex group-hover:border-secondary5">
+                      <Image
+                        className="hidden group-hover:block"
+                        src={Icons.wallet}
+                        alt="wallet connect"
+                      />
+                      <Image
+                        className="block group-hover:hidden"
+                        src={Icons.walletHover}
+                        alt="wallet connect hover"
+                      />
+                      <span className="ml-2">{formatNumber(balanceToken)}</span>
+                      <span className="ml-1">ETH</span>
+                    </div>
+                  </div>
+
+                </div>
               </Tippy>
             ) : (
               <button className={style.btnWallet} onClick={handleOpen}>

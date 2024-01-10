@@ -78,7 +78,6 @@ const Pagination = ({
     // useEffect(() => {
     //     refetch();
     // }, [page]);
-    console.log(page);
     
     return (
         <div className="flex justify-center w-full mx-auto text-sm">

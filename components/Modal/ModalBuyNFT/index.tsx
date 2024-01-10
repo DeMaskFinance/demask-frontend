@@ -1,8 +1,8 @@
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { DownIcon, EtherIcon } from "@/components/Icons";
-import TransitionURL from "@/components/Toast/TransionURL";
+import { DetailIcon, DownIcon, EtherIcon } from "@/components/Icons";
+import { FaChevronLeft } from "react-icons/fa";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInforFee from "@/hooks/useInforFee";
@@ -60,6 +60,7 @@ const ModalBuyNFT: React.FunctionComponent<
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
         const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
             useState<boolean>(false);
+        const [seeDetail, setSeeDetail] = useState<boolean>(false);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
         const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
         const [gasLimit, setGasLimit] = useState<string>('0');
@@ -111,7 +112,7 @@ const ModalBuyNFT: React.FunctionComponent<
 
         useEffect(() => {
             const checkReservesNFT = () => {
-                if (data && Number(inputNFT) < Number(reserveNFT)) {
+                if (data && Number(inputNFT) <= Number(reserveNFT)) {
                     setIsSufficientNFT(true);
                 } else {
                     setIsSufficientNFT(false);
@@ -146,7 +147,7 @@ const ModalBuyNFT: React.FunctionComponent<
         //     test1,
         //     test2
         // });
-        console.log(isLoadingInforDML);
+        console.log(seeDetail);
 
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
@@ -210,7 +211,6 @@ const ModalBuyNFT: React.FunctionComponent<
                 }
             }
         };
-        console.log(data);
 
         return (
             <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
@@ -269,22 +269,36 @@ const ModalBuyNFT: React.FunctionComponent<
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-between text-sm text-dark1">
-                                <p>Trading fee</p>
+                            <div className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1" onClick={() => setSeeDetail(!seeDetail)}>
+                                <div className="flex items-center gap-x-1">
+                                    <p>Total fee</p>
+                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? '-rotate-90' : ''}`}><FaChevronLeft /></div>
+                                </div>
                                 <div className="flex items-center">
-                                    <FormatNumber number={divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals).toString()} />
+                                    <FormatNumber number={divideByDecimal((+feeTradingBuy + +royaltiesFeeBuy).toString(), data.tokenDecimals).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex justify-between text-sm text-dark1">
-                                <p>Royalties Fee</p>
-                                <div className="flex items-center">
-                                    <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
-                                    <p>
-                                        <EtherIcon width={14} height={14} className="fill-dark2" />
-                                    </p>
+                            <div className={`overflow-hidden will-change-[height] ${seeDetail ? 'h-[56px] opacity-100' : 'h-0 opacity-0'} transition-all duration-100 ease-linear`}>
+                                <div className="flex justify-between mb-4 text-sm text-dark1">
+                                    <p>Trading fee</p>
+                                    <div className="flex items-center">
+                                        <FormatNumber number={divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals).toString()} />
+                                        <p>
+                                            <EtherIcon width={14} height={14} className="fill-dark2" />
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between text-sm text-dark1">
+                                    <p>Royalties Fee</p>
+                                    <div className="flex items-center">
+                                        <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
+                                        <p>
+                                            <EtherIcon width={14} height={14} className="fill-dark2" />
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             {

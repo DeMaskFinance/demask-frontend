@@ -21,7 +21,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import NextAdapterPages from 'next-query-params';
 import { QueryParamProvider } from 'use-query-params';
 import { Provider } from 'react-redux';
-import store from '../store';
+import store, { persistor } from '../store';
+import { PersistGate } from 'redux-persist/integration/react';
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -46,7 +47,17 @@ const queryClient = new QueryClient({
     },
   },
 });
-
+// const DataPersistGate = ({ children }) => {
+//   return typeof window !== "undefined" ? (
+//     <>
+//       <PersistGate loading={null} persistor={persistor}>
+//         {children}
+//       </PersistGate>
+//     </>
+//   ) : (
+//     <>{children}</>
+//   );
+// };
 const chains = [arbitrum, mainnet, polygon, zkSyncTestnet];
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 
@@ -66,65 +77,67 @@ export default function App({
 
   return (
     <Provider store={store}>
-      <AccountProvider>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-        />
+      <PersistGate loading={null} persistor={persistor}>
+        <AccountProvider>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+          />
 
-        <Script id="google-analytics">
-          {` 
+          <Script id="google-analytics">
+            {` 
                     window.dataLayer = window.dataLayer || []; 
                     function gtag(){dataLayer.push(arguments);} 
                     gtag('js', new Date()); 
                     gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}'); 
                 `}
-        </Script>
-        <Head>
-          <link rel="shortcut icon" href="/favicon.ico" />
-          <link rel="apple-touch-icon" href="/logo.png" />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-          ></link>
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-          ></link>
-        </Head>
-        <QueryClientProvider client={queryClient}>
-          <QueryParamProvider adapter={NextAdapterPages}>
-            <style jsx global>{`
+          </Script>
+          <Head>
+            <link rel="shortcut icon" href="/favicon.ico" />
+            <link rel="apple-touch-icon" href="/logo.png" />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/favicon-16x16.png"
+            ></link>
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/favicon-32x32.png"
+            ></link>
+          </Head>
+          <QueryClientProvider client={queryClient}>
+            <QueryParamProvider adapter={NextAdapterPages}>
+              <style jsx global>{`
           html {
             font-family: ${roboto.style.fontFamily};
           }
         `}</style>
-            <WagmiConfig config={wagmiConfig}>
-              {isMaintenanceMode ? (
-                <Layout>
-                  <MaintenanceError />
-                </Layout>
-              ) : Component.PageLayout ? (
-                <Component.PageLayout>
-                  <Component {...pageProps} />
-                </Component.PageLayout>
-              ) : (
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              )}
-            </WagmiConfig>
+              <WagmiConfig config={wagmiConfig}>
+                {isMaintenanceMode ? (
+                  <Layout>
+                    <MaintenanceError />
+                  </Layout>
+                ) : Component.PageLayout ? (
+                  <Component.PageLayout>
+                    <Component {...pageProps} />
+                  </Component.PageLayout>
+                ) : (
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                )}
+              </WagmiConfig>
 
-            <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
-              '--w3m-z-index': '9999'
-            }} />
-            <ToastContainer limit={1} />
-          </QueryParamProvider>
-        </QueryClientProvider>
-      </AccountProvider>
+              <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
+                '--w3m-z-index': '9999'
+              }} />
+              <ToastContainer limit={1} />
+            </QueryParamProvider>
+          </QueryClientProvider>
+        </AccountProvider>
+      </PersistGate>
     </Provider>
   );
 }

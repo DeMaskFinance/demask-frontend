@@ -9,6 +9,8 @@ import { changeNetwork } from '@/libs/utils/changeNetwork';
 import { useSearchParams } from 'next/navigation';
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { logout } from '@/store/profileSlice';
 
 interface WrongNetworkProps {
 }
@@ -18,12 +20,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
     const router = useRouter();
     const { chain } = router.query;
-
-
-    console.log({
-        chain,
-        chainId
-    });
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (account && wallet && router.isReady && chain && wallet !== "WalletConnect") {
@@ -48,23 +45,15 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             setIsWrongNetwork(false);
         }
     }, [chain, account, wallet, router.isReady])
-    console.log({
-        chain,
-        isWrongNetwork
-    });
 
     const disconnectWallet = () => {
         localStorage.removeItem("ACCOUNT_DEMASK");
         // localStorage.removeItem("WALLET_DEMASK");
         updateAccount("");
-        setIsWrongNetwork(false)
+        setIsWrongNetwork(false);
+        dispatch(logout());
         document.body.style.overflowY = "auto";
     };
-    // const handleClose = () =>{
-    //     setIsWrongNetwork(false)
-    //     document.body.style.overflowY = "auto";
-    // }
-    console.log(isWrongNetwork);
 
     const PORT = process.env.NEXT_PUBLIC_APP_PORT;
     return (

@@ -148,7 +148,7 @@ const Swap: React.FC = () => {
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
-        if (data && Number(inputNFT) < Number(data.reserveNFT)) {
+        if (data && Number(inputNFT) <= Number(data.reserveNFT)) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
@@ -196,6 +196,7 @@ const Swap: React.FC = () => {
     }
     else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null && Math.floor(amountBuyDec) !== 0) {
       setIsOpenBuyNFT(true);
+      document.body.style.overflowY = "hidden";
     }
   };
   const handleSell = () => {
@@ -203,6 +204,7 @@ const Swap: React.FC = () => {
       setShowRequiredMessage(true);
     } else if (isSufficientNFT && isSufficientTokenSell && data.dmlAddress !== null && Math.floor(amountSellDec) !== 0) {
       setIsOpenSellNFT(true);
+      document.body.style.overflowY = "hidden";
     }
   };
   const handleSearchNFT = () => {
@@ -291,16 +293,16 @@ const Swap: React.FC = () => {
                 </div>
                 <form className="mt-5">
                   <div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-2">
                       <div>
                         {account && activeChoice === "BUY" && (
-                          <p className="flex items-center mb-1 text-sm text-dark3">
+                          <p className="flex items-center text-sm text-dark3">
                             Your balance:{formatNumber(balanceToken)}
                             <EtherIcon width={16} height={16} className="fill-dark2" />
                           </p>
                         )}
                         {account && activeChoice === "SELL" && (
-                          <div className="flex items-center mb-1 text-sm text-dark3">
+                          <div className="flex items-center text-sm text-dark3">
                             <p>Your balance:</p>
                             <p>{formatNumber(balanceNFT)}</p>
                             <NFTIcon width={14} height={14} className="fill-dark1 ml-[2px]" />
@@ -308,12 +310,12 @@ const Swap: React.FC = () => {
                         )}
                       </div>
                       <div className="flex items-center text-sm text-dark3">
-                        <div className="flex items-center">
+                        <div className="flex items-center mr-2">
                           <span>Liquidity:</span>
-                          <span className="ml-[1px]">{data.reserveNFT}</span>
+                          <FormatNumber number={data.reserveNFT} />
                           <NFTIcon width={14} height={14} className="fill-dark1 ml-[2px]" />
                         </div>
-                        <span className="ml-2">{data.reserveNFT}</span>
+                        <FormatNumber number={data.reserveToken} />
                         <span><EtherIcon width={14} height={14} className="fill-dark1 ml-[-1px]" /></span>
                       </div>
                     </div>
@@ -352,6 +354,7 @@ const Swap: React.FC = () => {
                               } else {
                                 setInputNFT((Math.floor(item.percent * Number(balanceNFT))).toString())
                               }
+                              setShowRequiredMessage(false);
                               setActiveChoiceNFT(item.text);
                             }}
                           >{item.text}</button>
@@ -402,13 +405,13 @@ const Swap: React.FC = () => {
                   </div>
 
                   <div className="mt-4">
-                    <div className="flex justify-between">
-                      <div className="mb-1 text-sm text-dark3">
+                    <div className="flex justify-between mb-2">
+                      <div className="text-sm text-dark3">
                         Total Proceeds:
                       </div>
                       <div className="">
-                        <label htmlFor="data.royaltyFee" className='mb-1 text-dark3'>
-                          <div className="flex mb-1 text-sm">Royalties Fee:
+                        <label htmlFor="data.royaltyFee" className=' text-dark3'>
+                          <div className="flex text-sm">Royalties Fee:
                             {activeChoice === "BUY" ? (
                               <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
                             ) : (

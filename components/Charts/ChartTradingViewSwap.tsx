@@ -170,7 +170,6 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             }
         };
     }, [data, volume, newData]);
-    console.log(data);
 
     return (
         <div>
@@ -197,7 +196,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                             <p>Supply</p>
                             <p>125</p>
                         </div>
-                        <div className='flex p-4 border-r border-dark3 gap-x-1'>
+                        <div className='flex p-4 gap-x-1'>
                             <p>Liquidity</p>
                             <div className='flex items-center'>
                                 <p>123</p>

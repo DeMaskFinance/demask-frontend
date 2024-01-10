@@ -8,6 +8,10 @@ import { CgClose } from "react-icons/cg";
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Web3 from "web3";
 import Wrapper from "../Wrapper";
+import { getNonce, loginAuthen } from "@/libs/service/userService";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/profileSlice";
+
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -20,6 +24,7 @@ const styles = {
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet, updateChainId } = useContext(AccountContext);
   const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+  const dispatch = useDispatch();
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
@@ -86,15 +91,21 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
                 console.error(error);
               }
             });
-          const msg = `0x${Buffer.from("DEMASK", 'utf8').toString('hex')}`;
+          const { data: sign } = await getNonce(accounts[0]);
+          const msg = `${Buffer.from(String(sign.nonce), 'utf8').toString('hex')}`;
           const signedData = await provider?.request({
             method: "personal_sign",
             params: [
-              JSON.stringify(msg),
+              (msg),
               accounts[0],
             ],
           });
-          console.log(signedData);
+          const loginData = await loginAuthen({
+            userAddress: accounts[0],
+            signature: signedData
+          })
+          console.log(loginData.accessToken);
+          dispatch(login({ accessToken: loginData.accessToken, user: accounts[0] }));
           updateAccount(accounts[0]);
           updateWallet(walletName);
           document.body.style.overflowY = "auto";

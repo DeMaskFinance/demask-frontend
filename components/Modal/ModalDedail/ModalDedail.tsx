@@ -31,10 +31,6 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
       <br />
     </React.Fragment>
   ));
-  console.log({
-    data,
-    idNFT
-  });
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
