@@ -25,7 +25,7 @@ const Profile = () => {
     const { account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "nfts"));
     const [visible, setVisible] = useState(true);
-    const {profile} = useSelector(selectProfile);
+    const { profile } = useSelector(selectProfile);
     const TABS = [
         {
             title: "Inventory",
@@ -75,6 +75,10 @@ const Profile = () => {
             // cleanup code 
         };
     }, [tab]);
+    const fullTime = profile?.createdAt ? new Date(profile.createdAt) : new Date();
+    const monthName = fullTime.toLocaleString('default', { month: 'long' });
+    console.log(fullTime.getMonth() + 1);
+
     return (
         <div className='pt-6 my-6'>
             <section>
@@ -90,6 +94,9 @@ const Profile = () => {
                         <div className='flex items-center gap-x-2'>
                             <span className='text-secondary1'>{`${account.slice(0, 6)}...${account.slice(-4)}`}</span>
                             <Copy content={account} />
+                        </div>
+                        <div className='flex items-center gap-x-2'>
+                            <span className='text-dark3'>Joined {monthName} {fullTime.getFullYear()}</span>
                         </div>
                     </div>
                 </div>

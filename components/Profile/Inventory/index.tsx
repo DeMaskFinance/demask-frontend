@@ -93,13 +93,13 @@ const Inventory = () => {
                                                 <div className='my-1'>
                                                     {chainId === '280' ? (
                                                         <div className='flex items-center gap-x-1'>
-                                                            <ZkSyncIcon width={18} height={7} className='fill-secondary3' />
+                                                            <ZkSyncIcon width={18} height={12} className='fill-secondary3' />
                                                             <p className='text-[11px] font-semibold text-secondary3'>zKsync Era</p>
                                                         </div>
                                                     ) : (
                                                         <div className='flex items-center gap-x-1'>
-                                                            <GoerliIcon width={18} height={7} className='fill-secondary3' />
-                                                            <p className='text-[11px] font-semibold text-secondary3'>Goerli Testnet</p>
+                                                            <GoerliIcon width={18} height={12} className='fill-secondary3' />
+                                                            <p className='text-[12px] font-semibold text-secondary3'>Goerli Testnet</p>
                                                         </div>
                                                     )}
                                                 </div>
