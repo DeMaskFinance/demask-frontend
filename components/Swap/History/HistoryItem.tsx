@@ -16,7 +16,6 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
     isFetching,
     demask
 }) => {
-    console.log(data);
     
     return (
         <>

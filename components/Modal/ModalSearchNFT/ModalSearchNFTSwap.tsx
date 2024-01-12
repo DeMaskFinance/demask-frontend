@@ -73,7 +73,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
 
       keepPreviousData: true,
     });
-  console.log(topNftData);
 
   const handleSelectNFT = (item: any) => {
     const { currency } = router.query;

@@ -108,12 +108,14 @@ const Swap: React.FC = () => {
   }, [slug]);
 
   useEffect(() => {
+    console.log('123yyy');
+    
     if (router.query.chain === '280') {
       router.replace('0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280');
     } else {
       router.replace('0x6c216DFAFc944C46582a34D9f87532D00080C61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/22451713?chain=5');
     }
-  }, [router.query.chain, router.isReady])
+  }, [router.query.chain, router.isReady]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
   useEffect(() => {
@@ -296,20 +298,20 @@ const Swap: React.FC = () => {
                     <div className="flex items-center justify-between mb-2">
                       <div>
                         {account && activeChoice === "BUY" && (
-                          <p className="flex items-center text-sm text-dark3">
+                          <p className="flex items-center text-sm text-dark1">
                             Your balance:{formatNumber(balanceToken)}
                             <EtherIcon width={16} height={16} className="fill-dark2" />
                           </p>
                         )}
                         {account && activeChoice === "SELL" && (
-                          <div className="flex items-center text-sm text-dark3">
+                          <div className="flex items-center text-sm text-dark1">
                             <p>Your balance:</p>
                             <p>{formatNumber(balanceNFT)}</p>
                             <NFTIcon width={14} height={14} className="fill-dark1 ml-[2px]" />
                           </div>
                         )}
                       </div>
-                      <div className="flex items-center text-sm text-dark3">
+                      <div className="flex items-center text-sm text-dark1">
                         <div className="flex items-center mr-2">
                           <span>Liquidity:</span>
                           <FormatNumber number={data.reserveNFT} />
@@ -406,11 +408,11 @@ const Swap: React.FC = () => {
 
                   <div className="mt-4">
                     <div className="flex justify-between mb-2">
-                      <div className="text-sm text-dark3">
+                      <div className="text-sm text-dark1">
                         Total Proceeds:
                       </div>
                       <div className="">
-                        <label htmlFor="data.royaltyFee" className=' text-dark3'>
+                        <label htmlFor="data.royaltyFee" className=' text-dark1'>
                           <div className="flex text-sm">Royalties Fee:
                             {activeChoice === "BUY" ? (
                               <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />

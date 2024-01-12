@@ -30,10 +30,20 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const handleChangeNetwork = (chain: string) => {
         if (chain !== '1') {
             if (account && wallet) {
-                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab)
+                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
             } else {
                 updateChainId(chain);
                 setTab(chain);
+                // console.log("asdnn");
+                
+                // const { slug } = router.query;
+                // if (slug && router.isReady) {
+                //     if (router.query.chain === '280') {
+                //         router.replace('0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280');
+                //     } else {
+                //         router.replace('0x6c216DFAFc944C46582a34D9f87532D00080C61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/22451713?chain=5');
+                //     }
+                // }
             }
         }
     };
@@ -44,6 +54,8 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
         } else {
             setFilterNetwork(network[1]);
         }
+        const { slug } = router.query;
+
     }, [router.query.chain, router.isReady]);
 
 

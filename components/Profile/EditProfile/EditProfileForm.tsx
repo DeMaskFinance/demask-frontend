@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field, useFormik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { DiscordIcon, FacebookIcon, GithubIcon, GmailIcon, TeleIcon, TwitterIcon, WebsiteIcon } from '@/components/Icons';
+import { DiscordIcon, FacebookIcon, GithubIcon, TeleIcon, TwitterIcon, WebsiteIcon } from '@/components/Icons';
 import { Button } from '@/components/Buttons';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProfile, userData } from '@/store/profileSlice';
-import { useMutation } from '@tanstack/react-query';
 import * as userService from "@/libs/service/userService";
 import { useRouter } from 'next/router';
 const styles = {

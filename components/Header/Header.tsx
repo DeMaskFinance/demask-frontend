@@ -108,7 +108,6 @@ export default function Header() {
   }, []);
 
   const [showSearch, setShowSearch] = useState(false);
-  console.log(showSearch);
 
   return (
     <>

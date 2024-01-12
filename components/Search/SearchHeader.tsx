@@ -89,8 +89,15 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata.name);
-    setShowSearch(false);
+    let newURL = "";
+    const { slug } = router.query;
+    if (slug) {
+      const currentURL = router.asPath;
+      newURL = currentURL.replace(slug[0], item.nftAddress).replace(slug[1], item.tokenAddress).replace(slug[2], item.nftID);
+    }
+    router.push(newURL);
     document.body.style.overflowY = "auto";
+    setShowSearch(false);
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata.name &&
@@ -102,7 +109,6 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
       setSearchHistory(newHistory);
       setCookie("searchHistory", JSON.stringify(newHistory), { expires: 7 });
     }
-    router.replace(`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`)
   };
 
   const handleRemoveItem = (index: number) => {
@@ -238,10 +244,9 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
                     </div>
                     <div className="flex flex-col gap-4">
                       {searchData.map((item: any, index: number) => (
-                        <Link
+                        <div
                           key={index}
                           onClick={() => handleResultItemClick(item)}
-                          href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
                           className="flex-1"
                         //
                         >
@@ -265,7 +270,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       ))}
                     </div>
                   </>
@@ -286,10 +291,9 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
                     <div className="block mb-2">
                       <span className="text-base">NFTs Top</span>
                       {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
-                        <Link
+                        <div
                           key={index}
                           onClick={() => handleResultItemClick(item)}
-                          href={`/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
                           className="flex-1"
                         //
                         >
@@ -313,7 +317,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       ))}
                     </div>
                   </div>

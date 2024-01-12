@@ -42,6 +42,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       text-sm
       flex
       items-center
+      justify-center
       ${primary ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear" : ""}
       ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
       ${active ? "bg-dark2 text-white" : ""}
@@ -53,7 +54,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       {children}
       {
         isLoadingBtn && (
-          <BiLoaderAlt className="ml-2 text-white  animate-spin" />
+          <BiLoaderAlt className="ml-2 text-white animate-spin" />
         )
       }
     </button>

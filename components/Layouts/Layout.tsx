@@ -30,7 +30,7 @@ export default function Layout({ children }: PropsWithChildren) {
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {
-        dispatch(userData({ profile: userInfo.data }))
+        dispatch(userData({ profile: userInfo?.data }))
       })
     }
   }, [user, accessToken, isLoggedIn])
