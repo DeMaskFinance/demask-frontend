@@ -48,16 +48,6 @@ export default function Layout({ children }: PropsWithChildren) {
   }, [router.query.chain, router.isReady, chainId]);
   console.log(chainId);
   useEffect(() => {
-    const { slug } = router.query;
-    if (slug) {
-      if (router.query.chain === '280') {
-        router.replace(`/swap/0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280`);
-      } else if (router.query.chain === '5') {
-        router.replace(`/swap/0x6c216dfafc944c46582a34d9f87532d00080c61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/8910040055?chain=5`);
-      }
-    }
-  }, [ router.query.chain, router.isReady]);
-  useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {
         dispatch(userData({ profile: userInfo?.data }))
