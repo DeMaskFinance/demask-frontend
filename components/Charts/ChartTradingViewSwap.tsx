@@ -179,25 +179,25 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 </div>
             ) : data && newData?.length > 0 ? (
                 <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
-                    <div className='flex-wrap hidden mb-2 text-xs border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
-                        <div className='flex p-4 border-r border-dark3'>
-                            <p>Price:</p>
+                    <div className='flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
+                        <div className='flex p-4 border-r border-dark3 text-dark2'>
+                            <p className='mr-1 text-dark3'>Price:</p>
                             <FormatNumber number={data[data.length - 1].closePrice} />
                             ({formatPercent(data[data.length - 1].changePrice)}%)
                         </div>
-                        <div className='flex p-4 border-r border-dark3'>
-                            <p>Volume:</p>
+                        <div className='flex p-4 border-r border-dark3 text-dark2'>
+                            <p className='mr-1 text-dark3'>Volume:</p>
                             <div className='flex items-center'>
                                 <FormatNumber number={data[data.length - 1].volume} />
                                 <EtherIcon width={12} height={12} className='fill-dark2' />
                             </div>
                         </div>
-                        <div className='flex p-4 border-r border-dark3 gap-x-1'>
-                            <p>Supply</p>
+                        <div className='flex p-4 border-r border-dark3 text-dark2'>
+                            <p className='mr-1 text-dark3'>Supply:</p>
                             <p>125</p>
                         </div>
-                        <div className='flex p-4 gap-x-1'>
-                            <p>Liquidity</p>
+                        <div className='flex p-4 text-dark2'>
+                            <p className='mr-1 text-dark3'>Liquidity:</p>
                             <div className='flex items-center'>
                                 <p>123</p>
                                 <EtherIcon width={12} height={12} className='fill-dark2' />
