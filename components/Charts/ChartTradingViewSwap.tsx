@@ -194,12 +194,12 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                         </div>
                         <div className='flex p-4 border-r border-dark3 text-dark2'>
                             <p className='mr-1 text-dark3'>Supply:</p>
-                            <p>125</p>
+                            <p>-</p>
                         </div>
                         <div className='flex p-4 text-dark2'>
                             <p className='mr-1 text-dark3'>Liquidity:</p>
                             <div className='flex items-center'>
-                                <p>123</p>
+                                <p>-</p>
                                 <EtherIcon width={12} height={12} className='fill-dark2' />
                             </div>
                         </div>
