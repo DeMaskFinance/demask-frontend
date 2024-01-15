@@ -8,6 +8,7 @@ interface MediaNFTProps {
     launchpad?: boolean
 }
 const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad }) => {
+    
     return (
         <>
             {data?.metadata && (
@@ -20,7 +21,12 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad 
                             height={576}
                             sizes="(max-width: 770px) 100vw"
                             className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
-                            blurDataURL={`${images.blur}`}
+                            blurDataURL="/Placeholder.png"
+                            onError={(event: any) => {
+                                event.target.srcset = "https://api.demask.finance/media/default_image.jpg";
+                            }}
+                            placeholder="blur"
+                            loading="lazy"
                         />
                     )}
                     {!data.metadata?.image && data.metadata?.animation_url && (
@@ -38,6 +44,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({ data, isControls, hover, launchpad 
                                 }
                                 : {})}
                             className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
+                            poster="/Placeholder.png"
                         />
                     )}
                     {data.metadata?.image && data.metadata?.animation_url && !launchpad && (

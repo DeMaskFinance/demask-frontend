@@ -1,6 +1,7 @@
 import Tippy from '@tippyjs/react'
 import React, { useEffect, useState } from 'react'
 import { IoCopyOutline } from 'react-icons/io5'
+import { CopyIcon } from '../Icons';
 
 export default function Copy({ content }: { content: string }) {
     const [isCopy, setIsCopy] = useState<boolean>(false);
@@ -23,7 +24,7 @@ export default function Copy({ content }: { content: string }) {
                 theme='light'
                 visible={isCopy}
                 content={<span>Copied</span>}>
-                <button onClick={copyToClipboard}><IoCopyOutline /></button>
+                <button onClick={copyToClipboard}><CopyIcon width={20} height={20} /></button>
             </Tippy>
         </div>
     )

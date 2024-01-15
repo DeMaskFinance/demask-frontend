@@ -75,7 +75,7 @@ const ModalSetting: React.FunctionComponent<
                                         updateSlippage(item)
                                     }}>{item}</Button>
                                 ))}
-                                <input type="text" value={slippageTo} className='w-10 h-full pb-2 pt-[6px] mr-2 font-semibold border rounded-lg border-dark4 text-dark3'
+                                <input type="text" value={slippageTo} className='w-10 text-center justify-center h-full pb-2 pt-[6px] mr-2 font-semibold border rounded-lg border-dark4 text-dark3'
                                     onChange={(e) => handleChangeSlippage(e)}
                                     onBlur={() => {
                                         if (slippageTo > 100) {

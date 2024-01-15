@@ -23,7 +23,6 @@ const approveNFT = async (
       console.error(error);
     }
   } else {
-    console.log("No account");
     return false;
   }
 };

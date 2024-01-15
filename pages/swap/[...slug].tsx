@@ -2,7 +2,7 @@ import { Button } from "@/components/Buttons";
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { ActiveIcon, BackIcon, EtherIcon, PoolIcon, RefetchIcon, SettingIcon } from "@/components/Icons";
+import { ActiveIcon, BackIcon, EtherIcon, NFTIcon, PoolIcon, RefetchIcon, SettingIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -31,13 +31,13 @@ import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
 import Tippy from "@tippyjs/react";
 const styles = {
-  inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block",
+  inputItem: "w-full py-2 pl-2 mb-2 border rounded-lg border-dark3 block placeholder:text-sm",
   btnActive: "rounded-full bg-base2",
 };
 const updateMeta = {
@@ -48,7 +48,6 @@ const Swap: React.FC = () => {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const [symbolToken, setSymbolToken] = useState<string>('');
   const [idNFT, setIdNFT] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
@@ -80,6 +79,7 @@ const Swap: React.FC = () => {
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
   const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
+  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>('');
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -106,16 +106,16 @@ const Swap: React.FC = () => {
       setInputNFT("");
     }
   }, [slug]);
-  useEffect(() => {
-    if (tokenDefault && data) {
-      if (data.tokenSymbol !== tokenDefault[0].symbolNative) {
-        setSymbolToken(data.tokenSymbol)
-      } else {
-        setSymbolToken(tokenDefault[0].symbol)
-      }
-    }
-  }, [data, slug, tokenDefault])
 
+  // useEffect(() => {
+  //   console.log('123yyy');
+    
+  //   if (router.query.chain === '280') {
+  //     router.replace('0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280');
+  //   } else {
+  //     router.replace('0x6c216DFAFc944C46582a34D9f87532D00080C61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/22451713?chain=5');
+  //   }
+  // }, [router.query.chain, router.isReady]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
   useEffect(() => {
@@ -128,7 +128,6 @@ const Swap: React.FC = () => {
 
   const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFT, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
-  console.log(data);
 
   useEffect(() => {
     if (inputNFT && data && amountTokenBuy && amountTokenSell) {
@@ -151,7 +150,7 @@ const Swap: React.FC = () => {
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "BUY") {
-        if (data && Number(inputNFT) < Number(data.reserveNFT)) {
+        if (data && Number(inputNFT) <= Number(data.reserveNFT)) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
@@ -176,7 +175,10 @@ const Swap: React.FC = () => {
       setIsSufficientTokenSell(true);
     }
   }, [inputNFT, activeChoice, account, amountBuyDec, amountSellDec, data]);
-
+  useEffect(() => {
+    setInputNFT('');
+    setActiveChoiceNFT('');
+  }, [activeChoice])
   useEffect(() => {
     if (inputNFT === "") {
       setIsSufficientNFT(true);
@@ -196,6 +198,7 @@ const Swap: React.FC = () => {
     }
     else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null && Math.floor(amountBuyDec) !== 0) {
       setIsOpenBuyNFT(true);
+      document.body.style.overflowY = "hidden";
     }
   };
   const handleSell = () => {
@@ -203,6 +206,7 @@ const Swap: React.FC = () => {
       setShowRequiredMessage(true);
     } else if (isSufficientNFT && isSufficientTokenSell && data.dmlAddress !== null && Math.floor(amountSellDec) !== 0) {
       setIsOpenSellNFT(true);
+      document.body.style.overflowY = "hidden";
     }
   };
   const handleSearchNFT = () => {
@@ -213,20 +217,20 @@ const Swap: React.FC = () => {
     setIsOpenDetail(true);
     document.body.style.overflowY = "hidden";
   };
-  const handleSearchToken = () => {
-    setIsOpenSearchToken(true);
-    document.body.style.overflowY = "hidden";
-  };
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  console.log(data);
   const actions = [
     { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
     { icon: <PoolIcon width={24} height={24} className="group-hover:fill-secondary3" />, content: 'Pool', link: `/add/${nftAddress}/${tokenAddress}/${idNFT}` },
     { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
-  ]
+  ];
+  const activeNFTPercent = [
+    { text: '25%', percent: 0.25 },
+    { text: '50%', percent: 0.5 },
+    { text: '75%', percent: 0.75 },
+    { text: 'MAX', percent: 1 },]
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
       <NextSeo {...updateMeta} />
@@ -234,11 +238,14 @@ const Swap: React.FC = () => {
         <SkeletonReels />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex mb-6 gap-x-2">
+          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
             <div onClick={() => router.back()}>
               <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
             </div>
-            <h1 className="text-xl font-semibold text-dark0">Detail Swap</h1>
+            <div className="w-[30px] h-[30px]">
+              <MediaNFT data={data} isControls={false} />
+            </div>
+            <p>{data?.metadata?.name}</p>
           </div>
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
             <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
@@ -263,7 +270,7 @@ const Swap: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-x-2">
                     {actions.map((action, index) => (
-                      <Tippy key={index} content={<div>{action.content}</div>} theme='dark' placement="bottom">
+                      <Tippy key={index} content={<div className="text-xs">{action.content}</div>} theme='dark' placement="bottom">
                         {action.link ? (
                           <Link href={action.link} className="group">
                             {action.icon}
@@ -286,124 +293,74 @@ const Swap: React.FC = () => {
                     Show detail
                   </p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-semibold">
-                    <div className="flex text-xl text-dark1">
-                      {symbolToken && isSuccess ? (
-                        <div className="relative flex items-center">
-                          {data.metadata?.symbol ? (
-                            <div className="max-w-[96px]">
-                              <ModalDocument data={data.metadata?.symbol} />
-                            </div>
-                          ) : (
-                            <span>{idNFT}</span>
-                          )}
-                          <span className="block overflow-hidden leading-4">/</span>
-                          <span>{symbolToken}</span>
-                        </div>
-                      ) : (
-                        <div className="w-20 h-5 rounded-full animate-pulse bg-slate-200"></div>
-                      )}
-                      <span className="ml-1">
-                        <ActiveIcon
-                          width={24}
-                          height={24}
-                          className={
-                            data.dmlAddress ===
-                              null
-                              ? "fill-red"
-                              : ""
-                          }
-                        />
-                      </span>
-                    </div>
-                    {account && activeChoice === "BUY" && (
-                      <div className="flex items-center text-dark2">
-                        Balance:{formatNumber(balanceToken)}
-                        <span className="mb-1 ml-1">
-                          <EtherIcon width={16} height={16} className="fill-dark2" />
-                        </span>
-                      </div>
-                    )}
-                    {account && activeChoice === "SELL" && (
-                      <p className="text-dark2">
-                        Balance:{formatNumber(balanceNFT)} NFT
-                      </p>
-                    )}
-                  </div>
-                  <div className="">
-                    {activeChoice === "BUY" && (
-                      <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
-                        {inputNFT ? (
-                          <FormatNumber number={divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)} />
-                        ) : (
-                          <span>0</span>
-                        )}
-                        <span className="mb-1 ml-2">
-                          <EtherIcon width={20} height={20} className="fill-secondary4" />
-                        </span>
-                      </div>
-                    )}
-                    {activeChoice === "SELL" && (
-                      <div className="flex items-center text-lg font-semibold lg:text-3xl text-secondary3">
-                        {inputNFT ? (
-                          <FormatNumber number={divideByDecimal(amountTokenSell.toString(), data.tokenDecimals)} />
-                        ) : (
-                          <span>0</span>
-                        )}
-                        <span className="mb-1 ml-2">
-                          <EtherIcon width={20} height={20} className="fill-secondary4" />
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
                 <form className="mt-5">
                   <div>
-                    <div className="flex justify-between">
-                      {data.reserveNFT ? (
-                        <p className="mb-1 text-sm text-dark3">
-                          Reverse NFT:{formatNumber(data.reserveNFT)}
-                        </p>
-                      ) : (
-                        <div className="w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
-                      )}
-                      {data.reserveToken ? (
-                        <div className="flex mb-1 text-sm text-dark3">
-                          <p>Reverse Token:</p>
-                          <FormatNumber number={data.reserveToken} />
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        {account && activeChoice === "BUY" && (
+                          <p className="flex items-center text-sm text-dark1">
+                            Your balance:{formatNumber(balanceToken)}
+                            <EtherIcon width={16} height={16} className="fill-dark2" />
+                          </p>
+                        )}
+                        {account && activeChoice === "SELL" && (
+                          <div className="flex items-center text-sm text-dark1">
+                            <p>Your balance:</p>
+                            <p>{formatNumber(balanceNFT)}</p>
+                            <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center text-sm text-dark1">
+                        <div className="flex items-center mr-2">
+                          <span>Liquidity:</span>
+                          <FormatNumber number={data.reserveNFT} />
+                          <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
                         </div>
-                      ) : (
-                        <div className="self-end w-24 h-5 mb-4 rounded-full animate-pulse bg-slate-200"></div>
-                      )}
+                        <FormatNumber number={data.reserveToken} />
+                        <span><EtherIcon width={20} height={20} className="fill-dark1 ml-[-1px]" /></span>
+                      </div>
                     </div>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        name="amountNFT"
-                        id="amountNFT"
-                        autoComplete="off"
-                        placeholder="Input amount NFT"
-                        className={
-                          showRequiredMessage
-                            ? "w-full py-2 pl-2 mb-2 rounded-lg border-2 border-red"
-                            : styles.inputItem
-                        }
-                        value={inputNFT}
-                        onChange={(e) => {
-                          setInputNFT(e.target.value);
-                          setShowRequiredMessage(false);
-                          setCheckExit(true);
-                        }}
-                      />
-                      <div
-                        className="absolute px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
-                        onClick={handleSearchNFT}
-                      >
-                        <div className="w-16 text-center">
-                          <h2 className="truncate">{data.metadata?.symbol ? data.metadata?.symbol : data.metadata?.name}</h2>
+                    <div className={`relative p-2 border rounded-lg border-dark3 ${showRequiredMessage && 'border-red'}`}>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          name="amountNFT"
+                          id="amountNFT"
+                          autoComplete="off"
+                          placeholder="Input amount NFT"
+                          className="border-none outline-none placeholder:font-semibold"
+                          value={inputNFT}
+                          onChange={(e) => {
+                            setInputNFT(e.target.value);
+                            setShowRequiredMessage(false);
+                            setActiveChoiceNFT('');
+                            setCheckExit(true);
+                          }}
+                        />
+                        <div
+                          className="absolute min-h-[80%] px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
+                          onClick={handleSearchNFT}
+                        >
+                          <div className="w-16 text-center">
+                            <h2 className="truncate">{data.metadata?.symbol ? data.metadata?.symbol : data.metadata?.name}</h2>
+                          </div>
                         </div>
+                      </div>
+                      <div className="flex justify-end mt-8">
+                        {activeNFTPercent.map((item, index) => (
+                          <button type="button" className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
+                            onClick={() => {
+                              if (activeChoice === "BUY") {
+                                setInputNFT((Math.floor(item.percent * data.reserveNFT)).toString())
+                              } else {
+                                setInputNFT((Math.floor(item.percent * Number(balanceNFT))).toString())
+                              }
+                              setShowRequiredMessage(false);
+                              setActiveChoiceNFT(item.text);
+                            }}
+                          >{item.text}</button>
+                        ))}
                       </div>
                     </div>
                     {data.dmlAddress !== null &&
@@ -450,13 +407,13 @@ const Swap: React.FC = () => {
                   </div>
 
                   <div className="mt-4">
-                    <div className="flex justify-between">
-                      <div className="mb-1 text-sm text-dark3">
+                    <div className="flex justify-between mb-4">
+                      <div className="text-sm text-dark1">
                         Total Proceeds:
                       </div>
                       <div className="">
-                        <label htmlFor="data.royaltyFee" className='mb-1 text-dark3'>
-                          <div className="flex mb-1 text-sm">Royalties Fee:
+                        <label htmlFor="data.royaltyFee" className=' text-dark1'>
+                          <div className="flex text-sm">Royalties Fee:
                             {activeChoice === "BUY" ? (
                               <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
                             ) : (
@@ -516,7 +473,7 @@ const Swap: React.FC = () => {
                   {activeChoice === "BUY" && account && (
                     <button
                       type="button"
-                      className="py-2 w-[144px] bg-green rounded-lg text-sm text-white"
+                      className="py-2 w-[144px] bg-green hover:text-green hover:bg-white hover:border-green border rounded-lg text-sm text-white"
                       onClick={handleBuy}
                     >
                       BUY NFT
@@ -571,6 +528,7 @@ const Swap: React.FC = () => {
       <ModalSearchNFTSwap
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
+        setActiveChoiceNFT={setActiveChoiceNFT}
       />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
@@ -587,10 +545,10 @@ const Swap: React.FC = () => {
         isOpenSearchToken={isOpenSearchToken}
       />
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
+        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFT} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
       )}
       {data && account && (
-        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} symbolToken={symbolToken} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
+        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFT} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
       )}
       <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
       <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />

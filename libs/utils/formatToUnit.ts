@@ -16,5 +16,12 @@ const formatToUnit = (number: string) => {
   if (n >= 1e33 && n < 1e35) return +(n / 1e33).toFixed(1) + "U";
   if (n >= 1e35) return +(n / 1e35).toFixed(1) + "D";
 };
-
-export default formatToUnit;
+const formatPercent = (number: string) => {
+  const n = Math.abs(Number(number));
+  if (n <= 0.1) {
+    return "0";
+  } else {
+    return n.toFixed(2);
+  }
+};
+export { formatToUnit, formatPercent };

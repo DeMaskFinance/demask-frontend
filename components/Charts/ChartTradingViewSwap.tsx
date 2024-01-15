@@ -11,6 +11,8 @@ import ChartLoading from './ChartLoading';
 import ChartNoTransfers from './ChartNoTransfers';
 import FormatNumber from '../Common/FormatNumber';
 import AccountContext from '@/context/AccountContext';
+import { EtherIcon } from '../Icons';
+import { formatPercent } from '@/libs/utils/formatToUnit';
 interface BarData {
     time: string;
     value: number;
@@ -18,13 +20,7 @@ interface BarData {
     high: number;
     low: number;
     open: number;
-}
-interface CandleData {
-    open: number;
-    close: number;
-    high: number;
-    low: number;
-    time: string;
+    change: string;
 }
 const ChartTradingViewSwap = ({ dmlAddress }: any) => {
     const chartContainerRef = useRef(null);
@@ -42,30 +38,35 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
             return res;
         },
     });
+    // console.log(data);
+
     // console.log(volume[volume.length - 1]);
-    // console.log(legendData);
+    // console.log({
+    //     legendData,
+    // });
     useEffect(() => {
         setLegendData(volume[volume.length - 1]);
     }, [volume]);
     useEffect(() => {
         if (data) {
-            const convertedData = data.map((item: any) => ({
+            const convertedData = data?.map((item: any) => ({
                 close: parseFloat(item.closePrice),
                 high: parseFloat(item.highPrice),
                 low: parseFloat(item.lowPrice),
                 open: parseFloat(item.openPrice),
                 time: item.date,
+                change: item.changePrice
             }));
             setNewData(convertedData);
-            const convertedDataVolume: BarData[] = data.map((item: any) => ({
+            const convertedDataVolume: BarData[] = data?.map((item: any) => ({
                 time: item.date,
                 value: parseFloat(item.volume),
                 close: parseFloat(item.closePrice),
                 high: parseFloat(item.highPrice),
                 low: parseFloat(item.lowPrice),
                 open: parseFloat(item.openPrice),
+                change: item.changePrice
             }));
-            setNewData(convertedData);
             setVolume(convertedDataVolume);
         }
     }, [data]);
@@ -148,13 +149,15 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                         const low = candleData.low;
                         const value = VolumeData?.value;
                         const time = VolumeData?.time;
+                        const change = Number(candleData.open) > Number(candleData.close);
                         setLegendData({
                             open,
                             close,
                             high,
                             low,
                             value,
-                            time
+                            time,
+                            change
                         })
                     }
                 }
@@ -176,37 +179,79 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 </div>
             ) : data && newData?.length > 0 ? (
                 <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
+                    <div className='flex-wrap hidden mb-2 text-xs border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
+                        <div className='flex p-4 border-r border-dark3'>
+                            <p>Price:</p>
+                            <FormatNumber number={data[data.length - 1].closePrice} />
+                            ({formatPercent(data[data.length - 1].changePrice)}%)
+                        </div>
+                        <div className='flex p-4 border-r border-dark3'>
+                            <p>Volume:</p>
+                            <div className='flex items-center'>
+                                <FormatNumber number={data[data.length - 1].volume} />
+                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                            </div>
+                        </div>
+                        <div className='flex p-4 border-r border-dark3 gap-x-1'>
+                            <p>Supply</p>
+                            <p>125</p>
+                        </div>
+                        <div className='flex p-4 gap-x-1'>
+                            <p>Liquidity</p>
+                            <div className='flex items-center'>
+                                <p>123</p>
+                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                            </div>
+                        </div>
+                    </div>
                     <div
                         id="legend"
                         className="secondary heading-XXS"
                         style={{
-                            marginLeft: "1rem",
                             marginBottom: "0.5rem",
                             fontFamily: "unset",
                         }}
                     >
                         <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap">
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Price: <FormatNumber number={data[data.length - 1].closePrice} />
-                            </span>
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Open: <FormatNumber number={legendData?.open} />
-                            </span>
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Low: <FormatNumber number={legendData?.low} />
-                            </span>
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                High: <FormatNumber number={legendData?.high} />
-                            </span>
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Close: <FormatNumber number={legendData?.close} />
-                            </span>
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Vol: <FormatNumber number={legendData?.value} />
-                            </span>
-                            <span className="flex rounded-lg py-[5px] px-2.5 bg-gray-50 heading-XS text-gray-500 border border-gray-200">
-                                Time: {legendData?.time}
-                            </span>
+                            <div className="flex">
+                                <span className='text-xs text-dark3'>Time:</span>
+                                <span>{legendData?.time}</span>
+                            </div>
+                            <div className="flex ">
+                                <span className='text-xs text-dark3'>O:</span>
+                                <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
+                                    <FormatNumber number={legendData?.open} />
+                                </div>
+                            </div>
+                            <div className="flex ">
+                                <span className='text-xs text-dark3'>
+                                    L:</span>
+                                <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
+                                    <FormatNumber number={legendData?.low} />
+                                </div>
+                            </div>
+                            <div className="flex ">
+                                <span className='text-xs text-dark3'>
+                                    H:
+                                </span>
+                                <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
+                                    <FormatNumber number={legendData?.high} />
+                                </div>
+                            </div>
+                            <div className="flex text-xs ">
+                                <span className='text-xs text-dark3'>
+                                    C:
+                                </span>
+                                <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
+                                    <FormatNumber number={legendData?.close} />
+                                </div>
+                            </div>
+                            <div className="flex ">
+                                <span className='text-xs text-dark3'>Vol:</span>
+                                <div className={`${legendData?.change ? "text-red" : "text-green"}`}>
+                                    <FormatNumber number={legendData?.value} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div ref={chartContainerRef} id="chart" className='w-full h-[350px] lg:h-[450px]' />

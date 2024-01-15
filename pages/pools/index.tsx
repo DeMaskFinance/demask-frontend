@@ -3,15 +3,15 @@ import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
-import { NextSeo } from "next-seo";
 import { SEO } from '../../next-seo.config';
-import ChartKline from "@/components/Charts/ChartSwapKLine";
-import Image from "next/image";
-import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
+import { useSelector } from "react-redux";
+import { selectProfile } from "@/store/profileSlice";
+import Web3 from "web3";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',
@@ -26,7 +26,9 @@ export default function Liquidity() {
     const idNFT = demask.IDNFT;
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
-  const { ref, inView } = useInView();
+  // const { profile, isLoggedIn } = useSelector(selectProfile);
+  // console.log(profile, isLoggedIn);
+
   const fetchDataListLiquidity = async (accountUser: string, pageParam = 1, chainId: string | string[]) => {
     const data = await liquidityListAPI(accountUser.toLowerCase(), pageParam, chainId);
     return data;
@@ -49,7 +51,6 @@ export default function Liquidity() {
           : undefined,
     }
   );
-
   return (
     <div className="py-8 max-w-4xl mx-auto min-h-[75vh]">
       <NextSeo {...updateMeta} />

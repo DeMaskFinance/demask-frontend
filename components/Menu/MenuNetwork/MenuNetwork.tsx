@@ -2,6 +2,7 @@ import AccountContext from '@/context/AccountContext';
 import { network } from "@/libs/constants";
 import { changeNetwork } from '@/libs/utils/changeNetwork';
 import Tippy from "@tippyjs/react/headless";
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
 import "tippy.js/dist/tippy.css"; // optional
@@ -25,25 +26,46 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+    const router = useRouter();
     const handleChangeNetwork = (chain: string) => {
         if (chain !== '1') {
             if (account && wallet) {
-                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId,setTab)
+                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
             } else {
                 updateChainId(chain);
                 setTab(chain);
             }
+            let newURL = "";
+            const { slug } = router.query;
+            // if (slug) {
+            //     const currentURL = router.asPath;
+            //     console.log(demask);
+
+            //     newURL = currentURL.replace(slug[0], demask.CREATOR).replace(slug[1], demask.NATIVE_ADDRESS).replace(slug[2], demask.IDNFT);
+            //     console.log(newURL);
+
+            //     router.replace(newURL);
+            // }
+            // if (router.query.chain === '280') {
+            //     console.log("kkk");
+
+            //     router.replace(`/swap/0x59620b99146C56785b067f84237fa80D89588228/0x59620b99146C56785b067f84237fa80D89588228/581234443?chain=280`);
+            // } else {
+            //     console.log("acs");
+
+            //     router.replace(`/swap/0x6c216dfafc944c46582a34d9f87532d00080c61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/8910040055?chain=5`);
+            // }
         }
     };
     useEffect(() => {
-        if (chainId) {
-            const foundNetwork = network.find((item) => item.chain === chainId);
+        if (router.query.chain) {
+            const foundNetwork = network.find((item) => item.chain === router.query.chain);
             setFilterNetwork(foundNetwork);
         } else {
             setFilterNetwork(network[1]);
         }
-    }, [chainId]);
-
+    }, [router.query.chain, router.isReady]);
+    
 
     const LogoComponent: any = filterNetwork?.logo;
     return (

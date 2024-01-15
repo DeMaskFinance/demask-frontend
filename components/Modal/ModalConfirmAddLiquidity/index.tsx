@@ -21,6 +21,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ModalDocument from "../ModalLength/ModalDocument";
 import FormatNumber from "@/components/Common/FormatNumber";
+import { BiLoaderAlt } from "react-icons/bi";
 interface ModalConfirmAddLiquidityProps {
     isOpenConfirmAddLiquidity: boolean;
     tokenAddress: string;
@@ -99,7 +100,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             return () => {
                 clearInterval(load)
             }
-        }, [isOpenConfirmAddLiquidity])
+        }, [isOpenConfirmAddLiquidity, preFectch])
         const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
             dmlToken,
             wallet,
@@ -290,11 +291,14 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                             {isApprovedToken && (
                                 <button
                                     type="button"
-                                    disabled={isLoadingInforDML}
-                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    disabled={isLoadingInforDML || preFectch}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML || preFectch ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={addLiquidity}
                                 >
                                     Create pool
+                                    {isLoadingInforDML && (
+                                        <BiLoaderAlt className="text-white animate-spin" />
+                                    )}
                                 </button>
                             )}
                             {!isApprovedToken && tokenAddress !== nativeAddress && (

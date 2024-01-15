@@ -40,8 +40,6 @@ export const changeNetwork = async (
               },
             ],
           });
-          // refresh
-          // window.location.reload();
           setIsWrongNetwork(false);
           document.body.style.overflowY = "auto";
         } else {
@@ -50,6 +48,12 @@ export const changeNetwork = async (
       }
     }
   } catch (error) {
+    // if (wallet === "Metamask") {
+    //   window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
+    // }
+    // if (wallet === "Coinbase") {
+    //   window.open('https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad', '_blank', 'noopener,noreferrer');
+    // }
     console.error("Failed to switch network:", error);
     return;
   }

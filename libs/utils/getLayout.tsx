@@ -3,7 +3,7 @@ import { Layout, LayoutSecondary } from '@/components/Layouts';
 import Home from '@/pages';
 
 const getLayout = (page: React.ReactNode) => {
-  // Xác định layout dựa trên trang
+  // layout depend page
   if (page && (page as any).type === Home) {
     return <LayoutSecondary>{page}</LayoutSecondary>;
   }

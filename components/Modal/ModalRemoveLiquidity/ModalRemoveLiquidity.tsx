@@ -77,7 +77,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     };
 
     useEffect(() => {
-      if (balanceOfDML) {
+      if (balanceOfDML && activeChoice !== '' && activeChoice !== '0%') {
         let liquidityPercentage = 0;
         if (activeChoice === '25%') {
           liquidityPercentage = 0.25;
@@ -89,10 +89,10 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           liquidityPercentage = 1;
         }
         const calculatedLiquidity = (Number(balanceOfDML) * liquidityPercentage).toLocaleString('en-US', {
-          minimumFractionDigits: 18,
+          minimumFractionDigits: 2,
           maximumFractionDigits: 18,
         });
-  
+
         setInputLiquidity(calculatedLiquidity);
         setShowRequiredMessage(false);
         setIsSufficientLiquidity(false);
@@ -158,7 +158,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <div>
                     <div className="flex justify-between mb-4 text-dark2">
                       <p className="font-semibold">Liquidity</p>
-                      <div className="flex">Balance: <FormatNumber number={balanceOfDML}/></div>
+                      <div className="flex">Balance: <FormatNumber number={balanceOfDML} /></div>
                     </div>
                     <input
                       className={styles.inputItem}
@@ -206,7 +206,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                     </div>
                     <div className={styles.inputItem}>
                       <div className="flex justify-between">
-                        <FormatNumber number={amountTokenDec}/>
+                        <FormatNumber number={amountTokenDec} />
                         <p className="text-dark3">{data.tokenSymbol}</p>
                       </div>
                     </div>
@@ -256,7 +256,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError}/>
+        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       </Wrapper>

@@ -1,5 +1,4 @@
 import formatNumber from "@/libs/utils/formatNumer";
-import formatToUnit from "@/libs/utils/formatToUnit";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStock from "highcharts/modules/stock";

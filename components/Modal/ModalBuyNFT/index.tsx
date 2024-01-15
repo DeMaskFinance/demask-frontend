@@ -1,8 +1,8 @@
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { DownIcon, EtherIcon } from "@/components/Icons";
-import TransitionURL from "@/components/Toast/TransionURL";
+import { DetailIcon, DownIcon, EtherIcon } from "@/components/Icons";
+import { FaChevronLeft } from "react-icons/fa";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInforFee from "@/hooks/useInforFee";
@@ -21,12 +21,12 @@ import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import { BiLoaderAlt } from "react-icons/bi";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
     data: any;
     inputNFT: string;
-    symbolToken: string;
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
@@ -45,7 +45,6 @@ const ModalBuyNFT: React.FunctionComponent<
     tokenAddress,
     data,
     inputNFT,
-    symbolToken,
     nftAddress,
     idNFT,
     isOpenTransaction,
@@ -61,6 +60,7 @@ const ModalBuyNFT: React.FunctionComponent<
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
         const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
             useState<boolean>(false);
+        const [seeDetail, setSeeDetail] = useState<boolean>(false);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
         const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
         const [gasLimit, setGasLimit] = useState<string>('0');
@@ -108,11 +108,11 @@ const ModalBuyNFT: React.FunctionComponent<
             return () => {
                 clearInterval(load)
             }
-        }, [isOpenBuyNFT])
+        }, [isOpenBuyNFT, preFectch])
 
         useEffect(() => {
             const checkReservesNFT = () => {
-                if (data && Number(inputNFT) < Number(reserveNFT)) {
+                if (data && Number(inputNFT) <= Number(reserveNFT)) {
                     setIsSufficientNFT(true);
                 } else {
                     setIsSufficientNFT(false);
@@ -124,25 +124,6 @@ const ModalBuyNFT: React.FunctionComponent<
             } else {
                 setIsSufficientTokenBuy(true);
             }
-            // const getFeeGas = async () => {
-            //     if (inputNFT) {
-            //         const value = (tokenAddress === nativeAddress) ? exponentialToDecimal(Math.floor(amountBuyDec)) : 0;
-            //         const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
-            //             tokenAddress,
-            //             nftAddress,
-            //             idNFT,
-            //             inputNFT,
-            //             exponentialToDecimal(Math.floor(amountBuyDec)),
-            //             account,
-            //             Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-            //             { value: value }
-            //         );
-            //         console.log(estimatedGas);
-
-            //         setGasLimit(estimatedGas.toString());
-            //     }
-            // }
-            // getFeeGas();
         }, [inputNFT, account, amountBuyDec, data, reserveNFT]);
 
         useEffect(() => {
@@ -166,8 +147,8 @@ const ModalBuyNFT: React.FunctionComponent<
         //     test1,
         //     test2
         // });
-        console.log(isLoadingInforDML);
-        
+        console.log(seeDetail);
+
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -240,7 +221,7 @@ const ModalBuyNFT: React.FunctionComponent<
                         </p>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <FormatNumber number={divideByDecimal(totalProcessBuy.toString(), data.tokenDecimals).toString()} />
-                            <p>{symbolToken}</p>
+                            <p>{data?.tokenSymbol}</p>
                         </div>
                         <div>
                             <DownIcon width={24} height={24} className="mx-auto cursor-pointer hover:fill-secondary5" />
@@ -281,29 +262,43 @@ const ModalBuyNFT: React.FunctionComponent<
                                 <p>Maximum amount</p>
                                 <div className="flex gap-x-1">
                                     <div className="flex items-center">
-                                        <FormatNumber number={(Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals)) / Number(inputNFT)).toString()} />
+                                        <FormatNumber number={(Number(divideByDecimal(amountBuyDec.toString(), data.tokenDecimals))).toString()} />
                                         <p>
                                             <EtherIcon width={14} height={14} className="fill-dark2" />
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-between text-sm text-dark1">
-                                <p>Trading fee</p>
+                            <div className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1" onClick={() => setSeeDetail(!seeDetail)}>
+                                <div className="flex items-center gap-x-1">
+                                    <p>Total fee</p>
+                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? '-rotate-90' : ''}`}><FaChevronLeft /></div>
+                                </div>
                                 <div className="flex items-center">
-                                    <FormatNumber number={divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals).toString()} />
+                                    <FormatNumber number={divideByDecimal((+feeTradingBuy + +royaltiesFeeBuy).toString(), data.tokenDecimals).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex justify-between text-sm text-dark1">
-                                <p>Royalties Fee</p>
-                                <div className="flex items-center">
-                                    <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
-                                    <p>
-                                        <EtherIcon width={14} height={14} className="fill-dark2" />
-                                    </p>
+                            <div className={`overflow-hidden will-change-[height] ${seeDetail ? 'h-[56px] opacity-100' : 'h-0 opacity-0'} transition-all duration-100 ease-linear`}>
+                                <div className="flex justify-between mb-4 text-sm text-dark1">
+                                    <p>Trading fee</p>
+                                    <div className="flex items-center">
+                                        <FormatNumber number={divideByDecimal(feeTradingBuy.toString(), data.tokenDecimals).toString()} />
+                                        <p>
+                                            <EtherIcon width={14} height={14} className="fill-dark2" />
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between text-sm text-dark1">
+                                    <p>Royalties Fee</p>
+                                    <div className="flex items-center">
+                                        <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
+                                        <p>
+                                            <EtherIcon width={14} height={14} className="fill-dark2" />
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             {
@@ -333,11 +328,14 @@ const ModalBuyNFT: React.FunctionComponent<
                             {isApprovedToken ? (
                                 <button
                                     type="button"
-                                    disabled={isLoadingInforDML}
-                                    className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                    disabled={isLoadingInforDML || preFectch}
+                                    className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML || preFectch ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                     onClick={handleBuyNFT}
                                 >
                                     BUY NFT
+                                    {isLoadingInforDML && (
+                                        <BiLoaderAlt className="text-white animate-spin" />
+                                    )}
                                 </button>
                             ) : (
                                 <Button

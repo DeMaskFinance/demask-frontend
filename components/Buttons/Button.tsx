@@ -1,4 +1,5 @@
-import { FunctionComponent,MouseEventHandler } from "react";
+import { FunctionComponent, MouseEventHandler } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 
 interface ButtonProps {
   children: any;
@@ -7,12 +8,13 @@ interface ButtonProps {
   large?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
-  primary?:boolean;
-  active?:boolean;
+  primary?: boolean;
+  active?: boolean;
   outline?: boolean;
   className?: string;
-  type?:"button" | "submit" | "reset" | undefined;
-  third?:boolean
+  type?: "button" | "submit" | "reset" | undefined;
+  third?: boolean;
+  isLoadingBtn?: boolean;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -27,7 +29,8 @@ const Button: FunctionComponent<ButtonProps> = ({
   outline,
   className,
   type,
-  third
+  third,
+  isLoadingBtn
 }) => {
   return (
     <button
@@ -37,6 +40,9 @@ const Button: FunctionComponent<ButtonProps> = ({
       className={`
       rounded-lg
       text-sm
+      flex
+      items-center
+      justify-center
       ${primary ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear" : ""}
       ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
       ${active ? "bg-dark2 text-white" : ""}
@@ -46,6 +52,11 @@ const Button: FunctionComponent<ButtonProps> = ({
       `}
     >
       {children}
+      {
+        isLoadingBtn && (
+          <BiLoaderAlt className="ml-2 text-white animate-spin" />
+        )
+      }
     </button>
   );
 };

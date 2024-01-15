@@ -1,18 +1,17 @@
+import AccountContext from "@/context/AccountContext";
+import { getProvider } from "@/libs/connection/getProvider";
+import { changeNetwork } from "@/libs/utils/changeNetwork";
 import images from "@/public/images";
 import Image from "next/image";
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { getProvider } from "@/libs/connection/getProvider";
-import Web3 from "web3";
-import { checkNetwork } from "@/libs/validation/checkNetwork";
-import AccountContext from "@/context/AccountContext";
-import Wrapper from "../Wrapper";
-import { useWeb3Modal } from '@web3modal/react'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import { useAccount, useDisconnect, useEnsName, useConnect } from 'wagmi'
-import { ethers } from "ethers";
-import { changeNetwork } from "@/libs/utils/changeNetwork";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import Web3 from "web3";
+import Wrapper from "../Wrapper";
+import { getNonce, loginAuthen } from "@/libs/service/userService";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/profileSlice";
+
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
@@ -24,75 +23,32 @@ const styles = {
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet, updateChainId } = useContext(AccountContext);
-  const [walletWeb3, setWalletWeb3] = useState("");
-  const { open, close } = useWeb3Modal();
-  const { address, isConnecting, isDisconnected, isConnected } = useAccount();
-  const { disconnect } = useDisconnect();
   const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+  const dispatch = useDispatch();
   const handleClose = (e: any) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);
   };
-  // useEffect(() => {
-  //   if (isConnected) {
-  //     // Thực hiện các hành động sau khi kết nối thành công
-  //     updateAccount(address);
-  //     updateWallet("WalletConnect");
-  //     document.body.style.overflowY = "auto";
-  //     setIsOpen(false);
-  //   }
-  // }, [isConnected, address]);
   const connectWallet = async (walletName: string) => {
-    switch (walletName) {
-      case "Binance":
-        if (window.BinanceChain) {
-          try {
-            const web3 = new Web3(window.BinanceChain);
-            const accounts = await web3.eth.getAccounts();
-            document.body.style.overflowY = "auto";
-            updateAccount(accounts);
-            updateWallet(walletName);
-            console.log(accounts);
-            setIsOpen(false);
-            if (accounts.length > 0) {
-              const balance = await web3.eth.getBalance(accounts[0]);
-              console.log(balance);
-
-              return true;
-            } else {
-              console.log("No account found");
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
+    try {
+      let provider;
+      let accounts;
+      if (walletName === "Binance") {
+        if (!window.BinanceChain) {
           alert("Binance Wallet not found");
           return false;
         }
-      case "WalletConnect":
-        const providerWallet = await getProvider(walletName);
-        try {
-          await providerWallet.connect();
-          const accounts = await providerWallet.accounts;
-          updateAccount(accounts[0]);
-          updateWallet(walletName);
-          document.body.style.overflowY = "auto";
-          setIsOpen(false);
-        } catch (error) {
-          console.log(error);
-        }
-        break;
-      default:
-        const provider = await getProvider(walletName);
-        const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId, setTab);
-        console.log(networkSwitched);
-
-        if (!networkSwitched) {
-          return;
-        }
-        try {
-          const accounts = await provider
+        provider = new Web3(window.BinanceChain);
+        accounts = await provider.eth.getAccounts();
+      } else {
+        provider = await getProvider(walletName);
+        if (walletName !== "WalletConnect") {
+          const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId, setTab);
+          if (!networkSwitched) {
+            return;
+          }
+          accounts = await provider
             .request({
               method: "eth_requestAccounts",
             })
@@ -104,27 +60,33 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
                 console.error(error);
               }
             });
-          const msg = `0x${Buffer.from("DEMASK", 'utf8').toString('hex')}`;
-          const signedData = await provider?.request({
-            method: "personal_sign",
-            params: [
-              JSON.stringify(msg),
-              accounts[0],
-            ],
-          });
-          console.log(signedData);
-          
-          updateAccount(accounts[0]);
-          updateWallet(walletName);
-          setWalletWeb3(walletName);
-          document.body.style.overflowY = "auto";
-          setIsOpen(false);
-          console.log(accounts);
-        } catch (error: any) {
-          console.log(error);
+        } else {
+          await provider.connect();
+          accounts = await provider.accounts;
         }
+      }
+      if (walletName !== "Binance") {
+        const { data: sign } = await getNonce(accounts[0]);
+        const msg = `${Buffer.from(String(sign.nonce), 'utf8').toString('hex')}`;
+        const signedData = await provider?.request({
+          method: "personal_sign",
+          params: [msg, accounts[0]],
+        });
+        const loginData = await loginAuthen({
+          userAddress: accounts[0],
+          signature: signedData,
+        });
+        dispatch(login({ accessToken: loginData.accessToken, user: accounts[0] }));
+        updateAccount(accounts[0]);
+        updateWallet(walletName);
+        document.body.style.overflowY = "auto";
+        setIsOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
+
 
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
@@ -168,14 +130,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
             />
             <p>Binance wallet</p>
           </div>
-          {/* {isConnected ? (
-            <>
-              <p>{address}</p>
-              <button onClick={() => disconnect}>Disconnect</button>
-            </>
-          ) : (
-            <button onClick={() => console.log("abc")}>Disconnect</button>
-          )} */}
         </div>
         <button
           className="absolute top-0 right-0 p-6 text-lg"

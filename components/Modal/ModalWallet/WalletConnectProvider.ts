@@ -16,7 +16,7 @@ async function getWalletConnectProvider() {
       optionalChains: [97, 80001, 280],
       showQrModal: true, // REQUIRED set to "true" to use @walletconnect/modal
       methods: ["eth_sendTransaction"],
-      events: ["eth_transactionHash"],
+      events: ["eth_transactionHash","chainChanged", "accountsChanged", "connect", "disconnect"],
       // optionalEvents, // OPTIONAL ethereum events
       rpcMap: {
         "1": "https://mainnet.eth.aragon.network",

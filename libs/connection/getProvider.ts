@@ -33,17 +33,32 @@ export const getProvider = async (wallet: string) => {
     provider = await EthereumProvider.init({
       projectId: "1af0159e7a959f2fff3f96c541aef2cb", // REQUIRED your projectId
       chains: [280], // REQUIRED chain ids
-      // optionalChains: [97, 80001, 280],
+      optionalChains: [280, 5],
       showQrModal: true, // REQUIRED set to "true" to use @walletconnect/modal
       methods: ["eth_sendTransaction"],
-      events: ["eth_transactionHash"],
+      optionalMethods: [
+        "personal_sign",
+        "eth_sign",
+        "eth_signTransaction",
+        "eth_sendTransaction",
+        "eth_signTypedData",
+        "eth_signTypedData_v3",
+        "eth_signTypedData_v4",
+        "wallet_addEthereumChain",
+        "eth_requestAccounts",
+        "eth_accounts",
+        "wallet_switchEthereumChain",
+        ],
+      events: [
+        "eth_transactionHash",
+        "chainChanged",
+        "accountsChanged",
+        "disconnect",
+      ],
       // optionalEvents, // OPTIONAL ethereum events
       rpcMap: {
-        // "1": "https://mainnet.eth.aragon.network",
-        // "80001": "https://polygon-mumbai-bor.publicnode.com",
-        // "97": "https://data-seed-prebsc-1-s1.binance.org:8545/",
-        // "56": "https://bsc-dataseed.binance.org/",
         "280": "https://testnet.era.zksync.dev",
+        "5": "https://ethereum-goerli.publicnode.com",
       },
     });
   }

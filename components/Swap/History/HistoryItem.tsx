@@ -16,7 +16,6 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
     isFetching,
     demask
 }) => {
-    console.log(data);
     
     return (
         <>
@@ -35,7 +34,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                         {item.blockTime}
                                     </div>
                                 </td>
-                                <td className="py-2 flex items-center md:w-[70%] w-[100px]">
+                                <td className="py-2 flex items-center justify-center md:w-[70%] w-[100px]">
                                     <div className="flex items-center justify-end text-green">
                                         <span
                                             className={`border text-xs ${item.action === "Buy" || item.action === "Add"
@@ -50,8 +49,8 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                 <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[100px]">
                                     <FormatNumber number={item.amountNFT} />
                                 </td>
-                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
-                                    <div className="flex items-center justify-center md:gap-2">
+                                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                                    <div className="flex items-center justify-between md:gap-2">
                                         <FormatNumber number={item.price} />
                                         <EtherIcon width={18} height={18} className="fill-dark2" />
                                     </div>
@@ -62,14 +61,14 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                         <EtherIcon width={18} height={18} className="fill-dark2" />
                                     </div>
                                 </td>
-                                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
                                     <div className="flex items-center justify-end md:gap-2 text-secondary5">
                                         <Link href={`${demask.urltxHash}address/${item.sender}`} target="_blank" rel="noopener noreferrer" className="text-secondary5">
                                             {item.sender.slice(0, 4) + "..." + item.sender.slice(-4)}
                                         </Link>
                                     </div>
                                 </td>
-                                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
                                     <div className="flex justify-end pr-2 text-secondary5">
                                         <Link
                                             target="_blank"

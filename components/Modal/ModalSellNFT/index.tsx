@@ -17,12 +17,13 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { Button } from "@/components/Buttons";
+import { BiLoaderAlt } from "react-icons/bi";
+import { FaChevronLeft } from "react-icons/fa";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
     data: any;
     inputNFT: string;
-    symbolToken: string;
     nftAddress: string;
     idNFT: string;
     isOpenTransaction: boolean,
@@ -41,7 +42,6 @@ const ModalSellNFT: React.FunctionComponent<
     tokenAddress,
     data,
     inputNFT,
-    symbolToken,
     nftAddress,
     idNFT,
     isOpenTransaction,
@@ -61,6 +61,7 @@ const ModalSellNFT: React.FunctionComponent<
         const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
         const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
+        const [seeDetail, setSeeDetail] = useState<boolean>(false);
         const [isSufficientTokenSell, setIsSufficientTokenSell] =
             useState<boolean>(false);
         const { bigNumberBalance } =
@@ -112,7 +113,7 @@ const ModalSellNFT: React.FunctionComponent<
             return () => {
                 clearInterval(load)
             }
-        }, [isOpenSellNFT])
+        }, [isOpenSellNFT, preFectch])
         const handleSellNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -187,7 +188,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </div>
                         <div className="flex justify-between text-lg font-semibold text-dark2">
                             <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
-                            <p>{symbolToken}</p>
+                            <p>{data?.tokenSymbol}</p>
                         </div>
                         {
                             preFectch && (
@@ -206,7 +207,7 @@ const ModalSellNFT: React.FunctionComponent<
                         </div>
                         <div className="flex flex-wrap mt-2 mb-6 text-sm text-dark2 gap-x-1">
                             <span>Output is estimated. You will receive at least</span>
-                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} /> {symbolToken}</span>
+                            <span className="flex gap-x-1"><FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} /> {data.metadata?.symbol}</span>
                             <span> or the transaction will revert</span>
                         </div>
                         <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
@@ -222,28 +223,42 @@ const ModalSellNFT: React.FunctionComponent<
                             <div className="flex justify-between text-sm text-dark1">
                                 <p>Minimum received</p>
                                 <div className="flex items-center">
-                                    <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
+                                    <FormatNumber number={divideByDecimal(amountSellDec.toString(), data.tokenDecimals)} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex justify-between text-sm text-dark1">
-                                <p>Trading fee</p>
+                            <div className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1" onClick={() => setSeeDetail(!seeDetail)}>
+                                <div className="flex items-center gap-x-1">
+                                    <p>Total fee</p>
+                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? '-rotate-90' : ''}`}><FaChevronLeft /></div>
+                                </div>
                                 <div className="flex items-center">
-                                    <FormatNumber number={divideByDecimal(feeTradingSell.toString(), data.tokenDecimals)} />
+                                    <FormatNumber number={divideByDecimal((+feeTradingSell + +royaltiesFeeSell).toString(), data.tokenDecimals).toString()} />
                                     <p>
                                         <EtherIcon width={14} height={14} className="fill-dark2" />
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex justify-between text-sm text-dark1">
-                                <p>Royalties Fee</p>
-                                <div className="flex items-center">
-                                    <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
-                                    <p>
-                                        <EtherIcon width={14} height={14} className="fill-dark2" />
-                                    </p>
+                            <div className={`overflow-hidden ${seeDetail ? 'h-[56px] opacity-100' : 'h-0 opacity-0'} transition-all duration-100 ease-linear`}>
+                                <div className="flex justify-between mb-4 text-sm text-dark1">
+                                    <p>Trading fee</p>
+                                    <div className="flex items-center">
+                                        <FormatNumber number={divideByDecimal(feeTradingSell.toString(), data.tokenDecimals)} />
+                                        <p>
+                                            <EtherIcon width={14} height={14} className="fill-dark2" />
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between text-sm text-dark1">
+                                    <p>Royalties Fee</p>
+                                    <div className="flex items-center">
+                                        <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
+                                        <p>
+                                            <EtherIcon width={14} height={14} className="fill-dark2" />
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             {
@@ -277,11 +292,14 @@ const ModalSellNFT: React.FunctionComponent<
                         <div className="flex flex-col items-center mt-6">
                             <button
                                 type="button"
-                                disabled={isLoadingInforDML}
-                                className={`py-2 w-[144px] ${isLoadingInforDML ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
+                                disabled={isLoadingInforDML || preFectch}
+                                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${isLoadingInforDML || preFectch ? 'bg-dark4' : 'bg-secondary5'} rounded-lg text-sm text-white mx-auto block`}
                                 onClick={handleSellNFT}
                             >
                                 SELL NFT
+                                {isLoadingInforDML && (
+                                    <BiLoaderAlt className="text-white animate-spin" />
+                                )}
                             </button>
                         </div>
                     </div>

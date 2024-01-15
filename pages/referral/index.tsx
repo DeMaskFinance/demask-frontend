@@ -7,8 +7,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import abiReferral from "@/abi/abiReferral.json";
 import { ModalError, ModalSuccess, ModalTransation } from '@/components/Modal/ModalTransation';
-import TransitionURL from '@/components/Toast/TransionURL';
-import { toast } from "react-toastify";
 export default function Referral() {
     const [sponsor] = useQueryParam('sponsor', withDefault(StringParam, '0x4699A9A5607c9281103Ad504fA922276Eb6385A2'));
     const { account, wallet, demask } = useContext(AccountContext);

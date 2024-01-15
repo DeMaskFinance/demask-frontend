@@ -3,7 +3,6 @@ import MediaNFT from '@/components/Common/MediaNFT';
 import React from 'react'
 
 const Box = ({ data }: any) => {
-    console.log(data);
     const remaining = Number(data?.hardcap) - Number(data?.totalSold);
     return (
         <div className='overflow-y-auto'>

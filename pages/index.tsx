@@ -1,6 +1,5 @@
 import NFTItems from "@/components/Home/NFTItems";
 import SocialBar from "@/components/Home/SocialBar";
-import { LayoutSecondary } from "@/components/Layouts";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonNewFeeds, SkeletonReels } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
@@ -146,5 +145,4 @@ const Home = () => {
     </div>
   );
 };
-Home.PageLayout = LayoutSecondary;
 export default Home;
