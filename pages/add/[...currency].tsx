@@ -26,6 +26,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from '../../next-seo.config';
 import Tippy from "@tippyjs/react";
 import FormatNumber from "@/components/Common/FormatNumber";
+import formatNumber from "@/libs/utils/formatNumer";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -277,13 +278,13 @@ export default function AddLiquidity() {
                 <span className="text-red">*</span>
               </p>
               <div>
-                <div className="flex justify-between mb-4 text-dark1">
+                <div className="flex justify-between mb-1 text-dark1">
                   <p>NFT</p>
-                  <p>Balance: {balanceNFT}</p>
+                  <p>Balance: {formatNumber(balanceNFT)}</p>
                 </div>
                 <div className={`relative p-2 border rounded-lg border-dark3 ${!inputNFT && isInputNFT && 'border-red'}`}>
                   <input
-                    className='border-none outline-none placeholder:text-sm'
+                    className='font-semibold border-none outline-none text-dark3 placeholder:font-semibold'
                     type="number"
                     placeholder="Input amount NFT"
                     value={inputNFT}
@@ -313,9 +314,9 @@ export default function AddLiquidity() {
                 )}
               </div>
               <div>
-                <div className="flex justify-between mb-4 text-dark1">
+                <div className="flex justify-between mt-4 mb-1 text-dark1">
                   <p>Token</p>
-                  <p>Balance: {balanceToken}</p>
+                  <p>Balance: {formatNumber(balanceToken)}</p>
                 </div>
                 {(data.dmlAddress === null) ? (
                   <input
