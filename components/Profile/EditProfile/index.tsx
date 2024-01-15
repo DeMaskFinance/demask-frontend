@@ -4,6 +4,7 @@ import { AvatarUser } from '@/components/Avatars'
 import { EditIcon } from '@/components/Icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProfile, userData } from '@/store/profileSlice';
+import { uploadFile } from '@/libs/service/userService';
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
@@ -90,7 +91,7 @@ export default function EditProfile() {
               if (e.target.files) {
                 const file = e.target.files[0];
                 if (file) {
-                  console.log(file);
+                  await uploadFile(file);
                 }
               }
             }}

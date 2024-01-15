@@ -107,15 +107,15 @@ const Swap: React.FC = () => {
     }
   }, [slug]);
 
-  useEffect(() => {
-    console.log('123yyy');
+  // useEffect(() => {
+  //   console.log('123yyy');
     
-    if (router.query.chain === '280') {
-      router.replace('0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280');
-    } else {
-      router.replace('0x6c216DFAFc944C46582a34D9f87532D00080C61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/22451713?chain=5');
-    }
-  }, [router.query.chain, router.isReady]);
+  //   if (router.query.chain === '280') {
+  //     router.replace('0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280');
+  //   } else {
+  //     router.replace('0x6c216DFAFc944C46582a34D9f87532D00080C61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/22451713?chain=5');
+  //   }
+  // }, [router.query.chain, router.isReady]);
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
   useEffect(() => {
@@ -295,7 +295,7 @@ const Swap: React.FC = () => {
                 </div>
                 <form className="mt-5">
                   <div>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-4">
                       <div>
                         {account && activeChoice === "BUY" && (
                           <p className="flex items-center text-sm text-dark1">
@@ -307,7 +307,7 @@ const Swap: React.FC = () => {
                           <div className="flex items-center text-sm text-dark1">
                             <p>Your balance:</p>
                             <p>{formatNumber(balanceNFT)}</p>
-                            <NFTIcon width={14} height={14} className="fill-dark1 ml-[2px]" />
+                            <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
                           </div>
                         )}
                       </div>
@@ -315,10 +315,10 @@ const Swap: React.FC = () => {
                         <div className="flex items-center mr-2">
                           <span>Liquidity:</span>
                           <FormatNumber number={data.reserveNFT} />
-                          <NFTIcon width={14} height={14} className="fill-dark1 ml-[2px]" />
+                          <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
                         </div>
                         <FormatNumber number={data.reserveToken} />
-                        <span><EtherIcon width={14} height={14} className="fill-dark1 ml-[-1px]" /></span>
+                        <span><EtherIcon width={20} height={20} className="fill-dark1 ml-[-1px]" /></span>
                       </div>
                     </div>
                     <div className={`relative p-2 border rounded-lg border-dark3 ${showRequiredMessage && 'border-red'}`}>
@@ -329,7 +329,7 @@ const Swap: React.FC = () => {
                           id="amountNFT"
                           autoComplete="off"
                           placeholder="Input amount NFT"
-                          className="border-none outline-none placeholder:text-sm"
+                          className="border-none outline-none placeholder:font-semibold"
                           value={inputNFT}
                           onChange={(e) => {
                             setInputNFT(e.target.value);
@@ -349,7 +349,7 @@ const Swap: React.FC = () => {
                       </div>
                       <div className="flex justify-end mt-8">
                         {activeNFTPercent.map((item, index) => (
-                          <button type="button" className={`ml-3 text-[10px] text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
+                          <button type="button" className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
                             onClick={() => {
                               if (activeChoice === "BUY") {
                                 setInputNFT((Math.floor(item.percent * data.reserveNFT)).toString())
@@ -407,7 +407,7 @@ const Swap: React.FC = () => {
                   </div>
 
                   <div className="mt-4">
-                    <div className="flex justify-between mb-2">
+                    <div className="flex justify-between mb-4">
                       <div className="text-sm text-dark1">
                         Total Proceeds:
                       </div>

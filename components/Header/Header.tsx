@@ -180,8 +180,8 @@ export default function Header() {
                     {...attrs}
                   >
                     <ul className="pb-2 mt-2">
-                      <Link href='/profile' className={`${style.itemSub}`}>Profile</Link>
-                      <Link href='/profile/edit' className={`${style.itemSub}`}>Edit profile</Link>
+                      <Link href={`/profile?chain=${chainId}`} className={`${style.itemSub}`}>Profile</Link>
+                      <Link href={`/profile/edit?chain=${chainId}`} className={`${style.itemSub}`}>Edit profile</Link>
                       <li
                         className={`${style.itemSub} justify-between mb-2`}
                         onClick={disconnectWallet}

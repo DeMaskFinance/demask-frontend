@@ -49,7 +49,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
     }, [volume]);
     useEffect(() => {
         if (data) {
-            const convertedData = data.map((item: any) => ({
+            const convertedData = data?.map((item: any) => ({
                 close: parseFloat(item.closePrice),
                 high: parseFloat(item.highPrice),
                 low: parseFloat(item.lowPrice),
@@ -58,7 +58,7 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 change: item.changePrice
             }));
             setNewData(convertedData);
-            const convertedDataVolume: BarData[] = data.map((item: any) => ({
+            const convertedDataVolume: BarData[] = data?.map((item: any) => ({
                 time: item.date,
                 value: parseFloat(item.volume),
                 close: parseFloat(item.closePrice),

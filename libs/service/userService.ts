@@ -34,4 +34,17 @@ const updateUserInfor = async (body: UserInterface) => {
     console.error(error);
   }
 };
-export { getNonce, loginAuthen, profileInfor, updateUserInfor };
+const uploadFile = async (params: any) => {
+  try {
+    const formData = new FormData();
+    if (params.avatar) {
+      formData.append("avatar", params.avatar);
+    }
+    if (params.cover) {
+      formData.append("cover", params.cover);
+    }
+    const res = await request.post("upload", formData);
+    return res.data;
+  } catch (error) {}
+};
+export { getNonce, loginAuthen, profileInfor, updateUserInfor, uploadFile };
