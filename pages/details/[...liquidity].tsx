@@ -138,38 +138,42 @@ export default function DetailLiquidity() {
       <div className="flex flex-col lg:flex-row gap-x-10">
         <div className="grow">
           <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
-            <div className="flex items-center mb-2 lg:mb-0">
-              <div onClick={() => router.back()} className="p-1 rounded-lg group">
-                <BackIcon width={30} height={30} className="hover:fill-secondary2" />
-              </div>
-              <div className="w-[30px] h-[30px] ml-4">
-                <MediaNFT data={data} isControls={false} />
-              </div>
-              {account && data && (
-                <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-2xl font-medium text-dark1">
-                  <span>{data?.metadata?.name}</span>
-                  (
-                  <span>{data?.metadata?.symbol}</span>
-                  <span className="block overflow-hidden leading-[18px]">/</span>
-                  <span>{data.tokenSymbol}</span>
-                  )
-                </Link>
-              )}
-              {isLoading && (
-                <p className="w-[110px] h-6 rounded-full animate-pulse bg-slate-200"></p>
-              )}
-            </div>
-            <div className="flex justify-end gap-x-4">
-              <button className={style.btnWallet} onClick={handleAddLiquidity}>
-                ADD
-              </button>
-              <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
-                REMOVE
-              </button>
-              <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className={style.btnWallet} >
-                SWAP
-              </Link>
-            </div>
+            {data && account && (
+              <>
+                <div className="flex flex-wrap items-center mb-2 lg:mb-0">
+                  <Link href='/pools' className="p-1 rounded-lg group">
+                    <BackIcon width={30} height={30} className="hover:fill-secondary2" />
+                  </Link>
+                  <div className="w-[30px] h-[30px] ml-4">
+                    <MediaNFT data={data} isControls={false} />
+                  </div>
+                  <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
+                    <span>{data?.metadata?.name}</span>
+                    (
+                    <span>{data?.metadata?.symbol}</span>
+                    <span className="block overflow-hidden leading-[18px]">/</span>
+                    <span>{data.tokenSymbol}</span>
+                    )
+                  </Link>
+                </div>
+                <div className="flex justify-end gap-x-4">
+                  <button className={style.btnWallet} onClick={handleAddLiquidity}>
+                    ADD
+                  </button>
+                  <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
+                    REMOVE
+                  </button>
+                  <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className={style.btnWallet} >
+                    SWAP
+                  </Link>
+                </div>
+              </>
+            )}
+            {
+              isLoading && (
+                <p className="w-[200px] h-6 rounded-full animate-pulse bg-slate-200"></p>
+              )
+            }
           </div>
           <div className="h-full ">
             <div className="">
@@ -191,14 +195,14 @@ export default function DetailLiquidity() {
                         </button>
                       ))}
                     </div>
-                    <div className="mt-6 overflow-hidden ">
+                    <div className="mt-6 ">
                       <div className="">
                         <div className="grid gap-x-4 lg:grid-cols-[200px,repeat(4,4fr)] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold mb-2">
-                          <p>Time</p>
-                          <p>Action</p>
-                          <p>Liquidity</p>
-                          <p>NFT</p>
-                          <p>Token</p>
+                          <p className="pl-3">Time</p>
+                          <p className="mx-auto">Action</p>
+                          <p className="mx-auto">Liquidity</p>
+                          <p className="mx-auto">NFT</p>
+                          <p className="mx-auto">Token</p>
                         </div>
                         <LiquiditiesHistory
                           data={data}

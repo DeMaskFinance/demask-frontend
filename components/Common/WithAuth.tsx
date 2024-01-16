@@ -7,7 +7,7 @@ import AccountContext from '@/context/AccountContext';
 import { NextSeo } from "next-seo";
 import { useContext, useState } from 'react';
 import 'tippy.js/dist/tippy.css';
-import { SEO } from '../../../next-seo.config';
+import { SEO } from '../../next-seo.config';
 const updateMeta = {
     ...SEO,
     title: 'Profile',

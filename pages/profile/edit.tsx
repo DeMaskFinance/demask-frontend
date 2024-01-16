@@ -1,4 +1,4 @@
-import WithAuth from '@/components/LaunchPad/components/WithAuth'
+import WithAuth from '@/components/Common/WithAuth'
 import EditProfile from '@/components/Profile/EditProfile'
 import React from 'react'
 

@@ -1,4 +1,4 @@
-import WithAuth from '@/components/LaunchPad/components/WithAuth';
+import WithAuth from '@/components/Common/WithAuth';
 import Profile from '@/components/Profile/Profile';
 import 'tippy.js/dist/tippy.css';
 

@@ -7,17 +7,21 @@ import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
 import FormatNumber from "../Common/FormatNumber";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
+import MediaNFT from "../Common/MediaNFT";
+import Image from "next/image";
+import { EtherIcon, NFTIcon } from "../Icons";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
+import { Button } from "../Buttons";
 interface LiquidytiesItemProps {
   liquidity: any;
-  tokenDefault: [any]
 }
 
 const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
-  tokenDefault
 }) => {
   const { account, wallet } = useContext(AccountContext);
   const [reward, setReward] = useState("");
+  const { balanceOfDML, totalSupply } = useBananceOfDML(account, liquidity.dmlAddress, wallet);
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && wallet && liquidity) {
@@ -28,26 +32,42 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     };
     fetchDataReward();
   }, [liquidity, account, wallet]);
-
   return (
-    <Link href={`/details/${liquidity.dmlAddress}`}>
-      <div className="box-border flex justify-between p-2 mb-3 rounded cursor-pointer lg:mb-6 text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
-        <div className="flex items-center leading-[13px]">
-          <div className="max-w-[180px]">
-            <ModalDocument data={liquidity.nftSymbol}/>
+    <div className="relative w-full group">
+      <div className="transition-all duration-200 ease-linear group-hover:brightness-50 h-[240px] w-full">
+        <MediaNFT data={liquidity} isControls />
+      </div>
+      <div className="absolute top-0 left-0 flex flex-col items-center justify-between w-full h-full py-4 text-white transition-all duration-200 ease-linear opacity-0 group-hover:opacity-100">
+        <p className="font-semibold text-[18px]">{liquidity.nftSymbol}</p>
+        <p className="my-4 text-xl font-semibold">77.00</p>
+        <div className="flex items-center text-sm ">
+          <div className="flex items-center mr-2">
+            <span>Liquidity:</span>
+            <FormatNumber number={liquidity.reserveNFT} />
+            <NFTIcon width={24} height={24} className="fill-white ml-[2px]" />
           </div>
-          <span className="overflow-hidden">/</span>
-          <span>{liquidity?.tokenSymbol}</span>
+          <FormatNumber number={liquidity.reserveToken} />
+          <span><EtherIcon width={20} height={20} className="fill-white ml-[-1px]" /></span>
+        </div>
+        <div className="flex">
+          <p className="">Liquidity:</p>
+          <div className="flex font-light">
+            <FormatNumber number={balanceOfDML} />
+            <div>({(Number(balanceOfDML) / Number(liquidity.reserveToken)).toFixed(2)}%)</div>
+          </div>
         </div>
         <div className="flex items-center">
           Reward:
           {reward ? (<div className="ml-2">
             <FormatNumber number={reward} />
           </div>) : (<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)}
-          <span>{liquidity?.tokenSymbol}</span>
+          <span><EtherIcon width={20} height={20} className="fill-white ml-[-1px]" /></span>
         </div>
+        <Link href={`/details/${liquidity.dmlAddress}`}>
+          <Button active className="justify-end">DETAIL</Button>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 

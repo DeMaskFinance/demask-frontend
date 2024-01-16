@@ -38,18 +38,18 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
               className="grid gap-4 lg:grid-cols-[200px,repeat(4,4fr)] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 mb-2"
               key={index}
             >
-              <p>{item.blockTime}</p>
-              <div className={`border text-xs w-fit ${item.action === "Add"
+              <p className="pl-3 ">{item.blockTime}</p>
+              <div className={`border text-xs w-fit mx-auto ${item.action === "Add"
                 ? "border-green text-green"
                 : "border-red text-red"
                 } p-1 rounded-lg`}>{item.action}</div>
-              <div>
+              <div className="mx-auto">
                 <ModalNumber data={item.liquidity} />
               </div>
-              <div>
+              <div className="mx-auto">
                 <FormatNumber number={item.amountNFT} />
               </div>
-              <div>
+              <div className="mx-auto">
                 <ModalNumber data={item.amountToken} />
               </div>
             </div>

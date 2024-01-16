@@ -37,16 +37,13 @@ const updateUserInfor = async (body: UserInterface) => {
 const uploadFile = async (params: any) => {
   try {
     const formData = new FormData();
-    console.log(params.cover);
-    
     if (params.avatar) {
       formData.append("avatar", params.avatar);
     }
-    if (params.cover) {
-      formData.append("cover", params.cover);
-    }
-    console.log(formData);
     
+    if (params.banner) {
+      formData.append("banner", params.banner);
+    }
     const res = await request.postForm("upload", formData);
     return res.data;
   } catch (error) {}

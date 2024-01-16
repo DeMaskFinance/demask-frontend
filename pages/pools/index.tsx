@@ -26,8 +26,6 @@ export default function Liquidity() {
     const idNFT = demask.IDNFT;
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
-  // const { profile, isLoggedIn } = useSelector(selectProfile);
-  // console.log(profile, isLoggedIn);
 
   const fetchDataListLiquidity = async (accountUser: string, pageParam = 1, chainId: string | string[]) => {
     const data = await liquidityListAPI(accountUser.toLowerCase(), pageParam, chainId);
@@ -51,11 +49,23 @@ export default function Liquidity() {
           : undefined,
     }
   );
+  console.log(data);
+  
   return (
-    <div className="py-8 max-w-4xl mx-auto min-h-[75vh]">
+    <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0">
       <NextSeo {...updateMeta} />
       <div className="w-full">
-        <h2 className="text-2xl text-black24">Your Liquidity</h2>
+        <div className="flex justify-between w-full">
+          <h2 className="text-2xl font-semibold text-dark0">Your Liquidity</h2>
+          <Button
+            type="button"
+            primary
+            className="h-[34px] w-[158px] text-sm"
+            onClick={handleAddLiquidity}
+          >
+            + Add Liquidity
+          </Button>
+        </div>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
         {((!account || data?.pages[0]?.combinedRecords.length === 0) && !isLoading) && (
           <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
@@ -67,21 +77,20 @@ export default function Liquidity() {
             <div>
               {isSuccess &&
                 data.pages.map((page: any, index: number) => (
-                  <div key={index}>
+                  <div key={index} className="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-2">
                     {page?.combinedRecords.map(
                       (liquidity: any, index: number) => (
-                        <div key={index}>
-                          <LiquidytiesItem liquidity={liquidity} tokenDefault={tokenDefault} />
+                        <div key={index} className="w-full mx-auto">
+                          <LiquidytiesItem liquidity={liquidity} />
                         </div>
                       )
                     )}
-
                   </div>
                 ))}
               {hasNextPage && (
                 <p
                   onClick={() => fetchNextPage()}
-                  className="mb-6 -mt-4 text-sm cursor-pointer text-secondary4"
+                  className="mt-4 text-sm cursor-pointer text-secondary4"
                 >
                   See more
                 </p>
@@ -101,14 +110,6 @@ export default function Liquidity() {
             </div>
           )
         }
-        <Button
-          type="button"
-          primary
-          className="h-[34px] w-[158px] text-sm mb-4 block mx-auto"
-          onClick={handleAddLiquidity}
-        >
-          + Add Liquidity
-        </Button>
       </div>
     </div>
   );

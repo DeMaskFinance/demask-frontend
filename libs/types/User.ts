@@ -3,7 +3,7 @@ interface UserInterface {
   userName?: string;
   avatar?: string;
   socials?: Socials;
-  cover?: string;
+  banner?: string;
   about?: string;
   id?: string;
   createdAt?: Date;

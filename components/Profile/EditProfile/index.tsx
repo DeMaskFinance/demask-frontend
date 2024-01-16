@@ -5,71 +5,94 @@ import { EditIcon } from '@/components/Icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProfile, userData } from '@/store/profileSlice';
 import { uploadFile } from '@/libs/service/userService';
+import Image from 'next/image';
+import { BiLoaderAlt } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
-  const inputCover = useRef(null);
+  const inputBanner = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
-  const [coverLoading, setCoverLoading] = useState(false);
+  const [bannerLoading, setBannerLoading] = useState(false);
   const { user, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
-  const handleUploadCover = async (file: any) => {
+  const router = useRouter();
+  const handleUploadBanner = async (file: any) => {
     try {
-      setCoverLoading(true);
-      const userInfor = { cover: '1234567' };
-      dispatch(userData({ profile: userInfor }))
+      setBannerLoading(true);
+      const res = await uploadFile({ banner: file });
+      dispatch(userData({ profile: res }));
+      router.push("/profile");
     } catch (error) {
       console.error(error);
     } finally {
-      setCoverLoading(false);
+      setBannerLoading(false);
     }
   }
   const handleUploadAvatar = async (file: any) => {
     try {
       setAvatarLoading(true);
-      const userInfor = { avatar: '12' };
-      dispatch(userData({ profile: userInfor }))
+      const res = await uploadFile({ avatar: file });
+      dispatch(userData({ profile: res }));
+      router.push("/profile");
     } catch (error) {
       console.error(error);
     } finally {
       setAvatarLoading(false);
     }
   }
-  console.log(profile);
-
   return (
-    <div className=''>
-      <div className='relative cursor-pointer group'>
-        <div className='w-full h-[240px] bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
-        </div>
-        <div className='absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex'
-          onClick={() => {
-            if (inputCover.current) {
-              (inputCover.current as HTMLInputElement).click();
-            }
-          }}
-        >
-          <EditIcon width={32} height={32} />
-          <p className='text-xs'>1200 x 400 Recommended</p>
-        </div>
+    <div className='pb-20 lg:pb-0'>
+      <div className='relative cursor-pointer group h-[120px] lg:h-[240px]'>
+        {profile?.banner ? (
+          <Image src={profile?.banner} alt='banner' width={400} height={200} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-fill' />
+        ) : (
+          <div className='w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
+          </div>
+        )}
+        {bannerLoading ? (
+          <div className='absolute top-0 bottom-0 flex items-center justify-center w-full h-full bg-slate-600/[.7]'>
+            <BiLoaderAlt className="text-5xl text-white animate-spin" />
+          </div>
+        ) : (
+          <div className='absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex'
+            onClick={() => {
+              if (inputBanner.current) {
+                (inputBanner.current as HTMLInputElement).click();
+              }
+            }}
+          >
+            <EditIcon width={32} height={32} />
+            <p className='text-xs'>1200 x 400 Recommended</p>
+          </div>
+        )}
       </div>
       <h1 className='mt-8 text-xl font-semibold text-center'>Edit My Profile</h1>
       <div className='flex justify-center my-6'>
         <div className='relative rounded-full cursor-pointer w-fit h-fit group'>
           <div className='group-hover:brightness-50'>
-            <AvatarUser width={120} height={120} />
+            {profile?.avatar ? (
+              <Image src={profile?.avatar} alt='banner' width={96} height={96} className='object-fill rounded-full w-[120px] h-[120px]' />
+            ) : (
+              <AvatarUser width={120} height={120} />
+            )}
           </div>
-          <div className='absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex'
-            onClick={() => {
-              if (inputAvatar.current) {
-                (inputAvatar.current as HTMLInputElement).click();
-              }
-            }}
-          >
-            <EditIcon width={32} height={32} />
-            <p className='text-xs'>600 x 600px</p>
-          </div>
-
+          {avatarLoading ? (
+            <div className='absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-full bg-slate-600/[.7]'>
+              <BiLoaderAlt className="text-4xl text-white animate-spin" />
+            </div>
+          ) : (
+            <div className='absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex'
+              onClick={() => {
+                if (inputAvatar.current) {
+                  (inputAvatar.current as HTMLInputElement).click();
+                }
+              }}
+            >
+              <EditIcon width={32} height={32} />
+              <p className='text-xs'>600 x 600px</p>
+            </div>
+          )}
         </div>
         <div>
           <input type="file" ref={inputAvatar} accept="image/png,image/jpeg,image/gif"
@@ -77,8 +100,7 @@ export default function EditProfile() {
               if (e.target.files) {
                 const file = e.target.files[0];
                 if (file) {
-                  console.log(file);
-
+                  handleUploadAvatar(file);
                 }
               }
             }}
@@ -86,16 +108,16 @@ export default function EditProfile() {
           />
         </div>
         <div>
-          <input type="file" ref={inputCover} accept="image/png,image/jpeg,image/gif"
+          <input type="file" ref={inputBanner} accept="image/png,image/jpeg,image/gif"
             onChange={async (e) => {
               if (e.target.files) {
                 const file = e.target.files[0];
                 if (file) {
-                  await uploadFile({cover:file});
+                  handleUploadBanner(file);
                 }
               }
             }}
-          className='hidden'
+            className='hidden'
           />
         </div>
       </div>

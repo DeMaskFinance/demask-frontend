@@ -416,18 +416,20 @@ export default function Creator() {
           </div>
           <div>
             <p className={styles.title}>Category</p>
-            {Category.map((item, index) => (
-              <Button
-                type="button"
-                active={selectedCategory.includes(item.value)}
-                outline
-                className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
-                key={item.id}
-                onClick={() => selectCategory(item.value)}
-              >
-                {item.value}
-              </Button>
-            ))}
+            <div className="flex">
+              {Category.map((item, index) => (
+                <Button
+                  type="button"
+                  active={selectedCategory.includes(item.value)}
+                  outline
+                  className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
+                  key={item.id}
+                  onClick={() => selectCategory(item.value)}
+                >
+                  {item.value}
+                </Button>
+              ))}
+            </div>
           </div>
           <div>
             <label htmlFor="description" className={styles.title}>
