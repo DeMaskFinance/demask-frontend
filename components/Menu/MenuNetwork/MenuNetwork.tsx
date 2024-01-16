@@ -27,34 +27,19 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
     const router = useRouter();
-    const handleChangeNetwork = (chain: string) => {
-        if (chain !== '1') {
-            if (account && wallet) {
-                changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
-            } else {
-                updateChainId(chain);
-                setTab(chain);
-            }
-            let newURL = "";
-            const { slug } = router.query;
-            // if (slug) {
-            //     const currentURL = router.asPath;
-            //     console.log(demask);
+    const handleChangeNetwork = async (chain: string) => {
+        if (account && wallet) {
+            await changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
+        } else {
+            updateChainId(chain);
+            setTab(chain);
+        }
+        console.log(chainId);
 
-            //     newURL = currentURL.replace(slug[0], demask.CREATOR).replace(slug[1], demask.NATIVE_ADDRESS).replace(slug[2], demask.IDNFT);
-            //     console.log(newURL);
-
-            //     router.replace(newURL);
-            // }
-            // if (router.query.chain === '280') {
-            //     console.log("kkk");
-
-            //     router.replace(`/swap/0x59620b99146C56785b067f84237fa80D89588228/0x59620b99146C56785b067f84237fa80D89588228/581234443?chain=280`);
-            // } else {
-            //     console.log("acs");
-
-            //     router.replace(`/swap/0x6c216dfafc944c46582a34d9f87532d00080c61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/8910040055?chain=5`);
-            // }
+        if (chain === '280' && router.isReady) {
+            router.push(`/swap/0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280`);
+        } else if (chain === '5' && router.isReady) {
+            router.push(`/swap/0x6c216dfafc944c46582a34d9f87532d00080c61a/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6/8910040055?chain=5`);
         }
     };
     useEffect(() => {
@@ -65,7 +50,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
             setFilterNetwork(network[1]);
         }
     }, [router.query.chain, router.isReady]);
-    
+
 
     const LogoComponent: any = filterNetwork?.logo;
     return (

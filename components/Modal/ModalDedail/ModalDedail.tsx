@@ -75,7 +75,10 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 </li>
                 <li className="mb-4">
                   <p className="font-medium text-dark2">Contract Address</p>
-                  <a target="_blank" rel="noopener noreferrer" href={`${demask.urltxHash}address/${nftAddress}`} className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</a>
+                  <div className="flex gap-x-1">
+                    <a target="_blank" rel="noopener noreferrer" href={`${demask.urltxHash}address/${nftAddress}`} className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</a>
+                    <Copy content={nftAddress} />
+                  </div>
                 </li>
               </ul>
             </div>
@@ -120,7 +123,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                   <p className="font-medium text-dark2">Token ID</p>
                   <div className="flex items-center gap-x-1">
                     <a target="_blank" rel="noopener noreferrer" href={data.uri} className="text-sm font-light cursor-pointer text-secondary5">{idNFT}</a>
-                    <Copy content={idNFT}/>
+                    <Copy content={idNFT} />
                   </div>
                 </div>
                 <div>

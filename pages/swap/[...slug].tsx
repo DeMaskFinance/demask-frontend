@@ -246,13 +246,14 @@ const Swap: React.FC = () => {
               <MediaNFT data={data} isControls={false} />
             </div>
             <p>{data?.metadata?.name}</p>
+            <p>({data?.metadata?.symbol}/ETH)</p>
           </div>
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
             <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
               <div className="w-full">
                 {data && (
                   <div>
-                    <ChartTradingViewSwap dmlAddress={data.dmlAddress} />
+                    <ChartTradingViewSwap dataSwap={data} />
                   </div>
                 )}
               </div>
@@ -283,7 +284,7 @@ const Swap: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex flex-col justify-center my-6">
-                  <div className="mx-auto w-40 3xl:w-[320px]">
+                  <div className="mx-auto w-40 3xl:w-[320px] ">
                     <MediaNFT data={data} isControls={true} />
                   </div>
                   <p
@@ -313,7 +314,7 @@ const Swap: React.FC = () => {
                       </div>
                       <div className="flex items-center text-sm text-dark1">
                         <div className="flex items-center mr-2">
-                          <span>Liquidity:</span>
+                          <span>LP:</span>
                           <FormatNumber number={data.reserveNFT} />
                           <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
                         </div>

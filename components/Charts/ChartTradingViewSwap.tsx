@@ -11,7 +11,7 @@ import ChartLoading from './ChartLoading';
 import ChartNoTransfers from './ChartNoTransfers';
 import FormatNumber from '../Common/FormatNumber';
 import AccountContext from '@/context/AccountContext';
-import { EtherIcon } from '../Icons';
+import { EtherIcon, NFTIcon } from '../Icons';
 import { formatPercent } from '@/libs/utils/formatToUnit';
 interface BarData {
     time: string;
@@ -22,33 +22,27 @@ interface BarData {
     open: number;
     change: string;
 }
-const ChartTradingViewSwap = ({ dmlAddress }: any) => {
+const ChartTradingViewSwap = ({ dataSwap }: any) => {
     const chartContainerRef = useRef(null);
     const [currentHour, setCurrentHour] = useState(0);
     const [currentMinute, setCurrentMinute] = useState(0);
     const [currentSecond, setCurrentSecond] = useState(0);
     const { chainId } = useContext(AccountContext);
-    const [newData, setNewData] = useState([]);
+    const [newData, setNewData] = useState<any>([]);
     const [volume, setVolume] = useState<BarData[]>([]);
     const [legendData, setLegendData] = useState<any>(newData[newData.length - 1]);
     const { data, isLoading } = useQuery({
-        queryKey: ["chart", chainId, dmlAddress],
+        queryKey: ["chart", chainId, dataSwap.dmlAddress],
         queryFn: async () => {
-            const res = await categoryAPI(`chart?chainId=${chainId}&dmlAddress=${dmlAddress}`);
+            const res = await categoryAPI(`chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}`);
             return res;
         },
     });
-    // console.log(data);
-
-    // console.log(volume[volume.length - 1]);
-    // console.log({
-    //     legendData,
-    // });
     useEffect(() => {
         setLegendData(volume[volume.length - 1]);
     }, [volume]);
     useEffect(() => {
-        if (data) {
+        if (Array.isArray(data)) {
             const convertedData = data?.map((item: any) => ({
                 close: parseFloat(item.closePrice),
                 high: parseFloat(item.highPrice),
@@ -181,26 +175,26 @@ const ChartTradingViewSwap = ({ dmlAddress }: any) => {
                 <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
                     <div className='flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
                         <div className='flex p-4 border-r border-dark3 text-dark2'>
-                            <p className='mr-1 text-dark3'>Price:</p>
-                            <FormatNumber number={data[data.length - 1].closePrice} />
-                            ({formatPercent(data[data.length - 1].changePrice)}%)
+                            <p className='mr-1 text-dark3'>Price 1D:</p>
+                            <FormatNumber number={data[data.length - 1]?.closePrice} />
+                            ({formatPercent(data[data.length - 1]?.changePrice)}%)
                         </div>
                         <div className='flex p-4 border-r border-dark3 text-dark2'>
-                            <p className='mr-1 text-dark3'>Volume:</p>
+                            <p className='mr-1 text-dark3'>Volume 1D:</p>
                             <div className='flex items-center'>
-                                <FormatNumber number={data[data.length - 1].volume} />
-                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                                <FormatNumber number={data[data.length - 1]?.volume} />
+                                <EtherIcon width={16} height={16} className='fill-dark2' />
                             </div>
                         </div>
-                        <div className='flex p-4 border-r border-dark3 text-dark2'>
-                            <p className='mr-1 text-dark3'>Supply:</p>
-                            <p>-</p>
-                        </div>
-                        <div className='flex p-4 text-dark2'>
-                            <p className='mr-1 text-dark3'>Liquidity:</p>
-                            <div className='flex items-center'>
-                                <p>-</p>
-                                <EtherIcon width={12} height={12} className='fill-dark2' />
+                        <div className='flex items-center p-4 text-dark2'>
+                            <div className="flex items-center text-sm ">
+                                <div className="flex items-center mr-2">
+                                    <span className='text-dark3'>LP:</span>
+                                    <FormatNumber number={dataSwap.reserveNFT} />
+                                    <NFTIcon width={24} height={24} className="fill-dark2 ml-[2px]" />
+                                </div>
+                                <FormatNumber number={dataSwap.reserveToken} />
+                                <span><EtherIcon width={16} height={16} className="fill-dark2 ml-[-1px]" /></span>
                             </div>
                         </div>
                     </div>

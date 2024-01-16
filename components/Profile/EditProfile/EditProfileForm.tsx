@@ -15,16 +15,16 @@ const styles = {
 };
 const validationSchema = yup.object().shape({
     name: yup.string().nullable().notRequired().max(50),
-    userName: yup
-        .string()
-        .nullable()
-        .notRequired()
-        .max(50)
-        .matches(/^[\w\d_]+$/, {
-            message:
-                'Username must only contain alphanumeric characters and symbol "_"',
-            excludeEmptyString: true,
-        }),
+    // userName: yup
+    //     .string()
+    //     .nullable()
+    //     .notRequired()
+    //     .max(50)
+    //     .matches(/^[\w\d_]+$/, {
+    //         message:
+    //             'Username must only contain alphanumeric characters and symbol "_"',
+    //         excludeEmptyString: true,
+    //     }),
     about: yup.string().max(200).nullable(),
     twitter: yup
         .string()
@@ -167,8 +167,7 @@ export default function EditProfileForm() {
 
                     <div className='flex flex-col'>
                         <label htmlFor="userName" className={styles.title}>Username</label>
-                        <Field type="text" id="userName" name="userName" value={values.userName} onChange={handleChange} placeholder="Enter your userName" className={styles.inputItem} />
-                        <ErrorMessage name="userName" component="div" className="text-red-500" />
+                        <div className={styles.inputItem} >{profile.userName}</div>
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor="about" className={styles.title}>About</label>
