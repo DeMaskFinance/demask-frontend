@@ -35,10 +35,11 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item: any, index: number) => (
             <div
-              className="grid gap-4 lg:grid-cols-[80px,repeat(3,3fr),3fr] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 mb-2"
+              className="grid gap-4 lg:grid-cols-[200px,repeat(4,4fr)] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 mb-2"
               key={index}
             >
-              <div className={`border text-xs w-fit ${ item.action === "Add"
+              <p>{item.blockTime}</p>
+              <div className={`border text-xs w-fit ${item.action === "Add"
                 ? "border-green text-green"
                 : "border-red text-red"
                 } p-1 rounded-lg`}>{item.action}</div>
@@ -51,7 +52,6 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
               <div>
                 <ModalNumber data={item.amountToken} />
               </div>
-              <p>{item.blockTime}</p>
             </div>
           ))}
         </>

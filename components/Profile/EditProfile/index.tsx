@@ -91,11 +91,11 @@ export default function EditProfile() {
               if (e.target.files) {
                 const file = e.target.files[0];
                 if (file) {
-                  await uploadFile(file);
+                  await uploadFile({cover:file});
                 }
               }
             }}
-            className='hidden'
+          className='hidden'
           />
         </div>
       </div>
