@@ -15,6 +15,7 @@ import { EditIcon } from "../Icons";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectProfile } from "@/store/profileSlice";
+import Image from "next/image";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -83,7 +84,11 @@ const Profile = () => {
         <div className='pt-6 my-6'>
             <section>
                 <div className='flex items-center justify-center mt-2'>
-                    <AvatarUser width={96} height={96} />
+                    {profile?.avatar ? (
+                        <Image src={profile?.avatar} alt='banner' width={96} height={96} className='object-fill rounded-full w-[120px] h-[120px] mr-2' />
+                    ) : (
+                        <AvatarUser width={120} height={120} />
+                    )}
                     <div>
                         <div className="flex items-center gap-x-2">
                             <p className='text-2xl font-semibold'>{profile?.name}</p>
