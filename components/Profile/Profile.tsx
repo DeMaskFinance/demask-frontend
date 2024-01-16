@@ -81,9 +81,17 @@ const Profile = () => {
     console.log(fullTime.getMonth() + 1);
 
     return (
-        <div className='pt-6 my-6'>
+        <div className='my-6 '>
             <section>
-                <div className='flex items-center justify-center mt-2'>
+                <div className='h-[120px] lg:h-[240px]'>
+                    {profile?.banner ? (
+                        <Image src={profile?.banner} alt='banner' width={400} height={200} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-fill' />
+                    ) : (
+                        <div className='w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
+                        </div>
+                    )}
+                </div>
+                <div className='flex items-center justify-center mt-6'>
                     {profile?.avatar ? (
                         <Image src={profile?.avatar} alt='banner' width={96} height={96} className='object-fill rounded-full w-[120px] h-[120px] mr-2' />
                     ) : (
