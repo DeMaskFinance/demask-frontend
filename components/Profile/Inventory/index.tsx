@@ -13,7 +13,6 @@ import MediaNFT from '@/components/Common/MediaNFT';
 import { AddIcon, GoerliIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
 import ModalNumber from '@/components/Modal/ModalLength/ModalNumber';
 import { Button } from '@/components/Buttons';
-import TransionDML from './TransitionDML';
 import FormatNumber from '@/components/Common/FormatNumber';
 import ModalDocument from '@/components/Modal/ModalLength/ModalDocument';
 import { ModalDetail } from '@/components/Modal/ModalDedail';
