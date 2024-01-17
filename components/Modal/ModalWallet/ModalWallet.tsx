@@ -72,13 +72,11 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           method: "personal_sign",
           params: [msg, accounts[0]],
         });
-        console.log(signedData);
-        
         const loginData = await loginAuthen({
           userAddress: accounts[0],
           signature: signedData,
         });
-        console.log(loginData.accessToken);
+        console.log(loginData);
         
         dispatch(login({ accessToken: loginData.accessToken, user: accounts[0] }));
         updateAccount(accounts[0]);

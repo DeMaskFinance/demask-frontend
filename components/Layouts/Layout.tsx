@@ -26,8 +26,6 @@ export default function Layout({ children }: PropsWithChildren) {
       }
     }
   }, [chainId, router.asPath, router.isReady]);
-
-  // console.log(chainId);
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {

@@ -33,9 +33,7 @@ const ModalClaimLaunchpad: React.FunctionComponent<
         const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { release } = useLaunchpadInfor(account, data.launchpad, wallet, isOpenTransaction);
-        console.log(data);
-        console.log(release.toString());
-
+        
         const handleClose = (e: any) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";

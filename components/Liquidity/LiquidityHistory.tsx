@@ -14,7 +14,6 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
   isFetching,
   isLoading,
 }) => {
-  console.log(data);
 
   return (
     <>

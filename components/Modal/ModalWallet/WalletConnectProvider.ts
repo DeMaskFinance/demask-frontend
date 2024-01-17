@@ -28,7 +28,7 @@ async function getWalletConnectProvider() {
     })
     return provider;
   } catch (error) {
-    console.error("Lỗi khi khởi tạo WalletConnect Provider:", error);
+    console.error("Error create WalletConnect Provider:", error);
     throw error;
   }
 }

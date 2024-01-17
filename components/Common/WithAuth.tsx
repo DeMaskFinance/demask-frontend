@@ -8,12 +8,14 @@ import { NextSeo } from "next-seo";
 import { useContext, useState } from 'react';
 import 'tippy.js/dist/tippy.css';
 import { SEO } from '../../next-seo.config';
+import { useSelector } from 'react-redux';
+import { selectProfile } from '@/store/profileSlice';
 const updateMeta = {
     ...SEO,
     title: 'Profile',
 };
 function WithAuth({ children }: any) {
-    const { account } = useContext(AccountContext);
+    const { isLoggedIn } = useSelector(selectProfile);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const handleOpen = () => {
         document.body.style.overflowY = "hidden";
@@ -23,7 +25,7 @@ function WithAuth({ children }: any) {
         <div>
             <NextSeo {...updateMeta} />
             <div className='max-w-6xl mx-auto min-h-[75vh]'>
-                {account ? (
+                {isLoggedIn ? (
                     <div>
                         {children}
                     </div>

@@ -82,7 +82,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       setIsSufficientToken(false);
     }
   };
-  console.log(data);
 
   useEffect(() => {
     let amountErcDesired;
@@ -113,9 +112,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       }
     }
   }, [inputNFT, inputToken, data]);
-  // console.log(amountErcDesired.toString());
-  // console.log(amountErcDesiredToDec.toString());
-  // console.log(balanceToken);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await approveNFT(

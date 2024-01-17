@@ -280,7 +280,7 @@ export default function AddLiquidity() {
               <div>
                 <div className="flex justify-between mb-1 text-dark1">
                   <p>NFT</p>
-                  <p>Balance: {formatNumber(balanceNFT)}</p>
+                  <p>Balance: {account ? 0 : formatNumber(balanceNFT)}</p>
                 </div>
                 <div className={`relative p-2 border rounded-lg border-dark3 ${!inputNFT && isInputNFT && 'border-red'}`}>
                   <input
@@ -288,6 +288,11 @@ export default function AddLiquidity() {
                     type="number"
                     placeholder="Input amount NFT"
                     value={inputNFT}
+                    onKeyDown={(event) => {
+                      if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace') {
+                        event.preventDefault();
+                      }
+                    }}
                     onChange={handleGetNFT}
                   />
                   <div className="flex justify-end mt-8">

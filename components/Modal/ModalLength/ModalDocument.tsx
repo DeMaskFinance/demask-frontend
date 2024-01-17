@@ -8,10 +8,6 @@ const ModalDocument = ({ data }: { data: string }) => {
             const parts = data.split(':');
             const prefix = parts[0].slice(0, 3) + "..." + parts[0].slice(-2);
             const result = prefix + ":" + parts[1];
-            console.log({
-                result
-            });
-            
             setDocument(result);
         } else {
             setDocument(data);

@@ -74,7 +74,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             inputLiquidity,
             routerAddress,
         );
-        console.log(currentAllowance);
         const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
             data.dmlAddress,
             wallet,
@@ -88,7 +87,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         );
         useEffect(() => {
             const checkApproveToken = async () => {
-                console.log(currentAllowance);
                 if (currentAllowance && Number(currentAllowance) < Number(Number(handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals))).toFixed(0))) {
                     setIsApprovedLiquidity(false);
                 } else {
@@ -97,8 +95,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             };
             checkApproveToken();
         }, [account, wallet, inputLiquidity, currentAllowance, isOpenTransaction]);
-        console.log(currentAllowance);
-        console.log(Number(handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals))).toFixed(0));
 
         useEffect(() => {
             if (data && inputLiquidity) {
@@ -118,7 +114,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             }
         }, [inputLiquidity, reserveNFT, reserveToken])
 
-        console.log(handleBignumber(Number(inputLiquidity), 18));
         const handleApproveDML = async () => {
             const providerChoice = await getProvider(wallet);
             const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -127,7 +122,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             const inputLiquidityBN = new BigNumber(inputLiquidity)
                 .times(new BigNumber(10).pow(Number(data.dmlDecimals)))
                 .toFixed(0);
-            console.log(inputLiquidityBN);
 
             try {
                 const result = await contract.approve(routerAddress, inputLiquidityBN);
@@ -152,10 +146,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                 const signer = provider.getSigner();
                 const contract = new ethers.Contract(routerAddress, abiRouter, signer);
                 const liquidity = handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals));
-                console.log(liquidity);
-                console.log(amountTokenMin);
-                console.log(amountNFTMin);
-
                 try {
                     setIsOpenTransaction(true);
                     const estimatedGas = await contract.estimateGas.removeERC20ERC1155(

@@ -154,7 +154,6 @@ const LauchPad: React.FunctionComponent<LauchPadProps> = ({
     (softCap * (price * 1e18) * (percentLock * 10000)) /
     (priceListing * 1e18 * 1000000)
   );
-  console.log(checkSoftcap);
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
       setIsErrorTime(true);

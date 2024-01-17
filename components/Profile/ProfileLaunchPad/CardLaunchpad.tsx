@@ -34,8 +34,6 @@ export default function CardLaunchpad() {
           : page?.currentPage + 1,
     }
   );
-  console.log(data);
-  
   useEffect(() => {
     if (inView) {
       fetchNextPage();

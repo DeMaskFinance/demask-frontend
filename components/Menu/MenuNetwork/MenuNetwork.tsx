@@ -34,8 +34,6 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
             updateChainId(chain);
             setTab(chain);
         }
-        console.log(chainId);
-
         if (chain === '280' && router.isReady) {
             router.push(`/swap/0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280`);
         } else if (chain === '5' && router.isReady) {

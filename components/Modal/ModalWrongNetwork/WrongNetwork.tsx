@@ -27,11 +27,6 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             const checkNetwork = async () => {
                 const provider = await getProvider(wallet);
                 const networkId = await provider.request({ method: "net_version" });
-                console.log({
-                    networkId,
-                    chain
-                });
-
                 if (networkId !== chain) {
                     setIsWrongNetwork(true);
                     document.body.style.overflowY = "hidden";

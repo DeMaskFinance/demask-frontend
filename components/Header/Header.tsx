@@ -25,8 +25,8 @@ import { version } from "@/libs/constants";
 import { useRouter } from "next/router";
 import useInformationToken from "@/hooks/useInformationToken";
 import formatNumber from "@/libs/utils/formatNumer";
-import { useDispatch } from "react-redux";
-import { logout } from "@/store/profileSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectProfile } from "@/store/profileSlice";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -43,6 +43,7 @@ export default function Header() {
   const router = useRouter();
   const { account, updateAccount, wallet, chainId, demask } = useContext(AccountContext);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+  const { isLoggedIn } = useSelector(selectProfile);
   const { balanceToken, isLoadingBalance } =
     useInformationToken(account, nativeAddress, wallet, routerAddress, rpc, nativeAddress, true);
   const dispatch = useDispatch();
@@ -63,26 +64,26 @@ export default function Header() {
     dispatch(logout());
   };
 
-  // const provider = getProvider(wallet);
-  // useEffect(() => {
-  //   const getAddress = async () => {
-  //     const provider = await getProvider(wallet);
-  //     if (provider) {
-  //       const test = new ethers.providers.Web3Provider(provider) as any;
-  //       if (provider && test.provider.selectedAddress === null) {
-  //         console.log(provider);
-  //         console.log(provider.selectedAddress);
-  //         console.log(provider.chainId);
-  //         const web3 = new Web3(provider);
-  //         const accounts = await web3.eth.getAccounts();
-  //         const selectedAddress = accounts[0];
-  //         console.log(selectedAddress);
-  //         disconnectWallet();
-  //       }
-  //     }
-  //   };
-  //   getAddress();
-  // }, [provider]);
+  const provider = getProvider(wallet);
+  useEffect(() => {
+    const getAddress = async () => {
+      const provider = await getProvider(wallet);
+      if (provider) {
+        const test = new ethers.providers.Web3Provider(provider) as any;
+        if (provider && test.provider.selectedAddress === null) {
+          console.log(provider);
+          console.log(provider.selectedAddress);
+          console.log(provider.chainId);
+          const web3 = new Web3(provider);
+          const accounts = await web3.eth.getAccounts();
+          const selectedAddress = accounts[0];
+          console.log(selectedAddress);
+          disconnectWallet();
+        }
+      }
+    };
+    getAddress();
+  }, [provider, wallet]);
   useEffect(() => {
     if (window.innerWidth >= 768) {
       let prevScrollPos = window.scrollY;
@@ -106,9 +107,9 @@ export default function Header() {
       };
     }
   }, []);
-
+  console.log(isLoggedIn);
+  
   const [showSearch, setShowSearch] = useState(false);
-  const a = 0;
   return (
     <>
       <header
@@ -170,7 +171,7 @@ export default function Header() {
               </button>
             </div>
             <MenuNetwork />
-            {account ? (
+            {isLoggedIn ? (
               <Tippy
                 interactive
                 render={(attrs) => (

@@ -51,7 +51,6 @@ const ModalLaunchPadProfile: React.FunctionComponent<
       useContext(AccountContext);
 
     useEffect(() => { }, [isOpenTransation]);
-    console.log(amount);
 
     return (
       <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>

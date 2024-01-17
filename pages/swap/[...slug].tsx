@@ -109,7 +109,7 @@ const Swap: React.FC = () => {
 
   // useEffect(() => {
   //   console.log('123yyy');
-    
+
   //   if (router.query.chain === '280') {
   //     router.replace('0x59620b99146C56785b067f84237fa80D89588228/0x20b28b1e4665fff290650586ad76e977eab90c5d/581234443?chain=280');
   //   } else {
@@ -331,7 +331,15 @@ const Swap: React.FC = () => {
                           id="amountNFT"
                           autoComplete="off"
                           placeholder="Input amount NFT"
-                          className="font-semibold border-none outline-none text-lg text-dark3 placeholder:font-semibold"
+                          pattern="^[1-9][0-9]*$"
+                          inputMode="numeric"
+                          onKeyDown={(event) => {
+                            if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace') {
+                              event.preventDefault();
+                            }
+                          }}
+                          min="1"
+                          className="text-lg font-semibold border-none outline-none text-dark3 placeholder:font-semibold"
                           value={inputNFT}
                           onChange={(e) => {
                             setInputNFT(e.target.value);

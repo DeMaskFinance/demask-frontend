@@ -78,8 +78,6 @@ const Profile = () => {
     }, [tab]);
     const fullTime = profile?.createdAt ? new Date(profile.createdAt) : new Date();
     const monthName = fullTime.toLocaleString('default', { month: 'long' });
-    console.log(fullTime.getMonth() + 1);
-
     return (
         <div className='my-6 '>
             <section>

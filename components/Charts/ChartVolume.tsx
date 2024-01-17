@@ -106,7 +106,6 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
         // Calculate monthly data by aggregating volumeInDay values for each month
         // const monthlyData = calculateMonthlyData(data);
         // setMonthlyData(monthlyData);
-        console.log("m hihi");
         break;
       default:
         break;
