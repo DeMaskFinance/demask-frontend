@@ -63,26 +63,26 @@ export default function Header() {
     dispatch(logout());
   };
 
-  const provider = getProvider(wallet);
-  useEffect(() => {
-    const getAddress = async () => {
-      const provider = await getProvider(wallet);
-      if (provider) {
-        const test = new ethers.providers.Web3Provider(provider) as any;
-        if (provider && test.provider.selectedAddress === null) {
-          console.log(provider);
-          console.log(provider.selectedAddress);
-          console.log(provider.chainId);
-          const web3 = new Web3(provider);
-          const accounts = await web3.eth.getAccounts();
-          const selectedAddress = accounts[0];
-          console.log(selectedAddress);
-          disconnectWallet();
-        }
-      }
-    };
-    getAddress();
-  }, [provider]);
+  // const provider = getProvider(wallet);
+  // useEffect(() => {
+  //   const getAddress = async () => {
+  //     const provider = await getProvider(wallet);
+  //     if (provider) {
+  //       const test = new ethers.providers.Web3Provider(provider) as any;
+  //       if (provider && test.provider.selectedAddress === null) {
+  //         console.log(provider);
+  //         console.log(provider.selectedAddress);
+  //         console.log(provider.chainId);
+  //         const web3 = new Web3(provider);
+  //         const accounts = await web3.eth.getAccounts();
+  //         const selectedAddress = accounts[0];
+  //         console.log(selectedAddress);
+  //         disconnectWallet();
+  //       }
+  //     }
+  //   };
+  //   getAddress();
+  // }, [provider]);
   useEffect(() => {
     if (window.innerWidth >= 768) {
       let prevScrollPos = window.scrollY;
