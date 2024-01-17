@@ -43,7 +43,7 @@ export default function Header() {
   const router = useRouter();
   const { account, updateAccount, wallet, chainId, demask } = useContext(AccountContext);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-  const { balanceToken } =
+  const { balanceToken, isLoadingBalance } =
     useInformationToken(account, nativeAddress, wallet, routerAddress, rpc, nativeAddress, true);
   const dispatch = useDispatch();
   const handleOpen = () => {
@@ -108,7 +108,7 @@ export default function Header() {
   }, []);
 
   const [showSearch, setShowSearch] = useState(false);
-
+  const a = 0;
   return (
     <>
       <header
@@ -212,7 +212,11 @@ export default function Header() {
                         src={Icons.walletHover}
                         alt="wallet connect hover"
                       />
-                      <span className="ml-2">{formatNumber(balanceToken)}</span>
+                      {isLoadingBalance ? (
+                        <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 animate-pulse"></div>
+                      ) : (
+                        <span className="ml-2">{formatNumber(balanceToken)}</span>
+                      )}
                       <span className="ml-1">ETH</span>
                     </div>
                   </div>

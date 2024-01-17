@@ -157,7 +157,7 @@ export default function EditProfileForm() {
 
                     <div className='flex flex-col overflow-hidden'>
                         <label htmlFor="userName" className={styles.title}>Username</label>
-                        <div className={styles.inputItem} >{profile?.userName}</div>
+                        <div className={`${styles.inputItem} flex`} ><p className='mr-1'>@</p>{profile?.userName}</div>
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor="about" className={styles.title}>About</label>

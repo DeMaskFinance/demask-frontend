@@ -132,7 +132,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 min-h-[75vh] w-[80%] mx-auto">
+    <div className="py-8 min-h-[75vh] w-[65%] mx-auto">
       <NextSeo {...updateMeta} />
 
       <div className="flex flex-col lg:flex-row gap-x-10">
@@ -197,12 +197,12 @@ export default function DetailLiquidity() {
                     </div>
                     <div className="mt-6 ">
                       <div className="">
-                        <div className="grid gap-x-4 lg:grid-cols-[200px,repeat(4,4fr)] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold mb-2">
-                          <p className="pl-3">Time</p>
-                          <p className="mx-auto">Action</p>
+                        <div className="grid gap-x-4 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold mb-2">
+                          <p className="pl-3">Action</p>
                           <p className="mx-auto">Liquidity</p>
                           <p className="mx-auto">NFT</p>
                           <p className="mx-auto">Token</p>
+                          <p className="flex justify-end">Time</p>
                         </div>
                         <LiquiditiesHistory
                           data={data}

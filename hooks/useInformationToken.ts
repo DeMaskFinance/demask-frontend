@@ -20,12 +20,14 @@ const useInformationToken = (
   const [allowanceToken, setAllowanceToken] = useState("");
   const provider = new ethers.providers.JsonRpcProvider(rpc);
   const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(true);
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   useEffect(() => {
     const getInformationToken = async () => {
       if (tokenAddress && account && nativeAddress) {
         if (tokenAddress === nativeAddress) {
           setDecimals("18");
           setIsLoadingApprove(false);
+          setIsLoadingBalance(true);
           try {
             const balance = await provider.getBalance(account);
             const balanceInMatic = parseFloat(
@@ -33,6 +35,7 @@ const useInformationToken = (
             ).toFixed(4);
             setBalanceToken(balanceInMatic);
             setBigNumberBalance(balance.toString());
+            setIsLoadingBalance(false);
           } catch (error) {
             console.error(error);
           }
@@ -79,6 +82,7 @@ const useInformationToken = (
     decimals,
     allowanceToken,
     isLoadingApprove,
+    isLoadingBalance
   };
 };
 

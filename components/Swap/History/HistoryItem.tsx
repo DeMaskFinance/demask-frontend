@@ -16,7 +16,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
     isFetching,
     demask
 }) => {
-    
+
     return (
         <>
             {isLoading || isFetching ? (
@@ -27,14 +27,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                         data?.data?.map((item: any, idx: number) => (
                             <tr
                                 key={idx} className="flex px-2 text-xs border-b rounded-lg hover:cursor-pointer text-dark2 group hover:bg-slate-100">
-                                <td className="py-2 lg:w-full md:w-[175px] w-[200px]">
-                                    <div
-                                        className="flex items-center justify-start transition-all w-[inherit]"
-                                    >
-                                        {item.blockTime}
-                                    </div>
-                                </td>
-                                <td className="py-2 flex items-center justify-center md:w-[70%] w-[100px]">
+                                <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
                                     <div className="flex items-center justify-end text-green">
                                         <span
                                             className={`border text-xs ${item.action === "Buy" || item.action === "Add"
@@ -77,6 +70,13 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                         >
                                             {item.transactionHash.slice(0, 4) + "..." + item.transactionHash.slice(-4)}
                                         </Link>
+                                    </div>
+                                </td>
+                                <td className="py-2 lg:w-full md:w-[175px] w-[200px]">
+                                    <div
+                                        className="flex items-center justify-end transition-all w-[inherit]"
+                                    >
+                                        {item.blockTime}
                                     </div>
                                 </td>
                             </tr>

@@ -62,7 +62,7 @@ const tokenGoerli = [
     name: "Goerli",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
-    logo: BscIcon,
+    logo: ZkSyncIcon,
     symbolNative: "ETH"
   }
 ];

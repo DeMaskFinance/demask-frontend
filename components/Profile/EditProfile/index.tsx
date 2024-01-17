@@ -22,7 +22,6 @@ export default function EditProfile() {
       setBannerLoading(true);
       const res = await uploadFile({ banner: file });
       dispatch(userData({ profile: res }));
-      router.push("/profile");
     } catch (error) {
       console.error(error);
     } finally {
@@ -34,7 +33,6 @@ export default function EditProfile() {
       setAvatarLoading(true);
       const res = await uploadFile({ avatar: file });
       dispatch(userData({ profile: res }));
-      router.push("/profile");
     } catch (error) {
       console.error(error);
     } finally {
@@ -45,7 +43,7 @@ export default function EditProfile() {
     <div className='pb-20 lg:pb-0'>
       <div className='relative cursor-pointer group h-[120px] lg:h-[240px]'>
         {profile?.banner ? (
-          <Image src={profile?.banner} alt='banner' width={400} height={200} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-fill' />
+          <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover' />
         ) : (
           <div className='w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
           </div>
@@ -72,7 +70,7 @@ export default function EditProfile() {
         <div className='relative rounded-full cursor-pointer w-fit h-fit group'>
           <div className='group-hover:brightness-50'>
             {profile?.avatar ? (
-              <Image src={profile?.avatar} alt='banner' width={96} height={96} className='object-fill rounded-full w-[120px] h-[120px]' />
+              <Image src={profile?.avatar} alt='banner' width={600} height={600} className='object-cover rounded-full w-[120px] h-[120px]' />
             ) : (
               <AvatarUser width={120} height={120} />
             )}

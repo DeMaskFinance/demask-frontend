@@ -54,10 +54,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                 <table className="w-full text-left border-collapse">
                     <thead className="">
                         <tr className="flex pb-2 text-sm border-b ">
-                            <th className="flex justify-center lg:w-full md:w-full w-[200px]">
-                                <p className='lg:w-full md:w-[175px] w-[200px]'>Time</p>
-                            </th>
-                            <th className="flex justify-center md:w-[70%] w-[100px]">
+                            <th className="flex justify-start pl-2 md:w-[70%] w-[100px]">
                                 Type
                             </th>
                             <th className="flex justify-center lg:w-full md:w-full w-[100px]">
@@ -74,6 +71,9 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
                             </th>
                             <th className="flex justify-center lg:w-full md:w-full w-[140px]">
                                 Tx
+                            </th>
+                            <th className="flex  lg:w-full md:w-full w-[200px] pr-2">
+                                <p className='lg:w-full flex items-center justify-end md:w-[175px] w-[200px]'>Time</p>
                             </th>
                         </tr>
                     </thead>

@@ -299,14 +299,15 @@ const Swap: React.FC = () => {
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         {account && activeChoice === "BUY" && (
-                          <p className="flex items-center text-sm text-dark1">
-                            Your balance:{formatNumber(balanceToken)}
+                          <div className="flex items-center text-sm text-dark1">
+                            <p className="mr-1">Your balance:</p>
+                            {formatNumber(balanceToken)}
                             <EtherIcon width={16} height={16} className="fill-dark2" />
-                          </p>
+                          </div>
                         )}
                         {account && activeChoice === "SELL" && (
                           <div className="flex items-center text-sm text-dark1">
-                            <p>Your balance:</p>
+                            <p className="mr-1">Your balance:</p>
                             <p>{formatNumber(balanceNFT)}</p>
                             <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
                           </div>
@@ -314,7 +315,7 @@ const Swap: React.FC = () => {
                       </div>
                       <div className="flex items-center text-sm text-dark1">
                         <div className="flex items-center mr-2">
-                          <span>LP:</span>
+                          <span className="mr-1">LP:</span>
                           <FormatNumber number={data.reserveNFT} />
                           <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
                         </div>
@@ -414,7 +415,8 @@ const Swap: React.FC = () => {
                       </div>
                       <div className="">
                         <label htmlFor="data.royaltyFee" className=' text-dark1'>
-                          <div className="flex text-sm">Royalties Fee:
+                          <div className="flex text-sm">
+                            <p className="mr-1">Royalties Fee: </p>
                             {activeChoice === "BUY" ? (
                               <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
                             ) : (

@@ -85,7 +85,7 @@ const Profile = () => {
             <section>
                 <div className='h-[120px] lg:h-[240px]'>
                     {profile?.banner ? (
-                        <Image src={profile?.banner} alt='banner' width={400} height={200} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-fill' />
+                        <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover' />
                     ) : (
                         <div className='w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
                         </div>
@@ -93,7 +93,7 @@ const Profile = () => {
                 </div>
                 <div className='flex items-center justify-center mt-6'>
                     {profile?.avatar ? (
-                        <Image src={profile?.avatar} alt='banner' width={96} height={96} className='object-fill rounded-full w-[120px] h-[120px] mr-2' />
+                        <Image src={profile?.avatar} alt='banner' width={600} height={600} className='object-cover rounded-full w-[120px] h-[120px] mr-2' />
                     ) : (
                         <AvatarUser width={120} height={120} />
                     )}
