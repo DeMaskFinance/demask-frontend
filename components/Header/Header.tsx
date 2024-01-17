@@ -70,14 +70,16 @@ export default function Header() {
       const provider = await getProvider(wallet);
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
+        console.log("name:", provider.selectedAddress);
+        console.log("test1", test.provider.selectedAddress);
+        const web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        const selectedAddress = accounts[0];
+        console.log("selectedADD", selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
           console.log(provider);
-          console.log(provider.selectedAddress);
-          console.log(provider.chainId);
-          const web3 = new Web3(provider);
-          const accounts = await web3.eth.getAccounts();
-          const selectedAddress = accounts[0];
-          console.log(selectedAddress);
+          console.log("namehehee:", provider.selectedAddress);
+          console.log("chainID:", provider.chainId);
           disconnectWallet();
         }
       }
@@ -108,7 +110,7 @@ export default function Header() {
     }
   }, []);
   console.log(isLoggedIn);
-  
+
   const [showSearch, setShowSearch] = useState(false);
   return (
     <>
