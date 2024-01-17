@@ -330,7 +330,7 @@ const Swap: React.FC = () => {
                           id="amountNFT"
                           autoComplete="off"
                           placeholder="Input amount NFT"
-                          className="font-semibold border-none outline-none text-dark3 placeholder:font-semibold"
+                          className="font-semibold border-none outline-none text-lg text-dark3 placeholder:font-semibold"
                           value={inputNFT}
                           onChange={(e) => {
                             setInputNFT(e.target.value);
