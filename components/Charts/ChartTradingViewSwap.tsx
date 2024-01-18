@@ -174,12 +174,12 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
             ) : data && newData?.length > 0 ? (
                 <div className='w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3'>
                     <div className='flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
-                        <div className='flex p-4 border-r border-dark3 text-dark2'>
+                        <div className='flex items-center p-4 border-r border-dark3 text-dark2'>
                             <p className='mr-1 text-dark3'>Price 1D:</p>
                             <FormatNumber number={data[data.length - 1]?.closePrice} />
                             ({formatPercent(data[data.length - 1]?.changePrice)}%)
                         </div>
-                        <div className='flex p-4 border-r border-dark3 text-dark2'>
+                        <div className='flex items-center p-4 border-r border-dark3 text-dark2'>
                             <p className='mr-1 text-dark3'>Volume 1D:</p>
                             <div className='flex items-center'>
                                 <FormatNumber number={data[data.length - 1]?.volume} />

@@ -89,8 +89,8 @@ export default function DetailLiquidity() {
   }, [dmlTokenLiquidity, account, data]);
   console.log(data);
 
-  const { balanceOfDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
-  // console.log(balanceOfDML,totalSupply);
+  const { balanceOfDML, balanceDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
+  console.log(balanceDML, totalSupply);
   const options = [{ tab: 'All' }, { tab: 'Add' }, { tab: 'Remove' }];
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -197,7 +197,7 @@ export default function DetailLiquidity() {
                     </div>
                     <div className="mt-6 ">
                       <div className="">
-                        <div className="grid gap-x-4 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold mb-2">
+                        <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold">
                           <p className="pl-3">Action</p>
                           <p className="mx-auto">Liquidity</p>
                           <p className="mx-auto">NFT</p>
@@ -283,7 +283,7 @@ export default function DetailLiquidity() {
                 <p className="mb-2 text-dark1">Liquidity</p>
                 <div className="flex font-light text-dark3">
                   <FormatNumber number={balanceOfDML} />
-                  <div>({(Number(balanceOfDML) / Number(data?.reserveToken)).toFixed(2)})%</div>
+                  <div>({(Number(balanceDML) / Number(totalSupply)).toFixed(2)})%</div>
                 </div>
               </div>
               <div>

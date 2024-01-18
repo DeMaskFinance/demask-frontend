@@ -12,6 +12,7 @@ import { SEO } from '../../next-seo.config';
 import { useSelector } from "react-redux";
 import { selectProfile } from "@/store/profileSlice";
 import Web3 from "web3";
+import { PoolListIcon } from "@/components/Icons";
 const updateMeta = {
   ...SEO,
   title: 'Detail Liquidity',
@@ -50,7 +51,7 @@ export default function Liquidity() {
     }
   );
   console.log(data);
-  
+
   return (
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0">
       <NextSeo {...updateMeta} />
@@ -68,8 +69,9 @@ export default function Liquidity() {
         </div>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
         {((!account || data?.pages[0]?.combinedRecords.length === 0) && !isLoading) && (
-          <div className="w-full py-8 mb-6 font-medium text-center rounded-lg bg-dark4 text-secondary4">
-            No liquidity found.
+          <div className="flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2">
+            <PoolListIcon width={72} height={72} />
+            Your active liquidity positions will appear here.
           </div>
         )}
         {account && data?.pages[0]?.combinedRecords.length !== 0 && (

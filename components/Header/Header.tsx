@@ -27,6 +27,7 @@ import useInformationToken from "@/hooks/useInformationToken";
 import formatNumber from "@/libs/utils/formatNumer";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectProfile } from "@/store/profileSlice";
+import Maintenance from "../Common/Maintenance";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
@@ -109,14 +110,14 @@ export default function Header() {
       };
     }
   }, []);
-  console.log(isLoggedIn);
 
   const [showSearch, setShowSearch] = useState(false);
   return (
-    <>
+    <div
+      ref={headerRef}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out">
       <header
-        ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 transition-all duration-500 ease-in-outshadow-md bg-secondary1 h-header lg:px-primary md:px-14"
+        className="flex items-center justify-between w-full gap-2 shadow-md bg-secondary1 h-header lg:px-primary md:px-14"
       >
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">
@@ -249,10 +250,11 @@ export default function Header() {
           </div>
         </div>
       </header>
+      <Maintenance />
       <div className="absolute z-[50]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <WrongNetwork />
-    </>
+    </div>
   );
 }
