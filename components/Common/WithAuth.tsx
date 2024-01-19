@@ -1,15 +1,11 @@
-import { AvatarUser } from '@/components/Avatars';
 import { Button } from '@/components/Buttons';
-import Copy from '@/components/Common/Copy';
 import { ModalWallet } from '@/components/Modal/ModalWallet';
-import Profile from '@/components/Profile/Profile';
-import AccountContext from '@/context/AccountContext';
+import { selectProfile } from '@/store/profileSlice';
 import { NextSeo } from "next-seo";
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import 'tippy.js/dist/tippy.css';
 import { SEO } from '../../next-seo.config';
-import { useSelector } from 'react-redux';
-import { selectProfile } from '@/store/profileSlice';
 const updateMeta = {
     ...SEO,
     title: 'Profile',

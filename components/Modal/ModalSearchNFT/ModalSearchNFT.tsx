@@ -12,6 +12,7 @@ import { checkIsERC1155Service } from "@/libs/service/checkIsERC1155";
 import axios from "axios";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { searchNFTService } from "@/libs/service/searchService";
+import TopNFT from "./TopNFT";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -25,29 +26,22 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   setIsOpenSearchNFT,
 }) => {
   const [nftAddress, setNftAddress] = useState<string>("");
-  const [isERC1155, setIsERC1155] = useState<boolean>(false);
-  const [metadata, setMetadata] = useState(null);
-  const [uri, setUri] = useState("");
   const [idNFT, setIdNFT] = useState("");
   let debouncedNFT = useDebounce(nftAddress);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [nameNFT, setNameNFT] = useState("");
-  const [imageNFT, setImageNFT] = useState("");
-  const [symbolNFT, setSymbolNFT] = useState("");
   const router = useRouter();
   const { chainId, demask } = useContext(AccountContext);
 
   const { isLoading, data, isFetching, isSuccess } = useQuery({
-    queryKey: ["checkNFT", nftAddress, chainId],
+    queryKey: ["checkNFT", debouncedNFT, chainId],
     queryFn: async () => {
-      const res = await checkIsERC1155Service(nftAddress.toLowerCase(), chainId)
+      const res = await checkIsERC1155Service(debouncedNFT.toLowerCase(), chainId)
       return res;
     },
   });
   const { isLoading: isLoadingNFT, data: dataNFT, isFetching: isFetchingNFT, isSuccess: isSuccessNFT } = useQuery({
-    queryKey: ["searchNFT", nftAddress, chainId, idNFT],
+    queryKey: ["searchNFT", debouncedNFT, chainId, idNFT],
     queryFn: async () => {
-      const res = await searchNFTService(chainId, nftAddress.toLowerCase(), idNFT)
+      const res = await searchNFTService(chainId, debouncedNFT.toLowerCase(), idNFT)
       return res;
     },
   });
@@ -63,34 +57,19 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     if (currency) {
       const currentURL = router.asPath;
       newURL = currentURL
-        .replace(currency[0], nftAddress)
+        .replace(currency[0], debouncedNFT)
         .replace(currency[2], idNFT);
     } else if (slug) {
       const currentURL = router.asPath;
-      newURL = currentURL.replace(slug[0], nftAddress).replace(slug[2], idNFT);
+      newURL = currentURL.replace(slug[0], debouncedNFT).replace(slug[2], idNFT);
       router.push(newURL);
     }
     setNftAddress('')
     setIdNFT('');
-    setMetadata(null);
-    setUri('');
     router.push(newURL);
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
-  const { isLoading: topNftLoading,
-    data: topNftData,
-    isFetching: topNftFetching,
-    refetch: topNftRefetch,
-    isPreviousData: isTopNftPreviousData, } = useQuery({
-      queryKey: ["topNFT", chainId],
-      queryFn: async () => {
-        const res = await NFTTopService(chainId);
-        return res;
-      },
-
-      keepPreviousData: true,
-    });
   const handleSelectNFT = (item: any) => {
     const { currency } = router.query;
     const { slug } = router.query;
@@ -102,13 +81,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         .replace(currency[2], item.nftID);
     } else if (slug) {
       const currentURL = router.asPath;
-      newURL = currentURL.replace(slug[0], item.nftAddress).replace(slug[2], item.nftID);
+      newURL = currentURL.replace(slug[0], item.debouncedNFT).replace(slug[2], item.nftID);
     }
     router.push(newURL);
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   }
-
+  
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -130,60 +109,18 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </div>
               )}
             </div>
-            <ul className={`${nftAddress ? 'hidden' : 'block'}`}>
+            <ul className={`${debouncedNFT ? 'hidden' : 'block'}`}>
               <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={() => setNftAddress(demask.CREATOR)}>
-                <span><Image src='/logo.png' alt="logo" width={24} height={24} /></span>
+                <span><Image src='/logo.png' alt="logo" width={24} height={24} className="object-cover w-6 h-auto" /></span>
                 <span>DEMASK CREATOR</span>
               </li>
             </ul>
-            <div className={`${nftAddress ? 'hidden' : 'block'}`}>
-              <div className="mt-3">
-                {topNftData && topNftData.nftDataList.length > 0 ? (
-                  <div>
-                    <div className="block mb-2 max-h-[250px] overflow-y-scroll ">
-                      <span className="text-base">NFTs Top</span>
-                      {topNftData.nftDataList.map((item: any, index: number) => (
-                        <div
-                          key={index}
-                          onClick={() => handleSelectNFT(item)}
-                          className="flex-1"
-                        >
-                          <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                            <div className="flex items-center gap-2">
-                              <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                <MediaNFT data={item} isControls={false} />
-                              </div>
-                              <div className="flex flex-col items-baseline">
-                                <span className="block text-sm font-semibold">
-                                  <span className="line-clamp-1">
-                                    {item?.metadata?.name}
-                                  </span>
-                                </span>
-                                <span className="flex text-xs item-center">
-                                  <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlAddress?.slice(0, 4)}...
-                                    {item.dmlAddress?.slice(-8)}
-                                  </span>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {topNftFetching ? (
-                      <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
-                    ) : (
-                      <span className="text-base text-secondary3"></span>
-                    )}
-                  </>
-                )}
+            <div className={`${debouncedNFT ? 'hidden' : 'block'}`}>
+              <div>
+                <TopNFT handleSelectNFT={handleSelectNFT} />
               </div>
             </div>
-            {data?.status === true && nftAddress && (
+            {data?.status === true && debouncedNFT && (
               <input
                 className={styles.inputItem}
                 placeholder="Address id or paste id"
@@ -191,7 +128,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 onChange={(e) => setIdNFT(e.target.value)}
               />
             )}
-            {data?.status === false && nftAddress && (
+            {data?.status === false && debouncedNFT && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
                 key="totalPayment"

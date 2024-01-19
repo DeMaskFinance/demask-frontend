@@ -62,7 +62,7 @@ const tokenGoerli = [
     name: "Goerli",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
-    logo: ZkSyncIcon,
+    logo: EtherIcon,
     symbolNative: "ETH"
   }
 ];
@@ -87,6 +87,11 @@ const tokenzkSync = [
   //   logo: USDCIcon,
   // },
 ];
+const activeNFTPercent = [
+  { text: '25%', percent: 0.25 },
+  { text: '50%', percent: 0.5 },
+  { text: '75%', percent: 0.75 },
+  { text: 'MAX', percent: 1 },]
 const BSC_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_BSC,
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
@@ -257,5 +262,6 @@ export {
   tokenzkSync,
   tokenGoerli,
   Category,
-  version
+  version,
+  activeNFTPercent
 };

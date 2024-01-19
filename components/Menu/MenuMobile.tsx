@@ -191,9 +191,7 @@ const MenuMobile: React.FC<MenuMobileProps> = ({
                 <div className="flex flex-col gap-4 p-2 pl-8 border rounded-md">
                   <li>
                     <Link
-                      href={
-                        `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${process.env.NEXT_PUBLIC_IDNFT}`
-                      }
+                      href='/swap'
                     >
                       Swap
                     </Link>

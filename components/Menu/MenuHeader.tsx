@@ -10,7 +10,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const data = [
     { id: 1, name: "Mint", url: "/mint" },
     { id: 2, name: "Launchpad", url: "/launchpad" },
-    { id: 3, name: "Swap", url: `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}` },
+    { id: 3, name: "Swap", url: `/swap` },
     { id: 4, name: "Pools", url: "/pools" },
   ];
   const handleFocus = () => {

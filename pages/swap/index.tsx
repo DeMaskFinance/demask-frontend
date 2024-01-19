@@ -1,9 +1,8 @@
-import React from 'react'
+import SwapDefault from "@/components/Swap/SwapDefault";
 
 export default function Swap() {
+
   return (
-    <div>
-      123
-    </div>
+    <SwapDefault />
   )
 }

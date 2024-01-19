@@ -13,6 +13,7 @@ import axios from "axios";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { searchNFTService } from "@/libs/service/searchService";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
+import TopNFT from "./TopNFT";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: any;
@@ -60,39 +61,29 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
-  const { isLoading: topNftLoading,
-    data: topNftData,
-    isFetching: topNftFetching,
-    refetch: topNftRefetch,
-    isPreviousData: isTopNftPreviousData, } = useQuery({
-      queryKey: ["topNFT", chainId],
-      queryFn: async () => {
-        const res = await NFTTopService(chainId);
-        return res;
-      },
 
-      keepPreviousData: true,
-    });
 
   const handleSelectNFT = (item: any) => {
     const { currency } = router.query;
     const { slug } = router.query;
     let newURL = "";
+    const currentURL = router.asPath;
     if (currency) {
-      const currentURL = router.asPath;
       newURL = currentURL
         .replace(currency[0], item.nftAddress)
         .replace(currency[2], item.nftID);
+      router.push(newURL);
     } else if (slug) {
-      const currentURL = router.asPath;
       newURL = currentURL.replace(slug[0], item.nftAddress).replace(slug[2], item.nftID);
+      router.push(newURL);
+    } else {
+      router.replace(`/swap/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}`)
     }
-    router.push(newURL);
     document.body.style.overflowY = "auto";
     setActiveChoiceNFT('');
     setIsOpenSearchNFT(false);
   }
-
+  
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="z-50 flex flex-col justify-center h-full">
@@ -148,51 +139,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 )
               ) : (
                 <div>
-                  <div className="mt-3">
-                    {topNftData && topNftData.nftDataList.length > 0 ? (
-                      <div>
-                        <div className="block mb-2 max-h-[250px] overflow-y-scroll">
-                          <span className="text-base">NFTs Top</span>
-                          {topNftData.nftDataList.map((item: any, index: number) => (
-                            <div
-                              key={index}
-                              onClick={() => handleSelectNFT(item)}
-                              className="flex-1"
-                            >
-                              <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-secondary5 hover:text-white">
-                                <div className="flex items-center gap-2">
-                                  <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                    <MediaNFT data={item} isControls={false} />
-                                  </div>
-                                  <div className="flex flex-col items-baseline">
-                                    <span className="block text-sm font-semibold">
-                                      <span className="line-clamp-1">
-                                        {item?.metadata?.name}
-                                      </span>
-                                    </span>
-                                    <span className="flex text-xs item-center">
-                                      <span className="block pb-2 mr-1 font-semibold">
-                                        {item.dmlAddress?.slice(0, 4)}...
-                                        {item.dmlAddress?.slice(-8)}
-                                      </span>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        {topNftFetching ? (
-                          <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
-                        ) : (
-                          <span className="text-base text-secondary3"></span>
-                        )}
-                      </>
-                    )}
-                  </div>
+                  <TopNFT handleSelectNFT={handleSelectNFT} />
                 </div>
               )
             }

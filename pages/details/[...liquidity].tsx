@@ -132,7 +132,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 min-h-[75vh] w-[65%] mx-auto">
+    <div className="py-8 min-h-[75vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
       <NextSeo {...updateMeta} />
 
       <div className="flex flex-col lg:flex-row gap-x-10">

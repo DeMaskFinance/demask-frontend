@@ -17,7 +17,7 @@ export default function NavFooter({ reels }: any) {
   const data = [
     { id: 1, name: "Mint", url: "/mint", icon: OverviewIcon },
     { id: 2, name: "Launchpad", url: "/launchpad", icon: LaunchpadIcon },
-    { id: 3, name: "Swap", url: `/swap/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`, icon: CreateIcon },
+    { id: 3, name: "Swap", url: `/swap`, icon: CreateIcon },
     { id: 4, name: "Pools", url: "/pools", icon: TradeIcon },
     { id: 5, name: "Docs", url: "https://docs.demask.finance/", icon: OthersIcon },
   ];

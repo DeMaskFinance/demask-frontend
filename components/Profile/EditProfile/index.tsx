@@ -97,8 +97,10 @@ export default function EditProfile() {
             onChange={async (e) => {
               if (e.target.files) {
                 const file = e.target.files[0];
-                if (file) {
+                if (file && file.size < 10485760) {
                   handleUploadAvatar(file);
+                } else {
+                  console.log('Oversize');
                 }
               }
             }}
@@ -110,8 +112,10 @@ export default function EditProfile() {
             onChange={async (e) => {
               if (e.target.files) {
                 const file = e.target.files[0];
-                if (file) {
+                if (file && file.size < 10485760) {
                   handleUploadBanner(file);
+                } else {
+                  console.log('Oversize');
                 }
               }
             }}

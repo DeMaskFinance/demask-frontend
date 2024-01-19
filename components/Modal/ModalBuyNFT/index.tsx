@@ -2,7 +2,7 @@ import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { DetailIcon, DownIcon, EtherIcon } from "@/components/Icons";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInforFee from "@/hooks/useInforFee";
@@ -63,7 +63,6 @@ const ModalBuyNFT: React.FunctionComponent<
         const [seeDetail, setSeeDetail] = useState<boolean>(false);
         const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
         const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
-        const [gasLimit, setGasLimit] = useState<string>('0');
         const [preFectch, setPreFetch] = useState<boolean>(false);
         const [updatePrice, setUpdatePrice] = useState<boolean>(false);
         const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
@@ -78,9 +77,6 @@ const ModalBuyNFT: React.FunctionComponent<
         };
         const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(data.dmlAddress, wallet, account, isOpenTransaction, isOpenBuyNFT, true, true, updatePrice)
         const { amountTokenBuy, feeTradingBuy } = useAmountInMax(inputNFT, data.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, updatePrice);
-
-        const { tip, gasUse } = useInforFee(account, wallet);
-
         useEffect(() => {
             if (inputNFT && data && amountTokenBuy) {
                 setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(data.royaltyFee) / 100);
@@ -104,22 +100,27 @@ const ModalBuyNFT: React.FunctionComponent<
                 clearInterval(load)
             }
         }, [isOpenBuyNFT, preFectch])
+        console.log({
+            test: Number(reserveNFT),
+            inputNFT
+        });
+        console.log({
+            isSufficientTokenBuy,
+            isSufficientNFT
+        });
 
         useEffect(() => {
-            const checkReservesNFT = () => {
-                if (data && Number(inputNFT) <= Number(reserveNFT)) {
-                    setIsSufficientNFT(true);
-                } else {
-                    setIsSufficientNFT(false);
-                }
-            };
-            checkReservesNFT();
+            if (Number(inputNFT) <= Number(reserveNFT)) {
+                setIsSufficientNFT(true);
+            } else {
+                setIsSufficientNFT(false);
+            }
             if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
                 setIsSufficientTokenBuy(false);
             } else {
                 setIsSufficientTokenBuy(true);
             }
-        }, [inputNFT, account, amountBuyDec, data, reserveNFT]);
+        }, [inputNFT, account, amountBuyDec, data, reserveNFT, isOpenBuyNFT]);
 
         useEffect(() => {
             const checkApproveToken = async () => {
@@ -135,15 +136,6 @@ const ModalBuyNFT: React.FunctionComponent<
             };
             checkApproveToken();
         }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
-
-        const test1 = ethers.utils.formatUnits((748302 * (250000000 + 1500000000)).toString(), 'ether');
-        const test2 = ethers.utils.formatUnits((748302 * (250000000)).toString(), 'ether');
-        // console.log({
-        //     test1,
-        //     test2
-        // });
-        console.log(seeDetail);
-
         const handleBuyNFT = async (e: any) => {
             e.preventDefault();
             if (!account) {
@@ -267,7 +259,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             <div className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1" onClick={() => setSeeDetail(!seeDetail)}>
                                 <div className="flex items-center gap-x-1">
                                     <p>Total fee</p>
-                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? '-rotate-90' : ''}`}><FaChevronLeft /></div>
+                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? 'rotate-90' : ''}`}><FaChevronRight /></div>
                                 </div>
                                 <div className="flex items-center">
                                     <FormatNumber number={divideByDecimal((+feeTradingBuy + +royaltiesFeeBuy).toString(), data.tokenDecimals).toString()} />
@@ -297,8 +289,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                 </div>
                             </div>
                             {
-                                !isSufficientNFT &&
-                                reserveNFT && (
+                                !isSufficientNFT && reserveNFT && (
                                     <p
                                         className="text-xs text-red"
                                         key="NFTbalance"
@@ -312,7 +303,7 @@ const ModalBuyNFT: React.FunctionComponent<
                                 reserveToken && (
                                     <p
                                         className="text-xs text-red"
-                                        key="NFTbalance"
+                                        key="Tokenbalance"
                                     >
                                         Insufficient Token balance
                                     </p>
@@ -367,4 +358,4 @@ const ModalBuyNFT: React.FunctionComponent<
         );
     };
 
-export default memo(ModalBuyNFT);
+export default ModalBuyNFT;

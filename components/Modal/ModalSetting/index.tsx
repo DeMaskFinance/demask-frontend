@@ -68,7 +68,7 @@ const ModalSetting: React.FunctionComponent<
                                     </div>
                                 </Tippy>
                             </div>
-                            <div>
+                            <div className="flex">
                                 {Slippage.map((item, index) => (
                                     <Button key={index} className='w-10 py-2 mr-2 font-semibold border border-dark4 text-dark3' onClick={() => {
                                         setSlippageTo(item)
@@ -107,7 +107,7 @@ const ModalSetting: React.FunctionComponent<
                                 pattern="^[0-9]+$"
                                 value={time}
                                 type="text"
-                                className='w-1/2 p-2 mb-4 border rounded-xl border-dark4'
+                                className='w-1/2 p-2 mb-4 text-center border rounded-xl border-dark4'
                                 onChange={(e) => {
                                     const inputValue = Number(e.target.value);
                                     setTime(inputValue);

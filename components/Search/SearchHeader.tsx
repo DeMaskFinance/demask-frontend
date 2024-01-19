@@ -12,6 +12,7 @@ import Image from "next/image";
 import AccountContext from "@/context/AccountContext";
 import MediaNFT from "../Common/MediaNFT";
 import { CgClose } from "react-icons/cg";
+import useDebounce from "@/hooks/useDebounce";
 
 interface SearchProps {
   isFocused: boolean;
@@ -31,6 +32,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
   const [domLoaded, setDomLoaded] = useState(false);
   const [active, setActive] = useState(false);
   const [click, setClick] = useState(false);
+  let debouncedSearch = useDebounce(searchTerm, 1000);
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
@@ -42,10 +44,10 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
     isFetching: searchFetching,
     refetch: searchRefetch,
     isPreviousData: isSearchPreviousData } = useQuery({
-      queryKey: ["categories", searchTerm, chainId],
+      queryKey: ["categories", debouncedSearch, chainId],
       queryFn: async () => {
-        if (searchTerm.includes("/")) {
-          const [param1, param2] = searchTerm.split(":");
+        if (debouncedSearch.includes("/")) {
+          const [param1, param2] = debouncedSearch.split(":");
           const id = param1.includes("x") ? param2 : param1;
           const nftAddress = param1.includes("x") ? param1 : param2;
           const res = await categoryAPI(
@@ -53,7 +55,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
           );
           return res;
         } else {
-          const res = await categoryAPI(`search?chainId=${chainId}&search=${searchTerm}`);
+          const res = await categoryAPI(`search?chainId=${chainId}&search=${debouncedSearch}`);
           return res;
         }
       },
@@ -158,7 +160,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
                 } outline-none text-sm  text-dark2`}
               onFocus={handleActive}
             />
-            {searchTerm && (
+            {debouncedSearch && (
               <div className="absolute right-2 top-[50%] -translate-y-1/2 cursor-pointer" onClick={() => setSearchTerm('')}>
                 <CgClose className="text-lg text-gray-500 transition-colors duration-100 ease-linear hover:text-red" />
               </div>
@@ -177,7 +179,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
             className={`lg:border max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden ${click ? "block" : "block lg:hidden"
               }  bg-white w-full rounded-lg mt-3 lg:mt-1 py-4 lg:px-4 absolute top-8 right-0 left-0`}
           >
-            <div className={`${searchTerm === "" ? "block" : "hidden"}`}>
+            <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
               <p className="block mb-2">
                 <span className="text-base">Searched</span>
                 {isMounted && (
@@ -233,7 +235,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
                 </div>
               )}
             </div>
-            {searchTerm ? (
+            {debouncedSearch ? (
               <div className=''>
                 <p className="pb-2 text-base">Collections</p>
                 {searchData && searchData.length > 0 ? (
