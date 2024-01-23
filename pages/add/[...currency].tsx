@@ -96,6 +96,7 @@ export default function AddLiquidity() {
   console.log(data);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
+  console.log(balanceNFT);
 
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
@@ -280,7 +281,7 @@ export default function AddLiquidity() {
               <div>
                 <div className="flex justify-between mb-1 text-dark1">
                   <p>NFT</p>
-                  <p>Balance: {account ? 0 : formatNumber(balanceNFT)}</p>
+                  <p>Balance: {account ? formatNumber(balanceNFT) : 0}</p>
                 </div>
                 <div className={`relative p-2 border rounded-lg border-dark3 ${!inputNFT && isInputNFT && 'border-red'}`}>
                   <input
@@ -321,7 +322,7 @@ export default function AddLiquidity() {
               <div>
                 <div className="flex justify-between mt-4 mb-1 text-dark1">
                   <p>Token</p>
-                  <p>Balance: {formatNumber(balanceToken)}</p>
+                  <p>Balance: {account ? formatNumber(balanceToken) : 0}</p>
                 </div>
                 {(data.dmlAddress === null) ? (
                   <input

@@ -22,6 +22,7 @@ export const changeNetwork = async (
         updateChainId(chainId);
         setTab(chainId)
         document.body.style.overflowY = "auto";
+        // window.location.replace(`/swap?chain=${chainId}`);
       } catch (errors: any) {
         // This error code indicates that the chain has not been added to MetaMask
         if (errors.code === 4902) {

@@ -174,7 +174,7 @@ export default function Header() {
               </button>
             </div>
             <MenuNetwork />
-            {isLoggedIn ? (
+            {(isLoggedIn && account) ? (
               <Tippy
                 interactive
                 render={(attrs) => (

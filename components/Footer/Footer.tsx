@@ -1,18 +1,20 @@
 import { version } from "@/libs/constants";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Button } from "../Buttons";
 import { EmailIcon } from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import useSvgComponents from "../Picture/Picture";
-import AccountContext from "@/context/AccountContext";
+import { useTheme } from "next-themes";
+
 export default function Footer() {
   const svgComponents = useSvgComponents();
-  const { demask} = useContext(AccountContext);
+  const { theme, setTheme } = useTheme();
   const [activeChoice, setActiveChoice] = useState<string>("Light");
 
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
+    setTheme(theme === "light" ? "dark" : "light");
   };
   return (
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex lg:px-[156px] md:px-14 bg-dark4">
@@ -23,13 +25,9 @@ export default function Footer() {
               <Link href='https://demask.finance/' target="_blank" className="text-dark1">About</Link>
             </li>
             <li className="transition-all duration-100 hover:text-secondary5">
-              <a
-                href="https://github.com/DeMaskFinance/demask_brand/tree/master"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Brand
-              </a>
+              <Link href='/media-kit'>
+                Branding & Media Kit
+              </Link>
             </li>
             <li className="transition-all duration-100 hover:text-secondary5">
               <a

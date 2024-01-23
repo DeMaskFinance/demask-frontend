@@ -21,11 +21,11 @@ const Referral = () => {
     }, [isCopy]);
     return (
         <div className='flex justify-center'>
-            <div className='w-full lg:w-[70%] p-2 border rounded-lg border-dark2 text-dark2 flex flex-col gap-y-2'>
-                <p>Invite your friend to DEMASK, if they sign up</p>
-                <h1 className='font-semibold'>Refer Friends To Earn</h1>
+            <div className='w-full lg:w-[70%] p-8 border rounded-lg border-dark2 text-dark2 flex flex-col gap-y-2'>
+                <p className='text-secondary5'>Invite your friends to DEMASK, if they sign up</p>
+                <h1 className='my-6 font-semibold'>Refer Friends To Earn</h1>
                 <p>Experience a new way of earning rewards by inviting your friends to join DeMask & earn up to 10% commission every time they trade on DeMask.</p>
-                <div className='flex mb-4'>
+                <div className='flex mt-6'>
                     <div className='w-[75%] mr-4 p-2 border rounded-lg border-dark3 text-secondary5'>https://test.demask.finance...{`${account.slice(-4)}`}&chain={chainId}</div>
                     <Tippy theme='light'
                         visible={isCopy}

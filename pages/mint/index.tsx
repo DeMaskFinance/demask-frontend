@@ -9,15 +9,13 @@ import React, {
   useState,
 } from "react";
 
-import "react-datepicker/dist/react-datepicker.css";
-import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import MintNFT from "@/components/Creator/MintNFT";
-import { LaunchPad } from "@/components/Creator";
-import images from "@/public/images";
-import { TabGroups } from "@/components/NavChoice";
-import { NextSeo } from "next-seo";
-import { SEO } from "../../next-seo.config";
 import { Category } from "@/libs/constants";
+import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
+import images from "@/public/images";
+import { NextSeo } from "next-seo";
+import "react-datepicker/dist/react-datepicker.css";
+import { SEO } from "../../next-seo.config";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",

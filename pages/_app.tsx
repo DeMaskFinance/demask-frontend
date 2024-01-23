@@ -23,6 +23,7 @@ import { QueryParamProvider } from 'use-query-params';
 import { Provider } from 'react-redux';
 import store, { persistor } from '../store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider } from "next-themes";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -114,21 +115,23 @@ export default function App({
             font-family: ${roboto.style.fontFamily};
           }
         `}</style>
-              <WagmiConfig config={wagmiConfig}>
-                {isMaintenanceMode ? (
-                  <Layout>
-                    <MaintenanceError />
-                  </Layout>
-                ) : Component.PageLayout ? (
-                  <Component.PageLayout>
-                    <Component {...pageProps} />
-                  </Component.PageLayout>
-                ) : (
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                )}
-              </WagmiConfig>
+              <ThemeProvider attribute="class">
+                <WagmiConfig config={wagmiConfig}>
+                  {isMaintenanceMode ? (
+                    <Layout>
+                      <MaintenanceError />
+                    </Layout>
+                  ) : Component.PageLayout ? (
+                    <Component.PageLayout>
+                      <Component {...pageProps} />
+                    </Component.PageLayout>
+                  ) : (
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  )}
+                </WagmiConfig>
+              </ThemeProvider>
 
               <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
                 '--w3m-z-index': '9999'

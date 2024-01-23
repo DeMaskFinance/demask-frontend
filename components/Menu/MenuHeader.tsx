@@ -12,6 +12,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
     { id: 2, name: "Launchpad", url: "/launchpad" },
     { id: 3, name: "Swap", url: `/swap` },
     { id: 4, name: "Pools", url: "/pools" },
+    { id: 5, name: "Leader Board", url: "/leaderboard" },
   ];
   const handleFocus = () => {
     setIsFocused(true);

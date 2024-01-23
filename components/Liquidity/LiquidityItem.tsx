@@ -23,7 +23,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   const [reward, setReward] = useState("");
   const { balanceDML, totalSupply } = useBananceOfDML(account, liquidity.dmlAddress, wallet);
   console.log(totalSupply);
-  
+
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && wallet && liquidity) {
@@ -52,7 +52,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             </div>
             <FormatNumber number={liquidity.reserveToken} />
             <span><EtherIcon width={20} height={20} className="fill-white ml-[-1px]" /></span>
-            <div>({(Number(balanceDML) / Number(totalSupply)).toFixed(2)})%</div>
+            <div>({(Number(balanceDML) / Number(totalSupply) * 100).toFixed(2)}%)</div>
           </div>
           <div className="flex items-center my-2">
             Reward:

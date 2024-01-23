@@ -140,7 +140,7 @@ export default function SwapDefault() {
                                         }}
                                     />
                                     <div
-                                        className="absolute px-4 py-2 transition duration-150 ease-out bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-white border rounded-lg cursor-pointer font-semibold right-1 top-1 border-secondary5 "
+                                        className="absolute px-4 py-2 transition duration-150 ease-out bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-white border hover:bg-gradient-to-r hover:border-secondary5 hover:from-white active:bg-secondary3 active:text-white hover:text-secondary2 hover:bg-white rounded-lg cursor-pointer font-semibold right-1 top-1 border-secondary5 "
                                         onClick={handleSearchNFT}
                                     >
                                         <div className="text-center">

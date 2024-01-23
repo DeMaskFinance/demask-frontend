@@ -49,7 +49,7 @@ export default function EditProfile() {
           </div>
         )}
         {bannerLoading ? (
-          <div className='absolute top-0 bottom-0 flex items-center justify-center w-full h-full bg-slate-600/[.7]'>
+          <div className='absolute top-0 bottom-0 flex items-center rounded-b-lg justify-center w-full h-full bg-slate-600/[.7]'>
             <BiLoaderAlt className="text-5xl text-white animate-spin" />
           </div>
         ) : (

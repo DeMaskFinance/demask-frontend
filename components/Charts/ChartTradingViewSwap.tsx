@@ -1,18 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import {
-    createChart, ChartOptions,
-    DeepPartial,
-    IChartApi,
-    UTCTimestamp
-} from 'lightweight-charts';
-import { useQuery } from '@tanstack/react-query';
+import AccountContext from '@/context/AccountContext';
 import { categoryAPI } from '@/libs/service/categoriesChartService';
+import { formatPercent } from '@/libs/utils/formatToUnit';
+import { useQuery } from '@tanstack/react-query';
+import {
+    createChart
+} from 'lightweight-charts';
+import { useContext, useEffect, useRef, useState } from 'react';
+import FormatNumber from '../Common/FormatNumber';
+import { EtherIcon, NFTIcon } from '../Icons';
 import ChartLoading from './ChartLoading';
 import ChartNoTransfers from './ChartNoTransfers';
-import FormatNumber from '../Common/FormatNumber';
-import AccountContext from '@/context/AccountContext';
-import { EtherIcon, NFTIcon } from '../Icons';
-import { formatPercent } from '@/libs/utils/formatToUnit';
+import ModalWarningRemove from '../Modal/ModalWarningRemove';
 interface BarData {
     time: string;
     value: number;
@@ -269,6 +267,7 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
                     <ChartNoTransfers />
                 </div>
             )}
+             {/* <ModalWarningRemove isOpenWarning={true} setIsOpenWarning={setNewData}/> */}
         </div>
     )
 }

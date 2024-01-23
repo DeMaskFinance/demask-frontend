@@ -216,7 +216,8 @@ const Swap: React.FC = () => {
     { icon: <PoolIcon width={24} height={24} className="group-hover:fill-secondary3" />, content: 'Pool', link: `/add/${nftAddress}/${tokenAddress}/${idNFT}` },
     { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
   ];
-
+  console.log(account);
+  
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
       <NextSeo {...updateMeta} />
@@ -224,7 +225,7 @@ const Swap: React.FC = () => {
         <SkeletonReels />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
+          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 dark:text-white">
             <Link href='/swap'>
               <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
             </Link>
@@ -527,7 +528,7 @@ const Swap: React.FC = () => {
         isOpenSearchNFT={isOpenSearchNFT}
         setActiveChoiceNFT={setActiveChoiceNFT}
       />
-      {/* <ModalWarningRemove isOpenWarning={true} setIsOpenWarning={setIsOpenSearchNFT}/> */}
+     
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
         <ModalDetail

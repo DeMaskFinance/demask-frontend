@@ -29,12 +29,16 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const router = useRouter();
     const handleChangeNetwork = async (chain: string) => {
         if (account && wallet) {
-            await changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
+            const check = await changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
+            if(check){
+                router.replace(`/swap?chain=${chain}`);
+            }
+            
         } else {
             updateChainId(chain);
             setTab(chain);
+            router.replace(`/swap?chain=${chain}`);
         }
-        router.replace(`/swap?chain=${chain}`);
     };
     useEffect(() => {
         if (router.query.chain) {
