@@ -1,7 +1,7 @@
 import { amountNFT } from "@/libs/constants";
 import React from "react";
 
-export default function SkeletonReels() {
+export default function SkeletonSwap() {
   return (
     <div className="lg:flex h-[calc(100vh-130px)] items-center animate-pulse gap-x-10 lg:px-primary lg:ml-14 lg:mr-14">
       <div className="w-full lg:w-2/4">

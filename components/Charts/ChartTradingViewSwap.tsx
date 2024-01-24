@@ -267,7 +267,7 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
                     <ChartNoTransfers />
                 </div>
             )}
-             {/* <ModalWarningRemove isOpenWarning={true} setIsOpenWarning={setNewData}/> */}
+            
         </div>
     )
 }

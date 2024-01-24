@@ -7,15 +7,13 @@ import { useRouter } from "next/router";
 
 interface ModalWarningRemoveProps {
     isOpenWarning: boolean;
-    setIsOpenWarning: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({ isOpenWarning, setIsOpenWarning }) => {
+const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({ isOpenWarning }) => {
     const router = useRouter();
     const handleClose = (e: any) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
-        setIsOpenWarning(false);
         router.replace('/swap');
     };
     return (
