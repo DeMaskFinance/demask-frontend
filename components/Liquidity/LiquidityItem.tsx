@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 
 import AccountContext from "@/context/AccountContext";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
 import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
-import FormatNumber from "../Common/FormatNumber";
-import ModalDocument from "../Modal/ModalLength/ModalDocument";
-import MediaNFT from "../Common/MediaNFT";
-import Image from "next/image";
-import { EtherIcon, NFTIcon } from "../Icons";
-import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import { Button } from "../Buttons";
+import FormatNumber from "../Common/FormatNumber";
+import MediaNFT from "../Common/MediaNFT";
+import { EtherIcon, NFTIcon } from "../Icons";
 interface LiquidytiesItemProps {
   liquidity: any;
 }

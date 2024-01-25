@@ -1,4 +1,3 @@
-export {default as SkeletonNewFeeds} from './SkeletonNewFeeds'
 export {default as SkeletonSwap} from './SkeletonSwap'
 export {default as SkeletonNFTTop} from './SkeletonNFTTop'
 export {default as SkeletonAddLiquidity} from './SkeletonAddLiquidity'

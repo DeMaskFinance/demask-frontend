@@ -25,6 +25,8 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import "react-toastify/dist/ReactToastify.css";
 import { SEO } from '../../next-seo.config';
+import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
@@ -134,179 +136,180 @@ export default function DetailLiquidity() {
   return (
     <div className="py-8 min-h-[75vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
       <NextSeo {...updateMeta} />
-
-      <div className="flex flex-col lg:flex-row gap-x-10">
-        <div className="grow">
-          <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
-            {data && account && (
-              <>
-                <div className="flex flex-wrap items-center mb-2 lg:mb-0">
-                  <Link href='/pools' className="p-1 rounded-lg group">
-                    <BackIcon width={30} height={30} className="hover:fill-secondary2" />
-                  </Link>
-                  <div className="w-[30px] h-[30px] ml-4">
-                    <MediaNFT data={data} isControls={false} />
-                  </div>
-                  <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
-                    <span>{data?.metadata?.name}</span>
-                    (
-                    <span>{data?.metadata?.symbol}</span>
-                    <span className="block overflow-hidden leading-[18px]">/</span>
-                    <span>{data.tokenSymbol}</span>
-                    )
-                  </Link>
-                </div>
-                <div className="flex justify-end gap-x-4">
-                  <button className={style.btnWallet} onClick={handleAddLiquidity}>
-                    ADD
-                  </button>
-                  <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
-                    REMOVE
-                  </button>
-                  <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className={style.btnWallet} >
-                    SWAP
-                  </Link>
-                </div>
-              </>
-            )}
-            {
-              isLoading && (
-                <p className="w-[200px] h-6 rounded-full animate-pulse bg-slate-200"></p>
-              )
-            }
-          </div>
-          <div className="h-full ">
-            <div className="">
-              {account && isSuccess && data.liquidityHistory.length > 0 ? (
-                <div>
-                  <div className="p-2 mt-6 overflow-y-scroll border border-gray-200 rounded-lg min-h-[315px]">
-                    <div className='sticky left-0 flex items-center gap-2 p-1 mb-2 text-base text-center text-white rounded-lg lg:left-2 bg-dark3 w-max'>
-                      {options.map((item, idx) => (
-                        <button
-                          key={idx}
-                          className={`py-2 px-4 ${tab === item.tab ? "bg-secondary5" : ""
-                            } rounded-lg text-xs`}
-                          type="button"
-                          onClick={() => {
-                            setTab(item.tab)
-                          }}
-                        >
-                          {item.tab}
-                        </button>
-                      ))}
+      {(isLoading || isFetching) ? (
+        <SkeletonPoolDetail />
+      ) : isSuccess ? (
+        <div className="flex flex-col lg:flex-row gap-x-10">
+          <div className="grow">
+            <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
+              {data && account && (
+                <>
+                  <div className="flex flex-wrap items-center mb-2 lg:mb-0">
+                    <Link href='/pools' className="p-1 rounded-lg group">
+                      <BackIcon width={30} height={30} className="hover:fill-secondary2" />
+                    </Link>
+                    <div className="w-[30px] h-[30px] ml-4">
+                      <MediaNFT data={data} isControls={false} />
                     </div>
-                    <div className="mt-6 ">
-                      <div className="">
-                        <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold">
-                          <p className="pl-3">Action</p>
-                          <p className="mx-auto">Liquidity</p>
-                          <p className="mx-auto">NFT</p>
-                          <p className="mx-auto">Token</p>
-                          <p className="flex justify-end">Time</p>
-                        </div>
-                        <LiquiditiesHistory
-                          data={data}
-                          isFetching={isFetching}
-                          isLoading={isLoading}
-                        />
+                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
+                      <div className="truncate w-40">
+                        <ModalDocument data={data?.metadata?.name}/>
                       </div>
-                    </div>
+                      (
+                      <span>{data?.metadata?.symbol}</span>
+                      <span className="block overflow-hidden leading-[18px]">/</span>
+                      <span>{data.tokenSymbol}</span>
+                      )
+                    </Link>
                   </div>
-                  <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
-                    <button
-                      onClick={prevPage}
-                      disabled={isPreviousData || page === 1 || isFetching}
-                      className={`${isPreviousData || page === 1 || isFetching
-                        ? "text-white bg-slate-300"
-                        : "hover:text-white hover:bg-secondary2 transition-all"
-                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
-                    >
-                      <MdNavigateBefore />
+                  <div className="flex justify-end gap-x-4">
+                    <button className={style.btnWallet} onClick={handleAddLiquidity}>
+                      ADD
                     </button>
-                    <p>
-                      Page
-                      <span className="px-2 font-medium text-secondary2">
-                        {page}
-                      </span>{" "}
-                      of
-                      <span
-                        className="px-2 font-medium cursor-pointer text-secondary2"
-                        onClick={() =>
-                          page !== data?.totalPages && setPage(data?.totalPages)
-                        }
-                      >
-                        {data?.totalPages}
-                      </span>
-                    </p>
-                    <button
-                      onClick={nextPage}
-                      disabled={
-                        isPreviousData || page === data?.totalPages || isFetching
-                      }
-                      className={`${isPreviousData || page === data?.totalPages || isFetching
-                        ? "text-white bg-slate-300"
-                        : "hover:text-white hover:bg-secondary2 transition-all"
-                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
-                    >
-                      <MdOutlineNavigateNext />
+                    <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
+                      REMOVE
                     </button>
+                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className={style.btnWallet} >
+                      SWAP
+                    </Link>
                   </div>
-                </div>
-              ) : (
-                <div className="flex items-center mt-8 gap-x-2">
-                  <BsClock className="w-5 h-5" />
-                  <p className="text-sm font-medium text-dark1">
-                    No events in this time range
-                  </p>
-                </div>
+                </>
               )}
             </div>
-          </div>
-        </div>
-        <div className="w-full lg:w-[400px] mb-20 lg:mb-0">
-          <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
-            {account && data?.metadata && (
-              <div className="justify-end max-w-[350px] mb-6 mx-auto">
-                <MediaNFT data={data} isControls={true} />
-                <div className="w-full">
-                  <p
-                    className="block mx-auto mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
-                    onClick={handleShowDetail}
-                  >
-                    Show detail
-                  </p>
-                </div>
-              </div>
-            )}
-            <div className="flex flex-wrap justify-between">
-              <div>
-                <p className="mb-2 text-dark1">Liquidity</p>
-                <div className="flex font-light text-dark3">
-                  <FormatNumber number={balanceOfDML} />
-                  <div>({(Number(balanceDML) / Number(totalSupply)).toFixed(2)})%</div>
-                </div>
-              </div>
-              <div>
-                <p className="mb-2 text-dark1">Reward</p>
-                <div className="flex items-center font-light text-dark3">
-                  <FormatNumber number={reward} />
-                  <span className="mb-1 ml-1">
-                    <EtherIcon width={18} height={18} className="fill-dark3" />
-                  </span>
-                </div>
+            <div className="h-full ">
+              <div className="">
+                {account && isSuccess && data.liquidityHistory.length > 0 ? (
+                  <div>
+                    <div className="p-2 mt-6 overflow-y-scroll border border-gray-200 rounded-lg min-h-[315px]">
+                      <div className='sticky left-0 flex items-center gap-2 p-1 mb-2 text-base text-center text-white rounded-lg lg:left-2 bg-dark3 w-max'>
+                        {options.map((item, idx) => (
+                          <button
+                            key={idx}
+                            className={`py-2 px-4 ${tab === item.tab ? "bg-secondary5" : ""
+                              } rounded-lg text-xs`}
+                            type="button"
+                            onClick={() => {
+                              setTab(item.tab)
+                            }}
+                          >
+                            {item.tab}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="mt-6 ">
+                        <div className="">
+                          <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold">
+                            <p className="pl-3">Action</p>
+                            <p className="mx-auto">Liquidity</p>
+                            <p className="mx-auto">NFT</p>
+                            <p className="mx-auto">Token</p>
+                            <p className="flex justify-end">Time</p>
+                          </div>
+                          <LiquiditiesHistory
+                            data={data}
+                            isFetching={isFetching}
+                            isLoading={isLoading}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
+                      <button
+                        onClick={prevPage}
+                        disabled={isPreviousData || page === 1 || isFetching}
+                        className={`${isPreviousData || page === 1 || isFetching
+                          ? "text-white bg-slate-300"
+                          : "hover:text-white hover:bg-secondary2 transition-all"
+                          } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                      >
+                        <MdNavigateBefore />
+                      </button>
+                      <p>
+                        Page
+                        <span className="px-2 font-medium text-secondary2">
+                          {page}
+                        </span>{" "}
+                        of
+                        <span
+                          className="px-2 font-medium cursor-pointer text-secondary2"
+                          onClick={() =>
+                            page !== data?.totalPages && setPage(data?.totalPages)
+                          }
+                        >
+                          {data?.totalPages}
+                        </span>
+                      </p>
+                      <button
+                        onClick={nextPage}
+                        disabled={
+                          isPreviousData || page === data?.totalPages || isFetching
+                        }
+                        className={`${isPreviousData || page === data?.totalPages || isFetching
+                          ? "text-white bg-slate-300"
+                          : "hover:text-white hover:bg-secondary2 transition-all"
+                          } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                      >
+                        <MdOutlineNavigateNext />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center mt-8 gap-x-2">
+                    <BsClock className="w-5 h-5" />
+                    <p className="text-sm font-medium text-dark1">
+                      No events in this time range
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex justify-center mt-4">
-              <Button
-                className="px-6 py-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg bg-green hover:bg-white hover:text-green boder-white hover:border-green"
-                onClick={handleGetReward}
-              >
-                {account ? "COLLECT" : "CONNECT WALLET"}
-              </Button>
+          </div>
+          <div className="w-full lg:w-[400px] mb-20 lg:mb-0">
+            <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
+              {account && data?.metadata && (
+                <div className="justify-end max-w-[350px] mb-6 mx-auto">
+                  <MediaNFT data={data} isControls={true} />
+                  <div className="w-full">
+                    <p
+                      className="block mx-auto mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
+                      onClick={handleShowDetail}
+                    >
+                      Show detail
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div className="flex flex-wrap justify-between">
+                <div>
+                  <p className="mb-2 text-dark1">Liquidity</p>
+                  <div className="flex font-light text-dark3">
+                    <FormatNumber number={balanceOfDML} />
+                    <div>({(Number(balanceDML) / Number(totalSupply) * 100).toFixed(2)})%</div>
+                  </div>
+                </div>
+                <div>
+                  <p className="mb-2 text-dark1">Reward</p>
+                  <div className="flex items-center font-light text-dark3">
+                    <FormatNumber number={reward} />
+                    <span className="mb-1 ml-1">
+                      <EtherIcon width={18} height={18} className="fill-dark3" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center mt-4">
+                <Button
+                  className="px-6 py-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg bg-green hover:bg-white hover:text-green boder-white hover:border-green"
+                  onClick={handleGetReward}
+                >
+                  {account ? "COLLECT" : "CONNECT WALLET"}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>) : (
+        <SkeletonPoolDetail />
+      )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data && (
         <ModalDetail

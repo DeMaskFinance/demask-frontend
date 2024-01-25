@@ -167,6 +167,12 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
         <div>
             {isLoading ? (
                 <div className="h-[355px] p-4 border rounded-lg lg:mt-0 border-dark3">
+                    <div className='flex-wrap hidden mb-2 p-2 gap-x-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
+                        <div className="h-4 w-20 p-2 bg-slate-200 rounded"></div>
+                        <div className="h-4 w-20 bg-slate-200 rounded"></div>
+                        <div className="h-4 w-20 bg-slate-200 rounded"></div>
+                    </div>
+                    <div className="h-4 w-[60%] bg-slate-200 rounded"></div>
                     <ChartLoading />
                 </div>
             ) : data && newData?.length > 0 ? (
@@ -267,7 +273,7 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
                     <ChartNoTransfers />
                 </div>
             )}
-            
+
         </div>
     )
 }
