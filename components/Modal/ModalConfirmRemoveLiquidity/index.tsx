@@ -1,26 +1,24 @@
 import abiDML from "@/abi/abiDML.json";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
+import FormatNumber from "@/components/Common/FormatNumber";
 import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useInformationDML from "@/hooks/useInformationDML";
 import { getProvider } from "@/libs/connection/getProvider";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import { BiLoaderAlt } from "react-icons/bi";
-import TransitionURL from "@/components/Toast/TransionURL";
-import { toast } from "react-toastify";
-import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalConfirmRemoveLiquidityProps {
     isOpenConfirmRemoveLiquidity: boolean;
     data: any;
@@ -133,7 +131,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                 console.error(error);
             }
         };
-        const handleClose = (e: any) => {
+        const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenConfirmRemoveLiquidity(false);

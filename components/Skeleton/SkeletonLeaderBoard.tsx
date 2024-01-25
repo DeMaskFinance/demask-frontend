@@ -13,10 +13,10 @@ const SkeletonLeaderBoard = () => {
             <div className='max-w-[400px] lg:max-w-[800px] mx-auto mb-6'>
                 <Swiper
                     initialSlide={1}
-                    pagination={{
-                        dynamicBullets: true,
-                    }}
-                    // loop={true}
+                    // pagination={{
+                    //     dynamicBullets: true,
+                    // }}
+                    loop={true}
                     modules={[Pagination]}
                     autoplay={
                         {
@@ -49,7 +49,7 @@ const SkeletonLeaderBoard = () => {
                     className='mySwiper'
                 >
                     <SwiperSlide >
-                        <div className='mt-6'>
+                        <div className='lg:mt-6'>
                             <CardListLoading />
                         </div>
                     </SwiperSlide>
@@ -57,7 +57,7 @@ const SkeletonLeaderBoard = () => {
                         <CardListLoading />
                     </SwiperSlide>
                     <SwiperSlide >
-                        <div className='mt-10'>
+                        <div className='lg:mt-10'>
                             <CardListLoading />
                         </div>
                     </SwiperSlide>

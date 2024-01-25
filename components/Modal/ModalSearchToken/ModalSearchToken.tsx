@@ -1,16 +1,14 @@
+import AccountContext from "@/context/AccountContext";
+import { searchTokenService } from "@/libs/service/searchService";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { memo, useContext, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { useContext, useState, useEffect } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
-import checkIsERC20 from "@/libs/validation/checkIsERC20";
-import { useRouter } from "next/router";
-import { memo } from "react";
-import AccountContext from "@/context/AccountContext";
-import { useQuery } from "@tanstack/react-query";
-import { searchTokenService } from "@/libs/service/searchService";
 
 interface ModalSearchTokenProps {
-  setIsOpenSearchToken: any;
+  setIsOpenSearchToken: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenSearchToken: boolean;
 }
 const styles = {
@@ -70,7 +68,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
   };
-  const handleClose = (e: any) => {
+  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);

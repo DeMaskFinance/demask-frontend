@@ -1,13 +1,12 @@
-import React, { useRef, useState } from 'react'
-import EditProfileForm from './EditProfileForm'
-import { AvatarUser } from '@/components/Avatars'
-import { EditIcon } from '@/components/Icons'
-import { useDispatch, useSelector } from 'react-redux';
-import { selectProfile, userData } from '@/store/profileSlice';
+import { AvatarUser } from '@/components/Avatars';
+import { EditIcon } from '@/components/Icons';
 import { uploadFile } from '@/libs/service/userService';
+import { selectProfile, userData } from '@/store/profileSlice';
 import Image from 'next/image';
+import { useRef, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import EditProfileForm from './EditProfileForm';
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
@@ -16,7 +15,6 @@ export default function EditProfile() {
   const [bannerLoading, setBannerLoading] = useState(false);
   const { user, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
-  const router = useRouter();
   const handleUploadBanner = async (file: any) => {
     try {
       setBannerLoading(true);

@@ -1,21 +1,19 @@
+import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
-import { NFTTopService } from "@/libs/service";
+import { checkIsERC1155Service } from "@/libs/service/checkIsERC1155";
+import { searchNFTService } from "@/libs/service/searchService";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { checkIsERC1155Service } from "@/libs/service/checkIsERC1155";
-import axios from "axios";
-import MediaNFT from "@/components/Common/MediaNFT";
-import { searchNFTService } from "@/libs/service/searchService";
 import TopNFT from "./TopNFT";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
-  setIsOpenSearchNFT: any;
+  setIsOpenSearchNFT: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const styles = {
   inputItem:
@@ -45,7 +43,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
       return res;
     },
   });
-  const handleClose = (e: any) => {
+  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);

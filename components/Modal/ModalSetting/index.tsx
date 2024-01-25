@@ -41,7 +41,7 @@ const ModalSetting: React.FunctionComponent<
         const Slippage = [
             0.1, 0.5, 1
         ]
-        const handleClose = (e: any) => {
+        const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenSetting(false);

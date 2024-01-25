@@ -1,21 +1,17 @@
 import Button from "@/components/Buttons/Button";
+import { PoolListIcon } from "@/components/Icons";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { useInView } from "react-intersection-observer";
 import { SEO } from '../../next-seo.config';
-import { useSelector } from "react-redux";
-import { selectProfile } from "@/store/profileSlice";
-import Web3 from "web3";
-import { PoolListIcon } from "@/components/Icons";
 const updateMeta = {
   ...SEO,
-  title: 'Detail Liquidity',
+  title: 'Liquidity',
 };
 export default function Liquidity() {
   const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
@@ -50,7 +46,6 @@ export default function Liquidity() {
           : undefined,
     }
   );
-  console.log(data);
 
   return (
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0">

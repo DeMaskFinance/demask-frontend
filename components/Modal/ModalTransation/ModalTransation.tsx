@@ -9,7 +9,7 @@ interface ModalTransationProps {
 }
 
 const ModalTransation: React.FunctionComponent<ModalTransationProps> = ({ isOpenTransation, setIsOpenTransaction }) => {
-    const handleClose = (e: any) => {
+    const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
         setIsOpenTransaction(false);

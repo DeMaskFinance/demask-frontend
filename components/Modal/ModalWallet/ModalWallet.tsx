@@ -25,7 +25,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
   const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet, updateChainId } = useContext(AccountContext);
   const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
   const dispatch = useDispatch();
-  const handleClose = (e: any) => {
+  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);

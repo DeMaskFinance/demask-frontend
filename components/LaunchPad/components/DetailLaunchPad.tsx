@@ -166,7 +166,7 @@ export default function DetailLaunchPad() {
     }
   ];
 
-  const handleBuyNFT = async (e: any) => {
+  const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
       setIsOpen(true);
@@ -180,15 +180,7 @@ export default function DetailLaunchPad() {
     const contract = new ethers.Contract(tokenLaunchpad, abiLaunchPad, signer);
     try {
       let result;
-      // const valueToSend = tokenAddress === nativeAddress ? exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) : 0;
-      // console.log({
-      //   amount,
-      //   valueToSend
-      // });
       setIsOpenTransaction(true);
-      // const estimatedGas = await contract.estimateGas.buy(150, { value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
-      // console.log(estimatedGas);
-
       result = await contract.buy(exponentialToDecimal(amount), { gasLimit: 8000000, value: exponentialToDecimal(Math.floor(Number(data.price) * Number(amount))) });
       setHash(result.hash);
       const check = await provider.waitForTransaction(result.hash);
@@ -252,7 +244,7 @@ export default function DetailLaunchPad() {
                     </div>
                   </div>
                   <div className=" w-full lg:w-[50%] mt-4 lg:mt-0">
-                    <div className="relative text-2xl font-semibold text-dark1">
+                    <div className="relative max-w-full text-2xl font-semibold text-dark1">
                       <ModalDocument data={data.metadata.name} />
                     </div>
                     <div className="flex items-center text-3xl font-semibold datas-center text-secondary3">

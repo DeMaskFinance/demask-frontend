@@ -1,16 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Web3 from 'web3';
+import AccountContext from '@/context/AccountContext';
+import { getProvider } from '@/libs/connection/getProvider';
+import { changeNetwork } from '@/libs/utils/changeNetwork';
+import { logout, selectProfile } from '@/store/profileSlice';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useState } from 'react';
+import { CgClose } from 'react-icons/cg';
+import { useDispatch, useSelector } from 'react-redux';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { WarningIcon } from '../../Icons';
 import Wrapper from '../Wrapper';
-import { CgClose } from 'react-icons/cg';
-import { getProvider } from '@/libs/connection/getProvider';
-import AccountContext from '@/context/AccountContext';
-import { changeNetwork } from '@/libs/utils/changeNetwork';
-import { useSearchParams } from 'next/navigation';
-import { useQueryParam, StringParam, withDefault } from 'use-query-params';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { logout } from '@/store/profileSlice';
 
 interface WrongNetworkProps {
 }
@@ -18,12 +16,13 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateChainId } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+    const { isLoggedIn } = useSelector(selectProfile);
     const router = useRouter();
     const { chain } = router.query;
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (account && wallet && router.isReady && chain && wallet !== "WalletConnect") {
+        if (account && wallet && router.isReady && isLoggedIn && chain && wallet !== "WalletConnect") {
             const checkNetwork = async () => {
                 const provider = await getProvider(wallet);
                 const networkId = await provider.request({ method: "net_version" });

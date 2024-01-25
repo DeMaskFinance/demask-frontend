@@ -70,7 +70,7 @@ const ModalBuyNFT: React.FunctionComponent<
         const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
         const { allowanceToken, bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenBuyNFT);
-        const handleClose = (e: any) => {
+        const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenBuyNFT(false);
@@ -136,7 +136,7 @@ const ModalBuyNFT: React.FunctionComponent<
             };
             checkApproveToken();
         }, [account, wallet, data, inputNFT, amountBuyDec, isOpenTransaction, tokenAddress, allowanceToken]);
-        const handleBuyNFT = async (e: any) => {
+        const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             if (!account) {
                 setIsOpen(true);

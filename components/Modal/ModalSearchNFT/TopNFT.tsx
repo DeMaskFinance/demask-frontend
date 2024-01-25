@@ -21,7 +21,6 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
 
             keepPreviousData: true,
         });
-        console.log(topNftData);
         
     return (
         <div className="mt-3">

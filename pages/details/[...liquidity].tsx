@@ -92,7 +92,6 @@ export default function DetailLiquidity() {
   console.log(data);
 
   const { balanceOfDML, balanceDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
-  console.log(balanceDML, totalSupply);
   const options = [{ tab: 'All' }, { tab: 'Add' }, { tab: 'Remove' }];
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -152,7 +151,7 @@ export default function DetailLiquidity() {
                       <MediaNFT data={data} isControls={false} />
                     </div>
                     <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
-                      <div className="truncate w-40">
+                      <div className="relative w-40 truncate">
                         <ModalDocument data={data?.metadata?.name}/>
                       </div>
                       (

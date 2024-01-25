@@ -1,26 +1,21 @@
-import AccountContext from '@/context/AccountContext';
-import { nftsUserService } from '@/libs/service/profileService';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { useInView } from "react-intersection-observer";
-import Image from 'next/image';
-import images from '@/public/images';
-import { mediaType } from '@/libs/constants';
-import Link from 'next/link';
-import { useQueryParam, StringParam, withDefault } from 'use-query-params';
-import SkeletonCategory from '@/components/Skeleton/SkeletonCategory';
-import MediaNFT from '@/components/Common/MediaNFT';
-import { AddIcon, GoerliIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
-import ModalNumber from '@/components/Modal/ModalLength/ModalNumber';
 import { Button } from '@/components/Buttons';
 import FormatNumber from '@/components/Common/FormatNumber';
-import ModalDocument from '@/components/Modal/ModalLength/ModalDocument';
+import MediaNFT from '@/components/Common/MediaNFT';
+import { AddIcon, GoerliIcon, SwapIconProfile, ZkSyncIcon } from '@/components/Icons';
 import { ModalDetail } from '@/components/Modal/ModalDedail';
+import ModalDocument from '@/components/Modal/ModalLength/ModalDocument';
+import SkeletonCategory from '@/components/Skeleton/SkeletonCategory';
+import AccountContext from '@/context/AccountContext';
+import { nftsUserService } from '@/libs/service/profileService';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { Fragment, useContext, useEffect, useState } from 'react';
+import { useInView } from "react-intersection-observer";
 interface ModalDetailProps {
     data: any;
     nftAddress: string;
     nftID: string;
-    setIsOpenDetail: any;
+    setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
     isOpenDetail: boolean;
 }
 const Inventory = () => {
@@ -82,7 +77,7 @@ const Inventory = () => {
                                                             title={item.metadata.name}
                                                             className="flex items-start gap-2 font-medium uppercase"
                                                         >
-                                                            <span className="flex-wrap text-xl line-clamp-1 max-w-[100%]">
+                                                            <span className="flex-wrap max-w-full text-xl line-clamp-1">
                                                                 <ModalDocument data={item.metadata.name} />
                                                             </span>
                                                         </h6>

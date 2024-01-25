@@ -1,9 +1,8 @@
-import MediaNFT from "@/components/Common/MediaNFT";
-import { EtherIcon, ZkSyncIcon } from "@/components/Icons";
+import FormatNumber from "@/components/Common/FormatNumber";
+import { EtherIcon } from "@/components/Icons";
+import Link from "next/link";
 import React from "react";
 import TableRowSkeleton from "../../Skeleton/SkeletonTablev2";
-import FormatNumber from "@/components/Common/FormatNumber";
-import Link from "next/link";
 interface HistorySwapProps {
     data: any,
     isLoading: boolean,

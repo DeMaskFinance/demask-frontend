@@ -66,7 +66,7 @@ const ModalSellNFT: React.FunctionComponent<
             useState<boolean>(false);
         const { bigNumberBalance } =
             useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction, isOpenSellNFT);
-        const handleClose = (e: any) => {
+        const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenSellNFT(false);
@@ -114,7 +114,7 @@ const ModalSellNFT: React.FunctionComponent<
                 clearInterval(load)
             }
         }, [isOpenSellNFT, preFectch])
-        const handleSellNFT = async (e: any) => {
+        const handleSellNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             if (!account) {
                 setIsOpen(true);

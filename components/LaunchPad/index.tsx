@@ -63,13 +63,6 @@ export default function Launchpad() {
               </button>
             ))}
           </div>
-
-          {/* <Link
-            href={"/launchpad/create"}
-            className="flex px-2 py-1 text-sm text-white rounded-lg bg-dark3 hover:bg-secondary3 lg:pt-3 w-fit"
-          >
-            Create Launchpad
-          </Link> */}
         </div>
         <div>{selectedTab?.component}</div>
       </div>

@@ -11,13 +11,13 @@ import { Button } from "@/components/Buttons";
 
 interface ModalLaunchPadProfileProps {
   isOpenTransation: boolean;
-  setIsOpenTransaction: any;
-  setIsOpenModal: any;
+  setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   amount: number;
-  isOpenModal: any;
+  isOpenModal: boolean;
   setAmount: any;
   setAmountLeave: any;
-  amountLeave: any;
+  amountLeave: number;
   tokenLaunchpad: string;
   refetch: any;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,7 +42,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
   setIsOpenSuccess,
   setHash
 }) => {
-    const handleClose = (e: any) => {
+    const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
       setIsOpenModal(false);
@@ -70,7 +70,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
                 />
 
                 <span
-                  className={`${amount === amountLeave ? "text-gray-300" : "text-secondary5"
+                  className={`${amount === Number(amountLeave) ? "text-gray-300" : "text-secondary5"
                     }  text-sm absolute right-6 cursor-pointer`}
                   onClick={() => {
                     setAmount(amountLeave);
@@ -80,7 +80,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
                 </span>
               </div>
 
-              {amount > parseInt(amountLeave) ||
+              {amount > amountLeave ||
                 (amount.toString() === "" && (
                   <small className="text-red">Maximum {amountLeave}</small>
                 ))}
@@ -96,7 +96,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
                 primary
                 className="px-6 py-2"
                 disabled={
-                  amount > parseInt(amountLeave) || amount.toString() === "" || amount.toString() === "0"
+                  amount > amountLeave || amount.toString() === "" || amount.toString() === "0"
                 }
                 onClick={() => {
                   handleLeaveLaunchPad(

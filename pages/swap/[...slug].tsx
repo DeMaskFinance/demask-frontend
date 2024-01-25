@@ -22,7 +22,7 @@ const Swap: React.FC = () => {
   const [nftAddress, setNftAddress] = useState<string>("");
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [idNFT, setIdNFT] = useState<string>("");
-  const { account, wallet, chainId, demask, tokenDefault, slippage, txDeadline } = useContext(AccountContext);
+  const { chainId } = useContext(AccountContext);
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
     queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
@@ -40,8 +40,6 @@ const Swap: React.FC = () => {
       // setInputNFT("");
     }
   }, [slug]);
-
-  console.log(account);
 
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">

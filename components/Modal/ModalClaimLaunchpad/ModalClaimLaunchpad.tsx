@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { CgClose } from 'react-icons/cg';
-import Wrapper from '../Wrapper';
-import { ModalWallet } from '../ModalWallet';
-import { ModalTransation } from '../ModalTransation';
-import useLaunchpadInfor from '@/hooks/useLaunchpadInfor';
 import AccountContext from '@/context/AccountContext';
+import useLaunchpadInfor from '@/hooks/useLaunchpadInfor';
 import handleReleaseLaunchPad from '@/libs/utils/handleReleaseLaunchPad';
-import { getProvider } from '@/libs/connection/getProvider';
-import { ethers } from 'ethers';
-import abiLaunchPad from "@/abi/abiLaunchPad.json";
+import React, { useContext, useState } from 'react';
+import { CgClose } from 'react-icons/cg';
 import Web3 from 'web3';
+import { ModalTransation } from '../ModalTransation';
+import { ModalWallet } from '../ModalWallet';
+import Wrapper from '../Wrapper';
 interface ModalConfirmClaimProps {
     data: any,
     isOpenConfirmClaim: boolean;
@@ -28,13 +25,12 @@ const ModalClaimLaunchpad: React.FunctionComponent<
     setIsOpenSuccess,
     setHash
 }) => {
-        const web3 = new Web3;
         const [isOpen, setIsOpen] = useState<boolean>(false);
         const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
         const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
         const { release } = useLaunchpadInfor(account, data.launchpad, wallet, isOpenTransaction);
         
-        const handleClose = (e: any) => {
+        const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenConfirmClaim(false);

@@ -39,7 +39,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
         fetchData();
     }, [metadataLink])
     
-    const handleClose = (e: any) => {
+    const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
         setIsOpenSuccess(false);

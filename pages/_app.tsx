@@ -48,17 +48,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-// const DataPersistGate = ({ children }) => {
-//   return typeof window !== "undefined" ? (
-//     <>
-//       <PersistGate loading={null} persistor={persistor}>
-//         {children}
-//       </PersistGate>
-//     </>
-//   ) : (
-//     <>{children}</>
-//   );
-// };
 const chains = [arbitrum, mainnet, polygon, zkSyncTestnet];
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 

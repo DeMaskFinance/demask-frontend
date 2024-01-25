@@ -8,7 +8,7 @@ interface ModalDetailProps {
   data: any;
   nftAddress: string;
   idNFT: string;
-  setIsOpenDetail: any;
+  setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenDetail: boolean;
 }
 
@@ -20,7 +20,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   isOpenDetail,
 }) => {
   const { demask } = useContext(AccountContext);
-  const handleClose = (e: any) => {
+  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenDetail(false);

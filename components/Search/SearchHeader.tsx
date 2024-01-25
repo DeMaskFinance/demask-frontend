@@ -1,23 +1,20 @@
+import AccountContext from "@/context/AccountContext";
+import useDebounce from "@/hooks/useDebounce";
+import { NFTTopService } from "@/libs/service";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { getCookie, setCookie } from "@/libs/utils/cookieUtils";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { FunctionComponent, useEffect, useRef, useState, useContext } from "react";
+import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { AvatarUser } from "../Avatars";
-import { SearchIcon } from "../Icons";
-import { NFTTopService } from "@/libs/service";
-import Image from "next/image";
-import AccountContext from "@/context/AccountContext";
-import MediaNFT from "../Common/MediaNFT";
 import { CgClose } from "react-icons/cg";
-import useDebounce from "@/hooks/useDebounce";
+import MediaNFT from "../Common/MediaNFT";
+import { SearchIcon } from "../Icons";
 
 interface SearchProps {
   isFocused: boolean;
   handleFocus: any;
-  setShowSearch?: any;
+  setShowSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) => {

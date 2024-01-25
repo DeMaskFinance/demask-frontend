@@ -1,6 +1,6 @@
 import request from "../utils/httpRequest";
 
-export const categoryAPI = async (url: any) => {
+export const categoryAPI = async (url: string) => {
   try {
     const res = await request.get(url);
     return res.data;

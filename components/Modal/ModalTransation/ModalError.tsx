@@ -17,7 +17,7 @@ interface ModalErrorProps {
 const ModalError: React.FunctionComponent<ModalErrorProps> = ({ isOpenError, setIsOpenError, type, transactionHash }) => {
     const { demask } = useContext(AccountContext);
     const router = useRouter();
-    const handleClose = (e: any) => {
+    const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
         setIsOpenError(false);

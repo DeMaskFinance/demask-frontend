@@ -11,7 +11,7 @@ interface ModalWarningRemoveProps {
 
 const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({ isOpenWarning }) => {
     const router = useRouter();
-    const handleClose = (e: any) => {
+    const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
         router.replace('/swap');

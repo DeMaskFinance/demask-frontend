@@ -50,7 +50,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
   const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
 
-  const handleClose = (e: any) => {
+  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenLiquidity(false);

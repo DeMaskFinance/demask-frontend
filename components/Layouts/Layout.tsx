@@ -79,7 +79,7 @@ export default function Layout({ children }: PropsWithChildren) {
         {children}
       </main>
       <Footer />
-      <NavFooter reels={false} />
+      <NavFooter />
     </div>
   );
 }

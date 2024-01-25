@@ -20,13 +20,12 @@ export default function History() {
         },
     });
 
-    console.log(data);
-    const goToPage = (pageNum: any) => {
+    const goToPage = (pageNum: number) => {
         const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
         setPage(newPageNumber);
         setPageNumberInput(String(newPageNumber));
     };
-    const generatePagination = (currentPage: any, totalPages: any) => {
+    const generatePagination = (currentPage: number, totalPages: any) => {
         const buttons = [];
         const maxButtonsToShow = 3;
 

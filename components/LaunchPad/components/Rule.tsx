@@ -1,10 +1,7 @@
 import FormatNumber from '@/components/Common/FormatNumber';
 import { TeleIcon, TwitterIcon } from '@/components/Icons';
-import formatNumber from '@/libs/utils/formatNumer';
-import React from 'react'
 import { FiShare } from "react-icons/fi";
 const Rule = ({ data }: any) => {
-    console.log(data);
     const options: Intl.DateTimeFormatOptions = {
         weekday: 'long',
         year: 'numeric',

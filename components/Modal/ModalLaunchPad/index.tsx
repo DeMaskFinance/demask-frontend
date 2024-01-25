@@ -8,19 +8,19 @@ import FormatNumber from "@/components/Common/FormatNumber";
 
 interface ModalLaunchPadProps {
   isOpenTransation: boolean;
-  setIsOpenTransaction: any;
+  setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   account: string;
-  wallet: any;
+  wallet: string;
   tokenAddress: string;
   inputNFT: number;
   routerAddress: string;
-  setIsOpen: any;
-  setCheckApproveToken: any;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setCheckApproveToken: React.Dispatch<React.SetStateAction<boolean>>;
   checkApproveToken: boolean;
-  nativeAddress: any;
+  nativeAddress: string;
   handleBuyNFT: any;
   isLoadingApprove: boolean;
-  setIsOpenModal: any;
+  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenModal: boolean;
   refetch: any;
   data:any;
@@ -43,7 +43,7 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
   refetch,
   data
 }) => {
-  const handleClose = (e: any) => {
+  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenModal(false);

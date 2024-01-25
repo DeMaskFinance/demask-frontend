@@ -9,9 +9,9 @@ const handleApproveToken = async (
   tokenAddress: string,
   amountErcDesired: number,
   routerAddress: string,
-  setIsOpen: any,
-  setIsOpenTransaction: any,
-  setInputNFT?:any,
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
+  setInputNFT?: any
 ) => {
   if (account) {
     const providerChoice = await getProvider(wallet);
@@ -19,7 +19,10 @@ const handleApproveToken = async (
     const signer = provider.getSigner();
     const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
     try {
-      const result = await contract.approve(routerAddress, exponentialToDecimal(amountErcDesired));
+      const result = await contract.approve(
+        routerAddress,
+        exponentialToDecimal(amountErcDesired)
+      );
       setIsOpenTransaction(true);
       await provider.waitForTransaction(result.hash);
       console.log(result.hash);

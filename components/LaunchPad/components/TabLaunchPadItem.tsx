@@ -1,13 +1,8 @@
-import { AvatarUser } from "@/components/Avatars";
 import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import AccountContext from "@/context/AccountContext";
-import { convertTime } from "@/hooks/useConvertTime";
-import formatNumber from "@/libs/utils/formatNumer";
-import Image from "next/image";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 
 interface TabLaunchPadProps {
   item: any;

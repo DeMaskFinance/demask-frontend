@@ -1,4 +1,4 @@
-export const convertTime = (timestamp: any) => {
+export const convertTime = (timestamp: number) => {
   const date = new Date(timestamp * 1000);
   const days = Math.floor(timestamp / (60 * 60 * 24));
   const hours = date.getUTCHours();

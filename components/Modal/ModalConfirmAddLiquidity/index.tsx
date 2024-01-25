@@ -1,7 +1,7 @@
 import abiErc20 from "@/abi/abiErc20.json";
 import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
-import TransitionURL from "@/components/Toast/TransionURL";
+import FormatNumber from "@/components/Common/FormatNumber";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
@@ -9,19 +9,16 @@ import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { ethers } from "ethers";
 import { memo, useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
+import ModalDocument from "../ModalLength/ModalDocument";
+import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import ModalDocument from "../ModalLength/ModalDocument";
-import FormatNumber from "@/components/Common/FormatNumber";
-import { BiLoaderAlt } from "react-icons/bi";
 interface ModalConfirmAddLiquidityProps {
     isOpenConfirmAddLiquidity: boolean;
     tokenAddress: string;
@@ -228,7 +225,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 }
             }
         };
-        const handleClose = (e: any) => {
+        const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             document.body.style.overflowY = "auto";
             setIsOpenConfirmAddLiquidity(false);

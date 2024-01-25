@@ -1,16 +1,12 @@
-import CardList from '@/components/LeaderBoard/CardList';
-import TableRank from '@/components/LeaderBoard/TableRank';
-import { TabGroups } from '@/components/NavChoice'
-import React, { useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { TabGroups } from '@/components/NavChoice';
+import { useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 // import required modules
-import { Pagination } from 'swiper';
-import { NextSeo } from 'next-seo';
-import { SEO } from '@/next-seo.config';
 import SkeletonLeaderBoard from '@/components/Skeleton/SkeletonLeaderBoard';
+import { SEO } from '@/next-seo.config';
+import { NextSeo } from 'next-seo';
 const updateMeta = {
     ...SEO,
     title: 'Leaderboard',

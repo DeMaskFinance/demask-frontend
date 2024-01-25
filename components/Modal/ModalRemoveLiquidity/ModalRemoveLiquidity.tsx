@@ -1,4 +1,5 @@
 import { Button } from "@/components/Buttons";
+import FormatNumber from "@/components/Common/FormatNumber";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
@@ -15,8 +16,6 @@ import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import FormatNumber from "@/components/Common/FormatNumber";
-import formatNumber from "@/libs/utils/formatNumer";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: any;
@@ -42,7 +41,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const [inputLiquidity, setInputLiquidity] = useState<any>("");
     const [activeChoice, setActiveChoice] = useState<string>("0%");
     const [isSufficientLiquidity, setIsSufficientLiquidity] = useState<boolean>(false);
-    const [isApprovedLiquidity, setIsApprovedLiquidity] = useState<boolean>(false);
     const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
     const [showRequiredMessage, setShowRequiredMessage] = useState(false);
     const [amountNFT, setAmountNFT] = useState('');
@@ -55,7 +53,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] = useState<boolean>(false);
     const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
     const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-    const handleClose = (e: any) => {
+    const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
       setIsOpenRemoveLiquidity(false);

@@ -1,10 +1,12 @@
 import AccountContext from '@/context/AccountContext';
 import { network } from "@/libs/constants";
 import { changeNetwork } from '@/libs/utils/changeNetwork';
+import { selectProfile } from '@/store/profileSlice';
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { BsCaretDownFill } from "react-icons/bs";
+import { useSelector } from 'react-redux';
 import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 interface MenuNetworkProps {
@@ -27,8 +29,9 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
     const router = useRouter();
+    const { isLoggedIn } = useSelector(selectProfile);
     const handleChangeNetwork = async (chain: string) => {
-        if (account && wallet) {
+        if (account && wallet && isLoggedIn) {
             const check = await changeNetwork(chain, wallet, demask, setIsWrongNetwork, updateChainId, setTab);
             if(check){
                 router.replace(`/swap?chain=${chain}`);

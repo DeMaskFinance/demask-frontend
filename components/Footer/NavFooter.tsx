@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
-import MenuOptions from "../Menu/MenuOptions";
-import { CategoryIcon, CreateIcon, LaunchpadIcon, OthersIcon, OverviewIcon, TradeIcon } from "../Icons/Mobile/IconMobile";
 import { useRouter } from "next/router";
-import AccountContext from "@/context/AccountContext";
+import { useEffect, useState } from "react";
+import { CreateIcon, LaunchpadIcon, OthersIcon, OverviewIcon, TradeIcon } from "../Icons/Mobile/IconMobile";
 
-export default function NavFooter({ reels }: any) {
+export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);
   const [mode, setMode] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>(mode);
-  const { account, updateAccount, wallet, demask } = useContext(AccountContext);
   useEffect(() => {
     setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
   }, [activeChoice]);
