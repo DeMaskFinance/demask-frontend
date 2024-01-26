@@ -30,7 +30,7 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 interface SwapTransactionProps {
-  data: any,
+  data: DataBase,
   tokenAddress: string;
   idNFT: string;
   nftAddress: string;
@@ -260,7 +260,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                   pattern="^[1-9][0-9]*$"
                   inputMode="numeric"
                   onKeyDown={(event) => {
-                    if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace') {
+                    if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
                       event.preventDefault();
                     }
                   }}
@@ -288,7 +288,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                   <button type="button" className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
                     onClick={() => {
                       if (activeChoice === "BUY") {
-                        setInputNFT((Math.floor(item.percent * data.reserveNFT)).toString())
+                        setInputNFT((Math.floor(item.percent * +data.reserveNFT)).toString())
                       } else {
                         setInputNFT((Math.floor(item.percent * Number(balanceNFT))).toString())
                       }

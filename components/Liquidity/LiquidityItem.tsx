@@ -10,7 +10,7 @@ import FormatNumber from "../Common/FormatNumber";
 import MediaNFT from "../Common/MediaNFT";
 import { EtherIcon, NFTIcon } from "../Icons";
 interface LiquidytiesItemProps {
-  liquidity: any;
+  liquidity: DataBase;
 }
 
 const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({

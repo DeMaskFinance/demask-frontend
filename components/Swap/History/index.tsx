@@ -6,7 +6,7 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import AccountContext from '@/context/AccountContext';
 interface HistorySwapProps {
-    data: any
+    data: DataBase
 }
 const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
     const [page, setPage] = useState(1);

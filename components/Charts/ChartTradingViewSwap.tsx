@@ -20,7 +20,19 @@ interface BarData {
     open: number;
     change: string;
 }
-const ChartTradingViewSwap = ({ dataSwap }: any) => {
+interface DataItem {
+    closePrice: string;
+    highPrice: string;
+    lowPrice: string;
+    openPrice: string;
+    date: string;
+    changePrice: string;
+    volume: string;
+  }
+interface ChartSwapProps {
+    dataSwap: DataBase
+}
+const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({ dataSwap }) => {
     const chartContainerRef = useRef(null);
     const [currentHour, setCurrentHour] = useState(0);
     const [currentMinute, setCurrentMinute] = useState(0);
@@ -41,7 +53,7 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
     }, [volume]);
     useEffect(() => {
         if (Array.isArray(data)) {
-            const convertedData = data?.map((item: any) => ({
+            const convertedData = data?.map((item: DataItem) => ({
                 close: parseFloat(item.closePrice),
                 high: parseFloat(item.highPrice),
                 low: parseFloat(item.lowPrice),
@@ -50,7 +62,7 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
                 change: item.changePrice
             }));
             setNewData(convertedData);
-            const convertedDataVolume: BarData[] = data?.map((item: any) => ({
+            const convertedDataVolume: BarData[] = data?.map((item: DataItem) => ({
                 time: item.date,
                 value: parseFloat(item.volume),
                 close: parseFloat(item.closePrice),
@@ -167,10 +179,10 @@ const ChartTradingViewSwap = ({ dataSwap }: any) => {
         <div>
             {isLoading ? (
                 <div className="h-[355px] p-4 border rounded-lg lg:mt-0 border-dark3">
-                    <div className='flex-wrap hidden mb-2 p-2 gap-x-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3'>
-                        <div className="h-4 w-20 p-2 bg-slate-200 rounded"></div>
-                        <div className="h-4 w-20 bg-slate-200 rounded"></div>
-                        <div className="h-4 w-20 bg-slate-200 rounded"></div>
+                    <div className='flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-dark3 w-fit text-dark3'>
+                        <div className="w-20 h-4 p-2 rounded bg-slate-200"></div>
+                        <div className="w-20 h-4 rounded bg-slate-200"></div>
+                        <div className="w-20 h-4 rounded bg-slate-200"></div>
                     </div>
                     <div className="h-4 w-[60%] bg-slate-200 rounded"></div>
                     <ChartLoading />

@@ -5,7 +5,7 @@ import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import FormatNumber from "@/components/Common/FormatNumber";
 const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
-  const calculatePercentage = (value: any, total: any) => {
+  const calculatePercentage = (value: number, total: number) => {
     return (value / total) * 100;
   };
 

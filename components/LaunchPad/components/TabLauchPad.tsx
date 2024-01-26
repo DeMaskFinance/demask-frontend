@@ -60,7 +60,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                 data.pages.map((page, pageIndex) => (
                   <Fragment key={pageIndex}>
                     <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
-                      {page?.data?.map((item: any, itemIndex: number) => (
+                      {page?.data?.map((item: LaunchpadData, itemIndex: number) => (
                         <li
                           title={item?.metadata?.name}
                           key={itemIndex}

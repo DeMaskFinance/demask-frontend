@@ -25,7 +25,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 interface ModalBuyNFTProps {
     isOpenBuyNFT: boolean;
     tokenAddress: string;
-    data: any;
+    data: DataBase;
     inputNFT: string;
     nftAddress: string;
     idNFT: string;

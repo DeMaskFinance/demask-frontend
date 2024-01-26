@@ -8,7 +8,7 @@ import { ModalTransation } from '../ModalTransation';
 import { ModalWallet } from '../ModalWallet';
 import Wrapper from '../Wrapper';
 interface ModalConfirmClaimProps {
-    data: any,
+    data: LaunchpadData,
     isOpenConfirmClaim: boolean;
     setIsOpenConfirmClaim: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;

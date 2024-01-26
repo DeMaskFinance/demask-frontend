@@ -22,7 +22,7 @@ import Wrapper from "../Wrapper";
 interface ModalConfirmAddLiquidityProps {
     isOpenConfirmAddLiquidity: boolean;
     tokenAddress: string;
-    data: any;
+    data: DataBase;
     inputNFT: string;
     inputToken: string;
     nftAddress: string;

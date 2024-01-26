@@ -2,7 +2,7 @@ import FormatNumber from '@/components/Common/FormatNumber';
 import MediaNFT from '@/components/Common/MediaNFT';
 import React from 'react'
 
-const Box = ({ data }: any) => {
+const Box: React.FC<{ data: LaunchpadData }> = ({ data }) => {
     const remaining = Number(data?.hardcap) - Number(data?.totalSold);
     return (
         <div className='overflow-y-auto'>

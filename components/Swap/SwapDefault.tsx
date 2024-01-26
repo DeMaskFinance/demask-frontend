@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react'
 export default function SwapDefault() {
     const router = useRouter();
-    const { account, wallet, chainId, demask} = useContext(AccountContext);
+    const { account, wallet, chainId, demask } = useContext(AccountContext);
     const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
     const [activeChoice, setActiveChoice] = useState<string>("BUY");
     const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
@@ -23,7 +23,7 @@ export default function SwapDefault() {
     const [inputNFT, setInputNFT] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>('');
-    const { balanceToken} =
+    const { balanceToken } =
         useInformationToken(account, nativeAddress, wallet, routerAddress, rpc, nativeAddress);
     const handleChoiceChange = (choice: string) => {
         setActiveChoice(choice);
@@ -48,7 +48,7 @@ export default function SwapDefault() {
                     <BackIcon width={32} height={32} className="cursor-pointer hover:fill-secondary5" />
                 </div>
                 <div className="w-[32px] h-[32px] ">
-                    <Image alt='demask' width={32} height={32} src='/logoIcon.png' className='object-cover rounded-lg'/>
+                    <Image alt='demask' width={32} height={32} src='/logoIcon.png' className='object-cover rounded-lg' />
                 </div>
                 <p>DEMASK</p>
             </div>
@@ -78,7 +78,7 @@ export default function SwapDefault() {
                     </div>
                     <div className="flex flex-col justify-center my-6">
                         <div className="mx-auto w-60 ">
-                            <Image alt='demask' width={240} height={240} src='/logo.png' className='object-cover'/>
+                            <Image alt='demask' width={240} height={240} src='/logo.png' className='object-cover' />
                         </div>
                         {/* <p
               className="mx-auto mt-1 text-xs cursor-pointer text-dark3 hover:text-secondary3"
@@ -127,7 +127,7 @@ export default function SwapDefault() {
                                         pattern="^[1-9][0-9]*$"
                                         inputMode="numeric"
                                         onKeyDown={(event) => {
-                                            if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace') {
+                                            if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
                                                 event.preventDefault();
                                             }
                                         }}

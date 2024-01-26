@@ -18,7 +18,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
-  data: any;
+  data: DataBase;
   setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;

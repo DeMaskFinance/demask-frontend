@@ -21,7 +21,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 interface ModalConfirmRemoveLiquidityProps {
     isOpenConfirmRemoveLiquidity: boolean;
-    data: any;
+    data: DataBase;
     inputLiquidity: string;
     isOpenTransaction: boolean;
     totalSupply: string;

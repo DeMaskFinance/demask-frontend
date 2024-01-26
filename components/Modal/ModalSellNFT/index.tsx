@@ -22,7 +22,7 @@ import { FaChevronLeft } from "react-icons/fa";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
-    data: any;
+    data: DataBase;
     inputNFT: string;
     nftAddress: string;
     idNFT: string;

@@ -290,7 +290,7 @@ export default function AddLiquidity() {
                     placeholder="Input amount NFT"
                     value={inputNFT}
                     onKeyDown={(event) => {
-                      if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace') {
+                      if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace'&& event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
                         event.preventDefault();
                       }
                     }}
@@ -309,7 +309,7 @@ export default function AddLiquidity() {
                 </div>
 
                 {isSufficientNFT && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
+                  <p className="mt-1 mb-2 ml-3 text-xs text-red" key="totalSale">
                     Insufficient NFT balance
                   </p>
                 )}
@@ -351,7 +351,7 @@ export default function AddLiquidity() {
                   </div>
                 )}
                 {isSufficientToken && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                  <p className="mb-2 ml-3 -mt-2 text-xs text-red" key="inputNFT">
                     Insufficient Token balance
                   </p>
                 )}

@@ -23,7 +23,7 @@ interface ModalLaunchPadProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenModal: boolean;
   refetch: any;
-  data:any;
+  data: LaunchpadData;
 }
 
 const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({

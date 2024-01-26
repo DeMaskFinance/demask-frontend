@@ -1,11 +1,12 @@
 import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import Link from "next/link";
 import React from "react";
 
 interface TabLaunchPadProps {
-  item: any;
+  item: LaunchpadData;
   query: string;
 }
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
@@ -31,13 +32,12 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
 
             <div className="flex flex-col justify-between flex-grow">
               <div>
-                <h6
+                <div
                   title={item.metadata.name}
-                  className="flex items-start gap-2 py-2 font-medium uppercase"
+                  className="flex items-start gap-2 py-2 text-xl font-medium uppercase"
                 >
-                  <span className="flex-wrap text-xl line-clamp-1">
-                    {item.metadata.name}
-                  </span>
+                  <ModalDocument data={item.metadata.name}>
+                  </ModalDocument>
                   <svg
                     className="flex-shrink-0"
                     width="25"
@@ -56,7 +56,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                       fill="#9075FE"
                     />
                   </svg>
-                </h6>
+                </div>
                 <div className="mt-2">
                   <div className="flex flex-col gap-2">
                     <div className="line-clamp-3">
@@ -71,7 +71,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                   <p>0 ETH</p>
                 ) : (
                   <div className="flex gap-x-1">
-                    <FormatNumber number={(item.price / 1e18 * item.totalSold).toString()} />
+                    <FormatNumber number={(+item.price / 1e18 * +item.totalSold).toString()} />
                     ETH
                   </div>
                 )}
@@ -79,7 +79,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
             </div>
           </div>
           <div className="pt-2 mt-2 border-t">
-            <CountdownTime query={query} blockNumber={blockNumber} isSuccess={item.isSuccess}/>
+            <CountdownTime query={query} blockNumber={+blockNumber} isSuccess={item.isSuccess} />
           </div>
         </div>
       </Link>

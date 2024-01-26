@@ -75,7 +75,7 @@ const ModalSetting: React.FunctionComponent<
                                         updateSlippage(item)
                                     }}>{item}</Button>
                                 ))}
-                                <input type="text" value={slippageTo} className='w-10 text-center justify-center h-full pb-2 pt-[6px] mr-2 font-semibold border rounded-lg border-dark4 text-dark3'
+                                <input type="number" value={slippageTo} className='w-10 text-center justify-center h-full pb-2 pt-[6px] mr-2 font-semibold border rounded-lg border-dark4 text-dark3'
                                     onChange={(e) => handleChangeSlippage(e)}
                                     onBlur={() => {
                                         if (slippageTo > 100) {
@@ -106,7 +106,7 @@ const ModalSetting: React.FunctionComponent<
                             <input
                                 pattern="^[0-9]+$"
                                 value={time}
-                                type="text"
+                                type="number"
                                 className='w-1/2 p-2 mb-4 text-center border rounded-xl border-dark4'
                                 onChange={(e) => {
                                     const inputValue = Number(e.target.value);
@@ -117,6 +117,11 @@ const ModalSetting: React.FunctionComponent<
                                     if (time < 20) {
                                         setTime(20);
                                         updateTxDeadline(20);
+                                    }
+                                }}
+                                onKeyDown={(event) => {
+                                    if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                                        event.preventDefault();
                                     }
                                 }}
                             />

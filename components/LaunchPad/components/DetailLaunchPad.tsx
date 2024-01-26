@@ -23,7 +23,6 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Box from "./Box";
-import DetailLaunchPadInfo from "./DetailLaunchPadInfo";
 import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
@@ -204,7 +203,6 @@ export default function DetailLaunchPad() {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  const listInfo = DetailLaunchPadInfo(data);
   const selectedTab = TABS.find((data) => data.key === status);
   const blockNumber =
     data?.status === "Upcoming"
@@ -466,7 +464,7 @@ export default function DetailLaunchPad() {
         />
       </div>
       <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0">
-        <ul className='flex gap-4 p-2 mx-auto text-sm text-white rounded-lg bg-dark3 w-fit'>
+        <ul className='flex p-2 mx-auto text-sm text-white rounded-lg lg:gap-4 bg-dark3 w-fit'>
           {TABS.map((data, index) => (
             <li key={index} onClick={() => setStatus(data.key)} className={`cursor-pointer p-2 ${status === data.key ? "rounded-lg bg-secondary5" : ""} `}>
               <h2 className='font-semibold'>{data.title}</h2>
