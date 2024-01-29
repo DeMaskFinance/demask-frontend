@@ -5,7 +5,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class',
+  darkMode: "class",
   theme: {
     extend: {
       backgroundImage: {
@@ -34,6 +34,7 @@ module.exports = {
         dark2: "#636977",
         dark3: "#A3A9B9",
         dark4: "#E6E7F1",
+        dark5: "#F8F8F8",
         secondary1: "#514199",
         secondary2: "#6957BB",
         secondary3: "#6452B6",
@@ -63,7 +64,7 @@ module.exports = {
         home: "0px 4px 12px 0px rgba(0, 0, 0, 0.08)",
         swiper: "rgba(0, 0, 0, 0.15) 0px 4px 10px",
         chart: "0px 8px 24px 0px rgba(0, 0, 0, 0.15)",
-        about:"#9075FE 0px 22px 70px 4px"
+        about: "#9075FE 0px 22px 70px 4px",
       },
       keyframes: {
         scrollUpHeader: {
@@ -84,8 +85,8 @@ module.exports = {
       },
       animation: {
         scrollUpHeader: "scrollUpHeader 0.3s ease-in-out",
-        loadingTransaction: 'loadingTransaction 1s ease-in-out infinite',
-        'spin-360': 'spin 0.5s linear',
+        loadingTransaction: "loadingTransaction 1s ease-in-out infinite",
+        "spin-360": "spin 0.5s linear",
       },
       container: {
         main: "1048px",

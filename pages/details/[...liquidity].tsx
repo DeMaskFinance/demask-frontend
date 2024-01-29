@@ -151,7 +151,7 @@ export default function DetailLiquidity() {
                       <MediaNFT data={data} isControls={false} />
                     </div>
                     <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
-                      <div className="relative w-40 truncate">
+                      <div className="relative truncate max-w-[160px]">
                         <ModalDocument data={data?.metadata?.name}/>
                       </div>
                       (

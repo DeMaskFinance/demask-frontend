@@ -14,7 +14,7 @@ interface NetworkItem {
   chain: string;
   disable?: boolean;
 }
-const version ="Version 0.1.7";
+const version ="Version 0.1.8";
 const tokenMatic = [
   {
     name: "Polygon",

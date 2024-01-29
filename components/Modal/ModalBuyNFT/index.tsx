@@ -259,7 +259,7 @@ const ModalBuyNFT: React.FunctionComponent<
                             <div className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1" onClick={() => setSeeDetail(!seeDetail)}>
                                 <div className="flex items-center gap-x-1">
                                     <p>Total fee</p>
-                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? 'rotate-90' : ''}`}><FaChevronRight /></div>
+                                    <div className={`p-1 text-sm rounded-lg transition-all duration-100 ease-linear ${seeDetail ? 'rotate-90' : ''}`}><FaChevronRight /></div>
                                 </div>
                                 <div className="flex items-center">
                                     <FormatNumber number={divideByDecimal((+feeTradingBuy + +royaltiesFeeBuy).toString(), data.tokenDecimals).toString()} />

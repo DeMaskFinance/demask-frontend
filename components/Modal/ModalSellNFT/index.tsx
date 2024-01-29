@@ -18,7 +18,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { Button } from "@/components/Buttons";
 import { BiLoaderAlt } from "react-icons/bi";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 interface ModalSellNFTProps {
     isOpenSellNFT: boolean;
     tokenAddress: string;
@@ -232,7 +232,7 @@ const ModalSellNFT: React.FunctionComponent<
                             <div className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1" onClick={() => setSeeDetail(!seeDetail)}>
                                 <div className="flex items-center gap-x-1">
                                     <p>Total fee</p>
-                                    <div className={`p-1 text-sm rounded-lg bg-dark3 transition-all duration-100 ease-linear ${seeDetail ? '-rotate-90' : ''}`}><FaChevronLeft /></div>
+                                    <div className={`p-1 text-sm rounded-lg transition-all duration-100 ease-linear ${seeDetail ? 'rotate-90' : ''}`}><FaChevronRight /></div>
                                 </div>
                                 <div className="flex items-center">
                                     <FormatNumber number={divideByDecimal((+feeTradingSell + +royaltiesFeeSell).toString(), data.tokenDecimals).toString()} />

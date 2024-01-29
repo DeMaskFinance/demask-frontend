@@ -70,11 +70,11 @@ export default function Liquidity() {
           </div>
         )}
         {account && data?.pages[0]?.combinedRecords.length !== 0 && (
-          <div>
-            <div>
+          <div className="rounded-lg bg-dark5">
+            <div className="">
               {isSuccess &&
                 data.pages.map((page: any, index: number) => (
-                  <div key={index} className="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-2">
+                  <div key={index} className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-4 md:grid-cols-2">
                     {page?.combinedRecords.map(
                       (liquidity: any, index: number) => (
                         <div key={index} className="w-full mx-auto">
