@@ -19,7 +19,6 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   const { account, wallet } = useContext(AccountContext);
   const [reward, setReward] = useState("");
   const { balanceDML, totalSupply } = useBananceOfDML(account, liquidity.dmlAddress, wallet);
-  console.log(totalSupply);
 
   useEffect(() => {
     const fetchDataReward = async () => {
@@ -31,7 +30,6 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     };
     fetchDataReward();
   }, [liquidity, account, wallet]);
-  console.log(liquidity);
 
   return (
     <div className="relative w-full overflow-hidden group">

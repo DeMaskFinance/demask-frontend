@@ -63,7 +63,9 @@ const SkeletonLeaderBoard = () => {
                     </SwiperSlide>
                 </Swiper>
             </div>
-            <SkeletonTable length={8}/>
+            <tbody>
+                <SkeletonTable length={8} />
+            </tbody>
         </div>
     )
 }

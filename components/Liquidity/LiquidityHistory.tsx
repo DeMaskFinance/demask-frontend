@@ -1,7 +1,5 @@
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
-import ModalNumber from "../Modal/ModalLength/ModalNumber";
 import FormatNumber from "../Common/FormatNumber";
+import ModalNumber from "../Modal/ModalLength/ModalNumber";
 
 interface LiquiditiesHistoryProps {
   data: any;

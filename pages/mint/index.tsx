@@ -367,6 +367,11 @@ export default function Creator() {
               id="totalSupply"
               autoComplete="off"
               value={totalSupply || ""}
+              onKeyDown={(event) => {
+                if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                  event.preventDefault();
+                }
+              }}
               className={
                 emptyInputs.includes("totalSupply")
                   ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
