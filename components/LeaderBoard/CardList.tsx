@@ -4,8 +4,8 @@ import { EtherIcon, PriceIcon } from '../Icons'
 import FormatNumber from '../Common/FormatNumber'
 export const CardListLoading = () => {
     return (
-        <div className='flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 w-60 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]'>
-            <div className=' w-[120px] h-[120px] bg-slate-200 rounded-full' />
+        <div className='flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]'>
+            <div className='w-[80px] h-[80px] rounded-full bg-slate-200' />
             <div className='mt-2 mb-6 text-2xl font-semibold'>
                 <div className="w-20 h-4 rounded bg-slate-200"></div>
             </div>
@@ -20,7 +20,7 @@ export const CardListLoading = () => {
                 <div className='flex my-2 text-sm font-semibold'>
                     <div className="w-20 h-4 rounded-full bg-slate-200"></div>
                 </div>
-                <p className='text-xs font-medium'>Season Volume</p>
+                <p className='text-xs font-medium whitespace-nowrap'>Season Volume</p>
             </div>
         </div>
     )
