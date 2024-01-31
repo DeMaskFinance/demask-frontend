@@ -104,8 +104,10 @@ export default function App({
             font-family: ${roboto.style.fontFamily};
           }
         `}</style>
-              <ThemeProvider attribute="class">
-                <WagmiConfig config={wagmiConfig}>
+              {/* <ThemeProvider attribute="class">
+                
+              </ThemeProvider> */}
+              <WagmiConfig config={wagmiConfig}>
                   {isMaintenanceMode ? (
                     <Layout>
                       <MaintenanceError />
@@ -120,8 +122,6 @@ export default function App({
                     </Layout>
                   )}
                 </WagmiConfig>
-              </ThemeProvider>
-
               <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
                 '--w3m-z-index': '9999'
               }} />
