@@ -7,10 +7,12 @@ import { SkeletonTable } from '../Skeleton';
 import { leaderBoardAPI } from '@/libs/service/leaderBoard';
 import AccountContext from '@/context/AccountContext';
 import { useQuery } from '@tanstack/react-query';
+import { AvatarUser } from '../Avatars';
+import Link from 'next/link';
 
 const TableRank = () => {
     const [page, setPage] = useState(1);
-    const { chainId } = useContext(AccountContext);
+    const { chainId, demask } = useContext(AccountContext);
     const { isLoading, data, isRefetching, isSuccess, refetch, isPreviousData, isFetching } = useQuery({
         queryKey: ["leaderBoardAPI", chainId, page],
         queryFn: async () => {
@@ -38,7 +40,7 @@ const TableRank = () => {
         refetch();
     }, [page, refetch]);
     console.log(data);
-    
+
     return (
         <div className='px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home'>
             <table className="w-full text-left border-collapse">
@@ -79,13 +81,24 @@ const TableRank = () => {
                                         </div>
                                     </td>
                                     <td className="py-2 flex items-center justify-start gap-x-1 lg:w-full md:w-full w-[100px]">
-                                        <Image src={`${item.avatar ? item.avatar : '/Placeholder.png'}`} width={120} alt='userIMG' height={120} className='object-cover w-6 h-6 rounded-lg' />
+                                        {
+                                            item.avatar ? (
+                                                <Image src={item.avatar} width={120} alt='userIMG' height={120} className='object-cover w-6 h-6 rounded-lg' />
+                                            ) : (
+                                                <AvatarUser width={24} height={24} />
+                                            )
+                                        }
                                         <p>
                                             {item.name}
                                         </p>
                                     </td>
-                                    <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
-                                        {`${item.userAddress.slice(0, 4)}...${item.userAddress.slice(-4)}`}
+                                    <td className="py-2 flex text-secondary5 items-center justify-center lg:w-full md:w-full w-[140px]">
+                                        <Link
+                                            target="_blank"
+                                            href={`${demask.urltxHash}address/${item.userAddress}`}
+                                        >
+                                            {`${item.userAddress.slice(0, 4)}...${item.userAddress.slice(-4)}`}
+                                        </Link>
                                     </td>
                                     <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                                         <div className="flex items-center justify-end md:gap-2">

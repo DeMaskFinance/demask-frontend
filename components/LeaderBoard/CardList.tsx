@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import { EtherIcon, PriceIcon } from '../Icons'
 import FormatNumber from '../Common/FormatNumber'
+import { AvatarUser } from '../Avatars'
 export const CardListLoading = () => {
     return (
         <div className='flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]'>
@@ -28,7 +29,13 @@ export const CardListLoading = () => {
 const CardList = ({ data }: any) => {
     return (
         <div className={`flex flex-col items-center justify-center p-2 border rounded-lg text-dark1 w-full h-fit ${data?.rank === 1 ? 'border-yellow shadow-[0px_8px_24px_0px_rgba(255,194,88,0.25)]' : data?.rank === 2 ? "border-blue shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]" : data?.rank === 3 ? "border-red shadow-[0px_8px_24px_0px_rgba(253,128,130,0.25)]" : ''}`}>
-             <Image width={600} height={600} alt='leaderboardImg' src={`${data?.avatar ? data?.avatar : '/Placeholder.png'}`} className='rounded-full object-cover w-[120px] h-[120px]' />
+            {
+                data?.avatar ? (
+                    <Image width={600} height={600} alt='leaderboardImg' src={data?.avatar} className='rounded-full object-cover w-[120px] h-[120px]' />
+                ) : (
+                    <AvatarUser width={120} height={120} />
+                )
+            }
             <h2 className='mt-2 mb-6 text-lg font-semibold lg:text-2xl'>{data?.name}</h2>
             <div className='bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative'>
                 <div className='absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit'>
