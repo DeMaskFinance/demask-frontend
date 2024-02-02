@@ -12,10 +12,6 @@ const useBananceOfDML = (
   const [balanceOfDML, setBalanceOfDML] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
   const [balanceDML, setBalanceDML] = useState("");
-  console.log({
-    account,
-    dmlToken
-  });
   
   useEffect(() => {
     const getBalanceOf = async () => {

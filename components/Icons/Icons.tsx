@@ -430,7 +430,7 @@ export const WarningSwapIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
-export const PriceIcon: React.FunctionComponent<IconProps> = ({
+export const RankIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
   height,

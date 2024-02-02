@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import React from 'react'
-import { EtherIcon, PriceIcon } from '../Icons'
+import { EtherIcon, RankIcon } from '../Icons'
 import FormatNumber from '../Common/FormatNumber'
 import { AvatarUser } from '../Avatars'
+import { formatToUnit } from '@/libs/utils/formatToUnit'
 export const CardListLoading = () => {
     return (
         <div className='flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]'>
@@ -13,7 +14,7 @@ export const CardListLoading = () => {
 
             <div className='bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative'>
                 <div className='absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit'>
-                    <PriceIcon width={24} height={24} className='fill-[#1D85E8]' />
+                    <RankIcon width={24} height={24} className='fill-[#1D85E8]' />
                 </div>
                 <div className='pb-2 font-semibold border-b border-dark1 w-[60%] text-center'>
                     <div className="h-4 rounded-full bg-slate-200"></div>
@@ -39,9 +40,11 @@ const CardList = ({ data }: any) => {
             <h2 className='mt-2 mb-6 text-lg font-semibold lg:text-2xl'>{data?.name}</h2>
             <div className='bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative'>
                 <div className='absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit'>
-                    <PriceIcon width={24} height={24} className={`${data?.rank === 1 ? 'fill-yellow' : data?.rank === 2 ? "fill-blue" : data?.rank === 3 ? "fill-red" : ''}`} />
+                    <RankIcon width={24} height={24} className={`${data?.rank === 1 ? 'fill-yellow' : data?.rank === 2 ? "fill-blue" : data?.rank === 3 ? "fill-red" : ''}`} />
                 </div>
-                <p className='pb-2 font-semibold border-b border-dark1 w-[60%] text-center'>70 Point</p>
+                <div className='pb-2 font-semibold border-b border-dark1 w-[60%] text-center'>
+                    {formatToUnit(data?.point)}
+                </div>
                 <div className='flex my-2 text-sm font-semibold'>
                     <FormatNumber number={data?.volume} />
                     <EtherIcon width={20} height={20} className='fill-dark1' />

@@ -31,7 +31,7 @@ const LeaderBoard = () => {
     const { isLoading, data, isSuccess } = useQuery({
         queryKey: ["leaderBoard", chainId],
         queryFn: async () => {
-            const res = await leaderBoardAPI(chainId, 1);
+            const res = await leaderBoardAPI(chainId, 1, "");
             return res;
         },
         keepPreviousData: true,

@@ -40,13 +40,12 @@ export default function Liquidity() {
     ["LiquidityList", account, chainId],
     ({ pageParam = 1 }) => fetchDataListLiquidity(account, pageParam, chainId),
     {
-      getNextPageParam: (page) =>
+      getNextPageParam: (page: any) =>
         page?.currentPage < page?.totalPages
           ? page?.currentPage + 1
           : undefined,
     }
   );
-
   return (
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0">
       <NextSeo {...updateMeta} />
