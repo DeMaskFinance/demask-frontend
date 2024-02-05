@@ -16,7 +16,6 @@ const approveToken = async (
     try {
       const tokenAllowance = await contract.allowance(account, routerAddress);
       const currentAllowance = tokenAllowance.toString();
-      console.log(currentAllowance);
 
       return currentAllowance;
     } catch (error) {

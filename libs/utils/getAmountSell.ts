@@ -1,6 +1,5 @@
 import abiRouter from "@/abi/abiRouter.json";
 import { ethers } from "ethers";
-import { getProvider } from "../connection/getProvider";
 
 const getAmountSell = async (
   wallet: string,

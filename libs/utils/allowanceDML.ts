@@ -16,7 +16,6 @@ const allowanceDML = async (
     try {
         const dmlAllowance = await contract.allowance(account, routerAddress);
         const currentAllowance = dmlAllowance.toString();
-        console.log(currentAllowance);
         
         return currentAllowance;
     } catch (error) {

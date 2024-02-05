@@ -1,16 +1,12 @@
+import { Button } from "@/components/Buttons";
+import MediaNFT from "@/components/Common/MediaNFT";
+import { SuccessIcon, URLTransactionIcon } from "@/components/Icons";
+import AccountContext from "@/context/AccountContext";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { SuccessIcon, URLTransactionIcon } from "@/components/Icons";
-import { Button } from "@/components/Buttons";
-import { useContext, useEffect, useState } from "react";
-import AccountContext from "@/context/AccountContext";
-import MediaNFT from "@/components/Common/MediaNFT";
-import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { searchNFTService } from "@/libs/service/searchService";
-import { BiLoaderAlt } from "react-icons/bi";
-import Link from "next/link";
-import useMetadata from "@/hooks/useMetadata";
 
 interface ModalSuccessProps {
     isOpenSuccess: boolean;

@@ -1,7 +1,6 @@
 import abiErc20 from "@/abi/abiErc20.json";
-import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { getProvider } from "@/libs/connection/getProvider";
+import { useEffect, useState } from "react";
 
 const useInformationToken = (
   account: string,

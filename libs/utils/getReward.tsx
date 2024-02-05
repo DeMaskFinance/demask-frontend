@@ -1,11 +1,8 @@
 import abiDML from "@/abi/abiDML.json";
-import TransitionURL from "@/components/Toast/TransionURL";
 import { ethers } from "ethers";
-import { toast } from "react-toastify";
 import { getProvider } from "../connection/getProvider";
-import viewReward from "./viewReward";
 import divideByDecimal from "./divideByDecimal";
-import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import viewReward from "./viewReward";
 interface RewardDMLProps {
   wallet: string;
   dmlTokenLiquidity: string;
