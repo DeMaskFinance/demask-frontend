@@ -16,13 +16,13 @@ import { Web3Modal } from "@web3modal/react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, polygon, zkSyncTestnet } from "wagmi/chains";
 import Script from "next/script";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import NextAdapterPages from 'next-query-params';
-import { QueryParamProvider } from 'use-query-params';
-import { Provider } from 'react-redux';
-import store, { persistor } from '../store';
-import { PersistGate } from 'redux-persist/integration/react';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import NextAdapterPages from "next-query-params";
+import { QueryParamProvider } from "use-query-params";
+import { Provider } from "react-redux";
+import store, { persistor } from "../store";
+import { PersistGate } from "redux-persist/integration/react";
 import { ThemeProvider } from "next-themes";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
@@ -31,7 +31,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
-  adjustFontFallback: false
+  adjustFontFallback: false,
 });
 const roboto = Roboto_Mono({
   subsets: ["latin"],
@@ -100,14 +100,12 @@ export default function App({
           <QueryClientProvider client={queryClient}>
             <QueryParamProvider adapter={NextAdapterPages}>
               <style jsx global>{`
-          html {
-            font-family: ${roboto.style.fontFamily};
-          }
-        `}</style>
-              {/* <ThemeProvider attribute="class">
-                
-              </ThemeProvider> */}
-              <WagmiConfig config={wagmiConfig}>
+                html {
+                  font-family: ${roboto.style.fontFamily};
+                }
+              `}</style>
+              <ThemeProvider attribute="class">
+                <WagmiConfig config={wagmiConfig}>
                   {isMaintenanceMode ? (
                     <Layout>
                       <MaintenanceError />
@@ -122,9 +120,14 @@ export default function App({
                     </Layout>
                   )}
                 </WagmiConfig>
-              <Web3Modal projectId={projectId} ethereumClient={ethereumClient} themeVariables={{
-                '--w3m-z-index': '9999'
-              }} />
+              </ThemeProvider>
+              <Web3Modal
+                projectId={projectId}
+                ethereumClient={ethereumClient}
+                themeVariables={{
+                  "--w3m-z-index": "9999",
+                }}
+              />
               <ToastContainer limit={1} />
             </QueryParamProvider>
           </QueryClientProvider>

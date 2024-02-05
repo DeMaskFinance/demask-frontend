@@ -9,12 +9,12 @@ import { useTheme } from "next-themes";
 
 export default function Footer() {
   const svgComponents = useSvgComponents();
-  // const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [activeChoice, setActiveChoice] = useState<string>("Light");
 
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
-    // setTheme(theme === "light" ? "dark" : "light");
+    setTheme(theme === "light" ? "dark" : "light");
   };
   return (
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex lg:px-[156px] md:px-14 bg-dark4">
