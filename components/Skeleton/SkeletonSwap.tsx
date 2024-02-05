@@ -5,7 +5,7 @@ export default function SkeletonSwap() {
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
       <div className="min-h-[80vh]">
-        <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 dark:text-white">
+        <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 ">
           <div className="w-8 h-8 rounded bg-slate-200"></div>
           <div className="w-8 h-8 rounded bg-slate-200"></div>
           <div className="w-40 h-8 rounded-full bg-slate-200"></div>

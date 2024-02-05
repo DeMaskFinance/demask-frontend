@@ -48,7 +48,7 @@ const Swap: React.FC = () => {
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 dark:text-white">
+          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 ">
             <Link href='/swap'>
               <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
             </Link>

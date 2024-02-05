@@ -63,7 +63,7 @@ export default function LaunchpadReleased() {
                   <Link
                     href={`launchpad/${item.nftID}/${process.env.NEXT_PUBLIC_CREATOR}/${item.tokenPayment}`}
                   >
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 hover:text-secondary5 dark:text-white">
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 hover:text-secondary5">
                       {item.metadata?.name}
                     </h5>
                   </Link>
