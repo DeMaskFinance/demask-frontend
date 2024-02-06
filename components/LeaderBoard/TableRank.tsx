@@ -91,7 +91,7 @@ const TableRank = () => {
     }, [page, refetch]);
 
     return (
-        <div className='px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home'>
+        <div className='px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home min-h-[500px] flex flex-col justify-between'>
             <table className="w-full text-left border-collapse">
                 <thead className="">
                     <tr className="flex px-2 pb-2 text-sm border-b">

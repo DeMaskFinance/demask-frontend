@@ -51,7 +51,7 @@ export default function Layout({ children }: PropsWithChildren) {
             if (
               (PORT === "3000" && (networkId === "280" || networkId === "5")) ||
               (PORT === "1307" &&
-                (networkId === "97" || networkId === "80001"))
+                (networkId === "168587773"))
             ) {
               updateChainId(networkId);
             }
