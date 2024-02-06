@@ -24,7 +24,7 @@ interface networkProps {
     chain: string;
 }
 const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
-    const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
+    const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[0]);
     const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
     const { updateChainId, chainId, wallet, demask, account } = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
@@ -48,7 +48,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
             const foundNetwork = network.find((item) => item.chain === router.query.chain);
             setFilterNetwork(foundNetwork);
         } else {
-            setFilterNetwork(network[1]);
+            setFilterNetwork(network[0]);
         }
     }, [router.query.chain, router.isReady]);
 

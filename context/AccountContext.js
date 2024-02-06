@@ -1,15 +1,15 @@
 import { getProvider } from "@/libs/connection/getProvider";
 import React, { createContext, useEffect, useState } from "react";
 import {
-  MUMBAI_DEMASK,
-  BSC_DEMASK,
   Goerli_DEMASK,
   tokenBsc,
   tokenMatic,
   tokenGoerli,
+  tokenBlast,
   Zksync_DEMASK,
   tokenzkSync,
   network,
+  BLAST_DEMASK
 } from "@/libs/constants";
 const AccountContext = createContext();
 
@@ -36,18 +36,15 @@ export const AccountProvider = ({ children }) => {
     }
   }, [account]);
   useEffect(() => {
-    if (chainId === "80001") {
-      setDemask(MUMBAI_DEMASK);
-      setTokenDefault(tokenMatic);
-    } else if (chainId === "97") {
-      setDemask(BSC_DEMASK);
-      setTokenDefault(tokenBsc);
-    } else if (chainId === "280") {
+    if (chainId === "280") {
       setDemask(Zksync_DEMASK);
       setTokenDefault(tokenzkSync);
     } else if (chainId === "5") {
       setDemask(Goerli_DEMASK);
       setTokenDefault(tokenGoerli);
+    } else if (chainId === "168587773") {
+      setDemask(BLAST_DEMASK);
+      setTokenDefault(tokenBlast);
     }
   }, [chainId]);
   useEffect(() => {

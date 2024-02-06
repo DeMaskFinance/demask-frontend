@@ -6,7 +6,8 @@ import {
   BscIcon,
   EtherIcon,
   ZkSyncIcon,
-  GoerliIcon
+  GoerliIcon,
+  BlastIcon
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -15,48 +16,6 @@ interface NetworkItem {
   disable?: boolean;
 }
 const version ="Version 0.1.8";
-const tokenMatic = [
-  {
-    name: "Polygon",
-    symbol: "MATIC",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS,
-    logo: MaticIcon,
-    symbolNative: "WETH",
-  },
-  {
-    name: "Tether",
-    symbol: "USDT",
-    address: process.env.NEXT_PUBLIC_USDT,
-    logo: USDTIcon,
-  },
-  {
-    name: "USD Coin",
-    symbol: "USDC",
-    address: process.env.NEXT_PUBLIC_USDC,
-    logo: USDCIcon,
-  },
-];
-const tokenBsc = [
-  {
-    name: "Smart Chain",
-    symbol: "BNB",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
-    logo: BscIcon,
-    symbolNative: "WBNB"
-  },
-  {
-    name: "Tether",
-    symbol: "USDT",
-    address: process.env.NEXT_PUBLIC_USDT_BSC,
-    logo: USDTIcon,
-  },
-  {
-    name: "USD Coin",
-    symbol: "USDC",
-    address: process.env.NEXT_PUBLIC_USDC_BSC,
-    logo: USDCIcon,
-  },
-];
 const tokenGoerli = [
   {
     name: "Goerli",
@@ -74,57 +33,37 @@ const tokenzkSync = [
     logo: ZkSyncIcon,
     symbolNative: "WETH"
   },
-  // {
-  //   name: "Tether",
-  //   symbol: "USDT",
-  //   address: process.env.NEXT_PUBLIC_USDT_Zksync,
-  //   logo: USDTIcon,
-  // },
-  // {
-  //   name: "USD Coin",
-  //   symbol: "USDC",
-  //   address: process.env.NEXT_PUBLIC_USDC_Zksync,
-  //   logo: USDCIcon,
-  // },
+];
+const tokenBlast = [
+  {
+    name: "Blast Testnet",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
+    logo: BlastIcon,
+    symbolNative: "WETH"
+  },
 ];
 const activeNFTPercent = [
   { text: '25%', percent: 0.25 },
   { text: '50%', percent: 0.5 },
   { text: '75%', percent: 0.75 },
   { text: 'MAX', percent: 1 },]
-const BSC_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_BSC,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_BSC,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_BSC,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_BSC,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BSC,
-  WETH: process.env.NEXT_PUBLIC_WETH_BSC,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
-  USDT: process.env.NEXT_PUBLIC_USDT_BSC,
-  USDC: process.env.NEXT_PUBLIC_USDC_BSC,
-  urltxHash:"https://testnet.bscscan.com/",
-  chainName:"BNB Smart Chain Testnet",
-  NAME:"BNB Smart Chain Testnet",
-  CURRENCY:"tBNB"
-};
-const MUMBAI_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN,
-  WETH: process.env.NEXT_PUBLIC_WETH,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT,
-  USDT: process.env.NEXT_PUBLIC_USDT,
-  USDC: process.env.NEXT_PUBLIC_USDC,
-  urltxHash:"https://mumbai.polygonscan.com/",
-  chainName: "Mumbai",
-  NAME:"MUMBAI",
-  CURRENCY:"MATIC",
+const BLAST_DEMASK = {
+  RPC: process.env.NEXT_PUBLIC_RPC_BLAST,
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BLAST,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_BLAST,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_BLAST,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_BLAST,
+  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BLAST,
+  WETH: process.env.NEXT_PUBLIC_WETH_BLAST,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
+  USDT: process.env.NEXT_PUBLIC_USDT_BLAST,
+  USDC: process.env.NEXT_PUBLIC_USDC_BLAST,
+  urltxHash:"https://testnet.blastscan.io/",
+  chainName:"Blast Testnet",
+  NAME:"Blast Testnet",
+  CURRENCY:"ETH"
 };
 const Zksync_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_Zksync,
@@ -178,25 +117,14 @@ if (PORT === '3000') {
       logo: GoerliIcon,
       chain: "5",
     },
-    // {
-    //   name: "Ethereum",
-    //   logo: EtherIcon,
-    //   chain: "1",
-    //   disable: true,
-    // },
   ];
 } else if (PORT === '1307') {
   network = [
     {
-      name: "Polygon",
-      logo: PolygonIcon,
-      chain: "80001",
+      name: "Blast Testnet",
+      logo: BlastIcon,
+      chain: "168587773",
     },
-    {
-      name: "BNB Smart Chain",
-      logo: BscIcon,
-      chain: "97",
-    }
   ];
 }
 const amountNFT = [
@@ -250,17 +178,15 @@ const Category = [
   },
 ];
 export {
-  tokenMatic,
   amountNFT,
   mediaType,
   network,
-  BSC_DEMASK,
-  MUMBAI_DEMASK,
+  BLAST_DEMASK,
   Zksync_DEMASK,
   Goerli_DEMASK,
-  tokenBsc,
   tokenzkSync,
   tokenGoerli,
+  tokenBlast,
   Category,
   version,
   activeNFTPercent
