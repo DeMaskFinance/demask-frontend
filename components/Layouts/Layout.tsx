@@ -14,18 +14,18 @@ export default function Layout({ children }: PropsWithChildren) {
   const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   if (router.isReady) {
-  //     if (!router.query.chain) {
-  //       router.push({
-  //         pathname: router.pathname,
-  //         query: { ...router.query, chain: chainId },
-  //       });
-  //     } else {
-  //       updateChainId(router.query.chain);
-  //     }
-  //   }
-  // }, [chainId, router.asPath, router.isReady]);
+  useEffect(() => {
+    if (router.isReady) {
+      if (!router.query.chain) {
+        router.push({
+          pathname: router.pathname,
+          query: { ...router.query, chain: chainId },
+        });
+      } else {
+        updateChainId(router.query.chain);
+      }
+    }
+  }, [chainId, router.asPath, router.isReady]);
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {
