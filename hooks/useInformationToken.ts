@@ -1,4 +1,5 @@
 import abiErc20 from "@/abi/abiErc20.json";
+import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 
@@ -17,11 +18,12 @@ const useInformationToken = (
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
   const [decimals, setDecimals] = useState("18");
   const [allowanceToken, setAllowanceToken] = useState("");
-  const provider = new ethers.providers.JsonRpcProvider(rpc);
   const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(true);
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   useEffect(() => {
     const getInformationToken = async () => {
+      const providerChoice = await getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
       if (tokenAddress && account && nativeAddress) {
         if (tokenAddress === nativeAddress) {
           setDecimals("18");
@@ -42,7 +44,7 @@ const useInformationToken = (
           const contract = new ethers.Contract(
             tokenAddress,
             abiErc20,
-            provider
+            providerChoice
           );
 
           try {
@@ -61,8 +63,6 @@ const useInformationToken = (
             const balance = bigNumberBalance.div(divisor);
             setBalanceToken(balance.toString());
             // setDecimals(decimals);
-            
-            
           } catch (error) {
             console.error(error);
           }
@@ -73,7 +73,16 @@ const useInformationToken = (
     };
 
     getInformationToken();
-  }, [tokenAddress, account, wallet, isOpenTransaction, isOpenBuyNFT,isOpenSellNFT,routerAddress]);
+  }, [
+    tokenAddress,
+    account,
+    wallet,
+    isOpenTransaction,
+    isOpenBuyNFT,
+    isOpenSellNFT,
+    routerAddress,
+    rpc,
+  ]);
 
   return {
     balanceToken,
@@ -81,7 +90,7 @@ const useInformationToken = (
     decimals,
     allowanceToken,
     isLoadingApprove,
-    isLoadingBalance
+    isLoadingBalance,
   };
 };
 
