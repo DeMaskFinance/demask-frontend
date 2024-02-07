@@ -38,7 +38,7 @@ const tokenBlast = [
   {
     name: "Blast Testnet",
     symbol: "ETH",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
     logo: BlastIcon,
     symbolNative: "WETH"
   },

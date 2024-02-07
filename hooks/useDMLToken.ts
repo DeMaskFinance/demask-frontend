@@ -20,7 +20,8 @@ const useDMLToken = (
           dmlToken,
           nftAddress,
           idNFT,
-          tokenAddress
+          tokenAddress,
+          factoryAddress
         });
         
         setDmlToken(dmlToken);

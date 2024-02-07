@@ -96,7 +96,6 @@ export default function AddLiquidity() {
   console.log(data);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-  console.log(balanceNFT);
 
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
@@ -145,6 +144,7 @@ export default function AddLiquidity() {
       }
     }
   }, [inputNFT, inputToken, data]);
+  console.log(amountErcDesired);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);

@@ -22,9 +22,9 @@ const useInformationToken = (
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   useEffect(() => {
     const getInformationToken = async () => {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
       if (tokenAddress && account && nativeAddress) {
+        const providerChoice = await getProvider(wallet);
+        const provider = new ethers.providers.Web3Provider(providerChoice);
         if (tokenAddress === nativeAddress) {
           setDecimals("18");
           setIsLoadingApprove(false);
