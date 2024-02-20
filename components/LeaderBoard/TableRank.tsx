@@ -50,7 +50,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
             width={120}
             alt="userIMG"
             height={120}
-            className="object-cover w-6 h-6 rounded-lg"
+            className="object-cover w-6 h-6 mr-2 rounded-lg"
           />
         ) : (
           <AvatarUser width={24} height={24} />
@@ -113,7 +113,20 @@ const TableRank = () => {
         return res;
       },
     });
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://api.demask.finance/v2/volume-user-list?userAddress=0x4699a9a5607c9281103ad504fa922276eb6385a2&chainId=168587773&page=1&limit=10"
+  //       );
+  //       console.log(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
+  //   fetchData();
+  // }, []);
   const prevPage = () => {
     const prevPageNumber = Math.max(page - 1, 1);
     setPage(prevPageNumber);
