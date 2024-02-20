@@ -108,9 +108,9 @@ let network: NetworkItem[] = [];
 if (PORT === '3000') {
   network = [
     {
-      name: "zkSync Testnet",
-      logo: ZkSyncIcon,
-      chain: "280",
+      name: "Blast Testnet",
+      logo: BlastIcon,
+      chain: "168587773",
     },
     {
       name: "Goerli Testnet",

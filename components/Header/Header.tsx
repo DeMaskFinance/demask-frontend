@@ -76,7 +76,7 @@ export default function Header() {
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
         const selectedAddress = accounts[0];
-        console.log("selectedADD", selectedAddress);
+        // console.log("selectedADD", selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
           // console.log(provider);
           // console.log("namehehee:", provider.selectedAddress);

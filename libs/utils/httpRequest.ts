@@ -42,19 +42,19 @@ request.interceptors.request.use(
 //   return Promise.reject(new Error(errors));
 // }, onError);
 // Add a response interceptor
-request.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response.status === 401) {
-      store.dispatch(logout());
-    }else {
-      console.error("FAILED RESPONSE!");
-    }
-    if(error.response.status === 404){
-      return Promise.reject(error);
-    }
-    return Promise.reject(error);
-  }
-);
+// request.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     if (error.response.status === 401) {
+//       store.dispatch(logout());
+//     }else {
+//       console.error("FAILED RESPONSE!");
+//     }
+//     if(error.response.status === 404){
+//       return Promise.reject(error);
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default request;
