@@ -10,7 +10,8 @@ import { logout, selectProfile, userData } from "@/store/profileSlice";
 import * as userService from "@/libs/service/userService";
 import { getProvider } from "@/libs/connection/getProvider";
 export default function Layout({ children }: PropsWithChildren) {
-  const { chainId, updateChainId, updateAccount, wallet } = useContext(AccountContext);
+  const { chainId, updateChainId, updateAccount, wallet } =
+    useContext(AccountContext);
   const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
@@ -29,10 +30,15 @@ export default function Layout({ children }: PropsWithChildren) {
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {
-        dispatch(userData({ profile: userInfo?.data }))
-      })
+        dispatch(userData({ profile: userInfo?.data }));
+      });
     }
-  }, [user, accessToken, isLoggedIn])
+    if (isLoggedIn === false) {
+      localStorage.removeItem("ACCOUNT_DEMASK");
+      updateAccount("");
+      dispatch(logout());
+    }
+  }, [user, accessToken, isLoggedIn]);
   const PORT = process.env.NEXT_PUBLIC_APP_PORT;
   useEffect(() => {
     const initProvider = async () => {
@@ -50,8 +56,7 @@ export default function Layout({ children }: PropsWithChildren) {
           const handleChainChanged = (networkId: string) => {
             if (
               (PORT === "3000" && (networkId === "280" || networkId === "5")) ||
-              (PORT === "1307" &&
-                (networkId === "168587773"))
+              (PORT === "1307" && networkId === "168587773")
             ) {
               updateChainId(networkId);
             }
@@ -75,9 +80,7 @@ export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className="box-border w-full overflow-hidden">
       <Header />
-      <main className="mt-[64px] lg:px-primary md:px-14 px-4">
-        {children}
-      </main>
+      <main className="mt-[64px] lg:px-primary md:px-14 px-4">{children}</main>
       <Footer />
       <NavFooter />
     </div>

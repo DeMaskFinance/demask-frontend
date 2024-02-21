@@ -4,7 +4,6 @@ import { BsCaretDownFill } from 'react-icons/bs';
 import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import History from './History';
-import Inventory from './Inventory';
 import Pools from './Pools';
 import Referral from './Referral';
 import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
@@ -16,6 +15,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectProfile } from "@/store/profileSlice";
 import Image from "next/image";
+import Inventory from "./Inventory";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",

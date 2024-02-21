@@ -103,10 +103,10 @@ export default function Creator() {
           setSelectedFile(fileURL);
           setFileIPFS(uploadFileToIPFS(file));
         } else {
-          alert("Vui lòng chọn file nhỏ hơn 1GB");
+          alert("Please choose a file smaller than 1GB");
         }
       } else {
-        alert("Lỗi định dạng file");
+        alert("File format error");
       }
     } else {
       console.log("No file");
