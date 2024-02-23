@@ -1,6 +1,11 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { EditIcon } from "@/components/Icons";
+import {
+  EditIcon,
+  EtherIcon,
+  TwitterIcon,
+  WebsiteIcon,
+} from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -62,9 +67,12 @@ export default function CreatedCollection() {
     }
   }, [inView]);
   return (
-    <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-14 mb-[100px]">
-      <section>
-        <div className="flex items-center justify-center gap-x-6">
+    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px]">
+      <div className="h-[120px] lg:h-[240px]">
+        <div className="w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]"></div>
+      </div>
+      <section className="flex justify-between">
+        <div className="flex items-center gap-x-6">
           <div className="h-[120px]">
             <Image
               src="/images/test.png"
@@ -82,15 +90,41 @@ export default function CreatedCollection() {
               </Link>
             </div>
             <LogoIconCard chainId={chainId} />
-            <div className="flex justify-between text-sm gap-x-3">
-              <p>Total Volume</p>
-              <p>Total Items</p>
+            <div className="flex mt-4 gap-x-2">
+              <Link href="/">
+                <WebsiteIcon width={24} height={24} />
+              </Link>
+              <Link href="/">
+                <TwitterIcon width={24} height={24} />
+              </Link>
             </div>
-            <div className="flex justify-between font-semibold text-dark2">
-              <div>
-                <FormatNumber number={"123"} />
-              </div>
-              <div>789</div>
+          </div>
+        </div>
+        <div className="flex self-end p-4 rounded-lg gap-x-20 bg-dark5">
+          <div className="text-dark2">
+            <p className="mb-1 text-sm">Total Volume</p>
+            <div className="flex items-center text-xl font-semibold ">
+              <FormatNumber number={"1245"} />
+              <EtherIcon width={16} height={16} className="fill-dark2" />
+            </div>
+          </div>
+          <div className="text-dark2">
+            <p className="mb-1 text-sm">Total Sale</p>
+            <div className="flex items-center text-xl font-semibold ">
+              <FormatNumber number={"1245"} />
+              <EtherIcon width={16} height={16} className="fill-dark2" />
+            </div>
+          </div>
+          <div className="text-dark2 gird">
+            <p className="mb-1 text-sm">Listed/Supply</p>
+            <div className="flex items-center text-xl font-semibold ">
+              <FormatNumber number={"1245"} />
+            </div>
+          </div>
+          <div className="text-dark2">
+            <p className="mb-1 text-sm">Owner</p>
+            <div className="flex items-center text-xl font-semibold ">
+              <FormatNumber number={"1245"} />
             </div>
           </div>
         </div>
@@ -100,7 +134,7 @@ export default function CreatedCollection() {
           <SkeletonCategory />
         ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
           <div>
-            <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:grid-cols-3 text-dark2">
               {data?.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (

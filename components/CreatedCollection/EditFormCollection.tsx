@@ -44,8 +44,11 @@ const EditFormCollection = () => {
     }
   };
   return (
-    <div className="py-8 min-h-[75vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto  mb-14 lg:mb-0">
-      <h1 className="text-2xl font-semibold text-center">
+    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto mb-[100px]">
+      <div className="h-[120px] lg:h-[240px]">
+        <div className="w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]"></div>
+      </div>
+      <h1 className="mt-4 text-2xl font-semibold text-center">
         Edit Collection Details
       </h1>
       <Formik

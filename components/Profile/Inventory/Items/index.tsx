@@ -72,8 +72,8 @@ const Items = () => {
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <div>
-          <h1 className="text-2xl font-semibold text-center">My Items</h1>
-          <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
+          <h1 className="mb-6 text-2xl font-semibold text-center">My Items</h1>
+          <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
             {data?.pages.map((page, pageIndex) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (

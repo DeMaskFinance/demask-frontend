@@ -20,7 +20,7 @@ function WithAuth({ children }: any) {
     return (
         <div>
             <NextSeo {...updateMeta} />
-            <div className='max-w-6xl mx-auto min-h-[75vh]'>
+            <div className='max-w-[1440px] mx-auto min-h-[75vh]'>
                 {isLoggedIn ? (
                     <div>
                         {children}

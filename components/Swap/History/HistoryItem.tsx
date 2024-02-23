@@ -2,7 +2,7 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon } from "@/components/Icons";
 import Link from "next/link";
 import React from "react";
-import TableRowSkeleton from "../../Skeleton/SkeletonTablev2";
+import { SkeletonTable } from "@/components/Skeleton";
 interface HistorySwapProps {
     data: any,
     isLoading: boolean,
@@ -19,7 +19,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
     return (
         <>
             {isLoading || isFetching ? (
-                <TableRowSkeleton length={7} col={6} />
+                <SkeletonTable length={9} />
             ) : (
                 <>
                     {data &&

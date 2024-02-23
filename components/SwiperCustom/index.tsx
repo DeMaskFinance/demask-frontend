@@ -33,7 +33,7 @@ const SwiperCustom = ({ children }: any) => {
           navigation={true}
           modules={[Navigation]}
           className="hidden mySwiper lg:block md:block"
-          slidesPerView={4}
+          slidesPerView={5}
           slidesPerGroup={1}
           ref={swiperRef}
           breakpoints={{
@@ -50,7 +50,7 @@ const SwiperCustom = ({ children }: any) => {
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 4,
+              slidesPerView: 5,
               spaceBetween: 30,
             },
           }}

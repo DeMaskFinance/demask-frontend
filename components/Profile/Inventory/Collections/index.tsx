@@ -12,7 +12,7 @@ const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-center">Created</h1>
+      <h1 className="mb-4 text-2xl font-semibold text-center">Created</h1>
       <SwiperCustom>
         <ul className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:grid-cols-2 text-dark2">
           <SwiperSlide className="text-sm lg:text-base text-dark2">
