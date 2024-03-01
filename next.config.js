@@ -8,6 +8,7 @@ const nextConfig = {
       "demask.infura-ipfs.io",
       "api.demask.finance",
       "file.demask.finance",
+      "metadata.degods.com",
     ],
   },
   env: {

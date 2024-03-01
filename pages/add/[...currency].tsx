@@ -93,7 +93,6 @@ export default function AddLiquidity() {
     },
     keepPreviousData: true,
   });
-  console.log(data);
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
 
@@ -377,7 +376,6 @@ export default function AddLiquidity() {
               </Button>
             )}
             {!account && (
-              !account && (
                 <Button
                   className="w-[144px] py-2"
                   primary
@@ -385,8 +383,7 @@ export default function AddLiquidity() {
                 >
                   CONNECT WALLET
                 </Button>
-              )
-            )}
+              )}
             {Math.floor(amountErcDesired) === 0 && inputNFT && inputToken === '0' && (
               <p className="mt-3 ml-3 text-xs text-red" key="inputNFT">
                 Can't add liquidity

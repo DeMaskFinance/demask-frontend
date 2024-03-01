@@ -9,7 +9,7 @@ import { FunctionComponent, useContext, useEffect, useRef, useState } from "reac
 import { AiOutlineClose } from "react-icons/ai";
 import { CgClose } from "react-icons/cg";
 import MediaNFT from "../Common/MediaNFT";
-import { SearchIcon } from "../Icons";
+import { SearchIconHeader } from "../Icons";
 
 interface SearchProps {
   isFocused: boolean;
@@ -163,7 +163,7 @@ const Search: FunctionComponent<SearchProps> = ({ isFocused, setShowSearch }) =>
               </div>
             )}
             <div onClick={handleActive}>
-              <SearchIcon
+              <SearchIconHeader
                 width={32}
                 height={32}
                 className={`${active ? "" : ""

@@ -25,45 +25,22 @@ interface ModalDetailProps {
   setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenDetail: boolean;
 }
-const Items = () => {
-  const { account, chainId, demask } = useContext(AccountContext);
+interface ItemListProps {
+  data: any;
+  isSuccess: boolean;
+  isLoading: boolean;
+}
+export const ItemList: React.FC<ItemListProps> = ({
+  data,
+  isSuccess,
+  isLoading,
+}) => {
+  const { chainId, demask } = useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
-  const { ref, inView } = useInView();
-  const fetchDataNFTs = async (
-    pageParam = 1,
-    chain: string | string[],
-    account: string
-  ) => {
-    const data = await nftsUserService(account, chain, pageParam);
-    return data;
-  };
-
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery(
-    ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
   return (
     <div>
       {isLoading ? (
@@ -72,9 +49,8 @@ const Items = () => {
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <div>
-          <h1 className="mb-6 text-2xl font-semibold text-center">My Items</h1>
           <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
-            {data?.pages.map((page, pageIndex) => (
+            {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (
                   <div key={index} className="relative overflow-hidden">
@@ -103,7 +79,12 @@ const Items = () => {
                           </div>
                           {/* <ActiveIcon width={24} height={24} className="mr-4 fill-yellow" /> */}
                         </div>
-                        <LogoIconCard chainId={chainId}/>
+                        <div className="flex items-center justify-between">
+                          <LogoIconCard chainId={chainId} />
+                          <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px]">
+                            ERC 1155
+                          </p>
+                        </div>
                         <div className="flex justify-between text-sm">
                           <p>Floor price</p>
                           <p>Balance</p>
@@ -162,6 +143,48 @@ const Items = () => {
           isOpenDetail={isOpenDetail}
         />
       )}
+    </div>
+  );
+};
+const Items = () => {
+  const { account, chainId, demask } = useContext(AccountContext);
+
+  const { ref, inView } = useInView();
+  const fetchDataNFTs = async (
+    pageParam = 1,
+    chain: string | string[],
+    account: string
+  ) => {
+    const data = await nftsUserService(account, chain, pageParam);
+    return data;
+  };
+
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useInfiniteQuery(
+    ["NFTsUser", chainId, account],
+    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
+    {
+      getNextPageParam: (page) =>
+        page?.currentPage === page?.totalPages
+          ? undefined
+          : page?.currentPage + 1,
+    }
+  );
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+  return (
+    <div>
+      <h1 className="my-4 text-2xl font-semibold text-center">My Items</h1>
+      <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
       <div ref={ref} style={{ height: "1px" }}></div>
     </div>
   );

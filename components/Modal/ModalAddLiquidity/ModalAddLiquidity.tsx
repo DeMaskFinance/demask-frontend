@@ -21,7 +21,7 @@ interface ModalAddLiquidityProps {
   setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
-  setHash: React.Dispatch<React.SetStateAction<string>>
+  setHash: React.Dispatch<React.SetStateAction<string>>;
 }
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
@@ -33,7 +33,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   setIsOpenLiquidity,
   setHash,
   setIsOpenSuccess,
-  setIsOpenError
+  setIsOpenError,
 }) => {
   const [inputNFT, setInputNFT] = useState<string>("");
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
@@ -41,16 +41,24 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
-  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>('0');
+  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] = useState<boolean>(false);
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } = useContext(AccountContext);
-  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+  const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
+    useState<boolean>(false);
+  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+    useContext(AccountContext);
+  const {
+    ROUTER: routerAddress,
+    RPC: rpc,
+    NATIVE_ADDRESS: nativeAddress,
+  } = demask;
 
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenLiquidity(false);
@@ -63,8 +71,15 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     isOpenTransaction
   );
 
-  const { balanceToken, bigNumberBalance, allowanceToken } =
-    useInformation(account, data.tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
+  const { balanceToken, bigNumberBalance, allowanceToken } = useInformation(
+    account,
+    data.tokenAddress,
+    wallet,
+    routerAddress,
+    rpc,
+    nativeAddress,
+    isOpenTransaction
+  );
 
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
@@ -85,13 +100,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
 
   useEffect(() => {
     let amountErcDesired;
-    if (
-      data?.dmlAddress !== null &&
-      data &&
-      inputNFT
-    ) {
-      amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * (1 + (slippage / 100));
-
+    if (data?.dmlAddress !== null && data && inputNFT) {
+      amountErcDesired =
+        ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
+        (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(
         Number(inputToken),
@@ -106,7 +118,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
-        setIsSufficientToken(true)
+        setIsSufficientToken(true);
       } else {
         setIsSufficientToken(false);
       }
@@ -131,7 +143,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     } else {
       setIsInputNFT(true);
     }
-  }
+  };
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
@@ -183,28 +195,27 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     <p className="font-semibold">Token</p>
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
-                  {
-                    data.dmlAddress === null ? (
-                      <input
-                        className={styles.inputItem}
-                        type="number"
-                        placeholder="Input amount Token"
-                        value={inputToken}
-                        onChange={handleGetToken}
-                      />
-                    ) : (
-                      <div>
-                        {data ? (
-                          <div className={styles.inputItem}>
-                            {amountErcDesiredToDec}
-                          </div>
-                        ) : (
-                          <div className={styles.inputItem}>
-                            <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
-                          </div>
-                        )}
-                      </div>
-                    )}
+                  {data.dmlAddress === null ? (
+                    <input
+                      className={styles.inputItem}
+                      type="number"
+                      placeholder="Input amount Token"
+                      value={inputToken}
+                      onChange={handleGetToken}
+                    />
+                  ) : (
+                    <div>
+                      {data ? (
+                        <div className={styles.inputItem}>
+                          {amountErcDesiredToDec}
+                        </div>
+                      ) : (
+                        <div className={styles.inputItem}>
+                          <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                        </div>
+                      )}
+                    </div>
+                  )}
                   {isSufficientToken && (
                     <p
                       className="mb-2 ml-3 -mt-1 text-xs text-red"
@@ -260,10 +271,30 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalConfirmAddLiquidity isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={data.tokenAddress} nftAddress={data.nftAddress} idNFT={data.nftID} data={data} inputToken={inputToken} setInputToken={setInputToken} setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity} inputNFT={inputNFT} setInputNFT={setInputNFT} setIsOpenLiquidity={setIsOpenLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
-      <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+      <ModalConfirmAddLiquidity
+        isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
+        isOpenTransaction={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+        tokenAddress={data.tokenAddress}
+        nftAddress={data.nftAddress}
+        idNFT={data.nftID}
+        data={data}
+        inputToken={inputToken}
+        setInputToken={setInputToken}
+        setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
+        inputNFT={inputNFT}
+        setInputNFT={setInputNFT}
+        setIsOpenLiquidity={setIsOpenLiquidity}
+        setHash={setHash}
+        setIsOpenSuccess={setIsOpenSuccess}
+        setIsOpenError={setIsOpenError}
+      />
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+        isTransaction={true}
+      />
     </Wrapper>
-
   );
 };
 

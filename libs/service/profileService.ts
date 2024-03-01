@@ -42,4 +42,27 @@ const historyUserService = async (
     console.error(error);
   }
 };
-export { nftsUserService, poolsUserService, historyUserService };
+const collectionListUserService = async (
+  account: string,
+  chainId: string | string[],
+  type: string,
+  category: string,
+  search: string,
+  page: number,
+  limit: number
+) => {
+  try {
+    const res = await request.get(
+      `NFT-collection-list?userAddress=${account}&chainId=${chainId}&type=${type}&category=${category}&search=${search}&page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export {
+  nftsUserService,
+  poolsUserService,
+  historyUserService,
+  collectionListUserService,
+};

@@ -22,9 +22,9 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
         <button
           key={choice}
           type="button"
-          className={`py-2 px-3 lg:px-6 rounded-lg text-sm ${activeChoice === "BUY" && activeChoice === choice
+          className={`py-2 px-3 lg:px-6 rounded-lg text-sm ${activeChoice === "Buy" && activeChoice === choice
               ? "bg-green"
-              : activeChoice === "SELL" && activeChoice === choice ? 'bg-red' : activeChoice === choice
+              : activeChoice === "Sell" && activeChoice === choice ? 'bg-red' : activeChoice === choice
                 ? "bg-secondary5"
                 : ""
             }`}
