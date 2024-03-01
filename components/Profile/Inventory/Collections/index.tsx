@@ -63,7 +63,7 @@ const Created = () => {
     ["NFTsUser", chainId, account, typeERC, category, debouncedSearch],
     ({ pageParam = 1 }) =>
       fetchDataNFTs(
-        '0x4699a9a5607c9281103ad504fa922276eb6385a2',
+        "0x4699a9a5607c9281103ad504fa922276eb6385a2",
         chainId,
         typeERC,
         category,
@@ -136,15 +136,19 @@ const Created = () => {
                                   </h6>
                                 </div>
                               </div>
-                              <LogoIconCard chainId={chainId} />
+                              <div className="flex items-center justify-between">
+                                <LogoIconCard chainId={chainId} />
+                                <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase">
+                                  {item.type}
+                                </p>
+                              </div>
                               <div className="flex justify-between text-sm">
                                 <p>Total Volume</p>
                                 <p>Total Items</p>
                               </div>
                               <div className="flex justify-between font-semibold text-dark2">
                                 <div>
-                                  {/* <FormatNumber number={"123"} /> */}
-                                  -
+                                  {/* <FormatNumber number={"123"} /> */}-
                                 </div>
                                 <div>
                                   <FormatNumber number={item.totalItems} />

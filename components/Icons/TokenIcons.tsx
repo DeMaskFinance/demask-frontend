@@ -73,9 +73,32 @@ export const BlastIcon: React.FunctionComponent<IconProps> = ({
       fill="#636977"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M3.5 0L0 2.5H20.5L19.0358 6H11.5L10.5 8.5H18.5L17 12.5H6L8 5L5.5 3L1.72897 15H17L20 13.5L21.5 9.5L19 7.5L22.5 5.5L24 1.5L22 0H3.5Z"
-      />
+      <path d="M3.5 0L0 2.5H20.5L19.0358 6H11.5L10.5 8.5H18.5L17 12.5H6L8 5L5.5 3L1.72897 15H17L20 13.5L21.5 9.5L19 7.5L22.5 5.5L24 1.5L22 0H3.5Z" />
+    </svg>
+  );
+};
+export const MonadIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="#636977"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_6320_32681)">
+        <path d="M11.9999 0C8.53462 0 0 8.53433 0 11.9998C0 15.4652 8.53462 23.9997 11.9999 23.9997C15.4652 23.9997 24 15.4651 24 11.9998C24 8.53447 15.4654 0 11.9999 0ZM10.1299 18.8617C8.66865 18.4635 4.73985 11.5911 5.13811 10.1298C5.53637 8.66845 12.4087 4.73978 13.87 5.13804C15.3313 5.53624 19.2601 12.4085 18.8619 13.8699C18.4636 15.3312 11.5912 19.2599 10.1299 18.8617Z" />
+      </g>
+      <defs>
+        <clipPath id="clip0_6320_32681">
+          <rect width="24" height="23.9997" fill="white" />
+        </clipPath>
+      </defs>
     </svg>
   );
 };

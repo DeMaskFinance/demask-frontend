@@ -7,7 +7,8 @@ import {
   EtherIcon,
   ZkSyncIcon,
   GoerliIcon,
-  BlastIcon
+  BlastIcon,
+  MonadIcon,
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -15,15 +16,15 @@ interface NetworkItem {
   chain: string;
   disable?: boolean;
 }
-const version ="Version 0.1.8";
+const version = "Version 0.1.8";
 const tokenGoerli = [
   {
     name: "Goerli",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
     logo: EtherIcon,
-    symbolNative: "ETH"
-  }
+    symbolNative: "ETH",
+  },
 ];
 const tokenzkSync = [
   {
@@ -31,7 +32,7 @@ const tokenzkSync = [
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
     logo: ZkSyncIcon,
-    symbolNative: "WETH"
+    symbolNative: "WETH",
   },
 ];
 const tokenBlast = [
@@ -40,14 +41,15 @@ const tokenBlast = [
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
     logo: BlastIcon,
-    symbolNative: "WETH"
+    symbolNative: "WETH",
   },
 ];
 const activeNFTPercent = [
-  { text: '25%', percent: 0.25 },
-  { text: '50%', percent: 0.5 },
-  { text: '75%', percent: 0.75 },
-  { text: 'MAX', percent: 1 },]
+  { text: "25%", percent: 0.25 },
+  { text: "50%", percent: 0.5 },
+  { text: "75%", percent: 0.75 },
+  { text: "MAX", percent: 1 },
+];
 const BLAST_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_BLAST,
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BLAST,
@@ -60,10 +62,10 @@ const BLAST_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
   USDT: process.env.NEXT_PUBLIC_USDT_BLAST,
   USDC: process.env.NEXT_PUBLIC_USDC_BLAST,
-  urltxHash:"https://testnet.blastscan.io/",
-  chainName:"Blast Testnet",
-  NAME:"Blast Testnet",
-  CURRENCY:"ETH"
+  urltxHash: "https://testnet.blastscan.io/",
+  chainName: "Blast Testnet",
+  NAME: "Blast Testnet",
+  CURRENCY: "ETH",
 };
 const Zksync_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_Zksync,
@@ -77,11 +79,11 @@ const Zksync_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_Zksync,
   USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
   USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
-  ROYALTY:process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Zksync,
-  urltxHash:"https://goerli.explorer.zksync.io/",
-  chainName:"zkSync Testnet",
-  NAME:"zkSync Testnet",
-  CURRENCY:"ETH"
+  ROYALTY: process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Zksync,
+  urltxHash: "https://goerli.explorer.zksync.io/",
+  chainName: "zkSync Testnet",
+  NAME: "zkSync Testnet",
+  CURRENCY: "ETH",
 };
 const Goerli_DEMASK = {
   RPC: process.env.NEXT_PUBLIC_RPC_Goerli,
@@ -97,17 +99,17 @@ const Goerli_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_Goerli,
   USDT: process.env.NEXT_PUBLIC_USDT_Goerli,
   USDC: process.env.NEXT_PUBLIC_USDC_Goerli,
-  ROYALTY:process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Goerli,
-  urltxHash:"https://goerli.etherscan.io/",
-  chainName:"Goerli Testnet",
-  NAME:"Goerli Testnet",
-  CURRENCY:"ETH"
+  ROYALTY: process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Goerli,
+  urltxHash: "https://goerli.etherscan.io/",
+  chainName: "Goerli Testnet",
+  NAME: "Goerli Testnet",
+  CURRENCY: "ETH",
 };
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
 
-if (PORT === '3000') {
+if (PORT === "3000") {
   network = [
     {
       name: "Blast Testnet",
@@ -119,8 +121,14 @@ if (PORT === '3000') {
       logo: GoerliIcon,
       chain: "5",
     },
+    {
+      name: "Monad Devnet",
+      logo: MonadIcon,
+      chain: "123",
+      disable: true,
+    },
   ];
-} else if (PORT === '1307') {
+} else if (PORT === "1307") {
   network = [
     {
       name: "Blast Testnet",
@@ -153,7 +161,7 @@ const amountNFT = [
 ];
 const mediaType = {
   image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml", ".webp"],
-  video: [".mp4", ".quicktime",".m4v"],
+  video: [".mp4", ".quicktime", ".m4v"],
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
@@ -191,5 +199,5 @@ export {
   tokenBlast,
   Category,
   version,
-  activeNFTPercent
+  activeNFTPercent,
 };
