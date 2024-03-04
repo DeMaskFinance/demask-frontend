@@ -36,7 +36,6 @@ interface ModalConfirmAddLiquidityProps {
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenLiquidity?: React.Dispatch<React.SetStateAction<boolean>>;
-  isERC721?: boolean;
 }
 
 const ModalConfirmAddLiquidity: React.FunctionComponent<

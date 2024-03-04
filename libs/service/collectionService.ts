@@ -2,7 +2,7 @@ import request from "../utils/httpRequest";
 
 const collectionListERC1155 = async (
   type: string,
-  contractAddress: string,
+  contractAddress: string | string[],
   chainId: string | string[],
   page: number,
   limit: number

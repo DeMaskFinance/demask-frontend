@@ -17,7 +17,7 @@ import React, { useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import DetailERC721 from "../ERC721/DetailERC721";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { collectionDetail } from "@/libs/service/collectionService";
+import { collectionDetail, collectionListERC1155 } from "@/libs/service/collectionService";
 
 export default function CreatedCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
@@ -25,47 +25,48 @@ export default function CreatedCollection() {
     "typeERC",
     withDefault(StringParam, "")
   );
-  const collectionAddress = useRouter().query.created;
+  const collectionAddress = useRouter().query.created || "";
   const { ref, inView } = useInView();
-  // const fetchDataNFTs = async (
-  //   typeERC: string,
-  //   collectionAddress: string,
-  //   chain: string | string[],
-  //   pageParam = 1
-  // ) => {
-  //   const data = await collectionDetail(
-  //     collectionAddress,
-  //     chain,
-  //     pageParam,
-  //     10
-  //   );
-  //   return data.data;
-  // };
+  const fetchDataNFTs = async (
+    typeERC: string,
+    collectionAddress: string | string[],
+    chain: string | string[],
+    pageParam = 1
+  ) => {
+    const data = await collectionListERC1155(
+      typeERC,
+      collectionAddress,
+      chain,
+      pageParam,
+      10
+    );
+    return data.data;
+  };
 
-  // const {
-  //   data,
-  //   fetchNextPage,
-  //   isFetchingNextPage,
-  //   isSuccess,
-  //   isLoading,
-  //   isFetching,
-  // } = useInfiniteQuery(
-  //   ["NFTsUser", chainId, collectionAddress, typeERC],
-  //   ({ pageParam = 1 }) =>
-  //     fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
-  //   {
-  //     getNextPageParam: (page) =>
-  //       page?.currentPage === page?.totalPages
-  //         ? undefined
-  //         : page?.currentPage + 1,
-  //   }
-  // );
-  // useEffect(() => {
-  //   if (inView) {
-  //     fetchNextPage();
-  //   }
-  // }, [inView]);
-  const { data, isLoading, isSuccess } = useQuery({
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useInfiniteQuery(
+    ["NFTsUser", chainId, collectionAddress, typeERC],
+    ({ pageParam = 1 }) =>
+      fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
+    {
+      getNextPageParam: (page) =>
+        page?.currentPage === page?.totalPages
+          ? undefined
+          : page?.currentPage + 1,
+    }
+  );
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+  const { data:dataDetail } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
       if (collectionAddress) {
@@ -74,7 +75,7 @@ export default function CreatedCollection() {
       }
     },
   });
-  console.log(data);
+  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px]">
@@ -100,12 +101,12 @@ export default function CreatedCollection() {
               </Link>
             </div>
             <p className="text-xs">
-              {data.description}
+              {dataDetail?.description}
             </p>
 
             <div className="flex justify-between mt-4 gap-x-10">
               <div className="flex gap-x-2">
-                <Link href="/">
+                <Link href="/" >
                   <WebsiteIcon width={24} height={24} />
                 </Link>
                 <Link href="/">
@@ -113,7 +114,7 @@ export default function CreatedCollection() {
                 </Link>
               </div>
               <div className="flex gap-x-6">
-                <p className="px-2 py-1 rounded-full bg-dark4">ERC 1155</p>
+                <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap">{dataDetail?.type}</p>
                 <LogoIconCard chainId={chainId} />
               </div>
             </div>
@@ -148,13 +149,11 @@ export default function CreatedCollection() {
           </div>
         </div>
       </section>
-      {/* {typeERC === 'erc721' ? (
+      {typeERC === 'erc721' ? (
         <DetailERC721 />
       ) : (
         <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
-      )} */}
-      {/* <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} /> */}
-      <div ref={ref} style={{ height: "1px" }}></div>
+      )}
     </div>
   );
 }

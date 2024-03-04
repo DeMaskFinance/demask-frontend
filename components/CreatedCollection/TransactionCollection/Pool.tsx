@@ -1,5 +1,5 @@
 import { Button } from "@/components/Buttons";
-import ModalConfirmAddLiquidity from "@/components/Modal/ModalConfirmAddLiquidity";
+import ModalConfirmAddLiquidityERC721 from "@/components/Modal/ModalConfirmAddLiquidityERC721";
 import {
   ModalError,
   ModalSuccess,
@@ -17,7 +17,6 @@ import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -33,7 +32,6 @@ const Pool = () => {
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [amountTokenMin, setAmountTokenMin] = useState<number>(0);
-  const [inputNFT, setInputNFT] = useState<string>("3");
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
@@ -150,11 +148,10 @@ const Pool = () => {
     }
   };
   const handleAddLiquidity = () => {
-    if (inputNFT && !isSufficientToken) {
+    if (!isSufficientToken) {
       setIsOpenConfirmAddLiquidity(true);
     }else{
       console.log({
-        inputNFT,
         isSufficientToken
       });
     }
@@ -221,7 +218,7 @@ const Pool = () => {
         </div>
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalConfirmAddLiquidity
+      <ModalConfirmAddLiquidityERC721
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
@@ -232,8 +229,6 @@ const Pool = () => {
         inputToken={inputToken}
         setInputToken={setInputToken}
         setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
-        inputNFT={inputNFT}
-        setInputNFT={setInputNFT}
         setHash={setHash}
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
