@@ -16,15 +16,15 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
-  const [typeERC, setTypeERC] = useQueryParam(
+  const [typeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
   );
-  const [category, setCategory] = useQueryParam(
+  const [category] = useQueryParam(
     "category",
     withDefault(StringParam, "")
   );
-  const [searchCollection, setSearchCollection] = useQueryParam(
+  const [searchCollection] = useQueryParam(
     "searchCollection",
     withDefault(StringParam, "")
   );
@@ -72,8 +72,6 @@ const Created = () => {
       ),
     {
       getNextPageParam: (page) => {
-        console.log(page);
-
         return page.data?.currentPage === page.data?.totalPages
           ? undefined
           : page.data?.currentPage + 1;
@@ -101,7 +99,7 @@ const Created = () => {
                   {page?.data?.data?.map((item: any, itemIndex: number) => (
                     <li key={itemIndex}>
                       <SwiperSlide className="text-sm lg:text-base text-dark2">
-                        <Link href={`created/123123`}>
+                        <Link href={`created/${item.contractAddress}?typeERC=${item.type}`}>
                           <li className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
                             <div className="h-[127px]">
                               {item.avatar ? (

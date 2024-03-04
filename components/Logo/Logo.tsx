@@ -1024,7 +1024,7 @@ export const LogoIconCard: React.FunctionComponent<LogoProps> = ({
       ) : chainId === "5" ? (
         <div className="flex items-center gap-x-1">
           <GoerliIcon width={18} height={12} className="fill-secondary3" />
-          <p className="text-[12px] font-semibold text-secondary3">
+          <p className="text-[12px] font-semibold text-secondary3 whitespace-nowrap">
             Goerli Testnet
           </p>
         </div>

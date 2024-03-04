@@ -11,9 +11,14 @@ import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import FormatNumber from "@/components/Common/FormatNumber";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import Pool from "./Pool";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const TransactionCollection = () => {
   const { account, chainId, demask } = useContext(AccountContext);
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
+  const [typeERC, setTypeERC] = useQueryParam(
+    "typeERC",
+    withDefault(StringParam, "")
+  );
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -22,7 +27,7 @@ const TransactionCollection = () => {
     chain: string | string[],
     account: string
   ) => {
-    const data = await nftsUserService(account, chain, pageParam);
+    const data = await nftsUserService(account, chain, typeERC, pageParam);
     return data;
   };
 
@@ -137,7 +142,7 @@ const TransactionCollection = () => {
         ) : activeChoice === "Sell" ? (
           <div>Upcoming</div>
         ) : (
-          <Pool/>
+          <Pool />
         )}
       </div>
     </div>

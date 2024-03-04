@@ -18,6 +18,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalDetailProps {
   data: any;
   nftAddress: string;
@@ -63,11 +64,11 @@ export const ItemList: React.FC<ItemListProps> = ({
                           document.body.style.overflowY = "hidden";
                         }}
                       >
-                        <MediaNFT data={item} isControls={false} hover />
+                        {/* <MediaNFT data={item} isControls={false} hover /> */}
                       </div>
                       <div className="w-full">
                         <div className="flex w-full mt-2">
-                          <div className="w-full">
+                          {/* <div className="w-full">
                             <h6
                               title={item.metadata.name}
                               className="flex items-start gap-2 font-medium uppercase"
@@ -76,8 +77,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                                 <ModalDocument data={item.metadata.name} />
                               </span>
                             </h6>
-                          </div>
-                          {/* <ActiveIcon width={24} height={24} className="mr-4 fill-yellow" /> */}
+                          </div> */}
                         </div>
                         <div className="flex items-center justify-between">
                           <LogoIconCard chainId={chainId} />
@@ -91,7 +91,8 @@ export const ItemList: React.FC<ItemListProps> = ({
                         </div>
                         <div className="flex justify-between font-semibold text-dark2">
                           <div>
-                            <FormatNumber number={item.floorPrice} />
+                            {/* <FormatNumber number={item.floorPrice} /> */}
+                            -
                           </div>
                           <div>
                             {item.nftBalance ? (
@@ -148,15 +149,19 @@ export const ItemList: React.FC<ItemListProps> = ({
 };
 const Items = () => {
   const { account, chainId, demask } = useContext(AccountContext);
-
+  const [typeERC, setTypeERC] = useQueryParam(
+    "typeERC",
+    withDefault(StringParam, "")
+  );
   const { ref, inView } = useInView();
   const fetchDataNFTs = async (
     pageParam = 1,
     chain: string | string[],
-    account: string
+    account: string,
+    typeERC: string
   ) => {
-    const data = await nftsUserService(account, chain, pageParam);
-    return data;
+    const data = await nftsUserService(account, chain, typeERC, pageParam);
+    return data.data;
   };
 
   const {
@@ -167,8 +172,8 @@ const Items = () => {
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
+    ["NFTsUser", chainId, account, typeERC],
+    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account, typeERC),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -181,6 +186,7 @@ const Items = () => {
       fetchNextPage();
     }
   }, [inView]);
+  
   return (
     <div>
       <h1 className="my-4 text-2xl font-semibold text-center">My Items</h1>

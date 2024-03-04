@@ -9,56 +9,73 @@ import { LogoIconCard } from "@/components/Logo/Logo";
 import { ItemList } from "@/components/Profile/Inventory/Items";
 import AccountContext from "@/context/AccountContext";
 import { nftsUserService } from "@/libs/service/profileService";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import DetailERC721 from "../ERC721/DetailERC721";
-interface ModalDetailProps {
-  data: any;
-  nftAddress: string;
-  nftID: string;
-  setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpenDetail: boolean;
-}
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { collectionDetail } from "@/libs/service/collectionService";
+
 export default function CreatedCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
-  const address = useRouter().query.created;
-  const { ref, inView } = useInView();
-  const fetchDataNFTs = async (
-    pageParam = 1,
-    chain: string | string[],
-    account: string
-  ) => {
-    const data = await nftsUserService(account, chain, pageParam);
-    return data;
-  };
-
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery(
-    ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
+  const [typeERC, setTypeERC] = useQueryParam(
+    "typeERC",
+    withDefault(StringParam, "")
   );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
-  const typeERC = 721;
+  const collectionAddress = useRouter().query.created;
+  const { ref, inView } = useInView();
+  // const fetchDataNFTs = async (
+  //   typeERC: string,
+  //   collectionAddress: string,
+  //   chain: string | string[],
+  //   pageParam = 1
+  // ) => {
+  //   const data = await collectionDetail(
+  //     collectionAddress,
+  //     chain,
+  //     pageParam,
+  //     10
+  //   );
+  //   return data.data;
+  // };
+
+  // const {
+  //   data,
+  //   fetchNextPage,
+  //   isFetchingNextPage,
+  //   isSuccess,
+  //   isLoading,
+  //   isFetching,
+  // } = useInfiniteQuery(
+  //   ["NFTsUser", chainId, collectionAddress, typeERC],
+  //   ({ pageParam = 1 }) =>
+  //     fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
+  //   {
+  //     getNextPageParam: (page) =>
+  //       page?.currentPage === page?.totalPages
+  //         ? undefined
+  //         : page?.currentPage + 1,
+  //   }
+  // );
+  // useEffect(() => {
+  //   if (inView) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView]);
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["detailCollection", chainId, collectionAddress],
+    queryFn: async () => {
+      if (collectionAddress) {
+        const res = await collectionDetail(collectionAddress, chainId);
+        return res.data;
+      }
+    },
+  });
+  console.log(data);
+
   return (
     <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px]">
       <div className="h-[120px] lg:h-[240px]">
@@ -83,9 +100,7 @@ export default function CreatedCollection() {
               </Link>
             </div>
             <p className="text-xs">
-              Timefall Valley is a small city that has always remained isolated
-              from the outside world. It is a time capsule, reminding us of a
-              cherished
+              {data.description}
             </p>
 
             <div className="flex justify-between mt-4 gap-x-10">
@@ -133,11 +148,12 @@ export default function CreatedCollection() {
           </div>
         </div>
       </section>
-      {typeERC === 721 ? (
+      {/* {typeERC === 'erc721' ? (
         <DetailERC721 />
       ) : (
         <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
-      )}
+      )} */}
+      {/* <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} /> */}
       <div ref={ref} style={{ height: "1px" }}></div>
     </div>
   );
