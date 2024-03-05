@@ -1,15 +1,15 @@
 import { DefaultSeoProps } from "next-seo";
 
 export const SEO: DefaultSeoProps = {
-  titleTemplate: "%s | DeMask",
-  defaultTitle: "DeMask",
+  titleTemplate: "%s | DeMask App",
+  defaultTitle: "DeMask App",
   description:
     "Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program.",
-  twitter: {
-    cardType: "summary_large_image",
-    handle: "@DeMask",
-    site: "@DeMask",
-  },
+  // twitter: {
+  //   cardType: "summary_large_image",
+  //   handle: "@DeMask",
+  //   site: "@DeMask",
+  // },
   openGraph: {
     title:
       "DeMask - Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program",
