@@ -45,7 +45,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       justify-center
       ${primary ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear" : ""}
       ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
-      ${active ? "bg-dark3 px-6 py-2 text-white hover:bg-white hover:text-secondary5 border border-dark3 hover:border-secondary5" : ""}
+      ${active ? "bg-dark3 px-3 py-2 text-white hover:bg-white hover:text-secondary5 border border-dark3 hover:border-secondary5" : ""}
       ${secondary ? "bg-white text-dark3" : ""}
       ${outline ? " border border-dark3 " : ""}
       ${className}

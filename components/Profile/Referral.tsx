@@ -22,8 +22,8 @@ const Referral = () => {
         }
     }, [isCopy]);
     return (
-        <div className='w-full lg:w-[70%] mx-auto'>
-            <div className='flex flex-col p-8 mb-6 border rounded-lg border-dark3 text-dark2 gap-y-2 shadow-home'>
+        <div className='w-full mx-auto'>
+            {/* <div className='flex flex-col p-8 mb-6 border rounded-lg border-dark3 text-dark2 gap-y-2 shadow-home'>
                 <p className='text-secondary5'>Invite your friends to DEMASK, if they sign up</p>
                 <h1 className='my-6 font-semibold'>Refer Friends To Earn</h1>
                 <p>Experience a new way of earning rewards by inviting your friends to join DeMask & earn up to 10% commission every time they trade on DeMask.</p>
@@ -38,7 +38,8 @@ const Referral = () => {
                     </Tippy>
                 </div>
             </div>
-            <SkeletonTable length={8}/>
+            <SkeletonTable length={8}/> */}
+            <div className='text-dark2'>Upcoming</div>
         </div>
     )
 }

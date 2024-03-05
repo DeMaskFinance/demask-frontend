@@ -7,7 +7,8 @@ import {
   EtherIcon,
   ZkSyncIcon,
   GoerliIcon,
-  BlastIcon
+  BlastIcon,
+  MonadIcon
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -116,6 +117,12 @@ if (PORT === '3000') {
       name: "Goerli Testnet",
       logo: GoerliIcon,
       chain: "5",
+    },
+    {
+      name: "Monad Devnet",
+      logo: MonadIcon,
+      chain: "123",
+      disable: true,
     },
   ];
 } else if (PORT === '1307') {

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import { EtherIcon, RankIcon } from '../Icons'
+import { DiamondIcon, EtherIcon, RankIcon } from '../Icons'
 import FormatNumber from '../Common/FormatNumber'
 import { AvatarUser } from '../Avatars'
 import { formatToUnit } from '@/libs/utils/formatToUnit'
@@ -42,14 +42,10 @@ const CardList = ({ data }: any) => {
                 <div className='absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit'>
                     <RankIcon width={24} height={24} className={`${data?.rank === 1 ? 'fill-yellow' : data?.rank === 2 ? "fill-blue" : data?.rank === 3 ? "fill-red" : ''}`} />
                 </div>
-                <div className='pb-2 font-semibold border-b border-dark1 w-[60%] text-center'>
-                    {formatToUnit(data?.point)}
+                <div className='flex my-2 text-sm font-semibold gap-x-1'>
+                    <FormatNumber number={(data?.volume * 100).toString()} />
+                    <DiamondIcon width={20} height={20} className='' />
                 </div>
-                <div className='flex my-2 text-sm font-semibold'>
-                    <FormatNumber number={data?.volume} />
-                    <EtherIcon width={20} height={20} className='fill-dark1' />
-                </div>
-                <p className='text-xs font-medium whitespace-nowrap'>Season Volume</p>
             </div>
         </div>
     )

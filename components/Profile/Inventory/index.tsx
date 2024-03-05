@@ -5,7 +5,7 @@ import Created from './Collections';
 const Inventory = () => {
   return (
     <div>
-      <Created/>
+      {/* <Created/> */}
       <Items />
     </div>
   )

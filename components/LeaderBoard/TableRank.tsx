@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { EtherIcon, RankIcon } from "../Icons";
+import { DiamondIcon, EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import Image from "next/image";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
@@ -70,12 +70,12 @@ const ItemTableRank = ({ item, currentRank }: any) => {
         </Link>
       </td>
       <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-        <div className="flex items-center justify-end md:gap-2">
-          -
-          <EtherIcon
+        <div className="flex items-center justify-end md:gap-1">
+          <FormatNumber number={(item?.volume * 100).toString()} />
+          <DiamondIcon
             width={18}
             height={18}
-            className={`${currentRank ? "fill-white" : "fill-dark2"}`}
+            className={`${currentRank ? "fill-white" : ""}`}
           />
         </div>
       </td>
@@ -160,7 +160,7 @@ const TableRank = () => {
               Address
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              Reward
+              DM Point
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
               Season Volume
