@@ -1,6 +1,5 @@
 import abiErc1155 from "@/abi/abiErc1155.json";
-import { ethers } from "ethers";
-import { getProvider } from "../connection/getProvider";
+import ercContract from "./erc/erc721.contract";
 
 const approveNFT = async (
   account: string,
@@ -9,10 +8,7 @@ const approveNFT = async (
   routerAddress: string
 ) => {
   if (account && nftAddress && wallet) {
-    const providerChoice = await getProvider(wallet);
-    const provider = new ethers.providers.Web3Provider(providerChoice);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
+    const contract = await ercContract.erc(wallet, nftAddress, abiErc1155);
     try {
       const isApprovedNFT = await contract.isApprovedForAll(
         account,

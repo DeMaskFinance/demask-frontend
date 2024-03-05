@@ -1,4 +1,4 @@
-import erc721Contract from "@/libs/utils/erc721/erc721.contract";
+import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import getDMLToken from "@/libs/utils/getDMLToken";
 import { useEffect, useState } from "react";
 const useDMLToken = (

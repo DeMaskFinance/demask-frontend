@@ -91,6 +91,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
   }, [inputNFTValue])
   const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
   const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
+console.log({
+  amountTokenSell,
+  feeTradingSell,
+  amountTokenBuy
+});
 
   useEffect(() => {
     if (inputNFTValue && data && amountTokenBuy && amountTokenSell) {

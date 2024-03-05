@@ -72,6 +72,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             inputLiquidity,
             routerAddress,
         );
+        console.log(currentAllowance);
+        
         const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
             data.dmlAddress,
             wallet,

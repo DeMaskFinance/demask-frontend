@@ -15,7 +15,7 @@ import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import erc721Contract from "@/libs/utils/erc721/erc721.contract";
+import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import abiFactory from "@/abi/erc721/abiFactory.json";
