@@ -1,4 +1,3 @@
-import erc1155Contract from '@/libs/utils/erc/erc1155.contract';
 import getAmountBuy from "@/libs/utils/getAmountBuy";
 import { useEffect, useState } from "react";
 
@@ -25,12 +24,13 @@ const useAmountInMax = (
         inputNFT &&
         dmlToken !== "0x0000000000000000000000000000000000000000"
       ) {
-        const amountAFee = await erc1155Contract.getAmountBuy(
+        const amountAFee = await getAmountBuy(
           wallet,
           tokenAddress,
           nftAddress,
           idNFT,
           inputNFT,
+          rpc,
           routerAddress
         );
         if (amountAFee) {

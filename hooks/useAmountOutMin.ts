@@ -1,4 +1,4 @@
-import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import getAmountSell from "@/libs/utils/getAmountSell";
 import { useEffect, useState } from "react";
 const useAmountOutMin = (
   inputNFT: string,
@@ -22,13 +22,14 @@ const useAmountOutMin = (
         inputNFT &&
         dmlToken !== "0x0000000000000000000000000000000000000000"
       ) {
-        const amountAFee = await erc1155Contract.getAmountSell(
+        const amountAFee = await getAmountSell(
           wallet,
           tokenAddress,
           nftAddress,
           idNFT,
-          routerAddress,
-          inputNFT
+          inputNFT,
+          rpc,
+          routerAddress
         );
         setAmountTokenSell(amountAFee[0].toString());
         setFeeTradingSell(amountAFee[1].toString());
