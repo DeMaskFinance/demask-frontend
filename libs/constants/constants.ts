@@ -105,7 +105,7 @@ const Goerli_DEMASK = {
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
-
+const chainBlast = "168587773";
 if (PORT === '3000') {
   network = [
     {
@@ -196,5 +196,6 @@ export {
   tokenBlast,
   Category,
   version,
-  activeNFTPercent
+  activeNFTPercent,
+  chainBlast
 };

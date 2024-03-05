@@ -1,9 +1,11 @@
 import Image from "next/image";
-import React from "react";
+import React, { Fragment, useContext } from "react";
 import { DiamondIcon, EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import { AvatarUser } from "../Avatars";
 import { formatToUnit } from "@/libs/utils/formatToUnit";
+import AccountContext from "@/context/AccountContext";
+import { chainBlast } from "@/libs/constants";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
@@ -28,6 +30,7 @@ export const CardListLoading = () => {
   );
 };
 const CardList = ({ data }: any) => {
+  const { chainId, demask } = useContext(AccountContext);
   return (
     <div
       className={`flex flex-col items-center justify-center p-2 border rounded-lg text-dark1 w-full h-fit ${
@@ -70,14 +73,29 @@ const CardList = ({ data }: any) => {
             }`}
           />
         </div>
-        <div className="flex my-2 text-sm font-semibold gap-x-1">
-          {data?.volume ? (
-            <FormatNumber number={(data?.volume * 100).toString()} />
-          ) : (
-            "-"
-          )}
-          <DiamondIcon width={20} height={20} className="" />
-        </div>
+        {chainId === chainBlast ? (
+          <div className="flex items-center mt-2 font-semibold gap-x-2 text-dark1">
+            {data?.volume ? (
+              <FormatNumber number={(data?.volume * 100).toString()} />
+            ) : (
+              "-"
+            )}
+            <DiamondIcon width={20} height={20} className="" />
+          </div>
+        ) : (
+          <div className="relative flex flex-col items-center w-full">
+            <div className="pb-2 font-semibold border-b border-dark1 w-[60%] text-center">
+              {formatToUnit(data?.point)}
+            </div>
+            <div className="flex my-2 text-sm font-semibold">
+              <FormatNumber number={data?.volume} />
+              <EtherIcon width={20} height={20} className="fill-dark1" />
+            </div>
+            <p className="text-xs font-medium whitespace-nowrap">
+              Season Volume
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

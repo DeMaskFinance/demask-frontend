@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { DiamondIcon, EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import Image from "next/image";
@@ -10,9 +10,10 @@ import { useQuery } from "@tanstack/react-query";
 import { AvatarUser } from "../Avatars";
 import Link from "next/link";
 import axios from "axios";
+import { chainBlast } from "@/libs/constants";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
-  const { demask } = useContext(AccountContext);
+  const { demask, chainId } = useContext(AccountContext);
   return (
     <tr
       className={`flex px-2 text-xs border-b rounded-lg hover:cursor-pointer  group hover:bg-slate-100 ${
@@ -71,12 +72,25 @@ const ItemTableRank = ({ item, currentRank }: any) => {
       </td>
       <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
         <div className="flex items-center justify-end md:gap-1">
-          <FormatNumber number={(item?.volume * 100).toString()} />
-          <DiamondIcon
-            width={18}
-            height={18}
-            className={`${currentRank ? "fill-white" : ""}`}
-          />
+          {chainId === chainBlast ? (
+            <Fragment>
+              <FormatNumber number={(item?.volume * 100).toString()} />
+              <DiamondIcon
+                width={18}
+                height={18}
+                className={`${currentRank ? "fill-white" : ""}`}
+              />
+            </Fragment>
+          ) : (
+            <Fragment>
+              -
+              <EtherIcon
+                width={18}
+                height={18}
+                className={`${currentRank ? "fill-white" : "fill-dark2"}`}
+              />
+            </Fragment>
+          )}
         </div>
       </td>
       <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
@@ -113,20 +127,7 @@ const TableRank = () => {
         return res;
       },
     });
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://api.demask.finance/v2/volume-user-list?userAddress=0x4699a9a5607c9281103ad504fa922276eb6385a2&chainId=168587773&page=1&limit=10"
-  //       );
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
 
-  //   fetchData();
-  // }, []);
   const prevPage = () => {
     const prevPageNumber = Math.max(page - 1, 1);
     setPage(prevPageNumber);
@@ -145,7 +146,6 @@ const TableRank = () => {
   useEffect(() => {
     refetch();
   }, [page, refetch, account]);
-  console.log({ data, account });
 
   return (
     <div className="px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home min-h-[500px] flex flex-col justify-between">
@@ -160,7 +160,7 @@ const TableRank = () => {
               Address
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              DM Point
+              {chainId === chainBlast ? "DM Point" : "Reward"}
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
               Season Volume
