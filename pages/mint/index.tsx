@@ -191,7 +191,7 @@ export default function Creator() {
       return;
     }
     setRoyaltiesFee(inputValue);
-    if (e.target.value < 0 || e.target.value > 100) {
+    if (e.target.value < 0 || e.target.value > 10) {
       setValidFee(true);
     } else {
       setValidFee(false);
@@ -413,7 +413,7 @@ export default function Creator() {
             )}
             {validFee && (
               <p className="mb-2 -mt-1 text-xs text-red" key="initial">
-                Royalty fee must be less than or equal to 100%
+                Royalty fee must be less than or equal to 10%
               </p>
             )}
           </div>
