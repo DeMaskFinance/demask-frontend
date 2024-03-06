@@ -34,7 +34,7 @@ const LeaderBoard = () => {
               Blast Big Bang Season
             </h1>
             <h2 className="flex items-center justify-center mt-3 text-2xl italic font-normal gap-x-2">
-              <span className="text-dark1">Airdrop</span>
+              <span className="text-dark1">Sharing</span>
               <span className="text-yellow">100% Blast points</span>
               <span className="text-dark1">&</span>
               <span className="text-purple">100 OG Demask NFTs</span>

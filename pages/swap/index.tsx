@@ -10,8 +10,8 @@ export default function Swap() {
 
   return (
     <div>
-      {/* <NextSeo {...updateMeta} /> */}
-      <NextSeo
+      <NextSeo {...updateMeta} />
+      {/* <NextSeo
         title="Swap"
         description="Description about pages."
         canonical="https://dhanar98.hashnode.dev/"
@@ -34,7 +34,7 @@ export default function Swap() {
           site: "@dhanar98",
           cardType: "summary_large_image",
         }}
-      />
+      /> */}
       <SwapDefault />
     </div>
   );
