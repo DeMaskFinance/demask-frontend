@@ -49,7 +49,7 @@ const CardList = ({ data }: any) => {
           height={600}
           alt="leaderboardImg"
           src={data?.avatar}
-          className="rounded-full object-cover w-[120px] h-[120px]"
+          className="object-cover w-full h-full rounded-full max-w-[120px]"
         />
       ) : (
         <AvatarUser width={120} height={120} />
