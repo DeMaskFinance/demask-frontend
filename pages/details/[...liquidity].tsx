@@ -5,16 +5,16 @@ import { BackIcon, EtherIcon } from "@/components/Icons";
 import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
+import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
 import getRewardDML from "@/libs/utils/getReward";
-import viewReward from "@/libs/utils/viewReward";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
@@ -22,11 +22,10 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import "react-toastify/dist/ReactToastify.css";
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { SEO } from '../../next-seo.config';
-import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
@@ -77,10 +76,8 @@ export default function DetailLiquidity() {
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity && data) {
-        const result = await viewReward(dmlTokenLiquidity, account, wallet);
+        const result = await erc1155Contract.viewReward(dmlTokenLiquidity, account, wallet);
         const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
-        console.log(rewardDec);
-
         setReward(rewardDec);
       } else {
         setReward("0");

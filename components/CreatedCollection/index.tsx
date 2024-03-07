@@ -8,16 +8,15 @@ import {
 import { LogoIconCard } from "@/components/Logo/Logo";
 import { ItemList } from "@/components/Profile/Inventory/Items";
 import AccountContext from "@/context/AccountContext";
-import { nftsUserService } from "@/libs/service/profileService";
+import { collectionDetail, collectionListERC1155 } from "@/libs/service/collectionService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import DetailERC721 from "../ERC721/DetailERC721";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { collectionDetail, collectionListERC1155 } from "@/libs/service/collectionService";
+import DetailERC721 from "../ERC721/DetailERC721";
 
 export default function CreatedCollection() {
   const { account, chainId, demask } = useContext(AccountContext);

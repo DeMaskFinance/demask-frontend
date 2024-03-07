@@ -14,7 +14,6 @@ import useNFTBalance from "@/hooks/useBalanceNFT";
 import useBalanceToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { swapAPI } from "@/libs/service";
-import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
@@ -27,6 +26,8 @@ import { SEO } from '../../next-seo.config';
 import Tippy from "@tippyjs/react";
 import FormatNumber from "@/components/Common/FormatNumber";
 import formatNumber from "@/libs/utils/formatNumer";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import { activeNFTPercent } from "@/libs/constants";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -186,7 +187,7 @@ export default function AddLiquidity() {
   }, [inputNFT])
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, nftAddress, routerAddress);
+      const result = await ercContract.approveNFT(account, wallet, nftAddress, routerAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
@@ -207,11 +208,6 @@ export default function AddLiquidity() {
     { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
     { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
   ]
-  const activeNFTPercent = [
-    { text: '25%', percent: 0.25 },
-    { text: '50%', percent: 0.5 },
-    { text: '75%', percent: 0.75 },
-    { text: 'MAX', percent: 1 },]
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />

@@ -29,6 +29,7 @@ interface ModalConfirmAddLiquidityERC721Props {
   nftAddress: string;
   idNFT: string;
   isOpenTransaction: boolean;
+  inputNFT: number;
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setInputToken: React.Dispatch<React.SetStateAction<string>>;
@@ -48,6 +49,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   nftAddress,
   idNFT,
   isOpenTransaction,
+  inputNFT,
   setIsOpenTransaction,
   setIsOpenConfirmAddLiquidity,
   setInputToken,
@@ -61,7 +63,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
-    ROUTER: routerAddress,
+    ROUTER_721: routerAddress,
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
@@ -92,8 +94,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  console.log(txDeadline);
-
   useEffect(() => {
     const handleCheckApproveToken = async () => {
       if (tokenAddress === nativeAddress) {
@@ -141,14 +141,15 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     true,
     updatePrice
   );
-
+    console.log(inputNFT);
+    
   useEffect(() => {
     let amountErcDesired;
     let amountTokenMin;
-    if (dmlToken !== "0x0000000000000000000000000000000000000000" && data) {
-      amountErcDesired = (Number(3) * +reserveToken) / +reserveNFT;
+    if (dmlToken !== "0x0000000000000000000000000000000000000000" && data && inputNFT) {
+      amountErcDesired = (Number(inputNFT) * +reserveToken) / +reserveNFT;
       amountTokenMin =
-        ((Number(3) * +reserveToken) / +reserveNFT) * (1 + slippage / 100);
+        ((Number(inputNFT) * +reserveToken) / +reserveNFT) * (1 - slippage / 100);
     } else {
       amountErcDesired = handleBignumber(Number(inputToken), 18);
       amountTokenMin = handleBignumber(Number(inputToken), 18);
@@ -209,16 +210,10 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     }
     console.log({
       isSufficientToken,
-      amountErcDesired
+      amountErcDesired,
     });
-    
-    if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
-      console.log("123");
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(routerAddress, abiRouter, signer);
+    if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       try {
         setIsOpenTransaction(true);
         const valueToSend =
@@ -230,8 +225,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           wallet,
           collectionAddress,
           nativeAddress,
-          ["1", "2", "3"],
-          demask.ROUTER,
+          ["4", "5"],
+          demask.ROUTER_721,
           amountErcDesired,
           amountTokenMin,
           account,

@@ -2,7 +2,7 @@ import abiDML from "@/abi/abiDML.json";
 import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
 import divideByDecimal from "./divideByDecimal";
-import viewReward from "./viewReward";
+import erc1155Contract from "./erc/erc1155.contract";
 interface RewardDMLProps {
   wallet: string;
   dmlTokenLiquidity: string;
@@ -30,7 +30,7 @@ const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, a
     );
     setIsOpenTransaction(true);
     const check = await provider.waitForTransaction(result.hash);
-    const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);
+    const resultTest = await erc1155Contract.viewReward(dmlTokenLiquidity, account, wallet);
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
     setHash(result.hash);
     setReward(rewardDec);

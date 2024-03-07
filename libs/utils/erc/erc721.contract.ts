@@ -1,23 +1,16 @@
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
 import abiFactory from "@/abi/erc721/abiFactory.json";
 import abiRouter from "@/abi/erc721/abiRouter.json";
 import { exponentialToDecimal } from "../convertExponential";
-const erc = async (wallet: string, address: string, abi: any) => {
-  const providerChoice = await getProvider(wallet);
-  const provider = new ethers.providers.Web3Provider(providerChoice);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(address, abi, signer);
-  return contract;
-};
+import ercContract from "./erc.contract";
+
 const dmlToken = async (
   wallet: string,
   collectionAddress: string,
   tokenAddress: string,
   factoryAddress: string
 ) => {
-  const contract = await erc(wallet, factoryAddress, abiFactory);
-  const dmlToken = await contract.dmlToken(collectionAddress, tokenAddress);
+  const contract = await ercContract.erc(wallet, factoryAddress, abiFactory);
+  const dmlToken = await contract.dmlToken(tokenAddress, collectionAddress);
   return dmlToken;
 };
 const addLiquidity = async (
@@ -32,7 +25,7 @@ const addLiquidity = async (
   txDeadline: number,
   valueToSend: string | 0
 ) => {
-  const contract = await erc(wallet, routerAddress, abiRouter);
+  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   // const estimatedGas = await contract.estimateGas.addERC20ERC721(
   //   tokenAddress,
   //   collectionAddress,
@@ -69,7 +62,7 @@ const buyERC20ERC721 = async (
   txDeadline: number,
   valueToSend: string | 0
 ) => {
-  const contract = await erc(wallet, routerAddress, abiRouter);
+  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   // const estimatedGas = await contract.estimateGas.addERC20ERC721(
   //   tokenAddress,
   //   collectionAddress,
@@ -86,7 +79,7 @@ const buyERC20ERC721 = async (
     collectionAddress,
     idNFT,
     exponentialToDecimal(Math.floor(amountErcDesired)),
-    royaltyFee === 0 ? '5000' : royaltyFee! * 10000,
+    royaltyFee === 0 ? "5000" : royaltyFee! * 10000,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: 8000000, value: valueToSend }
@@ -103,9 +96,9 @@ const sellERC20ERC721 = async (
   amountOutMin: number,
   royaltyFee: number,
   account: string,
-  txDeadline: number,
+  txDeadline: number
 ) => {
-  const contract = await erc(wallet, routerAddress, abiRouter);
+  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   // const estimatedGas = await contract.estimateGas.addERC20ERC721(
   //   tokenAddress,
   //   collectionAddress,
@@ -122,7 +115,7 @@ const sellERC20ERC721 = async (
     collectionAddress,
     idNFT,
     exponentialToDecimal(Math.floor(amountOutMin)),
-    royaltyFee === 0 ? '5000' : royaltyFee! * 10000,
+    royaltyFee === 0 ? "5000" : royaltyFee! * 10000,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: 8000000 }
@@ -130,11 +123,10 @@ const sellERC20ERC721 = async (
   const check = await contract.waitForTransaction(result.hash);
   return result;
 };
-const ercContract = {
-  erc,
+const ercContract721 = {
   dmlToken,
   addLiquidity,
   buyERC20ERC721,
-  sellERC20ERC721
+  sellERC20ERC721,
 };
-export default ercContract;
+export default ercContract721;

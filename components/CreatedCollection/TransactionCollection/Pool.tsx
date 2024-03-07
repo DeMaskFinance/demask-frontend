@@ -10,13 +10,16 @@ import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
+import { getProvider } from "@/libs/connection/getProvider";
 import { swapAPI } from "@/libs/service";
-import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
+import abiDML from "@/abi/abiDML.json";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -26,6 +29,7 @@ const Pool = () => {
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
+  const [inputNFT, setInputNFT] = useState<number>(2);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
@@ -35,11 +39,11 @@ const Pool = () => {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
-  const { account, wallet, chainId, demask, tokenDefault, slippage } =
+  const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
   const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
   const {
-    ROUTER: routerAddress,
+    ROUTER_721: routerAddress,
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
@@ -76,6 +80,7 @@ const Pool = () => {
       nativeAddress,
       isOpenTransaction
     );
+
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -86,9 +91,11 @@ const Pool = () => {
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
+  console.log(dmlToken);
+
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(
+      const result = await ercContract.approveNFT(
         account,
         wallet,
         "0x286e08EEb3169042585B4838378D21d2c23ded55",
@@ -98,6 +105,7 @@ const Pool = () => {
     };
     checkApproveNFT();
   }, [account, wallet, isOpenTransaction]);
+
   const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
     dmlToken,
     wallet,
@@ -108,17 +116,14 @@ const Pool = () => {
     isOpenConfirmAddLiquidity,
     true
   );
+
   useEffect(() => {
     let amountErcDesired;
     let amountTokenMin;
-    if (
-      dmlToken !== "0x0000000000000000000000000000000000000000"
-      // &&
-      // inputNFT
-    ) {
-      amountErcDesired = (Number(3) * +reserveToken) / +reserveNFT;
+    if (dmlToken !== "0x0000000000000000000000000000000000000000" && inputNFT) {
+      amountErcDesired = (Number(inputNFT) * +reserveToken) / +reserveNFT;
       amountTokenMin =
-        ((Number(3) * +reserveToken) / +reserveNFT) * (1 + slippage / 100);
+        ((Number(inputNFT) * +reserveToken) / +reserveNFT) * (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(Number(inputToken), 18);
       amountTokenMin = handleBignumber(Number(inputToken), 18);
@@ -137,7 +142,7 @@ const Pool = () => {
         setIsSufficientToken(false);
       }
     }
-  }, [inputToken, reserveToken, reserveNFT, dmlToken]);
+  }, [inputToken, reserveToken, reserveNFT, dmlToken, inputNFT]);
 
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
@@ -150,14 +155,13 @@ const Pool = () => {
   const handleAddLiquidity = () => {
     if (!isSufficientToken) {
       setIsOpenConfirmAddLiquidity(true);
-    }else{
+    } else {
       console.log({
-        isSufficientToken
+        isSufficientToken,
       });
     }
-  }
-  console.log(isOpenConfirmAddLiquidity);
-  
+  };
+
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -212,7 +216,11 @@ const Pool = () => {
               Insufficient Token balance
             </p>
           )}
-          <Button className="w-[144px] py-2" primary onClick={handleAddLiquidity}>
+          <Button
+            className="w-[144px] py-2"
+            primary
+            onClick={handleAddLiquidity}
+          >
             Create pool
           </Button>
         </div>
@@ -225,6 +233,7 @@ const Pool = () => {
         tokenAddress={demask.NATIVE_ADDRESS}
         nftAddress={collectionAddress}
         idNFT={""}
+        inputNFT={inputNFT}
         data={data}
         inputToken={inputToken}
         setInputToken={setInputToken}

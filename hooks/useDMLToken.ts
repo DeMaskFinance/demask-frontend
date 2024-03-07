@@ -1,5 +1,5 @@
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import erc721Contract from "@/libs/utils/erc/erc721.contract";
-import getDMLToken from "@/libs/utils/getDMLToken";
 import { useEffect, useState } from "react";
 const useDMLToken = (
   account: string,
@@ -18,7 +18,7 @@ const useDMLToken = (
       try {
         let dmlToken;
         if (idNFT) {
-          dmlToken = await getDMLToken(
+          dmlToken = await erc1155Contract.getDMLToken(
             nftAddress,
             idNFT,
             tokenAddress,

@@ -6,7 +6,7 @@ const useAmountInMax = (
   dmlToken: string,
   tokenAddress: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | string[],
   wallet: string,
   account: string,
   rpc: string,
@@ -45,7 +45,16 @@ const useAmountInMax = (
     };
 
     getAmountInMax();
-  }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, account,updatePrice]);
+  }, [
+    inputNFT,
+    dmlToken,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    account,
+    updatePrice,
+  ]);
 
   return { amountTokenBuy, isLoadingBuy, feeTradingBuy };
 };

@@ -3,12 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import viewReward from "@/libs/utils/viewReward";
 import Link from "next/link";
 import { Button } from "../Buttons";
 import FormatNumber from "../Common/FormatNumber";
 import MediaNFT from "../Common/MediaNFT";
 import { EtherIcon, NFTIcon } from "../Icons";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
 }
@@ -23,7 +23,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && wallet && liquidity) {
-        const result = await viewReward(liquidity.dmlAddress, account, wallet);
+        const result = await erc1155Contract.viewReward(liquidity.dmlAddress, account, wallet);
         const rewardDec = divideByDecimal(result?.toString(), liquidity.dmlDecimals);
         setReward(rewardDec);
       }

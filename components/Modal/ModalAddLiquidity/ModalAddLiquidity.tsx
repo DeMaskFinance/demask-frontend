@@ -2,7 +2,6 @@ import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useInformation from "@/hooks/useInformationToken";
-import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
@@ -15,6 +14,7 @@ import ModalConfirmAddLiquidity from "../ModalConfirmAddLiquidity";
 import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import ercContract from "@/libs/utils/erc/erc.contract";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -126,7 +126,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   }, [inputNFT, inputToken, data]);
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(
+      const result = await ercContract.approveNFT(
         account,
         wallet,
         data.nftAddress,

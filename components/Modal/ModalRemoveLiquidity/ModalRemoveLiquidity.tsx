@@ -4,7 +4,6 @@ import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
-import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
@@ -16,6 +15,7 @@ import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import ercContract from "@/libs/utils/erc/erc.contract";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: DataBase;
@@ -117,7 +117,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     }, [inputLiquidity, data])
     useEffect(() => {
       const checkApproveNFT = async () => {
-        const result = await approveNFT(
+        const result = await ercContract.approveNFT(
           account,
           wallet,
           data.nftAddress,

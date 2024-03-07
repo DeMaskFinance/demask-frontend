@@ -20,8 +20,8 @@ import useDebounce from "@/hooks/useDebounce";
 import useInformationToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { activeNFTPercent } from "@/libs/constants";
-import approveNFT from "@/libs/utils/approveNFT";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import Tippy from "@tippyjs/react";
@@ -77,7 +77,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
   usePreventUserFromErasingContent(checkExit);
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await approveNFT(account, wallet, nftAddress, routerAddress);
+      const result = await ercContract.approveNFT(account, wallet, nftAddress, routerAddress);
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
@@ -89,13 +89,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
       setCheckExit(false)
     }
   }, [inputNFTValue])
-  const { amountTokenBuy, feeTradingBuy, isLoadingBuy } = useAmountInMax(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
-  const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
-console.log({
-  amountTokenSell,
-  feeTradingSell,
-  amountTokenBuy
-});
+  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
+  const { amountTokenSell, isLoadingSell } = useAmountOutMin(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
 
   useEffect(() => {
     if (inputNFTValue && data && amountTokenBuy && amountTokenSell) {
@@ -113,7 +108,7 @@ console.log({
       setTotalProcessBuy(0);
       setTotalProcessSell(0);
     }
-  }, [inputNFTValue, slippage, amountTokenBuy, amountTokenSell, activeChoice])
+  }, [inputNFTValue, slippage, amountTokenBuy, amountTokenSell, activeChoice]);
 
   useEffect(() => {
     const checkReservesNFT = () => {

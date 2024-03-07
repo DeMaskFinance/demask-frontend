@@ -1,14 +1,7 @@
-import abiRouter from "@/abi/abiRouter.json";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
 import abiDML from "@/abi/abiDML.json";
-const erc1155 = async (wallet: string, address: string, abi: any) => {
-  const providerChoice = await getProvider(wallet);
-  const provider = new ethers.providers.Web3Provider(providerChoice);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(address, abi, signer);
-  return contract;
-};
+import ercContract from "./erc.contract";
+import abiErc1155 from "@/abi/abiErc1155.json";
+import abiFactory from "@/abi/abiFactory.json";
 //DML ADDRESS
 const allowanceDML = async (
   account: string,
@@ -16,49 +9,69 @@ const allowanceDML = async (
   dmlAddress: string,
   routerAddress: string
 ) => {
-  const contract = await erc1155(wallet, dmlAddress, abiDML);
+  const contract = await ercContract.erc(wallet, dmlAddress, abiDML);
   const dmlAllowance = await contract.allowance(account, routerAddress);
   const currentAllowance = dmlAllowance.toString();
   return currentAllowance;
 };
-//ROUTER
-const getAmountBuy = async (
-  wallet: string,
-  tokenAddress: string,
+const viewReward = async (
+  dmlToken: string,
+  account: string,
+  wallet: string
+) => {
+  if (dmlToken && account && wallet) {
+    const contract = await ercContract.erc(wallet, dmlToken, abiDML);
+    try {
+      const result = await contract.viewReward(account);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+//NFT balance
+const getBalanceNFT = async (
+  account: string,
   nftAddress: string,
   idNFT: string,
-  amountNFT: string,
-  routerAddress: string
+  wallet: string
 ) => {
-  const contract = await erc1155(wallet, routerAddress, abiRouter);
-  const amountAFee = await contract.getAmountBuy(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    amountNFT
-  );
-  return amountAFee;
+  if (account) {
+    const contract = await ercContract.erc(wallet, nftAddress, abiErc1155);
+    try {
+      const bigNumberBalance = await contract.balanceOf(
+        account,
+        idNFT.toString()
+      );
+      const balance = bigNumberBalance.toString();
+      return balance;
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    console.log("No account");
+  }
 };
-const getAmountSell = async (
-  wallet: string,
-  tokenAddress: string,
+const getDMLToken = async (
   nftAddress: string,
   idNFT: string,
-  routerAddress: string,
-  amountNFT?: string
+  tokenAddress: string,
+  wallet: string,
+  factoryAddress:string,
 ) => {
-  const contract = await erc1155(wallet, routerAddress, abiRouter);
-  const amountAFee = await contract.getAmountSell(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    amountNFT
-  );
-  return amountAFee;
+  const contract = await ercContract.erc(wallet, factoryAddress, abiFactory);
+  try {
+    const result = await contract.getDmlToken(tokenAddress, nftAddress, idNFT);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
 };
+
 const erc1155Contract = {
   allowanceDML,
-  getAmountBuy,
-  getAmountSell,
+  getBalanceNFT,
+  getDMLToken,
+  viewReward
 };
 export default erc1155Contract;
