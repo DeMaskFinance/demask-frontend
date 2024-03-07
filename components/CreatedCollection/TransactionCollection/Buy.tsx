@@ -1,18 +1,55 @@
 import { Button } from "@/components/Buttons";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
+import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
+import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
+import useAmountInMax from "@/hooks/useAmountInMax";
+import useDMLToken from "@/hooks/useDMLToken";
+import useInformationToken from "@/hooks/useInformationToken";
 import { nftsUserService } from "@/libs/service/profileService";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Buy = () => {
-  const { account, chainId, demask } = useContext(AccountContext);
+  const { account, chainId, demask, wallet, slippage } =
+    useContext(AccountContext);
+  const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
+  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [idNFT, setIdNFT] = useState<number[]>([]);
+  const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
+  const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
+  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
+  const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
+  const [hash, setHash] = useState<string>("");
+  const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
+  const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
+    useState<boolean>(false);
+  const {
+    ROUTER_721: routerAddress,
+    RPC: rpc,
+    NATIVE_ADDRESS: nativeAddress,
+  } = demask;
+  const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
   const [typeERC, setTypeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
   );
+  const royaltyFee = 0;
+  const { balanceToken, bigNumberBalance, allowanceToken } =
+    useInformationToken(
+      account,
+      nativeAddress,
+      wallet,
+      routerAddress,
+      rpc,
+      nativeAddress,
+      isOpenTransaction
+    );
   const fetchDataNFTs = async (
     pageParam = 1,
     chain: string | string[],
@@ -39,7 +76,86 @@ const Buy = () => {
           : page?.currentPage + 1,
     }
   );
-  
+  const dmlToken = useDMLToken(
+    account,
+    collectionAddress,
+    nativeAddress,
+    wallet,
+    demask.FACTORY_721,
+    "",
+    isOpenTransaction
+  );
+  useEffect(() => {
+    const checkApproveNFT = async () => {
+      const result = await ercContract.approveNFT(
+        account,
+        wallet,
+        collectionAddress,
+        routerAddress
+      );
+      setIsApprovedNFT(result);
+    };
+    checkApproveNFT();
+  }, [account, collectionAddress, wallet, isOpenTransaction]);
+  const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
+    "",
+    dmlToken,
+    nativeAddress,
+    collectionAddress,
+    idNFT,
+    wallet,
+    account,
+    rpc,
+    routerAddress,
+    true
+  );
+  useEffect(() => {
+    if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
+      setIsSufficientTokenBuy(false);
+    } else {
+      setIsSufficientTokenBuy(true);
+    }
+  }, [account, amountBuyDec, data, isOpenBuyNFT]);
+  useEffect(() => {
+    if (data && amountTokenBuy) {
+      setAmountBuyDec(
+        amountTokenBuy * (1 + slippage / 100) +
+          (amountTokenBuy * Number(royaltyFee)) / 100
+      );
+      setTotalProcessBuy(
+        Number(amountTokenBuy) + (amountTokenBuy * Number(royaltyFee)) / 100
+      );
+    } else {
+      setAmountBuyDec(0);
+      setTotalProcessBuy(0);
+    }
+  }, [data, slippage, amountTokenBuy]);
+  console.log(amountBuyDec);
+
+  const hanldeChoiceNFT = (index: number) => {
+    const isExist = idNFT.includes(index);
+    if (isExist) {
+      const arr = idNFT.filter((item) => {
+        return item !== index;
+      });
+      setIdNFT(arr);
+    } else {
+      setIdNFT([...idNFT, index]);
+    }
+  };
+  const handleBuy = () => {
+    setIsOpenBuyNFT(true);
+    document.body.style.overflowY = "hidden";
+  };
+  const handleOpen = () => {
+    document.body.style.overflowY = "hidden";
+    setIsOpen(true);
+  };
+  const dataFake = {
+    dmlAddress:dmlToken,
+    royaltyFee:royaltyFee,
+    tokenDecimals:'18',
+  }
   return (
     <div>
       {isLoading ? (
@@ -52,7 +168,11 @@ const Buy = () => {
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (
-                  <div key={index} className="relative overflow-hidden">
+                  <div
+                    key={index}
+                    className="relative overflow-hidden"
+                    onClick={() => hanldeChoiceNFT(index)}
+                  >
                     <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
                       <div className="relative h-[78px] lg:h-[100px]">
                         <MediaNFT data={item} isControls={false} hover />
@@ -126,18 +246,73 @@ const Buy = () => {
           </div>
           <div>
             <ul className="p-2 text-white rounded-lg bg-dark1">
-              <li className="flex items-center">Send: 1.23 <EtherIcon width={18} height={18} className="fill-white"/></li>
+              <li className="flex items-center">
+                Send: 1.23{" "}
+                <EtherIcon width={18} height={18} className="fill-white" />
+              </li>
               <li className="flex items-center">Receive: 1.23 NFTs</li>
-              <li className="flex items-center">Price: 1.23 <EtherIcon width={18} height={18} className="fill-white"/></li>
+              <li className="flex items-center">
+                Price: 1.23{" "}
+                <EtherIcon width={18} height={18} className="fill-white" />
+              </li>
             </ul>
-            <Button primary className="w-full py-4 ">
-              BUY 2 NFTs
-            </Button>
+            {!account ? (
+              <Button className="w-full py-2" primary onClick={handleOpen}>
+                CONNECT WALLET
+              </Button>
+            ) : !isApprovedNFT ? (
+              <Button
+                className="w-full py-2"
+                primary
+                onClick={() =>
+                  handleApproveNFT(
+                    account,
+                    wallet,
+                    "0x286e08EEb3169042585B4838378D21d2c23ded55",
+                    setIsOpen,
+                    setIsOpenTransaction,
+                    routerAddress
+                  )
+                }
+              >
+                APPROVE NFT
+              </Button>
+            ) : (
+              <Button
+                primary
+                className="w-full py-4"
+                onClick={handleBuy}
+                disabled={idNFT.length === 0}
+              >
+                BUY {idNFT.length} NFTs
+              </Button>
+            )}
           </div>
         </div>
       ) : (
         <p className="mt-4">No data available.</p>
       )}
+      {data && account && (
+        <ModalBuyNFT
+          isOpenBuyNFT={isOpenBuyNFT}
+          isOpenTransaction={isOpenTransaction}
+          setIsOpenTransaction={setIsOpenTransaction}
+          tokenAddress={nativeAddress}
+          nftAddress={collectionAddress}
+          idNFT={idNFT}
+          routerAddress={routerAddress}
+          /* 
+          // @ts-ignore */
+          data={dataFake}
+          setIsOpenBuyNFT={setIsOpenBuyNFT}
+          inputNFT={""}
+          setInputNFT={setIdNFT}
+          setHash={setHash}
+          setIsOpenSuccess={setIsOpenSuccessBuy}
+          setIsOpenError={setIsOpenErrorBuy}
+        />
+      )}
+      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

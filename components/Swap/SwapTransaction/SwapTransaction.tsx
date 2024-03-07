@@ -1,14 +1,24 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { EtherIcon, NFTIcon, PoolIcon, RefetchIcon, SettingIcon } from "@/components/Icons";
+import {
+  EtherIcon,
+  NFTIcon,
+  PoolIcon,
+  RefetchIcon,
+  SettingIcon,
+} from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
-import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
+import {
+  ModalError,
+  ModalSuccess,
+  ModalTransation,
+} from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import ModalWarningRemove from "@/components/Modal/ModalWarningRemove";
 import { TabGroups } from "@/components/NavChoice";
@@ -30,13 +40,19 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 interface SwapTransactionProps {
-  data: DataBase,
+  data: DataBase;
   tokenAddress: string;
   idNFT: string;
   nftAddress: string;
-  refetch: any
+  refetch: any;
 }
-const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, tokenAddress, idNFT, nftAddress, refetch }) => {
+const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
+  data,
+  tokenAddress,
+  idNFT,
+  nftAddress,
+  refetch,
+}) => {
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
@@ -48,7 +64,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
-  const [hash, setHash] = useState<string>('');
+  const [hash, setHash] = useState<string>("");
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
@@ -62,44 +78,108 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
   const [totalProcessSell, setTotalProcessSell] = useState<number>(0);
   const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
   const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
-  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>('');
+  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const { account, wallet, chainId, demask, tokenDefault, slippage, txDeadline } = useContext(AccountContext);
+  const {
+    account,
+    wallet,
+    chainId,
+    demask,
+    tokenDefault,
+    slippage,
+    txDeadline,
+  } = useContext(AccountContext);
   const [checkExit, setCheckExit] = useState<boolean>(false);
-  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+  const {
+    ROUTER: routerAddress,
+    RPC: rpc,
+    NATIVE_ADDRESS: nativeAddress,
+  } = demask;
 
   let inputNFTValue = useDebounce(inputNFT, 1000);
-  const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
+  const balanceNFT = useNFTBalance(
+    account,
+    nftAddress,
+    idNFT,
+    wallet,
+    isOpenTransaction
+  );
   const { balanceToken, bigNumberBalance, allowanceToken } =
-    useInformationToken(account, tokenAddress, wallet, routerAddress, rpc, nativeAddress, isOpenTransaction);
+    useInformationToken(
+      account,
+      tokenAddress,
+      wallet,
+      routerAddress,
+      rpc,
+      nativeAddress,
+      isOpenTransaction
+    );
   usePreventUserFromErasingContent(checkExit);
   useEffect(() => {
     const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(account, wallet, nftAddress, routerAddress);
+      const result = await ercContract.approveNFT(
+        account,
+        wallet,
+        nftAddress,
+        routerAddress
+      );
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
   useEffect(() => {
     if (inputNFTValue) {
-      setCheckExit(true)
+      setCheckExit(true);
     } else {
-      setCheckExit(false)
+      setCheckExit(false);
     }
-  }, [inputNFTValue])
-  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
-  const { amountTokenSell, isLoadingSell } = useAmountOutMin(inputNFTValue, data?.dmlAddress, tokenAddress, nftAddress, idNFT, wallet, account, rpc, routerAddress, true);
+  }, [inputNFTValue]);
+  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
+    inputNFTValue,
+    data?.dmlAddress,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    account,
+    rpc,
+    routerAddress,
+    true
+  );
+  const { amountTokenSell, isLoadingSell } = useAmountOutMin(
+    inputNFTValue,
+    data?.dmlAddress,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    account,
+    rpc,
+    routerAddress,
+    true
+  );
 
   useEffect(() => {
     if (inputNFTValue && data && amountTokenBuy && amountTokenSell) {
-      setAmountBuyDec(amountTokenBuy * (1 + (slippage / 100)) + amountTokenBuy * Number(data.royaltyFee) / 100);
-      setAmountSellDec(amountTokenSell * (1 - (slippage / 100)) - amountTokenSell * Number(data.royaltyFee) / 100);
-      setTotalProcessBuy(Number(amountTokenBuy) + (amountTokenBuy * Number(data.royaltyFee) / 100));
-      setTotalProcessSell(amountTokenSell - amountTokenSell * Number(data.royaltyFee) / 100);
-      setRoyaltiesFeeBuy(amountTokenBuy * Number(data.royaltyFee) / 100);
-      setRoyaltiesFeeSell(amountTokenSell * Number(data.royaltyFee) / 100);
+      setAmountBuyDec(
+        amountTokenBuy * (1 + slippage / 100) +
+          (amountTokenBuy * Number(data.royaltyFee)) / 100
+      );
+      setAmountSellDec(
+        amountTokenSell * (1 - slippage / 100) -
+          (amountTokenSell * Number(data.royaltyFee)) / 100
+      );
+      setTotalProcessBuy(
+        Number(amountTokenBuy) +
+          (amountTokenBuy * Number(data.royaltyFee)) / 100
+      );
+      setTotalProcessSell(
+        amountTokenSell - (amountTokenSell * Number(data.royaltyFee)) / 100
+      );
+      setRoyaltiesFeeBuy((amountTokenBuy * Number(data.royaltyFee)) / 100);
+      setRoyaltiesFeeSell((amountTokenSell * Number(data.royaltyFee)) / 100);
     } else {
       setAmountBuyDec(0);
       setAmountSellDec(0);
@@ -139,9 +219,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
     }
   }, [inputNFTValue, activeChoice, account, amountBuyDec, amountSellDec, data]);
   useEffect(() => {
-    setInputNFT('');
-    setActiveChoiceNFT('');
-  }, [activeChoice])
+    setInputNFT("");
+    setActiveChoiceNFT("");
+  }, [activeChoice]);
   useEffect(() => {
     if (inputNFTValue === "") {
       setIsSufficientNFT(true);
@@ -153,8 +233,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
   const handleBuy = () => {
     if (inputNFTValue === "") {
       setShowRequiredMessage(true);
-    }
-    else if (isSufficientNFT && isSufficientTokenBuy && data.dmlAddress !== null && Math.floor(amountBuyDec) !== 0) {
+    } else if (
+      isSufficientNFT &&
+      isSufficientTokenBuy &&
+      data.dmlAddress !== null &&
+      Math.floor(amountBuyDec) !== 0
+    ) {
       setIsOpenBuyNFT(true);
       document.body.style.overflowY = "hidden";
     }
@@ -162,7 +246,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
   const handleSell = () => {
     if (inputNFTValue === "") {
       setShowRequiredMessage(true);
-    } else if (isSufficientNFT && isSufficientTokenSell && data.dmlAddress !== null && Math.floor(amountSellDec) !== 0) {
+    } else if (
+      isSufficientNFT &&
+      isSufficientTokenSell &&
+      data.dmlAddress !== null &&
+      Math.floor(amountSellDec) !== 0
+    ) {
       setIsOpenSellNFT(true);
       document.body.style.overflowY = "hidden";
     }
@@ -180,9 +269,39 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
     setIsOpen(true);
   };
   const actions = [
-    { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
-    { icon: <PoolIcon width={24} height={24} className="group-hover:fill-secondary3" />, content: 'Pool', link: `/add/${nftAddress}/${tokenAddress}/${idNFT}` },
-    { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
+    {
+      icon: (
+        <RefetchIcon
+          width={24}
+          height={24}
+          className="cursor-pointer hover:fill-secondary5"
+        />
+      ),
+      content: "Refetch",
+      onClick: () => refetch(),
+    },
+    {
+      icon: (
+        <PoolIcon
+          width={24}
+          height={24}
+          className="group-hover:fill-secondary3"
+        />
+      ),
+      content: "Pool",
+      link: `/add/${nftAddress}/${tokenAddress}/${idNFT}`,
+    },
+    {
+      icon: (
+        <SettingIcon
+          width={24}
+          height={24}
+          className="cursor-pointer hover:rotate-90 hover:fill-secondary5"
+        />
+      ),
+      content: "Setting",
+      onClick: () => setIsOpenSetting(true),
+    },
   ];
   return (
     <div className="lg:w-[40%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
@@ -197,7 +316,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
           </div>
           <div className="flex items-center gap-x-2">
             {actions.map((action, index) => (
-              <Tippy key={index} content={<div className="text-xs">{action.content}</div>} theme='dark' placement="bottom">
+              <Tippy
+                key={index}
+                content={<div className="text-xs">{action.content}</div>}
+                theme="dark"
+                placement="bottom"
+              >
                 {action.link ? (
                   <Link href={action.link} className="group">
                     {action.icon}
@@ -235,7 +359,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                   <div className="flex items-center text-sm text-dark1">
                     <p className="mr-1">Your balance:</p>
                     <p>{formatNumber(balanceNFT)}</p>
-                    <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
+                    <NFTIcon
+                      width={24}
+                      height={24}
+                      className="fill-dark1 ml-[2px]"
+                    />
                   </div>
                 )}
               </div>
@@ -243,13 +371,27 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                 <div className="flex items-center mr-2">
                   <span className="mr-1">LP:</span>
                   <FormatNumber number={data.reserveNFT} />
-                  <NFTIcon width={24} height={24} className="fill-dark1 ml-[2px]" />
+                  <NFTIcon
+                    width={24}
+                    height={24}
+                    className="fill-dark1 ml-[2px]"
+                  />
                 </div>
                 <FormatNumber number={data.reserveToken} />
-                <span><EtherIcon width={20} height={20} className="fill-dark1 ml-[-1px]" /></span>
+                <span>
+                  <EtherIcon
+                    width={20}
+                    height={20}
+                    className="fill-dark1 ml-[-1px]"
+                  />
+                </span>
               </div>
             </div>
-            <div className={`relative p-2 border rounded-lg border-dark3 ${showRequiredMessage && 'border-red'}`}>
+            <div
+              className={`relative p-2 border rounded-lg border-dark3 ${
+                showRequiredMessage && "border-red"
+              }`}
+            >
               <div className="relative">
                 <input
                   type="number"
@@ -260,7 +402,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                   pattern="^[1-9][0-9]*$"
                   inputMode="numeric"
                   onKeyDown={(event) => {
-                    if (!(event.key >= '0' && event.key <= '9') && event.key !== 'Backspace' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                    if (
+                      !(event.key >= "0" && event.key <= "9") &&
+                      event.key !== "Backspace" &&
+                      event.key !== "ArrowLeft" &&
+                      event.key !== "ArrowRight"
+                    ) {
                       event.preventDefault();
                     }
                   }}
@@ -270,7 +417,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                   onChange={(e) => {
                     setInputNFT(e.target.value);
                     setShowRequiredMessage(false);
-                    setActiveChoiceNFT('');
+                    setActiveChoiceNFT("");
                     setCheckExit(true);
                   }}
                 />
@@ -279,23 +426,41 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
                   onClick={handleSearchNFT}
                 >
                   <div className="w-16 text-center">
-                    <h2 className="truncate">{data.metadata?.symbol ? data.metadata?.symbol : data.metadata?.name}</h2>
+                    <h2 className="truncate">
+                      {data.metadata?.symbol
+                        ? data.metadata?.symbol
+                        : data.metadata?.name}
+                    </h2>
                   </div>
                 </div>
               </div>
               <div className="flex justify-end mt-8">
                 {activeNFTPercent.map((item, index) => (
-                  <button type="button" className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
+                  <button
+                    type="button"
+                    className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${
+                      item.text === activeChoiceNFT &&
+                      "bg-secondary5 text-white"
+                    }`}
+                    key={index}
                     onClick={() => {
                       if (activeChoice === "BUY") {
-                        setInputNFT((Math.floor(item.percent * +data.reserveNFT)).toString())
+                        setInputNFT(
+                          Math.floor(item.percent * +data.reserveNFT).toString()
+                        );
                       } else {
-                        setInputNFT((Math.floor(item.percent * Number(balanceNFT))).toString())
+                        setInputNFT(
+                          Math.floor(
+                            item.percent * Number(balanceNFT)
+                          ).toString()
+                        );
                       }
                       setShowRequiredMessage(false);
                       setActiveChoiceNFT(item.text);
                     }}
-                  >{item.text}</button>
+                  >
+                    {item.text}
+                  </button>
                 ))}
               </div>
             </div>
@@ -304,10 +469,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
               balanceNFT &&
               data.reserveNFT &&
               account && (
-                <p
-                  className="mt-1 mb-2 ml-3 text-xs text-red"
-                  key="NFTbalance"
-                >
+                <p className="mt-1 mb-2 ml-3 text-xs text-red" key="NFTbalance">
                   Insufficient NFT balance
                 </p>
               )}
@@ -333,10 +495,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
               </p>
             )}
             {showRequiredMessage && (
-              <p
-                className="mt-1 mb-2 ml-3 text-xs text-red"
-                key="emptyNFT"
-              >
+              <p className="mt-1 mb-2 ml-3 text-xs text-red" key="emptyNFT">
                 Required
               </p>
             )}
@@ -344,17 +503,19 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
 
           <div className="mt-4">
             <div className="flex justify-between mb-4">
-              <div className="text-sm text-dark1">
-                Total Proceeds:
-              </div>
+              <div className="text-sm text-dark1">Total Proceeds:</div>
               <div className="">
-                <label htmlFor="data.royaltyFee" className=' text-dark1'>
+                <label htmlFor="data.royaltyFee" className=" text-dark1">
                   <div className="flex text-sm">
                     <p className="mr-1">Royalties Fee: </p>
                     {activeChoice === "BUY" ? (
-                      <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
+                      <FormatNumber
+                        number={(royaltiesFeeBuy / 1e18).toString()}
+                      />
                     ) : (
-                      <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} />
+                      <FormatNumber
+                        number={(royaltiesFeeSell / 1e18).toString()}
+                      />
                     )}
                     <p>({data?.royaltyFee}%)</p>
                   </div>
@@ -363,45 +524,44 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
             </div>
             <div className="relative">
               {activeChoice === "BUY" ? (
-                <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                  <FormatNumber number={divideByDecimal(totalProcessBuy.toString(), data.tokenDecimals)} />
+                <div className="block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4">
+                  <FormatNumber
+                    number={divideByDecimal(
+                      totalProcessBuy.toString(),
+                      data.tokenDecimals
+                    )}
+                  />
                 </div>
               ) : (
-                <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
-                  <FormatNumber number={divideByDecimal(totalProcessSell.toString(), data.tokenDecimals)} />
+                <div className="block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4">
+                  <FormatNumber
+                    number={divideByDecimal(
+                      totalProcessSell.toString(),
+                      data.tokenDecimals
+                    )}
+                  />
                 </div>
               )}
-              <div
-                className="absolute px-2 py-1 right-1 top-2"
-              >
+              <div className="absolute px-2 py-1 right-1 top-2">
                 <EtherIcon width={16} height={16} className="fill-dark2" />
               </div>
             </div>
           </div>
-
         </form>
-        {(inputNFTValue && activeChoice === "BUY") ? (
+        {inputNFTValue && activeChoice === "BUY" ? (
           !isLoadingBuy ? (
             Math.floor(amountBuyDec) === 0 ? (
-              <p className="mt-0 mb-2 ml-3 text-xs text-red">
-                Can't buy
-              </p>
-            ) : (
-              null
-            )
+              <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
+            ) : null
           ) : (
             <BiLoaderAlt className="animate-spin text-secondary5" />
           )
         ) : null}
-        {(inputNFTValue && activeChoice === "SELL") ? (
+        {inputNFTValue && activeChoice === "SELL" ? (
           !isLoadingSell ? (
             Math.floor(amountSellDec) === 0 ? (
-              <p className="mt-0 mb-2 ml-3 text-xs text-red">
-                Can't sell
-              </p>
-            ) : (
-              null
-            )
+              <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
+            ) : null
           ) : (
             <BiLoaderAlt className="animate-spin text-secondary5" />
           )
@@ -443,17 +603,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
               APPROVE NFT
             </Button>
           )}
-          {
-            !account && (
-              <Button
-                className="w-[144px] py-2"
-                primary
-                onClick={handleOpen}
-              >
-                CONNECT WALLET
-              </Button>
-            )
-          }
+          {!account && (
+            <Button className="w-[144px] py-2" primary onClick={handleOpen}>
+              CONNECT WALLET
+            </Button>
+          )}
         </div>
       </div>
       <ModalSearchNFTSwap
@@ -476,20 +630,76 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}
       />
-      {data && (<ModalWarningRemove isOpenWarning={data?.isDeleted} />)}
+      {data && <ModalWarningRemove isOpenWarning={data?.isDeleted} />}
       {data && account && (
-        <ModalBuyNFT isOpenBuyNFT={isOpenBuyNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenBuyNFT={setIsOpenBuyNFT} inputNFT={inputNFTValue} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessBuy} setIsOpenError={setIsOpenErrorBuy} />
+        <ModalBuyNFT
+          isOpenBuyNFT={isOpenBuyNFT}
+          isOpenTransaction={isOpenTransaction}
+          setIsOpenTransaction={setIsOpenTransaction}
+          tokenAddress={tokenAddress}
+          nftAddress={nftAddress}
+          idNFT={idNFT}
+          routerAddress={routerAddress}
+          data={data}
+          setIsOpenBuyNFT={setIsOpenBuyNFT}
+          inputNFT={inputNFTValue}
+          setInputNFT={setInputNFT}
+          setHash={setHash}
+          setIsOpenSuccess={setIsOpenSuccessBuy}
+          setIsOpenError={setIsOpenErrorBuy}
+        />
       )}
       {data && account && (
-        <ModalSellNFT isOpenSellNFT={isOpenSellNFT} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} tokenAddress={tokenAddress} nftAddress={nftAddress} idNFT={idNFT} data={data} setIsOpenSellNFT={setIsOpenSellNFT} inputNFT={inputNFTValue} setInputNFT={setInputNFT} setHash={setHash} setIsOpenSuccess={setIsOpenSuccessSell} setIsOpenError={setIsOpenErrorSell} />
+        <ModalSellNFT
+          isOpenSellNFT={isOpenSellNFT}
+          isOpenTransaction={isOpenTransaction}
+          setIsOpenTransaction={setIsOpenTransaction}
+          tokenAddress={tokenAddress}
+          nftAddress={nftAddress}
+          idNFT={idNFT}
+          data={data}
+          setIsOpenSellNFT={setIsOpenSellNFT}
+          inputNFT={inputNFTValue}
+          setInputNFT={setInputNFT}
+          setHash={setHash}
+          setIsOpenSuccess={setIsOpenSuccessSell}
+          setIsOpenError={setIsOpenErrorSell}
+        />
       )}
-      <ModalSetting isOpenSetting={isOpenSetting} setIsOpenSetting={setIsOpenSetting} />
-      <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
-      <ModalSuccess isOpenSuccess={isOpenSuccessBuy} transactionHash={hash} type="Buy NFT Success" setIsOpenSuccess={setIsOpenSuccessBuy} />
-      <ModalError isOpenError={isOpenErrorBuy} transactionHash={hash} type="Buy NFT Failed" setIsOpenError={setIsOpenErrorBuy} />
-      <ModalSuccess isOpenSuccess={isOpenSuccessSell} transactionHash={hash} type="Sell NFT Success" setIsOpenSuccess={setIsOpenSuccessSell} />
-      <ModalError isOpenError={isOpenErrorSell} transactionHash={hash} type="Sell NFT Failed" setIsOpenError={setIsOpenErrorSell} />
+      <ModalSetting
+        isOpenSetting={isOpenSetting}
+        setIsOpenSetting={setIsOpenSetting}
+      />
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+        isTransaction={true}
+      />
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessBuy}
+        transactionHash={hash}
+        type="Buy NFT Success"
+        setIsOpenSuccess={setIsOpenSuccessBuy}
+      />
+      <ModalError
+        isOpenError={isOpenErrorBuy}
+        transactionHash={hash}
+        type="Buy NFT Failed"
+        setIsOpenError={setIsOpenErrorBuy}
+      />
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessSell}
+        transactionHash={hash}
+        type="Sell NFT Success"
+        setIsOpenSuccess={setIsOpenSuccessSell}
+      />
+      <ModalError
+        isOpenError={isOpenErrorSell}
+        transactionHash={hash}
+        type="Sell NFT Failed"
+        setIsOpenError={setIsOpenErrorSell}
+      />
     </div>
-  )
-}
+  );
+};
 export default SwapTransaction;
