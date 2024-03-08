@@ -291,7 +291,7 @@ export default function Header() {
         </div>
       </header>
       <Maintenance />
-      <div className="text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] py-2 text-sm font-light">
+      <a href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv" rel="noopener noreferrer" target="_blank" className="block cursor-pointer text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] py-2 text-sm font-light">
         <Marquee autoFill pauseOnHover>
           <div className="flex items-center justify-center mr-20 gap-x-3">
             <span>
@@ -300,7 +300,7 @@ export default function Header() {
             <span>Blast Big Bang - The airdrop Demask Finance x BleBle Compaign on Galxe</span>
           </div>
         </Marquee>
-      </div>
+      </a>
       <div className="absolute z-[50]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
