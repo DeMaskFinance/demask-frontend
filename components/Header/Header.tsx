@@ -291,7 +291,7 @@ export default function Header() {
         </div>
       </header>
       <Maintenance />
-      <div className="text-white text-[8px] lg:text-base bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] py-2 text-sm font-light">
+      <div className="text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] py-2 text-sm font-light">
         <Marquee autoFill pauseOnHover>
           <div className="flex items-center justify-center mr-20 gap-x-3">
             <span>
