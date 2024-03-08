@@ -11,10 +11,7 @@ import { CgClose } from "react-icons/cg";
 import { MdLogout } from "react-icons/md";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
-import {
-  ProfileIcon,
-  SearchIcon
-} from "../Icons";
+import { LightIcon, ProfileIcon, SearchIcon } from "../Icons";
 import { LogoDeMask, LogoDeMaskBeta } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
@@ -27,6 +24,7 @@ import useInformationToken from "@/hooks/useInformationToken";
 import formatNumber from "@/libs/utils/formatNumer";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectProfile } from "@/store/profileSlice";
+import Marquee from "react-fast-marquee";
 import Maintenance from "../Common/Maintenance";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
@@ -42,11 +40,23 @@ export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
-  const { account, updateAccount, wallet, chainId, demask } = useContext(AccountContext);
-  const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+  const { account, updateAccount, wallet, chainId, demask } =
+    useContext(AccountContext);
+  const {
+    ROUTER: routerAddress,
+    RPC: rpc,
+    NATIVE_ADDRESS: nativeAddress,
+  } = demask;
   const { isLoggedIn } = useSelector(selectProfile);
-  const { balanceToken, isLoadingBalance } =
-    useInformationToken(account, nativeAddress, wallet, routerAddress, rpc, nativeAddress, true);
+  const { balanceToken, isLoadingBalance } = useInformationToken(
+    account,
+    nativeAddress,
+    wallet,
+    routerAddress,
+    rpc,
+    nativeAddress,
+    true
+  );
   const dispatch = useDispatch();
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -115,16 +125,29 @@ export default function Header() {
   return (
     <div
       ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out">
-      <header
-        className="flex items-center justify-between w-full gap-2 shadow-md bg-secondary1 h-header lg:px-primary md:px-14"
-      >
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+    >
+      <header className="flex items-center justify-between w-full gap-2 shadow-md bg-secondary1 h-header lg:px-primary md:px-14">
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">
-            <Link href='https://demask.finance/' target="_blank" className={`p-2 border border-secondary1 rounded-xl block hover:border-white ${router.pathname === '/' ? "bg-white" : ""}`}>
-              <LogoDeMask width={94} height={24} className={`${router.pathname === '/' ? "fill-[#7413DC]" : "fill-white"}`} />
+            <Link
+              href="https://demask.finance/"
+              target="_blank"
+              className={`p-2 border border-secondary1 rounded-xl block hover:border-white ${
+                router.pathname === "/" ? "bg-white" : ""
+              }`}
+            >
+              <LogoDeMask
+                width={94}
+                height={24}
+                className={`${
+                  router.pathname === "/" ? "fill-[#7413DC]" : "fill-white"
+                }`}
+              />
             </Link>
-            <p className="text-xs font-semibold text-dark3 lg:hidden">{version}</p>
+            <p className="text-xs font-semibold text-dark3 lg:hidden">
+              {version}
+            </p>
           </div>
           <div className="hidden ml-8 lg:block">
             <MenuHeader />
@@ -137,8 +160,9 @@ export default function Header() {
               setShowSearch(false);
               document.body.style.overflowY = "auto";
             }}
-            className={`${showSearch ? "block" : "hidden"
-              } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
+            className={`${
+              showSearch ? "block" : "hidden"
+            } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
           <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
             <div
@@ -156,11 +180,16 @@ export default function Header() {
             </div>
 
             <div
-              className={`${showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
-                } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
+              className={`${
+                showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
+              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
-                <Search isFocused={isFocused} handleFocus={handleFocus} setShowSearch={setShowSearch} />
+                <Search
+                  isFocused={isFocused}
+                  handleFocus={handleFocus}
+                  setShowSearch={setShowSearch}
+                />
               </div>
 
               <button
@@ -174,7 +203,7 @@ export default function Header() {
               </button>
             </div>
             <MenuNetwork />
-            {(isLoggedIn && account) ? (
+            {isLoggedIn && account ? (
               <Tippy
                 interactive
                 render={(attrs) => (
@@ -184,8 +213,18 @@ export default function Header() {
                     {...attrs}
                   >
                     <ul className="pb-2 mt-2">
-                      <Link href={`/profile?chain=${chainId}`} className={`${style.itemSub}`}>Profile</Link>
-                      <Link href={`/profile/edit?chain=${chainId}`} className={`${style.itemSub}`}>Edit profile</Link>
+                      <Link
+                        href={`/profile?chain=${chainId}`}
+                        className={`${style.itemSub}`}
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        href={`/profile/edit?chain=${chainId}`}
+                        className={`${style.itemSub}`}
+                      >
+                        Edit profile
+                      </Link>
                       <li
                         className={`${style.itemSub} justify-between mb-2`}
                         onClick={disconnectWallet}
@@ -219,12 +258,13 @@ export default function Header() {
                       {isLoadingBalance ? (
                         <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 animate-pulse"></div>
                       ) : (
-                        <span className="ml-2">{formatNumber(balanceToken)}</span>
+                        <span className="ml-2">
+                          {formatNumber(balanceToken)}
+                        </span>
                       )}
                       <span className="ml-1">ETH</span>
                     </div>
                   </div>
-
                 </div>
               </Tippy>
             ) : (
@@ -251,6 +291,16 @@ export default function Header() {
         </div>
       </header>
       <Maintenance />
+      <div className="text-white text-[8px] lg:text-base bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] py-2 text-sm font-light">
+        <Marquee autoFill pauseOnHover>
+          <div className="flex items-center justify-center mr-20 gap-x-3">
+            <span>
+              <LightIcon width={24} height={24}/>
+            </span>
+            <span>Blast Big Bang - The airdrop Demask Finance x BleBle Compaign on Galxe</span>
+          </div>
+        </Marquee>
+      </div>
       <div className="absolute z-[50]">
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>

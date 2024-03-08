@@ -7,7 +7,7 @@ export default function LayoutSecondary({ children }: PropsWithChildren) {
   return (
     <div className="box-border w-full ">
       <Header />
-      <main className="mt-[64px] ">{children}</main>
+      <main className="mt-[104px] ">{children}</main>
 
       <Footer />
       <NavFooter />
