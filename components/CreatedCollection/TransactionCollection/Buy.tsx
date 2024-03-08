@@ -2,6 +2,7 @@ import { Button } from "@/components/Buttons";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
+import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
@@ -152,10 +153,10 @@ const Buy = () => {
     setIsOpen(true);
   };
   const dataFake = {
-    dmlAddress:dmlToken,
-    royaltyFee:royaltyFee,
-    tokenDecimals:'18',
-  }
+    dmlAddress: dmlToken,
+    royaltyFee: royaltyFee,
+    tokenDecimals: "18",
+  };
   return (
     <div>
       {isLoading ? (
@@ -279,13 +280,27 @@ const Buy = () => {
               </Button>
             ) : (
               <Button
-                primary
+                disabled={
+                  idNFT.length === 0 ||
+                  !isSufficientTokenBuy ||
+                  Math.floor(amountBuyDec) === 0
+                }
+                primary={
+                  idNFT.length !== 0 ||
+                  isSufficientTokenBuy ||
+                  Math.floor(amountBuyDec) !== 0
+                }
                 className="w-full py-4"
+                active
                 onClick={handleBuy}
-                disabled={idNFT.length === 0}
               >
                 BUY {idNFT.length} NFTs
               </Button>
+            )}
+            {!isSufficientTokenBuy && account && (
+              <p className="text-xs text-red" key="Tokenbalance">
+                Insufficient Token balance
+              </p>
             )}
           </div>
         </div>
@@ -313,6 +328,18 @@ const Buy = () => {
         />
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessBuy}
+        transactionHash={hash}
+        type="Buy NFT Success"
+        setIsOpenSuccess={setIsOpenSuccessBuy}
+      />
+      <ModalError
+        isOpenError={isOpenErrorBuy}
+        transactionHash={hash}
+        type="Buy NFT Failed"
+        setIsOpenError={setIsOpenErrorBuy}
+      />
     </div>
   );
 };

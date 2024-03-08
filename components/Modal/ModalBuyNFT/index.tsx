@@ -21,6 +21,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import ercContract721 from "@/libs/utils/erc/erc721.contract";
 interface ModalBuyNFTProps {
   isOpenBuyNFT: boolean;
   tokenAddress: string;
@@ -203,19 +204,47 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           tokenAddress === nativeAddress
             ? exponentialToDecimal(Math.floor(amountBuyDec))
             : 0;
-        result = await erc1155Contract.buyERC20ERC1155(
-          wallet,
-          nftAddress,
-          tokenAddress,
-          idNFT,
-          routerAddress,
-          amountBuyDec,
-          inputNFT,
-          fee,
-          account,
-          txDeadline,
-          value
-        );
+        if(inputNFT){
+          result = await erc1155Contract.buyERC20ERC1155(
+            wallet,
+            nftAddress,
+            tokenAddress,
+            idNFT,
+            routerAddress,
+            amountBuyDec,
+            inputNFT,
+            fee,
+            account,
+            txDeadline,
+            value
+          );
+        }else{
+          console.log({
+            wallet,
+            nftAddress,
+            tokenAddress,
+            idNFT,
+            routerAddress,
+            amountBuyDec,
+            fee,
+            account,
+            txDeadline,
+            value
+          });
+          
+          result = await ercContract721.buyERC20ERC721(
+            wallet,
+            nftAddress,
+            tokenAddress,
+            idNFT,
+            routerAddress,
+            amountBuyDec,
+            0,
+            account,
+            txDeadline,
+            value
+          )
+        }
         setHash(result.hash);
         const check = await provider.waitForTransaction(result.hash);
         setIsOpenTransaction(false);
