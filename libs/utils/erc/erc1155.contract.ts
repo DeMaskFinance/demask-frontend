@@ -76,7 +76,7 @@ const buyERC20ERC1155 = async (
   idNFT: string | number[],
   routerAddress: string,
   amountBuyDec: number,
-  inputNFT:string,
+  inputNFT: string,
   fee: number,
   account: string,
   txDeadline: number,
@@ -108,11 +108,48 @@ const buyERC20ERC1155 = async (
   );
   return result;
 };
+const removeERC20ERC1155 = async (
+  wallet: string,
+  nftAddress: string,
+  tokenAddress: string,
+  idNFT: string | number[],
+  routerAddress: string,
+  liquidity: number,
+  amountTokenMin: string,
+  amountNFTMin: string,
+  account: string,
+  txDeadline: number
+) => {
+  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
+  const estimatedGas = await contract.estimateGas.removeERC20ERC1155(
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    Math.floor(Number(liquidity)).toString(),
+    exponentialToDecimal(Number(amountTokenMin)),
+    exponentialToDecimal(Number(amountNFTMin)),
+    account,
+    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
+  );
+  const result = await contract.removeERC20ERC1155(
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    Math.floor(Number(liquidity)).toString(),
+    exponentialToDecimal(Number(amountTokenMin)),
+    exponentialToDecimal(Number(amountNFTMin)),
+    account,
+    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    { gasLimit: estimatedGas }
+  );
+  return result;
+};
 const erc1155Contract = {
   allowanceDML,
   getBalanceNFT,
   getDMLToken,
   viewReward,
-  buyERC20ERC1155
+  buyERC20ERC1155,
+  removeERC20ERC1155,
 };
 export default erc1155Contract;

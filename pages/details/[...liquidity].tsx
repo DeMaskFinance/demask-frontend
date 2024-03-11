@@ -55,7 +55,11 @@ export default function DetailLiquidity() {
     useState<boolean>(false);
   const [tab, setTab] = useQueryParam("historyPool", withDefault(StringParam, "All"));
   const [page, setPage] = useState(1);
-
+  const {
+    ROUTER: routerAddress,
+    RPC: rpc,
+    NATIVE_ADDRESS: nativeAddress,
+  } = demask;
   useEffect(() => {
     if (liquidity) {
       setDmlTokenLiquidity(liquidity[0]);
@@ -331,6 +335,7 @@ export default function DetailLiquidity() {
         <>
           <ModalRemmoveLiquidity
             data={data}
+            routerAddress={routerAddress}
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}

@@ -20,6 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
 import abiDML from "@/abi/abiDML.json";
+import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -39,6 +40,11 @@ const Pool = () => {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
+  const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
+    useState<boolean>(false);
+  const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
+  const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
+    useState<boolean>(false);
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
   const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
@@ -123,7 +129,8 @@ const Pool = () => {
     if (dmlToken !== "0x0000000000000000000000000000000000000000" && inputNFT) {
       amountErcDesired = (Number(inputNFT) * +reserveToken) / +reserveNFT;
       amountTokenMin =
-        ((Number(inputNFT) * +reserveToken) / +reserveNFT) * (1 + slippage / 100);
+        ((Number(inputNFT) * +reserveToken) / +reserveNFT) *
+        (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(Number(inputToken), 18);
       amountTokenMin = handleBignumber(Number(inputToken), 18);
@@ -165,6 +172,18 @@ const Pool = () => {
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
+  };
+  const dataFake = {
+    reserveNFT: "5",
+    reserveTokenDecimals: "18",
+    dmlAddress: "0x21bCd1e6aEBb64ba33F23A871D0d58Fbd7A95B45",
+    dmlDecimals: "18",
+    nftAddress: "0x286e08EEb3169042585B4838378D21d2c23ded55",
+    nftID: [1, 2],
+  };
+  const handleRemoveLiquidity = () => {
+    setIsOpenRemoveLiquidity(true);
+    document.body.style.overflowY = "hidden";
   };
   return (
     <div>
@@ -223,8 +242,16 @@ const Pool = () => {
           >
             Create pool
           </Button>
+          <Button
+            className="w-[144px] py-2"
+            primary
+            onClick={handleRemoveLiquidity}
+          >
+            Remove pool
+          </Button>
         </div>
       )}
+
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalConfirmAddLiquidityERC721
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
@@ -260,6 +287,33 @@ const Pool = () => {
         type="Add Liquidity Failed"
         setIsOpenError={setIsOpenError}
       />
+      {data && account && (
+        <>
+          <ModalRemmoveLiquidity
+            /* 
+          // @ts-ignore */
+            data={dataFake}
+            routerAddress={routerAddress}
+            isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+            setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
+            setHash={setHash}
+            setIsOpenSuccess={setIsOpenSuccessRemove}
+            setIsOpenError={setIsOpenErrorRemove}
+          />
+          <ModalSuccess
+            isOpenSuccess={isOpenSuccessRemove}
+            transactionHash={hash}
+            type="Remove Liquidity Success"
+            setIsOpenSuccess={setIsOpenSuccessRemove}
+          />
+          <ModalError
+            isOpenError={isOpenErrorRemove}
+            transactionHash={hash}
+            type="Remove Liquidity Failed"
+            setIsOpenError={setIsOpenErrorRemove}
+          />
+        </>
+      )}
     </div>
   );
 };

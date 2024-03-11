@@ -19,6 +19,7 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: DataBase;
+  routerAddress:string;
   setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +34,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
 > = ({
   isOpenRemoveLiquidity,
   data,
+  routerAddress,
   setIsOpenRemoveLiquidity,
   setHash,
   setIsOpenSuccess,
@@ -52,7 +54,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
     const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] = useState<boolean>(false);
     const { demask, tokenDefault, account, wallet, slippage } = useContext(AccountContext);
-    const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
+    const { RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
     const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       document.body.style.overflowY = "auto";
@@ -254,7 +256,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
+        <ModalConfirmRemoveLiquidity isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity} routerAddress={routerAddress} isOpenTransaction={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} data={data} inputLiquidity={inputLiquidity} setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity} totalSupply={totalSupply} setInputLiquidity={setInputLiquidity} setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity} setHash={setHash} setIsOpenSuccess={setIsOpenSuccess} setIsOpenError={setIsOpenError} />
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation isOpenTransation={isOpenTransaction} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
       </Wrapper>

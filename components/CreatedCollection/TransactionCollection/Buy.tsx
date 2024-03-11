@@ -157,6 +157,8 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
+  console.log(dmlToken);
+  
   return (
     <div>
       {isLoading ? (
