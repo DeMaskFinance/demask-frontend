@@ -1,30 +1,18 @@
 import { Button } from "@/components/Buttons";
-import ModalConfirmAddLiquidityERC721 from "@/components/Modal/ModalConfirmAddLiquidityERC721";
-import {
-  ModalError,
-  ModalSuccess,
-  ModalTransation,
-} from "@/components/Modal/ModalTransation";
+import { LightBulbIcon } from "@/components/Icons";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
 import { swapAPI } from "@/libs/service";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
-import abiDML from "@/abi/abiDML.json";
-import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
-const styles = {
-  title: "block mb-4 text-base font-medium text-black24",
-  inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
-};
+import PoolItem from "./PoolItem";
+
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -37,14 +25,6 @@ const Pool = () => {
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [amountTokenMin, setAmountTokenMin] = useState<number>(0);
-  const [hash, setHash] = useState<string>("");
-  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
-  const [isOpenError, setIsOpenError] = useState<boolean>(false);
-  const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
-    useState<boolean>(false);
-  const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
-  const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
-    useState<boolean>(false);
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
   const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
@@ -159,101 +139,32 @@ const Pool = () => {
       setIsSufficientToken(false);
     }
   };
-  const handleAddLiquidity = () => {
-    if (!isSufficientToken) {
-      setIsOpenConfirmAddLiquidity(true);
-    } else {
-      console.log({
-        isSufficientToken,
-      });
-    }
-  };
 
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  const dataFake = {
-    reserveNFT: "5",
-    reserveTokenDecimals: "18",
-    dmlAddress: "0x21bCd1e6aEBb64ba33F23A871D0d58Fbd7A95B45",
-    dmlDecimals: "18",
-    nftAddress: "0x286e08EEb3169042585B4838378D21d2c23ded55",
-    nftID: [1, 2],
-  };
-  const handleRemoveLiquidity = () => {
-    setIsOpenRemoveLiquidity(true);
-    document.body.style.overflowY = "hidden";
-  };
+  
   return (
-    <div>
+    <div className="h-full text-dark3">
+      <div className="flex px-6 py-4 my-4 rounded-lg bg-dark5 ">
+        <LightBulbIcon width={24} height={24} className=" fill-yellow" />
+        <p>Pools accrue trading fees towards depositors.</p>
+      </div>
       {!account ? (
-        <Button className="w-[144px] py-2" primary onClick={handleOpen}>
+        <Button
+          className="flex items-end w-full py-2"
+          primary
+          onClick={handleOpen}
+        >
           CONNECT WALLET
         </Button>
-      ) : !isApprovedNFT ? (
-        <Button
-          className="w-[126px] py-2"
-          primary
-          onClick={() =>
-            handleApproveNFT(
-              account,
-              wallet,
-              "0x286e08EEb3169042585B4838378D21d2c23ded55",
-              setIsOpen,
-              setIsOpenTransaction,
-              routerAddress
-            )
-          }
-        >
-          APPROVE NFT
-        </Button>
       ) : (
-        <div>
-          {dmlToken === "0x0000000000000000000000000000000000000000" ? (
-            <input
-              className={styles.inputItem}
-              type="number"
-              placeholder="Input amount Token"
-              value={inputToken}
-              onChange={handleGetToken}
-            />
-          ) : (
-            <div>
-              <div className={styles.inputItem}>{amountErcDesiredToDec}</div>
-              {/* {data ? (
-                
-              ) : (
-                <div className={styles.inputItem}>
-                  <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
-                </div>
-              )} */}
-            </div>
-          )}
-          {isSufficientToken && (
-            <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
-              Insufficient Token balance
-            </p>
-          )}
-          <Button
-            className="w-[144px] py-2"
-            primary
-            onClick={handleAddLiquidity}
-          >
-            Create pool
-          </Button>
-          <Button
-            className="w-[144px] py-2"
-            primary
-            onClick={handleRemoveLiquidity}
-          >
-            Remove pool
-          </Button>
-        </div>
+        <PoolItem />
       )}
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalConfirmAddLiquidityERC721
+      {/* <ModalConfirmAddLiquidityERC721
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
@@ -268,52 +179,9 @@ const Pool = () => {
         setHash={setHash}
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
-      />
+      /> */}
 
-      <ModalTransation
-        isOpenTransation={isOpenTransaction}
-        setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
-      />
-      <ModalSuccess
-        isOpenSuccess={isOpenSuccess}
-        transactionHash={hash}
-        type="Add Liquidity Success"
-        setIsOpenSuccess={setIsOpenSuccess}
-      />
-      <ModalError
-        isOpenError={isOpenError}
-        transactionHash={hash}
-        type="Add Liquidity Failed"
-        setIsOpenError={setIsOpenError}
-      />
-      {data && account && (
-        <>
-          <ModalRemmoveLiquidity
-            /* 
-          // @ts-ignore */
-            data={dataFake}
-            routerAddress={routerAddress}
-            isOpenRemoveLiquidity={isOpenRemoveLiquidity}
-            setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
-            setHash={setHash}
-            setIsOpenSuccess={setIsOpenSuccessRemove}
-            setIsOpenError={setIsOpenErrorRemove}
-          />
-          <ModalSuccess
-            isOpenSuccess={isOpenSuccessRemove}
-            transactionHash={hash}
-            type="Remove Liquidity Success"
-            setIsOpenSuccess={setIsOpenSuccessRemove}
-          />
-          <ModalError
-            isOpenError={isOpenErrorRemove}
-            transactionHash={hash}
-            type="Remove Liquidity Failed"
-            setIsOpenError={setIsOpenErrorRemove}
-          />
-        </>
-      )}
+      
     </div>
   );
 };
