@@ -19,6 +19,7 @@ import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -210,37 +211,23 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       const providerChoice = await getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-
-      const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-
       try {
         setIsOpenTransaction(true);
         const valueToSend =
           tokenAddress === nativeAddress
             ? exponentialToDecimal(Math.floor(amountErcDesired))
             : 0;
-        const estimatedGas = await contract.estimateGas.addERC20ERC1155(
-          tokenAddress,
+        const result = await erc1155Contract.addERC20ERC1155(
+          wallet,
           nftAddress,
-          idNFT,
-          exponentialToDecimal(Math.floor(amountErcDesired)),
-          inputNFT,
-          0,
-          account,
-          Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-          { value: valueToSend }
-        );
-        const result = await contract.addERC20ERC1155(
           tokenAddress,
-          nftAddress,
           idNFT,
-          exponentialToDecimal(Math.floor(amountErcDesired)),
+          routerAddress,
+          amountErcDesired,
           inputNFT,
-          0,
           account,
-          Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-          { gasLimit: estimatedGas, value: valueToSend }
+          txDeadline,
+          valueToSend
         );
         const check = await provider.waitForTransaction(result.hash);
         setHash(result.hash);

@@ -12,9 +12,13 @@ import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import PoolItem from "./PoolItem";
+import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidityERC721";
+import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(false);
+  const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
@@ -25,6 +29,8 @@ const Pool = () => {
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [amountTokenMin, setAmountTokenMin] = useState<number>(0);
+  const [hash, setHash] = useState<string>('');
+  const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
   const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
@@ -77,7 +83,6 @@ const Pool = () => {
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  console.log(dmlToken);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -180,8 +185,17 @@ const Pool = () => {
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
       /> */}
-
-      
+      {data && account && (
+        <>
+          <ModalAddLiquidityERC721
+            data={data}
+            isOpenAddLiquidity={isOpenAddLiquidity}
+            setIsOpenLiquidity={setIsOpenAddLiquidity}
+            setHash={setHash} setIsOpenSuccess={setIsOpenSuccessAdd} setIsOpenError={setIsOpenErrorAdd}
+          />
+          <ModalSuccess isOpenSuccess={isOpenSuccessAdd} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccessAdd} />
+          <ModalError isOpenError={isOpenErrorAdd} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenErrorAdd} /></>
+      )}
     </div>
   );
 };

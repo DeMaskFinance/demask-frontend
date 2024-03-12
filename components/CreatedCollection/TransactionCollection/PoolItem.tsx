@@ -7,8 +7,11 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import getRewardDML from "@/libs/utils/getReward";
 
 const PoolItem = () => {
   const { account, wallet, chainId, demask, slippage } =
@@ -24,7 +27,11 @@ const PoolItem = () => {
   const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
     useState<boolean>(false);
   const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
-  const { ROUTER_721: routerAddress } = demask;
+  const [reward, setReward] = useState("");
+  const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
+    useState<boolean>(false);
+  const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
+  const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
     setIsOpenConfirmAddLiquidity(true);
   };
@@ -39,6 +46,47 @@ const PoolItem = () => {
     dmlDecimals: "18",
     nftAddress: "0x286e08EEb3169042585B4838378D21d2c23ded55",
     nftID: [1, 2],
+  };
+  const dmlTokenLiquidity = "0x21bCd1e6aEBb64ba33F23A871D0d58Fbd7A95B45";
+  useEffect(() => {
+    const fetchDataReward = async () => {
+      if (account && dmlTokenLiquidity && data) {
+        const result = await ercContract.viewReward(
+          dmlTokenLiquidity,
+          account,
+          wallet
+        );
+        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+        setReward(rewardDec);
+      } else {
+        setReward("0");
+      }
+    };
+    fetchDataReward();
+  }, [dmlTokenLiquidity, account, data]);
+  console.log(reward);
+  const handleGetReward = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (account && dmlTokenLiquidity && wallet) {
+      getRewardDML({
+        wallet,
+        dmlTokenLiquidity,
+        account,
+        data: {
+          dmlDecimals: data.dmlDecimals,
+          tokenAddress: nativeAddress,
+        },
+        setReward,
+        setIsOpenTransaction,
+        setIsOpenSuccessCollect,
+        setIsOpenErrorCollect,
+        setHash,
+      });
+    } else {
+      console.log("No account and DML");
+    }
   };
   return (
     <div className="p-4 border rounded-lg border-dark3">
@@ -74,7 +122,16 @@ const PoolItem = () => {
         </div>
         <div className="flex items-center justify-between my-2">
           <div className="flex">
-            <span>Reward:123</span>
+            <span className="flex items-center">
+              Reward:
+              {reward ? (
+                <div className="ml-2">
+                  <FormatNumber number={reward} />
+                </div>
+              ) : (
+                <p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>
+              )}
+            </span>
             {/* {reward ? (
               <div className="ml-2">
                 <FormatNumber number={reward} />
@@ -92,7 +149,7 @@ const PoolItem = () => {
           </div>
           <Button
             className="px-6 py-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg bg-green hover:bg-white hover:text-green boder-white hover:border-green"
-            //   onClick={handleGetReward}
+            onClick={handleGetReward}
           >
             COLLECT
           </Button>
@@ -115,6 +172,8 @@ const PoolItem = () => {
         type="Add Liquidity Failed"
         setIsOpenError={setIsOpenError}
       />
+      <ModalSuccess isOpenSuccess={isOpenSuccessCollect} transactionHash={hash} type="Collect Reward Success" setIsOpenSuccess={setIsOpenSuccessCollect} />
+      <ModalError isOpenError={isOpenErrorCollect} transactionHash={hash} type="Collect Reward Failed" setIsOpenError={setIsOpenErrorCollect} />
       {data && account && (
         <>
           <ModalRemmoveLiquidity

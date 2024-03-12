@@ -16,21 +16,7 @@ const allowanceDML = async (
   const currentAllowance = dmlAllowance.toString();
   return currentAllowance;
 };
-const viewReward = async (
-  dmlToken: string,
-  account: string,
-  wallet: string
-) => {
-  if (dmlToken && account && wallet) {
-    const contract = await ercContract.erc(wallet, dmlToken, abiDML);
-    try {
-      const result = await contract.viewReward(account);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-};
+
 //NFT balance
 const getBalanceNFT = async (
   account: string,
@@ -144,12 +130,49 @@ const removeERC20ERC1155 = async (
   );
   return result;
 };
+const addERC20ERC1155 = async (
+  wallet: string,
+  nftAddress: string,
+  tokenAddress: string,
+  idNFT: string | number[],
+  routerAddress: string,
+  amountErcDesired: number,
+  inputNFT: string,
+  account: string,
+  txDeadline: number,
+  valueToSend: string | 0
+) => {
+  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
+  const estimatedGas = await contract.estimateGas.addERC20ERC1155(
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    exponentialToDecimal(Math.floor(amountErcDesired)),
+    inputNFT,
+    0,
+    account,
+    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    { value: valueToSend }
+  );
+  const result = await contract.addERC20ERC1155(
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    exponentialToDecimal(Math.floor(amountErcDesired)),
+    inputNFT,
+    0,
+    account,
+    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    { gasLimit: estimatedGas, value: valueToSend }
+  );
+  return result;
+};
 const erc1155Contract = {
   allowanceDML,
   getBalanceNFT,
   getDMLToken,
-  viewReward,
   buyERC20ERC1155,
   removeERC20ERC1155,
+  addERC20ERC1155
 };
 export default erc1155Contract;

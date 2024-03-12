@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
 import divideByDecimal from "./divideByDecimal";
 import erc1155Contract from "./erc/erc1155.contract";
+import ercContract from "./erc/erc.contract";
 interface RewardDMLProps {
   wallet: string;
   dmlTokenLiquidity: string;
@@ -30,7 +31,7 @@ const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, a
     );
     setIsOpenTransaction(true);
     const check = await provider.waitForTransaction(result.hash);
-    const resultTest = await erc1155Contract.viewReward(dmlTokenLiquidity, account, wallet);
+    const resultTest = await ercContract.viewReward(dmlTokenLiquidity, account, wallet);
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
     setHash(result.hash);
     setReward(rewardDec);

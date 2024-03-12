@@ -33,9 +33,7 @@ interface ModalBuyNFTProps {
   isOpenTransaction: boolean;
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenBuyNFT: React.Dispatch<React.SetStateAction<boolean>>;
-  setInputNFT:
-    | React.Dispatch<React.SetStateAction<string>>
-    | React.Dispatch<React.SetStateAction<number[]>>;
+  setInputNFT: any;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
@@ -204,7 +202,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           tokenAddress === nativeAddress
             ? exponentialToDecimal(Math.floor(amountBuyDec))
             : 0;
-        if(inputNFT){
+        if (inputNFT) {
           result = await erc1155Contract.buyERC20ERC1155(
             wallet,
             nftAddress,
@@ -218,7 +216,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             txDeadline,
             value
           );
-        }else{
+        } else {
           console.log({
             wallet,
             nftAddress,
@@ -229,9 +227,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             fee,
             account,
             txDeadline,
-            value
+            value,
           });
-          
+
           result = await ercContract721.buyERC20ERC721(
             wallet,
             nftAddress,
@@ -243,7 +241,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             account,
             txDeadline,
             value
-          )
+          );
         }
         setHash(result.hash);
         const check = await provider.waitForTransaction(result.hash);
@@ -254,7 +252,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         } else {
           setIsOpenError(false);
         }
-        setInputNFT("");
+        setInputNFT([]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

@@ -14,6 +14,7 @@ import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
@@ -25,7 +26,6 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import "react-toastify/dist/ReactToastify.css";
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { SEO } from '../../next-seo.config';
-import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
@@ -76,11 +76,10 @@ export default function DetailLiquidity() {
     keepPreviousData: true,
   });
 
-
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity && data) {
-        const result = await erc1155Contract.viewReward(dmlTokenLiquidity, account, wallet);
+        const result = await ercContract.viewReward(dmlTokenLiquidity, account, wallet);
         const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
         setReward(rewardDec);
       } else {
@@ -90,7 +89,6 @@ export default function DetailLiquidity() {
     fetchDataReward();
 
   }, [dmlTokenLiquidity, account, data]);
-  console.log(data);
 
   const { balanceOfDML, balanceDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
   const options = [{ tab: 'All' }, { tab: 'Add' }, { tab: 'Remove' }];

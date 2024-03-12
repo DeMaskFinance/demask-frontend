@@ -43,7 +43,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
@@ -233,7 +232,15 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
               </div>
             </div>
             <div className="flex justify-center">
-              {!isApprovedNFT && (
+              {isApprovedNFT ? (
+                <Button
+                  className="w-[126px] py-2 mx-auto"
+                  primary
+                  onClick={handleAddLiquidity}
+                >
+                  ADD LIQUIDITY
+                </Button>
+              ) : (
                 <Button
                   className="w-[126px] py-2 mx-auto"
                   primary
@@ -249,15 +256,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   }
                 >
                   APPROVE NFT
-                </Button>
-              )}
-              {isApprovedNFT && (
-                <Button
-                  className="w-[126px] py-2 mx-auto"
-                  primary
-                  onClick={handleAddLiquidity}
-                >
-                  ADD LIQUIDITY
                 </Button>
               )}
             </div>

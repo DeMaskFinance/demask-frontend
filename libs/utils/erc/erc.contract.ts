@@ -62,10 +62,26 @@ const getInforDML = async (dmlToken: string, wallet: string) => {
     console.error(error);
   }
 };
+const viewReward = async (
+  dmlToken: string,
+  account: string,
+  wallet: string
+) => {
+  if (dmlToken && account && wallet) {
+    const contract = await ercContract.erc(wallet, dmlToken, abiDML);
+    try {
+      const result = await contract.viewReward(account);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 const ercContract = {
   erc,
   approveNFT,
   getTotalSupply,
-  getInforDML
+  getInforDML,
+  viewReward
 };
 export default ercContract;

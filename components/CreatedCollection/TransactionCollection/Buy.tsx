@@ -131,7 +131,6 @@ const Buy = () => {
       setTotalProcessBuy(0);
     }
   }, [data, slippage, amountTokenBuy]);
-  console.log(amountBuyDec);
 
   const hanldeChoiceNFT = (index: number) => {
     const isExist = idNFT.includes(index);
@@ -157,7 +156,6 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-  console.log(dmlToken);
   
   return (
     <div>

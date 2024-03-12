@@ -25,7 +25,6 @@ const handleApproveToken = async (
       );
       setIsOpenTransaction(true);
       await provider.waitForTransaction(result.hash);
-      console.log(result.hash);
       setIsOpenTransaction(false);
       setInputNFT("");
     } catch (error) {
