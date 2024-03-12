@@ -297,7 +297,7 @@ export default function Header() {
             <span>
               <LightIcon width={24} height={24}/>
             </span>
-            <span>Blast Big Bang - The airdrop Demask Finance x BleBle Compaign on Galxe</span>
+            <span>Blast Big Bang - The airdrop Demask Finance x BleBle Campaign on Galxe</span>
           </div>
         </Marquee>
       </a>
