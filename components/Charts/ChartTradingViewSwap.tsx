@@ -111,8 +111,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({ dataSwa
                 borderDownColor: 'rgb(246,70,93)',
                 priceFormat: {
                     type: 'volume',
-                    precision: 6,
-                    minMove: 0.000001,
+                    precision: 16,
+                    minMove: 0.00000000001,
                 },
             });
             const volumeSeries = chart.addHistogramSeries({
