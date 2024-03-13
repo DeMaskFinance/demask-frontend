@@ -465,7 +465,11 @@ export default function DetailLaunchPad() {
                                 >
                                   Buy
                                 </button>
-                                <p className="mt-2 text-xs text-red">{errors}</p>
+                                {amount && (
+                                  <p className="mt-2 text-xs text-red">
+                                    {errors}
+                                  </p>
+                                )}
                               </div>
                             )}
                             <ModalLaunchPad
