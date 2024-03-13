@@ -18,9 +18,9 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
     <div className="relative w-full h-1 bg-dark4 rounded-xl">
       <div className="relative z-10 flex justify-between w-full bg-black">
         <div
-          style={{ width: `${percentage}%` }}
+          style={{ width: `100%` }}
           className={`absolute z-2 ${isSoldOut ? "bg-gray-400" : "bg-secondary5"
-            } h-1 rounded-lg w-[${percentage}%] text-sm text-white flex text-center justify-center items-center`}
+            } h-1 rounded-lg text-sm text-white flex text-center justify-center items-center`}
         >
         </div>
         <div className={`absolute w-1 h-1 bg-secondary3`} style={{ left: `${percentageSoftcap}%` }}>

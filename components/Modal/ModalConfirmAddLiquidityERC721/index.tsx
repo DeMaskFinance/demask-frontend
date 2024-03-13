@@ -1,11 +1,12 @@
-import abiErc20 from "@/abi/abiErc20.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -15,12 +16,6 @@ import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import erc721Contract from "@/libs/utils/erc/erc721.contract";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
-import abiFactory from "@/abi/erc721/abiFactory.json";
-import abiRouter from "@/abi/erc721/abiRouter.json";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 interface ModalConfirmAddLiquidityERC721Props {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -29,7 +24,7 @@ interface ModalConfirmAddLiquidityERC721Props {
   nftAddress: string;
   idNFT: string;
   isOpenTransaction: boolean;
-  inputNFT: number;
+  inputNFT: string[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setInputToken: React.Dispatch<React.SetStateAction<string>>;
@@ -39,15 +34,13 @@ interface ModalConfirmAddLiquidityERC721Props {
   setIsOpenLiquidity?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ModalConfirmAddLiquidity: React.FunctionComponent<
+const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   ModalConfirmAddLiquidityERC721Props
 > = ({
   isOpenConfirmAddLiquidity,
   tokenAddress,
   data,
   inputToken,
-  nftAddress,
-  idNFT,
   isOpenTransaction,
   inputNFT,
   setIsOpenTransaction,
@@ -59,7 +52,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenError,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
@@ -70,7 +62,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   } = demask;
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
-  const [amountTokenMin, setAmountTokenMin] = useState<number>(0);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
@@ -94,30 +85,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  useEffect(() => {
-    const handleCheckApproveToken = async () => {
-      if (tokenAddress === nativeAddress) {
-        setIsApprovedToken(true);
-      } else {
-        if (amountErcDesired && allowanceToken) {
-          if (Number(allowanceToken) < Number(amountErcDesired.toString())) {
-            setIsApprovedToken(false);
-          } else {
-            setIsApprovedToken(true);
-          }
-        }
-      }
-    };
-    handleCheckApproveToken();
-  }, [
-    account,
-    wallet,
-    tokenAddress,
-    inputToken,
-    isOpenTransaction,
-    amountErcDesired,
-    allowanceToken,
-  ]);
+
   useEffect(() => {
     const load = setInterval(() => {
       if (isOpenConfirmAddLiquidity) {
@@ -141,21 +109,20 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     true,
     updatePrice
   );
-    console.log(inputNFT);
-    
+  console.log(inputNFT);
+
   useEffect(() => {
     let amountErcDesired;
-    let amountTokenMin;
-    if (dmlToken !== "0x0000000000000000000000000000000000000000" && data && inputNFT) {
+    if (
+      dmlToken !== "0x0000000000000000000000000000000000000000" &&
+      data &&
+      inputNFT
+    ) {
       amountErcDesired = (Number(inputNFT) * +reserveToken) / +reserveNFT;
-      amountTokenMin =
-        ((Number(inputNFT) * +reserveToken) / +reserveNFT) * (1 - slippage / 100);
     } else {
       amountErcDesired = handleBignumber(Number(inputToken), 18);
-      amountTokenMin = handleBignumber(Number(inputToken), 18);
     }
     setAmountErcDesired(amountErcDesired);
-    setAmountTokenMin(amountTokenMin);
     if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
@@ -169,40 +136,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       }
     }
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
-  console.log({
-    amountErcDesired,
-    amountTokenMin,
-  });
 
-  const handleApproveToken = async () => {
-    if (account) {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
-      let result;
-      try {
-        if (dmlToken === "0x0000000000000000000000000000000000000000") {
-          result = await contract.approve(
-            routerAddress,
-            handleBignumber(Number(inputToken), Number(data?.tokenDecimals))
-          );
-        } else {
-          result = await contract.approve(
-            routerAddress,
-            exponentialToDecimal(amountErcDesired)
-          );
-        }
-        setIsOpenTransaction(true);
-        await provider.waitForTransaction(result.hash);
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
+
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -225,10 +160,10 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           wallet,
           collectionAddress,
           nativeAddress,
-          ["4", "5"],
+          inputNFT,
           demask.ROUTER_721,
           amountErcDesired,
-          amountTokenMin,
+          0,
           account,
           txDeadline,
           valueToSend
@@ -299,11 +234,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
               Can't add liquidity
             </p>
           )}
-          {/* {isSufficientNFT && (
-                                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-                                    Insufficient NFT balance
-                                </p>
-                            )} */}
           {preFectch && (
             <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
               <p className="text-xs">Price Updated</p>
@@ -329,30 +259,19 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             transaction will revert
           </p>
           <div className="flex flex-col items-center mt-6">
-            {isApprovedToken && (
-              <button
-                type="button"
-                disabled={isLoadingInforDML || preFectch}
-                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
-                  isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
-                } rounded-lg text-sm text-white mx-auto block`}
-                onClick={addLiquidity}
-              >
-                Create pool
-                {isLoadingInforDML && (
-                  <BiLoaderAlt className="text-white animate-spin" />
-                )}
-              </button>
-            )}
-            {!isApprovedToken && tokenAddress !== nativeAddress && (
-              <Button
-                className="w-[126px] py-2"
-                primary
-                onClick={handleApproveToken}
-              >
-                Approve Token
-              </Button>
-            )}
+            <button
+              type="button"
+              disabled={isLoadingInforDML || preFectch}
+              className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
+                isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
+              } rounded-lg text-sm text-white mx-auto block`}
+              onClick={addLiquidity}
+            >
+              Create pool
+              {isLoadingInforDML && (
+                <BiLoaderAlt className="text-white animate-spin" />
+              )}
+            </button>
           </div>
         </div>
         <button
@@ -372,4 +291,4 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   );
 };
 
-export default memo(ModalConfirmAddLiquidity);
+export default memo(ModalConfirmAddLiquidityERC721);

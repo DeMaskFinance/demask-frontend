@@ -12,12 +12,11 @@ import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/Modal
 import ercContract from "@/libs/utils/erc/erc.contract";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import getRewardDML from "@/libs/utils/getReward";
+import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidityERC721";
 
 const PoolItem = () => {
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
-  const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
-    useState<boolean>(false);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -31,9 +30,10 @@ const PoolItem = () => {
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
+  const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
-    setIsOpenConfirmAddLiquidity(true);
+    setIsOpenAddLiquidity(true);
   };
   const handleRemoveLiquidity = () => {
     setIsOpenRemoveLiquidity(true);
@@ -42,29 +42,32 @@ const PoolItem = () => {
   const data = {
     reserveNFT: "5",
     reserveTokenDecimals: "18",
+    tokenDecimals: "18",
     dmlAddress: "0x21bCd1e6aEBb64ba33F23A871D0d58Fbd7A95B45",
     dmlDecimals: "18",
-    nftAddress: "0x286e08EEb3169042585B4838378D21d2c23ded55",
-    nftID: [1, 2],
+    nftAddress: "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd",
+    nftID: [31, 32],
   };
-  const dmlTokenLiquidity = "0x21bCd1e6aEBb64ba33F23A871D0d58Fbd7A95B45";
-  useEffect(() => {
-    const fetchDataReward = async () => {
-      if (account && dmlTokenLiquidity && data) {
-        const result = await ercContract.viewReward(
-          dmlTokenLiquidity,
-          account,
-          wallet
-        );
-        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
-        setReward(rewardDec);
-      } else {
-        setReward("0");
-      }
-    };
-    fetchDataReward();
-  }, [dmlTokenLiquidity, account, data]);
-  console.log(reward);
+  const dmlTokenLiquidity = "0x56e82d1e58ad6eb6764fa8ce4c905ec3833143a3";
+  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
+  // useEffect(() => {
+  //   const fetchDataReward = async () => {
+  //     if (account && dmlTokenLiquidity && data) {
+  //       const result = await ercContract.viewReward(
+  //         dmlTokenLiquidity,
+  //         account,
+  //         wallet
+  //       );
+  //       console.log(result);
+
+  //       const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+  //       setReward(rewardDec);
+  //     } else {
+  //       setReward("0");
+  //     }
+  //   };
+  //   fetchDataReward();
+  // }, [dmlTokenLiquidity, account, data]);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -160,20 +163,19 @@ const PoolItem = () => {
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
+
       <ModalSuccess
-        isOpenSuccess={isOpenSuccess}
+        isOpenSuccess={isOpenSuccessCollect}
         transactionHash={hash}
-        type="Add Liquidity Success"
-        setIsOpenSuccess={setIsOpenSuccess}
+        type="Collect Reward Success"
+        setIsOpenSuccess={setIsOpenSuccessCollect}
       />
       <ModalError
-        isOpenError={isOpenError}
+        isOpenError={isOpenErrorCollect}
         transactionHash={hash}
-        type="Add Liquidity Failed"
-        setIsOpenError={setIsOpenError}
+        type="Collect Reward Failed"
+        setIsOpenError={setIsOpenErrorCollect}
       />
-      <ModalSuccess isOpenSuccess={isOpenSuccessCollect} transactionHash={hash} type="Collect Reward Success" setIsOpenSuccess={setIsOpenSuccessCollect} />
-      <ModalError isOpenError={isOpenErrorCollect} transactionHash={hash} type="Collect Reward Failed" setIsOpenError={setIsOpenErrorCollect} />
       {data && account && (
         <>
           <ModalRemmoveLiquidity
@@ -198,6 +200,32 @@ const PoolItem = () => {
             transactionHash={hash}
             type="Remove Liquidity Failed"
             setIsOpenError={setIsOpenErrorRemove}
+          />
+        </>
+      )}
+      {data && account && (
+        <>
+          <ModalAddLiquidityERC721
+            /* 
+          // @ts-ignore */
+            data={data}
+            isOpenAddLiquidity={isOpenAddLiquidity}
+            setIsOpenLiquidity={setIsOpenAddLiquidity}
+            setHash={setHash}
+            setIsOpenSuccess={setIsOpenSuccess}
+            setIsOpenError={setIsOpenError}
+          />
+          <ModalSuccess
+            isOpenSuccess={isOpenSuccess}
+            transactionHash={hash}
+            type="Add Liquidity Success"
+            setIsOpenSuccess={setIsOpenSuccess}
+          />
+          <ModalError
+            isOpenError={isOpenError}
+            transactionHash={hash}
+            type="Add Liquidity Failed"
+            setIsOpenError={setIsOpenError}
           />
         </>
       )}

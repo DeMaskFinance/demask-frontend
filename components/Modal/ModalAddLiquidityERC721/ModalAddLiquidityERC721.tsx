@@ -15,6 +15,8 @@ import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import ModalConfirmAddLiquidityERC721 from "../ModalConfirmAddLiquidityERC721";
+import useDMLToken from "@/hooks/useDMLToken";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -27,7 +29,9 @@ const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
 };
-const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Props> = ({
+const ModalAddLiquidityERC721: React.FunctionComponent<
+  ModalAddLiquidityERC721Props
+> = ({
   isOpenAddLiquidity,
   data,
   setIsOpenLiquidity,
@@ -35,10 +39,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const [inputNFT, setInputNFT] = useState<string>("");
-  const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
+  const [inputNFT, setInputNFT] = useState<string[]>(["31", "32"]);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
@@ -47,14 +49,25 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
-    ROUTER: routerAddress,
+    ROUTER_721: routerAddress,
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
+    FACTORY: factoryAddress,
   } = demask;
-
+  const collectionAddress = "0x469EcC0763Ac4E281C358744015344daD645ca47";
+  const dmlToken = useDMLToken(
+    account,
+    collectionAddress,
+    nativeAddress,
+    wallet,
+    demask.FACTORY_721,
+    "",
+    isOpenTransaction,
+    isOpenConfirmAddLiquidity
+  );
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -62,17 +75,10 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
     document.body.style.overflowY = "auto";
     setIsOpenLiquidity(false);
   };
-  const balanceNFT = useNFTBalance(
-    account,
-    data.nftAddress,
-    data.nftID,
-    wallet,
-    isOpenTransaction
-  );
 
   const { balanceToken, bigNumberBalance, allowanceToken } = useInformation(
     account,
-    data.tokenAddress,
+    nativeAddress,
     wallet,
     routerAddress,
     rpc,
@@ -80,14 +86,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
     isOpenTransaction
   );
 
-  const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputNFT(e.target.value);
-    if (Number(e.target.value) > Number(balanceNFT)) {
-      setIsSufficientNFT(true);
-    } else {
-      setIsSufficientNFT(false);
-    }
-  };
+  const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {};
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
@@ -137,10 +136,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
   }, [account, data.nftAddress, wallet, isOpenTransaction]);
 
   const handleAddLiquidity = () => {
-    if (inputNFT && !isSufficientNFT && !isSufficientToken) {
+    if (inputNFT && !isSufficientToken) {
       setIsOpenConfirmAddLiquidity(true);
-    } else {
-      setIsInputNFT(true);
     }
   };
   return (
@@ -162,39 +159,10 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
               <div>
                 <div>
                   <div className="flex justify-between mb-4 text-dark2">
-                    <p className="font-semibold">NFT</p>
-                    <p>Balance: {formatNumber(balanceNFT)}</p>
-                  </div>
-                  <input
-                    className={styles.inputItem}
-                    type="number"
-                    placeholder="Input amount NFT"
-                    value={inputNFT}
-                    onChange={handleGetNFT}
-                  />
-                  {isSufficientNFT && (
-                    <p
-                      className="mb-2 ml-3 -mt-1 text-xs text-red"
-                      key="totalSale"
-                    >
-                      Insufficient NFT balance
-                    </p>
-                  )}
-                  {!inputNFT && isInputNFT && (
-                    <p
-                      className="mb-2 ml-3 -mt-1 text-xs text-red"
-                      key="inputNFT"
-                    >
-                      Required
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <div className="flex justify-between mb-4 text-dark2">
                     <p className="font-semibold">Token</p>
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
-                  {data.dmlAddress === null ? (
+                  {dmlToken === "0x0000000000000000000000000000000000000000" ? (
                     <input
                       className={styles.inputItem}
                       type="number"
@@ -269,20 +237,18 @@ const ModalAddLiquidityERC721: React.FunctionComponent<ModalAddLiquidityERC721Pr
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalConfirmAddLiquidity
+      <ModalConfirmAddLiquidityERC721
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        tokenAddress={data.tokenAddress}
-        nftAddress={data.nftAddress}
-        idNFT={data.nftID}
+        tokenAddress={demask.NATIVE_ADDRESS}
+        nftAddress={collectionAddress}
+        idNFT={""}
+        inputNFT={inputNFT}
         data={data}
         inputToken={inputToken}
         setInputToken={setInputToken}
         setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
-        inputNFT={inputNFT}
-        setInputNFT={setInputNFT}
-        setIsOpenLiquidity={setIsOpenLiquidity}
         setHash={setHash}
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
