@@ -17,6 +17,7 @@ import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import ModalConfirmAddLiquidityERC721 from "../ModalConfirmAddLiquidityERC721";
 import useDMLToken from "@/hooks/useDMLToken";
+import useInformationDML from "@/hooks/useInformationDML";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -39,7 +40,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const [inputNFT, setInputNFT] = useState<string[]>(["31", "32"]);
+  const [inputNFT, setInputNFT] = useState<string[]>(["35"]);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -57,7 +58,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;
-  const collectionAddress = "0x469EcC0763Ac4E281C358744015344daD645ca47";
+  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -67,6 +68,17 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     "",
     isOpenTransaction,
     isOpenConfirmAddLiquidity
+  );
+  console.log(dmlToken);
+  const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
+    dmlToken,
+    wallet,
+    account,
+    isOpenTransaction,
+    false,
+    false,
+    isOpenConfirmAddLiquidity,
+    true
   );
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
@@ -95,12 +107,13 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIsSufficientToken(false);
     }
   };
+  console.log(inputNFT.length);
 
   useEffect(() => {
     let amountErcDesired;
     if (data?.dmlAddress !== null && data && inputNFT) {
       amountErcDesired =
-        ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
+        ((Number(inputNFT.length) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(
@@ -186,7 +199,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                   {isSufficientToken && (
                     <p
                       className="mb-2 ml-3 -mt-1 text-xs text-red"
-                      key="inputNFT"
+                      key="inputToken"
                     >
                       Insufficient Token balance
                     </p>

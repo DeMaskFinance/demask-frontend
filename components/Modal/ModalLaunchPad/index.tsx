@@ -5,6 +5,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "../ModalTransation";
 import { useEffect } from "react";
 import FormatNumber from "@/components/Common/FormatNumber";
+import { EtherIcon } from "@/components/Icons";
 
 interface ModalLaunchPadProps {
   isOpenTransation: boolean;
@@ -37,15 +38,16 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
 
   return (
     <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
-      <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
-        <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
+      <div className="relative z-50 cursor-default h-fit">
+        <div className="bg-white h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
           <h3 className="pt-4 pb-8 text-xl text-center">
             Confirm buy launchpad
           </h3>
-          <div className="h-32 p-2 mx-auto text-center border rounded-lg">
+          <div className="flex flex-col justify-center h-32 p-2 mx-auto text-center border rounded-lg item-center">
             <p>Total buy</p>
-            <div className="block py-4 text-xl font-semibold">
+            <div className="flex justify-center py-4 text-xl font-semibold">
               <FormatNumber number={inputNFT.toString()} />
+              <EtherIcon width={20} height={20} className="fill-dark1" />
             </div>
             <p>Max buy : {+data.purchaseLimit / 1e18}</p>
           </div>

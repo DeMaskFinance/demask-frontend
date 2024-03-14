@@ -20,7 +20,6 @@ const addLiquidity = async (
   idNFT: string[],
   routerAddress: string,
   amountErcDesired: number,
-  amountTokenMin: number,
   account: string,
   txDeadline: number,
   valueToSend: string | 0
@@ -36,18 +35,25 @@ const addLiquidity = async (
   //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
   //   { value: valueToSend }
   // );
-
+  console.log({
+    tokenAddress,
+    collectionAddress,
+    idNFT,
+    amountErcDesired,
+    account,
+    valueToSend,
+    routerAddress
+  });
   const result = await contract.addERC20ERC721(
     tokenAddress,
     collectionAddress,
     idNFT,
     exponentialToDecimal(Math.floor(amountErcDesired)),
-    exponentialToDecimal(Math.floor(amountTokenMin)),
+    0,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: 8000000, value: valueToSend }
   );
-  const check = await contract.waitForTransaction(result.hash);
   return result;
 };
 const buyERC20ERC721 = async (

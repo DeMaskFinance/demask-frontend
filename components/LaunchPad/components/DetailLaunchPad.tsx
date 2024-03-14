@@ -109,16 +109,16 @@ export default function DetailLaunchPad() {
       setErrors("Comming soon");
     } else if (!checkTime) {
       setErrors("Sold out");
-    } else if (parseInt(totalSold) >= parseInt(hardcap)) {
+    } else if (+totalSold + +amount * data.price >= parseInt(hardcap)) {
       setErrors("Sold out");
     } else if (inputNFT > balanceToken) {
       setErrors("Insufficient Token balance");
-    } else if (+amount > data?.purchaseLimit - data.amount) {
+    } else if (inputNFT > data?.purchaseLimit / 1e18) {
       setErrors("Amount express");
     } else {
       setErrors("");
     }
-  }, [amount, startTime, endTime]);
+  }, [startTime, endTime, inputNFT, amount]);
 
   const TABS = [
     {
@@ -153,8 +153,18 @@ export default function DetailLaunchPad() {
     try {
       let result;
       setIsOpenTransaction(true);
+      const estimatedGas = await contract.estimateGas.buy(
+        exponentialToDecimal(+amount),
+        {
+          value: exponentialToDecimal(
+            Math.floor(Number(data.price) * Number(amount))
+          ),
+        }
+      );
+      console.log(estimatedGas);
+      
       result = await contract.buy(exponentialToDecimal(+amount), {
-        gasLimit: 8000000,
+        gasLimit: estimatedGas,
         value: exponentialToDecimal(
           Math.floor(Number(data.price) * Number(amount))
         ),
@@ -277,10 +287,7 @@ export default function DetailLaunchPad() {
                         <p>Total raise</p>
                         <div className="flex items-center mt-1 font-semibold gap-x-1">
                           <FormatNumber
-                            number={(
-                              (data.price / 1e18) *
-                              data.totalSold
-                            ).toString()}
+                            number={(data.totalSold / 1e18).toString()}
                           />
                           <EtherIcon
                             width={16}
@@ -329,10 +336,7 @@ export default function DetailLaunchPad() {
                         </div>
                         <div className="flex items-center text-sm font-semibold text-secondary4">
                           <FormatNumber
-                            number={(
-                              (data.price / 1e18) *
-                              data.totalSold
-                            ).toString()}
+                            number={(data.totalSold / 1e18).toString()}
                           />
                           /
                           <FormatNumber
@@ -345,7 +349,7 @@ export default function DetailLaunchPad() {
                         <ProgressBar
                           softcap={softcap}
                           hardcap={hardcap}
-                          amount={totalSold * data.price}
+                          amount={totalSold}
                           isRefetching={isRefetching}
                         />
                       </div>
@@ -416,13 +420,17 @@ export default function DetailLaunchPad() {
                                     )
                                   </div>
                                 </div>
-                                <p className="text-dark2 text-[10px] font-medium mb-2">
+                                <div className="text-dark2 text-[10px] font-medium mb-2 flex items-center">
                                   The maximum number of Tokens you can buy is{" "}
-                                  <span className="text-xs font-semibold text-secondary5">
-                                    {Number(data.purchaseLimit - data.amount) /
-                                      1e18}
+                                  <span className="ml-1 text-xs font-semibold text-secondary5">
+                                    {Number(data.purchaseLimit) / 1e18}
                                   </span>
-                                </p>
+                                  <EtherIcon
+                                    width={12}
+                                    height={12}
+                                    className=" fill-secondary3"
+                                  />
+                                </div>
                                 <input
                                   onChange={(e) => {
                                     setAmount(e.target.value);
@@ -435,6 +443,18 @@ export default function DetailLaunchPad() {
                                       setIsMaxBuy(false);
                                     }
                                   }}
+                                  inputMode="numeric"
+                                  onKeyDown={(event) => {
+                                    if (
+                                      !(event.key >= "0" && event.key <= "9") &&
+                                      event.key !== "Backspace" &&
+                                      event.key !== "ArrowLeft" &&
+                                      event.key !== "ArrowRight"
+                                    ) {
+                                      event.preventDefault();
+                                    }
+                                  }}
+                                  min="1"
                                   type="number"
                                   // disabled={errors !== "" ? true : false}
                                   className="px-2 py-2 mb-2 border rounded-md outline-none"
@@ -452,13 +472,13 @@ export default function DetailLaunchPad() {
                                 )}
                                 <button
                                   disabled={
-                                    errors !== "" || !amount ? true : false
+                                    errors !== "" || !amount || +amount < 1 ? true : false
                                   }
                                   onClick={() => {
                                     setIsOpenModal(!isOpenModal);
                                   }}
                                   className={`px-6 py-2 rounded-md text-sm text-white  ${
-                                    errors !== "" || !amount
+                                    errors !== "" || !amount || +amount < 1
                                       ? "bg-slate-400"
                                       : "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear"
                                   }`}

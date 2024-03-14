@@ -13,12 +13,13 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
   const percentageSoftcap = calculatePercentage(softcap, parseInt(hardcap));
 
   const isSoldOut = parseInt(amount) >= parseInt(hardcap);
-
+  console.log(percentage);
+  
   return (
     <div className="relative w-full h-1 bg-dark4 rounded-xl">
       <div className="relative z-10 flex justify-between w-full bg-black">
         <div
-          style={{ width: `100%` }}
+          style={{ width: `${percentage}%` }}
           className={`absolute z-2 ${isSoldOut ? "bg-gray-400" : "bg-secondary5"
             } h-1 rounded-lg text-sm text-white flex text-center justify-center items-center`}
         >

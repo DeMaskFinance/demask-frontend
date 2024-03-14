@@ -29,7 +29,7 @@ const Pool = () => {
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [amountTokenMin, setAmountTokenMin] = useState<number>(0);
-  const [hash, setHash] = useState<string>('');
+  const [hash, setHash] = useState<string>("");
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
@@ -149,7 +149,7 @@ const Pool = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  
+
   return (
     <div className="h-full text-dark3">
       <div className="flex px-6 py-4 my-4 rounded-lg bg-dark5 ">
@@ -169,32 +169,29 @@ const Pool = () => {
       )}
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {/* <ModalConfirmAddLiquidityERC721
-        isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
-        isOpenTransaction={isOpenTransaction}
-        setIsOpenTransaction={setIsOpenTransaction}
-        tokenAddress={demask.NATIVE_ADDRESS}
-        nftAddress={collectionAddress}
-        idNFT={""}
-        inputNFT={inputNFT}
-        data={data}
-        inputToken={inputToken}
-        setInputToken={setInputToken}
-        setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
-        setHash={setHash}
-        setIsOpenSuccess={setIsOpenSuccess}
-        setIsOpenError={setIsOpenError}
-      /> */}
       {data && account && (
         <>
           <ModalAddLiquidityERC721
             data={data}
             isOpenAddLiquidity={isOpenAddLiquidity}
             setIsOpenLiquidity={setIsOpenAddLiquidity}
-            setHash={setHash} setIsOpenSuccess={setIsOpenSuccessAdd} setIsOpenError={setIsOpenErrorAdd}
+            setHash={setHash}
+            setIsOpenSuccess={setIsOpenSuccessAdd}
+            setIsOpenError={setIsOpenErrorAdd}
           />
-          <ModalSuccess isOpenSuccess={isOpenSuccessAdd} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccessAdd} />
-          <ModalError isOpenError={isOpenErrorAdd} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenErrorAdd} /></>
+          {/* <ModalSuccess
+            isOpenSuccess={isOpenSuccessAdd}
+            transactionHash={hash}
+            type="Add Liquidity Success"
+            setIsOpenSuccess={setIsOpenSuccessAdd}
+          />
+          <ModalError
+            isOpenError={isOpenErrorAdd}
+            transactionHash={hash}
+            type="Add Liquidity Failed"
+            setIsOpenError={setIsOpenErrorAdd}
+          /> */}
+        </>
       )}
     </div>
   );

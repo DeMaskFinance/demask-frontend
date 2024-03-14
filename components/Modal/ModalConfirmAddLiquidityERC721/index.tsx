@@ -13,9 +13,11 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import ModalDocument from "../ModalLength/ModalDocument";
-import { ModalTransation } from "../ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import { getProvider } from "@/libs/connection/getProvider";
+import { ethers } from "ethers";
 interface ModalConfirmAddLiquidityERC721Props {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -65,8 +67,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
-  const { allowanceToken, bigNumberBalance } = useInformationToken(
+  const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(true);
+  const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
+  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
+
+  const { bigNumberBalance } = useInformationToken(
     account,
     tokenAddress,
     wallet,
@@ -85,6 +90,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
+  console.log(dmlToken);
 
   useEffect(() => {
     const load = setInterval(() => {
@@ -118,7 +124,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       data &&
       inputNFT
     ) {
-      amountErcDesired = (Number(inputNFT) * +reserveToken) / +reserveNFT;
+      amountErcDesired =
+        ((Number(inputNFT.length) * +reserveToken) / +reserveNFT) *
+        (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(Number(inputToken), 18);
     }
@@ -137,48 +145,34 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     }
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
 
-
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
       return;
     }
-    console.log({
-      isSufficientToken,
-      amountErcDesired,
-    });
 
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
+      const providerChoice = await getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
       try {
         setIsOpenTransaction(true);
         const valueToSend =
           tokenAddress === nativeAddress
             ? exponentialToDecimal(Math.floor(amountErcDesired))
             : 0;
-
-        const check = await erc721Contract.addLiquidity(
+        const result = await erc721Contract.addLiquidity(
           wallet,
           collectionAddress,
           nativeAddress,
           inputNFT,
           demask.ROUTER_721,
           amountErcDesired,
-          0,
           account,
           txDeadline,
           valueToSend
         );
-        // setHash(result.hash);
-        // const result = await contract.addERC20ERC721(
-        //   tokenAddress,
-        //   collectionAddress,
-        //   ["1","2","3"],
-        //   exponentialToDecimal(Math.floor(amountErcDesired)),
-        //   exponentialToDecimal(Math.floor(amountTokenMin)),
-        //   account,
-        //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-        //   { gasLimit: 8000000, value: valueToSend }
-        // );
+        setHash(result.hash);
+        const check = await provider.waitForTransaction(result.hash);
         setIsOpenTransaction(false);
         setInputToken("");
         setAmountErcDesiredToDec("");
@@ -186,11 +180,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         if (setIsOpenLiquidity) {
           setIsOpenLiquidity(false);
         }
-        // if (check.status === 1) {
-        //   setIsOpenSuccess(true);
-        // } else {
-        //   setIsOpenError(true);
-        // }
+        if (check.status === 1) {
+          setIsOpenSuccess(true);
+        } else {
+          setIsOpenError(true);
+        }
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -287,6 +281,18 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
+      <ModalSuccess
+        isOpenSuccess={true}
+        transactionHash={'123'}
+        type="Add Liquidity Success"
+        setIsOpenSuccess={setIsOpenSuccessAdd}
+      />
+      {/* <ModalError
+        isOpenError={isOpenErrorAdd}
+        transactionHash={hash}
+        type="Add Liquidity Failed"
+        setIsOpenError={setIsOpenErrorAdd}
+      /> */}
     </Wrapper>
   );
 };
