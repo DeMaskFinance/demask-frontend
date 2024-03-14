@@ -49,7 +49,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   return (
     <>
       <div className="mb-8 containe">
-        {(isLoading) ? (
+        {/* {(isLoading) ? (
           <div className="mt-8">
             <SkeletonCategory />
           </div>
@@ -76,9 +76,11 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                 <p>{desc}</p>
               )}
             </div>
+            <p>{desc}</p>
             <div ref={ref} style={{ height: "1px" }} ></div>
           </>
-        )}
+        )} */}
+        <p className="mt-4">{desc}</p>
       </div>
     </>
   );
