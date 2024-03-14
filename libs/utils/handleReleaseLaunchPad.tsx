@@ -5,7 +5,7 @@ import { getProvider } from "../connection/getProvider";
 const handleReleaseLaunchPad = async (
   account: string,
   wallet: string,
-  routerAddress: string,
+  launchpadAddress: string,
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>,
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>,
@@ -16,7 +16,7 @@ const handleReleaseLaunchPad = async (
     const providerChoice = await getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(routerAddress, abiLaunchPad, signer);
+    const contract = new ethers.Contract(launchpadAddress, abiLaunchPad, signer);
     try {
       const gasLimit = await contract.estimateGas.balanceOf(account);
       console.log(gasLimit.toString());
