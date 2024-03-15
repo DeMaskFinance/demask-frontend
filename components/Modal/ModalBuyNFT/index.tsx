@@ -127,7 +127,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       setRoyaltiesFeeBuy(0);
     }
   }, [inputNFT, data, slippage, amountTokenBuy]);
-
+  
   useEffect(() => {
     const load = setInterval(() => {
       if (isOpenBuyNFT) {

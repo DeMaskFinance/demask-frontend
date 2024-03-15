@@ -53,7 +53,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
@@ -67,8 +66,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(true);
-  const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
   const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
 
   const { bigNumberBalance } = useInformationToken(
@@ -90,7 +87,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  console.log(dmlToken);
 
   useEffect(() => {
     const load = setInterval(() => {
@@ -115,7 +111,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     true,
     updatePrice
   );
-  console.log(inputNFT);
 
   useEffect(() => {
     let amountErcDesired;
@@ -146,10 +141,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
 
   const addLiquidity = async () => {
-    if (!account) {
-      setIsOpen(true);
-      return;
-    }
 
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       const providerChoice = await getProvider(wallet);
@@ -275,21 +266,20 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
         </button>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
-      <ModalSuccess
-        isOpenSuccess={true}
+      {/* <ModalSuccess
+        isOpenSuccess={isOpenSuccessAdd}
         transactionHash={'123'}
         type="Add Liquidity Success"
         setIsOpenSuccess={setIsOpenSuccessAdd}
       />
-      {/* <ModalError
+      <ModalError
         isOpenError={isOpenErrorAdd}
-        transactionHash={hash}
+        transactionHash={'123'}
         type="Add Liquidity Failed"
         setIsOpenError={setIsOpenErrorAdd}
       /> */}

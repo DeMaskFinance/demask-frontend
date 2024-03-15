@@ -89,7 +89,7 @@ const Pool = () => {
       const result = await ercContract.approveNFT(
         account,
         wallet,
-        "0x286e08EEb3169042585B4838378D21d2c23ded55",
+        collectionAddress,
         routerAddress
       );
       setIsApprovedNFT(result);
@@ -179,7 +179,7 @@ const Pool = () => {
             setIsOpenSuccess={setIsOpenSuccessAdd}
             setIsOpenError={setIsOpenErrorAdd}
           />
-          {/* <ModalSuccess
+          <ModalSuccess
             isOpenSuccess={isOpenSuccessAdd}
             transactionHash={hash}
             type="Add Liquidity Success"
@@ -190,7 +190,7 @@ const Pool = () => {
             transactionHash={hash}
             type="Add Liquidity Failed"
             setIsOpenError={setIsOpenErrorAdd}
-          /> */}
+          />
         </>
       )}
     </div>

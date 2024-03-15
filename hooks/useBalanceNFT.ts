@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const useBalanceNFT = (
   account: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | number[],
   wallet: string,
   isOpenTransaction?: boolean
 ) => {

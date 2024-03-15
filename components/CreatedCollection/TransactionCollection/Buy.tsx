@@ -35,7 +35,7 @@ const Buy = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
+  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
   const [typeERC, setTypeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
@@ -69,7 +69,7 @@ const Buy = () => {
     isFetching,
   } = useInfiniteQuery(
     ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
+    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, "5", account),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -86,6 +86,8 @@ const Buy = () => {
     "",
     isOpenTransaction
   );
+  console.log(dmlToken);
+
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -133,15 +135,16 @@ const Buy = () => {
   }, [data, slippage, amountTokenBuy]);
 
   const hanldeChoiceNFT = (index: number) => {
-    const isExist = idNFT.includes(index);
-    if (isExist) {
-      const arr = idNFT.filter((item) => {
-        return item !== index;
-      });
-      setIdNFT(arr);
-    } else {
-      setIdNFT([...idNFT, index]);
-    }
+    // const isExist = idNFT.includes(index);
+    // if (isExist) {
+    //   const arr = idNFT.filter((item) => {
+    //     return item !== index;
+    //   });
+    //   setIdNFT(arr);
+    // } else {
+    //   setIdNFT([...idNFT, index]);
+    // }
+    setIdNFT([34]);
   };
   const handleBuy = () => {
     setIsOpenBuyNFT(true);
@@ -156,7 +159,7 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-  
+
   return (
     <div>
       {isLoading ? (
@@ -269,7 +272,7 @@ const Buy = () => {
                   handleApproveNFT(
                     account,
                     wallet,
-                    "0x286e08EEb3169042585B4838378D21d2c23ded55",
+                    collectionAddress,
                     setIsOpen,
                     setIsOpenTransaction,
                     routerAddress

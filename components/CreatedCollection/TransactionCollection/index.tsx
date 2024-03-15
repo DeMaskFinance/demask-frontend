@@ -7,6 +7,7 @@ import Buy from "./Buy";
 import Pool from "./Pool";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import Tippy from "@tippyjs/react";
+import Sell from "./Sell";
 const TransactionCollection = () => {
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
@@ -62,7 +63,7 @@ const TransactionCollection = () => {
         {activeChoice === "Buy" ? (
           <Buy />
         ) : activeChoice === "Sell" ? (
-          <div>Upcoming</div>
+          <Sell />
         ) : activeChoice === "Pool" ? (
           <Pool />
         ) : (

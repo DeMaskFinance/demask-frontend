@@ -6,7 +6,7 @@ const getAmountSell = async (
   wallet: string,
   tokenAddress: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | number[],
   amountNFT: string,
   rpc:string,
   routerAddress:string,

@@ -1,6 +1,7 @@
 import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
+import { EtherIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import Link from "next/link";
 import React from "react";
@@ -10,20 +11,16 @@ interface TabLaunchPadProps {
   query: string;
 }
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
-
   const blockNumber =
     query === "Upcoming"
       ? item.startTime
       : query === "Active"
-        ? item.endTime
-        : "";
+      ? item.endTime
+      : "";
 
   return (
     <div className="h-full group">
-      <Link
-        href={`launchpad/${item.launchpad}`}
-        className="block h-full"
-      >
+      <Link href={`launchpad/${item.launchpad}`} className="block h-full">
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex flex-col h-full">
             <div className="h-[250px] ">
@@ -66,19 +63,25 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
               </div>
               <div className="flex items-center p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg gap-x-1 bg-dark3 group-hover:bg-secondary3">
                 <span className="text-sm">Total raise </span>
-                {query === 'Upcoming' ? (
+                {query === "Upcoming" ? (
                   <p>0 ETH</p>
                 ) : (
-                  <div className="flex gap-x-1">
-                    <FormatNumber number={(+item.price / 1e18 * +item.totalSold).toString()} />
-                    ETH
+                  <div className="flex items-center">
+                    <FormatNumber
+                      number={(+item.totalSold / 1e18).toString()}
+                    />
+                    <EtherIcon width={16} height={16} className="fill-white" />
                   </div>
                 )}
               </div>
             </div>
           </div>
           <div className="pt-2 mt-2 border-t">
-            <CountdownTime query={query} blockNumber={+blockNumber} isSuccess={item.isSuccess} />
+            <CountdownTime
+              query={query}
+              blockNumber={+blockNumber}
+              isSuccess={item.isSuccess}
+            />
           </div>
         </div>
       </Link>

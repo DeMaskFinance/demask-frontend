@@ -90,7 +90,6 @@ const buyERC20ERC721 = async (
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: 8000000, value: valueToSend }
   );
-  const check = await contract.waitForTransaction(result.hash);
   return result;
 };
 const sellERC20ERC721 = async (
@@ -126,7 +125,6 @@ const sellERC20ERC721 = async (
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: 8000000 }
   );
-  const check = await contract.waitForTransaction(result.hash);
   return result;
 };
 const ercContract721 = {

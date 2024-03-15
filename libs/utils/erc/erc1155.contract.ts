@@ -21,7 +21,7 @@ const allowanceDML = async (
 const getBalanceNFT = async (
   account: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | number[],
   wallet: string
 ) => {
   if (account) {
@@ -173,6 +173,6 @@ const erc1155Contract = {
   getDMLToken,
   buyERC20ERC1155,
   removeERC20ERC1155,
-  addERC20ERC1155
+  addERC20ERC1155,
 };
 export default erc1155Contract;

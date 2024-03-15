@@ -45,11 +45,10 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
           </h3>
           <div className="flex flex-col justify-center h-32 p-2 mx-auto text-center border rounded-lg item-center">
             <p>Total buy</p>
-            <div className="flex justify-center py-4 text-xl font-semibold">
+            <div className="flex items-center justify-center py-4 text-xl font-semibold">
               <FormatNumber number={inputNFT.toString()} />
-              <EtherIcon width={20} height={20} className="fill-dark1" />
+              <EtherIcon width={16} height={16} className="mb-1 fill-dark1" />
             </div>
-            <p>Max buy : {+data.purchaseLimit / 1e18}</p>
           </div>
 
           <div className="flex justify-center mt-4">
