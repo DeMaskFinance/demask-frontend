@@ -658,6 +658,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           nftAddress={nftAddress}
           idNFT={idNFT}
           data={data}
+          routerAddress={routerAddress}
           setIsOpenSellNFT={setIsOpenSellNFT}
           inputNFT={inputNFTValue}
           setInputNFT={setInputNFT}

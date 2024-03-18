@@ -63,11 +63,11 @@ const Swap: React.FC = () => {
               <div className="w-full">
                 {data && (
                   <div>
-                    <ChartTradingViewSwap dataSwap={data} />
+                    <ChartTradingViewSwap dataSwap={data} typeERC="erc1155"/>
                   </div>
                 )}
               </div>
-              <HistorySwap data={data} />
+              <HistorySwap data={data} typeERC="erc1155"/>
             </div>
             <SwapTransaction data={data} tokenAddress={tokenAddress} idNFT={idNFT} nftAddress={nftAddress} refetch={refetch}/>
           </div>

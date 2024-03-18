@@ -195,8 +195,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         setIsOpenTransaction(true);
         const providerChoice = await getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(routerAddress, abiRouter, signer);
         const fee = data.royaltyFee === 0 ? 5000 : data.royaltyFee! * 10000;
         const value =
           tokenAddress === nativeAddress

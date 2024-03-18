@@ -8,7 +8,10 @@ import {
 import { LogoIconCard } from "@/components/Logo/Logo";
 import { ItemList } from "@/components/Profile/Inventory/Items";
 import AccountContext from "@/context/AccountContext";
-import { collectionDetail, collectionListERC1155 } from "@/libs/service/collectionService";
+import {
+  collectionDetail,
+  collectionListERC1155,
+} from "@/libs/service/collectionService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,7 +68,11 @@ export default function CreatedCollection() {
       fetchNextPage();
     }
   }, [inView]);
-  const { data:dataDetail } = useQuery({
+  const {
+    data: dataDetail,
+    isLoading: isLoadingDetail,
+    isSuccess: isSuccessDetail,
+  } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
       if (collectionAddress) {
@@ -74,6 +81,7 @@ export default function CreatedCollection() {
       }
     },
   });
+  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px]">
@@ -83,28 +91,36 @@ export default function CreatedCollection() {
       <section className="justify-between p-4 rounded-lg lg:flex bg-dark5">
         <div className="items-center text-xs lg:flex gap-x-6 ">
           <div className="h-[120px] w-[120px]">
-            <Image
-              src="/images/test.png"
-              width={620}
-              height={620}
-              className="object-cover w-full h-full rounded-lg"
-              alt="1"
-            />
+            {dataDetail?.avatar ? (
+              <Image
+                src={dataDetail?.avatar}
+                alt="banner"
+                width={600}
+                height={600}
+                className="object-cover rounded-lg w-[120px] h-[120px] mr-2"
+              />
+            ) : (
+              <Image
+                src="/Placeholder.png"
+                width={620}
+                height={620}
+                className="object-cover w-full h-full rounded-lg"
+                alt="1" 
+              />
+            )}
           </div>
           <div className="lg:max-w-[45%] mt-4 lg:mt-0">
             <div className="flex items-center gap-x-2">
-              <p className="text-2xl font-semibold">123</p>
+              <p className="text-2xl font-semibold whitespace-nowrap">{dataDetail?.name}</p>
               <Link href="/edit/123">
                 <EditIcon width={24} height={24} className="fill-dark3" />
               </Link>
             </div>
-            <p className="text-xs">
-              {dataDetail?.description}
-            </p>
+            <p className="text-xs">{dataDetail?.description}</p>
 
             <div className="flex justify-between mt-4 gap-x-10">
               <div className="flex gap-x-2">
-                <Link href="/" >
+                <Link href="/">
                   <WebsiteIcon width={24} height={24} />
                 </Link>
                 <Link href="/">
@@ -112,7 +128,9 @@ export default function CreatedCollection() {
                 </Link>
               </div>
               <div className="flex gap-x-6">
-                <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap">{dataDetail?.type}</p>
+                <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap">
+                  {dataDetail?.type}
+                </p>
                 <LogoIconCard chainId={chainId} />
               </div>
             </div>
@@ -147,8 +165,12 @@ export default function CreatedCollection() {
           </div>
         </div>
       </section>
-      {typeERC === 'erc721' ? (
-        <DetailERC721 />
+      {typeERC === "erc721" ? (
+        <DetailERC721
+          isLoading={isLoadingDetail}
+          isSuccess={isSuccessDetail}
+          data={dataDetail}
+        />
       ) : (
         <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
       )}

@@ -1,6 +1,7 @@
 import { Button } from "@/components/Buttons";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
@@ -10,6 +11,7 @@ import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationToken from "@/hooks/useInformationToken";
+import { collectionListSell } from "@/libs/service/collectionService";
 import { nftsUserService } from "@/libs/service/profileService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
@@ -53,11 +55,18 @@ const Sell = () => {
       isOpenTransaction
     );
   const fetchDataNFTs = async (
+    collectionAddress: string,
     pageParam = 1,
     chain: string | string[],
     account: string
   ) => {
-    const data = await nftsUserService(account, chain, typeERC, pageParam);
+    const data = await collectionListSell(
+      account,
+      collectionAddress,
+      chain,
+      pageParam,
+      10
+    );
     return data.data;
   };
 
@@ -69,8 +78,9 @@ const Sell = () => {
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, "5", account),
+    ["collectionNFTSell", chainId, account, collectionAddress],
+    ({ pageParam = 1 }) =>
+      fetchDataNFTs(collectionAddress, pageParam, chainId, account),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -78,6 +88,8 @@ const Sell = () => {
           : page?.currentPage + 1,
     }
   );
+  console.log(data);
+
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -113,7 +125,7 @@ const Sell = () => {
     true
   );
   console.log(amountTokenSell);
-  
+
   useEffect(() => {
     if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
       setIsSufficientTokenSell(false);
@@ -136,17 +148,18 @@ const Sell = () => {
     }
   }, [data, slippage, amountTokenSell]);
 
-  const hanldeChoiceNFT = (index: number) => {
-    // const isExist = idNFT.includes(index);
-    // if (isExist) {
-    //   const arr = idNFT.filter((item) => {
-    //     return item !== index;
-    //   });
-    //   setIdNFT(arr);
-    // } else {
-    //   setIdNFT([...idNFT, index]);
-    // }
-    setIdNFT([34]);
+  const hanldeChoiceNFT = (item: any) => {
+    const isExist = idNFT.includes(Number(item.nftID));
+    if (isExist) {
+      const arr = idNFT.filter((itemArr) => {
+        return itemArr !== Number(item.nftID);
+      });
+      console.log(arr);
+
+      setIdNFT(arr);
+    } else {
+      setIdNFT([...idNFT, Number(item.nftID)]);
+    }
   };
   const handleSell = () => {
     setIsOpenSellNFT(true);
@@ -161,6 +174,7 @@ const Sell = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
+  console.log(idNFT);
 
   return (
     <div>
@@ -177,7 +191,7 @@ const Sell = () => {
                   <div
                     key={index}
                     className="relative overflow-hidden"
-                    onClick={() => hanldeChoiceNFT(index)}
+                    onClick={() => hanldeChoiceNFT(item)}
                   >
                     <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
                       <div className="relative h-[78px] lg:h-[100px]">
@@ -186,62 +200,15 @@ const Sell = () => {
                       <div className="w-full">
                         <div className="flex w-full mt-2">
                           <div className="w-full">
-                            {/* <h6
+                            <h6
                               title={item.metadata.name}
-                              className="flex items-start gap-2 font-medium uppercase"
+                              className="flex items-start gap-2 font-semibold uppercase"
                             >
-                              <span className="flex-wrap max-w-full text-xl line-clamp-1">
+                              <span className="flex-wrap max-w-full text-sm line-clamp-1">
                                 <ModalDocument data={item.metadata.name} />
                               </span>
-                            </h6> */}
-                            --
+                            </h6>
                           </div>
-                        </div>
-                        <div className="hidden text-sm lg:block ">
-                          <p>Floor price</p>
-                        </div>
-                        <div className="flex justify-between font-semibold text-dark2">
-                          {/* <div>
-                            <FormatNumber number={item.floorPrice} />
-                          </div> */}
-                          123
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </Fragment>
-            ))}
-            {data?.pages.map((page: any, pageIndex: number) => (
-              <Fragment key={pageIndex}>
-                {page?.data?.map((item: any, index: number) => (
-                  <div key={index} className="relative overflow-hidden">
-                    <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
-                      <div className="relative h-[78px] lg:h-[100px]">
-                        <MediaNFT data={item} isControls={false} hover />
-                      </div>
-                      <div className="w-full">
-                        <div className="flex w-full mt-2">
-                          <div className="w-full">
-                            {/* <h6
-                              title={item.metadata.name}
-                              className="flex items-start gap-2 font-medium uppercase"
-                            >
-                              <span className="flex-wrap max-w-full text-xl line-clamp-1">
-                                <ModalDocument data={item.metadata.name} />
-                              </span>
-                            </h6> */}
-                            --
-                          </div>
-                        </div>
-                        <div className="hidden text-sm lg:block ">
-                          <p>Floor price</p>
-                        </div>
-                        <div className="flex justify-between font-semibold text-dark2">
-                          {/* <div>
-                            <FormatNumber number={item.floorPrice} />
-                          </div> */}
-                          123
                         </div>
                       </div>
                     </div>
@@ -250,18 +217,22 @@ const Sell = () => {
               </Fragment>
             ))}
           </div>
-          <div>
-            <ul className="p-2 text-white rounded-lg bg-dark1">
-              <li className="flex items-center">
-                Send: 1.23{" "}
-                <EtherIcon width={18} height={18} className="fill-white" />
-              </li>
-              <li className="flex items-center">Receive: 1.23 NFTs</li>
-              <li className="flex items-center">
-                Price: 1.23{" "}
-                <EtherIcon width={18} height={18} className="fill-white" />
-              </li>
-            </ul>
+          <div className="absolute bottom-0 w-full">
+            {idNFT.length > 0 && (
+              <ul className="p-2 text-white rounded-lg bg-dark1">
+                <li className="flex items-center">
+                  Send: 1.23{" "}
+                  <EtherIcon width={18} height={18} className="fill-white" />
+                </li>
+                <li className="flex items-center">
+                  Receive: {idNFT.length} NFTs
+                </li>
+                <li className="flex items-center">
+                  Price: 1.23{" "}
+                  <EtherIcon width={18} height={18} className="fill-white" />
+                </li>
+              </ul>
+            )}
             {!account ? (
               <Button className="w-full py-2" primary onClick={handleOpen}>
                 CONNECT WALLET

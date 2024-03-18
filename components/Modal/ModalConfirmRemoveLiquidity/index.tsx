@@ -20,6 +20,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import ercContract721 from "@/libs/utils/erc/erc721.contract";
 interface ModalConfirmRemoveLiquidityProps {
   isOpenConfirmRemoveLiquidity: boolean;
   data: DataBase;
@@ -157,7 +158,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       setAmountTokenDec(resAmountTokenMinShow);
     }
   }, [inputLiquidity, reserveNFT, reserveToken]);
-
+  console.log(amountNFTMin,reserveNFT.toString(),reserveToken.toString(),totalSupply);
+  
   const handleApproveDML = async () => {
     const providerChoice = await getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -184,7 +186,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenConfirmRemoveLiquidity(false);
   };
-  console.log(routerAddress);
+  console.log(data.nftID);
 
   const removeLiquidity = async () => {
     if (
@@ -205,19 +207,18 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         let result;
 
         if (typeof (data.nftID === "object")) {
-        //   result = await contract.removeERC20ERC721(
-        //     data.tokenAddress,
-        //     data.nftAddress,
-        //     data.nftID,
-        //     Math.floor(Number(liquidity)).toString(),
-        //     exponentialToDecimal(Number(amountTokenMin)),
-        //     exponentialToDecimal(Number(amountNFTMin)),
-        //     account,
-        //     Math.floor((new Date().getTime() + slippage * 60000) / 1000),
-        //     { gasLimit: 8000000 }
-        //   );
-        console.log("123");
-        
+          result = await ercContract721.removeERC20ERC721(
+            wallet,
+            data.nftAddress,
+            data.tokenAddress,
+            data.nftID,
+            routerAddress,
+            liquidity,
+            amountTokenMin,
+            amountNFTMin,
+            account,
+            slippage
+          );
         } else {
           result = await erc1155Contract.removeERC20ERC1155(
             wallet,

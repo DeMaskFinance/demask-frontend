@@ -4,25 +4,19 @@ import ChartTradingViewSwap from "../Charts/ChartTradingViewSwap";
 import TransactionCollection from "../CreatedCollection/TransactionCollection";
 import { SkeletonSwap } from "../Skeleton";
 import HistorySwap from "../Swap/History";
-
-const DetailERC721 = () => {
-  const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["swap123"],
-    queryFn: async () => {
-      const res = await swapAPI(
-        "0x4200000000000000000000000000000000000023",
-        "168587773",
-        "0x362acd37a8820c850b09d78416ea23ec78cbb45d",
-        "1116753928"
-      );
-      return res;
-    },
-    keepPreviousData: true,
-  });
-  console.log(data);
+interface DetailERC721Props {
+  data: any;
+  isSuccess: boolean;
+  isLoading: boolean;
+}
+const DetailERC721: React.FC<DetailERC721Props> = ({
+  data,
+  isSuccess,
+  isLoading,
+}) => {
   return (
     <div>
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
@@ -30,7 +24,7 @@ const DetailERC721 = () => {
             {data && (
               <div className="flex gap-x-6">
                 <div className="hidden basis-1/2 lg:block">
-                  <ChartTradingViewSwap dataSwap={data} />
+                  <ChartTradingViewSwap dataSwap={data} typeERC="erc721"/>
                 </div>
                 <div className="w-full lg:basis-1/2">
                   <TransactionCollection />
@@ -38,7 +32,7 @@ const DetailERC721 = () => {
               </div>
             )}
           </div>
-          <HistorySwap data={data} />
+          <HistorySwap data={data} typeERC="erc721"/>
         </div>
       ) : (
         <SkeletonSwap />

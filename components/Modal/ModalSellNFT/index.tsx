@@ -19,6 +19,8 @@ import Wrapper from "../Wrapper";
 import { Button } from "@/components/Buttons";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import ercContract721 from "@/libs/utils/erc/erc721.contract";
 interface ModalSellNFTProps {
   isOpenSellNFT: boolean;
   tokenAddress: string;
@@ -106,20 +108,28 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     routerAddress,
     updatePrice
   );
-
+  console.log({
+    inputNFT,
+    idNFT
+  });
+  
   const balanceNFT = useNFTBalance(
     account,
     nftAddress,
     idNFT,
     wallet,
-    isOpenTransaction
+    isOpenTransaction,
   );
   useEffect(() => {
     const checkReservesNFT = () => {
-      if (Number(inputNFT) <= Number(balanceNFT)) {
+      if(inputNFT===''){
         setIsSufficientNFT(true);
-      } else {
-        setIsSufficientNFT(false);
+      }else{
+        if (Number(inputNFT) <= Number(balanceNFT)) {
+          setIsSufficientNFT(true);
+        } else {
+          setIsSufficientNFT(false);
+        }
       }
     };
     checkReservesNFT();
@@ -149,6 +159,10 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     inputNFT,
     amountTokenSell,
     data,
+    idNFT,
+    reserveNFT,
+    isSufficientNFT,
+    isSufficientTokenSell
   });
 
   useEffect(() => {
@@ -180,31 +194,36 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(routerAddress, abiRouter, signer);
-      const fee = data.royaltyFee === 0 ? "5000" : data.royaltyFee! * 10000;
+      const fee = data.royaltyFee === 0 ? 5000 : data.royaltyFee! * 10000;
       try {
         let result;
         setIsOpenTransaction(true);
-        const estimatedGas = await contract.estimateGas.sellERC20ERC1155(
-          tokenAddress,
-          nftAddress,
-          idNFT,
-          inputNFT,
-          exponentialToDecimal(Math.floor(amountSellDec)),
-          fee,
-          account,
-          Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
-        );
-        result = await contract.sellERC20ERC1155(
-          tokenAddress,
-          nftAddress,
-          idNFT,
-          inputNFT,
-          exponentialToDecimal(Math.floor(amountSellDec)),
-          fee,
-          account,
-          Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-          { gasLimit: estimatedGas }
-        );
+        if(inputNFT){
+          result = await erc1155Contract.sellERC20ERC1155(
+            wallet,
+            nftAddress,
+            tokenAddress,
+            idNFT,
+            routerAddress,
+            amountSellDec,
+            inputNFT,
+            fee,
+            account,
+            txDeadline
+          )
+        }else{
+          result = await ercContract721.sellERC20ERC721(
+            wallet,
+            nftAddress,
+            tokenAddress,
+            idNFT,
+            routerAddress,
+            amountSellDec,
+            fee,
+            account,
+            txDeadline
+          )
+        }
         setHash(result.hash);
         const check = await provider.waitForTransaction(result.hash);
         setIsOpenTransaction(false);

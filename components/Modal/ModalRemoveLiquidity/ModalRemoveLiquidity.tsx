@@ -64,7 +64,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setActiveChoice(choice);
     };
 
-    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress, wallet, isOpenTransaction);
+    const { balanceOfDML } = useBananceOfDML(account, data.dmlAddress, wallet, isOpenTransaction);    
     const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputLiquidity(e.target.value);
       setShowRequiredMessage(false);
@@ -99,7 +99,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       }
     }, [balanceOfDML, activeChoice]);
     const totalSupply = useTotalSupply(account, wallet, data.dmlAddress, isOpenTransaction);
-
+    console.log(amountNFTMin);
+    
     useEffect(() => {
       if (data && inputLiquidity) {
         const amountLIQUIDITY = handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals));
@@ -129,7 +130,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       };
       checkApproveNFT();
     }, [account, data.nftAddress, wallet, isOpenTransaction]);
-
+    console.log(data.reserveNFT);
+    
     const handleRemoveLiquidity = () => {
       if (inputLiquidity === "") {
         setShowRequiredMessage(true);

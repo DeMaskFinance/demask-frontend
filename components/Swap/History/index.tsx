@@ -6,16 +6,17 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import AccountContext from '@/context/AccountContext';
 interface HistorySwapProps {
-    data: DataBase
+    data: DataBase,
+    typeERC: string,
 }
-const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
+const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data ,typeERC}) => {
     const [page, setPage] = useState(1);
     const [tab, setTab] = useQueryParam("historyType", withDefault(StringParam, "All"));
     const { account, wallet, chainId, demask } = useContext(AccountContext);
     const { isLoading, data: dataHistory, isFetching, refetch, isPreviousData } = useQuery({
         queryKey: ["historySwap", chainId, tab],
         queryFn: async () => {
-            const res = await categoryAPI(`transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${tab}`);
+            const res = await categoryAPI(`transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${tab}&type=${typeERC}`);
             return res;
         },
 

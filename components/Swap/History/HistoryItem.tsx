@@ -49,7 +49,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                                 </td>
                                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                                     <div className="flex items-center justify-end md:gap-2">
-                                        <FormatNumber number={item.amountTokenETH} />
+                                        <FormatNumber number={item.amountToken} />
                                         <EtherIcon width={18} height={18} className="fill-dark2" />
                                     </div>
                                 </td>

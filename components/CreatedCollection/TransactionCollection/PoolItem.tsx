@@ -40,15 +40,16 @@ const PoolItem = () => {
     document.body.style.overflowY = "hidden";
   };
   const data = {
-    reserveNFT: "5",
+    reserveNFT: "3",
     reserveTokenDecimals: "18",
     tokenDecimals: "18",
-    dmlAddress: "0x21bCd1e6aEBb64ba33F23A871D0d58Fbd7A95B45",
+    dmlAddress: "0x2d4C46bac8817558F80B4219a6e5020d5f78672B",
     dmlDecimals: "18",
     nftAddress: "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd",
-    nftID: [31, 32],
+    tokenAddress: nativeAddress,
+    nftID: [33],
   };
-  const dmlTokenLiquidity = "0x56e82d1e58ad6eb6764fa8ce4c905ec3833143a3";
+  const dmlTokenLiquidity = data.dmlAddress;
   const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
   // useEffect(() => {
   //   const fetchDataReward = async () => {
