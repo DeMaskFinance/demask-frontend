@@ -18,6 +18,7 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import ModalConfirmAddLiquidityERC721 from "../ModalConfirmAddLiquidityERC721";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
+import { useRouter } from "next/router";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -40,7 +41,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const [inputNFT, setInputNFT] = useState<string[]>(["35"]);
+  const [inputNFT, setInputNFT] = useState<string[]>(["36", "37", "38"]);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -58,7 +59,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;
-  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
+  const collectionAddress = useRouter().query.created as string;
   const dmlToken = useDMLToken(
     account,
     collectionAddress,

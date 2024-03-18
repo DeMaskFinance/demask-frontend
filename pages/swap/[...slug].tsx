@@ -12,10 +12,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { SEO } from '../../next-seo.config';
+import { SEO } from "../../next-seo.config";
 const updateMeta = {
   ...SEO,
-  title: 'Swap',
+  title: "Swap",
 };
 const Swap: React.FC = () => {
   const router = useRouter();
@@ -27,7 +27,12 @@ const Swap: React.FC = () => {
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
     queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
-      const res = await swapAPI(tokenAddress.toLocaleLowerCase(), chainId, nftAddress.toLowerCase(), idNFT);
+      const res = await swapAPI(
+        tokenAddress.toLocaleLowerCase(),
+        chainId,
+        nftAddress.toLowerCase(),
+        idNFT
+      );
       return res;
     },
     keepPreviousData: true,
@@ -44,13 +49,17 @@ const Swap: React.FC = () => {
   return (
     <div className="py-8 mx-auto max-w-screen-3xl swap">
       <NextSeo {...updateMeta} />
-      {(isLoading || isFetching) ? (
+      {isLoading || isFetching ? (
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
           <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 ">
-            <Link href='/swap'>
-              <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
+            <Link href="/swap">
+              <BackIcon
+                width={30}
+                height={30}
+                className="cursor-pointer hover:fill-secondary5"
+              />
             </Link>
             <div className="w-[30px] h-[30px]">
               <MediaNFT data={data} isControls={false} />
@@ -59,18 +68,20 @@ const Swap: React.FC = () => {
             <p>({data?.metadata?.symbol}/ETH)</p>
           </div>
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
-            <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
-              <div className="w-full">
+            <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center h-full">
                 {data && (
-                  <div>
-                    <ChartTradingViewSwap dataSwap={data} typeERC="erc1155"/>
-                  </div>
+                  <ChartTradingViewSwap dataSwap={data} typeERC="erc1155" />
                 )}
-              </div>
-              <HistorySwap data={data} typeERC="erc1155"/>
             </div>
-            <SwapTransaction data={data} tokenAddress={tokenAddress} idNFT={idNFT} nftAddress={nftAddress} refetch={refetch}/>
+            <SwapTransaction
+              data={data}
+              tokenAddress={tokenAddress}
+              idNFT={idNFT}
+              nftAddress={nftAddress}
+              refetch={refetch}
+            />
           </div>
+          <HistorySwap data={data} typeERC="erc1155" />
         </div>
       ) : (
         <SkeletonSwap />

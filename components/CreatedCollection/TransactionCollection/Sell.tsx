@@ -16,6 +16,7 @@ import { nftsUserService } from "@/libs/service/profileService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Sell = () => {
@@ -38,7 +39,7 @@ const Sell = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
+  const collectionAddress = useRouter().query.created as string;
   const [typeERC, setTypeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
@@ -99,7 +100,8 @@ const Sell = () => {
     "",
     isOpenTransaction
   );
-
+    console.log(dmlToken);
+    
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -174,8 +176,8 @@ const Sell = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-  console.log(idNFT);
-
+  console.log(data);
+  
   return (
     <div>
       {isLoading ? (
@@ -193,7 +195,7 @@ const Sell = () => {
                     className="relative overflow-hidden"
                     onClick={() => hanldeChoiceNFT(item)}
                   >
-                    <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
+                    <div className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${idNFT.includes(Number(item.nftID)) ? 'border-secondary5' : ''}`}>
                       <div className="relative h-[78px] lg:h-[100px]">
                         <MediaNFT data={item} isControls={false} hover />
                       </div>

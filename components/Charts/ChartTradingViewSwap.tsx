@@ -92,7 +92,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       clearInterval(intervalId);
     };
   }, []);
-
+  
   useEffect(() => {
     if (chartContainerRef.current) {
       const chart = createChart(chartContainerRef.current, { autoSize: true });
@@ -191,7 +191,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   }, [data, volume, newData]);
 
   return (
-    <div>
+    <div className="w-full">
       {isLoading ? (
         <div className="h-[355px] p-4 border rounded-lg lg:mt-0 border-dark3">
           <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-dark3 w-fit text-dark3">

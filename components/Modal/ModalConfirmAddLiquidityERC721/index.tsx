@@ -18,6 +18,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
 interface ModalConfirmAddLiquidityERC721Props {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -66,7 +67,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
+  const collectionAddress = useRouter().query.created as string;
 
   const { bigNumberBalance } = useInformationToken(
     account,
@@ -141,7 +142,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
 
   const addLiquidity = async () => {
-
+    console.log(inputNFT);
+    
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       const providerChoice = await getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);

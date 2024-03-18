@@ -17,6 +17,8 @@ const useAmountInMax = (
   const [feeTradingBuy, setFeeTradingBuy] = useState(0);
   const [isLoadingBuy, setIsLoadingBuy] = useState<boolean>(false);
   useEffect(() => {
+    console.log(idNFT);
+    
     const getAmountInMax = async () => {
       setIsLoadingBuy(true);
       if (
@@ -31,6 +33,8 @@ const useAmountInMax = (
           rpc,
           routerAddress
         );
+        console.log(amountAFee);
+        
         if (amountAFee) {
           setAmountTokenBuy(amountAFee[0].toString());
           setFeeTradingBuy(amountAFee[1].toString());

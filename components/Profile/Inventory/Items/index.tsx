@@ -19,6 +19,7 @@ import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import Inventory from "..";
 interface ModalDetailProps {
   data: any;
   nftAddress: string;
@@ -64,20 +65,24 @@ export const ItemList: React.FC<ItemListProps> = ({
                           document.body.style.overflowY = "hidden";
                         }}
                       >
-                        {/* <MediaNFT data={item} isControls={false} hover /> */}
+                        <MediaNFT data={item} isControls={false} hover />
                       </div>
                       <div className="w-full">
                         <div className="flex w-full mt-2">
-                          {/* <div className="w-full">
+                          <div className="w-full">
                             <h6
-                              title={item.metadata.name}
+                              title={item.metadata?.name}
                               className="flex items-start gap-2 font-medium uppercase"
                             >
                               <span className="flex-wrap max-w-full text-xl line-clamp-1">
-                                <ModalDocument data={item.metadata.name} />
+                                {item.metadata?.name ? (
+                                  <ModalDocument data={item.metadata?.name} />
+                                ) : (
+                                  <p>--</p>
+                                )}
                               </span>
                             </h6>
-                          </div> */}
+                          </div>
                         </div>
                         <div className="flex items-center justify-between">
                           <LogoIconCard chainId={chainId} />
@@ -91,8 +96,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                         </div>
                         <div className="flex justify-between font-semibold text-dark2">
                           <div>
-                            {/* <FormatNumber number={item.floorPrice} /> */}
-                            -
+                            {/* <FormatNumber number={item.floorPrice} /> */}-
                           </div>
                           <div>
                             {item.nftBalance ? (
@@ -186,13 +190,13 @@ const Items = () => {
       fetchNextPage();
     }
   }, [inView]);
-  
+  console.log(data);
+
   return (
-    <div>
-      <h1 className="my-4 text-2xl font-semibold text-center">My Items</h1>
+    <Inventory>
       <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
       <div ref={ref} style={{ height: "1px" }}></div>
-    </div>
+    </Inventory>
   );
 };
 export default Items;

@@ -11,9 +11,33 @@ import Sell from "./Sell";
 const TransactionCollection = () => {
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
+  const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "buy"));
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
+  const TABS = [
+    {
+      title: "Buy",
+      panel: () => <Buy />,
+      key: "buy",
+    },
+    {
+      title: "Sell",
+      panel: () => <Sell />,
+      key: "sell",
+    },
+    {
+      title: "Change",
+      panel: () => <div>Upcomming</div>,
+      key: "change",
+    },
+    {
+      title: "Pools",
+      panel: () => <Pool />,
+      key: "pool",
+    },
+  ];
+  const selectedTab = TABS.find((item) => item.key === tab);
   const actions = [
     {
       icon: (
@@ -39,13 +63,20 @@ const TransactionCollection = () => {
     },
   ];
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full p-3 border rounded-lg border-dark3">
       <div className="flex items-center justify-between mb-3 lg:mb-0 gap-x-8">
-        <TabGroups
-          choices={["Buy", "Sell", "Change", "Pool"]}
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-        />
+        <ul className="hidden gap-4 p-2 text-sm text-white rounded-lg lg:flex bg-dark3 ">
+          {TABS.map((item, index) => (
+            <li
+              key={index}
+              onClick={() => setTab(item.key)}
+              className={`cursor-pointer p-2 rounded-lg ${item.key === tab && 'bg-secondary5'}`}
+
+            >
+              <h2 className="font-semibold">{item.title}</h2>
+            </li>
+          ))}
+        </ul>
         <div className="flex items-center gap-x-2">
           {actions.map((action, index) => (
             <Tippy
@@ -60,15 +91,7 @@ const TransactionCollection = () => {
         </div>
       </div>
       <div className="relative h-full">
-        {activeChoice === "Buy" ? (
-          <Buy />
-        ) : activeChoice === "Sell" ? (
-          <Sell />
-        ) : activeChoice === "Pool" ? (
-          <Pool />
-        ) : (
-          <div>Upcoming</div>
-        )}
+      {selectedTab ? selectedTab.panel() : null}
       </div>
       <ModalSetting
         isOpenSetting={isOpenSetting}

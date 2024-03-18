@@ -10,7 +10,7 @@ const styles = {
   itemSub:
     "flex items-center justify-between text-sm  w-[182px] px-2 py-2 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
 };
-const Inventory = () => {
+const Inventory = ({children}:any) => {
   const [typeERC, setTypeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
@@ -121,8 +121,7 @@ const Inventory = () => {
           </div>
         </Tippy>
       </div>
-      <Created />
-      <Items />
+      {children}
     </div>
   );
 };

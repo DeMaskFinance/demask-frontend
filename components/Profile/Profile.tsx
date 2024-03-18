@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import { selectProfile } from "@/store/profileSlice";
 import Image from "next/image";
 import Inventory from "./Inventory";
+import Items from "./Inventory/Items";
+import Created from "./Inventory/Collections";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -24,16 +26,16 @@ const style = {
 };
 const Profile = () => {
     const { account } = useContext(AccountContext);
-    const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "nfts"));
+    const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "items"));
     const [visible, setVisible] = useState(true);
     const { profile } = useSelector(selectProfile);
     const TABS = [
         {
-            title: "Inventory",
+            title: "Items",
             panel: () => (
-                <Inventory />
+                <Items />
             ),
-            key: "nfts",
+            key: "items",
         },
         {
             title: "Pools",
@@ -41,6 +43,13 @@ const Profile = () => {
                 <Pools />
             ),
             key: "pools",
+        },
+        {
+            title: "Created",
+            panel: () => (
+                <Created />
+            ),
+            key: "created",
         },
         {
             title: "Launchpad",

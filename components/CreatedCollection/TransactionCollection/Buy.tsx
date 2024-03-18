@@ -1,4 +1,5 @@
 import { Button } from "@/components/Buttons";
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
@@ -15,6 +16,7 @@ import { nftsUserService } from "@/libs/service/profileService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Buy = () => {
@@ -37,7 +39,9 @@ const Buy = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
+  const collectionAddress = '0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd';
+  console.log(collectionAddress);
+  
   const [typeERC, setTypeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
@@ -98,9 +102,11 @@ const Buy = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
+  console.log(isApprovedNFT,collectionAddress,routerAddress);
+  
   const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
     "",
-    '0x2d4c46bac8817558f80b4219a6e5020d5f78672b',
+    "0x2d4c46bac8817558f80b4219a6e5020d5f78672b",
     nativeAddress,
     collectionAddress,
     idNFT,
@@ -138,8 +144,6 @@ const Buy = () => {
       const arr = idNFT.filter((itemArr) => {
         return itemArr !== Number(item.nftID);
       });
-      console.log(arr);
-
       setIdNFT(arr);
     } else {
       setIdNFT([...idNFT, Number(item.nftID)]);
@@ -159,6 +163,7 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
+  console.log(amountTokenBuy,amountBuyDec);
 
   return (
     <div>
@@ -174,10 +179,16 @@ const Buy = () => {
                 {page?.data?.map((item: any, index: number) => (
                   <div
                     key={index}
-                    className="relative overflow-hidden"
+                    className="relative"
                     onClick={() => hanldeChoiceNFT(item)}
                   >
-                    <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
+                    <div
+                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        idNFT.includes(Number(item.nftID))
+                          ? "border-secondary5"
+                          : ""
+                      }`}
+                    >
                       <div className="relative h-[78px] lg:h-[100px]">
                         <MediaNFT data={item} isControls={false} hover />
                       </div>
@@ -205,14 +216,17 @@ const Buy = () => {
             {idNFT.length > 0 && (
               <ul className="p-2 text-white rounded-lg bg-dark1">
                 <li className="flex items-center">
-                  Send: {amountBuyDec}{" "}
+                  Send: 
+                  <FormatNumber number={(amountBuyDec/1e18).toString()}/>{" "}
                   <EtherIcon width={18} height={18} className="fill-white" />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
                 </li>
                 <li className="flex items-center">
-                  Price: {amountTokenBuy}{" "}
+                  Price: 
+                  <FormatNumber number={(amountTokenBuy/1e18).toString()}/>
+                  {" "}Í
                   <EtherIcon width={18} height={18} className="fill-white" />
                 </li>
               </ul>

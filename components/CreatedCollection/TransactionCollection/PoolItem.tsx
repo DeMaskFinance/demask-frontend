@@ -50,7 +50,6 @@ const PoolItem = () => {
     nftID: [33],
   };
   const dmlTokenLiquidity = data.dmlAddress;
-  const collectionAddress = "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd";
   // useEffect(() => {
   //   const fetchDataReward = async () => {
   //     if (account && dmlTokenLiquidity && data) {

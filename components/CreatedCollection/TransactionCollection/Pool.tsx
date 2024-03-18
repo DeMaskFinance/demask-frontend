@@ -14,6 +14,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PoolItem from "./PoolItem";
 import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidityERC721";
 import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
+import { useRouter } from "next/router";
 
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -33,7 +34,7 @@ const Pool = () => {
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
-  const collectionAddress = "0x286e08EEb3169042585B4838378D21d2c23ded55";
+  const collectionAddress = useRouter().query.created as string;
   const {
     ROUTER_721: routerAddress,
     RPC: rpc,
