@@ -163,7 +163,7 @@ export default function Header() {
               showSearch ? "block" : "hidden"
             } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
-          <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
+          <div className="flex items-center gap-2 lg:gap-x-6 md:gap-x-4">
             <div
               className="text-secondary5 lg:hidden"
               onClick={() => {
@@ -172,9 +172,9 @@ export default function Header() {
               }}
             >
               <SearchIcon
-                width={32}
-                height={32}
-                className="cursor-pointer fill-secondary3 active:fill-secondary2"
+                width={20}
+                height={20}
+                className="cursor-pointer"
               />
             </div>
 

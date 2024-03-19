@@ -21,6 +21,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
+import { useRouter } from "next/router";
 interface ModalConfirmRemoveLiquidityProps {
   isOpenConfirmRemoveLiquidity: boolean;
   data: DataBase;
@@ -28,6 +29,7 @@ interface ModalConfirmRemoveLiquidityProps {
   isOpenTransaction: boolean;
   totalSupply: string;
   routerAddress: string;
+  idNFT:number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenConfirmRemoveLiquidity: React.Dispatch<
     React.SetStateAction<boolean>
@@ -46,6 +48,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   data,
   inputLiquidity,
   isOpenTransaction,
+  idNFT,
   totalSupply,
   routerAddress,
   setIsOpenTransaction,
@@ -60,8 +63,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     useState<boolean>(false);
   const [isApprovedLiquidity, setIsApprovedLiquidity] =
     useState<boolean>(false);
-  const [amountNFT, setAmountNFT] = useState("");
-  const [amountToken, setAmountToken] = useState("");
   const [amountTokenMin, setAmountTokenMin] = useState("");
   const [amountTokenDec, setAmountTokenDec] = useState("");
   const [amountNFTMin, setAmountNFTMin] = useState("");
@@ -70,18 +71,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage } =
     useContext(AccountContext);
-  const {
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-    FACTORY: factoryAddress,
-  } = demask;
-
-  const { balanceOfDML } = useBananceOfDML(
-    account,
-    data.dmlAddress,
-    wallet,
-    isOpenTransaction
-  );
+  const collectionAddress = useRouter().query.created as string;
   const currentAllowance = useAllowanceDML(
     account,
     data.dmlAddress,
@@ -90,8 +80,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     inputLiquidity,
     routerAddress
   );
-  console.log(currentAllowance);
-  console.log(data);
 
   const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
     data.dmlAddress,
@@ -150,15 +138,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       const resAmountTokenMin = Math.floor(
         Number(resAmountToken * (1 - slippage / 100))
       );
-      setAmountNFT(resAmountNFT.toString());
-      setAmountToken(resAmountToken.toString());
       setAmountNFTMin(resAmountNFTMin.toString());
-      // setAmountTokenMin(resAmountTokenMin.toString());
       setAmountTokenMin(Math.floor(resAmountTokenMin).toString());
       setAmountTokenDec(resAmountTokenMinShow);
     }
   }, [inputLiquidity, reserveNFT, reserveToken]);
-  console.log(amountNFTMin,reserveNFT.toString(),reserveToken.toString(),totalSupply);
+  console.log(reserveNFT.toString(),reserveToken.toString());
   
   const handleApproveDML = async () => {
     const providerChoice = await getProvider(wallet);
@@ -186,7 +171,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenConfirmRemoveLiquidity(false);
   };
-  console.log(data.nftID);
 
   const removeLiquidity = async () => {
     if (
@@ -196,8 +180,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     ) {
       const providerChoice = await getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
-      //   const signer = provider.getSigner();
-      //   const contract = new ethers.Contract(routerAddress, abiRouter, signer);
       const liquidity = handleBignumber(
         Number(inputLiquidity),
         Number(data.dmlDecimals)
@@ -206,12 +188,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         setIsOpenTransaction(true);
         let result;
 
-        if (typeof (data.nftID === "object")) {
+        if (idNFT.length >0) {
           result = await ercContract721.removeERC20ERC721(
             wallet,
-            data.nftAddress,
+            collectionAddress,
             data.tokenAddress,
-            data.nftID,
+            idNFT,
             routerAddress,
             liquidity,
             amountTokenMin,
@@ -285,7 +267,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           </div>
           <div className="flex justify-between text-lg font-semibold text-dark2">
             <FormatNumber number={amountTokenDec} />
-            <p>{data.tokenSymbol}</p>
+            <p>ETH</p>
           </div>
           {preFectch && (
             <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">

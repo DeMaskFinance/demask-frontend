@@ -110,21 +110,21 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   );
   console.log({
     inputNFT,
-    idNFT
+    idNFT,
   });
-  
+
   const balanceNFT = useNFTBalance(
     account,
     nftAddress,
     idNFT,
     wallet,
-    isOpenTransaction,
+    isOpenTransaction
   );
   useEffect(() => {
     const checkReservesNFT = () => {
-      if(inputNFT===''){
+      if (inputNFT === "") {
         setIsSufficientNFT(true);
-      }else{
+      } else {
         if (Number(inputNFT) <= Number(balanceNFT)) {
           setIsSufficientNFT(true);
         } else {
@@ -162,7 +162,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     idNFT,
     reserveNFT,
     isSufficientNFT,
-    isSufficientTokenSell
+    isSufficientTokenSell,
   });
 
   useEffect(() => {
@@ -198,7 +198,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       try {
         let result;
         setIsOpenTransaction(true);
-        if(inputNFT){
+        if (inputNFT) {
           result = await erc1155Contract.sellERC20ERC1155(
             wallet,
             nftAddress,
@@ -210,8 +210,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             fee,
             account,
             txDeadline
-          )
-        }else{
+          );
+        } else {
           result = await ercContract721.sellERC20ERC721(
             wallet,
             nftAddress,
@@ -222,7 +222,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             fee,
             account,
             txDeadline
-          )
+          );
         }
         setHash(result.hash);
         const check = await provider.waitForTransaction(result.hash);
@@ -248,7 +248,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             Confirm Sell
           </p>
           <div className="flex justify-between text-lg font-semibold text-dark2">
-            <p>{inputNFT}</p>
+            {inputNFT ? <p>{inputNFT}</p> : <p>{idNFT.length}</p>}
             <p>{data?.metadata?.symbol}</p>
           </div>
           <div>
@@ -265,7 +265,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                 data.tokenDecimals
               )}
             />
-            <p>{data?.tokenSymbol}</p>
+            <p>ETH</p>
           </div>
           {preFectch && (
             <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
@@ -310,7 +310,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                         amountTokenSell.toString(),
                         data.tokenDecimals
                       )
-                    ) / Number(inputNFT)
+                    ) / (inputNFT ? Number(inputNFT) : idNFT.length)
                   ).toString()}
                 />
                 <p>

@@ -1,24 +1,26 @@
 import { Button } from "@/components/Buttons";
+import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
-import useNFTBalance from "@/hooks/useBalanceNFT";
+import useDMLToken from "@/hooks/useDMLToken";
+import useInformationDML from "@/hooks/useInformationDML";
 import useInformation from "@/hooks/useInformationToken";
+import { collectionListBuy } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
-import { useContext, useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
-import ModalConfirmAddLiquidity from "../ModalConfirmAddLiquidity";
-import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
+import ModalDocument from "../ModalLength/ModalDocument";
+import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import ModalConfirmAddLiquidityERC721 from "../ModalConfirmAddLiquidityERC721";
-import useDMLToken from "@/hooks/useDMLToken";
-import useInformationDML from "@/hooks/useInformationDML";
-import { useRouter } from "next/router";
+import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -41,7 +43,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const [inputNFT, setInputNFT] = useState<string[]>(["36", "37", "38"]);
+  const [idNFT, setIdNFT] = useState<number[]>([]);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -51,7 +53,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, chainId } =
     useContext(AccountContext);
   const {
     ROUTER_721: routerAddress,
@@ -108,13 +110,12 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIsSufficientToken(false);
     }
   };
-  console.log(inputNFT.length);
 
   useEffect(() => {
     let amountErcDesired;
-    if (data?.dmlAddress !== null && data && inputNFT) {
+    if (data?.dmlAddress !== null && data && idNFT) {
       amountErcDesired =
-        ((Number(inputNFT.length) * +reserveToken) / +reserveNFT) *
+        ((Number(idNFT.length) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(
@@ -135,7 +136,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         setIsSufficientToken(false);
       }
     }
-  }, [inputNFT, inputToken, data]);
+  }, [idNFT, inputToken, data]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -150,24 +151,105 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   }, [account, data.nftAddress, wallet, isOpenTransaction]);
 
   const handleAddLiquidity = () => {
-    if (inputNFT && !isSufficientToken) {
+    if (idNFT.length > 0 && !isSufficientToken) {
       setIsOpenConfirmAddLiquidity(true);
+    }
+  };
+  const fetchDataNFTs = async (
+    collectionAddress: string | string[],
+    pageParam = 1,
+    chain: string | string[]
+  ) => {
+    const data = await collectionListBuy(
+      collectionAddress,
+      chain,
+      pageParam,
+      10
+    );
+    return data.data;
+  };
+
+  const {
+    data: data721,
+    fetchNextPage,
+    isFetchingNextPage,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useInfiniteQuery(
+    ["collectionNFTBUY", chainId, collectionAddress],
+    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, pageParam, chainId),
+    {
+      getNextPageParam: (page) =>
+        page?.currentPage === page?.totalPages
+          ? undefined
+          : page?.currentPage + 1,
+    }
+  );
+  const hanldeChoiceNFT = (item: any) => {
+    const isExist = idNFT.includes(Number(item.nftID));
+    if (isExist) {
+      const arr = idNFT.filter((itemArr) => {
+        return itemArr !== Number(item.nftID);
+      });
+      setIdNFT(arr);
+    } else {
+      setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
-          <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
+          <div className="flex items-center mb-4 text-xl font-semibold text-dark1">
             Add
             {data && (
               <div className="flex items-center leading-[16px] ml-1">
                 <span> {data?.metadata?.symbol}</span>
                 <span className="overflow-hidden">/</span>
-                <span>{data?.tokenSymbol}</span>
+                <span>ETH</span>
               </div>
             )}
-          </p>
+          </div>
+          <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
+            {data721?.pages.map((page: any, pageIndex: number) => (
+              <Fragment key={pageIndex}>
+                {page?.data?.map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className="relative"
+                    onClick={() => hanldeChoiceNFT(item)}
+                  >
+                    <div
+                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        idNFT.includes(Number(item.nftID))
+                          ? "border-secondary5"
+                          : ""
+                      }`}
+                    >
+                      <div className="relative h-[78px] lg:h-[100px]">
+                        <MediaNFT data={item} isControls={false} hover />
+                      </div>
+                      <div className="w-full">
+                        <div className="flex w-full mt-2">
+                          <div className="w-full">
+                            <h6
+                              title={item.metadata.name}
+                              className="flex items-start gap-2 font-semibold uppercase"
+                            >
+                              <span className="flex-wrap max-w-full text-sm line-clamp-1">
+                                <ModalDocument data={item.metadata.name} />
+                              </span>
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </Fragment>
+            ))}
+          </div>
           <div>
             <div className="relative">
               <div>
@@ -205,7 +287,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       Insufficient Token balance
                     </p>
                   )}
-                  {Math.floor(amountErcDesired) === 0 && inputNFT && (
+                  {Math.floor(amountErcDesired) === 0 && idNFT.length > 0 && (
                     <p className="mt-2 ml-2 text-xs text-red" key="inputNFT">
                       Can't add liquidity
                     </p>
@@ -216,8 +298,9 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             <div className="flex justify-center">
               {isApprovedNFT ? (
                 <Button
-                  className="w-[126px] py-2 mx-auto"
-                  primary
+                  className="w-[126px] py-2 mx-auto whitespace-nowrap"
+                  primary={idNFT.length > 0}
+                  active={idNFT.length === 0}
                   onClick={handleAddLiquidity}
                 >
                   ADD LIQUIDITY
@@ -258,7 +341,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         tokenAddress={demask.NATIVE_ADDRESS}
         nftAddress={collectionAddress}
         idNFT={""}
-        inputNFT={inputNFT}
+        inputNFT={idNFT}
         data={data}
         inputToken={inputToken}
         setInputToken={setInputToken}

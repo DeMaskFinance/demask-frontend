@@ -1,18 +1,18 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
+import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
+import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
   ModalError,
   ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
-import React, { useContext, useEffect, useState } from "react";
-import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
-import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidityERC721";
+import React, { useContext, useEffect, useState } from "react";
 
 const PoolItem = () => {
   const { account, wallet, chainId, demask, slippage } =
@@ -40,7 +40,7 @@ const PoolItem = () => {
     document.body.style.overflowY = "hidden";
   };
   const data = {
-    reserveNFT: "3",
+    reserveNFT: "5",
     reserveTokenDecimals: "18",
     tokenDecimals: "18",
     dmlAddress: "0x2d4C46bac8817558F80B4219a6e5020d5f78672B",
@@ -50,24 +50,24 @@ const PoolItem = () => {
     nftID: [33],
   };
   const dmlTokenLiquidity = data.dmlAddress;
-  // useEffect(() => {
-  //   const fetchDataReward = async () => {
-  //     if (account && dmlTokenLiquidity && data) {
-  //       const result = await ercContract.viewReward(
-  //         dmlTokenLiquidity,
-  //         account,
-  //         wallet
-  //       );
-  //       console.log(result);
+  useEffect(() => {
+    const fetchDataReward = async () => {
+      if (account && dmlTokenLiquidity && data) {
+        const result = await ercContract.viewReward(
+          dmlTokenLiquidity,
+          account,
+          wallet
+        );
+        console.log(result);
 
-  //       const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
-  //       setReward(rewardDec);
-  //     } else {
-  //       setReward("0");
-  //     }
-  //   };
-  //   fetchDataReward();
-  // }, [dmlTokenLiquidity, account, data]);
+        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+        setReward(rewardDec);
+      } else {
+        setReward("0");
+      }
+    };
+    fetchDataReward();
+  }, [dmlTokenLiquidity, account, data]);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -93,7 +93,7 @@ const PoolItem = () => {
   };
   return (
     <div className="p-4 border rounded-lg border-dark3">
-      <div className="flex justify-between ">
+      <div className="flex flex-wrap justify-between gap-y-2">
         <p className="text-xl font-semibold text-dark0">
           The Buns - Hefty Hares
         </p>
@@ -106,7 +106,7 @@ const PoolItem = () => {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center mt-4 lg:mt-0">
         <div className="flex items-center text-sm ">
           <div className="flex items-center mr-2">
             <span>LP:</span>
@@ -183,6 +183,7 @@ const PoolItem = () => {
           // @ts-ignore */
             data={data}
             routerAddress={routerAddress}
+            type='erc721'
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash}

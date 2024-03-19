@@ -35,7 +35,7 @@ const updateMeta = {
   title: 'Detail Liquidity',
 };
 export default function DetailLiquidity() {
-  const { account, wallet, chainId, tokenDefault, demask } = useContext(AccountContext);
+  const { account, wallet, chainId, demask } = useContext(AccountContext);
   const router = useRouter();
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
@@ -57,8 +57,6 @@ export default function DetailLiquidity() {
   const [page, setPage] = useState(1);
   const {
     ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
   } = demask;
   useEffect(() => {
     if (liquidity) {
@@ -334,6 +332,7 @@ export default function DetailLiquidity() {
           <ModalRemmoveLiquidity
             data={data}
             routerAddress={routerAddress}
+            type='erc1155'
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}

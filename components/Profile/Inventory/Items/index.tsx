@@ -43,6 +43,8 @@ export const ItemList: React.FC<ItemListProps> = ({
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
+  console.log(data );
+  
   return (
     <div>
       {isLoading ? (
@@ -96,7 +98,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                         </div>
                         <div className="flex justify-between font-semibold text-dark2">
                           <div>
-                            {/* <FormatNumber number={item.floorPrice} /> */}-
+                            <FormatNumber number={item.floorPrice} />
                           </div>
                           <div>
                             {item.nftBalance ? (

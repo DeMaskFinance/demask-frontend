@@ -15,22 +15,14 @@ import { SwiperSlide } from "swiper/react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Inventory from "..";
 
-const Created = () => {
+const Created = ({typeERC,category}:any) => {
   const { account, chainId, demask } = useContext(AccountContext);
-  const [typeERC] = useQueryParam(
-    "typeERC",
-    withDefault(StringParam, "")
-  );
-  const [category] = useQueryParam(
-    "category",
-    withDefault(StringParam, "")
-  );
   const [searchCollection] = useQueryParam(
     "searchCollection",
     withDefault(StringParam, "")
   );
   let debouncedSearch = useDebounce(searchCollection);
-  console.log(typeERC);
+  console.log(typeERC,category);
 
   const { ref, inView } = useInView();
   const fetchDataNFTs = async (

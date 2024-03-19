@@ -84,7 +84,7 @@ export default function CreatedCollection() {
   console.log(dataDetail);
 
   return (
-    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px]">
+    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0">
       <div className="h-[120px] lg:h-[240px]">
         <div className="w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]"></div>
       </div>

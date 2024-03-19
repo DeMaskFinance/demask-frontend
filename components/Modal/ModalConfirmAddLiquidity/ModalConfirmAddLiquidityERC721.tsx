@@ -27,7 +27,7 @@ interface ModalConfirmAddLiquidityERC721Props {
   nftAddress: string;
   idNFT: string;
   isOpenTransaction: boolean;
-  inputNFT: string[];
+  inputNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setInputToken: React.Dispatch<React.SetStateAction<string>>;
@@ -142,8 +142,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
 
   const addLiquidity = async () => {
-    console.log(inputNFT);
-    
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       const providerChoice = await getProvider(wallet);
       const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -200,8 +198,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             Create Pool
           </p>
           <div className="flex justify-between text-lg font-semibold text-dark2">
+            <p>{inputNFT.length}</p>
             <div className="max-w-[60%]">
-              <ModalDocument data={data?.metadata?.symbol} />
+              <ModalDocument data='DM' />
             </div>
           </div>
           <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
@@ -209,7 +208,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           </div>
           <div className="flex justify-between text-lg font-semibold text-dark2">
             <FormatNumber number={amountErcDesiredToDec} />
-            <p>{data?.tokenSymbol}</p>
+            <p>ETH</p>
           </div>
           {isSufficientToken && (
             <p className="text-xs text-red" key="inputNFT">
@@ -242,7 +241,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             <p>{slippage}%</p>
           </div>
           <p className="mt-2 mb-6 text-sm text-dark2">
-            Output is estimated. You will receive at least 12 NFT or the
+            Output is estimated. You will receive at least {inputNFT.length} NFT or the
             transaction will revert
           </p>
           <div className="flex flex-col items-center mt-6">

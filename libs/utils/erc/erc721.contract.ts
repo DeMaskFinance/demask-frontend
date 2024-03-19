@@ -17,7 +17,7 @@ const addLiquidity = async (
   wallet: string,
   collectionAddress: string,
   tokenAddress: string,
-  idNFT: string[],
+  idNFT: number[],
   routerAddress: string,
   amountErcDesired: number,
   account: string,

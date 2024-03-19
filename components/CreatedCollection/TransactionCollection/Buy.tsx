@@ -9,14 +9,11 @@ import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
-import useDMLToken from "@/hooks/useDMLToken";
 import useInformationToken from "@/hooks/useInformationToken";
 import { collectionListBuy } from "@/libs/service/collectionService";
-import { nftsUserService } from "@/libs/service/profileService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Buy = () => {
@@ -163,7 +160,7 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-  console.log(amountTokenBuy,amountBuyDec);
+console.log(data);
 
   return (
     <div>
@@ -214,7 +211,7 @@ const Buy = () => {
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="p-2 text-white rounded-lg bg-dark1">
+              <ul className="flex flex-wrap px-4 py-2 mb-2 text-sm bg-dark5 text-dark2 gap-x-4">
                 <li className="flex items-center">
                   Send: 
                   <FormatNumber number={(amountBuyDec/1e18).toString()}/>{" "}
@@ -226,7 +223,7 @@ const Buy = () => {
                 <li className="flex items-center">
                   Price: 
                   <FormatNumber number={(amountTokenBuy/1e18).toString()}/>
-                  {" "}Í
+                  {" "}
                   <EtherIcon width={18} height={18} className="fill-white" />
                 </li>
               </ul>

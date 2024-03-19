@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import Items from "./Items";
-import Created from "./Collections";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SearchInventory } from "@/components/Search";
 import Tippy from "@tippyjs/react/headless";
@@ -11,14 +10,8 @@ const styles = {
     "flex items-center justify-between text-sm  w-[182px] px-2 py-2 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
 };
 const Inventory = ({children}:any) => {
-  const [typeERC, setTypeERC] = useQueryParam(
-    "typeERC",
-    withDefault(StringParam, "")
-  );
-  const [category, setCategory] = useQueryParam(
-    "category",
-    withDefault(StringParam, "")
-  );
+  const [typeERC, setTypeERC] = useState<string>('All')
+  const [category, setCategory] = useState<string>('All')
   const ERCType = [
     {
       type: "",

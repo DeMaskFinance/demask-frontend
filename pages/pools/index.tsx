@@ -6,16 +6,19 @@ import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { SEO } from '../../next-seo.config';
+import { SEO } from "../../next-seo.config";
+import { TabGroups } from "@/components/NavChoice";
 const updateMeta = {
   ...SEO,
-  title: 'Liquidity',
+  title: "Liquidity",
 };
 export default function Liquidity() {
-  const { account, wallet, chainId, demask, tokenDefault } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, tokenDefault } =
+    useContext(AccountContext);
   const router = useRouter();
+  const [activeChoice, setActiveChoice] = useState<string>("Item pool");
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
     const nftAddress = demask.CREATOR;
@@ -24,8 +27,16 @@ export default function Liquidity() {
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
 
-  const fetchDataListLiquidity = async (accountUser: string, pageParam = 1, chainId: string | string[]) => {
-    const data = await liquidityListAPI(accountUser.toLowerCase(), pageParam, chainId);
+  const fetchDataListLiquidity = async (
+    accountUser: string,
+    pageParam = 1,
+    chainId: string | string[]
+  ) => {
+    const data = await liquidityListAPI(
+      accountUser.toLowerCase(),
+      pageParam,
+      chainId
+    );
     return data;
   };
   const {
@@ -46,6 +57,9 @@ export default function Liquidity() {
           : undefined,
     }
   );
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
+  };
   return (
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0">
       <NextSeo {...updateMeta} />
@@ -62,50 +76,61 @@ export default function Liquidity() {
           </Button>
         </div>
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
-        {((!account || data?.pages[0]?.combinedRecords.length === 0) && !isLoading) && (
-          <div className="flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2">
-            <PoolListIcon width={72} height={72} />
-            Your active liquidity positions will appear here.
-          </div>
-        )}
+        {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
+          !isLoading && (
+            <div className="flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2">
+              <PoolListIcon width={72} height={72} />
+              Your active liquidity positions will appear here.
+            </div>
+          )}
         {account && data?.pages[0]?.combinedRecords.length !== 0 && (
-          <div className="rounded-lg bg-dark5">
-            <div className="">
-              {isSuccess &&
-                data.pages.map((page: any, index: number) => (
-                  <div key={index} className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-4 md:grid-cols-2">
-                    {page?.combinedRecords.map(
-                      (liquidity: any, index: number) => (
-                        <div key={index} className="w-full mx-auto">
-                          <LiquidytiesItem liquidity={liquidity} />
-                        </div>
-                      )
-                    )}
-                  </div>
-                ))}
-              {hasNextPage && (
-                <p
-                  onClick={() => fetchNextPage()}
-                  className="mt-4 text-sm cursor-pointer text-secondary4"
-                >
-                  See more
-                </p>
+          <div>
+            <div className="flex justify-center">
+              <TabGroups
+                choices={["Item pool", "Collection pool"]}
+                activeChoice={activeChoice}
+                onChoiceChange={handleChoiceChange}
+              />
+            </div>
+            <div className="mt-6 rounded-lg bg-dark5">
+              <div className="">
+                {isSuccess &&
+                  data.pages.map((page: any, index: number) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-4 md:grid-cols-2"
+                    >
+                      {page?.combinedRecords.map(
+                        (liquidity: any, index: number) => (
+                          <div key={index} className="w-full mx-auto">
+                            <LiquidytiesItem liquidity={liquidity} />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  ))}
+                {hasNextPage && (
+                  <p
+                    onClick={() => fetchNextPage()}
+                    className="mt-4 text-sm cursor-pointer text-secondary4"
+                  >
+                    See more
+                  </p>
+                )}
+              </div>
+              {isFetchingNextPage && (
+                <div>
+                  <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
+                </div>
               )}
             </div>
-            {(isFetchingNextPage) && (
-              <div>
-                <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
-              </div>
-            )}
-          </div>)
-        }
-        {
-          isLoading && account && (
-            <div>
-              <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
-            </div>
-          )
-        }
+          </div>
+        )}
+        {isLoading && account && (
+          <div>
+            <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
+          </div>
+        )}
       </div>
     </div>
   );

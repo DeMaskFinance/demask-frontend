@@ -17,7 +17,7 @@ import { selectProfile } from "@/store/profileSlice";
 import Image from "next/image";
 import Inventory from "./Inventory";
 import Items from "./Inventory/Items";
-import Created from "./Inventory/Collections";
+import Created from "./Inventory/Created";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",

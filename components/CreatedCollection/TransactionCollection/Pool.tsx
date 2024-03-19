@@ -12,9 +12,9 @@ import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import PoolItem from "./PoolItem";
-import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidityERC721";
 import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 import { useRouter } from "next/router";
+import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
 
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -63,7 +63,7 @@ const Pool = () => {
     },
     keepPreviousData: true,
   });
-  const { allowanceToken, bigNumberBalance, balanceToken } =
+  const { bigNumberBalance, balanceToken } =
     useInformationToken(
       account,
       nativeAddress,
@@ -153,7 +153,7 @@ const Pool = () => {
 
   return (
     <div className="h-full text-dark3">
-      <div className="flex px-6 py-4 my-4 rounded-lg bg-dark5 ">
+      <div className="flex px-6 py-4 my-4 text-sm rounded-lg md:text-base bg-dark5">
         <LightBulbIcon width={24} height={24} className=" fill-yellow" />
         <p>Pools accrue trading fees towards depositors.</p>
       </div>

@@ -64,8 +64,8 @@ const TransactionCollection = () => {
   ];
   return (
     <div className="flex flex-col h-full p-3 border rounded-lg border-dark3">
-      <div className="flex items-center justify-between mb-3 lg:mb-0 gap-x-8">
-        <ul className="hidden gap-4 p-2 text-sm text-white rounded-lg lg:flex bg-dark3 ">
+      <div className="flex items-center justify-between mb-3 lg:mb-0 gap-x-2 lg:gap-x-8">
+        <ul className="flex gap-4 p-2 text-sm text-white rounded-lg bg-dark3 ">
           {TABS.map((item, index) => (
             <li
               key={index}

@@ -127,7 +127,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       setRoyaltiesFeeBuy(0);
     }
   }, [inputNFT, data, slippage, amountTokenBuy]);
-  
+
   useEffect(() => {
     const load = setInterval(() => {
       if (isOpenBuyNFT) {
@@ -250,13 +250,14 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         } else {
           setIsOpenError(false);
         }
-        setInputNFT([]);
+        setInputNFT("");
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
       }
     }
   };
+  console.log(data);
 
   return (
     <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
@@ -272,7 +273,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 data.tokenDecimals
               ).toString()}
             />
-            <p>{data?.tokenSymbol}</p>
+            <p>ETH</p>
           </div>
           <div>
             <DownIcon
@@ -282,7 +283,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             />
           </div>
           <div className="flex justify-between text-lg font-semibold text-dark2">
-            <p>{inputNFT}</p>
+            {inputNFT ? <p>{inputNFT}</p> : <p>{idNFT.length}</p>}
             <div className="max-w-[260px]">
               <ModalDocument data={data?.metadata?.symbol} />
             </div>
@@ -322,9 +323,10 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                         amountTokenBuy.toString(),
                         data.tokenDecimals
                       )
-                    ) / Number(inputNFT)
+                    ) / (inputNFT ? Number(inputNFT) : idNFT.length)
                   ).toString()}
                 />
+
                 <p>
                   <EtherIcon width={14} height={14} className="fill-dark2" />
                 </p>

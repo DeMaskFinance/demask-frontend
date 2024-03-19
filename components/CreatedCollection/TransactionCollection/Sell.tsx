@@ -1,4 +1,5 @@
 import { Button } from "@/components/Buttons";
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
@@ -221,17 +222,21 @@ const Sell = () => {
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="p-2 text-white rounded-lg bg-dark1">
+              <ul className="flex flex-wrap px-4 py-2 mb-2 text-sm bg-dark5 text-dark2 gap-x-4">
                 <li className="flex items-center">
-                  Send: 1.23{" "}
-                  <EtherIcon width={18} height={18} className="fill-white" />
+                  Send: 
+                  <FormatNumber number={(amountSellDec/1e18).toString()}/>
+                  {" "}
+                  <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
                 </li>
                 <li className="flex items-center">
-                  Price: 1.23{" "}
-                  <EtherIcon width={18} height={18} className="fill-white" />
+                  Price: 
+                  <FormatNumber number={(amountTokenSell/1e18).toString()}/>
+                  {" "}
+                  <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
               </ul>
             )}

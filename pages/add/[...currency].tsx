@@ -1,7 +1,6 @@
 import Button from "@/components/Buttons/Button";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { BackIcon, DownIcon, NFTIcon, RefetchIcon, SettingIcon, TokenIconNotDefine } from "@/components/Icons";
-import ModalConfirmAddLiquidity from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
@@ -28,6 +27,7 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import formatNumber from "@/libs/utils/formatNumer";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { activeNFTPercent } from "@/libs/constants";
+import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
   inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
@@ -144,7 +144,6 @@ export default function AddLiquidity() {
       }
     }
   }, [inputNFT, inputToken, data]);
-  console.log(amountErcDesired);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);

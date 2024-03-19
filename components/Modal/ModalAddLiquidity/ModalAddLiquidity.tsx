@@ -10,11 +10,11 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
-import ModalConfirmAddLiquidity from "../ModalConfirmAddLiquidity";
 import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -273,10 +273,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
+        data={data}
         tokenAddress={data.tokenAddress}
         nftAddress={data.nftAddress}
         idNFT={data.nftID}
-        data={data}
         inputToken={inputToken}
         setInputToken={setInputToken}
         setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
