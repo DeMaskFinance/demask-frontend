@@ -5,13 +5,24 @@ import { SearchInventory } from "@/components/Search";
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css";
 import { DownIcon, FilterIcon } from "@/components/Icons";
+import Created from "./Created";
 const styles = {
   itemSub:
     "flex items-center justify-between text-sm  w-[182px] px-2 py-2 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
 };
-const Inventory = ({children}:any) => {
-  const [typeERC, setTypeERC] = useState<string>('All')
-  const [category, setCategory] = useState<string>('All')
+interface ClassifyProps {
+  typeERC: string;
+  category: string;
+  setTypeERC: any;
+  setCategory: any;
+}
+const Classify: React.FC<ClassifyProps> = ({
+  typeERC,
+  category,
+  setCategory,
+  setTypeERC,
+}) => {
+  const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "items"));
   const ERCType = [
     {
       type: "",
@@ -35,6 +46,8 @@ const Inventory = ({children}:any) => {
     { name: "Memberships", type: "Memberships" },
     { name: "Others", type: "Others" },
   ];
+  console.log(tab);
+
   return (
     <div>
       <div className="flex text-sm font-normal gap-x-4 text-dark3">
@@ -114,9 +127,8 @@ const Inventory = ({children}:any) => {
           </div>
         </Tippy>
       </div>
-      {children}
     </div>
   );
 };
 
-export default Inventory;
+export default Classify;

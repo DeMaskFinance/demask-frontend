@@ -28,7 +28,6 @@ export default function CreatedCollection() {
     withDefault(StringParam, "")
   );
   const collectionAddress = useRouter().query.created || "";
-  const { ref, inView } = useInView();
   const fetchDataNFTs = async (
     typeERC: string,
     collectionAddress: string | string[],
@@ -63,11 +62,6 @@ export default function CreatedCollection() {
           : page?.currentPage + 1,
     }
   );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
   const {
     data: dataDetail,
     isLoading: isLoadingDetail,
@@ -81,8 +75,6 @@ export default function CreatedCollection() {
       }
     },
   });
-  console.log(dataDetail);
-
   return (
     <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0">
       <div className="h-[120px] lg:h-[240px]">
@@ -172,7 +164,7 @@ export default function CreatedCollection() {
           data={dataDetail}
         />
       ) : (
-        <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
+        <ItemList isLoading={isLoading} isSuccess={isSuccess} isFetching={isFetching} data={data} fetchNextPage={fetchNextPage}/>
       )}
     </div>
   );

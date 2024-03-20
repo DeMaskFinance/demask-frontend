@@ -19,7 +19,7 @@ import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import Inventory from "..";
+import Classify from "../Classify";
 interface ModalDetailProps {
   data: any;
   nftAddress: string;
@@ -31,11 +31,15 @@ interface ItemListProps {
   data: any;
   isSuccess: boolean;
   isLoading: boolean;
+  isFetching: boolean;
+  fetchNextPage:any;
 }
 export const ItemList: React.FC<ItemListProps> = ({
   data,
   isSuccess,
   isLoading,
+  isFetching,
+  fetchNextPage
 }) => {
   const { chainId, demask } = useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
@@ -43,11 +47,16 @@ export const ItemList: React.FC<ItemListProps> = ({
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
-  console.log(data );
-  
+  console.log(data);
+  const { ref, inView } = useInView();
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
   return (
     <div>
-      {isLoading ? (
+      {(isLoading || isFetching) ? (
         <div className="mt-4">
           <SkeletonCategory />
         </div>
@@ -136,6 +145,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                 ))}
               </Fragment>
             ))}
+            <div ref={ref} style={{ height: "1px" }}></div>
           </div>
         </div>
       ) : (
@@ -155,11 +165,8 @@ export const ItemList: React.FC<ItemListProps> = ({
 };
 const Items = () => {
   const { account, chainId, demask } = useContext(AccountContext);
-  const [typeERC, setTypeERC] = useQueryParam(
-    "typeERC",
-    withDefault(StringParam, "")
-  );
-  const { ref, inView } = useInView();
+  const [typeERC, setTypeERC] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const fetchDataNFTs = async (
     pageParam = 1,
     chain: string | string[],
@@ -187,18 +194,24 @@ const Items = () => {
           : page?.currentPage + 1,
     }
   );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
   console.log(data);
 
   return (
-    <Inventory>
-      <ItemList isLoading={isLoading} isSuccess={isSuccess} data={data} />
-      <div ref={ref} style={{ height: "1px" }}></div>
-    </Inventory>
+    <div>
+      <Classify
+        typeERC={typeERC}
+        category={category}
+        setTypeERC={setTypeERC}
+        setCategory={setCategory}
+      />
+      <ItemList
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        data={data}
+        isFetching={isFetching}
+        fetchNextPage={fetchNextPage}
+      />
+    </div>
   );
 };
 export default Items;

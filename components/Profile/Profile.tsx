@@ -15,7 +15,6 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectProfile } from "@/store/profileSlice";
 import Image from "next/image";
-import Inventory from "./Inventory";
 import Items from "./Inventory/Items";
 import Created from "./Inventory/Created";
 const style = {
