@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import abiDML from "@/abi/abiDML.json";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { getProvider } from "@/libs/connection/getProvider";
+import ercContract from "@/libs/utils/erc/erc.contract";
 const useBananceOfDML = (
   account: string,
   dmlToken: string,
@@ -17,10 +18,7 @@ const useBananceOfDML = (
     const getBalanceOf = async () => {
       if (dmlToken!=='0x0000000000000000000000000000000000000000' && account && wallet) {
         try {
-          const providerChoice = await getProvider(wallet);
-          const provider = new ethers.providers.Web3Provider(providerChoice);
-          const signer = provider.getSigner();
-          const contract = new ethers.Contract(dmlToken, abiDML, signer);
+          const contract = await ercContract.erc(wallet, dmlToken, abiDML);
           const result = await contract.balanceOf(account);
           const balanceOfDMLDec = divideByDecimal(result.toString(), "18");
           setBalanceOfDML(balanceOfDMLDec);

@@ -20,6 +20,9 @@ const handleLeaveLaunchPad = async (
     const signer = provider.getSigner();
     const contract = new ethers.Contract(routerAddress, abiLaunchPad, signer);
     try {
+      // const estimatedGas = await contract.estimateGas.leave(inputLeave.toString());
+      // console.log(estimatedGas);
+      
       const result = await contract.leave(inputLeave.toString(), {
         gasLimit: 8000000,
       });

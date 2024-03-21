@@ -8,6 +8,7 @@ import Pool from "./Pool";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import Tippy from "@tippyjs/react";
 import Sell from "./Sell";
+import Change from "./Change";
 const TransactionCollection = () => {
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
@@ -28,7 +29,7 @@ const TransactionCollection = () => {
     },
     {
       title: "Change",
-      panel: () => <div>Upcomming</div>,
+      panel: () => <Change />,
       key: "change",
     },
     {
@@ -70,8 +71,9 @@ const TransactionCollection = () => {
             <li
               key={index}
               onClick={() => setTab(item.key)}
-              className={`cursor-pointer p-2 rounded-lg ${item.key === tab && 'bg-secondary5'}`}
-
+              className={`cursor-pointer p-2 rounded-lg ${
+                item.key === tab && "bg-secondary5"
+              }`}
             >
               <h2 className="font-semibold">{item.title}</h2>
             </li>
@@ -91,7 +93,7 @@ const TransactionCollection = () => {
         </div>
       </div>
       <div className="relative h-full">
-      {selectedTab ? selectedTab.panel() : null}
+        {selectedTab ? selectedTab.panel() : null}
       </div>
       <ModalSetting
         isOpenSetting={isOpenSetting}

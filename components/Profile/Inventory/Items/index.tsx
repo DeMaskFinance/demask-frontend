@@ -149,7 +149,7 @@ export const ItemList: React.FC<ItemListProps> = ({
           </div>
         </div>
       ) : (
-        <p>No data available.</p>
+        <p className="mt-4">No data available.</p>
       )}
       {selectedItem && (
         <ModalDetail

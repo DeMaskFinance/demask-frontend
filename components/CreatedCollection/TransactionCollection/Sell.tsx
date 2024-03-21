@@ -8,12 +8,10 @@ import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
-import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationToken from "@/hooks/useInformationToken";
 import { collectionListSell } from "@/libs/service/collectionService";
-import { nftsUserService } from "@/libs/service/profileService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -46,7 +44,7 @@ const Sell = () => {
     withDefault(StringParam, "")
   );
   const royaltyFee = 0;
-  const { balanceToken, bigNumberBalance, allowanceToken } =
+  const { balanceToken, bigNumberBalance } =
     useInformationToken(
       account,
       nativeAddress,
@@ -101,8 +99,8 @@ const Sell = () => {
     "",
     isOpenTransaction
   );
-    console.log(dmlToken);
-    
+  console.log(dmlToken);
+
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -178,7 +176,7 @@ const Sell = () => {
     tokenDecimals: "18",
   };
   console.log(data);
-  
+
   return (
     <div>
       {isLoading ? (
@@ -196,7 +194,13 @@ const Sell = () => {
                     className="relative overflow-hidden"
                     onClick={() => hanldeChoiceNFT(item)}
                   >
-                    <div className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${idNFT.includes(Number(item.nftID)) ? 'border-secondary5' : ''}`}>
+                    <div
+                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        idNFT.includes(Number(item.nftID))
+                          ? "border-secondary5"
+                          : ""
+                      }`}
+                    >
                       <div className="relative h-[78px] lg:h-[100px]">
                         <MediaNFT data={item} isControls={false} hover />
                       </div>
@@ -224,18 +228,20 @@ const Sell = () => {
             {idNFT.length > 0 && (
               <ul className="flex flex-wrap px-4 py-2 mb-2 text-sm bg-dark5 text-dark2 gap-x-4">
                 <li className="flex items-center">
-                  Send: 
-                  <FormatNumber number={(amountSellDec/1e18).toString()}/>
-                  {" "}
+                  Send:
+                  <FormatNumber
+                    number={(amountSellDec / 1e18).toString()}
+                  />{" "}
                   <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
                 </li>
                 <li className="flex items-center">
-                  Price: 
-                  <FormatNumber number={(amountTokenSell/1e18).toString()}/>
-                  {" "}
+                  Price:
+                  <FormatNumber
+                    number={(amountTokenSell / 1e18).toString()}
+                  />{" "}
                   <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
               </ul>

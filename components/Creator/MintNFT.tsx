@@ -13,6 +13,7 @@ import Button from "../Buttons/Button";
 import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
 import { ModalWallet } from "../Modal/ModalWallet";
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import ercContract from "@/libs/utils/erc/erc.contract";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-[200px] py-2 pl-2 mb-4 border rounded-lg border-dark3",
@@ -78,11 +79,7 @@ export default function MintNFT({
     }
 
     try {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, abiDemask, signer);
-
+      const contract = await ercContract.erc(wallet, contractAddress, abiDemask);
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
         return isExisting;
@@ -105,7 +102,7 @@ export default function MintNFT({
           const tx = await contract.mint(account, randomID, exponentialToDecimal(amount), exponentialToDecimal(feeRoyal * 100), data, url);
           transactionHash = tx.hash;
           setHash(transactionHash);
-          const check = await provider.waitForTransaction(transactionHash);
+          const check = await tx.wait();
           if (check.status === 1) {
             setIsOpenSuccess(true);
           } else {

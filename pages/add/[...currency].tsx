@@ -96,7 +96,8 @@ export default function AddLiquidity() {
   });
 
   const balanceNFT = useNFTBalance(account, nftAddress, idNFT, wallet, isOpenTransaction);
-
+  console.log(amountErcDesiredToDec);
+  
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
     tokenAddress,
@@ -122,13 +123,14 @@ export default function AddLiquidity() {
       inputNFT
     ) {
       amountErcDesired = Number(inputNFT) * +(data.reserveTokenDecimals) / +(data.reserveNFT) * (1 + (slippage / 100));
-      console.log(amountErcDesired);
-
     } else {
       amountErcDesired = handleBignumber(
         Number(inputToken),
         Number(data?.tokenDecimals)
       );
+    }
+    if(!inputNFT){
+      setAmountErcDesiredToDec('');
     }
     setAmountErcDesired(amountErcDesired);
     if (amountErcDesired) {
@@ -308,7 +310,7 @@ export default function AddLiquidity() {
                   </p>
                 )}
                 {!inputNFT && isInputNFT && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="inputNFT">
+                  <p className="mt-1 mb-2 ml-3 text-xs text-red" key="inputNFT">
                     Required
                   </p>
                 )}

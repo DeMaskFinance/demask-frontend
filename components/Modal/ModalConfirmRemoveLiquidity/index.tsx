@@ -215,7 +215,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             slippage
           );
         }
-        const check = await provider.waitForTransaction(result.hash);
+        const check = await result.wait();
         setHash(result.hash);
         setIsOpenTransaction(false);
         setInputLiquidity("");

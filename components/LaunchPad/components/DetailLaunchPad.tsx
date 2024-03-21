@@ -161,8 +161,6 @@ export default function DetailLaunchPad() {
           ),
         }
       );
-      console.log(estimatedGas);
-      
       result = await contract.buy(exponentialToDecimal(+amount), {
         gasLimit: estimatedGas,
         value: exponentialToDecimal(
@@ -170,7 +168,7 @@ export default function DetailLaunchPad() {
         ),
       });
       setHash(result.hash);
-      const check = await provider.waitForTransaction(result.hash);
+      const check = await result.wait();
       setIsOpenTransaction(false);
       setIsOpenModal(false);
       refetch();

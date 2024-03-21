@@ -143,8 +143,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
   const addLiquidity = async () => {
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
       try {
         setIsOpenTransaction(true);
         const valueToSend =
@@ -163,7 +161,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           valueToSend
         );
         setHash(result.hash);
-        const check = await provider.waitForTransaction(result.hash);
+        const check = await result.wait();
         setIsOpenTransaction(false);
         setInputToken("");
         setAmountErcDesiredToDec("");

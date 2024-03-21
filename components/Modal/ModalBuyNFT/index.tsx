@@ -193,8 +193,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       try {
         let result;
         setIsOpenTransaction(true);
-        const providerChoice = await getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
         const fee = data.royaltyFee === 0 ? 5000 : data.royaltyFee! * 10000;
         const value =
           tokenAddress === nativeAddress
@@ -215,19 +213,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             value
           );
         } else {
-          console.log({
-            wallet,
-            nftAddress,
-            tokenAddress,
-            idNFT,
-            routerAddress,
-            amountBuyDec,
-            fee,
-            account,
-            txDeadline,
-            value,
-          });
-
           result = await ercContract721.buyERC20ERC721(
             wallet,
             nftAddress,
@@ -242,7 +227,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           );
         }
         setHash(result.hash);
-        const check = await provider.waitForTransaction(result.hash);
+        const check = await result.wait();
         setIsOpenTransaction(false);
         setIsOpenBuyNFT(false);
         if (check.status === 1) {

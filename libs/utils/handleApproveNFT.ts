@@ -1,24 +1,22 @@
 import abiErc1155 from "@/abi/abiErc1155.json";
 import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
+import ercContract from "./erc/erc.contract";
 
 const handleApproveNFT = async (
   account: string,
   wallet: string,
   nftAddress: string,
   setIsOpen: any,
-  setIsOpenTransaction:any,
-  routerAddress:string
+  setIsOpenTransaction: any,
+  routerAddress: string
 ) => {
-  if (account) {
-    const providerChoice = await getProvider(wallet);
-    const provider = new ethers.providers.Web3Provider(providerChoice);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(nftAddress, abiErc1155, signer);
+  if (account && wallet) {
+    const contract = await ercContract.erc(wallet, nftAddress, abiErc1155);
     try {
       setIsOpenTransaction(true);
       const result = await contract.setApprovalForAll(routerAddress, true);
-      await provider.waitForTransaction(result.hash);
+      await result.wait();
       setIsOpenTransaction(false);
     } catch (error) {
       console.error(error);

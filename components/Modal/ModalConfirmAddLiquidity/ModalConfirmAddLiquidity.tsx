@@ -20,6 +20,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import ercContract from "@/libs/utils/erc/erc.contract";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -93,7 +94,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  console.log(dmlToken);
 
   useEffect(() => {
     const handleCheckApproveToken = async () => {
@@ -175,10 +175,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   }, [inputNFT, inputToken, reserveToken, reserveNFT, dmlToken]);
   const handleApproveToken = async () => {
     if (account) {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, abiErc20, signer);
+      const contract = await ercContract.erc(wallet, tokenAddress, abiErc20);
       let result;
       try {
         if (dmlToken === "0x0000000000000000000000000000000000000000") {
@@ -193,7 +190,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           );
         }
         setIsOpenTransaction(true);
-        await provider.waitForTransaction(result.hash);
+        await result.wait();
         setIsOpenTransaction(false);
       } catch (error) {
         console.error(error);
@@ -209,8 +206,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     }
 
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
       try {
         setIsOpenTransaction(true);
         const valueToSend =
@@ -229,7 +224,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           txDeadline,
           valueToSend
         );
-        const check = await provider.waitForTransaction(result.hash);
+        const check = await result.wait();
         setHash(result.hash);
         setIsOpenTransaction(false);
         setInputNFT("");

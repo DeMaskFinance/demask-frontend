@@ -190,10 +190,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       Number(reserveToken) > 0 &&
       Math.floor(amountSellDec) > 0
     ) {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(routerAddress, abiRouter, signer);
       const fee = data.royaltyFee === 0 ? 5000 : data.royaltyFee! * 10000;
       try {
         let result;
@@ -225,7 +221,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
           );
         }
         setHash(result.hash);
-        const check = await provider.waitForTransaction(result.hash);
+        const check = await result.wait();
         setIsOpenTransaction(false);
         setIsOpenSellNFT(false);
         if (check.status === 1) {

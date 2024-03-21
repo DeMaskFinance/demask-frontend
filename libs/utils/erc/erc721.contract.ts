@@ -163,11 +163,46 @@ const sellERC20ERC721 = async (
   );
   return result;
 };
+const swapERC20ERC721 = async (
+  wallet: string,
+  collectionAddress: string,
+  tokenAddress: string,
+  idFrom: number[],
+  idTo: number[],
+  routerAddress: string,
+  account: string,
+  txDeadline: number,
+  valueToSend: string | 0
+) => {
+  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
+  // const estimatedGas = await contract.estimateGas.addERC20ERC721(
+  //   tokenAddress,
+  //   collectionAddress,
+  //   idNFT,
+  //   exponentialToDecimal(Math.floor(amountErcDesired)),
+  //   exponentialToDecimal(Math.floor(amountTokenMin)),
+  //   account,
+  //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+  //   { value: valueToSend }
+  // );
+
+  const result = await contract.swap(
+    collectionAddress,
+    tokenAddress,
+    idFrom,
+    idTo,
+    account,
+    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    { gasLimit: 8000000, value: valueToSend }
+  );
+  return result;
+};
 const ercContract721 = {
   dmlToken,
   addLiquidity,
   buyERC20ERC721,
   sellERC20ERC721,
-  removeERC20ERC721
+  removeERC20ERC721,
+  swapERC20ERC721
 };
 export default ercContract721;
