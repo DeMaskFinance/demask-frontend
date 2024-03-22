@@ -160,7 +160,7 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-console.log(data);
+console.log(data,idNFT);
 
   return (
     <div>

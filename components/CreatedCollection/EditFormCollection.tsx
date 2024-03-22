@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Formik, Form, Field, useFormik, ErrorMessage } from "formik";
 import * as yup from "yup";
 import Link from "next/link";
@@ -15,6 +15,10 @@ import {
 } from "../Icons";
 import { Category } from "@/libs/constants";
 import Icons from "@/public/icons/icon";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import AccountContext from "@/context/AccountContext";
+import { collectionDetail } from "@/libs/service/collectionService";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
@@ -69,6 +73,9 @@ const EditFormCollection = () => {
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
+  const { chainId } = useContext(AccountContext);
+  const collectionAddress = useRouter().query.edit as string;
+
   const socialList = [
     {
       icon: <WebsiteIcon width={24} height={24} />,
@@ -119,6 +126,7 @@ const EditFormCollection = () => {
     URL: "",
     Collaborator: "",
     CreatorEarning: "",
+    category: [] as string[],
     Percent: "",
     images: "",
     twitter: "",
@@ -127,24 +135,21 @@ const EditFormCollection = () => {
     telegram: "",
     website: "",
   };
-  const selectCategory = (value: string) => {
+  const selectCategory = (value: string, selectedCategory: string[], setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) => {
+    console.log(value,selectedCategory);
     const isSelected = selectedCategory.includes(value);
+    let updatedCategories;
     if (isSelected) {
-      const updateCategories = selectedCategory.filter((item) => item != value);
-      setSelectedCategory(updateCategories);
+      updatedCategories = selectedCategory.filter((item) => item !== value);
     } else {
-      const updatedCategories = [...selectedCategory, value];
-      setSelectedCategory(updatedCategories);
+      updatedCategories = [...selectedCategory, value];
     }
-  };
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0].size < 10485760) {
-      const file = event.target.files[0];
-      setSelectedImage(file);
-    }
+    setFieldValue("category",updatedCategories);
   };
   const onSubmit = async (values: any) => {
     // Handle form submission
+    console.log(values);
+
     try {
       setLoading(true);
       console.log(values);
@@ -160,11 +165,22 @@ const EditFormCollection = () => {
       role: " Owner",
     },
   ];
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["detailCollection", chainId, collectionAddress],
+    queryFn: async () => {
+      if (collectionAddress) {
+        const res = await collectionDetail(collectionAddress, chainId);
+        return res.data;
+      }
+    },
+  });
+  console.log(data);
+
   return (
-    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto mb-[100px] lg:mb-0">
-      <div className="h-[120px] lg:h-[240px]">
+    <div className="py-6 min-h-[75vh] max-w-[1440px] mx-auto mb-[100px] lg:mb-0">
+      {/* <div className="h-[120px] lg:h-[240px]">
         <div className="w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]"></div>
-      </div>
+      </div> */}
       <h1 className="mt-4 text-2xl font-semibold text-center">
         Edit Collection Details
       </h1>
@@ -173,7 +189,15 @@ const EditFormCollection = () => {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          dirty,
+          setFieldValue,
+        }) => (
           <Form className="mx-auto max-w-[600px]">
             <div className="flex flex-col">
               <label htmlFor="name" className={styles.title}>
@@ -242,16 +266,16 @@ const EditFormCollection = () => {
               <p className={styles.title}>Category</p>
               <div className="flex">
                 {Category.map((item, index) => (
-                  <Button
+                  <Field
                     type="button"
-                    active={selectedCategory.includes(item.value)}
-                    outline
-                    className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
+                    name="category"
+                    id="category"
+                    className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2 border rounded-lg ${values.category.includes(item.value)&&'bg-dark3 text-white'}`}
                     key={item.id}
-                    onClick={() => selectCategory(item.value)}
+                    value={item.value}
+                    onClick={() => selectCategory(item.value, values.category, setFieldValue)}
                   >
-                    {item.value}
-                  </Button>
+                  </Field>
                 ))}
               </div>
             </div>
@@ -267,8 +291,17 @@ const EditFormCollection = () => {
                 type="file"
                 id="images"
                 name="images"
-                value={values.images}
-                onChange={handleImageChange}
+                // value={values.images}
+                onChange={(event) => {
+                  if (
+                    event.target.files &&
+                    event.target.files[0].size < 10485760
+                  ) {
+                    const file = event.target.files[0];
+                    setSelectedImage(file);
+                    setFieldValue("images", file);
+                  }
+                }}
                 ref={imgCollection}
                 className="hidden"
                 accept="image/png,image/jpeg,image/gif"
@@ -314,7 +347,10 @@ const EditFormCollection = () => {
                 on Demask
               </p>
               {listCollection.map((item, index) => (
-                <div className="flex items-center justify-between p-2 mb-2 font-semibold rounded-lg bg-dark5 text-dark2">
+                <div
+                  className="flex items-center justify-between p-2 mb-2 font-semibold rounded-lg bg-dark5 text-dark2"
+                  key={index}
+                >
                   <p>{item.address}</p>
                   <p className="text-sm">{item.role}</p>
                 </div>
@@ -381,7 +417,9 @@ const EditFormCollection = () => {
                     onChange={handleChange}
                     className={`${styles.inputItem} `}
                   />
-                  <p className="absolute right-2 top-[50%] -translate-y-[50%]">%</p>
+                  <p className="absolute right-2 top-[50%] -translate-y-[50%]">
+                    %
+                  </p>
                 </div>
               </div>
               <ErrorMessage
@@ -428,7 +466,9 @@ const EditFormCollection = () => {
               </Link>
               <Button
                 type="submit"
-                primary
+                primary={dirty}
+                active={!dirty}
+                disabled={!dirty}
                 className="px-6 py-2"
                 isLoadingBtn={loading}
               >

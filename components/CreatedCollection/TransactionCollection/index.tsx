@@ -9,10 +9,12 @@ import ModalSetting from "@/components/Modal/ModalSetting";
 import Tippy from "@tippyjs/react";
 import Sell from "./Sell";
 import Change from "./Change";
+import { useRouter } from "next/navigation";
 const TransactionCollection = () => {
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "buy"));
+  const router = useRouter();
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -49,7 +51,7 @@ const TransactionCollection = () => {
         />
       ),
       content: "Refetch",
-      onClick: () => console.log("123"),
+      onClick: () => router.refresh(),
     },
     {
       icon: (

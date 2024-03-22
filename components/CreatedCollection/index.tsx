@@ -104,7 +104,7 @@ export default function CreatedCollection() {
           <div className="lg:max-w-[45%] mt-4 lg:mt-0">
             <div className="flex items-center gap-x-2">
               <p className="text-2xl font-semibold whitespace-nowrap">{dataDetail?.name}</p>
-              <Link href="/edit/123">
+              <Link href={`/edit/${collectionAddress}`}>
                 <EditIcon width={24} height={24} className="fill-dark3" />
               </Link>
             </div>
