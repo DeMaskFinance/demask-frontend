@@ -4,7 +4,7 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
@@ -15,7 +15,6 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Buy = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -37,14 +36,9 @@ const Buy = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const collectionAddress = '0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd';
-  console.log(collectionAddress);
   
-  const [typeERC, setTypeERC] = useQueryParam(
-    "typeERC",
-    withDefault(StringParam, "")
-  );
   const royaltyFee = 0;
-  const { balanceToken, bigNumberBalance, allowanceToken } =
+  const { bigNumberBalance } =
     useInformationToken(
       account,
       nativeAddress,
@@ -99,7 +93,7 @@ const Buy = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  console.log(isApprovedNFT,collectionAddress,routerAddress);
+  console.log(isApprovedNFT,isOpenTransaction);
   
   const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
     "",
@@ -160,7 +154,6 @@ const Buy = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-console.log(data,idNFT);
 
   return (
     <div>
@@ -311,6 +304,11 @@ console.log(data,idNFT);
         transactionHash={hash}
         type="Buy NFT Failed"
         setIsOpenError={setIsOpenErrorBuy}
+      />
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+        isTransaction={true}
       />
     </div>
   );

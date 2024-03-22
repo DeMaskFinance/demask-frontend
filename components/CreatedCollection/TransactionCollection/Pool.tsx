@@ -41,28 +41,6 @@ const Pool = () => {
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;
-  const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["liquidity"],
-    queryFn: async () => {
-      try {
-        const res = await swapAPI(
-          "0x6c216dfafc944c46582a34d9f87532d00080c61a",
-          "5",
-          "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6",
-          "9866084186"
-        );
-        if (res) {
-          return res;
-        } else {
-          throw new Error("Invalid data from API");
-        }
-      } catch (error) {
-        console.error("Error in queryFn:", error);
-        throw error;
-      }
-    },
-    keepPreviousData: true,
-  });
   const { bigNumberBalance, balanceToken } =
     useInformationToken(
       account,
@@ -170,10 +148,9 @@ const Pool = () => {
       )}
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data && account && (
+      {account && (
         <>
           <ModalAddLiquidityERC721
-            data={data}
             isOpenAddLiquidity={isOpenAddLiquidity}
             setIsOpenLiquidity={setIsOpenAddLiquidity}
             setHash={setHash}

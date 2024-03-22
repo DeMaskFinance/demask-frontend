@@ -117,6 +117,8 @@ const Change = () => {
           : page?.currentPage + 1,
     }
   );
+  console.log(data,sellData);
+  
   const { amountTokenBuy } = useAmountInMax(
     "",
     "0x2d4c46bac8817558f80b4219a6e5020d5f78672b",
@@ -177,7 +179,6 @@ const Change = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  console.log(idNFTInput.length, isSufficientToken, amountTokenBuy);
   const handleSwap = async () => {
     // setIsOpenSwapNFT(true);
     // document.body.style.overflowY = "hidden";
@@ -229,7 +230,7 @@ const Change = () => {
         ) : isSellDataSuccess && sellData?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
-              {data?.pages.map((page: any, pageIndex: number) => (
+              {sellData?.pages.map((page: any, pageIndex: number) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (
                     <div
@@ -278,7 +279,7 @@ const Change = () => {
           <span className="text-secondary5"> {idNFTInput.length} </span>
           input NFTs and 
           <span className="text-secondary5">
-            {idNFTOutput.length} out of 10
+            {idNFTOutput.length} out of {data?.pages[0]?.totalRecords}
           </span>
             output NFTs
         </p>
@@ -362,18 +363,21 @@ const Change = () => {
                 idNFTInput.length === 0 ||
                 idNFTOutput.length === 0 ||
                 !isSufficientToken ||
+                idNFTInput.length !== idNFTOutput.length ||
                 Math.floor(amountTokenBuy) === 0
               }
               primary={
                 idNFTInput.length !== 0 &&
                 idNFTOutput.length !== 0 &&
                 isSufficientToken &&
+                idNFTInput.length === idNFTOutput.length &&
                 Math.floor(amountTokenBuy) !== 0
               }
               active={
                 idNFTInput.length === 0 ||
                 idNFTOutput.length === 0 ||
                 !isSufficientToken ||
+                idNFTInput.length !== idNFTOutput.length ||
                 Math.floor(amountTokenBuy) === 0
               }
               className="w-full py-4"

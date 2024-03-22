@@ -4,7 +4,7 @@ import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformation from "@/hooks/useInformationToken";
-import { collectionListBuy } from "@/libs/service/collectionService";
+import { collectionListBuy, collectionListSell } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -23,7 +23,6 @@ import Wrapper from "../Wrapper";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
-  data: DataBase;
   setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,7 +36,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   ModalAddLiquidityERC721Props
 > = ({
   isOpenAddLiquidity,
-  data,
   setIsOpenLiquidity,
   setHash,
   setIsOpenSuccess,
@@ -100,8 +98,38 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     nativeAddress,
     isOpenTransaction
   );
-
-  const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const fetchDataNFTs = async (
+    collectionAddress: string,
+    pageParam = 1,
+    chain: string | string[],
+    account: string
+  ) => {
+    const data = await collectionListSell(
+      account,
+      collectionAddress,
+      chain,
+      pageParam,
+      10
+    );
+    return data.data;
+  };
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useInfiniteQuery(
+    ["collectionNFTBUY", chainId, collectionAddress,account],
+    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, pageParam, chainId,account),
+    {
+      getNextPageParam: (page) =>
+        page?.currentPage === page?.totalPages
+          ? undefined
+          : page?.currentPage + 1,
+    }
+  );
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
@@ -113,21 +141,21 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   useEffect(() => {
     let amountErcDesired;
-    if (data?.dmlAddress !== null && data && idNFT) {
+    if (collectionAddress !== null && data && idNFT) {
       amountErcDesired =
         ((Number(idNFT.length) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(
         Number(inputToken),
-        Number(data?.dmlDecimals)
+        Number(18)
       );
     }
     setAmountErcDesired(amountErcDesired);
     if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
-        data?.dmlDecimals
+        '18'
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
@@ -142,50 +170,20 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       const result = await ercContract.approveNFT(
         account,
         wallet,
-        data.nftAddress,
+        collectionAddress,
         routerAddress
       );
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, data.nftAddress, wallet, isOpenTransaction]);
+  }, [account, collectionAddress, wallet, isOpenTransaction]);
 
   const handleAddLiquidity = () => {
     if (idNFT.length > 0 && !isSufficientToken) {
       setIsOpenConfirmAddLiquidity(true);
     }
   };
-  const fetchDataNFTs = async (
-    collectionAddress: string | string[],
-    pageParam = 1,
-    chain: string | string[]
-  ) => {
-    const data = await collectionListBuy(
-      collectionAddress,
-      chain,
-      pageParam,
-      10
-    );
-    return data.data;
-  };
 
-  const {
-    data: data721,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery(
-    ["collectionNFTBUY", chainId, collectionAddress],
-    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, pageParam, chainId),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
   const hanldeChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
@@ -205,14 +203,14 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             Add
             {data && (
               <div className="flex items-center leading-[16px] ml-1">
-                <span> {data?.metadata?.symbol}</span>
+                <span> DeMask</span>
                 <span className="overflow-hidden">/</span>
                 <span>ETH</span>
               </div>
             )}
           </div>
           <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
-            {data721?.pages.map((page: any, pageIndex: number) => (
+            {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (
                   <div
@@ -313,7 +311,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     handleApproveNFT(
                       account,
                       wallet,
-                      data.nftAddress,
+                      collectionAddress,
                       setIsOpen,
                       setIsOpenTransaction,
                       routerAddress
@@ -342,7 +340,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         nftAddress={collectionAddress}
         idNFT={""}
         inputNFT={idNFT}
-        data={data}
         inputToken={inputToken}
         setInputToken={setInputToken}
         setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}

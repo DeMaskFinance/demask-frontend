@@ -8,21 +8,17 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import handleBignumber from "@/libs/utils/handleBignumber";
+import { useRouter } from "next/router";
 import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import ModalDocument from "../ModalLength/ModalDocument";
-import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
-import { ModalWallet } from "../ModalWallet";
+import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
-import { useRouter } from "next/router";
 interface ModalConfirmAddLiquidityERC721Props {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
-  data: DataBase;
   inputToken: string;
   nftAddress: string;
   idNFT: string;
@@ -42,7 +38,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 > = ({
   isOpenConfirmAddLiquidity,
   tokenAddress,
-  data,
   inputToken,
   isOpenTransaction,
   inputNFT,
@@ -115,11 +110,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
   useEffect(() => {
     let amountErcDesired;
-    if (
-      dmlToken !== "0x0000000000000000000000000000000000000000" &&
-      data &&
-      inputNFT
-    ) {
+    if (dmlToken !== "0x0000000000000000000000000000000000000000" && inputNFT) {
       amountErcDesired =
         ((Number(inputNFT.length) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
@@ -130,7 +121,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
-        data?.tokenDecimals
+        "18"
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
@@ -198,7 +189,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           <div className="flex justify-between text-lg font-semibold text-dark2">
             <p>{inputNFT.length}</p>
             <div className="max-w-[60%]">
-              <ModalDocument data='DM' />
+              <ModalDocument data="DM" />
             </div>
           </div>
           <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
@@ -239,8 +230,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             <p>{slippage}%</p>
           </div>
           <p className="mt-2 mb-6 text-sm text-dark2">
-            Output is estimated. You will receive at least {inputNFT.length} NFT or the
-            transaction will revert
+            Output is estimated. You will receive at least {inputNFT.length} NFT
+            or the transaction will revert
           </p>
           <div className="flex flex-col items-center mt-6">
             <button

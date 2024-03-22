@@ -4,7 +4,7 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
-import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
+import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
@@ -39,10 +39,6 @@ const Sell = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const collectionAddress = useRouter().query.created as string;
-  const [typeERC, setTypeERC] = useQueryParam(
-    "typeERC",
-    withDefault(StringParam, "")
-  );
   const royaltyFee = 0;
   const { balanceToken, bigNumberBalance } =
     useInformationToken(
@@ -317,6 +313,11 @@ const Sell = () => {
         />
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+        isTransaction={true}
+      />
       <ModalSuccess
         isOpenSuccess={isOpenSuccessSell}
         transactionHash={hash}
