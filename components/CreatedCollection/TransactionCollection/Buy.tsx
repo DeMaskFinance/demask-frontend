@@ -14,6 +14,7 @@ import { collectionListBuy } from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 const Buy = () => {
   const { account, chainId, demask, wallet, slippage } =
@@ -35,7 +36,7 @@ const Buy = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = '0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd';
+  const collectionAddress = useRouter().query.created as string;
   
   const royaltyFee = 0;
   const { bigNumberBalance } =
@@ -93,11 +94,12 @@ const Buy = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  console.log(isApprovedNFT,isOpenTransaction);
+  const dmlToken = data?.pages[0]?.dmlAddress;
+  console.log(dmlToken);
   
   const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
     "",
-    "0x2d4c46bac8817558f80b4219a6e5020d5f78672b",
+    dmlToken,
     nativeAddress,
     collectionAddress,
     idNFT,

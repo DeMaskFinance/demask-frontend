@@ -92,6 +92,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     isOpenConfirmRemoveLiquidity,
     updatePrice
   );
+  console.log(data.dmlAddress);
+  
   useEffect(() => {
     const checkApproveToken = async () => {
       if (

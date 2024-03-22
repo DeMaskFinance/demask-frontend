@@ -53,8 +53,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
-  const [amountNFT, setAmountNFT] = useState("");
-  const [amountToken, setAmountToken] = useState("");
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [amountTokenMin, setAmountTokenMin] = useState("");
   const [amountTokenDec, setAmountTokenDec] = useState("");
@@ -158,10 +156,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       const resAmountTokenMin = Math.floor(
         Number(resAmountToken * (1 - slippage / 100))
       );
-      setAmountNFT(resAmountNFT.toString());
-      setAmountToken(resAmountToken.toString());
       setAmountNFTMin(resAmountNFTMin.toString());
-      // setAmountTokenMin(resAmountTokenMin.toString());
       setAmountTokenMin(Math.floor(resAmountTokenMin).toString());
       setAmountTokenDec(resAmountTokenMinShow);
     }

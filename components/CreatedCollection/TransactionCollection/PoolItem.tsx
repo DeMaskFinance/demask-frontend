@@ -9,9 +9,12 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
+import { collectionListBuy, collectionListSell } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 const PoolItem = () => {
@@ -32,6 +35,9 @@ const PoolItem = () => {
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
+  const collectionAddress =
+    useRouter().query.created ||
+    ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
   };
@@ -39,15 +45,27 @@ const PoolItem = () => {
     setIsOpenRemoveLiquidity(true);
     document.body.style.overflowY = "hidden";
   };
+  const { data:dataRemove } = useQuery({
+    queryKey: ["list-nft-buy", chainId,account],
+    queryFn: async () => {
+      const res = await await collectionListBuy(
+        collectionAddress,
+        chainId,
+        1,
+        10
+      );
+      return res.data;
+    },
+  });
+  
   const data = {
-    reserveNFT: "5",
+    reserveNFT: dataRemove?.totalRecords,
     reserveTokenDecimals: "18",
     tokenDecimals: "18",
-    dmlAddress: "0x2d4C46bac8817558F80B4219a6e5020d5f78672B",
+    dmlAddress: dataRemove?.dmlAddress,
     dmlDecimals: "18",
-    nftAddress: "0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd",
+    nftAddress: collectionAddress,
     tokenAddress: nativeAddress,
-    nftID: [33],
   };
   const dmlTokenLiquidity = data.dmlAddress;
   useEffect(() => {
