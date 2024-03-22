@@ -21,6 +21,7 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
+import { useInView } from "react-intersection-observer";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,6 +60,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;
+  const { ref, inView } = useInView();
   const collectionAddress = useRouter().query.created as string;
   const dmlToken = useDMLToken(
     account,
@@ -130,6 +132,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           : page?.currentPage + 1,
     }
   );
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
@@ -247,6 +254,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                 ))}
               </Fragment>
             ))}
+            <div ref={ref} style={{ height: "1px" }} ></div>
           </div>
           <div>
             <div className="relative">

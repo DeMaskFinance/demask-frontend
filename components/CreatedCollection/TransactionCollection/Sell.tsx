@@ -17,6 +17,7 @@ import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
@@ -39,6 +40,7 @@ const Sell = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const collectionAddress = useRouter().query.created as string;
+  const { ref, inView } = useInView();
   const royaltyFee = 0;
   const { balanceToken, bigNumberBalance } =
     useInformationToken(
@@ -84,6 +86,11 @@ const Sell = () => {
           : page?.currentPage + 1,
     }
   );
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
   console.log(data);
 
   const dmlToken = useDMLToken(
@@ -219,6 +226,7 @@ const Sell = () => {
                 ))}
               </Fragment>
             ))}
+            <div ref={ref} style={{ height: "1px" }} ></div>
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (

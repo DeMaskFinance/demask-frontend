@@ -16,6 +16,7 @@ import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 const Buy = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -37,7 +38,7 @@ const Buy = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const collectionAddress = useRouter().query.created as string;
-  
+  const { ref, inView } = useInView();
   const royaltyFee = 0;
   const { bigNumberBalance } =
     useInformationToken(
@@ -81,7 +82,11 @@ const Buy = () => {
     }
   );
   console.log(data);
-
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -159,7 +164,7 @@ const Buy = () => {
 
   return (
     <div>
-      {isLoading ? (
+      {(isLoading) ? (
         <div className="mt-4">
           <SkeletonCategory />
         </div>
@@ -203,6 +208,7 @@ const Buy = () => {
                 ))}
               </Fragment>
             ))}
+            <div ref={ref} style={{ height: "1px" }} ></div>
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (

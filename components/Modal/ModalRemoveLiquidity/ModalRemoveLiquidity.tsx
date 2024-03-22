@@ -21,6 +21,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import MediaNFT from "@/components/Common/MediaNFT";
 import ModalDocument from "../ModalLength/ModalDocument";
+import { useInView } from "react-intersection-observer";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: DataBase;
@@ -62,6 +63,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] =
     useState<boolean>(false);
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
+  const { ref, inView } = useInView();
   const collectionAddress =
     useRouter().query.created ||
     ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
@@ -212,6 +214,11 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           : page?.currentPage + 1,
     }
   );
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
   const hanldeChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
@@ -277,6 +284,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   ))}
                 </Fragment>
               ))}
+              <div ref={ref} style={{ height: "1px" }} ></div>
             </div>
           )}
           <div>

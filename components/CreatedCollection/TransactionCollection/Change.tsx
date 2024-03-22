@@ -21,6 +21,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 const Change = () => {
   const { account, chainId, demask, wallet, slippage, txDeadline } =
@@ -41,6 +42,8 @@ const Change = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
+  const { ref, inView } = useInView();
+  const { ref:refOutput, inView :inViewOutput} = useInView();
   const { balanceToken, bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -67,12 +70,12 @@ const Change = () => {
     return data.data;
   };
   const {
-    data: sellData,
-    fetchNextPage: fetchNextSellPage,
-    isFetchingNextPage: isFetchingNextSellPage,
-    isSuccess: isSellDataSuccess,
-    isLoading: isSellDataLoading,
-    isFetching: isSellDataFetching,
+    data: inputData,
+    fetchNextPage: fetchNextInputPage,
+    isFetchingNextPage: isFetchingNextInputPage,
+    isSuccess: isInputDataSuccess,
+    isLoading: isInputDataLoading,
+    isFetching: isInputDataFetching,
   } = useInfiniteQuery(
     ["collectionNFTSell", chainId, account, collectionAddress],
     ({ pageParam = 1 }) =>
@@ -84,6 +87,11 @@ const Change = () => {
           : page?.currentPage + 1,
     }
   );
+  useEffect(() => {
+    if (inView) {
+      fetchNextInputPage();
+    }
+  }, [inView]);
   //Data output
   const fetchDataNFTsOutput = async (
     collectionAddress: string,
@@ -117,8 +125,11 @@ const Change = () => {
           : page?.currentPage + 1,
     }
   );
-  console.log(data,sellData);
-  
+  useEffect(() => {
+    if (inViewOutput) {
+      fetchNextPage();
+    }
+  }, [inViewOutput]);
   const { amountTokenBuy } = useAmountInMax(
     "",
     "0x2d4c46bac8817558f80b4219a6e5020d5f78672b",
@@ -131,7 +142,6 @@ const Change = () => {
     routerAddress,
     true
   );
-  console.log(amountTokenBuy);
   useEffect(() => {
     if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
       setIsSufficientToken(false);
@@ -139,7 +149,6 @@ const Change = () => {
       setIsSufficientToken(true);
     }
   }, [account, amountTokenBuy, data, bigNumberBalance]);
-  console.log(bigNumberBalance);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -223,14 +232,14 @@ const Change = () => {
         Select some input NFTs from your wallet
       </h5>
       <div className="my-2">
-        {isSellDataLoading ? (
+        {isInputDataLoading ? (
           <div className="mt-4">
             <SkeletonCategory />
           </div>
-        ) : isSellDataSuccess && sellData?.pages[0]?.data?.length > 0 ? (
+        ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
-              {sellData?.pages.map((page: any, pageIndex: number) => (
+              {inputData?.pages.map((page: any, pageIndex: number) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (
                     <div
@@ -267,6 +276,7 @@ const Change = () => {
                   ))}
                 </Fragment>
               ))}
+              <div ref={ref} style={{ height: "1px" }} ></div>
             </div>
           </div>
         ) : (
@@ -330,6 +340,7 @@ const Change = () => {
                   ))}
                 </Fragment>
               ))}
+              <div ref={refOutput} style={{ height: "1px" }} ></div>
             </div>
           </div>
         ) : (

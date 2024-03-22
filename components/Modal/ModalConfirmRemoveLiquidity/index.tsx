@@ -218,6 +218,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           );
         }
         const check = await result.wait();
+        console.log(check.status);
+        
         setHash(result.hash);
         setIsOpenTransaction(false);
         setInputLiquidity("");

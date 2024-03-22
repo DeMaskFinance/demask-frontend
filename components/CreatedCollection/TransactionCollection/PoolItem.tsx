@@ -211,7 +211,7 @@ const PoolItem = () => {
           <ModalSuccess
             isOpenSuccess={isOpenSuccessRemove}
             transactionHash={hash}
-            type="Remove Liquidity Success"
+            type="Remove Liquidity Successed"
             setIsOpenSuccess={setIsOpenSuccessRemove}
           />
           <ModalError
