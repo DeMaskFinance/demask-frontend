@@ -4,7 +4,6 @@ import * as yup from "yup";
 import Link from "next/link";
 import { Button } from "../Buttons";
 import Image from "next/image";
-import images from "@/public/images";
 import {
   DiscordIcon,
   FacebookIcon,
@@ -19,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
 import { collectionDetail } from "@/libs/service/collectionService";
+import images from "@/public/images";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
@@ -28,7 +28,7 @@ const styles = {
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is a required").max(50),
   description: yup.string().required("Description is a required").max(200),
-  URL: yup.string().url().nullable(),
+  url: yup.string().url().nullable(),
   twitter: yup
     .string()
     .max(200)
@@ -70,7 +70,6 @@ const validationSchema = yup.object().shape({
 const EditFormCollection = () => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
   const { chainId } = useContext(AccountContext);
@@ -120,20 +119,29 @@ const EditFormCollection = () => {
       value: "12321",
     },
   ];
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["detailCollection", chainId, collectionAddress],
+    queryFn: async () => {
+      if (collectionAddress) {
+        const res = await collectionDetail(collectionAddress, chainId);
+        return res.data;
+      }
+    },
+  });
   const initialValues = {
-    name: "qew",
-    description: "123",
-    URL: "",
-    Collaborator: "",
-    CreatorEarning: "",
+    name: data?.name,
+    description: data?.description,
+    url: data?.url,
+    collaborators: data?.collaborators,
+    creatorAddress: data?.creatorAddress,
     category: [] as string[],
     Percent: "",
-    images: "",
-    twitter: "",
-    facebook: "",
-    discord: "",
-    telegram: "",
-    website: "",
+    featureImage: data?.featureImage,
+    twitter: data?.socials?.twitter,
+    facebook: data?.socials?.facebook,
+    discord: data?.socials?.discord,
+    telegram: data?.socials?.telegram,
+    website: data?.socials?.website,
   };
   const selectCategory = (value: string, selectedCategory: string[], setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) => {
     console.log(value,selectedCategory);
@@ -165,15 +173,7 @@ const EditFormCollection = () => {
       role: " Owner",
     },
   ];
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ["detailCollection", chainId, collectionAddress],
-    queryFn: async () => {
-      if (collectionAddress) {
-        const res = await collectionDetail(collectionAddress, chainId);
-        return res.data;
-      }
-    },
-  });
+  
   console.log(data);
 
   return (
@@ -249,15 +249,15 @@ const EditFormCollection = () => {
               </p>
               <Field
                 type="text"
-                id="URL"
-                name="URL"
-                value={values.URL}
+                id="url"
+                name="url"
+                value={values.url}
                 placeholder="https://Demask.finance/collection/abcdef"
                 onChange={handleChange}
                 className={styles.inputItem}
               />
               <ErrorMessage
-                name="URL"
+                name="url"
                 component="div"
                 className="mt-2 text-xs text-red"
               />
@@ -289,9 +289,9 @@ const EditFormCollection = () => {
               </p>
               <input
                 type="file"
-                id="images"
-                name="images"
-                // value={values.images}
+                id="featureImage"
+                name="featureImage"
+                // value={values.featureImage}
                 onChange={(event) => {
                   if (
                     event.target.files &&
@@ -299,7 +299,7 @@ const EditFormCollection = () => {
                   ) {
                     const file = event.target.files[0];
                     setSelectedImage(file);
-                    setFieldValue("images", file);
+                    setFieldValue("featureImage", file);
                   }
                 }}
                 ref={imgCollection}
@@ -363,7 +363,7 @@ const EditFormCollection = () => {
                       type="text"
                       id="Collaborator"
                       name="Collaborator"
-                      value={values.Collaborator}
+                      value={values.collaborators}
                       placeholder="0x...123"
                       onChange={handleChange}
                       className={styles.inputItem}
@@ -400,9 +400,9 @@ const EditFormCollection = () => {
               <div className="flex gap-x-4">
                 <Field
                   type="text"
-                  id="CreatorEarning"
-                  name="CreatorEarning"
-                  value={values.CreatorEarning}
+                  id="creatorAddress"
+                  name="creatorAddress"
+                  value={values.creatorAddress}
                   placeholder="0x...123"
                   onChange={handleChange}
                   className={styles.inputItem}
@@ -423,7 +423,7 @@ const EditFormCollection = () => {
                 </div>
               </div>
               <ErrorMessage
-                name="CreatorEarning"
+                name="creatorAddress"
                 component="div"
                 className="mt-2 text-xs text-red"
               />

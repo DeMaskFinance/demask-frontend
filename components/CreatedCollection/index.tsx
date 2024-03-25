@@ -75,6 +75,8 @@ export default function CreatedCollection() {
       }
     },
   });
+  console.log(dataDetail);
+
   return (
     <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0">
       <div className="h-[120px] lg:h-[240px]">
@@ -97,16 +99,24 @@ export default function CreatedCollection() {
                 width={620}
                 height={620}
                 className="object-cover w-full h-full rounded-lg"
-                alt="1" 
+                alt="1"
               />
             )}
           </div>
           <div className="lg:max-w-[45%] mt-4 lg:mt-0">
             <div className="flex items-center gap-x-2">
-              <p className="text-2xl font-semibold whitespace-nowrap">{dataDetail?.name}</p>
-              <Link href={`/edit/${collectionAddress}`}>
-                <EditIcon width={24} height={24} className="fill-dark3" />
-              </Link>
+              <p className="text-2xl font-semibold whitespace-nowrap">
+                {dataDetail?.name}
+              </p>
+              {dataDetail.collaborators.includes(account) && (
+                <Link href={`/edit/${collectionAddress}`}>
+                  <EditIcon
+                    width={24}
+                    height={24}
+                    className="fill-dark3 hover:fill-secondary5"
+                  />
+                </Link>
+              )}
             </div>
             <p className="text-xs">{dataDetail?.description}</p>
 
@@ -132,27 +142,27 @@ export default function CreatedCollection() {
           <div className="text-dark2">
             <p className="mb-1 text-sm whitespace-nowrap">Total Volume</p>
             <div className="flex items-center text-xl font-semibold ">
-              <FormatNumber number={"1245"} />
+              <FormatNumber number={dataDetail?.volume} />
               <EtherIcon width={16} height={16} className="fill-dark2" />
             </div>
           </div>
           <div className="text-dark2">
             <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
             <div className="flex items-center text-xl font-semibold ">
-              <FormatNumber number={"1245"} />
+              <FormatNumber number={dataDetail?.volume} />
               <EtherIcon width={16} height={16} className="fill-dark2" />
             </div>
           </div>
           <div className="text-dark2 gird">
             <p className="mb-1 text-sm whitespace-nowrap">Listed/Supply</p>
             <div className="flex items-center text-xl font-semibold ">
-              <FormatNumber number={"1245"} />
+              <FormatNumber number={dataDetail?.totalSale} />
             </div>
           </div>
           <div className="text-dark2">
             <p className="mb-1 text-sm whitespace-nowrap">Owner</p>
             <div className="flex items-center text-xl font-semibold ">
-              <FormatNumber number={"1245"} />
+              <FormatNumber number={dataDetail?.countOwner} />
             </div>
           </div>
         </div>
@@ -164,7 +174,13 @@ export default function CreatedCollection() {
           data={dataDetail}
         />
       ) : (
-        <ItemList isLoading={isLoading} isSuccess={isSuccess} isFetching={isFetching} data={data} fetchNextPage={fetchNextPage}/>
+        <ItemList
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          isFetching={isFetching}
+          data={data}
+          fetchNextPage={fetchNextPage}
+        />
       )}
     </div>
   );
