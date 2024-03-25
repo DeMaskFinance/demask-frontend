@@ -19,6 +19,7 @@ export default function Liquidity() {
     useContext(AccountContext);
   const router = useRouter();
   const [activeChoice, setActiveChoice] = useState<string>("Item pool");
+  const [type, setType] = useState<string>("erc1155");
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
     const nftAddress = demask.CREATOR;
@@ -30,11 +31,13 @@ export default function Liquidity() {
   const fetchDataListLiquidity = async (
     accountUser: string,
     pageParam = 1,
-    chainId: string | string[]
+    chainId: string | string[],
+    type: string
   ) => {
     const data = await liquidityListAPI(
       accountUser.toLowerCase(),
       pageParam,
+      type,
       chainId
     );
     return data;
@@ -48,8 +51,9 @@ export default function Liquidity() {
     isFetching,
     hasNextPage,
   } = useInfiniteQuery(
-    ["LiquidityList", account, chainId],
-    ({ pageParam = 1 }) => fetchDataListLiquidity(account, pageParam, chainId),
+    ["LiquidityList", account, chainId, type],
+    ({ pageParam = 1 }) =>
+      fetchDataListLiquidity(account, pageParam, chainId, type),
     {
       getNextPageParam: (page: any) =>
         page?.currentPage < page?.totalPages
@@ -57,8 +61,11 @@ export default function Liquidity() {
           : undefined,
     }
   );
+  console.log(data);
+
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
+    choice === "Item pool" ? setType("erc1155") : setType("erc721");
   };
   return (
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0">

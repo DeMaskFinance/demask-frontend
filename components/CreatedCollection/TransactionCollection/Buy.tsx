@@ -4,9 +4,17 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
+import {
+  ModalError,
+  ModalSuccess,
+  ModalTransation,
+} from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
+import {
+  SkeletonCategory,
+  SkeletonItemTransaction,
+  SkeletonSubCategory,
+} from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
@@ -40,16 +48,15 @@ const Buy = () => {
   const collectionAddress = useRouter().query.created as string;
   const { ref, inView } = useInView();
   const royaltyFee = 0;
-  const { bigNumberBalance } =
-    useInformationToken(
-      account,
-      nativeAddress,
-      wallet,
-      routerAddress,
-      rpc,
-      nativeAddress,
-      isOpenTransaction
-    );
+  const { bigNumberBalance } = useInformationToken(
+    account,
+    nativeAddress,
+    wallet,
+    routerAddress,
+    rpc,
+    nativeAddress,
+    isOpenTransaction
+  );
   const fetchDataNFTs = async (
     collectionAddress: string,
     pageParam = 1,
@@ -68,6 +75,7 @@ const Buy = () => {
     data,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
     isSuccess,
     isLoading,
     isFetching,
@@ -101,7 +109,7 @@ const Buy = () => {
   }, [account, collectionAddress, wallet, isOpenTransaction]);
   const dmlToken = data?.pages[0]?.dmlAddress;
   console.log(dmlToken);
-  
+
   const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
     "",
     dmlToken,
@@ -164,9 +172,9 @@ const Buy = () => {
 
   return (
     <div>
-      {(isLoading) ? (
-        <div className="mt-4">
-          <SkeletonCategory />
+      {isLoading ? (
+        <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+          <SkeletonItemTransaction />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <div className="flex flex-col ">
@@ -208,23 +216,27 @@ const Buy = () => {
                 ))}
               </Fragment>
             ))}
-            <div ref={ref} style={{ height: "1px" }} ></div>
+            {isFetching && hasNextPage && <SkeletonItemTransaction />}
+            <div ref={ref} style={{ height: "1px" }}></div>
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
               <ul className="flex flex-wrap px-4 py-2 mb-2 text-sm bg-dark5 text-dark2 gap-x-4">
                 <li className="flex items-center">
-                  Send: 
-                  <FormatNumber number={(amountBuyDec/1e18).toString()}/>{" "}
+                  Send:
+                  <FormatNumber
+                    number={(amountBuyDec / 1e18).toString()}
+                  />{" "}
                   <EtherIcon width={18} height={18} className="fill-white" />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
                 </li>
                 <li className="flex items-center">
-                  Price: 
-                  <FormatNumber number={(amountTokenBuy/1e18).toString()}/>
-                  {" "}
+                  Price:
+                  <FormatNumber
+                    number={(amountTokenBuy / 1e18).toString()}
+                  />{" "}
                   <EtherIcon width={18} height={18} className="fill-white" />
                 </li>
               </ul>

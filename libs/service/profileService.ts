@@ -4,11 +4,13 @@ const nftsUserService = async (
   account: string,
   chainId: string | string[],
   type:string,
+  search:string,
+  category:string,
   page: number
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-owner?userAddress=${account}&chainId=${chainId}&type=${type}&page=${page}&limit=8`
+      `NFT-list-from-owner?userAddress=${account}&chainId=${chainId}&type=${type}&page=${page}&category=${category}&search=${search}&limit=8`
     );
     return res.data;
   } catch (error) {

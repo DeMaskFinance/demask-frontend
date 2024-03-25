@@ -4,9 +4,13 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
-import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
+import {
+  ModalError,
+  ModalSuccess,
+  ModalTransation,
+} from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useDMLToken from "@/hooks/useDMLToken";
@@ -42,16 +46,15 @@ const Sell = () => {
   const collectionAddress = useRouter().query.created as string;
   const { ref, inView } = useInView();
   const royaltyFee = 0;
-  const { balanceToken, bigNumberBalance } =
-    useInformationToken(
-      account,
-      nativeAddress,
-      wallet,
-      routerAddress,
-      rpc,
-      nativeAddress,
-      isOpenTransaction
-    );
+  const { balanceToken, bigNumberBalance } = useInformationToken(
+    account,
+    nativeAddress,
+    wallet,
+    routerAddress,
+    rpc,
+    nativeAddress,
+    isOpenTransaction
+  );
   const fetchDataNFTs = async (
     collectionAddress: string,
     pageParam = 1,
@@ -75,6 +78,7 @@ const Sell = () => {
     isSuccess,
     isLoading,
     isFetching,
+    hasNextPage,
   } = useInfiniteQuery(
     ["collectionNFTSell", chainId, account, collectionAddress],
     ({ pageParam = 1 }) =>
@@ -183,8 +187,8 @@ const Sell = () => {
   return (
     <div>
       {isLoading ? (
-        <div className="mt-4">
-          <SkeletonCategory />
+        <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+          <SkeletonItemTransaction />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <div className="flex flex-col ">
@@ -226,7 +230,8 @@ const Sell = () => {
                 ))}
               </Fragment>
             ))}
-            <div ref={ref} style={{ height: "1px" }} ></div>
+            {isFetching && hasNextPage && <SkeletonItemTransaction />}
+            <div ref={ref} style={{ height: "1px" }}></div>
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (

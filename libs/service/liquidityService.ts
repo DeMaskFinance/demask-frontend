@@ -3,11 +3,12 @@ import request from "../utils/httpRequest";
 const liquidityListAPI = async (
   accountUser: string,
   page: number,
+  type:string,
   chainId: string | string[]
 ) => {
   try {
     const res = await request.get(
-      `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&page=${page}`
+      `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&type=${type}&page=${page}`
     );
     return res.data;
   } catch (error) {

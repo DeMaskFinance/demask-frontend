@@ -4,7 +4,7 @@ import { LightBulbIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
+import { SkeletonCategory, SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
@@ -114,6 +114,7 @@ const Change = () => {
     isSuccess,
     isLoading,
     isFetching,
+    hasNextPage
   } = useInfiniteQuery(
     ["collectionNFTBUY", chainId, collectionAddress],
     ({ pageParam = 1 }) =>
@@ -233,9 +234,9 @@ const Change = () => {
       </h5>
       <div className="my-2">
         {isInputDataLoading ? (
-          <div className="mt-4">
-            <SkeletonCategory />
-          </div>
+          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+          <SkeletonItemTransaction />
+        </div>
         ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
@@ -276,6 +277,7 @@ const Change = () => {
                   ))}
                 </Fragment>
               ))}
+              {isFetching && <SkeletonItemTransaction />}
               <div ref={ref} style={{ height: "1px" }} ></div>
             </div>
           </div>
@@ -297,9 +299,9 @@ const Change = () => {
       <h5 className="font-semibold text-dark1">Select some output NFTs</h5>
       <div className="my-2">
         {isLoading ? (
-          <div className="mt-4">
-            <SkeletonCategory />
-          </div>
+          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+          <SkeletonItemTransaction />
+        </div>
         ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
@@ -340,6 +342,7 @@ const Change = () => {
                   ))}
                 </Fragment>
               ))}
+              {isFetching && <SkeletonItemTransaction />}
               <div ref={refOutput} style={{ height: "1px" }} ></div>
             </div>
           </div>

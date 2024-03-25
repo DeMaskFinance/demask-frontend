@@ -4,7 +4,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SearchInventory } from "@/components/Search";
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css";
-import { DownIcon, FilterIcon } from "@/components/Icons";
+import { DownIcon, FilterIcon, SearchIcon } from "@/components/Icons";
 import Created from "./Created";
 const styles = {
   itemSub:
@@ -15,12 +15,14 @@ interface ClassifyProps {
   category: string;
   setTypeERC: any;
   setCategory: any;
+  setSearchCollection: any;
 }
 const Classify: React.FC<ClassifyProps> = ({
   typeERC,
   category,
   setCategory,
   setTypeERC,
+  setSearchCollection,
 }) => {
   const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "items"));
   const ERCType = [
@@ -46,7 +48,6 @@ const Classify: React.FC<ClassifyProps> = ({
     { name: "Memberships", type: "Memberships" },
     { name: "Others", type: "Others" },
   ];
-  console.log(tab);
 
   return (
     <div>
@@ -93,7 +94,19 @@ const Classify: React.FC<ClassifyProps> = ({
             />
           </div>
         </Tippy>
-        <SearchInventory />
+        <div className="relative flex-grow">
+      <div className="flex h-full rounded-lg bg-dark5" >
+        <div className="flex items-center justify-center w-8 h-full">
+          <SearchIcon width={16} height={16} />
+        </div>
+        <input
+          type="text"
+          placeholder="Search by name"
+          onChange={(e)=>{setSearchCollection(e.target.value)}}
+          className="relative w-full transition-all bg-transparent outline-none placeholder:text-xs"
+        />
+        </div>
+      </div>
         <Tippy
           className=""
           interactive

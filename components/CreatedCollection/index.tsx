@@ -48,6 +48,7 @@ export default function CreatedCollection() {
     data,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
     isSuccess,
     isLoading,
     isFetching,
@@ -149,14 +150,14 @@ export default function CreatedCollection() {
           <div className="text-dark2">
             <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
             <div className="flex items-center text-xl font-semibold ">
-              <FormatNumber number={dataDetail?.volume} />
+              <FormatNumber number={dataDetail?.totalSale} />
               <EtherIcon width={16} height={16} className="fill-dark2" />
             </div>
           </div>
           <div className="text-dark2 gird">
             <p className="mb-1 text-sm whitespace-nowrap">Listed/Supply</p>
             <div className="flex items-center text-xl font-semibold ">
-              <FormatNumber number={dataDetail?.totalSale} />
+              <FormatNumber number={dataDetail?.poolPercentageOfTotalSupply} />
             </div>
           </div>
           <div className="text-dark2">
@@ -180,6 +181,7 @@ export default function CreatedCollection() {
           isFetching={isFetching}
           data={data}
           fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
         />
       )}
     </div>

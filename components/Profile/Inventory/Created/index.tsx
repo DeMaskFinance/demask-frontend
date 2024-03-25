@@ -19,10 +19,7 @@ const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
   const [typeERC, setTypeERC] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  const [searchCollection] = useQueryParam(
-    "searchCollection",
-    withDefault(StringParam, "")
-  );
+  const [searchCollection, setSearchCollection] = useState<string>("");
   let debouncedSearch = useDebounce(searchCollection);
 
   const { ref, inView } = useInView();
@@ -54,7 +51,7 @@ const Created = () => {
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["NFTsUser", chainId, account, typeERC, category, debouncedSearch],
+    ["UserCollection", chainId, account, typeERC, category, debouncedSearch],
     ({ pageParam = 1 }) =>
       fetchDataNFTs(
         "0x4699a9a5607c9281103ad504fa922276eb6385a2",
@@ -77,7 +74,7 @@ const Created = () => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
+  console.log(data?.pages[0]?.data.length);
 
   return (
     <Fragment>
@@ -86,12 +83,13 @@ const Created = () => {
         category={category}
         setTypeERC={setTypeERC}
         setCategory={setCategory}
+        setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
         <SwiperCustom>
-          {isLoading || isFetching ? (
+          {isLoading ? (
             <SkeletonNFTTop />
-          ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
+          ) : (isSuccess && data?.pages[0]?.data.data.length > 0) ? (
             <div>
               {data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>

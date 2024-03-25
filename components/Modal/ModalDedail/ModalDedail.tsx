@@ -4,6 +4,7 @@ import React, { memo, useContext } from "react";
 import MediaNFT from "@/components/Common/MediaNFT";
 import Copy from "@/components/Common/Copy";
 import AccountContext from "@/context/AccountContext";
+import ModalDocument from "../ModalLength/ModalDocument";
 interface ModalDetailProps {
   data: any;
   nftAddress: string;
@@ -66,7 +67,9 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 {data?.metadata?.symbol && (
                   <li className="mb-4">
                     <p className="font-medium text-dark2">Symbol</p>
-                    <p className="text-sm font-light text-dark3">{data?.metadata?.symbol}</p>
+                    <div className="text-sm font-light text-dark3 max-w-[140px]">
+                      <ModalDocument data={data?.metadata?.symbol}/>
+                    </div>
                   </li>
                 )}
                 <li className="mb-4">
@@ -107,7 +110,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
               <div className="grid grid-cols-2 gap-y-4">
                 <div className="">
                   <p className="mb-1 font-medium text-dark2">Category</p>
-                  {data.metadata?.category.length > 0 ? (
+                  {data?.metadata?.category ? (
                     <div className="flex gap-x-4">
                       {data.metadata?.category.map((item: any, index: number) => (
                         <p className="px-4 py-1 text-sm font-medium border rounded-lg text-dark2 border-dark3" key={index}>

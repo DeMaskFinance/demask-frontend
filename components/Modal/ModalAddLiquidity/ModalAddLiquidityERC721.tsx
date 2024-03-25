@@ -4,7 +4,10 @@ import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformation from "@/hooks/useInformationToken";
-import { collectionListBuy, collectionListSell } from "@/libs/service/collectionService";
+import {
+  collectionListBuy,
+  collectionListSell,
+} from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -22,6 +25,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import { useInView } from "react-intersection-observer";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
@@ -123,8 +127,9 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["collectionNFTBUY", chainId, collectionAddress,account],
-    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, pageParam, chainId,account),
+    ["collectionNFTBUY", chainId, collectionAddress, account],
+    ({ pageParam = 1 }) =>
+      fetchDataNFTs(collectionAddress, pageParam, chainId, account),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -153,16 +158,13 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         ((Number(idNFT.length) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
     } else {
-      amountErcDesired = handleBignumber(
-        Number(inputToken),
-        Number(18)
-      );
+      amountErcDesired = handleBignumber(Number(inputToken), Number(18));
     }
     setAmountErcDesired(amountErcDesired);
     if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),
-        '18'
+        "18"
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
@@ -216,46 +218,53 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
               </div>
             )}
           </div>
-          <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
-            {data?.pages.map((page: any, pageIndex: number) => (
-              <Fragment key={pageIndex}>
-                {page?.data?.map((item: any, index: number) => (
-                  <div
-                    key={index}
-                    className="relative"
-                    onClick={() => hanldeChoiceNFT(item)}
-                  >
+          {isLoading ? (
+            <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+              <SkeletonItemTransaction />
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
+              {data?.pages.map((page: any, pageIndex: number) => (
+                <Fragment key={pageIndex}>
+                  {page?.data?.map((item: any, index: number) => (
                     <div
-                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
-                        idNFT.includes(Number(item.nftID))
-                          ? "border-secondary5"
-                          : ""
-                      }`}
+                      key={index}
+                      className="relative"
+                      onClick={() => hanldeChoiceNFT(item)}
                     >
-                      <div className="relative h-[78px] lg:h-[100px]">
-                        <MediaNFT data={item} isControls={false} hover />
-                      </div>
-                      <div className="w-full">
-                        <div className="flex w-full mt-2">
-                          <div className="w-full">
-                            <h6
-                              title={item.metadata.name}
-                              className="flex items-start gap-2 font-semibold uppercase"
-                            >
-                              <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                <ModalDocument data={item.metadata.name} />
-                              </span>
-                            </h6>
+                      <div
+                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                          idNFT.includes(Number(item.nftID))
+                            ? "border-secondary5"
+                            : ""
+                        }`}
+                      >
+                        <div className="relative h-[78px] lg:h-[100px]">
+                          <MediaNFT data={item} isControls={false} hover />
+                        </div>
+                        <div className="w-full">
+                          <div className="flex w-full mt-2">
+                            <div className="w-full">
+                              <h6
+                                title={item.metadata.name}
+                                className="flex items-start gap-2 font-semibold uppercase"
+                              >
+                                <span className="flex-wrap max-w-full text-sm line-clamp-1">
+                                  <ModalDocument data={item.metadata.name} />
+                                </span>
+                              </h6>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </Fragment>
-            ))}
-            <div ref={ref} style={{ height: "1px" }} ></div>
-          </div>
+                  ))}
+                </Fragment>
+              ))}
+              {isFetching && <SkeletonItemTransaction />}
+              <div ref={ref} style={{ height: "1px" }}></div>
+            </div>
+          )}
           <div>
             <div className="relative">
               <div>

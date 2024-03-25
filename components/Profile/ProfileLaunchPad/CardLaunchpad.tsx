@@ -1,5 +1,5 @@
 import TabLaunchPadItem from "@/components/LaunchPad/components/TabLaunchPadItem";
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
+import { SkeletonCategory } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useInfiniteQuery } from "@tanstack/react-query";

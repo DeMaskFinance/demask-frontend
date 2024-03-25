@@ -65,7 +65,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                                 </p>
                             </a>
                             <div className="flex items-center mt-6 gap-x-4">
-                                <Link href='/profile?tab=nfts'>
+                                <Link href='/profile?tab=items'>
                                     <Button className='px-6 py-2 font-semibold text-white bg-dark3' >View collection</Button>
                                 </Link>
                                 <Button primary className='px-6 py-2 ' onClick={handleClose}>Create an NFT</Button>

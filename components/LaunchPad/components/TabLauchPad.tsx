@@ -1,4 +1,3 @@
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, { Fragment, useContext, useEffect, useState } from "react";
@@ -6,6 +5,7 @@ import ActiveLaunchItem from "./TabLaunchPadItem";
 import { useInView } from "react-intersection-observer";
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import AccountContext from "@/context/AccountContext";
+import { SkeletonCategory } from "@/components/Skeleton/SkeletonCategory";
 
 type TabLaunchPadProps = {
   query: string;
