@@ -108,7 +108,7 @@ export default function CreatedCollection() {
               <p className="text-2xl font-semibold whitespace-nowrap">
                 {dataDetail?.name}
               </p>
-              {dataDetail.collaborators.includes(account) && (
+              {dataDetail?.collaborators.includes(account) && (
                 <Link href={`/edit/${collectionAddress}`}>
                   <EditIcon
                     width={24}

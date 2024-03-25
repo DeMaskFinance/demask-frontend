@@ -47,7 +47,6 @@ export const ItemList: React.FC<ItemListProps> = ({
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
-  console.log(data);
   const { ref, inView } = useInView();
   useEffect(() => {
     if (inView) {
@@ -121,20 +120,20 @@ export const ItemList: React.FC<ItemListProps> = ({
                           <Link
                             href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
                           >
-                            <Button className="flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
+                            <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
                               <p>Add</p>
                               <div>
-                                <AddIcon width={24} height={24} />
+                                <AddIcon width={20} height={20} />
                               </div>
                             </Button>
                           </Link>
                           <Link
                             href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
                           >
-                            <Button className="flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
+                            <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
                               <p>Swap</p>
                               <div>
-                                <SwapIconProfile width={24} height={24} />
+                                <SwapIconProfile width={20} height={20} />
                               </div>
                             </Button>
                           </Link>
