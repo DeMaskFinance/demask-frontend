@@ -1,134 +1,52 @@
 import { Button } from "@/components/Buttons";
-import { LightBulbIcon } from "@/components/Icons";
+import { LightBulbIcon, PoolListIcon } from "@/components/Icons";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
-import useDMLToken from "@/hooks/useDMLToken";
-import useInformationDML from "@/hooks/useInformationDML";
-import useInformationToken from "@/hooks/useInformationToken";
-import { swapAPI } from "@/libs/service";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useEffect, useState } from "react";
+import { liquidityListAPI } from "@/libs/service/liquidityService";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useContext, useState } from "react";
 import PoolItem from "./PoolItem";
-import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
-import { useRouter } from "next/router";
-import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
 
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(false);
-  const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [inputToken, setInputToken] = useState<string>("");
-  const [inputNFT, setInputNFT] = useState<number>(2);
-  const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
-    useState<boolean>(false);
-  const [amountErcDesired, setAmountErcDesired] = useState<any>();
-  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
-  const [amountTokenMin, setAmountTokenMin] = useState<number>(0);
-  const [hash, setHash] = useState<string>("");
-  const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
-  const { account, wallet, chainId, demask, slippage } =
-    useContext(AccountContext);
-  const collectionAddress = useRouter().query.created as string;
-  const {
-    ROUTER_721: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-    FACTORY: factoryAddress,
-  } = demask;
-  const { bigNumberBalance, balanceToken } =
-    useInformationToken(
-      account,
-      nativeAddress,
-      wallet,
-      routerAddress,
-      rpc,
-      nativeAddress,
-      isOpenTransaction
-    );
-
-  const dmlToken = useDMLToken(
-    account,
-    collectionAddress,
-    nativeAddress,
-    wallet,
-    demask.FACTORY_721,
-    "",
-    isOpenTransaction,
-    isOpenConfirmAddLiquidity
-  );
-
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        collectionAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, wallet, isOpenTransaction]);
-
-  const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
-    dmlToken,
-    wallet,
-    account,
-    isOpenTransaction,
-    false,
-    false,
-    isOpenConfirmAddLiquidity,
-    true
-  );
-
-  useEffect(() => {
-    let amountErcDesired;
-    let amountTokenMin;
-    if (dmlToken !== "0x0000000000000000000000000000000000000000" && inputNFT) {
-      amountErcDesired = (Number(inputNFT) * +reserveToken) / +reserveNFT;
-      amountTokenMin =
-        ((Number(inputNFT) * +reserveToken) / +reserveNFT) *
-        (1 + slippage / 100);
-    } else {
-      amountErcDesired = handleBignumber(Number(inputToken), 18);
-      amountTokenMin = handleBignumber(Number(inputToken), 18);
-    }
-    setAmountErcDesired(amountErcDesired);
-    setAmountTokenMin(amountTokenMin);
-    if (amountErcDesired) {
-      const amountErcDesiredToDec = divideByDecimal(
-        amountErcDesired?.toString(),
-        "18"
-      );
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
-        setIsSufficientToken(true);
-      } else {
-        setIsSufficientToken(false);
-      }
-    }
-  }, [inputToken, reserveToken, reserveNFT, dmlToken, inputNFT]);
-
-  const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputToken(e.target.value);
-    if (Number(e.target.value) > Number(balanceToken)) {
-      setIsSufficientToken(true);
-    } else {
-      setIsSufficientToken(false);
-    }
-  };
-
+  const { account, chainId } = useContext(AccountContext);
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-
+  const fetchDataListLiquidity = async (
+    accountUser: string,
+    pageParam = 1,
+    chainId: string | string[],
+    type: string
+  ) => {
+    const data = await liquidityListAPI(
+      accountUser.toLowerCase(),
+      pageParam,
+      type,
+      chainId
+    );
+    return data;
+  };
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isSuccess,
+    isLoading,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ["LiquidityList", account, chainId],
+    ({ pageParam = 1 }) =>
+      fetchDataListLiquidity(account, pageParam, chainId, "erc721"),
+    {
+      getNextPageParam: (page: any) =>
+        page?.currentPage < page?.totalPages
+          ? page?.currentPage + 1
+          : undefined,
+    }
+  );
   return (
     <div className="h-full text-dark3">
       <div className="flex px-6 py-4 my-4 text-sm rounded-lg md:text-base bg-dark5">
@@ -144,33 +62,32 @@ const Pool = () => {
           CONNECT WALLET
         </Button>
       ) : (
-        <PoolItem />
+        // <PoolItem />
+        <div>
+          {(data?.pages[0]?.combinedRecords.length === 0) &&
+          !isLoading && (
+            <div className="flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2">
+              <PoolListIcon width={72} height={72} />
+              Your active liquidity positions will appear here.
+            </div>
+          )}
+          {isSuccess && data?.pages[0]?.combinedRecords.length !== 0 && 
+  data.pages && data.pages.map((page: any, index: number) => (
+    <div key={index}>
+      {page?.combinedRecords && page.combinedRecords.map(
+        (liquidity: any, subIndex: number) => (
+          <div key={subIndex} className="w-full mx-auto">
+            <PoolItem liquidity={liquidity} />
+          </div>
+        )
+      )}
+    </div>
+  ))
+}
+        </div>
       )}
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {account && (
-        <>
-          <ModalAddLiquidityERC721
-            isOpenAddLiquidity={isOpenAddLiquidity}
-            setIsOpenLiquidity={setIsOpenAddLiquidity}
-            setHash={setHash}
-            setIsOpenSuccess={setIsOpenSuccessAdd}
-            setIsOpenError={setIsOpenErrorAdd}
-          />
-          <ModalSuccess
-            isOpenSuccess={isOpenSuccessAdd}
-            transactionHash={hash}
-            type="Add Liquidity Success"
-            setIsOpenSuccess={setIsOpenSuccessAdd}
-          />
-          <ModalError
-            isOpenError={isOpenErrorAdd}
-            transactionHash={hash}
-            type="Add Liquidity Failed"
-            setIsOpenError={setIsOpenErrorAdd}
-          />
-        </>
-      )}
     </div>
   );
 };

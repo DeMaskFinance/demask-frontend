@@ -1,24 +1,15 @@
-import React, { useContext, useRef, useState } from "react";
-import { Formik, Form, Field, useFormik, ErrorMessage } from "formik";
-import * as yup from "yup";
-import Link from "next/link";
-import { Button } from "../Buttons";
-import Image from "next/image";
-import {
-  DiscordIcon,
-  FacebookIcon,
-  GithubIcon,
-  TeleIcon,
-  TwitterIcon,
-  WebsiteIcon,
-} from "../Icons";
 import { Category } from "@/libs/constants";
 import Icons from "@/public/icons/icon";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
-import AccountContext from "@/context/AccountContext";
-import { collectionDetail } from "@/libs/service/collectionService";
 import images from "@/public/images";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import Image from "next/image";
+import Link from "next/link";
+import { useRef, useState } from "react";
+import * as yup from "yup";
+import { Button } from "../Buttons";
+import * as collectionService from "@/libs/service/collectionService";
+import { FacebookIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
+import { useRouter } from "next/router";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
@@ -67,12 +58,12 @@ const validationSchema = yup.object().shape({
     .min(0, "Must be greater than 0%")
     .max(10, "Must be less than 10%"),
 });
-const EditFormCollection = () => {
+
+const EditFormCollection = ({ data }: any) => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
-  const { chainId } = useContext(AccountContext);
   const collectionAddress = useRouter().query.edit as string;
 
   const socialList = [
@@ -104,30 +95,22 @@ const EditFormCollection = () => {
       placeHolder: "https://t.me/",
       value: 99123,
     },
-    {
-      icon: <DiscordIcon width={24} height={24} />,
-      title: "Discord",
-      name: "discord",
-      placeHolder: "https://discord.com/",
-      value: 321,
-    },
-    {
-      icon: <GithubIcon width={24} height={24} />,
-      title: "Github",
-      name: "github",
-      placeHolder: "https://github.com/",
-      value: "12321",
-    },
+    // {
+    //   icon: <DiscordIcon width={24} height={24} />,
+    //   title: "Discord",
+    //   name: "discord",
+    //   placeHolder: "https://discord.com/",
+    //   value: 321,
+    // },
+    // {
+    //   icon: <GithubIcon width={24} height={24} />,
+    //   title: "Github",
+    //   name: "github",
+    //   placeHolder: "https://github.com/",
+    //   value: "12321",
+    // },
   ];
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ["detailCollection", chainId, collectionAddress],
-    queryFn: async () => {
-      if (collectionAddress) {
-        const res = await collectionDetail(collectionAddress, chainId);
-        return res.data;
-      }
-    },
-  });
+
   const initialValues = {
     name: data?.name,
     description: data?.description,
@@ -139,12 +122,16 @@ const EditFormCollection = () => {
     featureImage: data?.featureImage,
     twitter: data?.socials?.twitter,
     facebook: data?.socials?.facebook,
-    discord: data?.socials?.discord,
+    // discord: data?.socials?.discord,
     telegram: data?.socials?.telegram,
     website: data?.socials?.website,
   };
-  const selectCategory = (value: string, selectedCategory: string[], setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) => {
-    console.log(value,selectedCategory);
+  const selectCategory = (
+    value: string,
+    selectedCategory: string[],
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void
+  ) => {
+    console.log(value, selectedCategory);
     const isSelected = selectedCategory.includes(value);
     let updatedCategories;
     if (isSelected) {
@@ -152,15 +139,31 @@ const EditFormCollection = () => {
     } else {
       updatedCategories = [...selectedCategory, value];
     }
-    setFieldValue("category",updatedCategories);
+    setFieldValue("category", updatedCategories);
   };
   const onSubmit = async (values: any) => {
     // Handle form submission
     console.log(values);
-
     try {
       setLoading(true);
-      console.log(values);
+      const newCollection = await collectionService.updateCollection(
+        {
+          name: values.name,
+          description: values.description,
+          url: values.url,
+          category: values.category,
+          collaborators: values.collaborators,
+          socials: {
+            facebook: values.facebook,
+            twitter: values.twitter,
+            telegram: values.telegram,
+            website: values.website,
+          },
+          creatorAddress: values.creatorAddress,
+          featureImage: values.featureImage,
+        },
+        collectionAddress
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -173,14 +176,11 @@ const EditFormCollection = () => {
       role: " Owner",
     },
   ];
-  
+
   console.log(data);
 
   return (
-    <div className="py-6 min-h-[75vh] max-w-[1440px] mx-auto mb-[100px] lg:mb-0">
-      {/* <div className="h-[120px] lg:h-[240px]">
-        <div className="w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]"></div>
-      </div> */}
+    <div className="">
       <h1 className="mt-4 text-2xl font-semibold text-center">
         Edit Collection Details
       </h1>
@@ -270,12 +270,16 @@ const EditFormCollection = () => {
                     type="button"
                     name="category"
                     id="category"
-                    className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2 border rounded-lg ${values.category.includes(item.value)&&'bg-dark3 text-white'}`}
+                    className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2 border rounded-lg ${
+                      values.category.includes(item.value) &&
+                      "bg-dark3 text-white"
+                    }`}
                     key={item.id}
                     value={item.value}
-                    onClick={() => selectCategory(item.value, values.category, setFieldValue)}
-                  >
-                  </Field>
+                    onClick={() =>
+                      selectCategory(item.value, values.category, setFieldValue)
+                    }
+                  ></Field>
                 ))}
               </div>
             </div>

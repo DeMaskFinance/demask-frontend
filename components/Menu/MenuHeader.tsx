@@ -1,5 +1,5 @@
 import AccountContext from "@/context/AccountContext";
-import React, { useContext, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { ActiveLink } from "../Link";
 import Search from "../Search/SearchHeader";
 import { useRouter } from "next/router";
@@ -19,7 +19,8 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   };
 
   return (
-    <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">
+    <div className="flex gap-x-4 3xl:gap-x-8">
+      <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-4">
       {data.map((item) => (
         <React.Fragment key={item.id}>
           <li className="relative text-base hover:text-secondary5 active:text-secondary3">
@@ -34,8 +35,10 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           <p>Docs</p>
         </a>
       </li>
-      <Search isFocused={isFocused} handleFocus={handleFocus} />
     </ul>
+      <Search isFocused={isFocused} handleFocus={handleFocus} />
+    </div>
+
   );
 };
 

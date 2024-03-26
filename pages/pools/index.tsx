@@ -110,7 +110,7 @@ export default function Liquidity() {
                       {page?.combinedRecords.map(
                         (liquidity: any, index: number) => (
                           <div key={index} className="w-full mx-auto">
-                            <LiquidytiesItem liquidity={liquidity} />
+                            <LiquidytiesItem liquidity={liquidity} type={type}/>
                           </div>
                         )
                       )}

@@ -9,6 +9,7 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import { collectionListBuy, collectionListSell } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
@@ -17,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
-const PoolItem = () => {
+const PoolItem = ({liquidity}:any) => {
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
@@ -38,6 +39,8 @@ const PoolItem = () => {
   const collectionAddress =
     useRouter().query.created ||
     ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
+    console.log(liquidity);
+    
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
   };
@@ -45,28 +48,17 @@ const PoolItem = () => {
     setIsOpenRemoveLiquidity(true);
     document.body.style.overflowY = "hidden";
   };
-  const { data:dataRemove } = useQuery({
-    queryKey: ["list-nft-buy", chainId,account],
-    queryFn: async () => {
-      const res = await await collectionListBuy(
-        collectionAddress,
-        chainId,
-        1,
-        10
-      );
-      return res.data;
-    },
-  });
   
   const data = {
-    reserveNFT: dataRemove?.totalRecords,
+    reserveNFT: liquidity?.reserveNFT,
     reserveTokenDecimals: "18",
     tokenDecimals: "18",
-    dmlAddress: dataRemove?.dmlAddress,
+    dmlAddress: liquidity?.dmlAddress,
     dmlDecimals: "18",
     nftAddress: collectionAddress,
     tokenAddress: nativeAddress,
   };
+  const { balanceDML, totalSupply } = useBananceOfDML(account, liquidity.dmlAddress, wallet);
   const dmlTokenLiquidity = data.dmlAddress;
   useEffect(() => {
     const fetchDataReward = async () => {
@@ -128,10 +120,10 @@ const PoolItem = () => {
         <div className="flex items-center text-sm ">
           <div className="flex items-center mr-2">
             <span>LP:</span>
-            <FormatNumber number={"76"} />
+            <FormatNumber number={liquidity?.reserveToken} />
             <NFTIcon width={24} height={24} className="fill-dark2 ml-[2px]" />
           </div>
-          <FormatNumber number={"23"} />
+          <FormatNumber number={liquidity?.reserveNFT} />
           <span>
             <EtherIcon
               width={20}
@@ -139,11 +131,11 @@ const PoolItem = () => {
               className="fill-dark2 ml-[-1px]"
             />
           </span>
-          <div>(20%)</div>
+          <div>({(Number(balanceDML) / Number(totalSupply) * 100).toFixed(2)}%)</div>
         </div>
         <div className="flex items-center justify-between my-2">
           <div className="flex">
-            <span className="flex items-center">
+            <div className="flex items-center">
               Reward:
               {reward ? (
                 <div className="ml-2">
@@ -152,14 +144,7 @@ const PoolItem = () => {
               ) : (
                 <p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>
               )}
-            </span>
-            {/* {reward ? (
-              <div className="ml-2">
-                <FormatNumber number={reward} />
-              </div>
-            ) : (
-              <p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>
-            )} */}
+            </div>
             <span>
               <EtherIcon
                 width={20}

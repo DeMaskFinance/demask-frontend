@@ -78,10 +78,25 @@ const collectionListUserService = async (
     console.error(error);
   }
 };
+const updateCollection = async (
+  body: CollectionInterface,
+  collectionAddress: string
+) => {
+  try {
+    const res = await request.patch(
+      `edit-collection?contractAddress=${collectionAddress}`,
+      body
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 export {
   collectionDetail,
   collectionListERC1155,
   collectionListBuy,
   collectionListSell,
-  collectionListUserService
+  collectionListUserService,
+  updateCollection
 };

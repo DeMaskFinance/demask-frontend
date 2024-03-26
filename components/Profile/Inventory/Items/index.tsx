@@ -121,7 +121,11 @@ export const ItemList: React.FC<ItemListProps> = ({
                       </div>
                       <div className="flex justify-between mt-2">
                         <Link
-                          href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
+                          href={
+                            item.type === "erc1155"
+                              ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                              : `/created/${item.nftAddress}?typeERC=erc721&tab=pool`
+                          }
                         >
                           <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
                             <p>Add</p>
@@ -131,7 +135,11 @@ export const ItemList: React.FC<ItemListProps> = ({
                           </Button>
                         </Link>
                         <Link
-                          href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
+                          href={
+                            item.type === "erc1155"
+                              ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                              : `/created/${item.nftAddress}?typeERC=erc721`
+                          }
                         >
                           <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
                             <p>Swap</p>

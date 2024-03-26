@@ -2,7 +2,7 @@ interface Socials {
     facebook: string;
     twitter: string;
     telegram: string;
-    discord: string;
+    discord?: string;
     website: string;
-    github: string;
+    github?: string;
   }

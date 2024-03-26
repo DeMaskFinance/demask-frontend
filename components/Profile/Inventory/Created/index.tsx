@@ -146,10 +146,10 @@ const Created = () => {
                                 </div>
                                 <div className="flex justify-between font-semibold text-dark2">
                                   <div>
-                                    {/* <FormatNumber number={"123"} /> */}-
+                                    <FormatNumber number={item?.volume} />
                                   </div>
                                   <div>
-                                    <FormatNumber number={item.totalItems} />
+                                    <FormatNumber number={item?.totalItems} />
                                   </div>
                                 </div>
                               </div>

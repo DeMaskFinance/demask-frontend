@@ -87,9 +87,6 @@ export default function Header() {
         const selectedAddress = accounts[0];
         // console.log("selectedADD", selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
-          // console.log(provider);
-          // console.log("namehehee:", provider.selectedAddress);
-          // console.log("chainID:", provider.chainId);
           disconnectWallet();
         }
       }
@@ -126,8 +123,8 @@ export default function Header() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
     >
-      <header className="flex items-center justify-between w-full gap-2 shadow-md bg-secondary1 h-header lg:px-primary md:px-14">
-        <div className="flex items-center flex-shrink-0 gap-2">
+      <header className="flex items-center justify-between w-full gap-2 px-4 max-w-[2550px] shadow-md bg-secondary1 h-header lg:px-10 2xl:px-primary md:px-6">
+        <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link
               href="https://demask.finance/"
@@ -144,16 +141,16 @@ export default function Header() {
                 }`}
               />
             </Link>
-            <p className="text-xs font-semibold text-dark3 lg:hidden">
+            {/* <p className="text-xs font-semibold text-dark3 lg:hidden">
               {version}
-            </p>
+            </p> */}
           </div>
-          <div className="hidden ml-8 lg:block">
+          <div className="hidden w-full lg:block">
             <MenuHeader />
           </div>
         </div>
-
-        <div className="flex items-center justify-end flex-shrink-0 gap-x-6">
+        {/* Search mobile */}
+        <div className="flex items-center justify-end flex-shrink-0 gap-x-6 ">
           <div
             onClick={() => {
               setShowSearch(false);
