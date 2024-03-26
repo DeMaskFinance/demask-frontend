@@ -19,8 +19,8 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   };
 
   return (
-    <div className="flex gap-x-4 3xl:gap-x-8">
-      <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-4">
+    <div className="flex gap-x-8">
+      <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">
       {data.map((item) => (
         <React.Fragment key={item.id}>
           <li className="relative text-base hover:text-secondary5 active:text-secondary3">
@@ -30,11 +30,6 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           </li>
         </React.Fragment>
       ))}
-      <li>
-        <a href="https://docs.demask.finance/" target="_blank" rel="noopener noreferrer" className="text-base text-dark3">
-          <p>Docs</p>
-        </a>
-      </li>
     </ul>
       <Search isFocused={isFocused} handleFocus={handleFocus} />
     </div>

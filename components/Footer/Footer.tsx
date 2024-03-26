@@ -17,7 +17,7 @@ export default function Footer() {
     // setTheme(theme === "light" ? "dark" : "light");
   };
   return (
-    <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex lg:px-[156px] md:px-14 bg-dark4">
+    <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-dark4">
       <div>
         <div className="flex gap-x-[120px]">
           <ul className="flex font-semibold gap-x-8 text-dark2">

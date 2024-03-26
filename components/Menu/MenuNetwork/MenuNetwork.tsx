@@ -91,8 +91,8 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                     height={24}
                     className=" fill-white group-hover:fill-secondary5"
                 />
-                <p className="hidden lg:block">{filterNetwork?.name}</p>
-                <span className="lg:hidden">
+                <p className="hidden 2xl:block">{filterNetwork?.name}</p>
+                <span className="2xl:hidden">
                     <BsCaretDownFill />
                 </span>
             </button>

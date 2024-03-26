@@ -141,9 +141,6 @@ export default function Header() {
                 }`}
               />
             </Link>
-            {/* <p className="text-xs font-semibold text-dark3 lg:hidden">
-              {version}
-            </p> */}
           </div>
           <div className="hidden w-full lg:block">
             <MenuHeader />
@@ -160,7 +157,7 @@ export default function Header() {
               showSearch ? "block" : "hidden"
             } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
-          <div className="flex items-center gap-2 lg:gap-x-6 md:gap-x-4">
+          <div className="flex items-center lg:gap-x-6 gap-x-4">
             <div
               className="text-secondary5 lg:hidden"
               onClick={() => {

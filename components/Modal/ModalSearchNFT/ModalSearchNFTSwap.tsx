@@ -90,7 +90,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
             <div className="relative">
               <input
                 className={styles.inputItem}
-                placeholder="Search name / liquidity pairs / crypto collectibles : id"
+                placeholder="Search NFTs"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />

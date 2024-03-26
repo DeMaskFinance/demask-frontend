@@ -166,11 +166,11 @@ const Search: FunctionComponent<SearchProps> = ({
             value={searchTerm}
             onChange={handleSearch}
             ref={searchRef}
-            placeholder="Search name / liquidity pairs / crypto collectibles : id"
+            placeholder="Search all of Demask"
             onClick={() => {
               setClick(true);
             }}
-            className={`border hide-clear rounded-xl relative pr-1 placeholder:text-dark2 transition-all ${
+            className={`border hide-clear rounded-xl w-full relative pr-1 placeholder:text-dark2 transition-all ${
               active
                 ? "w-full lg:h-[32px] h-[40px]  border-secondary5 pl-2 lg:pl-10"
                 : " lg:w-[32px]  border-dark3 shadow pl-2 lg:h-[32px] h-[40px]  bg-transparent transition-all"

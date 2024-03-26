@@ -5,7 +5,7 @@ import images from "@/public/images";
 import Image from "next/image";
 import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Web3 from "web3";
 import Wrapper from "../Wrapper";
 import { getNonce, loginAuthen } from "@/libs/service/userService";
@@ -22,10 +22,24 @@ const styles = {
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
-  const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet, updateChainId } = useContext(AccountContext);
-  const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+  const {
+    account,
+    wallet,
+    chainId,
+    demask,
+    tokenDefault,
+    updateAccount,
+    updateWallet,
+    updateChainId,
+  } = useContext(AccountContext);
+  const [tab, setTab] = useQueryParam(
+    "chain",
+    withDefault(StringParam, chainId)
+  );
   const dispatch = useDispatch();
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);
@@ -44,22 +58,29 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
       } else {
         provider = await getProvider(walletName);
         if (walletName !== "WalletConnect") {
-          const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId, setTab);
-          if (!networkSwitched) {
+          if (!window.ethereum) {
+            walletName === "Metamask" ? window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer') : window.open('https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad', '_blank', 'noopener,noreferrer');
             return;
-          }
-          accounts = await provider
-            .request({
-              method: "eth_requestAccounts",
-            })
-            .catch((error: any) => {
-              if (error.code === 4001) {
-                // EIP-1193 userRejectedRequest error
-                console.log("Please connect to MetaMask.");
-              } else {
+          } else {
+            const networkSwitched = await changeNetwork(
+              chainId,
+              walletName,
+              demask,
+              setIsOpen,
+              updateChainId,
+              setTab
+            );
+            if (!networkSwitched) {
+              return;
+            }
+            accounts = await provider
+              .request({
+                method: "eth_requestAccounts",
+              })
+              .catch((error: any) => {
                 console.error(error);
-              }
-            });
+              });
+          }
         } else {
           await provider.connect();
           accounts = await provider.accounts;
@@ -67,7 +88,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
       }
       if (walletName !== "Binance") {
         const { data: sign } = await getNonce(accounts[0]);
-        const msg = `${Buffer.from(String(sign.nonce), 'utf8').toString('hex')}`;
+        const msg = `${Buffer.from(String(sign.nonce), "utf8").toString(
+          "hex"
+        )}`;
         const signedData = await provider?.request({
           method: "personal_sign",
           params: [msg, accounts[0]],
@@ -76,9 +99,10 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           userAddress: accounts[0],
           signature: signedData,
         });
-        console.log(loginData);
-        
-        dispatch(login({ accessToken: loginData.accessToken, user: accounts[0] }));
+
+        dispatch(
+          login({ accessToken: loginData.accessToken, user: accounts[0] })
+        );
         updateAccount(accounts[0]);
         updateWallet(walletName);
         document.body.style.overflowY = "auto";
@@ -87,8 +111,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
     } catch (error) {
       console.error(error);
     }
-  }
-
+  };
 
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
