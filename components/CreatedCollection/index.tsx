@@ -72,6 +72,7 @@ export default function CreatedCollection() {
     data: dataDetail,
     isLoading: isLoadingDetail,
     isSuccess: isSuccessDetail,
+    refetch
   } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
@@ -90,8 +91,7 @@ export default function CreatedCollection() {
         chainId,
         collectionAddress,
       });
-      console.log(res);
-      
+      refetch();
     } catch (error) {
       console.error(error);
     } finally {
@@ -106,6 +106,7 @@ export default function CreatedCollection() {
         chainId,
         collectionAddress,
       });
+      refetch();
     } catch (error) {
       console.error(error);
     } finally {
@@ -167,12 +168,12 @@ export default function CreatedCollection() {
               )}
             </div>
             {avatarLoading ? (
-              <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-full bg-slate-600/[.7]">
+              <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-lg bg-slate-600/[.7]">
                 <BiLoaderAlt className="text-4xl text-white animate-spin" />
               </div>
             ) : (
               <div
-                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex"
+                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-lg group-hover:flex"
                 onClick={() => {
                   if (inputAvatar.current) {
                     (inputAvatar.current as HTMLInputElement).click();

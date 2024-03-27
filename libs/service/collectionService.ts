@@ -103,6 +103,9 @@ const uploadFileCollection = async (params: any) => {
     if (params.banner) {
       formData.append("banner", params.banner);
     }
+    if (params.featureImage) {
+      formData.append("featureImage", params.featureImage);
+    }
     const res = await request.postForm(`upload-collection?chainId=${params.chainId}&contractAddress=${params.collectionAddress}`, formData);
     return res.data;
   } catch (error) {

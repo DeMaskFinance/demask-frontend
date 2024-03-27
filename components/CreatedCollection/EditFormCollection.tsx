@@ -156,7 +156,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     console.log(values);
     try {
       setLoading(true);
-      const newCollection = await collectionService.updateCollection(
+      await collectionService.updateCollection(
         {
           name: values.name,
           description: values.description,
@@ -170,11 +170,17 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             website: values.website,
           },
           creatorAddress: values.creatorAddress,
-          featureImage: values.featureImage,
         },
         collectionAddress,
         chainId
       );
+      if(values.featureImage){
+        await collectionService.uploadFileCollection({
+          featureImage: values.featureImage,
+          chainId,
+          collectionAddress,
+        });
+      }
       toast.success('Update successed!', {
         position: "top-right",
         autoClose: 5000,
