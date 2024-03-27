@@ -24,6 +24,9 @@ html {
 .item-active-drap {
   border: 1px solid #0e8388;
 }
+.Toastify__toast-container--top-center:has(div.toastSuccess) {
+  width: fit-content;
+}
 .swipper-about {
   height: auto !important;
 }

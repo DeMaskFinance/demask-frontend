@@ -80,13 +80,30 @@ const collectionListUserService = async (
 };
 const updateCollection = async (
   body: CollectionInterface,
-  collectionAddress: string
+  collectionAddress: string,
+  chainID:string
 ) => {
   try {
     const res = await request.patch(
-      `edit-collection?contractAddress=${collectionAddress}`,
+      `edit-collection?contractAddress=${collectionAddress}&chainId=${chainID}`,
       body
     );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const uploadFileCollection = async (params: any) => {
+  try {
+    const formData = new FormData();
+    if (params.avatar) {
+      formData.append("avatar", params.avatar);
+    }
+    
+    if (params.banner) {
+      formData.append("banner", params.banner);
+    }
+    const res = await request.postForm(`upload-collection?chainId=${params.chainId}&contractAddress=${params.collectionAddress}`, formData);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -98,5 +115,6 @@ export {
   collectionListBuy,
   collectionListSell,
   collectionListUserService,
-  updateCollection
+  updateCollection,
+  uploadFileCollection
 };

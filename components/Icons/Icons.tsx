@@ -574,7 +574,7 @@ export const EditIcon: React.FunctionComponent<IconProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={`${className} hover:fill-secondary5`}
       width={width}
       height={height}
       viewBox="0 0 32 32"
@@ -596,20 +596,18 @@ export const CopyIcon: React.FunctionComponent<IconProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={`${className} hover:fill-secondary5`}
       width={width}
       height={height}
       viewBox="0 0 19 20"
-      fill="none"
+      fill="#A3A9B9"
     >
       <path
         d="M4.09961 9.39701C4.09961 6.67101 4.09961 5.30801 4.94261 4.46101C5.78661 3.61401 7.14361 3.61401 9.85961 3.61401H12.7396C15.4546 3.61401 16.8116 3.61401 17.6556 4.46101C18.4996 5.30801 18.4996 6.67101 18.4996 9.39701V14.217C18.4996 16.943 18.4996 18.306 17.6556 19.153C16.8126 20 15.4546 20 12.7396 20H9.85961C7.14361 20 5.78661 20 4.94261 19.153C4.09961 18.306 4.09961 16.943 4.09961 14.217V9.39701Z"
-        fill="#A3A9B9"
       />
       <path
         opacity="0.5"
         d="M1.672 1.172C0.5 2.343 0.5 4.229 0.5 8V10C0.5 13.771 0.5 15.657 1.672 16.828C2.289 17.446 3.105 17.738 4.292 17.876C4.1 17.036 4.1 15.88 4.1 14.216V9.397C4.1 6.671 4.1 5.308 4.943 4.461C5.787 3.614 7.144 3.614 9.86 3.614H12.74C14.392 3.614 15.54 3.614 16.378 3.804C16.24 2.611 15.948 1.792 15.328 1.172C14.157 -1.19209e-07 12.271 0 8.5 0C4.729 0 2.843 -1.19209e-07 1.672 1.172Z"
-        fill="#A3A9B9"
       />
     </svg>
   );

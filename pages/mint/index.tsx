@@ -14,7 +14,6 @@ import { Category } from "@/libs/constants";
 import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import images from "@/public/images";
 import { NextSeo } from "next-seo";
-import "react-datepicker/dist/react-datepicker.css";
 import { SEO } from "../../next-seo.config";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",

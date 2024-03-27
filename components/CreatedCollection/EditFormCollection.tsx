@@ -4,12 +4,16 @@ import images from "@/public/images";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import * as collectionService from "@/libs/service/collectionService";
-import { FacebookIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
+import { FacebookIcon, StartIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
 import { useRouter } from "next/router";
+import AccountContext from "@/context/AccountContext";
+import Swal from 'sweetalert2'
+import { toast } from "react-toastify";
+
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
@@ -58,12 +62,19 @@ const validationSchema = yup.object().shape({
     .min(0, "Must be greater than 0%")
     .max(10, "Must be less than 10%"),
 });
-
-const EditFormCollection = ({ data }: any) => {
+interface EditCollectionProps {
+  data: any;
+  refetch: any;
+}
+const EditFormCollection: React.FC<EditCollectionProps> = ({
+  data,
+  refetch,
+}) => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
+  const { account, chainId } = useContext(AccountContext);
   const collectionAddress = useRouter().query.edit as string;
 
   const socialList = [
@@ -151,8 +162,8 @@ const EditFormCollection = ({ data }: any) => {
           name: values.name,
           description: values.description,
           url: values.url,
-          category: values.category,
-          collaborators: values.collaborators,
+          // category: values.category,
+          // collaborators: values.collaborators,
           socials: {
             facebook: values.facebook,
             twitter: values.twitter,
@@ -162,8 +173,20 @@ const EditFormCollection = ({ data }: any) => {
           creatorAddress: values.creatorAddress,
           featureImage: values.featureImage,
         },
-        collectionAddress
+        collectionAddress,
+        chainId
       );
+      toast.success('Update successed!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      refetch();
     } catch (error) {
       console.error(error);
     } finally {
@@ -184,6 +207,7 @@ const EditFormCollection = ({ data }: any) => {
       <h1 className="mt-4 text-2xl font-semibold text-center">
         Edit Collection Details
       </h1>
+      
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -470,11 +494,11 @@ const EditFormCollection = ({ data }: any) => {
               </Link>
               <Button
                 type="submit"
-                primary={dirty}
-                active={!dirty}
-                disabled={!dirty}
+                primary={dirty && !isSubmitting}
+                active={!dirty || isSubmitting}
+                disabled={!dirty || isSubmitting}
                 className="px-6 py-2"
-                isLoadingBtn={loading}
+                isLoadingBtn={isSubmitting}
               >
                 Save
               </Button>
