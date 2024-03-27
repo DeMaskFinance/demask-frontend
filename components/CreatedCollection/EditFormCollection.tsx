@@ -11,7 +11,6 @@ import * as collectionService from "@/libs/service/collectionService";
 import { FacebookIcon, StartIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
 import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
-import Swal from 'sweetalert2'
 import { toast } from "react-toastify";
 
 const styles = {
