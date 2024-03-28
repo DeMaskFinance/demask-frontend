@@ -37,18 +37,18 @@ const Profile = () => {
             key: "items",
         },
         {
-            title: "Pools",
-            panel: () => (
-                <Pools />
-            ),
-            key: "pools",
-        },
-        {
             title: "Created",
             panel: () => (
                 <Created />
             ),
             key: "created",
+        },
+        {
+            title: "Pools",
+            panel: () => (
+                <Pools />
+            ),
+            key: "pools",
         },
         {
             title: "Launchpad",

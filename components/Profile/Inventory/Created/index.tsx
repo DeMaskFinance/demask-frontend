@@ -98,7 +98,7 @@ const Created = () => {
                       <li key={itemIndex}>
                         <SwiperSlide className="text-sm lg:text-base text-dark2">
                           <Link
-                            href={`created/${item.contractAddress}?typeERC=${item.type}`}
+                            href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                           >
                             <li className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
                               <div className="h-[127px]">

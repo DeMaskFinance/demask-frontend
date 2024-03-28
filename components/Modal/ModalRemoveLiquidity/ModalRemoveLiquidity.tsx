@@ -65,7 +65,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
   const collectionAddress =
-    useRouter().query.created ||
+    useRouter().query.collection ||
     ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>

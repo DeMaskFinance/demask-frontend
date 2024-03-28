@@ -58,7 +58,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             </div>) : (<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)}
             <span><EtherIcon width={20} height={20} className="fill-white ml-[-1px]" /></span>
           </div>
-          <Link href={type ==='erc1155'?`/details/${liquidity.dmlAddress}`:`created/${liquidity.nftAddress}?typeERC=erc721&tab=pool`}>
+          <Link href={type ==='erc1155'?`/details/${liquidity.dmlAddress}`:`/collection/${liquidity.nftAddress}?typeERC=erc721&tab=pool`}>
             <Button active className="justify-end">DETAIL</Button>
           </Link>
         </div>

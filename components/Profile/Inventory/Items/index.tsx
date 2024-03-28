@@ -74,7 +74,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                     </div>
                     <div className="w-full">
                       <Link
-                        href={`/created/${item.nftAddress}?typeERC=${item.type}`}
+                        href={`/collection/${item.nftAddress}?typeERC=${item.type}`}
                         className="flex-wrap max-w-full mt-2 text-xs font-semibold hover:underline text-secondary5 line-clamp-1 hover:underline-offset-1"
                       >
                         {item?.collectionName ? (
@@ -124,7 +124,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                           href={
                             item.type === "erc1155"
                               ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                              : `/created/${item.nftAddress}?typeERC=erc721&tab=pool`
+                              : `/collection/${item.nftAddress}?typeERC=erc721&tab=pool`
                           }
                         >
                           <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
@@ -138,7 +138,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                           href={
                             item.type === "erc1155"
                               ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                              : `/created/${item.nftAddress}?typeERC=erc721`
+                              : `/collection/${item.nftAddress}?typeERC=erc721`
                           }
                         >
                           <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">

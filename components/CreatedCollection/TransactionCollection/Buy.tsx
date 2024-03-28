@@ -45,7 +45,7 @@ const Buy = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = useRouter().query.created as string;
+  const collectionAddress = useRouter().query.collection as string;
   const { ref, inView } = useInView();
   const royaltyFee = 0;
   const { bigNumberBalance } = useInformationToken(
@@ -221,7 +221,7 @@ const Buy = () => {
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="flex flex-wrap px-4 py-2 mb-2 text-sm bg-dark5 text-dark2 gap-x-4">
+              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4">
                 <li className="flex items-center">
                   Send:
                   <FormatNumber

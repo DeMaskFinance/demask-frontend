@@ -32,7 +32,7 @@ export default function CreatedCollection() {
     "typeERC",
     withDefault(StringParam, "")
   );
-  const collectionAddress = useRouter().query.created || "";
+  const collectionAddress = useRouter().query.collection || "";
   const fetchDataNFTs = async (
     typeERC: string,
     collectionAddress: string | string[],

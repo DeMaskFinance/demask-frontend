@@ -37,7 +37,7 @@ const PoolItem = ({liquidity}:any) => {
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const collectionAddress =
-    useRouter().query.created ||
+    useRouter().query.collection ||
     ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
     console.log(liquidity);
     

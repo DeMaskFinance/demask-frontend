@@ -62,7 +62,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const collectionAddress = useRouter().query.created as string;
+  const collectionAddress = useRouter().query.collection as string;
 
   const { bigNumberBalance } = useInformationToken(
     account,

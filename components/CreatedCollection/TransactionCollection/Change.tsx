@@ -33,7 +33,7 @@ const Change = () => {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessSwap, setIsOpenSuccessSwap] = useState<boolean>(false);
   const [isOpenErrorSwap, setIsOpenErrorSwap] = useState<boolean>(false);
-  const collectionAddress = useRouter().query.created as string;
+  const collectionAddress = useRouter().query.collection as string;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenSwapNFT, setIsOpenSwapNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
