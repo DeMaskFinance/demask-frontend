@@ -72,7 +72,7 @@ export default function CreatedCollection() {
     data: dataDetail,
     isLoading: isLoadingDetail,
     isSuccess: isSuccessDetail,
-    refetch
+    refetch,
   } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
@@ -115,7 +115,7 @@ export default function CreatedCollection() {
   };
   return (
     <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0">
-      <div className="relative cursor-pointer group h-[120px] lg:h-[240px]">
+      <div className={`relative group h-[120px] lg:h-[240px] ${dataDetail?.collaborators.includes(account) && 'cursor-pointer'}`}>
         {dataDetail?.banner ? (
           <Image
             src={dataDetail?.banner}
@@ -125,29 +125,33 @@ export default function CreatedCollection() {
             className="w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]"></div>
+          <div className="w-full h-full rounded-b-lg bg-dark4 "></div>
         )}
-        {bannerLoading ? (
-          <div className="absolute top-0 bottom-0 flex items-center rounded-b-lg justify-center w-full h-full bg-slate-600/[.7]">
-            <BiLoaderAlt className="text-5xl text-white animate-spin" />
-          </div>
-        ) : (
-          <div
-            className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex"
-            onClick={() => {
-              if (inputBanner.current) {
-                (inputBanner.current as HTMLInputElement).click();
-              }
-            }}
-          >
-            <EditIcon width={30} height={30} />
-            <p className="text-xs">1200 x 400 Recommended</p>
+        {dataDetail?.collaborators.includes(account) && (
+          <div>
+            {bannerLoading ? (
+              <div className="absolute top-0 bottom-0 flex items-center rounded-b-lg justify-center w-full h-full bg-slate-600/[.7]">
+                <BiLoaderAlt className="text-5xl text-white animate-spin" />
+              </div>
+            ) : (
+              <div
+                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex"
+                onClick={() => {
+                  if (inputBanner.current) {
+                    (inputBanner.current as HTMLInputElement).click();
+                  }
+                }}
+              >
+                <EditIcon width={30} height={30} />
+                <p className="text-xs">1200 x 400 Recommended</p>
+              </div>
+            )}
           </div>
         )}
       </div>
       <section className="justify-between p-4 rounded-lg lg:flex bg-dark5">
         <div className="items-center text-xs lg:flex gap-x-2 ">
-          <div className="relative rounded-full cursor-pointer w-fit h-fit group">
+          <div className={`relative rounded-full w-fit h-fit group ${dataDetail?.collaborators.includes(account) && 'cursor-pointer'}`}>
             <div className="group-hover:brightness-50">
               {dataDetail?.avatar ? (
                 <Image
@@ -167,21 +171,25 @@ export default function CreatedCollection() {
                 />
               )}
             </div>
-            {avatarLoading ? (
-              <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-lg bg-slate-600/[.7]">
-                <BiLoaderAlt className="text-4xl text-white animate-spin" />
-              </div>
-            ) : (
-              <div
-                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-lg group-hover:flex"
-                onClick={() => {
-                  if (inputAvatar.current) {
-                    (inputAvatar.current as HTMLInputElement).click();
-                  }
-                }}
-              >
-                <EditIcon width={24} height={24} />
-                <p className="text-xs">600 x 600px</p>
+            {dataDetail?.collaborators.includes(account) && (
+              <div>
+                {avatarLoading ? (
+                  <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-lg bg-slate-600/[.7]">
+                    <BiLoaderAlt className="text-4xl text-white animate-spin" />
+                  </div>
+                ) : (
+                  <div
+                    className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-lg group-hover:flex"
+                    onClick={() => {
+                      if (inputAvatar.current) {
+                        (inputAvatar.current as HTMLInputElement).click();
+                      }
+                    }}
+                  >
+                    <EditIcon width={24} height={24} />
+                    <p className="text-xs">600 x 600px</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

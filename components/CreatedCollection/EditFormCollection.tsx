@@ -8,7 +8,13 @@ import { useContext, useRef, useState } from "react";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import * as collectionService from "@/libs/service/collectionService";
-import { FacebookIcon, StartIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
+import {
+  FacebookIcon,
+  StartIcon,
+  TeleIcon,
+  TwitterIcon,
+  WebsiteIcon,
+} from "../Icons";
 import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
 import { toast } from "react-toastify";
@@ -19,48 +25,7 @@ const styles = {
     "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3",
   btnActive: "rounded-full bg-base2",
 };
-const validationSchema = yup.object().shape({
-  name: yup.string().required("Name is a required").max(50),
-  description: yup.string().required("Description is a required").max(200),
-  url: yup.string().url().nullable(),
-  twitter: yup
-    .string()
-    .max(200)
-    .matches(/^(https:\/\/twitter.com\/).+$/, {
-      message: "Invalid twitter url",
-      excludeEmptyString: true,
-    })
-    .nullable(),
-  facebook: yup
-    .string()
-    .max(200)
-    .matches(/^(https:\/\/facebook.com\/).+$/, {
-      message: "Invalid facebook url",
-      excludeEmptyString: true,
-    })
-    .nullable(),
-  discord: yup
-    .string()
-    .max(200)
-    .matches(/^(https:\/\/discord.com\/).+$/, {
-      message: "Invalid discord url",
-      excludeEmptyString: true,
-    })
-    .nullable(),
-  telegram: yup
-    .string()
-    .max(200)
-    .matches(/^(https:\/\/t.me\/).+$/, {
-      message: "Invalid telegram url",
-      excludeEmptyString: true,
-    })
-    .nullable(),
-  website: yup.string().url().nullable(),
-  Percent: yup
-    .number()
-    .min(0, "Must be greater than 0%")
-    .max(10, "Must be less than 10%"),
-});
+
 interface EditCollectionProps {
   data: any;
   refetch: any;
@@ -76,6 +41,67 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const { account, chainId } = useContext(AccountContext);
   const collectionAddress = useRouter().query.edit as string;
 
+  const validationSchema = yup.object().shape({
+    name: yup.string().required("Name is a required").max(50),
+    description: yup.string().required("Description is a required").max(200),
+    url: yup.string().url().nullable(),
+    collaborator: yup
+      .string()
+      .matches(
+        /^(0x[a-fA-F0-9]{40}|[a-zA-Z0-9-]+\.eth)$/i,
+        "Invalid address or ENS name"
+      )
+      .min(42)
+      .test(
+        "unique-collaborator",
+        "You're already an authorized editor",
+        (value) => {
+          if (value) {
+            return !data?.collaborators.includes(value.toLowerCase());
+          } else {
+            return true;
+          }
+        }
+      )
+      .nullable(),
+    twitter: yup
+      .string()
+      .max(200)
+      .matches(/^(https:\/\/twitter.com\/).+$/, {
+        message: "Invalid twitter url",
+        excludeEmptyString: true,
+      })
+      .nullable(),
+    facebook: yup
+      .string()
+      .max(200)
+      .matches(/^(https:\/\/facebook.com\/).+$/, {
+        message: "Invalid facebook url",
+        excludeEmptyString: true,
+      })
+      .nullable(),
+    discord: yup
+      .string()
+      .max(200)
+      .matches(/^(https:\/\/discord.com\/).+$/, {
+        message: "Invalid discord url",
+        excludeEmptyString: true,
+      })
+      .nullable(),
+    telegram: yup
+      .string()
+      .max(200)
+      .matches(/^(https:\/\/t.me\/).+$/, {
+        message: "Invalid telegram url",
+        excludeEmptyString: true,
+      })
+      .nullable(),
+    website: yup.string().url().nullable(),
+    Percent: yup
+      .number()
+      .min(0, "Must be greater than 0%")
+      .max(10, "Must be less than 10%"),
+  });
   const socialList = [
     {
       icon: <WebsiteIcon width={24} height={24} />,
@@ -105,37 +131,21 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       placeHolder: "https://t.me/",
       value: 99123,
     },
-    // {
-    //   icon: <DiscordIcon width={24} height={24} />,
-    //   title: "Discord",
-    //   name: "discord",
-    //   placeHolder: "https://discord.com/",
-    //   value: 321,
-    // },
-    // {
-    //   icon: <GithubIcon width={24} height={24} />,
-    //   title: "Github",
-    //   name: "github",
-    //   placeHolder: "https://github.com/",
-    //   value: "12321",
-    // },
   ];
 
-  const initialValues = {
-    name: data?.name,
-    description: data?.description,
-    url: data?.url,
-    collaborators: data?.collaborators,
-    creatorAddress: data?.creatorAddress,
-    category: [] as string[],
-    Percent: "",
-    featureImage: data?.featureImage,
-    twitter: data?.socials?.twitter,
-    facebook: data?.socials?.facebook,
-    // discord: data?.socials?.discord,
-    telegram: data?.socials?.telegram,
-    website: data?.socials?.website,
-  };
+  const removeCollab = async(item:string) =>{
+    const newCollab = data.collaborators.filter((col:string)=>{
+      return col !== item;
+    });
+    await collectionService.updateCollection(
+      {
+        collaborators: newCollab,
+      },
+      collectionAddress,
+      chainId
+    );
+    refetch();
+  }
   const selectCategory = (
     value: string,
     selectedCategory: string[],
@@ -153,7 +163,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   };
   const onSubmit = async (values: any) => {
     // Handle form submission
-    console.log(values);
     try {
       setLoading(true);
       await collectionService.updateCollection(
@@ -162,7 +171,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
           description: values.description,
           url: values.url,
           // category: values.category,
-          // collaborators: values.collaborators,
+          collaborators: values.collaborator
+            ? [...values.collaborators, values.collaborator]
+            : values.collaborators,
           socials: {
             facebook: values.facebook,
             twitter: values.twitter,
@@ -174,7 +185,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         collectionAddress,
         chainId
       );
-      if(values.featureImage){
+      if (selectedImage) {
         await collectionService.uploadFileCollection({
           featureImage: values.featureImage,
           chainId,
@@ -183,7 +194,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       }
       toast.success('Update successed!', {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
@@ -198,25 +209,33 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       setLoading(false);
     }
   };
-  const listCollection = [
-    {
-      address: "0x4699A9A5607c9281103Ad504fA922276Eb6385A2",
-      role: " Owner",
-    },
-  ];
-
-  console.log(data);
+  const initialValues = {
+    name: data?.name,
+    description: data?.description,
+    url: data?.url,
+    collaborators: data?.collaborators,
+    collaborator: "",
+    creatorAddress: data?.creatorAddress,
+    category: [] as string[],
+    Percent: "",
+    featureImage: data?.featureImage,
+    twitter: data?.socials?.twitter,
+    facebook: data?.socials?.facebook,
+    telegram: data?.socials?.telegram,
+    website: data?.socials?.website,
+  };
 
   return (
     <div className="">
       <h1 className="mt-4 text-2xl font-semibold text-center">
         Edit Collection Details
       </h1>
-      
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
+        enableReinitialize
       >
         {({
           values,
@@ -379,24 +398,31 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 Collaborators can only edit how this collection or drop appears
                 on Demask
               </p>
-              {listCollection.map((item, index) => (
-                <div
-                  className="flex items-center justify-between p-2 mb-2 font-semibold rounded-lg bg-dark5 text-dark2"
-                  key={index}
-                >
-                  <p>{item.address}</p>
-                  <p className="text-sm">{item.role}</p>
-                </div>
-              ))}
+              {values?.collaborators &&
+                values.collaborators.map((item: string, index: number) => (
+                  <div
+                    className="flex items-center justify-between p-2 mb-2 font-semibold rounded-lg bg-dark5 text-dark2"
+                    key={index}
+                  >
+                    <p>{item}</p>
+                    {index === 0 && <p className="text-sm">Owner</p>}
+                    {index !== 0 && account === values?.collaborators[0] && <Image
+                      src={Icons.deleteIcon}
+                      alt="Delete property"
+                      className="ml-2 cursor-pointer"
+                      onClick={() => removeCollab(item)}
+                    />}
+                  </div>
+                ))}
 
               {checkCollaborator ? (
                 <div>
                   <div className="flex items-center">
                     <Field
                       type="text"
-                      id="Collaborator"
-                      name="Collaborator"
-                      value={values.collaborators}
+                      id="collaborator"
+                      name="collaborator"
+                      value={values.collaborator}
                       placeholder="0x...123"
                       onChange={handleChange}
                       className={styles.inputItem}
@@ -409,7 +435,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     />
                   </div>
                   <ErrorMessage
-                    name="Collaborator"
+                    name="collaborator"
                     component="div"
                     className="mt-2 text-xs text-red"
                   />
@@ -446,7 +472,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     id="Percent"
                     name="Percent"
                     value={values.Percent}
-                    placeholder="0%"
+                    placeholder="0"
                     onChange={handleChange}
                     className={`${styles.inputItem} `}
                   />

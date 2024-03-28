@@ -2,7 +2,7 @@ import { version } from "@/libs/constants";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../Buttons";
-import { EmailIcon } from "../Icons";
+import { EmailIcon, TeleIcon, TwitterIcon } from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import useSvgComponents from "../Picture/Picture";
 import { useTheme } from "next-themes";
@@ -121,6 +121,10 @@ export default function Footer() {
           <LogoDeMask width={245} height={56} />
         </Link>
         <p className="text-xs font-semibold text-dark3">{version}</p>
+        <div className="flex mt-2 gap-x-4">
+          <TeleIcon width={24} height={24} className="fill-dark2" />
+          <TwitterIcon width={24} height={24} />
+        </div>
       </div>
     </footer>
   );
