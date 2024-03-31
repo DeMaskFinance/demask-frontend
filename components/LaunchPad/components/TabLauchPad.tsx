@@ -6,6 +6,8 @@ import { useInView } from "react-intersection-observer";
 import { useQueryParam, StringParam, withDefault } from 'use-query-params';
 import AccountContext from "@/context/AccountContext";
 import { SkeletonCategory } from "@/components/Skeleton/SkeletonCategory";
+import Image from "next/image";
+import images from "@/public/images";
 
 type TabLaunchPadProps = {
   query: string;
@@ -73,7 +75,10 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                   </Fragment>
                 ))
               ) : (
-                <p>{desc}</p>
+                <div className="flex flex-col items-center justify-center">
+                  <Image alt="emptyLaunchpad" src={images.emptyLaunchpad}/>
+                  <p>{desc}</p>
+                </div>
               )}
             </div>
             <div ref={ref} style={{ height: "1px" }} ></div>

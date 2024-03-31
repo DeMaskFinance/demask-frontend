@@ -17,7 +17,7 @@ import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border rounded-lg border-dark3",
+  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
   btnActive: "rounded-lg bg-secondary5",
 };
 const updateMeta = {

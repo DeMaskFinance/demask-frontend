@@ -56,8 +56,8 @@ const Swap: React.FC = () => {
           <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 ">
             <Link href="/swap">
               <BackIcon
-                width={30}
-                height={30}
+                width={24}
+                height={24}
                 className="cursor-pointer hover:fill-secondary5"
               />
             </Link>

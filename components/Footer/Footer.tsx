@@ -122,8 +122,28 @@ export default function Footer() {
         </Link>
         <p className="text-xs font-semibold text-dark3">{version}</p>
         <div className="flex mt-2 gap-x-4">
-          <TeleIcon width={24} height={24} className="fill-dark2" />
-          <TwitterIcon width={24} height={24} />
+          <a
+            href="https://t.me/DemaskFinance"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <TeleIcon
+              width={24}
+              height={24}
+              className="cursor-pointer fill-dark2"
+            />
+          </a>
+          <a
+            href="https://twitter.com/DemaskFinance"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <TwitterIcon
+              width={20}
+              height={20}
+              className="cursor-pointer fill-dark2"
+            />
+          </a>
         </div>
       </div>
     </footer>

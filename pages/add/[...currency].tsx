@@ -30,7 +30,7 @@ import { activeNFTPercent } from "@/libs/constants";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
-  inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
+  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
   btnActive: "rounded-full bg-base2",
 };
 const updateMeta = {
@@ -213,9 +213,9 @@ export default function AddLiquidity() {
     <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />
       <div className="flex items-center justify-between mb-6">
-        <div className="flex">
+        <div className="flex items-center">
           <div onClick={() => router.back()}>
-            <BackIcon width={30} height={30} className="cursor-pointer hover:fill-secondary5" />
+            <BackIcon width={20} height={20} className="cursor-pointer hover:fill-secondary5" />
           </div>
           <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
         </div>

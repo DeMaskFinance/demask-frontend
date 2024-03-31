@@ -34,7 +34,7 @@ interface ModalRemoveLiquidityProps {
 }
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
-  inputItem: "w-full p-2 mb-4 border rounded-lg border-dark3",
+  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
 };
 const ModalRemoveLiquidity: React.FunctionComponent<
   ModalRemoveLiquidityProps

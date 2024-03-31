@@ -45,7 +45,7 @@ export default function SwapDefault() {
         <div className='mb-[100px] lg:mb-0 py-8 mx-auto max-w-screen-3xl swap'>
             <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
                 <div onClick={() => router.back()}>
-                    <BackIcon width={32} height={32} className="cursor-pointer hover:fill-secondary5" />
+                    <BackIcon width={20} height={20} className="cursor-pointer hover:fill-secondary5" />
                 </div>
                 <div className="w-[32px] h-[32px] ">
                     <Image alt='demask' width={32} height={32} src='/logoIcon.png' className='object-cover rounded-lg' />
@@ -116,7 +116,7 @@ export default function SwapDefault() {
                                     <span><EtherIcon width={20} height={20} className="fill-dark1 ml-[-1px]" /></span>
                                 </div>
                             </div>
-                            <div className={`relative p-2 border rounded-lg border-dark3`}>
+                            <div className={`relative p-2  rounded-lg bg-dark5`}>
                                 <div className="relative">
                                     <input
                                         type="number"
@@ -132,7 +132,7 @@ export default function SwapDefault() {
                                             }
                                         }}
                                         min="1"
-                                        className="text-sm font-semibold border-none outline-none lg:text-lg text-dark3 placeholder:font-semibold"
+                                        className="text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
                                         value={inputNFT}
                                         onChange={(e) => {
                                             setInputNFT(e.target.value);
@@ -140,7 +140,7 @@ export default function SwapDefault() {
                                         }}
                                     />
                                     <div
-                                        className="absolute px-4 py-2 transition duration-150 ease-out bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-white border hover:bg-gradient-to-r hover:border-secondary5 hover:from-white active:bg-secondary3 active:text-white hover:text-secondary2 hover:bg-white rounded-lg cursor-pointer font-semibold right-1 top-1 border-secondary5 "
+                                        className="absolute px-4 py-2 font-semibold transition duration-150 ease-out rounded-lg cursor-pointer bg-dark4 text-dark1 right-1 top-1 border-secondary5 "
                                         onClick={handleSearchNFT}
                                     >
                                         <div className="text-center">
@@ -148,12 +148,14 @@ export default function SwapDefault() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-end mt-8">
+                                <div className='flex flex-col items-end'>
+                                <ul className="flex p-2 mt-8 rounded-lg bg-dark4 w-fit">
                                     {activeNFTPercent.map((item, index) => (
-                                        <button type="button" className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
+                                        <li className={`text-[12px] w-10 flex justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${item.text === activeChoiceNFT && 'bg-secondary5 text-white'}`} key={index}
 
-                                        >{item.text}</button>
+                                        >{item.text}</li>
                                     ))}
+                                </ul>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +176,7 @@ export default function SwapDefault() {
                                 </div>
                             </div>
                             <div className="relative">
-                                <div className='block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4'>
+                                <div className='block w-full py-2 pl-2 mb-2 font-semibold border rounded-lg border-dark4 text-dark2 bg-dark4'>
                                     0.0
                                 </div>
                                 <div

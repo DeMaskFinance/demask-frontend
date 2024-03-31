@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from "../../next-seo.config";
 import { TabGroups } from "@/components/NavChoice";
+import { PoolGradientIcon } from "@/components/Icons/Mobile/IconMobile";
 const updateMeta = {
   ...SEO,
   title: "Liquidity",
@@ -72,7 +73,12 @@ export default function Liquidity() {
       <NextSeo {...updateMeta} />
       <div className="w-full">
         <div className="flex justify-between w-full">
-          <h2 className="text-2xl font-semibold text-dark0">Your Liquidity</h2>
+          <div className="flex items-center gap-x-2">
+            <PoolGradientIcon width={20} height={20} />
+            <h2 className="text-2xl font-semibold text_gradient">
+              Your Liquidity
+            </h2>
+          </div>
           <Button
             type="button"
             primary
@@ -110,7 +116,10 @@ export default function Liquidity() {
                       {page?.combinedRecords.map(
                         (liquidity: any, index: number) => (
                           <div key={index} className="w-full mx-auto">
-                            <LiquidytiesItem liquidity={liquidity} type={type}/>
+                            <LiquidytiesItem
+                              liquidity={liquidity}
+                              type={type}
+                            />
                           </div>
                         )
                       )}

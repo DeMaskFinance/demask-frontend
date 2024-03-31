@@ -142,7 +142,7 @@ export default function DetailLiquidity() {
                 <>
                   <div className="flex flex-wrap items-center mb-2 lg:mb-0">
                     <Link href='/pools' className="p-1 rounded-lg group">
-                      <BackIcon width={30} height={30} className="hover:fill-secondary2" />
+                      <BackIcon width={20} height={20} className="hover:fill-secondary2" />
                     </Link>
                     <div className="w-[30px] h-[30px] ml-4">
                       <MediaNFT data={data} isControls={false} />

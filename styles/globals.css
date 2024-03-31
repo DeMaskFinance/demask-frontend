@@ -10,6 +10,9 @@
   .title {
     @apply text-2xl font-semibold text-dark1;
   }
+  .text_gradient {
+    @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
+  }
 }
 body {
   scroll-behavior: smooth;
