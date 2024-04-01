@@ -5,6 +5,8 @@ import { useState } from "react";
 import { SEO } from "../../next-seo.config";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { LaunchpadGradientIcon } from "../Icons/Mobile/IconMobile";
+import TabQuery from "../NavChoice/TabQuery";
+import { title } from "process";
 
 const updateMeta = {
   ...SEO,
@@ -13,12 +15,13 @@ const updateMeta = {
 
 export default function Launchpad() {
   const [tab, setTab] = useQueryParam(
-    "choice",
+    "tab",
     withDefault(StringParam, "Active")
   );
   const listTab = [
     {
-      name: "Upcoming",
+      key: "Upcoming",
+      title: "Upcoming",
       component: (
         <TabLaunchPad
           query={"Upcoming"}
@@ -28,7 +31,8 @@ export default function Launchpad() {
       index: 0,
     },
     {
-      name: "Active",
+      key: "Active",
+      title: "Active",
       component: (
         <TabLaunchPad
           query={"Active"}
@@ -40,13 +44,14 @@ export default function Launchpad() {
     },
 
     {
-      name: "Ended",
+      key: "Ended",
+      title: "Ended",
       component: <TabLaunchPad query={"Ended"} desc="" />,
       desc: "",
       index: 2,
     },
   ];
-  const selectedTab = listTab.find((item) => item.name === tab);
+  const selectedTab = listTab.find((item) => item.key === tab);
 
   return (
     <section className="launchpad">
@@ -61,24 +66,7 @@ export default function Launchpad() {
           </h1>
         </div>
         <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
-          <div
-            className={`flex items-center p-1 gap-2 rounded-lg text-base text-center text-white  bg-dark3 w-max `}
-          >
-            {listTab.map((item, idx) => (
-              <button
-                key={idx}
-                className={`lg:py-2 py-1 px-3 lg:px-6 ${
-                  tab === item.name ? "bg-secondary5" : ""
-                } rounded-lg text-sm`}
-                type="button"
-                onClick={() => {
-                  setTab(item.name);
-                }}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
+          <TabQuery TABS={listTab} initialItem="Active"/>
         </div>
         </div>
         <div>{selectedTab?.component}</div>

@@ -11,6 +11,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from "../../next-seo.config";
 import { TabGroups } from "@/components/NavChoice";
 import { PoolGradientIcon } from "@/components/Icons/Mobile/IconMobile";
+import formatNumber from "@/libs/utils/formatNumer";
 const updateMeta = {
   ...SEO,
   title: "Liquidity",
@@ -62,8 +63,8 @@ export default function Liquidity() {
           : undefined,
     }
   );
-  console.log(data);
-
+    console.log(formatNumber('0.0000000000123123123'));
+    
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "Item pool" ? setType("erc1155") : setType("erc721");

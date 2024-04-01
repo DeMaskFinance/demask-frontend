@@ -15,7 +15,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask } = useContext(AccountContext);
   return (
     <tr
-      className={`flex px-2 text-xs border-b rounded-lg hover:cursor-pointer  group hover:bg-slate-100 ${
+      className={`flex px-2 text-sm border-b rounded-lg hover:cursor-pointer  group hover:bg-slate-100 ${
         currentRank
           ? "bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]"
           : "text-dark2"
@@ -151,7 +151,7 @@ const TableRank = () => {
     <div className="px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home min-h-[500px] flex flex-col justify-between">
       <table className="w-full text-left border-collapse">
         <thead className="">
-          <tr className="flex px-2 pb-2 text-sm border-b">
+          <tr className="flex px-2 pb-2 text-base border-b">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
               Name

@@ -17,6 +17,7 @@ import { selectProfile } from "@/store/profileSlice";
 import Image from "next/image";
 import Items from "./Inventory/Items";
 import Created from "./Inventory/Created";
+import TabQuery from "../NavChoice/TabQuery";
 const style = {
     itemSub:
         "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -122,14 +123,7 @@ const Profile = () => {
             </section>
             <div className='flex items-center justify-start mt-6 lg:justify-center'>
                 {/* PC */}
-                <ul className='hidden gap-4 p-2 text-sm text-white rounded-lg lg:flex bg-dark3 '>
-                    {TABS.map((item, index) => (
-                        <li key={index} onClick={() => setTab(item.key)} className={`cursor-pointer p-2 ${tab === item.key ? "rounded-lg bg-secondary5" : ""} `}>
-                            <h2 className='font-semibold'>{item.title}</h2>
-                        </li>
-                    )
-                    )}
-                </ul>
+                <TabQuery TABS={TABS} initialItem="items"/>
                 {/* mobile-tablet */}
                 <div className='lg:hidden'>
                     <Tippy

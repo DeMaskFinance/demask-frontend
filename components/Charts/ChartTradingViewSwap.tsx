@@ -9,6 +9,7 @@ import { EtherIcon, NFTIcon } from "../Icons";
 import ChartLoading from "./ChartLoading";
 import ChartNoTransfers from "./ChartNoTransfers";
 import ModalWarningRemove from "../Modal/ModalWarningRemove";
+import formatNumber from "@/libs/utils/formatNumer";
 interface BarData {
   time: string;
   value: number;
@@ -109,6 +110,24 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             style: 1,
           },
         },
+        localization: {
+          priceFormatter: (price: number) => {
+            const countDecimals = (price: number) => {
+              if (Math.floor(price) !== price) {
+                return (price.toString().split(".")[1]?.length || 0) + 1;
+              }
+              return 0;
+            };
+        
+            if (price < 0.000001) {
+              return price.toFixed(countDecimals(price));
+            } else if (price >= 0.000001 && price < 1) {
+              return parseFloat(price.toPrecision(6));
+            } else {
+              return parseFloat(price.toPrecision(6));
+            }
+          }
+        }
       });
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: "rgb(14,203,129)",
@@ -149,7 +168,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       volumeSeries.applyOptions({
         priceFormat: {
           type: "volume",
-          precision: 6,
+          precision: 16,
           minMove: 0.000001,
         },
       });

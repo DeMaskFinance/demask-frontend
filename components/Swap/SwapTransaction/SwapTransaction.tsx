@@ -36,7 +36,7 @@ import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 interface SwapTransactionProps {
@@ -82,6 +82,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [activeChoice, setActiveChoice] = useState<string>("BUY");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [widthBtn, setWidthBtn] = useState(0);
+  const buttonRefs = useRef<Array<HTMLButtonElement | null>>(
+    Array(activeNFTPercent.length).fill(null)
+  );
   const {
     account,
     wallet,
@@ -388,7 +392,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </div>
             </div>
             <div
-              className={`relative p-2 border rounded-lg border-dark3 ${
+              className={`relative p-2  rounded-lg bg-dark5 border border-dark5 hover:border-dark3 ${
                 showRequiredMessage && "border-red"
               }`}
             >
@@ -412,12 +416,13 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     }
                   }}
                   min="1"
-                  className="text-lg font-semibold border-none outline-none text-dark3 placeholder:font-semibold"
+                  className="text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
                   value={inputNFT}
                   onChange={(e) => {
                     setInputNFT(e.target.value);
                     setShowRequiredMessage(false);
                     setActiveChoiceNFT("");
+                    setWidthBtn(0);
                     setCheckExit(true);
                   }}
                 />
@@ -435,33 +440,48 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </div>
               </div>
               <div className="flex justify-end mt-8">
-                {activeNFTPercent.map((item, index) => (
-                  <button
-                    type="button"
-                    className={`ml-3 text-[12px] font-semibold text-dark3 p-1 border-dark3 border rounded-lg ${
-                      item.text === activeChoiceNFT &&
-                      "bg-secondary5 text-white"
-                    }`}
-                    key={index}
-                    onClick={() => {
-                      if (activeChoice === "BUY") {
-                        setInputNFT(
-                          Math.floor(item.percent * +data.reserveNFT).toString()
-                        );
-                      } else {
-                        setInputNFT(
-                          Math.floor(
-                            item.percent * Number(balanceNFT)
-                          ).toString()
-                        );
-                      }
-                      setShowRequiredMessage(false);
-                      setActiveChoiceNFT(item.text);
-                    }}
-                  >
-                    {item.text}
-                  </button>
-                ))}
+                <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit">
+                  <div
+                    className="absolute h-8 transition-transform duration-100 ease-linear rounded-l-lg bg-secondary5"
+                    style={{ width: `${widthBtn}px` }}
+                  ></div>
+                  {activeNFTPercent.map((item, index) => (
+                    <button
+                      type="button"
+                      ref={(el) => (buttonRefs.current[index] = el)}
+                      key={index}
+                      onClick={() => {
+                        if (activeChoice === "BUY") {
+                          setInputNFT(
+                            Math.floor(
+                              item.percent * +data.reserveNFT
+                            ).toString()
+                          );
+                        } else {
+                          setInputNFT(
+                            Math.floor(
+                              item.percent * Number(balanceNFT)
+                            ).toString()
+                          );
+                        }
+                        setShowRequiredMessage(false);
+                        setActiveChoiceNFT(item.text);
+                        const totalWidth = buttonRefs.current
+                          .slice(0, index + 1)
+                          .reduce(
+                            (acc, ref) => (ref ? acc + ref.offsetWidth : acc),
+                            0
+                          );
+                        setWidthBtn(totalWidth);
+                      }}
+                      className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${
+                        item.text === activeChoiceNFT && " text-white"
+                      }`}
+                    >
+                      {item.text}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
             {data.dmlAddress !== null &&
@@ -524,7 +544,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             <div className="relative">
               {activeChoice === "BUY" ? (
-                <div className="block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4">
+                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
                   <FormatNumber
                     number={divideByDecimal(
                       totalProcessBuy.toString(),

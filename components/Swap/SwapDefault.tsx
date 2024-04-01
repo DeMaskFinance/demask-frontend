@@ -116,7 +116,7 @@ export default function SwapDefault() {
                                     <span><EtherIcon width={20} height={20} className="fill-dark1 ml-[-1px]" /></span>
                                 </div>
                             </div>
-                            <div className={`relative p-2  rounded-lg bg-dark5`}>
+                            <div className={`relative p-2 rounded-lg bg-dark5 border border-dark5 hover:border-dark3`}>
                                 <div className="relative">
                                     <input
                                         type="number"

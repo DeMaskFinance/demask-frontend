@@ -75,7 +75,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                     <div className="w-full">
                       <Link
                         href={`/collection/${item.nftAddress}?typeERC=${item.type}`}
-                        className="flex-wrap max-w-full mt-2 text-xs font-semibold hover:underline text-secondary5 line-clamp-1 hover:underline-offset-1"
+                        className="flex-wrap max-w-full mt-2 text-xs font-semibold hover:underline text-dark3 line-clamp-1 hover:underline-offset-1"
                       >
                         {item?.collectionName ? (
                           <ModalDocument data={item?.collectionName} />
@@ -86,7 +86,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                       <div className="flex w-full">
                         <h6
                           title={item.metadata?.name}
-                          className="flex items-start gap-2 font-medium uppercase"
+                          className="flex items-start gap-2 font-medium uppercase text-dark1"
                         >
                           <span className="flex-wrap max-w-full text-lg line-clamp-1">
                             {item.metadata?.name ? (
@@ -103,7 +103,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                           {item.type}
                         </p>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-sm text-dark3">
                         <p>Floor price</p>
                         <p>Balance</p>
                       </div>
