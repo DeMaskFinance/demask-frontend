@@ -42,7 +42,7 @@ export default function SwapDefault() {
         { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
     ];
     return (
-        <div className='mb-[100px] lg:mb-0 py-8 mx-auto max-w-screen-3xl swap'>
+        <div className='mb-[100px] lg:mb-0 py-8 mx-auto swap backdrop-blur-xl lg:px-primary md:px-14 px-4'>
             <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
                 <div onClick={() => router.back()}>
                     <BackIcon width={20} height={20} className="cursor-pointer hover:fill-secondary5" />
@@ -53,7 +53,7 @@ export default function SwapDefault() {
                 <p>DEMASK</p>
             </div>
             <div className="max-w-[480px] h-fit flex gap-y-1 lg:gap-y-12 mx-auto">
-                <div className="w-full p-6 border rounded-lg shadow-home">
+                <div className="w-full p-6 bg-white border rounded-lg shadow-home">
                     <div className="flex justify-between gap-4 mb-2 text-dark1">
                         <div className="flex flex-col items-center ">
                             <TabGroups
@@ -140,7 +140,7 @@ export default function SwapDefault() {
                                         }}
                                     />
                                     <div
-                                        className="absolute px-4 py-2 font-semibold transition duration-150 ease-out rounded-lg cursor-pointer bg-dark4 text-dark1 right-1 top-1 border-secondary5 "
+                                        className="absolute px-4 py-2 font-semibold transition duration-150 ease-out rounded-lg cursor-pointer bg-dark4 hover:bg-dark3 text-dark1 right-1 top-1 border-secondary5 "
                                         onClick={handleSearchNFT}
                                     >
                                         <div className="text-center">

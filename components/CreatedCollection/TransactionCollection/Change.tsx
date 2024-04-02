@@ -223,7 +223,7 @@ const Change = () => {
   return (
     <div>
       <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2">
-        <LightBulbIcon width={24} height={24} className=" fill-yellow" />
+        <LightBulbIcon width={20} height={20} className="flex-shrink-0  fill-yellow" />
         <p>
           You can change any NFTs that you have in your wallet for some other
           NFTs in the pool and pay a small fee.

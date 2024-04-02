@@ -58,7 +58,7 @@ export default function Launchpad() {
       <NextSeo {...updateMeta} />
 
       <div className="max-w-6xl min-h-screen pb-20 mx-auto lg:pb-0">
-        <div className="flex justify-between pt-10 pb-6">
+        <div className="flex flex-wrap justify-between pt-10 pb-6 gap-y-2">
         <div className="flex items-center gap-x-2">
           <LaunchpadGradientIcon width={20} height={20}/>
           <h1 className="text-2xl font-semibold text_gradient">

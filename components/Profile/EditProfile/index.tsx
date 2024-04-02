@@ -38,7 +38,7 @@ export default function EditProfile() {
     }
   }
   return (
-    <div className='pb-20 lg:pb-0'>
+    <div className='px-4 pb-20 lg:pb-0 lg:px-secondary md:px-14'>
       <div className='relative cursor-pointer group h-[120px] lg:h-[240px]'>
         {profile?.banner ? (
           <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover' />

@@ -198,7 +198,7 @@ export default function Creator() {
   }
 
   return (
-    <div className="flex flex-col gap-6 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8">
+    <div className="flex flex-col gap-6 px-4 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 lg:px-secondary md:px-14">
       <NextSeo {...updateMeta} />
       {/* UpLoad File */}
       <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">

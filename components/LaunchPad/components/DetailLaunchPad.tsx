@@ -212,7 +212,7 @@ export default function DetailLaunchPad() {
             data?.metadata && (
               <>
                 <div className="flex justify-between mb-6">
-                  <h1 className="text-2xl font-medium text-dark0">
+                  <h1 className="text-2xl font-medium text_gradient">
                     Detail Launchpad
                   </h1>
                   <div className="flex justify-between datas-center gap-x-1">

@@ -170,7 +170,7 @@ export default function Header() {
           </button>
         </div>
       )}
-      <header className="flex items-center justify-between gap-2 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14">
+      <header className="flex items-center justify-between gap-2 px-4 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link
@@ -210,8 +210,8 @@ export default function Header() {
               }}
             >
               <SearchIcon
-                width={20}
-                height={20}
+                width={30}
+                height={30}
                 className="cursor-pointer"
               />
             </div>

@@ -61,9 +61,9 @@ export const ItemList: React.FC<ItemListProps> = ({
             <Fragment key={pageIndex}>
               {page?.data?.map((item: any, index: number) => (
                 <div key={index} className="relative overflow-hidden">
-                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
+                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group lg:text-base hover:-translate-y-1 hover:shadow-home">
                     <div
-                      className="relative h-[240px]"
+                      className="relative h-[240px] overflow-hidden"
                       onClick={() => {
                         setSelectedItem(item);
                         setIsOpenDetail(true);
@@ -71,6 +71,38 @@ export const ItemList: React.FC<ItemListProps> = ({
                       }}
                     >
                       <MediaNFT data={item} isControls={false} hover />
+                      <div className="absolute flex justify-between w-full opacity-0 group-hover:opacity-100 px-2 bottom-[-20%] transition-all duration-150 gap-x-2 group-hover:bottom-2">
+                        <Link
+                          href={
+                            item.type === "erc1155"
+                              ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                              : `/collection/${item.nftAddress}?typeERC=erc721&tab=pool`
+                          }
+                          className="basis-1/2"
+                        >
+                          <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-dark1 bg-dark5 hover:bg-dark3 gap-x-2">
+                          <div>
+                              <AddIcon width={20} height={20} className="fill-dark1"/>
+                            </div>
+                            <p>Add</p>
+                          </Button>
+                        </Link>
+                        <Link
+                          href={
+                            item.type === "erc1155"
+                              ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                              : `/collection/${item.nftAddress}?typeERC=erc721`
+                          }
+                          className="basis-1/2"
+                        >
+                          <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-dark1 bg-dark5 hover:bg-dark3 gap-x-2">
+                            <div>
+                              <SwapIconProfile width={20} height={20} className="fill-dark1"/>
+                            </div>
+                            <p>Swap</p>
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                     <div className="w-full">
                       <Link
@@ -118,36 +150,6 @@ export const ItemList: React.FC<ItemListProps> = ({
                             <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
                           )}
                         </div>
-                      </div>
-                      <div className="flex justify-between mt-2">
-                        <Link
-                          href={
-                            item.type === "erc1155"
-                              ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                              : `/collection/${item.nftAddress}?typeERC=erc721&tab=pool`
-                          }
-                        >
-                          <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
-                            <p>Add</p>
-                            <div>
-                              <AddIcon width={20} height={20} />
-                            </div>
-                          </Button>
-                        </Link>
-                        <Link
-                          href={
-                            item.type === "erc1155"
-                              ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                              : `/collection/${item.nftAddress}?typeERC=erc721`
-                          }
-                        >
-                          <Button className="flex items-center px-4 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
-                            <p>Swap</p>
-                            <div>
-                              <SwapIconProfile width={20} height={20} />
-                            </div>
-                          </Button>
-                        </Link>
                       </div>
                     </div>
                   </div>

@@ -47,7 +47,7 @@ const Swap: React.FC = () => {
   }, [slug]);
 
   return (
-    <div className="py-8 mx-auto max-w-screen-3xl swap">
+    <div className="px-4 py-8 mx-auto max-w-screen-3xl swap lg:px-primary md:px-14">
       <NextSeo {...updateMeta} />
       {isLoading || isFetching ? (
         <SkeletonSwap />

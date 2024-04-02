@@ -113,16 +113,25 @@ export default function CreatedCollection() {
       setAvatarLoading(false);
     }
   };
+  console.log(dataDetail);
+
   return (
-    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0">
-      <div className={`relative group h-[120px] lg:h-[240px] ${dataDetail?.collaborators.includes(account) && 'cursor-pointer'}`}>
+    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0 lg:px-primary md:px-14 px-4">
+      <div
+        className={`relative group h-[120px] lg:h-[240px] ${
+          dataDetail?.collaborators.includes(account) && "cursor-pointer"
+        }`}
+      >
         {dataDetail?.banner ? (
           <Image
             src={dataDetail?.banner}
             alt="banner"
             width={1200}
             height={400}
-            className="w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover"
+            className={`w-full h-full rounded-b-lg object-cover ${
+              dataDetail?.collaborators.includes(account) &&
+              "group-hover:brightness-[0.8]"
+            }`}
           />
         ) : (
           <div className="w-full h-full rounded-b-lg bg-dark4 "></div>
@@ -151,8 +160,17 @@ export default function CreatedCollection() {
       </div>
       <section className="justify-between p-4 rounded-lg lg:flex bg-dark5">
         <div className="items-center text-xs lg:flex gap-x-2 ">
-          <div className={`relative rounded-full w-fit h-fit group ${dataDetail?.collaborators.includes(account) && 'cursor-pointer'}`}>
-            <div className="group-hover:brightness-50">
+          <div
+            className={`relative rounded-full w-fit h-fit group ${
+              dataDetail?.collaborators.includes(account) && "cursor-pointer"
+            }`}
+          >
+            <div
+              className={`${
+                dataDetail?.collaborators.includes(account) &&
+                "group-hover:brightness-[0.8]"
+              }`}
+            >
               {dataDetail?.avatar ? (
                 <Image
                   src={dataDetail?.avatar}
@@ -241,15 +259,18 @@ export default function CreatedCollection() {
               )}
             </div>
             <p className="text-xs">{dataDetail?.description}</p>
-
-            <div className="flex justify-between mt-4 gap-x-10">
+            <div className="flex mt-4">
               <div className="flex gap-x-2">
-                <Link href="/">
-                  <WebsiteIcon width={24} height={24} />
-                </Link>
-                <Link href="/">
-                  <TwitterIcon width={24} height={24} />
-                </Link>
+                {dataDetail?.socials?.website && (
+                  <Link href={dataDetail.socials?.website} target="_blank" className="mr-3">
+                    <WebsiteIcon width={24} height={24} />
+                  </Link>
+                )}
+                {dataDetail?.socials?.twitter && (
+                  <Link href={dataDetail.socials?.twitter} target="_blank" className="mr-3">
+                    <TwitterIcon width={24} height={24} />
+                  </Link>
+                )}
               </div>
               <div className="flex gap-x-6">
                 <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap">

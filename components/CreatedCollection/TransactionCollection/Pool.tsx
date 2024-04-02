@@ -49,8 +49,8 @@ const Pool = () => {
   );
   return (
     <div className="h-full text-dark3">
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg md:text-base bg-dark5">
-        <LightBulbIcon width={24} height={24} className=" fill-yellow" />
+      <div className="flex items-center px-6 py-4 my-4 text-sm rounded-lg bg-dark5 gap-x-2">
+        <LightBulbIcon width={20} height={20} className="flex-shrink-0 fill-yellow" />
         <p>Pools accrue trading fees towards depositors.</p>
       </div>
       {!account ? (
