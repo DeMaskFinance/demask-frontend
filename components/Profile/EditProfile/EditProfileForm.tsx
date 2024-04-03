@@ -148,6 +148,7 @@ export default function EditProfileForm() {
                     handleBlur,
                     handleSubmit,
                     isSubmitting,
+                    dirty,
                 }) => (<Form className='mx-auto max-w-[600px]'>
                     <div className='flex flex-col'>
                         <label htmlFor="name" className={styles.title}>Name</label>
@@ -182,7 +183,11 @@ export default function EditProfileForm() {
                         <Link href='/profile' className='px-6 py-2 text-sm font-medium text-white rounded-lg bg-dark3' >
                             Cancel
                         </Link>
-                        <Button type="submit" primary className='px-6 py-2' isLoadingBtn={loading}>
+                        <Button type="submit" 
+                        primary={dirty }
+                        active={!dirty }
+                        disabled={!dirty }
+                        className='px-6 py-2' isLoadingBtn={loading}>
                             Save
                         </Button>
                     </div>

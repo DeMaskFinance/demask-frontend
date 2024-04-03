@@ -11,17 +11,23 @@ import Wrapper from "../Wrapper";
 import { getNonce, loginAuthen } from "@/libs/service/userService";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/profileSlice";
+import { useRouter } from "next/router";
 
 interface ModalWalletProps {
   isOpen?: boolean;
   setIsOpen?: any;
+  isAuthen?: true;
 }
 const styles = {
   walletItem:
     "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 rounded-lg cursor-pointer",
 };
 
-const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
+const ModalWallet: React.FC<ModalWalletProps> = ({
+  isOpen,
+  setIsOpen,
+  isAuthen,
+}) => {
   const {
     account,
     wallet,
@@ -37,12 +43,14 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
     withDefault(StringParam, chainId)
   );
   const dispatch = useDispatch();
+  const router = useRouter();
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpen(false);
+    isAuthen && router.replace("/swap");
   };
   const connectWallet = async (walletName: string) => {
     try {
@@ -59,7 +67,17 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         provider = await getProvider(walletName);
         if (walletName !== "WalletConnect") {
           if (!window.ethereum) {
-            walletName === "Metamask" ? window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer') : window.open('https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad', '_blank', 'noopener,noreferrer');
+            walletName === "Metamask"
+              ? window.open(
+                  "https://metamask.io/download/",
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              : window.open(
+                  "https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad",
+                  "_blank",
+                  "noopener,noreferrer"
+                );
             return;
           } else {
             const networkSwitched = await changeNetwork(

@@ -145,7 +145,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   };
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
-      <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+      <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
           <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
             Add

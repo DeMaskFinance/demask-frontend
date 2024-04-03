@@ -76,7 +76,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
 
   return (
     <Wrapper isOpen={isOpenSearchToken} onClick={handleClose}>
-      <div className="z-50 flex flex-col justify-center h-full">
+      <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
           <p className="py-2 mb-4 border-b-[1px] border-dark3 text-xl font-medium">
             Select a Token

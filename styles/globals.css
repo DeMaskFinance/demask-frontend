@@ -13,6 +13,9 @@
   .text_gradient {
     @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
   }
+  .container_modal{
+    @apply relative z-50 flex flex-col justify-center cursor-default h-fit;
+  }
 }
 body {
   scroll-behavior: smooth;

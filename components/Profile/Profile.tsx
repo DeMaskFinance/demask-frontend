@@ -88,13 +88,13 @@ const Profile = () => {
     const fullTime = profile?.createdAt ? new Date(profile.createdAt) : new Date();
     const monthName = fullTime.toLocaleString('default', { month: 'long' });
     return (
-        <div className='my-6 '>
+        <div className='my-6'>
             <section>
                 <div className='h-[120px] lg:h-[240px]'>
                     {profile?.banner ? (
-                        <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover' />
+                        <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full object-cover' />
                     ) : (
-                        <div className='w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
+                        <div className='w-full h-full bg-dark4 group-hover:brightness-[0.8]'>
                         </div>
                     )}
                 </div>
@@ -158,7 +158,7 @@ const Profile = () => {
                     </Tippy>
                 </div>
             </div>
-            <div className='px-4 py-8 pb-20 mt-4 lg:pb-0 md:px-0'>{selectedTab ? selectedTab.panel() : null}</div>
+            <div className='px-4 py-8 pb-20 mt-4 lg:pb-0 lg:px-secondary md:px-14'>{selectedTab ? selectedTab.panel() : null}</div>
         </div>
     )
 }

@@ -38,16 +38,16 @@ export default function EditProfile() {
     }
   }
   return (
-    <div className='px-4 pb-20 lg:pb-0 lg:px-secondary md:px-14'>
+    <div className='px-4 pb-20 lg:px-0 lg:pb-0'>
       <div className='relative cursor-pointer group h-[120px] lg:h-[240px]'>
         {profile?.banner ? (
-          <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full rounded-b-lg object-cover' />
+          <Image src={profile?.banner} alt='banner' width={1200} height={400} className='w-full group-hover:brightness-[0.8] h-full object-cover' />
         ) : (
-          <div className='w-full h-full bg-dark4 rounded-b-lg group-hover:brightness-[0.8]'>
+          <div className='w-full h-full bg-dark4 group-hover:brightness-[0.8]'>
           </div>
         )}
         {bannerLoading ? (
-          <div className='absolute top-0 bottom-0 flex items-center rounded-b-lg justify-center w-full h-full bg-slate-600/[.7]'>
+          <div className='absolute top-0 bottom-0 flex items-center justify-center w-full h-full bg-slate-600/[.7]'>
             <BiLoaderAlt className="text-5xl text-white animate-spin" />
           </div>
         ) : (

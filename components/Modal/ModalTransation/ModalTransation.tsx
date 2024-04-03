@@ -16,7 +16,7 @@ const ModalTransation: React.FunctionComponent<ModalTransationProps> = ({ isOpen
     };
     return (
         <Wrapper isOpen={isOpenTransation} onClick={handleClose} isTransaction>
-            <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+            <div className="container_modal">
                 <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
                     <p className="font-semibold text-md">Waiting for transaction</p>
                     <div className="mx-auto my-10 w-11 h-11 ">
