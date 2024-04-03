@@ -23,7 +23,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
       <Link href={`launchpad/${item.launchpad}`} className="block h-full">
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex flex-col h-full">
-            <div className="h-[250px] ">
+            <div className="h-[123px] ">
               <MediaNFT data={item} isControls={false} hover />
             </div>
 

@@ -32,7 +32,7 @@ export default function BackgroundHalo({ children }: BackgroundHaloProps) {
   }, [vantaEffect]);
 
   return (
-    <div ref={vantaRef} className="w-full">
+    <div ref={vantaRef} className="w-full h-full overflow-hidden">
       {children}
     </div>
   );

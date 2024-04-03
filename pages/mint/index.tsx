@@ -15,6 +15,7 @@ import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import images from "@/public/images";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
+import useIPFSUpload from "@/hooks/useIPFSUpload";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
@@ -43,6 +44,7 @@ export default function Creator() {
   const [validFee, setValidFee] = useState<boolean>(false);
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const { uploadData } = useIPFSUpload();
   let file: any;
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -101,6 +103,8 @@ export default function Creator() {
           setFileType(fileType);
           setSelectedFile(fileURL);
           setFileIPFS(uploadFileToIPFS(file));
+          uploadData(file);
+          
         } else {
           alert("Please choose a file smaller than 1GB");
         }
@@ -198,7 +202,7 @@ export default function Creator() {
   }
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 lg:px-secondary md:px-14">
+    <div className="flex flex-col gap-6 px-4 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 ">
       <NextSeo {...updateMeta} />
       {/* UpLoad File */}
       <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">

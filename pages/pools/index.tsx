@@ -146,7 +146,7 @@ export default function Liquidity() {
             <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
           </div>
         )}
-      </div>
+      </div> 
     </div>
   );
 }

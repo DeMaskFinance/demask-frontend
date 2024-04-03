@@ -27,7 +27,7 @@ const LeaderBoard = () => {
     <div>
       <NextSeo {...updateMeta} />
       <BackgroundFog>
-        <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-4 lg:gap-y-10 pb-[100px]">
+        <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-4 lg:gap-y-10">
           <h1 className="text-4xl h-[60px] lg:text-[60px] font-semibold bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent">
             Season 1
           </h1>

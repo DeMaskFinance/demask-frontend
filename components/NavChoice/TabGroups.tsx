@@ -19,7 +19,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   const handleButtonClick = (choice: string,index:number) => {
     onChoiceChange(choice);
     // console.log('width', buttonRefs.current[index], buttonRefs.current[index] ? buttonRefs.current[index].offsetWidth : 0);
-    setWidthBtn(buttonRefs.current[index] ? buttonRefs.current[index].offsetWidth : 0);
+    setWidthBtn(buttonRefs.current[index]?.offsetWidth ?? 0);
     const totalWidth = buttonRefs.current
     .slice(0, index)
     .reduce((acc, ref) => (ref ? acc + ref.offsetWidth : acc), 0);

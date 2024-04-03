@@ -11,7 +11,7 @@ export default function LaunchPad() {
     <section className="launchpad">
       <NextSeo {...updateMeta} />
       
-      <div className="min-h-[75vh] px-4 py-8 lg:px-secondary md:px-14">
+      <div className="min-h-[75vh] px-4 lg:px-0">
         <Launchpad />
       </div>
     </section>
