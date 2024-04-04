@@ -121,11 +121,13 @@ const Profile = () => {
                     </div>
                 </div>
             </section>
-            <div className='flex items-center justify-start mt-6 lg:justify-center'>
+            <div className='flex items-center justify-start px-4 mt-6 md:justify-center'>
                 {/* PC */}
+                <div className="hidden md:block">
                 <TabQuery TABS={TABS} initialItem="items"/>
+                </div>
                 {/* mobile-tablet */}
-                <div className='lg:hidden'>
+                <div className='md:hidden'>
                     <Tippy
                         className=""
                         interactive
@@ -158,7 +160,7 @@ const Profile = () => {
                     </Tippy>
                 </div>
             </div>
-            <div className='px-4 py-8 pb-20 mt-4 lg:pb-0 lg:px-secondary md:px-14'>{selectedTab ? selectedTab.panel() : null}</div>
+            <div className='px-4 py-8 pb-20 mt-4 lg:pb-0 lg:px-14 2xl:px-secondary md:px-14'>{selectedTab ? selectedTab.panel() : null}</div>
         </div>
     )
 }

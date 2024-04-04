@@ -79,7 +79,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
   const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
-  const [activeChoice, setActiveChoice] = useState<string>("BUY");
+  const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [widthBtn, setWidthBtn] = useState(0);
@@ -196,7 +196,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
 
   useEffect(() => {
     const checkReservesNFT = () => {
-      if (activeChoice === "BUY") {
+      if (activeChoice === "Buy") {
         if (data && Number(inputNFTValue) <= Number(data.reserveNFT)) {
           setIsSufficientNFT(true);
         } else {
@@ -278,10 +278,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <RefetchIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:fill-secondary5"
+          className="cursor-pointer hover:fill-dark2"
         />
       ),
-      content: "Refetch",
+      content: "Refresh",
       onClick: () => refetch(),
     },
     {
@@ -289,7 +289,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <PoolIcon
           width={24}
           height={24}
-          className="group-hover:fill-secondary3"
+          className="hover:fill-dark2"
         />
       ),
       content: "Pool",
@@ -300,7 +300,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <SettingIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-secondary5"
+          className="cursor-pointer hover:rotate-90 hover:fill-dark2"
         />
       ),
       content: "Setting",
@@ -313,7 +313,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <div className="flex justify-between gap-4 mb-2 text-dark1">
           <div className="flex flex-col items-center ">
             <TabGroups
-              choices={["BUY", "SELL"]}
+              choices={["Buy", "Sell"]}
               activeChoice={activeChoice}
               onChoiceChange={handleChoiceChange}
             />
@@ -352,14 +352,14 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                {account && activeChoice === "BUY" && (
+                {account && activeChoice === "Buy" && (
                   <div className="flex items-center text-sm text-dark1">
                     <p className="mr-1">Your balance:</p>
                     {formatNumber(balanceToken)}
                     <EtherIcon width={16} height={16} className="fill-dark2" />
                   </div>
                 )}
-                {account && activeChoice === "SELL" && (
+                {account && activeChoice === "Sell" && (
                   <div className="flex items-center text-sm text-dark1">
                     <p className="mr-1">Your balance:</p>
                     <p>{formatNumber(balanceNFT)}</p>
@@ -451,7 +451,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                       ref={(el) => (buttonRefs.current[index] = el)}
                       key={index}
                       onClick={() => {
-                        if (activeChoice === "BUY") {
+                        if (activeChoice === "Buy") {
                           setInputNFT(
                             Math.floor(
                               item.percent * +data.reserveNFT
@@ -495,11 +495,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               )}
             {data.dmlAddress !== null &&
               ((!isSufficientTokenBuy &&
-                activeChoice === "BUY" &&
+                activeChoice === "Buy" &&
                 account &&
                 data.reserveToken) ||
                 (!isSufficientTokenSell &&
-                  activeChoice === "SELL" &&
+                  activeChoice === "Sell" &&
                   account &&
                   data.reserveToken)) && (
                 <p
@@ -528,7 +528,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 <label htmlFor="data.royaltyFee" className=" text-dark1">
                   <div className="flex text-sm">
                     <p className="mr-1">Royalties Fee: </p>
-                    {activeChoice === "BUY" ? (
+                    {activeChoice === "Buy" ? (
                       <FormatNumber
                         number={(royaltiesFeeBuy / 1e18).toString()}
                       />
@@ -543,7 +543,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </div>
             </div>
             <div className="relative">
-              {activeChoice === "BUY" ? (
+              {activeChoice === "Buy" ? (
                 <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
                   <FormatNumber
                     number={divideByDecimal(
@@ -553,7 +553,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   />
                 </div>
               ) : (
-                <div className="block w-full py-2 pl-2 mb-2 border rounded-lg border-dark4 text-dark1 bg-dark4">
+                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
                   <FormatNumber
                     number={divideByDecimal(
                       totalProcessSell.toString(),
@@ -568,7 +568,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
           </div>
         </form>
-        {inputNFTValue && activeChoice === "BUY" ? (
+        {inputNFTValue && activeChoice === "Buy" ? (
           !isLoadingBuy ? (
             Math.floor(amountBuyDec) === 0 ? (
               <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
@@ -577,7 +577,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             <BiLoaderAlt className="animate-spin text-secondary5" />
           )
         ) : null}
-        {inputNFTValue && activeChoice === "SELL" ? (
+        {inputNFTValue && activeChoice === "Sell" ? (
           !isLoadingSell ? (
             Math.floor(amountSellDec) === 0 ? (
               <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
@@ -587,25 +587,25 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           )
         ) : null}
         <div className="flex justify-center w-full">
-          {activeChoice === "BUY" && account && (
+          {activeChoice === "Buy" && account && (
             <button
               type="button"
               className="py-2 w-[144px] bg-green hover:text-green hover:bg-white hover:border-green border rounded-lg text-sm text-white"
               onClick={handleBuy}
             >
-              BUY NFT
+              Buy NFT
             </button>
           )}
-          {isApprovedNFT && activeChoice === "SELL" && account && (
+          {isApprovedNFT && activeChoice === "Sell" && account && (
             <button
               type="button"
               className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
               onClick={handleSell}
             >
-              SELL NFT
+              Sell NFT
             </button>
           )}
-          {!isApprovedNFT && account && activeChoice === "SELL" && (
+          {!isApprovedNFT && account && activeChoice === "Sell" && (
             <Button
               className="w-[126px] py-2"
               primary

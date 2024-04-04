@@ -13,8 +13,6 @@ interface ModalSearchTokenProps {
 }
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
-  inputItem:
-    "w-full p-2 mb-4 border rounded-lg border-dark3 placeholder:text-sm block",
   btnActive: "rounded-full bg-base2",
 };
 const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
@@ -78,13 +76,13 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     <Wrapper isOpen={isOpenSearchToken} onClick={handleClose}>
       <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 border-b-[1px] border-dark3 text-xl font-medium">
+          <p className="py-2 mb-4 text-xl font-medium">
             Select a Token
           </p>
           <div>
             <div className="relative">
               <input
-                className={styles.inputItem}
+                className="input_item"
                 placeholder="Search Token Address"
                 value={tokenAddress}
                 onChange={handleAddressToken}

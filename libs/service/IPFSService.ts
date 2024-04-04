@@ -1,5 +1,4 @@
 import request from "../utils/httpRequest";
-
 const uploadFileIPFS = async (
   file:any
 ) => {
@@ -13,12 +12,10 @@ const uploadFileIPFS = async (
       }
 };
 const uploadMetadataIPFS = async (
-    file:any
+    body:any
   ) => {
       try {
-          const formData = new FormData();
-          formData.append("file", file);
-          const res = await request.postForm("upload-file-thirdweb", formData);
+          const res = await request.post("upload-uri-thirdweb",body);
           return res.data.uri;
         } catch (error) {
           console.error(error);

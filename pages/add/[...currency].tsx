@@ -30,8 +30,6 @@ import { activeNFTPercent } from "@/libs/constants";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
-  btnActive: "rounded-full bg-base2",
 };
 const updateMeta = {
   ...SEO,
@@ -206,8 +204,8 @@ export default function AddLiquidity() {
     document.body.style.overflowY = "hidden";
   };
   const actions = [
-    { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => refetch() },
-    { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
+    { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-dark2" />, content: 'Refresh', onClick: () => refetch() },
+    { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-dark2" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
   ]
   return (
     <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
@@ -322,7 +320,7 @@ export default function AddLiquidity() {
                 </div>
                 {(data.dmlAddress === null) ? (
                   <input
-                    className={styles.inputItem}
+                    className="input_item"
                     pattern="^[0-9]*[.,]?[0-9]*$"
                     spellCheck="false"
                     minLength={1}
@@ -336,11 +334,11 @@ export default function AddLiquidity() {
                 ) : (
                   <div>
                     {data ? (
-                      <div className={styles.inputItem}>
+                      <div className="input_item">
                         <FormatNumber number={amountErcDesiredToDec} />
                       </div>
                     ) : (
-                      <div className={styles.inputItem}>
+                      <div className="input_item">
                         <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
                       </div>
                     )}

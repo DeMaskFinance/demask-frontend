@@ -24,4 +24,8 @@ const formatPercent = (number: string) => {
     return n.toFixed(2);
   }
 };
-export { formatToUnit, formatPercent };
+const ipfsGateway = "https://cf-ipfs.com/ipfs/";
+const formatLinkIPFS = (link:string) =>{
+  return link?.replace("ipfs://", ipfsGateway);
+}
+export { formatToUnit, formatPercent ,formatLinkIPFS};

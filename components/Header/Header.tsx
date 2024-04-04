@@ -104,7 +104,7 @@ export default function Header() {
         if (headerRef.current) {
           const headerClassList = headerRef.current.classList;
           headerClassList.toggle("translate-y-0", isScrolledUp);
-          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);
+          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp && currentScrollPos >120);
           if (isScrolledUp) {
             headerClassList.add("border-b", "border-solid", "border-gray-300");
           } else {

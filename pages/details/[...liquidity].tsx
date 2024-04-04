@@ -6,7 +6,7 @@ import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
@@ -329,11 +329,12 @@ export default function DetailLiquidity() {
       )}
       {data && account && (
         <>
-          <ModalRemmoveLiquidity
+          <ModalRemoveLiquidity
             data={data}
             routerAddress={routerAddress}
             type='erc1155'
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+            isERC721={false}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}
           />

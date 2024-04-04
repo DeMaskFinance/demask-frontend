@@ -2,7 +2,7 @@ import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
-import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
   ModalError,
   ModalSuccess,
@@ -183,13 +183,14 @@ const PoolItem = ({liquidity}:any) => {
       />
       {data && account && (
         <>
-          <ModalRemmoveLiquidity
+          <ModalRemoveLiquidity
             /* 
           // @ts-ignore */
             data={data}
             routerAddress={routerAddress}
             type='erc721'
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+            isERC721={true}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash}
             setIsOpenSuccess={setIsOpenSuccessRemove}

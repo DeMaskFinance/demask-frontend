@@ -14,6 +14,7 @@ import { SwiperSlide } from "swiper/react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Classify from "../Classify";
 import { collectionListUserService } from "@/libs/service/collectionService";
+import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
@@ -86,21 +87,20 @@ const Created = () => {
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
-        <SwiperCustom>
+        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
           {isLoading ? (
-            <SkeletonNFTTop />
-          ) : (isSuccess && data?.pages[0]?.data.data.length > 0) ? (
-            <div>
+            <SkeletonSubCategory />
+          ) : isSuccess && data?.pages[0]?.data.data.length > 0? (
+            <Fragment>
               {data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
-                  <ul className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:grid-cols-2 text-dark2">
                     {page?.data?.data?.map((item: any, itemIndex: number) => (
-                      <li key={itemIndex}>
+                      <div key={itemIndex}>
                         <SwiperSlide className="text-sm lg:text-base text-dark2">
                           <Link
                             href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                           >
-                            <li className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
+                            <div className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
                               <div className="h-[127px]">
                                 {item.avatar ? (
                                   <img
@@ -153,20 +153,21 @@ const Created = () => {
                                   </div>
                                 </div>
                               </div>
-                            </li>
+                            </div>
                           </Link>
                           <div ref={ref} style={{ height: "1px" }}></div>
                         </SwiperSlide>
-                      </li>
+                      </div>
                     ))}
-                  </ul>
                 </Fragment>
               ))}
-            </div>
+              {isFetching && <SkeletonSubCategory />}
+              <div ref={ref} style={{ height: "1px" }}></div>
+            </Fragment>
           ) : (
-            <p>No data</p>
+            <p className="mt-4">No data available.</p>
           )}
-        </SwiperCustom>
+        </div>
       </div>
     </Fragment>
   );

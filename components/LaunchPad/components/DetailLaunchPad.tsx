@@ -326,7 +326,7 @@ export default function DetailLaunchPad() {
                       <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4">
                         <div className="flex item-center gap-x-2">
                           <div className="w-8 h-8">
-                            <MediaNFT data={data} isControls launchpad={true} />
+                            <MediaNFT data={data} isControls hideAudio={true} />
                           </div>
                           <div className="relative font-semibold text-dark1 max-w-[250px] flex items-center">
                             <ModalDocument data={data.metadata.name} />

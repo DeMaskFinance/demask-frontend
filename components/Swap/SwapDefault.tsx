@@ -17,7 +17,7 @@ export default function SwapDefault() {
     const router = useRouter();
     const { account, wallet, chainId, demask } = useContext(AccountContext);
     const { ROUTER: routerAddress, RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-    const [activeChoice, setActiveChoice] = useState<string>("BUY");
+    const [activeChoice, setActiveChoice] = useState<string>("Buy");
     const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
     const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
     const [inputNFT, setInputNFT] = useState<string>("");
@@ -37,9 +37,9 @@ export default function SwapDefault() {
         setIsOpen(true);
     };
     const actions = [
-        { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-secondary5" />, content: 'Refetch', onClick: () => { router.refresh() } },
-        { icon: <PoolIcon width={24} height={24} className="group-hover:fill-secondary3" />, content: 'Pool', link: `/add/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}` },
-        { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-secondary5" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
+        { icon: <RefetchIcon width={24} height={24} className="cursor-pointer hover:fill-dark2" />, content: 'Refresh', onClick: () => { router.refresh() } },
+        { icon: <PoolIcon width={24} height={24} className="hover:fill-dark2" />, content: 'Pool', link: `/add/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}` },
+        { icon: <SettingIcon width={24} height={24} className="cursor-pointer hover:rotate-90 hover:fill-dark2" />, content: 'Setting', onClick: () => setIsOpenSetting(true) },
     ];
     return (
         <div className='mb-[100px] lg:mb-0 py-8 mx-auto swap backdrop-blur-xl lg:px-primary md:px-14 px-4'>
@@ -57,7 +57,7 @@ export default function SwapDefault() {
                     <div className="flex justify-between gap-4 mb-2 text-dark1">
                         <div className="flex flex-col items-center ">
                             <TabGroups
-                                choices={["BUY", "SELL"]}
+                                choices={["Buy", "Sell"]}
                                 activeChoice={activeChoice}
                                 onChoiceChange={handleChoiceChange}
                             />
@@ -80,25 +80,19 @@ export default function SwapDefault() {
                         <div className="mx-auto w-60 ">
                             <Image alt='demask' width={240} height={240} src='/logo.png' className='object-cover' />
                         </div>
-                        {/* <p
-              className="mx-auto mt-1 text-xs cursor-pointer text-dark3 hover:text-secondary3"
-              onClick={handleShowDetail}
-            >
-              Show detail
-            </p> */}
                     </div>
                     <form className="mt-5">
                         <div>
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    {account && activeChoice === "BUY" && (
+                                    {account && activeChoice === "Buy" && (
                                         <div className="flex items-center text-sm text-dark1">
                                             <p className="mr-1">Your balance:</p>
                                             {formatNumber(balanceToken)}
                                             <EtherIcon width={16} height={16} className="fill-dark2" />
                                         </div>
                                     )}
-                                    {account && activeChoice === "SELL" && (
+                                    {account && activeChoice === "Sell" && (
                                         <div className="flex items-center text-sm text-dark1">
                                             <p className="mr-1">Your balance:</p>
                                             <p>0</p>

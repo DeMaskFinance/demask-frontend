@@ -13,10 +13,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "@tanstack/react-query": "^4.29.25",
-    "@thirdweb-dev/chains": "^0.1.86",
-    "@thirdweb-dev/react": "^4.4.29",
-    "@thirdweb-dev/sdk": "^4.0.55",
-    "@thirdweb-dev/storage": "^2.0.13",
     "@tippyjs/react": "^4.2.6",
     "@types/aos": "^3.0.4",
     "@types/node": "20.1.4",
@@ -49,6 +45,7 @@
     "react-fast-marquee": "^1.6.4",
     "react-icons": "^4.8.0",
     "react-intersection-observer": "^9.5.2",
+    "react-lazy-load-image-component": "^1.6.0",
     "react-query": "^3.39.3",
     "react-redux": "^9.0.4",
     "react-toastify": "^9.1.3",

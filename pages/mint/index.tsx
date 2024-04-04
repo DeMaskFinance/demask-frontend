@@ -15,13 +15,11 @@ import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import images from "@/public/images";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
-import useIPFSUpload from "@/hooks/useIPFSUpload";
 import WithAuth from "@/components/Common/WithAuth";
 import { uploadFileIPFS } from "@/libs/service/IPFSService";
+import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
-  inputItem:
-    "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
   btnActive: "rounded-lg bg-secondary5",
 };
 const updateMeta = {
@@ -47,7 +45,7 @@ export default function Creator() {
   const [validFee, setValidFee] = useState<boolean>(false);
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const { uploadData } = useIPFSUpload();
+
   let file: any;
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -117,7 +115,7 @@ export default function Creator() {
     }
   }
   console.log(fileIPFS);
-  
+
   const handleChangeAttributeType = (
     e: ChangeEvent<HTMLInputElement>,
     id: number
@@ -203,6 +201,9 @@ export default function Creator() {
       setValidFee(false);
     }
   };
+  console.log(
+    formatLinkIPFS("ipfs://QmYpx38VcgK78r27EPZnbEc8cYuZw7Bp96ubDkkuun3YbF/0")
+  );
 
   return (
     <>
@@ -345,7 +346,7 @@ export default function Creator() {
                   className={
                     emptyInputs.includes("name")
                       ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                      : styles.inputItem
+                      : "input_item"
                   }
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -370,7 +371,7 @@ export default function Creator() {
                   className={
                     emptyInputs.includes("symbol")
                       ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                      : styles.inputItem
+                      : "input_item"
                   }
                   onChange={(e) => setSymbol(e.target.value)}
                 />
@@ -405,7 +406,7 @@ export default function Creator() {
                   className={
                     emptyInputs.includes("totalSupply")
                       ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                      : styles.inputItem
+                      : "input_item"
                   }
                   onChange={(e) => setTotalSupply(Number(e.target.value))}
                 />
@@ -432,7 +433,7 @@ export default function Creator() {
                   className={
                     emptyInputs.includes("royaltiesFee")
                       ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                      : styles.inputItem
+                      : "input_item"
                   }
                   onChange={(e) => handleChangeRoyalFee(e)}
                 />
@@ -474,7 +475,7 @@ export default function Creator() {
                   id="description"
                   value={description}
                   rows={3}
-                  className={`${styles.inputItem} resize-none`}
+                  className={`${"input_item"} resize-none`}
                   onChange={(e) => {
                     setDescription(e.target.value);
                     handleTextareaResize(e);
@@ -501,7 +502,7 @@ export default function Creator() {
                       type="text"
                       id={`traitType_${item.id}`}
                       value={item.trait_type}
-                      className={styles.inputItem}
+                      className={"input_item"}
                       onChange={(e) => handleChangeAttributeType(e, item.id)}
                     />
                     <input
@@ -510,7 +511,7 @@ export default function Creator() {
                       type="text"
                       id={`value_${item.id}`}
                       value={item.value}
-                      className={styles.inputItem}
+                      className={"input_item"}
                       onChange={(e) => handleChangeAttributeValue(e, item.id)}
                     />
                     <Image

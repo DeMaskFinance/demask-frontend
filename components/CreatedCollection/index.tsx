@@ -113,10 +113,9 @@ export default function CreatedCollection() {
       setAvatarLoading(false);
     }
   };
-  console.log(dataDetail);
 
   return (
-    <div className="pb-6 min-h-[75vh] max-w-[1440px] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0 ">
+    <div className="pb-6 min-h-[75vh] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0 ">
       <div
         className={`relative group h-[120px] lg:h-[240px] ${
           dataDetail?.collaborators.includes(account) && "cursor-pointer"
@@ -158,8 +157,8 @@ export default function CreatedCollection() {
           </div>
         )}
       </div>
-      <div className="px-4 py-8 lg:px-primary md:px-14">
-        <section className="justify-between p-4 rounded-lg lg:flex bg-dark5 ">
+      <div className="px-4 lg:px-14 xl:px-[164px] md:px-10">
+        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 ">
           <div className="items-center text-xs lg:flex gap-x-2 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${

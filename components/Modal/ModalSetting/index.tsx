@@ -11,10 +11,7 @@ interface ModalSettingProps {
     isOpenSetting: boolean;
     setIsOpenSetting: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const styles = {
-    title: "block mb-4 text-base font-medium text-black24",
-    inputItem: "w-12 p-2 mb-4 border rounded-xl border-dark3",
-};
+
 const ModalSetting: React.FunctionComponent<
     ModalSettingProps
 > = ({

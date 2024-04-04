@@ -20,7 +20,7 @@ export default function Footer() {
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-white border-dark5 border-t">
       <div>
         <div className="flex gap-x-[120px]">
-          <ul className="flex font-semibold gap-x-8 text-dark2">
+          <ul className="flex font-semibold gap-x-8 text-dark3">
             <li>
               <Link
                 href="https://demask.finance/"
@@ -30,7 +30,7 @@ export default function Footer() {
                 About
               </Link>
             </li>
-            <li className="transition-all duration-100 hover:text-secondary5 whitespace-nowrap">
+            <li className="transition-all duration-100 hover:text-dark2 whitespace-nowrap">
               <a
                 href="https://demask.finance/media-kit"
                 rel="noreferrer noopener"
@@ -39,7 +39,7 @@ export default function Footer() {
                 Branding & Media Kit
               </a>
             </li>
-            <li className="transition-all duration-100 hover:text-secondary5">
+            <li className="transition-all duration-100 hover:text-dark2">
               <a
                 href="https://cryptoviet.info/he-sinh-thai-cryptoviet/demask"
                 rel="noreferrer noopener"
@@ -49,7 +49,7 @@ export default function Footer() {
               </a>
             </li>
           </ul>
-          <ul className="flex font-semibold gap-x-8 text-dark2">
+          <ul className="flex font-semibold gap-x-8 text-dark3">
             <li>
               <Link
                 href="https://demask.finance/"
@@ -59,7 +59,7 @@ export default function Footer() {
                 Developer
               </Link>
             </li>
-            <li className="transition-all duration-100 hover:text-secondary5">
+            <li className="transition-all duration-100 hover:text-dark2">
               <a
                 href="https://github.com/DeMaskFinance"
                 rel="noreferrer noopener"
@@ -68,7 +68,7 @@ export default function Footer() {
                 Github
               </a>
             </li>
-            <li className="transition-all duration-100 hover:text-secondary5">
+            <li className="transition-all duration-100 hover:text-dark2">
               <a
                 href=" https://docs.demask.finance/"
                 rel="noreferrer noopener"
@@ -101,15 +101,15 @@ export default function Footer() {
           </div>
           <a href="mailto:contact@demask.finance">
             <Button
-              third
-              className="flex items-center px-6 py-2 transition-all duration-200 ease-in-out border hover:border-secondary5 gap-x-1 hover:bg-white hover:text-secondary5 group"
+              active
+              className="flex items-center h-full px-6 py-3 font-semibold transition-all duration-200 ease-in-out border gap-x-2 group"
             >
               <span>Contact Us</span>
               <span>
                 <EmailIcon
                   width={24}
                   height={24}
-                  className="group-hover:fill-secondary5"
+                  className=""
                 />
               </span>
             </Button>
@@ -121,7 +121,7 @@ export default function Footer() {
           <LogoDeMask width={245} height={56} />
         </Link>
         <p className="text-xs font-semibold text-dark3">{version}</p>
-        <div className="flex mt-2 gap-x-4">
+        <div className="flex items-center mt-2 gap-x-4">
           <a
             href="https://t.me/DemaskFinance"
             target="_blank"
@@ -130,7 +130,7 @@ export default function Footer() {
             <TeleIcon
               width={24}
               height={24}
-              className="cursor-pointer fill-dark2"
+              className="cursor-pointer fill-dark3"
             />
           </a>
           <a
@@ -141,7 +141,7 @@ export default function Footer() {
             <TwitterIcon
               width={20}
               height={20}
-              className="cursor-pointer fill-dark2"
+              className="cursor-pointer fill-dark3"
             />
           </a>
         </div>

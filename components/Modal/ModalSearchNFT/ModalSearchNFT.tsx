@@ -15,9 +15,7 @@ interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const styles = {
-  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
-};
+
 const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   isOpenSearchNFT,
   setIsOpenSearchNFT,
@@ -89,13 +87,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 border-b-[1px] border-dark3 text-xl font-medium">
+          <p className="py-2 mb-4 text-xl font-medium">
             Select a NFT
           </p>
           <div>
             <div className="relative">
               <input
-                className={styles.inputItem}
+                className="input_item"
                 placeholder="Search address or paste address"
                 value={nftAddress}
                 onChange={(e) => setNftAddress(e.target.value)}
@@ -119,7 +117,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
             </div>
             {data?.status === true && debouncedNFT && (
               <input
-                className={styles.inputItem}
+                className="input_item"
                 placeholder="Address id or paste id"
                 value={idNFT}
                 onChange={(e) => setIdNFT(e.target.value)}

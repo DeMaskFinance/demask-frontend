@@ -21,9 +21,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
       <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">
       {data.map((item) => (
         <React.Fragment key={item.id}>
-          <li className="relative text-base hover:text-secondary5 active:text-secondary3">
+          <li className="relative text-base text-dark3 hover:text-dark2 active:text-dark1">
             <ActiveLink href={`${item?.url}?chain=${chainId}`}>
-              <p className="text-dark3">{item.name}</p>
+              <p className="">{item.name}</p>
             </ActiveLink>
           </li>
         </React.Fragment>

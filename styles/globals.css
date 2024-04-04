@@ -16,6 +16,9 @@
   .container_modal{
     @apply relative z-50 flex flex-col justify-center cursor-default h-fit;
   }
+  .input_item{
+    @apply w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2;
+  }
 }
 body {
   scroll-behavior: smooth;

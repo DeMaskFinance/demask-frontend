@@ -1,32 +1,34 @@
+import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
 import images from "@/public/images";
 import Image from "next/image";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
+
 interface MediaNFTProps {
   data: any;
   isControls: boolean;
   hover?: boolean;
-  launchpad?: boolean;
+  hideAudio?: boolean;
 }
 const MediaNFT: React.FC<MediaNFTProps> = ({
   data,
   isControls,
   hover,
-  launchpad,
+  hideAudio
 }) => {
+  console.log(formatLinkIPFS(data.metadata.image));
   return (
     <>
       {data?.metadata && (
         <div className="relative h-[inherit] w-full">
           {data.metadata?.image && (
-            <Suspense fallback="loading...">
-              <Image
-                src={data.metadata.image}
+              <img
+                src={formatLinkIPFS(data.metadata.image)}
                 alt="test"
                 width={680}
                 height={576}
                 sizes="(max-width: 770px) 100vw"
                 className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
-                blurDataURL="/Placeholder.png"
+                // blurDataURL="/Placeholder.png"
                 onError={(event: any) => {
                   event.target.srcset =
                     "https://api.demask.finance/media/default_image.jpg";
@@ -34,11 +36,10 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 placeholder="blur"
                 loading="lazy"
               />
-            </Suspense>
           )}
           {!data.metadata?.image && data.metadata?.animation_url && (
             <video
-              src={data.metadata.animation_url}
+              src={formatLinkIPFS(data.metadata.animation_url)}
               autoPlay
               playsInline
               loop
@@ -56,13 +57,13 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
           )}
           {data.metadata?.image &&
             data.metadata?.animation_url &&
-            !launchpad && (
+            !hideAudio && (
               <audio
                 autoPlay
                 loop
                 muted
                 controls
-                src={data.metadata.animation_url}
+                src={formatLinkIPFS(data.metadata.animation_url)}
                 className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg  object-cover ${
                   isControls ? "" : "hidden"
                 }`}

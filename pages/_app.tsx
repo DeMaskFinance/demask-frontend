@@ -30,8 +30,6 @@ import { Provider } from "react-redux";
 import store, { persistor } from "../store";
 import { PersistGate } from "redux-persist/integration/react";
 import { useEffect } from "react";
-import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { BlastSepoliaTestnet } from "@thirdweb-dev/chains";
 // import { ThemeProvider } from "next-themes";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
@@ -113,7 +111,6 @@ export default function App({
               href="/favicon-32x32.png"
             ></link>
           </Head>
-          <ThirdwebProvider clientId="e6b5a02892fc18cc2a24676a2a1fc720" activeChain={BlastSepoliaTestnet}>
           <QueryClientProvider client={queryClient}>
             <QueryParamProvider adapter={NextAdapterPages}>
               <style jsx global>{`
@@ -148,7 +145,6 @@ export default function App({
               <ToastContainer limit={1} />
             </QueryParamProvider>
           </QueryClientProvider>
-          </ThirdwebProvider>
         </AccountProvider>
       </PersistGate>
     </Provider>

@@ -27,15 +27,13 @@ interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
   type: string;
+  isERC721: boolean;
   setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
 }
-const styles = {
-  title: "block mb-4 text-base font-medium text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
-};
+
 const ModalRemoveLiquidity: React.FunctionComponent<
   ModalRemoveLiquidityProps
 > = ({
@@ -43,6 +41,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   data,
   routerAddress,
   type,
+  isERC721,
   setIsOpenRemoveLiquidity,
   setHash,
   setIsOpenSuccess,
@@ -284,7 +283,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   ))}
                 </Fragment>
               ))}
-              <div ref={ref} style={{ height: "1px" }} ></div>
+              <div ref={ref} style={{ height: "1px" }}></div>
             </div>
           )}
           <div>
@@ -296,7 +295,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 </div>
               </div>
               <input
-                className={styles.inputItem}
+                className="input_item"
                 inputMode="decimal"
                 type="number"
                 placeholder="Input amount Liquidity"
@@ -328,7 +327,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               <div className="flex justify-between my-4 text-dark2">
                 <p className="font-semibold">You will recieve</p>
               </div>
-              <div className={styles.inputItem}>
+              <div className="input_item">
                 <div className="flex justify-between">
                   {data.reserveTokenDecimals ? (
                     <p>{amountNFTMin}</p>
@@ -338,7 +337,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <p className="text-dark3">NFT</p>
                 </div>
               </div>
-              <div className={styles.inputItem}>
+              <div className="input_item">
                 <div className="flex justify-between">
                   <FormatNumber number={amountTokenDec} />
                   <p className="text-dark3">{data.tokenSymbol}</p>
@@ -369,15 +368,29 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   </Button>
                 )}
                 {isApprovedNFT && (
-                  <Button
-                    className="p-2 mx-auto"
-                    primary={+amountNFTMin === idNFT.length}
-                    active={+amountNFTMin !== idNFT.length}
-                    disabled={+amountNFTMin !== idNFT.length}
-                    onClick={handleRemoveLiquidity}
-                  >
-                    Remove Liquidity
-                  </Button>
+                  <div>
+                    {isERC721 ? (
+                      <Button
+                        className="p-2 mx-auto"
+                        primary={+amountNFTMin === idNFT.length}
+                        active={+amountNFTMin !== idNFT.length}
+                        disabled={+amountNFTMin !== idNFT.length}
+                        onClick={handleRemoveLiquidity}
+                      >
+                        Remove Liquidity
+                      </Button>
+                    ) : (
+                      <Button
+                        className="p-2 mx-auto"
+                        primary={inputLiquidity}
+                        active={!inputLiquidity}
+                        disabled={!inputLiquidity}
+                        onClick={handleRemoveLiquidity}
+                      >
+                        Remove Liquidity
+                      </Button>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
