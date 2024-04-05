@@ -54,7 +54,7 @@ const Swap: React.FC = () => {
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
           <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 ">
-            <Link href="/swap">
+            <Link href={`/swap?chain=${chainId}`}>
               <BackIcon
                 width={24}
                 height={24}

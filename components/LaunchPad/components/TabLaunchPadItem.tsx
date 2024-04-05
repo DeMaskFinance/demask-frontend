@@ -3,14 +3,16 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import AccountContext from "@/context/AccountContext";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 
 interface TabLaunchPadProps {
   item: LaunchpadData;
   query: string;
 }
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
+  const { chainId } = useContext(AccountContext);
   const blockNumber =
     query === "Upcoming"
       ? item.startTime
@@ -20,7 +22,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
 
   return (
     <div className="h-full group">
-      <Link href={`launchpad/${item.launchpad}`} className="block h-full">
+      <Link href={`launchpad/${item.launchpad}?chain=${chainId}`} className="block h-full">
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex flex-col h-full">
             <div className="h-[123px] ">

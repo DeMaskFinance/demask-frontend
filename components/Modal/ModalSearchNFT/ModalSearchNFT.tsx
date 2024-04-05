@@ -29,26 +29,40 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   const { isLoading, data, isFetching, isSuccess } = useQuery({
     queryKey: ["checkNFT", debouncedNFT, chainId],
     queryFn: async () => {
-      const res = await checkIsERC1155Service(debouncedNFT.toLowerCase(), chainId)
+      const res = await checkIsERC1155Service(
+        debouncedNFT.toLowerCase(),
+        chainId
+      );
       return res;
     },
   });
-  const { isLoading: isLoadingNFT, data: dataNFT, isFetching: isFetchingNFT, isSuccess: isSuccessNFT } = useQuery({
+  const {
+    isLoading: isLoadingNFT,
+    data: dataNFT,
+    isFetching: isFetchingNFT,
+    isSuccess: isSuccessNFT,
+  } = useQuery({
     queryKey: ["searchNFT", debouncedNFT, chainId, idNFT],
     queryFn: async () => {
-      const res = await searchNFTService(chainId, debouncedNFT.toLowerCase(), idNFT)
+      const res = await searchNFTService(
+        chainId,
+        debouncedNFT.toLowerCase(),
+        idNFT
+      );
       return res;
     },
   });
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
+  const { currency } = router.query;
+  const { slug } = router.query;
+  let newURL = "";
   const handleChangeRouteNFT = () => {
-    const { currency } = router.query;
-    const { slug } = router.query;
-    let newURL = "";
     if (currency) {
       const currentURL = router.asPath;
       newURL = currentURL
@@ -56,19 +70,18 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         .replace(currency[2], idNFT);
     } else if (slug) {
       const currentURL = router.asPath;
-      newURL = currentURL.replace(slug[0], debouncedNFT).replace(slug[2], idNFT);
+      newURL = currentURL
+        .replace(slug[0], debouncedNFT)
+        .replace(slug[2], idNFT);
       router.push(newURL);
     }
-    setNftAddress('')
-    setIdNFT('');
+    setNftAddress("");
+    setIdNFT("");
     router.push(newURL);
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
   const handleSelectNFT = (item: any) => {
-    const { currency } = router.query;
-    const { slug } = router.query;
-    let newURL = "";
     if (currency) {
       const currentURL = router.asPath;
       newURL = currentURL
@@ -76,20 +89,20 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         .replace(currency[2], item.nftID);
     } else if (slug) {
       const currentURL = router.asPath;
-      newURL = currentURL.replace(slug[0], item.debouncedNFT).replace(slug[2], item.nftID);
+      newURL = currentURL
+        .replace(slug[0], item.debouncedNFT)
+        .replace(slug[2], item.nftID);
     }
     router.push(newURL);
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
-  }
-  
+  };
+
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 text-xl font-medium">
-            Select a NFT
-          </p>
+          <p className="py-2 mb-4 text-xl font-medium">Select a NFT</p>
           <div>
             <div className="relative">
               <input
@@ -104,13 +117,24 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </div>
               )}
             </div>
-            <ul className={`${debouncedNFT ? 'hidden' : 'block'}`}>
-              <li className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3" onClick={() => setNftAddress(demask.CREATOR)}>
-                <span><Image src='/logo.png' alt="logo" width={24} height={24} className="object-cover w-6 h-auto" /></span>
+            <ul className={`${debouncedNFT ? "hidden" : "block"}`}>
+              <li
+                className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3"
+                onClick={() => setNftAddress(demask.CREATOR)}
+              >
+                <span>
+                  <Image
+                    src="/logo.png"
+                    alt="logo"
+                    width={24}
+                    height={24}
+                    className="object-cover w-6 h-auto"
+                  />
+                </span>
                 <span>DEMASK CREATOR</span>
               </li>
             </ul>
-            <div className={`${debouncedNFT ? 'hidden' : 'block'}`}>
+            <div className={`${debouncedNFT ? "hidden" : "block"}`}>
               <div>
                 <TopNFT handleSelectNFT={handleSelectNFT} />
               </div>
@@ -144,7 +168,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 <h2 className="font-medium group-hover:text-secondary5">
                   {dataNFT[0]?.metadata?.symbol}
                 </h2>
-                <p className="text-sm text-dark3">{dataNFT[0]?.metadata?.name}</p>
+                <p className="text-sm text-dark3">
+                  {dataNFT[0]?.metadata?.name}
+                </p>
               </div>
             </div>
           )}

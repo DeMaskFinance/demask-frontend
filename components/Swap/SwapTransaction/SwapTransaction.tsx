@@ -293,7 +293,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         />
       ),
       content: "Pool",
-      link: `/add/${nftAddress}/${tokenAddress}/${idNFT}`,
+      link: `/add/${nftAddress}/${tokenAddress}/${idNFT}?chain=${chainId}`,
     },
     {
       icon: (

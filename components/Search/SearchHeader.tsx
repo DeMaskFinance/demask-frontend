@@ -248,7 +248,7 @@ const Search: FunctionComponent<SearchProps> = ({
                           }}
                           className="p-1 rounded-lg text-dark2 h-fit hover:text-white"
                         >
-                          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+                          <CgClose className="text-xl transition-colors duration-100 ease-linear text-dark2 hover:text-red" />
                         </button>
                       </div>
                     )}

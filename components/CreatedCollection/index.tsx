@@ -253,7 +253,7 @@ export default function CreatedCollection() {
                   {dataDetail?.name}
                 </p>
                 {dataDetail?.collaborators.includes(account) && (
-                  <Link href={`/edit/${collectionAddress}`}>
+                  <Link href={`/edit/${collectionAddress}?chain=${chainId}`}>
                     <EditIcon width={24} height={24} className="fill-dark3" />
                   </Link>
                 )}

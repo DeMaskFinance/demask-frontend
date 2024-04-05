@@ -237,6 +237,8 @@ export default function Creator() {
                           alt="pictureframe"
                           width={504}
                           height={160}
+                          sizes="100vw"
+                          quality={100}
                           className="object-cover max-w-[504px] max-h-[590px] rounded-2xl"
                         />
                       )}

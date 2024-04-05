@@ -62,27 +62,33 @@ export const ItemList: React.FC<ItemListProps> = ({
               {page?.data?.map((item: any, index: number) => (
                 <div key={index} className="relative overflow-hidden">
                   <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group lg:text-base hover:-translate-y-1 hover:shadow-home">
-                    <div
-                      className="relative h-[240px] overflow-hidden"
-                      onClick={() => {
-                        setSelectedItem(item);
-                        setIsOpenDetail(true);
-                        document.body.style.overflowY = "hidden";
-                      }}
-                    >
-                      <MediaNFT data={item} isControls={false} hover />
-                      <div className="absolute flex justify-between w-full opacity-0 group-hover:opacity-100 px-2 bottom-[-20%] transition-all duration-150 gap-x-2 group-hover:bottom-2">
+                    <div className="relative h-[240px] overflow-hidden">
+                      <div
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setIsOpenDetail(true);
+                          document.body.style.overflowY = "hidden";
+                        }}
+                        className="w-full h-full"
+                      >
+                        <MediaNFT data={item} isControls={false} hover />
+                      </div>
+                      <div className="absolute flex z-10 justify-between w-full opacity-0 group-hover:opacity-100 px-2 bottom-[-20%] transition-all duration-150 gap-x-2 group-hover:bottom-2">
                         <Link
                           href={
                             item.type === "erc1155"
-                              ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                              : `/collection/${item.nftAddress}?typeERC=erc721&tab=pool`
+                              ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}?chain=${chainId}`
+                              : `/collection/${item.nftAddress}?typeERC=erc721&tab=pool&chain=${chainId}`
                           }
                           className="basis-1/2"
                         >
                           <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-dark1 bg-dark5 hover:bg-dark3 gap-x-2">
-                          <div>
-                              <AddIcon width={20} height={20} className="fill-dark1"/>
+                            <div>
+                              <AddIcon
+                                width={20}
+                                height={20}
+                                className="fill-dark1"
+                              />
                             </div>
                             <p>Add</p>
                           </Button>
@@ -90,14 +96,18 @@ export const ItemList: React.FC<ItemListProps> = ({
                         <Link
                           href={
                             item.type === "erc1155"
-                              ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                              : `/collection/${item.nftAddress}?typeERC=erc721`
+                              ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}?chain=${chainId}`
+                              : `/collection/${item.nftAddress}?typeERC=erc721&chain=${chainId}`
                           }
                           className="basis-1/2"
                         >
                           <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-dark1 bg-dark5 hover:bg-dark3 gap-x-2">
                             <div>
-                              <SwapIconProfile width={20} height={20} className="fill-dark1"/>
+                              <SwapIconProfile
+                                width={20}
+                                height={20}
+                                className="fill-dark1"
+                              />
                             </div>
                             <p>Swap</p>
                           </Button>

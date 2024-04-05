@@ -25,7 +25,7 @@ const style = {
         "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
 };
 const Profile = () => {
-    const { account } = useContext(AccountContext);
+    const { account ,chainId} = useContext(AccountContext);
     const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "items"));
     const [visible, setVisible] = useState(true);
     const { profile } = useSelector(selectProfile);
@@ -107,7 +107,7 @@ const Profile = () => {
                     <div>
                         <div className="flex items-center gap-x-2">
                             <p className='text-2xl font-semibold'>{profile?.name}</p>
-                            <Link href='/profile/edit'>
+                            <Link href={`/profile/edit?chain=${chainId}`}>
                                 <EditIcon width={24} height={24} className="fill-dark3" />
                             </Link>
                         </div>

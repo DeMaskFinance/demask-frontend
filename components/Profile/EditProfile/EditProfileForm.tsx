@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Formik, Form, Field, useFormik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { DiscordIcon, FacebookIcon, GithubIcon, TeleIcon, TwitterIcon, WebsiteIcon } from '@/components/Icons';
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectProfile, userData } from '@/store/profileSlice';
 import * as userService from "@/libs/service/userService";
 import { useRouter } from 'next/router';
+import AccountContext from '@/context/AccountContext';
 const styles = {
     title: "block my-4 text-base font-semibold text-black24",
     inputItem: "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3",
@@ -49,6 +50,7 @@ const validationSchema = yup.object().shape({
 
 export default function EditProfileForm() {
     const { profile } = useSelector(selectProfile);
+    const { account ,chainId} = useContext(AccountContext);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const dispatch = useDispatch();
@@ -180,7 +182,7 @@ export default function EditProfileForm() {
                     ))}
 
                     <div className='flex justify-center mx-auto my-6 gap-x-6'>
-                        <Link href='/profile' className='px-6 py-2 text-sm font-medium text-white rounded-lg bg-dark3' >
+                        <Link href={`/profile?chain=${chainId}`} className='px-6 py-2 text-sm font-medium text-white rounded-lg bg-dark3' >
                             Cancel
                         </Link>
                         <Button type="submit" 

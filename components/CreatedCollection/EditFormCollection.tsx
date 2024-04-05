@@ -518,7 +518,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             ))}
             <div className="flex justify-center mx-auto my-6 gap-x-6">
               <Link
-                href="/profile"
+                href={`/profile?chain=${chainId}`}
                 className="px-6 py-2 text-sm font-medium text-white rounded-lg bg-dark3"
               >
                 Cancel

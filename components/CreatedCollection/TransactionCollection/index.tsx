@@ -94,7 +94,7 @@ const TransactionCollection = () => {
           ))}
         </div>
       </div>
-      <div className="relative h-full">
+      <div className="relative h-full min-h-[500px]">
         {selectedTab ? selectedTab.panel() : null}
       </div>
       <ModalSetting

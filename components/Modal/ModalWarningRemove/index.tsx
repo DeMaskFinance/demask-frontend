@@ -4,6 +4,8 @@ import Wrapper from "../Wrapper";
 import { WarningSwapIcon } from "@/components/Icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import AccountContext from "@/context/AccountContext";
 
 interface ModalWarningRemoveProps {
     isOpenWarning: boolean;
@@ -11,6 +13,7 @@ interface ModalWarningRemoveProps {
 
 const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({ isOpenWarning }) => {
     const router = useRouter();
+    const { chainId } = useContext(AccountContext);
     const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         document.body.style.overflowY = "auto";
@@ -26,7 +29,7 @@ const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({ 
                         <p className="mt-6 font-normal text-center text-dark2">Due to a violation of out regulations, the NFT set is currently not tradable directly on the DeMask interface.</p>
 
                     </div>
-                    <Link href='/swap'>
+                    <Link href={`/swap?chain=${chainId}`}>
                         <Button primary className="px-6 py-2 mx-auto">Return to Swap</Button>
                     </Link>
                 </div>
