@@ -1,6 +1,7 @@
+import AccountContext from "@/context/AccountContext";
 import { convertTime } from "@/hooks/useConvertTime";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 interface CountdownTimeProps {
     blockNumber: number,
     query?: string,
@@ -12,7 +13,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     isSuccess
 }) => {
     const [blockNumberTimer, setBlockNumberTimer] = useState(0);
-    
+    const { chainId } = useContext(AccountContext);
     const timer = () => {
         const currentTime = Math.floor(Date.now() / 1000);
         const reBase = Math.max(0, blockNumber - currentTime);
@@ -52,7 +53,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
                                 </span>
                             </div>
                             <div className="text-[10px] border border-secondary2  text-secondary2 transition-all duration-150 hover:text-white hover:bg-secondary2 rounded-lg h-6 px-2 datas-end leading-6">
-                                <Link href={`/launchpad?choice=${query}`}>
+                                <Link href={`/launchpad?choice=${query}?chain=${chainId}`}>
                                     {query}
                                 </Link>
                             </div>
@@ -65,7 +66,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
                         This phase has:
                     </p>
                     <div className={`text-[10px] border  transition-all duration-150  rounded-lg h-6 px-2 datas-end leading-6 ${isSuccess ? 'border-green  text-green w-[61px] hover:text-white hover:bg-green' : 'border-red w-[50px]  text-red hover:text-white hover:bg-red'}`}>
-                        <Link href={`/launchpad?choice=${query}`}>
+                        <Link href={`/launchpad?choice=${query}?chain=${chainId}`}>
                             {isSuccess ? 'Success' : 'Failed'}
                         </Link>
                     </div>

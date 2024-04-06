@@ -20,24 +20,15 @@ function WithAuth({ children }: any) {
     return (
         <div>
             <NextSeo {...updateMeta} />
-            <div className='max-w-[1440px] mx-auto min-h-[75vh]'>
+            <div className='mx-auto min-h-[75vh]'>
                 {isLoggedIn ? (
                     <div>
                         {children}
                     </div>
                 ) : (
-                    <div className='pt-6'>
-                        <Button
-                            className="w-[140px] py-2 block mx-auto"
-                            primary
-                            onClick={handleOpen}
-                        >
-                            CONNECT WALLET
-                        </Button>
-                    </div>
+                    <ModalWallet isOpen={!isLoggedIn} setIsOpen={setIsOpen} isAuthen={true}/>
                 )}
             </div>
-            <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     )
 }

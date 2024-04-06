@@ -29,7 +29,7 @@ export const CardListLoading = () => {
 }
 const CardList = ({ data }: any) => {
     return (
-        <div className={`flex flex-col items-center justify-center p-2 border rounded-lg text-dark1 w-full h-fit ${data?.rank === 1 ? 'border-yellow shadow-[0px_8px_24px_0px_rgba(255,194,88,0.25)]' : data?.rank === 2 ? "border-blue shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]" : data?.rank === 3 ? "border-red shadow-[0px_8px_24px_0px_rgba(253,128,130,0.25)]" : ''}`}>
+        <div className={`flex flex-col bg-white items-center justify-center p-2 border rounded-lg text-dark1 w-full h-fit ${data?.rank === 1 ? 'border-yellow shadow-[0px_0px_24px_6px_rgba(255,194,88,0.25)]' : data?.rank === 2 ? "border-blue shadow-[0px_0px_24px_6px_rgba(29,133,232,0.25)]" : data?.rank === 3 ? "border-red shadow-[0px_0px_24px_6px_rgba(253,128,130,0.25)]" : ''}`}>
             {
                 data?.avatar ? (
                     <Image width={600} height={600} alt='leaderboardImg' src={data?.avatar} className='rounded-full object-cover    w-[120px] h-[120px]' />

@@ -137,7 +137,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         priceFormat: {
           type: "volume",
           precision: 16,
-          minMove: 0.000001,
+          minMove: 0.0001,
         },
       });
       const volumeSeries = chart.addHistogramSeries({
@@ -169,7 +169,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         priceFormat: {
           type: "volume",
           precision: 16,
-          minMove: 0.000001,
+          minMove: 0.0001,
         },
       });
       chart.timeScale().scrollToPosition(50, false);
@@ -222,7 +222,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full p-4 mt-6 border rounded-lg lg:mt-0 border-dark3">
+        <div className="w-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3">
           <div className="flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3">
             <div className="flex items-center p-4 border-r border-dark3 text-dark2">
               <p className="mr-1 text-dark3">Price 1D:</p>
@@ -328,7 +328,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             id="chart"
             className="w-full h-[350px] lg:h-[450px]"
           />
-          <div className="flex justify-between text-[12px] text-[#222] font-medium items-center">
+          <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               <li className="cursor-pointer hover:text-secondary4">15m</li>
               <li className="cursor-pointer hover:text-secondary4">1H</li>

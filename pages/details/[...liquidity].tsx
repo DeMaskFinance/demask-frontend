@@ -6,7 +6,7 @@ import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
@@ -141,13 +141,13 @@ export default function DetailLiquidity() {
               {data && account && (
                 <>
                   <div className="flex flex-wrap items-center mb-2 lg:mb-0">
-                    <Link href='/pools' className="p-1 rounded-lg group">
+                    <Link href={`/pools?chain=${chainId}`} className="p-1 rounded-lg group">
                       <BackIcon width={20} height={20} className="hover:fill-secondary2" />
                     </Link>
                     <div className="w-[30px] h-[30px] ml-4">
                       <MediaNFT data={data} isControls={false} />
                     </div>
-                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
+                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
                       <div className="relative truncate max-w-[160px]">
                         <ModalDocument data={data?.metadata?.name}/>
                       </div>
@@ -165,7 +165,7 @@ export default function DetailLiquidity() {
                     <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
                       REMOVE
                     </button>
-                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}`} className={style.btnWallet} >
+                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`} className={style.btnWallet} >
                       SWAP
                     </Link>
                   </div>
@@ -329,11 +329,12 @@ export default function DetailLiquidity() {
       )}
       {data && account && (
         <>
-          <ModalRemmoveLiquidity
+          <ModalRemoveLiquidity
             data={data}
             routerAddress={routerAddress}
             type='erc1155'
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+            isERC721={false}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}
           />

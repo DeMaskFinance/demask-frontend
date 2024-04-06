@@ -16,9 +16,7 @@ const TabQuery: React.FC<TabQueryProps> = ({ TABS, initialItem }) => {
   const [widthBtn, setWidthBtn] = useState(0);
   const handleButtonClick = (item: any, index: number) => {
     setTab(item.key)
-    setWidthBtn(
-      buttonRefs.current[index] ? buttonRefs.current[index].offsetWidth : 0
-    );
+    setWidthBtn(buttonRefs.current[index]?.offsetWidth ?? 0);
     const totalWidth = buttonRefs.current
       .slice(0, index)
       .reduce((acc, ref) => (ref ? acc + ref.offsetWidth : acc), 0);

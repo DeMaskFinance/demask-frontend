@@ -11,10 +11,7 @@ interface ModalSettingProps {
     isOpenSetting: boolean;
     setIsOpenSetting: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const styles = {
-    title: "block mb-4 text-base font-medium text-black24",
-    inputItem: "w-12 p-2 mb-4 border rounded-xl border-dark3",
-};
+
 const ModalSetting: React.FunctionComponent<
     ModalSettingProps
 > = ({
@@ -54,7 +51,7 @@ const ModalSetting: React.FunctionComponent<
 
         return (
             <Wrapper isOpen={isOpenSetting} onClick={handleClose}>
-                <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+                <div className="container_modal">
                     <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
                         <h2 className="flex items-center mb-3 text-xl font-semibold text-dark1">
                             Settings swap & liquidity

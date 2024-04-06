@@ -9,6 +9,8 @@ export const changeNetwork = async (
   updateChainId: any,
   setTab?: any
 ) => {
+  console.log(chainId);
+  
   try {
     const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });

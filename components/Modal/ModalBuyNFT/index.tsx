@@ -22,6 +22,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 interface ModalBuyNFTProps {
   isOpenBuyNFT: boolean;
   tokenAddress: string;
@@ -243,14 +244,15 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     }
   };
   console.log(data);
-
+  const queryClient = useQueryClient();
   return (
     <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
-      <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+      <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
           <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
             Confirm Buy
           </p>
+          <p onClick={()=>{queryClient.refetchQueries(['collectionNFTBUY'])}}>TEST</p>
           <div className="flex justify-between text-lg font-semibold text-dark2">
             <FormatNumber
               number={divideByDecimal(

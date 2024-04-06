@@ -1,3 +1,4 @@
+import { uploadFileIPFS, uploadMetadataIPFS } from "../service/IPFSService";
 import { uploadFileToIPFS } from "./uploadFileIPFS";
 
 interface MetadataProps {
@@ -40,15 +41,13 @@ const getMetadataUrl = async ({
     const response = await fetch(imagePath);
     const blob = await response.blob();
     const file = new File([blob], "audio.svg", { type: "image/svg" });
-    const audioImage = await uploadFileToIPFS(file);
-    console.log(audioImage);
+    const audioImage = await uploadFileIPFS(file);
     initialMetadata.image = audioImage || "";
     initialMetadata.animation_url = await fileIPFS;
   } else {
     initialMetadata.image = await fileIPFS;
   }
-  const metadata = JSON.stringify(initialMetadata);
-  const urlMetadata = await uploadFileToIPFS(metadata);
+  const urlMetadata = await uploadMetadataIPFS(initialMetadata);
   return urlMetadata;
 };
 export default getMetadataUrl;

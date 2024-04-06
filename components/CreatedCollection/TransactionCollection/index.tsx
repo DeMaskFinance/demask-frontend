@@ -47,10 +47,10 @@ const TransactionCollection = () => {
         <RefetchIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:fill-secondary5"
+          className="cursor-pointer hover:fill-dark2"
         />
       ),
-      content: "Refetch",
+      content: "Refresh",
       onClick: () => router.refresh(),
     },
     {
@@ -58,7 +58,7 @@ const TransactionCollection = () => {
         <SettingIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-secondary5"
+          className="cursor-pointer hover:rotate-90 hover:fill-dark2"
         />
       ),
       content: "Setting",
@@ -94,7 +94,7 @@ const TransactionCollection = () => {
           ))}
         </div>
       </div>
-      <div className="relative h-full">
+      <div className="relative h-full min-h-[500px]">
         {selectedTab ? selectedTab.panel() : null}
       </div>
       <ModalSetting

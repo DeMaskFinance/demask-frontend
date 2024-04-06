@@ -1,7 +1,6 @@
 import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
-import abiErc20 from "@/abi/abiErc20.json";
 import abiDML from "@/abi/abiDML.json";
 const erc = async (wallet: string, address: string, abi: any) => {
   const providerChoice = await getProvider(wallet);

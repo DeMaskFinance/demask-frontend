@@ -113,20 +113,6 @@ const TableRank = () => {
         return res;
       },
     });
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://api.demask.finance/v2/volume-user-list?userAddress=0x4699a9a5607c9281103ad504fa922276eb6385a2&chainId=168587773&page=1&limit=10"
-  //       );
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
   const prevPage = () => {
     const prevPageNumber = Math.max(page - 1, 1);
     setPage(prevPageNumber);
@@ -148,7 +134,7 @@ const TableRank = () => {
   console.log({ data, account });
 
   return (
-    <div className="px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home min-h-[500px] flex flex-col justify-between">
+    <div className="px-2 py-4 mt-10 overflow-x-scroll border bg-white rounded-lg border-dark4 shadow-home min-h-[500px] flex flex-col justify-between">
       <table className="w-full text-left border-collapse">
         <thead className="">
           <tr className="flex px-2 pb-2 text-base border-b">

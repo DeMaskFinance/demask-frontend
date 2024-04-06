@@ -33,10 +33,7 @@ interface ModalAddLiquidityERC721Props {
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
 }
-const styles = {
-  title: "block mb-4 text-base font-medium text-black24",
-  inputItem: "w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2",
-};
+
 const ModalAddLiquidityERC721: React.FunctionComponent<
   ModalAddLiquidityERC721Props
 > = ({
@@ -206,7 +203,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   };
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
-      <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+      <div className="container_modal">
         <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
           <div className="flex items-center mb-4 text-xl font-semibold text-dark1">
             Add
@@ -275,7 +272,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                   </div>
                   {dmlToken === "0x0000000000000000000000000000000000000000" ? (
                     <input
-                      className={styles.inputItem}
+                      className="input_item"
                       type="number"
                       placeholder="Input amount Token"
                       value={inputToken}
@@ -284,11 +281,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                   ) : (
                     <div>
                       {data ? (
-                        <div className={styles.inputItem}>
+                        <div className="input_item">
                           {amountErcDesiredToDec}
                         </div>
                       ) : (
-                        <div className={styles.inputItem}>
+                        <div className="input_item">
                           <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
                         </div>
                       )}

@@ -2,7 +2,7 @@ import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
-import ModalRemmoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
   ModalError,
   ModalSuccess,
@@ -101,11 +101,13 @@ const PoolItem = ({liquidity}:any) => {
       console.log("No account and DML");
     }
   };
+  console.log(liquidity);
+  
   return (
-    <div className="p-4 border rounded-lg border-dark3">
+    <div className="p-4 mb-4 border rounded-lg border-dark3">
       <div className="flex flex-wrap justify-between gap-y-2">
         <p className="text-xl font-semibold text-dark0">
-          The Buns - Hefty Hares
+          {liquidity.metadata.name}
         </p>
         <div className="flex gap-x-4">
           <Button className="py-2" active onClick={handleAddLiquidity}>
@@ -181,13 +183,14 @@ const PoolItem = ({liquidity}:any) => {
       />
       {data && account && (
         <>
-          <ModalRemmoveLiquidity
+          <ModalRemoveLiquidity
             /* 
           // @ts-ignore */
             data={data}
             routerAddress={routerAddress}
             type='erc721'
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+            isERC721={true}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash}
             setIsOpenSuccess={setIsOpenSuccessRemove}

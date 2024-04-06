@@ -14,6 +14,7 @@ import { SwiperSlide } from "swiper/react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Classify from "../Classify";
 import { collectionListUserService } from "@/libs/service/collectionService";
+import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
@@ -86,87 +87,85 @@ const Created = () => {
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
-        <SwiperCustom>
+        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
           {isLoading ? (
-            <SkeletonNFTTop />
-          ) : (isSuccess && data?.pages[0]?.data.data.length > 0) ? (
-            <div>
+            <SkeletonSubCategory />
+          ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
+            <Fragment>
               {data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
-                  <ul className="grid grid-cols-1 gap-6 lg:grid-cols-5 md:grid-cols-2 text-dark2">
-                    {page?.data?.data?.map((item: any, itemIndex: number) => (
-                      <li key={itemIndex}>
-                        <SwiperSlide className="text-sm lg:text-base text-dark2">
-                          <Link
-                            href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
-                          >
-                            <li className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
-                              <div className="h-[127px]">
-                                {item.avatar ? (
-                                  <img
-                                    src={item.avatar}
-                                    width={620}
-                                    height={620}
-                                    className="object-cover w-full h-full rounded-lg"
-                                    alt="1"
-                                  />
-                                ) : (
-                                  <Image
-                                    src="/Placeholder.png"
-                                    width={620}
-                                    height={620}
-                                    className="object-cover w-full h-full rounded-lg"
-                                    alt="1"
-                                  />
-                                )}
-                              </div>
+                  {page?.data?.data?.map((item: any, itemIndex: number) => (
+                    <div key={itemIndex}>
+                      <Link
+                        href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
+                      >
+                        <div className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
+                          <div className="h-[127px]">
+                            {item.avatar ? (
+                              <img
+                                src={item.avatar}
+                                width={620}
+                                height={620}
+                                className="object-cover w-full h-full rounded-lg"
+                                alt="1"
+                              />
+                            ) : (
+                              <Image
+                                src="/Placeholder.png"
+                                width={620}
+                                height={620}
+                                className="object-cover w-full h-full rounded-lg"
+                                alt="1"
+                              />
+                            )}
+                          </div>
+                          <div className="w-full">
+                            <div className="flex w-full mt-2">
                               <div className="w-full">
-                                <div className="flex w-full mt-2">
-                                  <div className="w-full">
-                                    <h6 className="flex items-start gap-2 font-medium uppercase">
-                                      <span className="flex-wrap max-w-full text-xl line-clamp-1">
-                                        {item.name ? (
-                                          <ModalDocument data={item.name} />
-                                        ) : (
-                                          <p>Unnamed</p>
-                                        )}
-                                      </span>
-                                    </h6>
-                                  </div>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <LogoIconCard chainId={chainId} />
-                                  <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase">
-                                    {item.type}
-                                  </p>
-                                </div>
-                                <div className="flex justify-between text-sm">
-                                  <p>Total Volume</p>
-                                  <p>Total Items</p>
-                                </div>
-                                <div className="flex justify-between font-semibold text-dark2">
-                                  <div>
-                                    <FormatNumber number={item?.volume} />
-                                  </div>
-                                  <div>
-                                    <FormatNumber number={item?.totalItems} />
-                                  </div>
-                                </div>
+                                <h6 className="flex items-start gap-2 font-medium uppercase">
+                                  <span className="flex-wrap max-w-full text-xl line-clamp-1">
+                                    {item.name ? (
+                                      <ModalDocument data={item.name} />
+                                    ) : (
+                                      <p>Unnamed</p>
+                                    )}
+                                  </span>
+                                </h6>
                               </div>
-                            </li>
-                          </Link>
-                          <div ref={ref} style={{ height: "1px" }}></div>
-                        </SwiperSlide>
-                      </li>
-                    ))}
-                  </ul>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <LogoIconCard chainId={chainId} />
+                              <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase">
+                                {item.type}
+                              </p>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <p>Total Volume</p>
+                              <p>Total Items</p>
+                            </div>
+                            <div className="flex justify-between font-semibold text-dark2">
+                              <div>
+                                <FormatNumber number={item?.volume} />
+                              </div>
+                              <div>
+                                <FormatNumber number={item?.totalItems} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                      <div ref={ref} style={{ height: "1px" }}></div>
+                    </div>
+                  ))}
                 </Fragment>
               ))}
-            </div>
+              {isFetching && <SkeletonSubCategory />}
+              <div ref={ref} style={{ height: "1px" }}></div>
+            </Fragment>
           ) : (
-            <p>No data</p>
+            <p className="mt-4">No data available.</p>
           )}
-        </SwiperCustom>
+        </div>
       </div>
     </Fragment>
   );

@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
+import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
 
 interface ModalSuccessProps {
     isOpenSuccess: boolean;
@@ -22,10 +23,11 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
     const { demask, chainId, wallet } = useContext(AccountContext);
     const [metadataRes, setMetadataRes] = useState<any>();
     const [isLoadingMeta, setIsLoadingMeta] = useState(false);
+    const metadataIPFS = formatLinkIPFS(metadataLink!)
     useEffect(() => {
         const fetchData = async () => {
             setIsLoadingMeta(true);
-            const res = await fetch(metadataLink!);
+            const res = await fetch(metadataIPFS);
             const metadata = await res.json();
             setMetadataRes({
                 metadata
@@ -34,6 +36,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
         }
         fetchData();
     }, [metadataLink])
+    console.log(metadataRes);
     
     const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -42,7 +45,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
     };
     return (
         <Wrapper isOpen={isOpenSuccess} onClick={handleClose} isTransaction>
-            <div className="relative z-50 flex flex-col justify-center cursor-default h-fit">
+            <div className="container_modal">
                 <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
                     {isMint ? (
                         <div className="flex flex-col items-center">
@@ -52,7 +55,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                                 </div>
                             ) : (metadataRes) ? (
                                 <div className="w-40 h-40 mx-auto mt-10 mb-6">
-                                    <MediaNFT data={metadataRes} isControls />
+                                    <MediaNFT data={metadataRes} isControls hideAudio={true}/>
                                 </div>
                             ) : (
                                 null
@@ -65,7 +68,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
                                 </p>
                             </a>
                             <div className="flex items-center mt-6 gap-x-4">
-                                <Link href='/profile?tab=items'>
+                                <Link href={`/profile?tab=items&chain=${chainId}`}>
                                     <Button className='px-6 py-2 font-semibold text-white bg-dark3' >View collection</Button>
                                 </Link>
                                 <Button primary className='px-6 py-2 ' onClick={handleClose}>Create an NFT</Button>
