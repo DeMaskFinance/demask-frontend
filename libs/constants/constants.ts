@@ -119,14 +119,9 @@ if (PORT === "3000") {
       chain: "168587773",
     },
     {
-      name: "Goerli Testnet",
-      logo: GoerliIcon,
-      chain: "5",
-    },
-    {
       name: "Monad Devnet",
       logo: MonadIcon,
-      chain: "123",
+      chain: "1",
       disable: true,
     },
   ];

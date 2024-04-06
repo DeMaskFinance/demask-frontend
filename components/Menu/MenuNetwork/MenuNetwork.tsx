@@ -11,11 +11,11 @@ import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface MenuNetworkProps {}
 const style = {
-    itemSub:
-      "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-semibold",
-    btnWallet:
-      "flex items-center py-2 pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
-  };
+  itemSub:
+    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-semibold",
+  btnWallet:
+    "flex items-center py-2 pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
+};
 interface networkProps {
   name: string;
   logo: React.FC;
@@ -87,7 +87,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                 } gap-x-2 group justify-between items-center active:bg-dark4 ${
                   item.disable ? "hover:cursor-no-drop" : ""
                 } `}
-                onClick={() => handleChangeNetwork(item.chain)}
+                onClick={() => !item.disable && handleChangeNetwork(item.chain)}
               >
                 <div className="flex items-center gap-x-2">
                   <item.logo
@@ -114,11 +114,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       )}
     >
       <button className={`${style.btnWallet} flex`}>
-        <LogoComponent
-          width={24}
-          height={24}
-          className=""
-        />
+        <LogoComponent width={24} height={24} className="" />
         <p className="hidden 2xl:block">{filterNetwork?.name}</p>
         <span className="2xl:hidden">
           <BsCaretDownFill />
