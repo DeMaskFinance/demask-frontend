@@ -13,7 +13,6 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
   const percentageSoftcap = calculatePercentage(softcap, parseInt(hardcap));
 
   const isSoldOut = parseInt(amount) >= parseInt(hardcap);
-  console.log(percentage);
   
   return (
     <div className="relative w-full h-1 bg-dark4 rounded-xl">

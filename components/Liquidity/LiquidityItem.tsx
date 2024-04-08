@@ -31,7 +31,6 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     };
     fetchDataReward();
   }, [liquidity, account, wallet]);
-  console.log(liquidity);
   
   return (
     <div className="relative w-full overflow-hidden group">

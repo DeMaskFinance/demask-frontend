@@ -192,7 +192,6 @@ export default function AddLiquidity() {
     }
     setInputToken(inputValue);
     if (Number(inputValue) > Number(balanceToken)) {
-      console.log("Insufficient Token balance");
       setIsSufficientToken(true);
     } else {
       setIsSufficientToken(false);

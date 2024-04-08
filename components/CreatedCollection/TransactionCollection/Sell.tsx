@@ -95,7 +95,6 @@ const Sell = () => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   const dmlToken = useDMLToken(
     account,
@@ -106,7 +105,6 @@ const Sell = () => {
     "",
     isOpenTransaction
   );
-  console.log(dmlToken);
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -132,7 +130,6 @@ const Sell = () => {
     routerAddress,
     true
   );
-  console.log(amountTokenSell);
 
   useEffect(() => {
     if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
@@ -162,8 +159,6 @@ const Sell = () => {
       const arr = idNFT.filter((itemArr) => {
         return itemArr !== Number(item.nftID);
       });
-      console.log(arr);
-
       setIdNFT(arr);
     } else {
       setIdNFT([...idNFT, Number(item.nftID)]);
@@ -182,8 +177,6 @@ const Sell = () => {
     royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
-  console.log(data);
-
   return (
     <div>
       {isLoading ? (

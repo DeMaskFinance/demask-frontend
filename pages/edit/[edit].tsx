@@ -20,12 +20,10 @@ const EditCollection = () => {
     queryFn: async () => {
       if (collectionAddress) {
         const res = await collectionDetail(collectionAddress, chainId);
-        console.log(res);
         return res.data;
       }
     },
   });
-  console.log(data);
 
   return (
     <div className="py-6 min-h-[75vh] max-w-[1440px] mx-auto mb-[100px] lg:mb-0 lg:px-primary md:px-14 px-4">

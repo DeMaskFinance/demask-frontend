@@ -49,7 +49,6 @@ export const ItemList: React.FC<ItemListProps> = ({
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   return (
     <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">

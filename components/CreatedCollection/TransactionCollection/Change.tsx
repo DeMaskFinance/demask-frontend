@@ -2,9 +2,16 @@ import { Button } from "@/components/Buttons";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { LightBulbIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
+import {
+  ModalError,
+  ModalSuccess,
+  ModalTransation,
+} from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import { SkeletonCategory, SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
+import {
+  SkeletonCategory,
+  SkeletonItemTransaction,
+} from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
@@ -17,7 +24,7 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import React, { Fragment, useContext, useEffect, useState } from "react";
@@ -43,7 +50,7 @@ const Change = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const { ref, inView } = useInView();
-  const { ref:refOutput, inView :inViewOutput} = useInView();
+  const { ref: refOutput, inView: inViewOutput } = useInView();
   const { balanceToken, bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -114,7 +121,7 @@ const Change = () => {
     isSuccess,
     isLoading,
     isFetching,
-    hasNextPage
+    hasNextPage,
   } = useInfiniteQuery(
     ["collectionNFTBUY", chainId, collectionAddress],
     ({ pageParam = 1 }) =>
@@ -189,6 +196,8 @@ const Change = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
+  const queryClient = useQueryClient();
+  
   const handleSwap = async () => {
     // setIsOpenSwapNFT(true);
     // document.body.style.overflowY = "hidden";
@@ -215,6 +224,8 @@ const Change = () => {
       } else {
         setIsOpenErrorSwap(true);
       }
+      queryClient.refetchQueries(["collectionNFTBUY"]);
+      queryClient.refetchQueries(["collectionNFTSell"]);
     } catch (error) {
       setIsOpenTransaction(false);
       console.error(error);
@@ -223,7 +234,11 @@ const Change = () => {
   return (
     <div>
       <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2">
-        <LightBulbIcon width={20} height={20} className="flex-shrink-0  fill-yellow" />
+        <LightBulbIcon
+          width={20}
+          height={20}
+          className="flex-shrink-0 fill-yellow"
+        />
         <p>
           You can change any NFTs that you have in your wallet for some other
           NFTs in the pool and pay a small fee.
@@ -235,8 +250,8 @@ const Change = () => {
       <div className="my-2">
         {isInputDataLoading ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
-          <SkeletonItemTransaction />
-        </div>
+            <SkeletonItemTransaction />
+          </div>
         ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
@@ -278,7 +293,7 @@ const Change = () => {
                 </Fragment>
               ))}
               {isFetching && <SkeletonItemTransaction />}
-              <div ref={ref} style={{ height: "1px" }} ></div>
+              <div ref={ref} style={{ height: "1px" }}></div>
             </div>
           </div>
         ) : (
@@ -300,8 +315,8 @@ const Change = () => {
       <div className="my-2">
         {isLoading ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
-          <SkeletonItemTransaction />
-        </div>
+            <SkeletonItemTransaction />
+          </div>
         ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
@@ -343,7 +358,7 @@ const Change = () => {
                 </Fragment>
               ))}
               {isFetching && <SkeletonItemTransaction />}
-              <div ref={refOutput} style={{ height: "1px" }} ></div>
+              <div ref={refOutput} style={{ height: "1px" }}></div>
             </div>
           </div>
         ) : (

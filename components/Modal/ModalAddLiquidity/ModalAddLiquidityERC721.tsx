@@ -73,7 +73,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  console.log(dmlToken);
   const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
     dmlToken,
     wallet,

@@ -18,6 +18,7 @@ import { SEO } from "../../next-seo.config";
 import WithAuth from "@/components/Common/WithAuth";
 import { uploadFileIPFS } from "@/libs/service/IPFSService";
 import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
+import { PictureMint } from "@/components/Icons";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24",
   btnActive: "rounded-lg bg-secondary5",
@@ -114,7 +115,6 @@ export default function Creator() {
       console.log("No file");
     }
   }
-  console.log(fileIPFS);
 
   const handleChangeAttributeType = (
     e: ChangeEvent<HTMLInputElement>,
@@ -201,9 +201,6 @@ export default function Creator() {
       setValidFee(false);
     }
   };
-  console.log(
-    formatLinkIPFS("ipfs://QmYpx38VcgK78r27EPZnbEc8cYuZw7Bp96ubDkkuun3YbF/0")
-  );
 
   return (
     <>
@@ -223,7 +220,7 @@ export default function Creator() {
                 ref={uploadRef}
               >
                 <div
-                  className={`flex flex-col items-center w-full text-center border border-dashed h-fit justify-center border-1 border-dark2 rounded-2xl`}
+                  className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-dark2 rounded-2xl`}
                   ref={itemRef}
                   onDragOver={handleDragOver}
                   onDragLeave={handleLeave}
@@ -296,13 +293,7 @@ export default function Creator() {
                       onClick={handleClickFile}
                       className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center"
                     >
-                      <Image
-                        src={images.pictureFrame}
-                        alt="pictureframe"
-                        width={160}
-                        height={160}
-                        className="object-cover mt-6 mb-4 w-[160px] h-40 rounded-[2rem] mx-auto"
-                      />
+                      <PictureMint width={160} height={160} className="mx-auto transition-all duration-200 group-hover:fill-dark2"/>
                       <p className="font-semibold text-dark1">Upload</p>
                       <input
                         ref={inputRef}
@@ -311,7 +302,7 @@ export default function Creator() {
                         hidden
                         onChange={handleChangeFile}
                       />
-                      <div className="text-sm w-[254px] text-dark3 mb-6 ">
+                      <div className="text-sm w-[254px] text-dark3 mb-6 transition-all duration-200 group-hover:text-dark2">
                         <span>
                           Video, audio, gif, pdf, and images supported.
                         </span>{" "}

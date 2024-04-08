@@ -285,13 +285,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       onClick: () => refetch(),
     },
     {
-      icon: (
-        <PoolIcon
-          width={24}
-          height={24}
-          className="hover:fill-dark2"
-        />
-      ),
+      icon: <PoolIcon width={24} height={24} className="hover:fill-dark2" />,
       content: "Pool",
       link: `/add/${nftAddress}/${tokenAddress}/${idNFT}?chain=${chainId}`,
     },
@@ -442,7 +436,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               <div className="flex justify-end mt-8">
                 <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit">
                   <div
-                    className="absolute h-8 transition-transform duration-100 ease-linear rounded-l-lg bg-secondary5"
+                    className="absolute h-8 transition-transform duration-500 ease-linear rounded-l-lg bg-secondary5"
                     style={{ width: `${widthBtn}px` }}
                   ></div>
                   {activeNFTPercent.map((item, index) => (
@@ -545,21 +539,29 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             <div className="relative">
               {activeChoice === "Buy" ? (
                 <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
-                  <FormatNumber
-                    number={divideByDecimal(
-                      totalProcessBuy.toString(),
-                      data.tokenDecimals
-                    )}
-                  />
+                  {isLoadingBuy ? (
+                    <BiLoaderAlt className="animate-spin text-secondary5" />
+                  ) : (
+                    <FormatNumber
+                      number={divideByDecimal(
+                        totalProcessBuy.toString(),
+                        data.tokenDecimals
+                      )}
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
-                  <FormatNumber
-                    number={divideByDecimal(
-                      totalProcessSell.toString(),
-                      data.tokenDecimals
-                    )}
-                  />
+                  {isLoadingSell ? (
+                    <BiLoaderAlt className="animate-spin text-secondary5" />
+                  ) : (
+                    <FormatNumber
+                      number={divideByDecimal(
+                        totalProcessSell.toString(),
+                        data.tokenDecimals
+                      )}
+                    />
+                  )}
                 </div>
               )}
               <div className="absolute px-2 py-1 right-1 top-2">
@@ -568,24 +570,17 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
           </div>
         </form>
-        {inputNFTValue && activeChoice === "Buy" ? (
-          !isLoadingBuy ? (
-            Math.floor(amountBuyDec) === 0 ? (
-              <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
-            ) : null
-          ) : (
-            <BiLoaderAlt className="animate-spin text-secondary5" />
-          )
-        ) : null}
-        {inputNFTValue && activeChoice === "Sell" ? (
-          !isLoadingSell ? (
-            Math.floor(amountSellDec) === 0 ? (
-              <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
-            ) : null
-          ) : (
-            <BiLoaderAlt className="animate-spin text-secondary5" />
-          )
-        ) : null}
+        {inputNFTValue &&
+          activeChoice === "Buy" &&
+          Math.floor(amountBuyDec) === 0 && (
+            <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
+          )}
+
+        {inputNFTValue &&
+          activeChoice === "Sell" &&
+          Math.floor(amountSellDec) === 0 && (
+            <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
+          )}
         <div className="flex justify-center w-full">
           {activeChoice === "Buy" && account && (
             <button

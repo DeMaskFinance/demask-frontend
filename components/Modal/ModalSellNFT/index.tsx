@@ -21,6 +21,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
+import { useQueryClient } from "@tanstack/react-query";
 interface ModalSellNFTProps {
   isOpenSellNFT: boolean;
   tokenAddress: string;
@@ -108,10 +109,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     routerAddress,
     updatePrice
   );
-  console.log({
-    inputNFT,
-    idNFT,
-  });
 
   const balanceNFT = useNFTBalance(
     account,
@@ -155,15 +152,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       setRoyaltiesFeeSell(0);
     }
   }, [data, slippage, amountTokenSell, data.royaltyFee]);
-  console.log({
-    inputNFT,
-    amountTokenSell,
-    data,
-    idNFT,
-    reserveNFT,
-    isSufficientNFT,
-    isSufficientTokenSell,
-  });
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const load = setInterval(() => {
@@ -230,6 +219,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
           setIsOpenError(true);
         }
         setInputNFT("");
+        queryClient.refetchQueries(['collectionNFTBUY'])
+        queryClient.refetchQueries(['collectionNFTSell'])
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

@@ -75,7 +75,6 @@ const Created = () => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data?.pages[0]?.data.length);
 
   return (
     <Fragment>

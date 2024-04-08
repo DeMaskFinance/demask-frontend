@@ -36,7 +36,6 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
         }
         fetchData();
     }, [metadataLink])
-    console.log(metadataRes);
     
     const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

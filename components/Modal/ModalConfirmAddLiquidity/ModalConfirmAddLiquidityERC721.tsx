@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
+import { useQueryClient } from "@tanstack/react-query";
 interface ModalConfirmAddLiquidityERC721Props {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -131,7 +132,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       }
     }
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
-
+  const queryClient = useQueryClient();
   const addLiquidity = async () => {
     if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
       try {
@@ -165,6 +166,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         } else {
           setIsOpenError(true);
         }
+        queryClient.refetchQueries(["collectionNFTBUY"]);
+        queryClient.refetchQueries(["collectionNFTSell"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

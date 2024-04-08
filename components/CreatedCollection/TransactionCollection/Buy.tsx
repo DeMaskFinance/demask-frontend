@@ -108,8 +108,6 @@ const Buy = () => {
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
   const dmlToken = data?.pages[0]?.dmlAddress;
-  console.log(dmlToken);
-
   const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
     "",
     dmlToken,

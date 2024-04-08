@@ -131,7 +131,6 @@ const TableRank = () => {
   useEffect(() => {
     refetch();
   }, [page, refetch, account]);
-  console.log({ data, account });
 
   return (
     <div className="px-2 py-4 mt-10 overflow-x-scroll border bg-white rounded-lg border-dark4 shadow-home min-h-[500px] flex flex-col justify-between">

@@ -22,6 +22,7 @@ import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import { useRouter } from "next/router";
+import { useQueryClient } from "@tanstack/react-query";
 interface ModalConfirmRemoveLiquidityProps {
   isOpenConfirmRemoveLiquidity: boolean;
   data: DataBase;
@@ -29,7 +30,7 @@ interface ModalConfirmRemoveLiquidityProps {
   isOpenTransaction: boolean;
   totalSupply: string;
   routerAddress: string;
-  idNFT:number[];
+  idNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenConfirmRemoveLiquidity: React.Dispatch<
     React.SetStateAction<boolean>
@@ -92,8 +93,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     isOpenConfirmRemoveLiquidity,
     updatePrice
   );
-  console.log(data.dmlAddress);
-  
+
   useEffect(() => {
     const checkApproveToken = async () => {
       if (
@@ -145,8 +145,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       setAmountTokenDec(resAmountTokenMinShow);
     }
   }, [inputLiquidity, reserveNFT, reserveToken]);
-  console.log(reserveNFT.toString(),reserveToken.toString());
-  
+
   const handleApproveDML = async () => {
     const providerChoice = await getProvider(wallet);
     const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -173,15 +172,13 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenConfirmRemoveLiquidity(false);
   };
-
+  const queryClient = useQueryClient();
   const removeLiquidity = async () => {
     if (
       inputLiquidity &&
       !isSufficientLiquidity &&
       Number(amountTokenMin) > 0
     ) {
-      const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
       const liquidity = handleBignumber(
         Number(inputLiquidity),
         Number(data.dmlDecimals)
@@ -190,7 +187,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         setIsOpenTransaction(true);
         let result;
 
-        if (idNFT.length >0) {
+        if (idNFT.length > 0) {
           result = await ercContract721.removeERC20ERC721(
             wallet,
             collectionAddress,
@@ -218,8 +215,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           );
         }
         const check = await result.wait();
-        console.log(check.status);
-        
         setHash(result.hash);
         setIsOpenTransaction(false);
         setInputLiquidity("");
@@ -230,6 +225,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         } else {
           setIsOpenError(true);
         }
+        queryClient.refetchQueries(["collectionNFTBUY"]);
+        queryClient.refetchQueries(["collectionNFTSell"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

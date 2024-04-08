@@ -39,7 +39,6 @@ export default function CardLaunchpad() {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
   
   return (
     <>

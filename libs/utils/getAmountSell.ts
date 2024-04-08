@@ -16,12 +16,6 @@ const getAmountSell = async (
   try {
     let amountAFee;
     if (amountNFT) {
-      console.log({
-        routerAddress,
-        tokenAddress,
-        nftAddress,
-        amountNFT
-      });
       amountAFee = await contract.getAmountSell(
         tokenAddress,
         nftAddress,

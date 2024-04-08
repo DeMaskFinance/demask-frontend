@@ -14,10 +14,6 @@ const ModalDocument = ({ data }: { data: string }) => {
             setDocument(data);
         }
     }, [data])
-    // console.log({
-    //     data,
-    //     document
-    // });
     useEffect(() => {
         if (containerRef.current) {
             const container = containerRef.current;

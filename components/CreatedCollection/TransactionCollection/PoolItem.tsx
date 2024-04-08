@@ -39,7 +39,6 @@ const PoolItem = ({liquidity}:any) => {
   const collectionAddress =
     useRouter().query.collection ||
     ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
-    console.log(liquidity);
     
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
@@ -68,8 +67,6 @@ const PoolItem = ({liquidity}:any) => {
           account,
           wallet
         );
-        console.log(result);
-
         const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
         setReward(rewardDec);
       } else {
@@ -101,7 +98,6 @@ const PoolItem = ({liquidity}:any) => {
       console.log("No account and DML");
     }
   };
-  console.log(liquidity);
   
   return (
     <div className="p-4 mb-4 border rounded-lg border-dark3">

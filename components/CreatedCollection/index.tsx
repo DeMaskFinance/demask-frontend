@@ -82,7 +82,6 @@ export default function CreatedCollection() {
       }
     },
   });
-  console.log(dataDetail);
   const handleUploadBanner = async (file: any) => {
     try {
       setBannerLoading(true);
@@ -308,7 +307,10 @@ export default function CreatedCollection() {
               <p className="mb-1 text-sm whitespace-nowrap">Listed/Supply</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber
-                  number={dataDetail?.poolPercentageOfTotalSupply}
+                  number={dataDetail?.countNFTsInPool}
+                />/
+                <FormatNumber
+                  number={dataDetail?.totalSupply}
                 />
               </div>
             </div>

@@ -55,7 +55,6 @@ export default function MintNFT({
   const { account, updateAccount, wallet, demask, chainId, updateChainId } = useContext(AccountContext);
   const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
   const contractAddress = demask.CREATOR; // Creator
-  console.log(fileIPFS);
   useEffect(() => {
     if (name || symbol || description || fileIPFS || totalSupply || royaltiesFee) {
       setCheckExit(true)
@@ -121,7 +120,6 @@ export default function MintNFT({
     }
     setIsProcess(false);
   }
-  console.log(metadataIPFS);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();

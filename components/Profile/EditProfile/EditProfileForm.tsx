@@ -133,7 +133,6 @@ export default function EditProfileForm() {
             setLoading(false);
         }
     };
-    console.log(profile);
 
     return (
         <div>

@@ -1,4 +1,3 @@
-import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { DownIcon, EtherIcon } from "@/components/Icons";
@@ -6,11 +5,12 @@ import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleApproveToken from "@/libs/utils/handleApproveToken";
-import { ethers } from "ethers";
+import { useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
@@ -20,9 +20,6 @@ import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
-import ercContract721 from "@/libs/utils/erc/erc721.contract";
-import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 interface ModalBuyNFTProps {
   isOpenBuyNFT: boolean;
   tokenAddress: string;
@@ -178,6 +175,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     tokenAddress,
     allowanceToken,
   ]);
+  const queryClient = useQueryClient();
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
@@ -237,6 +235,8 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           setIsOpenError(false);
         }
         setInputNFT("");
+        queryClient.refetchQueries(['collectionNFTBUY'])
+        queryClient.refetchQueries(['collectionNFTSell'])
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -244,7 +244,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     }
   };
   console.log(data);
-  const queryClient = useQueryClient();
   return (
     <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
       <div className="container_modal">

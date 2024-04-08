@@ -151,7 +151,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     selectedCategory: string[],
     setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void
   ) => {
-    console.log(value, selectedCategory);
     const isSelected = selectedCategory.includes(value);
     let updatedCategories;
     if (isSelected) {

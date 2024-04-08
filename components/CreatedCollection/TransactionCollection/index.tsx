@@ -10,14 +10,12 @@ import Tippy from "@tippyjs/react";
 import Sell from "./Sell";
 import Change from "./Change";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import TabQuery from "@/components/NavChoice/TabQuery";
 const TransactionCollection = () => {
-  const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "buy"));
   const router = useRouter();
-  const handleChoiceChange = (choice: string) => {
-    setActiveChoice(choice);
-  };
   const TABS = [
     {
       title: "Buy",
@@ -41,6 +39,7 @@ const TransactionCollection = () => {
     },
   ];
   const selectedTab = TABS.find((item) => item.key === tab);
+  const queryClient = useQueryClient();
   const actions = [
     {
       icon: (
@@ -51,7 +50,10 @@ const TransactionCollection = () => {
         />
       ),
       content: "Refresh",
-      onClick: () => router.refresh(),
+      onClick: () => {
+        queryClient.refetchQueries(["collectionNFTBUY"]);
+        queryClient.refetchQueries(["collectionNFTSell"]);
+      },
     },
     {
       icon: (
@@ -68,19 +70,9 @@ const TransactionCollection = () => {
   return (
     <div className="flex flex-col h-full p-3 border rounded-lg border-dark3">
       <div className="flex items-center justify-between mb-3 lg:mb-0 gap-x-2 lg:gap-x-8">
-        <ul className="flex gap-4 p-2 text-sm text-white rounded-lg bg-dark3 ">
-          {TABS.map((item, index) => (
-            <li
-              key={index}
-              onClick={() => setTab(item.key)}
-              className={`cursor-pointer p-2 rounded-lg ${
-                item.key === tab && "bg-secondary5"
-              }`}
-            >
-              <h2 className="font-semibold">{item.title}</h2>
-            </li>
-          ))}
-        </ul>
+      <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
+          <TabQuery TABS={TABS} initialItem="Buy"/>
+        </div>
         <div className="flex items-center gap-x-2">
           {actions.map((action, index) => (
             <Tippy
