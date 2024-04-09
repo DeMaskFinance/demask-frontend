@@ -62,7 +62,7 @@ export default function Liquidity() {
           : undefined,
     }
   );
-    
+
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "Item pool" ? setType("erc1155") : setType("erc721");
@@ -71,7 +71,7 @@ export default function Liquidity() {
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[75vh] pb-40 lg:pb-0 px-4 md:px-0">
       <NextSeo {...updateMeta} />
       <div className="w-full">
-        <div className="flex justify-between w-full">
+        <div className="flex flex-wrap justify-between w-full gap-y-2">
           <div className="flex items-center gap-x-2">
             <PoolGradientIcon width={20} height={20} />
             <h2 className="text-2xl font-semibold text_gradient">
@@ -90,7 +90,7 @@ export default function Liquidity() {
         <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
         {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
           !isLoading && (
-            <div className="flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2">
+            <div className="pool_empty">
               <PoolListIcon width={72} height={72} />
               Your active liquidity positions will appear here.
             </div>
@@ -146,7 +146,7 @@ export default function Liquidity() {
             <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
           </div>
         )}
-      </div> 
+      </div>
     </div>
   );
 }

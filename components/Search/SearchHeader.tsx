@@ -259,7 +259,9 @@ const Search: FunctionComponent<SearchProps> = ({
           </div>
           {debouncedSearch ? (
             <div className="">
-              <p className="pb-2 text-sm font-semibold text-dark2">Collections</p>
+              <p className="pb-2 text-sm font-semibold text-dark2">
+                Collections
+              </p>
               {searchData && searchData.length > 0 ? (
                 <>
                   <div className="flex text-xs item-center">
@@ -314,50 +316,54 @@ const Search: FunctionComponent<SearchProps> = ({
             <div>
               {topNftData && topNftData.nftDataList.length > 0 ? (
                 <div>
-                {topNftData && topNftData?.nftDataList?.length > 0 ? (
-                  <div>
-                    <div className="block mb-2">
-                      <span className="text-base font-semibold text-dark2">NFTs Top</span>
-                      {topNftData.nftDataList.slice(0, 4).map((item: any, index: number) => (
-                        <div
-                          onClick={() => handleResultItemClick(item)}
-                          className="flex-1"
-                        //
-                        >
-                          <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2">
-                            <div className="flex items-center gap-2">
-                              <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
-                                <MediaNFT data={item} isControls={false} />
-                              </div>
-                              <div className="flex flex-col items-baseline">
-                                <span className="block text-sm font-semibold">
-                                  <span className="line-clamp-1">
-                                    {item?.metadata?.name}
-                                  </span>
-                                </span>
-                                <span className="flex text-xs item-center">
-                                  <span className="block pb-2 mr-1 font-semibold">
-                                    {item.dmlAddress?.slice(0, 8)}...
-                                    {item.dmlAddress?.slice(-8)}
-                                  </span>
-                                </span>
+                  {topNftData && topNftData?.nftDataList?.length > 0 ? (
+                    <div>
+                      <div className="block mb-2">
+                        <span className="text-base font-semibold text-dark2">
+                          NFTs Top
+                        </span>
+                        {topNftData.nftDataList
+                          .slice(0, 4)
+                          .map((item: any, index: number) => (
+                            <div
+                              onClick={() => handleResultItemClick(item)}
+                              className="flex-1"
+                              //
+                            >
+                              <div className="item_search">
+                                <div className="flex items-center gap-2">
+                                  <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                                    <MediaNFT data={item} isControls={false} />
+                                  </div>
+                                  <div className="flex flex-col items-baseline">
+                                    <span className="block text-sm font-semibold">
+                                      <span className="line-clamp-1">
+                                        {item?.metadata?.name}
+                                      </span>
+                                    </span>
+                                    <span className="flex text-xs item-center">
+                                      <span className="block pb-2 mr-1 font-semibold">
+                                        {item.dmlAddress?.slice(0, 8)}...
+                                        {item.dmlAddress?.slice(-8)}
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
+                          ))}
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <>
-                    {topNftFetching ? (
-                      <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
-                    ) : (
-                      <span className="text-base text-secondary3"></span>
-                    )}
-                  </>
-                )}
-              </div>
+                  ) : (
+                    <>
+                      {topNftFetching ? (
+                        <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                      ) : (
+                        <span className="text-base text-secondary3"></span>
+                      )}
+                    </>
+                  )}
+                </div>
               ) : (
                 <>
                   {topNftFetching ? (

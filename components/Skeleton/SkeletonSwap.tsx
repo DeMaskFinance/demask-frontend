@@ -11,18 +11,15 @@ export default function SkeletonSwap() {
           <div className="w-40 h-8 rounded-full bg-slate-200"></div>
         </div>
         <div className="flex flex-col-reverse gap-x-10 md:flex-row">
-          <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center mb-4 ">
-            <div className="h-[355px] w-full p-4 border rounded-lg lg:mt-0 border-dark3">
-              <div className='flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-dark3 w-fit text-dark3'>
+          <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center">
+            <div className="w-full h-full p-4 border rounded-lg lg:mt-0 border-dark3">
+              <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-dark3 w-fit text-dark3">
                 <div className="w-20 h-4 p-2 rounded bg-slate-200"></div>
                 <div className="w-20 h-4 rounded bg-slate-200"></div>
                 <div className="w-20 h-4 rounded bg-slate-200"></div>
               </div>
               <div className="h-4 w-[60%] bg-slate-200 rounded"></div>
               <ChartLoading />
-            </div>
-            <div className="w-full p-4 mt-6 border rounded-lg border-dark3">
-              <SkeletonTable length={8} />
             </div>
           </div>
           <div className="lg:w-[40%] md:w-2/4 w-full h-fit p-6 border rounded-lg shadow-home">
@@ -48,6 +45,9 @@ export default function SkeletonSwap() {
             <div className="w-full h-12 rounded bg-slate-200"></div>
             <div className="h-8 w-[138px] bg-slate-200 rounded mt-6 mx-auto"></div>
           </div>
+        </div>
+        <div className="w-full p-4 mt-6 border rounded-lg border-dark3">
+          <SkeletonTable length={8} />
         </div>
       </div>
     </div>

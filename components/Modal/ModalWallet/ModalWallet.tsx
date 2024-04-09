@@ -20,7 +20,7 @@ interface ModalWalletProps {
 }
 const styles = {
   walletItem:
-    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 rounded-lg cursor-pointer",
+    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 dark:hover:bg-dark0 rounded-lg cursor-pointer",
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({
@@ -133,7 +133,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
 
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
-      <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center rounded-lg relative pb-4">
+      <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white dark:bg-darkBG0 dark:text-white text-black text-center rounded-lg relative pb-4">
         <h2 className="p-6 mb-3 text-xl font-medium">Connect your wallet</h2>
         <p>If you don't have a wallet, you can create one now.</p>
         <div className="mt-4 font-medium">

@@ -53,7 +53,7 @@ const Swap: React.FC = () => {
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 ">
+          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 dark:text-white">
             <Link href={`/swap?chain=${chainId}`}>
               <BackIcon
                 width={24}
@@ -68,10 +68,10 @@ const Swap: React.FC = () => {
             <p>({data?.metadata?.symbol}/ETH)</p>
           </div>
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
-            <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center ">
-                {data && (
-                  <ChartTradingViewSwap dataSwap={data} typeERC="erc1155" />
-                )}
+            <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center">
+              {data && (
+                <ChartTradingViewSwap dataSwap={data} typeERC="erc1155" />
+              )}
             </div>
             <SwapTransaction
               data={data}

@@ -50,7 +50,11 @@ const Pool = () => {
   return (
     <div className="h-full text-dark3 ">
       <div className="flex items-center px-6 py-4 my-4 text-sm rounded-lg bg-dark5 gap-x-2">
-        <LightBulbIcon width={20} height={20} className="flex-shrink-0 fill-yellow" />
+        <LightBulbIcon
+          width={20}
+          height={20}
+          className="flex-shrink-0 fill-yellow"
+        />
         <p>Pools accrue trading fees towards depositors.</p>
       </div>
       {!account ? (
@@ -64,26 +68,27 @@ const Pool = () => {
       ) : (
         // <PoolItem />
         <div>
-          {(data?.pages[0]?.combinedRecords.length === 0) &&
-          !isLoading && (
-            <div className="flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2">
+          {data?.pages[0]?.combinedRecords.length === 0 && !isLoading && (
+            <div className="pool_empty">
               <PoolListIcon width={72} height={72} />
               Your active liquidity positions will appear here.
             </div>
           )}
-          {isSuccess && data?.pages[0]?.combinedRecords.length !== 0 && 
-  data.pages && data.pages.map((page: any, index: number) => (
-    <div key={index}>
-      {page?.combinedRecords && page.combinedRecords.map(
-        (liquidity: any, subIndex: number) => (
-          <div key={subIndex} className="w-full mx-auto">
-            <PoolItem liquidity={liquidity} />
-          </div>
-        )
-      )}
-    </div>
-  ))
-}
+          {isSuccess &&
+            data?.pages[0]?.combinedRecords.length !== 0 &&
+            data.pages &&
+            data.pages.map((page: any, index: number) => (
+              <div key={index}>
+                {page?.combinedRecords &&
+                  page.combinedRecords.map(
+                    (liquidity: any, subIndex: number) => (
+                      <div key={subIndex} className="w-full mx-auto">
+                        <PoolItem liquidity={liquidity} />
+                      </div>
+                    )
+                  )}
+              </div>
+            ))}
         </div>
       )}
 

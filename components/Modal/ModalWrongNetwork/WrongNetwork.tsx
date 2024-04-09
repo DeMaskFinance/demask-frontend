@@ -53,7 +53,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     return (
         <Wrapper isOpen={isWrongNetwork}>
             <div className="container_modal">
-                <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
+                <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
                     <h2 className='text-xl font-semibold text-dark1'>Check your network</h2>
                     <h3 className='my-4 font-medium text-dark2'>Currently Demask only supported in {PORT === '3000' ? 'zkSync Testnet and Goerli Testnet' : 'BNB Smart Chain Testnet and Polygon Testnet'}</h3>
                     <h2 className='font-medium text-yellow'>Warning</h2>

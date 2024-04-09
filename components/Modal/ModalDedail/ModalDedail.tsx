@@ -36,8 +36,8 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
-        <div className="z-50 flex flex-col justify-center max-h-[80vh] cursor-default">
-          <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[550px] rounded-lg p-8 relative overflow-y-scroll">
+        <div className="cursor-default container_modal">
+          <div className="h-fit w-[360px] md:w-[400px] lg:w-[550px] rounded-lg p-8 relative overflow-y-scroll">
             <div className="flex justify-between mb-4">
               <p className="py-2 text-xl font-medium">NFT Details</p>
               <button

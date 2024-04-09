@@ -357,7 +357,7 @@ export default function AddLiquidity() {
                   <p>Balance: {account ? formatNumber(balanceNFT) : 0}</p>
                 </div>
                 <div
-                  className={`relative p-2 border rounded-lg border-dark3 ${
+                  className={`relative p-2 border rounded-lg border-dark3 dark:bg-darkBG2 dark:border-darkBG2 ${
                     !inputNFT && isInputNFT && "border-red"
                   }`}
                 >

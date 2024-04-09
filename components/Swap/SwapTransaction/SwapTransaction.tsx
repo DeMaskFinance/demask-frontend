@@ -386,7 +386,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </div>
             </div>
             <div
-              className={`relative p-2  rounded-lg bg-dark5 border border-dark5 hover:border-dark3 ${
+              className={`relative p-2  rounded-lg bg-dark5 border border-dark5 hover:border-dark3 dark:bg-darkBG2 dark:border-darkBG2 ${
                 showRequiredMessage && "border-red"
               }`}
             >

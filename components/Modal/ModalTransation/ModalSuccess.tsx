@@ -45,7 +45,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({ isOpenSucces
     return (
         <Wrapper isOpen={isOpenSuccess} onClick={handleClose} isTransaction>
             <div className="container_modal">
-                <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
+                <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
                     {isMint ? (
                         <div className="flex flex-col items-center">
                             {isLoadingMeta ? (

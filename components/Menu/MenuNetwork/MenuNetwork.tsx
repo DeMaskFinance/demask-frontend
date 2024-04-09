@@ -14,7 +14,7 @@ const style = {
     itemSub:
       "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-semibold",
     btnWallet:
-      "flex items-center 2xl:w-[184px] py-2 pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
+      "flex items-center 2xl:w-[184px] py-2 pl-2 lg:px-4 pr-2 dark:bg-dark1 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 dark:text-white gap-x-2 ",
   };
 interface networkProps {
   name: string;
@@ -71,7 +71,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       interactive
       render={(attrs) => (
         <div
-          className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
+          className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium dark:bg-darkBG0 dark:border-none"
           tabIndex={-1}
           {...attrs}
         >
@@ -114,7 +114,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       )}
     >
       <button className={`${style.btnWallet} flex`}>
-        <LogoComponent width={24} height={24} className="" />
+        <LogoComponent width={24} height={24} className="dark:fill-white" />
         <p className="hidden 2xl:block">{filterNetwork?.name}</p>
         <span className="2xl:hidden">
           <BsCaretDownFill />

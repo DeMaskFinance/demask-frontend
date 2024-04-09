@@ -47,7 +47,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     newData[newData.length - 1]
   );
   const { data, isLoading } = useQuery({
-    queryKey: ["chart", chainId, dataSwap.dmlAddress,typeERC],
+    queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC],
     queryFn: async () => {
       const res = await categoryAPI(
         `chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}&type=${typeERC}`
@@ -93,7 +93,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       clearInterval(intervalId);
     };
   }, []);
-  
+
   useEffect(() => {
     if (chartContainerRef.current) {
       const chart = createChart(chartContainerRef.current, { autoSize: true });
@@ -118,7 +118,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               }
               return 0;
             };
-        
             if (price < 0.000001) {
               return price.toFixed(countDecimals(price));
             } else if (price >= 0.000001 && price < 1) {
@@ -126,19 +125,19 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             } else {
               return parseFloat(price.toPrecision(6));
             }
-          }
-        }
+          },
+        },
       });
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: "rgb(14,203,129)",
         borderUpColor: "rgb(14,203,129)",
         downColor: "rgb(246,70,93)",
         borderDownColor: "rgb(246,70,93)",
-        priceFormat: {
-          type: "volume",
-          precision: 16,
-          minMove: 0.0001,
-        },
+        // priceFormat: {
+        //   type: "volume",
+        //   precision: 6,
+        //   minMove: 0.0001,
+        // },
       });
       const volumeSeries = chart.addHistogramSeries({
         priceFormat: {
@@ -165,13 +164,13 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           })
         )
       );
-      volumeSeries.applyOptions({
-        priceFormat: {
-          type: "volume",
-          precision: 16,
-          minMove: 0.0001,
-        },
-      });
+      // volumeSeries.applyOptions({
+      //   priceFormat: {
+      //     type: "volume",
+      //     precision: 6,
+      //     minMove: 0.0001,
+      //   },
+      // });
       chart.timeScale().scrollToPosition(50, false);
       chart
         .timeScale()
@@ -208,6 +207,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       }
     };
   }, [data, volume, newData]);
+  console.log(data);
 
   return (
     <div className="w-full h-full">
@@ -222,7 +222,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3">
+        <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3">
           <div className="flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3">
             <div className="flex items-center p-4 border-r border-dark3 text-dark2">
               <p className="mr-1 text-dark3">Price 1D:</p>
@@ -323,11 +323,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               </div>
             </div>
           </div>
-          <div
-            ref={chartContainerRef}
-            id="chart"
-            className="w-full h-[350px] lg:h-[450px]"
-          />
+          <div ref={chartContainerRef} id="chart" className="w-full h-[80%]" />
           <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               <li className="cursor-pointer hover:text-secondary4">15m</li>

@@ -29,7 +29,7 @@ const TabQuery: React.FC<TabQueryProps> = ({ TABS, initialItem }) => {
   }, []);
   
   return (
-    <div className="relative flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
+    <div className="relative flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max">
       <div
         className="absolute transition-transform duration-100 ease-linear rounded-lg h-9 bg-secondary5"
         style={{

@@ -33,7 +33,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   }, []);
   return (
     <div
-      className={`flex relative items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max ${
+      className={`flex relative items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max ${
         isOverview ? "lg:hidden" : ""
       }`}
     >

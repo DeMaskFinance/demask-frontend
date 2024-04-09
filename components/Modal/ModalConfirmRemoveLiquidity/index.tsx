@@ -251,7 +251,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   return (
     <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
       <div className="container_modal">
-        <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
           <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
             You will receive
           </p>

@@ -25,7 +25,7 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({ isOpenError, set
     return (
         <Wrapper isOpen={isOpenError} onClick={handleClose} isTransaction>
             <div className="container_modal">
-                <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
+                <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
                     <h2 className="flex items-center mb-4 text-xl font-semibold text-dark1">{type}</h2>
                     <div className="flex flex-col items-center">
                         <ErrorIcon width={120} height={120} />

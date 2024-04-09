@@ -1,32 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @layer base{
-    body {
-        @apply dark:bg-black bg-white
-    }
-} */
-@layer components{
+@layer base {
+  body {
+    @apply dark:bg-darkBG0 bg-white dark:text-dark3;
+  }
+  header,
+  footer {
+    @apply dark:bg-darkBG1 bg-white dark:border-none;
+  }
+  input,
+  textarea {
+    @apply dark:bg-darkBG2 dark:border-darkBG2;
+  }
+  label {
+    @apply dark:text-dark4;
+  }
+}
+@layer components {
   .title {
     @apply text-2xl font-semibold text-dark1;
   }
   .text_gradient {
     @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
   }
-  .container_modal{
-    @apply relative z-50 flex flex-col justify-center cursor-default h-fit;
+  .container_modal {
+    @apply relative z-50 flex flex-col justify-center cursor-default h-fit bg-white dark:bg-darkBG1 rounded-lg;
   }
-  .input_item{
+  .input_item {
     @apply w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2;
+  }
+  .pool_empty {
+    @apply flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2 dark:bg-darkBG1;
+  }
+  .area_input {
+    @apply dark:bg-darkBG2 dark:border-darkBG2;
+  }
+  .item_search {
+    @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2 dark:hover:bg-darkBG0;
   }
 }
 body {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
-html {
+/* html {
   font-family: "Poppins", sans-serif;
-}
+} */
 .active {
   color: black;
 }
@@ -255,34 +275,34 @@ html *::-webkit-scrollbar-track {
   }
 }
 .Timeline_lineBright__iam07:not(:last-child):before {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 2px;
-    background: #6c6d71;
-    top: 16px;
-    z-index: 1;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: #6c6d71;
+  top: 16px;
+  z-index: 1;
 }
 .Timeline_lineBrightActive__UU57x:before {
-    background: #9075FE!important;
+  background: #9075fe !important;
 }
 .Timeline_circleLight__X_ZC0:after {
-    position: absolute;
-    content: "";
-    width: 78px;
-    height: 78px;
-    background: rgba(163, 152, 255,.1);
-    border-radius: 50%;
-    z-index: -1;
+  position: absolute;
+  content: "";
+  width: 78px;
+  height: 78px;
+  background: rgba(163, 152, 255, 0.1);
+  border-radius: 50%;
+  z-index: -1;
 }
 .Timeline_circleLight__X_ZC0:before {
-    position: absolute;
-    content: "";
-    width: 58px;
-    height: 58px;
-    background: rgba(144, 117, 254,.5);
-    border-radius: 50%;
-    z-index: -1;
+  position: absolute;
+  content: "";
+  width: 58px;
+  height: 58px;
+  background: rgba(144, 117, 254, 0.5);
+  border-radius: 50%;
+  z-index: -1;
 }
 @media screen and (max-width: 1024px) {
   .Timeline_lineBright__iam07:not(:last-child):before {
@@ -291,4 +311,3 @@ html *::-webkit-scrollbar-track {
     left: 17.5px;
   }
 }
-

@@ -38,8 +38,8 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
 
   return (
     <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
-      <div className="relative z-50 cursor-default h-fit">
-        <div className="bg-white h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
+      <div className="container_modal">
+        <div className="h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
           <h3 className="pt-4 pb-8 text-xl text-center">
             Confirm buy launchpad
           </h3>

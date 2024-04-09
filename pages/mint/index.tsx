@@ -20,7 +20,7 @@ import { uploadFileIPFS } from "@/libs/service/IPFSService";
 import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
 import { PictureMint } from "@/components/Icons";
 const styles = {
-  title: "block mb-4 text-base font-semibold text-black24",
+  title: "block mb-4 text-base font-semibold text-black24 dark:text-dark4",
   btnActive: "rounded-lg bg-secondary5",
 };
 const updateMeta = {

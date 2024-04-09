@@ -30,7 +30,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   className,
   type,
   third,
-  isLoadingBtn
+  isLoadingBtn,
 }) => {
   return (
     <button
@@ -43,20 +43,24 @@ const Button: FunctionComponent<ButtonProps> = ({
       flex
       items-center
       justify-center
-      ${primary ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear" : ""}
+      ${
+        primary
+          ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear dark:border-secondary2"
+          : ""
+      }
       ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
-      ${active ? "bg-dark3 px-3 py-2 text-white hover:bg-dark2 border border-dark3 hover:border-dark2" : ""}
+      ${
+        active
+          ? "bg-dark3 px-3 py-2 text-white hover:bg-dark2 dark:bg-dark1 dark:border-dark1 border border-dark3 hover:border-dark2"
+          : ""
+      }
       ${secondary ? "bg-white text-dark3" : ""}
       ${outline ? " border border-dark3 " : ""}
       ${className}
       `}
     >
       {children}
-      {
-        isLoadingBtn && (
-          <BiLoaderAlt className="ml-2 text-white animate-spin" />
-        )
-      }
+      {isLoadingBtn && <BiLoaderAlt className="ml-2 text-white animate-spin" />}
     </button>
   );
 };

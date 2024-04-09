@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3",
+    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3 dark:bg-darkBG2 dark:border-darkBG2",
   btnActive: "rounded-full bg-base2",
 };
 
@@ -133,8 +133,8 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     },
   ];
 
-  const removeCollab = async(item:string) =>{
-    const newCollab = data.collaborators.filter((col:string)=>{
+  const removeCollab = async (item: string) => {
+    const newCollab = data.collaborators.filter((col: string) => {
       return col !== item;
     });
     await collectionService.updateCollection(
@@ -145,7 +145,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       chainId
     );
     refetch();
-  }
+  };
   const selectCategory = (
     value: string,
     selectedCategory: string[],
@@ -191,7 +191,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
           collectionAddress,
         });
       }
-      toast.success('Update successed!', {
+      toast.success("Update successed!", {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: true,
@@ -200,7 +200,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
       refetch();
     } catch (error) {
       console.error(error);
@@ -400,17 +400,19 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               {values?.collaborators &&
                 values.collaborators.map((item: string, index: number) => (
                   <div
-                    className="flex items-center justify-between p-2 mb-2 font-semibold rounded-lg bg-dark5 text-dark2"
+                    className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-dark5 text-dark2"
                     key={index}
                   >
-                    <p>{item}</p>
+                    <p>{`${item.slice(0, 6)}...${item.slice(-8)}`}</p>
                     {index === 0 && <p className="text-sm">Owner</p>}
-                    {index !== 0 && account === values?.collaborators[0] && <Image
-                      src={Icons.deleteIcon}
-                      alt="Delete property"
-                      className="ml-2 cursor-pointer"
-                      onClick={() => removeCollab(item)}
-                    />}
+                    {index !== 0 && account === values?.collaborators[0] && (
+                      <Image
+                        src={Icons.deleteIcon}
+                        alt="Delete property"
+                        className="ml-2 cursor-pointer"
+                        onClick={() => removeCollab(item)}
+                      />
+                    )}
                   </div>
                 ))}
 
@@ -491,7 +493,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 className="mt-2 text-xs text-red"
               />
             </div>
-            <p className={styles.title}>Social link</p>
+            <label className={styles.title}>Social link</label>
             {socialList.map((item, index) => (
               <div key={index}>
                 <div className="flex mt-4 gap-x-4">

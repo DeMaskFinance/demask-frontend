@@ -9,12 +9,12 @@ import { useTheme } from "next-themes";
 
 export default function Footer() {
   const svgComponents = useSvgComponents();
-  // const { theme, setTheme } = useTheme();
+  const { theme, setTheme,systemTheme } = useTheme();
   const [activeChoice, setActiveChoice] = useState<string>("Light");
-
+  const currentTheme = theme === 'system' ? systemTheme : theme;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
-    // setTheme(theme === "light" ? "dark" : "light");
+    setTheme(theme === "light" ? "dark" : "light");
   };
   return (
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-white border-dark5 border-t">
@@ -80,7 +80,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="flex items-center mt-8 gap-x-8">
-          <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
+          <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max">
             <div
               className={`p-2 cursor-pointer rounded-lg text-sm flex gap-2 items-center ${
                 activeChoice === "Light" ? "bg-secondary5" : ""
@@ -118,7 +118,7 @@ export default function Footer() {
       </div>
       <div>
         <Link href="https://demask.finance/" target="_blank">
-          <LogoDeMask width={245} height={56} />
+          <LogoDeMask width={245} height={56} className="fill-white"/>
         </Link>
         <p className="text-xs font-semibold text-dark3">{version}</p>
         <div className="flex items-center mt-2 gap-x-4">

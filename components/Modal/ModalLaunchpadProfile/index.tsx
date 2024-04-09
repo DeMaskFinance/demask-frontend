@@ -54,8 +54,8 @@ const ModalLaunchPadProfile: React.FunctionComponent<
 
     return (
       <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
-        <div className="relative z-50 flex flex-col justify-center bg-white rounded-lg cursor-default h-fit">
-          <div className="bg-white h-fit w-[260px] md:w-[300px] lg:w-[350px] p-4 relative rounded-lg">
+        <div className="container_modal">
+          <div className="h-fit w-[260px] md:w-[300px] lg:w-[350px] p-4 relative rounded-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-dark1">Confirm refund</h3>
             <div className="h-32 p-2 mx-auto text-center">
               <p className="font-semibold text-dark2">Amount refund</p>

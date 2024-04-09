@@ -22,7 +22,7 @@ const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({ 
     return (
         <Wrapper isOpen={isOpenWarning} onClick={handleClose}>
             <div className="container_modal">
-                <div className="bg-white h-fit w-[320px] lg:w-[540px] rounded-lg p-8 relative">
+                <div className="h-fit w-[320px] lg:w-[540px] rounded-lg p-8 relative">
                     <h2 className="flex items-center mb-4 text-xl font-semibold text-dark1">Notification</h2>
                     <div className="flex flex-col items-center my-6">
                         <WarningSwapIcon width={120} height={120} />
