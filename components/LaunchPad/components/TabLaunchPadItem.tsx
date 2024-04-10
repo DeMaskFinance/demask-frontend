@@ -22,7 +22,10 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
 
   return (
     <div className="h-full group">
-      <Link href={`launchpad/${item.launchpad}?chain=${chainId}`} className="block h-full">
+      <Link
+        href={`launchpad/${item.launchpad}?chain=${chainId}`}
+        className="block h-full"
+      >
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex flex-col h-full">
             <div className="h-[123px] ">
@@ -33,7 +36,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
               <div>
                 <div
                   title={item.metadata.name}
-                  className="flex items-start gap-2 py-2 text-xl font-medium uppercase"
+                  className="flex items-start gap-2 py-2 text-xl font-medium uppercase title"
                 >
                   <ModalDocument data={item.metadata.name} />
                   <svg

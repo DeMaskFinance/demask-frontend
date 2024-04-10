@@ -85,7 +85,7 @@ export default function SwapDefault() {
     },
   ];
   return (
-    <div className="mb-[100px] lg:mb-0 py-8 mx-auto swap backdrop-blur-xl lg:px-primary md:px-14 px-4">
+    <div className="mb-[100px] lg:mb-0 py-8 mx-auto swap lg:px-primary md:px-14 px-4">
       <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
         <div onClick={() => router.back()}>
           <BackIcon
@@ -103,10 +103,10 @@ export default function SwapDefault() {
             className="object-cover rounded-lg"
           />
         </div>
-        <p>DEMASK</p>
+        <p className="title">DEMASK</p>
       </div>
       <div className="max-w-[480px] h-fit flex gap-y-1 lg:gap-y-12 mx-auto">
-        <div className="w-full p-6 bg-white border rounded-lg shadow-home dark:bg-darkBG1">
+        <div className="w-full p-6 bg-white border rounded-lg shadow-home dark:bg-darkBG1 dark:border-none">
           <div className="flex justify-between gap-4 mb-2 text-dark1">
             <div className="flex flex-col items-center ">
               <TabGroups

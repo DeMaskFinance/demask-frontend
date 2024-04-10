@@ -14,8 +14,16 @@ export default function Footer() {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
-    setTheme(theme === "light" ? "dark" : "light");
+    if (
+      (theme === "dark" && choice === "Dark") ||
+      (theme === "light" && choice === "Light")
+    ) {
+      return;
+    }
+    theme === "dark" ? setTheme("light") : setTheme("dark");
   };
+  console.log(theme);
+
   return (
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-white border-dark5 border-t">
       <div>

@@ -3,7 +3,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import ActiveLaunchItem from "./TabLaunchPadItem";
 import { useInView } from "react-intersection-observer";
-import { useQueryParam, StringParam, withDefault } from 'use-query-params';
+import { useQueryParam, StringParam, withDefault } from "use-query-params";
 import AccountContext from "@/context/AccountContext";
 import { SkeletonCategory } from "@/components/Skeleton/SkeletonCategory";
 import Image from "next/image";
@@ -16,10 +16,16 @@ type TabLaunchPadProps = {
 const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const [choice] = useQueryParam('choice', withDefault(StringParam, 'Active'));
-  
-  const fetchDataPage = async (pageParam = 1, chainId: string | string[], query: string) => {
-    const data = await categoryAPI(`launchpad?chainId=${chainId}&status=${query}&page=${pageParam}&limit=8`);
+  const [choice] = useQueryParam("choice", withDefault(StringParam, "Active"));
+
+  const fetchDataPage = async (
+    pageParam = 1,
+    chainId: string | string[],
+    query: string
+  ) => {
+    const data = await categoryAPI(
+      `launchpad?chainId=${chainId}&status=${query}&page=${pageParam}&limit=8`
+    );
     return data;
   };
 
@@ -30,7 +36,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
     isSuccess,
     isLoading,
     isFetching,
-    hasNextPage
+    hasNextPage,
   } = useInfiniteQuery(
     ["LaunchpadTab", chainId, query],
     ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, query),
@@ -41,17 +47,17 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
           : page?.currentPage + 1,
     }
   );
- 
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
   }, [inView]);
-  
+
   return (
     <>
       <div className="mb-8 containe">
-        {(isLoading) ? (
+        {isLoading ? (
           <div className="mt-8">
             <SkeletonCategory />
           </div>
@@ -62,26 +68,28 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                 data.pages.map((page, pageIndex) => (
                   <Fragment key={pageIndex}>
                     <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
-                      {page?.data?.map((item: LaunchpadData, itemIndex: number) => (
-                        <li
-                          title={item?.metadata?.name}
-                          key={itemIndex}
-                          className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home "
-                        >
-                          <ActiveLaunchItem item={item} query={query} />
-                        </li>
-                      ))}
+                      {page?.data?.map(
+                        (item: LaunchpadData, itemIndex: number) => (
+                          <li
+                            title={item?.metadata?.name}
+                            key={itemIndex}
+                            className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home dark:bg-darkBG1 dark:border-none"
+                          >
+                            <ActiveLaunchItem item={item} query={query} />
+                          </li>
+                        )
+                      )}
                     </ul>
                   </Fragment>
                 ))
               ) : (
                 <div className="flex flex-col items-center justify-center">
-                  <Image alt="emptyLaunchpad" src={images.emptyLaunchpad}/>
+                  <Image alt="emptyLaunchpad" src={images.emptyLaunchpad} />
                   <p>{desc}</p>
                 </div>
               )}
             </div>
-            <div ref={ref} style={{ height: "1px" }} ></div>
+            <div ref={ref} style={{ height: "1px" }}></div>
           </>
         )}
       </div>

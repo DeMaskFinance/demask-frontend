@@ -18,7 +18,6 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import Search from "../Search/SearchHeader";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
-import { version } from "@/libs/constants";
 import { useRouter } from "next/router";
 import useInformationToken from "@/hooks/useInformationToken";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -39,7 +38,6 @@ const style = {
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const router = useRouter();
   const {
     account,
     updateAccount,
@@ -156,7 +154,7 @@ export default function Header() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
     >
-      {isEvent && (
+      {/* {isEvent && (
         <div>
           <a
             href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
@@ -185,7 +183,7 @@ export default function Header() {
             <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-      )}
+      )} */}
       <header className="flex items-center justify-between gap-2 px-4 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">

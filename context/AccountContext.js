@@ -21,7 +21,7 @@ export const AccountProvider = ({ children }) => {
   const [tokenDefault, setTokenDefault] = useState("");
   const [slippage, setSlippage] = useState(5);
   const [txDeadline, setTxDeadline] = useState(20);
-  const [isEvent, setIsEvent] = useState(true);
+  const [isEvent, setIsEvent] = useState(false);
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
