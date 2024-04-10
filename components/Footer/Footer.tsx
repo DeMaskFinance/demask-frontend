@@ -9,9 +9,9 @@ import { useTheme } from "next-themes";
 
 export default function Footer() {
   const svgComponents = useSvgComponents();
-  const { theme, setTheme,systemTheme } = useTheme();
+  const { theme, setTheme, systemTheme } = useTheme();
   const [activeChoice, setActiveChoice] = useState<string>("Light");
-  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const currentTheme = theme === "system" ? systemTheme : theme;
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     setTheme(theme === "light" ? "dark" : "light");
@@ -25,7 +25,7 @@ export default function Footer() {
               <Link
                 href="https://demask.finance/"
                 target="_blank"
-                className="text-dark1"
+                className="text-dark1 dark:text-dark5"
               >
                 About
               </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
               <Link
                 href="https://demask.finance/"
                 target="_blank"
-                className="text-dark1"
+                className="text-dark1 dark:text-dark5"
               >
                 Developer
               </Link>
@@ -106,11 +106,7 @@ export default function Footer() {
             >
               <span>Contact Us</span>
               <span>
-                <EmailIcon
-                  width={24}
-                  height={24}
-                  className=""
-                />
+                <EmailIcon width={24} height={24} className="" />
               </span>
             </Button>
           </a>
@@ -118,7 +114,7 @@ export default function Footer() {
       </div>
       <div>
         <Link href="https://demask.finance/" target="_blank">
-          <LogoDeMask width={245} height={56} className="fill-white"/>
+          <LogoDeMask width={245} height={56} className="fill-white" />
         </Link>
         <p className="text-xs font-semibold text-dark3">{version}</p>
         <div className="flex items-center mt-2 gap-x-4">

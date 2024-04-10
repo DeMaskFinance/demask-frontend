@@ -18,42 +18,47 @@ interface ModalAddressNFTProps {
 const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   isOpenSearchNFT,
   setIsOpenSearchNFT,
-  setActiveChoiceNFT
+  setActiveChoiceNFT,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   let debouncedSearchNFT = useDebounce(searchTerm);
   const router = useRouter();
   const { chainId, demask } = useContext(AccountContext);
 
-  const { isLoading: searchLoading,
+  const {
+    isLoading: searchLoading,
     isSuccess,
     data: searchData,
     isFetching: searchFetching,
     refetch: searchRefetch,
-    isPreviousData: isSearchPreviousData } = useQuery({
-      queryKey: ["categories", debouncedSearchNFT, chainId],
-      queryFn: async () => {
-        if (debouncedSearchNFT.includes("/")) {
-          const [param1, param2] = debouncedSearchNFT.split(":");
-          const id = param1.includes("x") ? param2 : param1;
-          const nftAddress = param1.includes("x") ? param1 : param2;
-          const res = await categoryAPI(
-            `search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
-          );
-          return res;
-        } else {
-          const res = await categoryAPI(`search?chainId=${chainId}&search=${debouncedSearchNFT}`);
-          return res;
-        }
-      },
-    });
+    isPreviousData: isSearchPreviousData,
+  } = useQuery({
+    queryKey: ["categories", debouncedSearchNFT, chainId],
+    queryFn: async () => {
+      if (debouncedSearchNFT.includes("/")) {
+        const [param1, param2] = debouncedSearchNFT.split(":");
+        const id = param1.includes("x") ? param2 : param1;
+        const nftAddress = param1.includes("x") ? param1 : param2;
+        const res = await categoryAPI(
+          `search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
+        );
+        return res;
+      } else {
+        const res = await categoryAPI(
+          `search?chainId=${chainId}&search=${debouncedSearchNFT}`
+        );
+        return res;
+      }
+    },
+  });
 
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };
-
 
   const handleSelectNFT = (item: any) => {
     const { currency } = router.query;
@@ -66,23 +71,25 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         .replace(currency[2], item.nftID);
       router.push(newURL);
     } else if (slug) {
-      newURL = currentURL.replace(slug[0], item.nftAddress).replace(slug[2], item.nftID);
+      newURL = currentURL
+        .replace(slug[0], item.nftAddress)
+        .replace(slug[2], item.nftID);
       router.push(newURL);
     } else {
-      router.replace(`/swap/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`)
+      router.replace(
+        `/swap/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
+      );
     }
     document.body.style.overflowY = "auto";
-    setActiveChoiceNFT('');
+    setActiveChoiceNFT("");
     setIsOpenSearchNFT(false);
-  }
-  
+  };
+
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 text-xl font-medium">
-            Select a NFT
-          </p>
+          <p className="py-2 mb-4 text-xl font-medium title">Select a NFT</p>
           <div>
             <div className="relative">
               <input
@@ -97,45 +104,44 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </div>
               )}
             </div>
-            {
-              searchTerm ? (
-                isSuccess && searchData.length > 0 ? (
-                  <div className="overflow-y-auto max-h-40">
-                    {searchData.map((item: any, index: number) => (
-                      <div key={index}>
-                        <div
-                          className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group gap-x-2"
-                          onClick={() => handleSelectNFT(item)}
-                        >
-                          <div className="w-8 h-8">
-                            <MediaNFT data={item} isControls={false} />
-                          </div>
-                          <div>
-                            <h2 className="font-medium group-hover:text-secondary5">
-                              {item?.metadata?.symbol}
-                            </h2>
-                            <p className="text-sm text-dark3">{item?.metadata?.name}</p>
-                          </div>
+            {searchTerm ? (
+              isSuccess && searchData.length > 0 ? (
+                <div className="overflow-y-auto max-h-40">
+                  {searchData.map((item: any, index: number) => (
+                    <div key={index}>
+                      <div
+                        className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group gap-x-2"
+                        onClick={() => handleSelectNFT(item)}
+                      >
+                        <div className="w-8 h-8">
+                          <MediaNFT data={item} isControls={false} />
+                        </div>
+                        <div>
+                          <h2 className="font-medium group-hover:text-secondary5">
+                            {item?.metadata?.symbol}
+                          </h2>
+                          <p className="text-sm text-dark3">
+                            {item?.metadata?.name}
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <>
-                    {searchFetching ? (
-                      <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
-                    ) : (
-                      <span className="text-base text-secondary3">No Result</span>
-                    )}
-                  </>
-                )
-              ) : (
-                <div>
-                  <TopNFT handleSelectNFT={handleSelectNFT} />
+                    </div>
+                  ))}
                 </div>
+              ) : (
+                <>
+                  {searchFetching ? (
+                    <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                  ) : (
+                    <span className="text-base text-secondary3">No Result</span>
+                  )}
+                </>
               )
-            }
-
+            ) : (
+              <div>
+                <TopNFT handleSelectNFT={handleSelectNFT} />
+              </div>
+            )}
           </div>
           <button
             className="absolute top-0 right-0 p-2 text-lg"
@@ -145,7 +151,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
           </button>
         </div>
       </div>
-    </Wrapper >
+    </Wrapper>
   );
 };
 

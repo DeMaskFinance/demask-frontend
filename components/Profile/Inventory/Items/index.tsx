@@ -60,7 +60,7 @@ export const ItemList: React.FC<ItemListProps> = ({
             <Fragment key={pageIndex}>
               {page?.data?.map((item: any, index: number) => (
                 <div key={index} className="relative overflow-hidden">
-                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group lg:text-base hover:-translate-y-1 hover:shadow-home">
+                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer dark:border-dark1 dark:bg-darkBG2 group lg:text-base hover:shadow-home">
                     <div className="relative h-[240px] overflow-hidden">
                       <div
                         onClick={() => {

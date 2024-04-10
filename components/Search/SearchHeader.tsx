@@ -197,7 +197,7 @@ const Search: FunctionComponent<SearchProps> = ({
         </div>
 
         <ul
-          className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 ${
+          className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 area_input ${
             click ? "block" : "block lg:hidden"
           }  bg-dark5 w-full rounded-lg mt-3 lg:mt-1 py-4 lg:px-4 absolute top-8 right-0 left-0`}
         >
@@ -216,7 +216,7 @@ const Search: FunctionComponent<SearchProps> = ({
                   <div key={index}>
                     {isMounted && (
                       <div
-                        className={`flex justify-between items-center text-dark2 hover:bg-dark4 rounded-lg`}
+                        className={`flex justify-between items-center text-dark2 hover:bg-dark4 rounded-lg area_input_hover`}
                       >
                         <div
                           onClick={() => handleResultItemClick(item)}
@@ -319,9 +319,7 @@ const Search: FunctionComponent<SearchProps> = ({
                   {topNftData && topNftData?.nftDataList?.length > 0 ? (
                     <div>
                       <div className="block mb-2">
-                        <span className="text-base font-semibold text-dark2">
-                          NFTs Top
-                        </span>
+                        <span className="title">NFTs Top</span>
                         {topNftData.nftDataList
                           .slice(0, 4)
                           .map((item: any, index: number) => (

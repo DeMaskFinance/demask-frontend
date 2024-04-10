@@ -98,7 +98,7 @@ const Created = () => {
                       <Link
                         href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                       >
-                        <div className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home ">
+                        <div className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home dark:border-dark1 dark:bg-darkBG2 ">
                           <div className="h-[127px]">
                             {item.avatar ? (
                               <img

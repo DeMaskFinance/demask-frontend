@@ -16,10 +16,19 @@
   label {
     @apply dark:text-dark4;
   }
+  tr {
+    @apply dark:border-dark2;
+  }
+  thead > tr {
+    @apply dark:text-white;
+  }
+  tbody tr {
+    @apply dark:hover:bg-dark0 dark:hover:text-dark4;
+  }
 }
 @layer components {
   .title {
-    @apply text-2xl font-semibold text-dark1;
+    @apply font-semibold text-dark1 dark:text-white;
   }
   .text_gradient {
     @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
@@ -36,8 +45,11 @@
   .area_input {
     @apply dark:bg-darkBG2 dark:border-darkBG2;
   }
+  .area_input_hover {
+    @apply dark:hover:bg-dark0 dark:text-white;
+  }
   .item_search {
-    @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2 dark:hover:bg-darkBG0;
+    @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2 dark:hover:bg-dark0 dark:text-white;
   }
 }
 body {

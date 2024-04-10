@@ -87,7 +87,9 @@ export default function Liquidity() {
             + Add Liquidity
           </Button>
         </div>
-        <p className="mt-2 mb-6 text-dark">List of your liquidity positions</p>
+        <p className="mt-2 mb-6 text-dark title">
+          List of your liquidity positions
+        </p>
         {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
           !isLoading && (
             <div className="pool_empty">
@@ -104,7 +106,7 @@ export default function Liquidity() {
                 onChoiceChange={handleChoiceChange}
               />
             </div>
-            <div className="mt-6 rounded-lg bg-dark5">
+            <div className="mt-6 rounded-lg bg-dark5 dark:bg-dark0">
               <div className="">
                 {isSuccess &&
                   data.pages.map((page: any, index: number) => (

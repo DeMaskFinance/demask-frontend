@@ -7,7 +7,11 @@ import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
-import { ModalError, ModalSuccess, ModalTransation } from "@/components/Modal/ModalTransation";
+import {
+  ModalError,
+  ModalSuccess,
+  ModalTransation,
+} from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
 import AccountContext from "@/context/AccountContext";
@@ -24,15 +28,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import "react-toastify/dist/ReactToastify.css";
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import { SEO } from '../../next-seo.config';
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { SEO } from "../../next-seo.config";
+import TabQuery from "@/components/NavChoice/TabQuery";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
 };
 const updateMeta = {
   ...SEO,
-  title: 'Detail Liquidity',
+  title: "Detail Liquidity",
 };
 export default function DetailLiquidity() {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -44,40 +49,53 @@ export default function DetailLiquidity() {
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
-  const [hash, setHash] = useState<string>('');
+  const [hash, setHash] = useState<string>("");
   const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(false);
   const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
-  const [isOpenSuccessRemove, setIsOpenSuccessRemove] = useState<boolean>(false);
+  const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
+    useState<boolean>(false);
   const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
-  const [isOpenSuccessCollect, setIsOpenSuccessCollect] = useState<boolean>(false);
+  const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
+    useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
-  const [tab, setTab] = useQueryParam("historyPool", withDefault(StringParam, "All"));
+  const [tab, setTab] = useQueryParam(
+    "historyPool",
+    withDefault(StringParam, "All")
+  );
   const [page, setPage] = useState(1);
-  const {
-    ROUTER: routerAddress,
-  } = demask;
+  const { ROUTER: routerAddress } = demask;
   useEffect(() => {
     if (liquidity) {
       setDmlTokenLiquidity(liquidity[0]);
     }
   }, [liquidity]);
-  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } = useQuery({
-    queryKey: ["liquidityHistory", account, dmlTokenLiquidity, chainId],
-    queryFn: async () => {
-      if (account && dmlTokenLiquidity) {
-        const res = await liquidityHistory(account, dmlTokenLiquidity, page, chainId);
-        return res;
-      }
-    },
-    keepPreviousData: true,
-  });
+  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
+    useQuery({
+      queryKey: ["liquidityHistory", account, dmlTokenLiquidity, chainId],
+      queryFn: async () => {
+        if (account && dmlTokenLiquidity) {
+          const res = await liquidityHistory(
+            account,
+            dmlTokenLiquidity,
+            page,
+            chainId
+          );
+          return res;
+        }
+      },
+      keepPreviousData: true,
+    });
 
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && dmlTokenLiquidity && data) {
-        const result = await ercContract.viewReward(dmlTokenLiquidity, account, wallet);
+        const result = await ercContract.viewReward(
+          dmlTokenLiquidity,
+          account,
+          wallet
+        );
         const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
         setReward(rewardDec);
       } else {
@@ -85,11 +103,18 @@ export default function DetailLiquidity() {
       }
     };
     fetchDataReward();
-
   }, [dmlTokenLiquidity, account, data]);
 
-  const { balanceOfDML, balanceDML, totalSupply } = useBananceOfDML(account, dmlTokenLiquidity, wallet);
-  const options = [{ tab: 'All' }, { tab: 'Add' }, { tab: 'Remove' }];
+  const { balanceOfDML, balanceDML, totalSupply } = useBananceOfDML(
+    account,
+    dmlTokenLiquidity,
+    wallet
+  );
+  const options = [
+    { key: "All", title: "All" },
+    { key: "Add", title: "Add" },
+    { key: "Remove", title: "Remove" },
+  ];
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -100,10 +125,18 @@ export default function DetailLiquidity() {
     }
     if (account && dmlTokenLiquidity && wallet) {
       getRewardDML({
-        wallet, dmlTokenLiquidity, account, data: {
+        wallet,
+        dmlTokenLiquidity,
+        account,
+        data: {
           dmlDecimals: data.dmlDecimals,
           tokenAddress: data.tokenAddress,
-        }, setReward, setIsOpenTransaction, setIsOpenSuccessCollect, setIsOpenErrorCollect, setHash
+        },
+        setReward,
+        setIsOpenTransaction,
+        setIsOpenSuccessCollect,
+        setIsOpenErrorCollect,
+        setHash,
       });
     } else {
       console.log("No account and DML");
@@ -132,7 +165,7 @@ export default function DetailLiquidity() {
   return (
     <div className="py-8 min-h-[75vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
       <NextSeo {...updateMeta} />
-      {(isLoading || isFetching) ? (
+      {isLoading || isFetching ? (
         <SkeletonPoolDetail />
       ) : isSuccess ? (
         <div className="flex flex-col lg:flex-row gap-x-10">
@@ -141,31 +174,50 @@ export default function DetailLiquidity() {
               {data && account && (
                 <>
                   <div className="flex flex-wrap items-center mb-2 lg:mb-0">
-                    <Link href={`/pools?chain=${chainId}`} className="p-1 rounded-lg group">
-                      <BackIcon width={20} height={20} className="hover:fill-secondary2" />
+                    <Link
+                      href={`/pools?chain=${chainId}`}
+                      className="p-1 rounded-lg group"
+                    >
+                      <BackIcon
+                        width={20}
+                        height={20}
+                        className="hover:fill-secondary2"
+                      />
                     </Link>
                     <div className="w-[30px] h-[30px] ml-4">
                       <MediaNFT data={data} isControls={false} />
                     </div>
-                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`} className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1">
+                    <Link
+                      href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`}
+                      className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1 title"
+                    >
                       <div className="relative truncate max-w-[160px]">
-                        <ModalDocument data={data?.metadata?.name}/>
+                        <ModalDocument data={data?.metadata?.name} />
                       </div>
-                      (
-                      <span>{data?.metadata?.symbol}</span>
-                      <span className="block overflow-hidden leading-[18px]">/</span>
-                      <span>{data.tokenSymbol}</span>
-                      )
+                      (<span>{data?.metadata?.symbol}</span>
+                      <span className="block overflow-hidden leading-[18px]">
+                        /
+                      </span>
+                      <span>{data.tokenSymbol}</span>)
                     </Link>
                   </div>
                   <div className="flex justify-end gap-x-4">
-                    <button className={style.btnWallet} onClick={handleAddLiquidity}>
+                    <button
+                      className={style.btnWallet}
+                      onClick={handleAddLiquidity}
+                    >
                       ADD
                     </button>
-                    <button className={style.btnWallet} onClick={handleRemoveLiquidity}>
+                    <button
+                      className={style.btnWallet}
+                      onClick={handleRemoveLiquidity}
+                    >
                       REMOVE
                     </button>
-                    <Link href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`} className={style.btnWallet} >
+                    <Link
+                      href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`}
+                      className={style.btnWallet}
+                    >
                       SWAP
                     </Link>
                   </div>
@@ -177,24 +229,10 @@ export default function DetailLiquidity() {
                 {account && isSuccess && data.liquidityHistory.length > 0 ? (
                   <div>
                     <div className="p-2 mt-6 overflow-y-scroll border border-gray-200 rounded-lg min-h-[315px]">
-                      <div className='sticky left-0 flex items-center gap-2 p-1 mb-2 text-base text-center text-white rounded-lg lg:left-2 bg-dark3 w-max'>
-                        {options.map((item, idx) => (
-                          <button
-                            key={idx}
-                            className={`py-2 px-4 ${tab === item.tab ? "bg-secondary5" : ""
-                              } rounded-lg text-xs`}
-                            type="button"
-                            onClick={() => {
-                              setTab(item.tab)
-                            }}
-                          >
-                            {item.tab}
-                          </button>
-                        ))}
-                      </div>
+                      <TabQuery TABS={options} initialItem="All" />
                       <div className="mt-6 ">
                         <div className="">
-                          <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold">
+                          <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold title">
                             <p className="pl-3">Action</p>
                             <p className="mx-auto">Liquidity</p>
                             <p className="mx-auto">NFT</p>
@@ -213,10 +251,11 @@ export default function DetailLiquidity() {
                       <button
                         onClick={prevPage}
                         disabled={isPreviousData || page === 1 || isFetching}
-                        className={`${isPreviousData || page === 1 || isFetching
-                          ? "text-white bg-slate-300"
-                          : "hover:text-white hover:bg-secondary2 transition-all"
-                          } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                        className={`${
+                          isPreviousData || page === 1 || isFetching
+                            ? "text-white bg-slate-300"
+                            : "hover:text-white hover:bg-secondary2 transition-all"
+                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                       >
                         <MdNavigateBefore />
                       </button>
@@ -229,7 +268,8 @@ export default function DetailLiquidity() {
                         <span
                           className="px-2 font-medium cursor-pointer text-secondary2"
                           onClick={() =>
-                            page !== data?.totalPages && setPage(data?.totalPages)
+                            page !== data?.totalPages &&
+                            setPage(data?.totalPages)
                           }
                         >
                           {data?.totalPages}
@@ -238,12 +278,17 @@ export default function DetailLiquidity() {
                       <button
                         onClick={nextPage}
                         disabled={
-                          isPreviousData || page === data?.totalPages || isFetching
+                          isPreviousData ||
+                          page === data?.totalPages ||
+                          isFetching
                         }
-                        className={`${isPreviousData || page === data?.totalPages || isFetching
-                          ? "text-white bg-slate-300"
-                          : "hover:text-white hover:bg-secondary2 transition-all"
-                          } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
+                        className={`${
+                          isPreviousData ||
+                          page === data?.totalPages ||
+                          isFetching
+                            ? "text-white bg-slate-300"
+                            : "hover:text-white hover:bg-secondary2 transition-all"
+                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                       >
                         <MdOutlineNavigateNext />
                       </button>
@@ -260,7 +305,7 @@ export default function DetailLiquidity() {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-[400px] mb-20 lg:mb-0">
+          <div className="w-full lg:w-[400px] mb-20 lg:mb-0 dark:bg-darkBG2 rounded-lg">
             <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
               {account && data?.metadata && (
                 <div className="justify-end max-w-[350px] mb-6 mx-auto">
@@ -280,7 +325,14 @@ export default function DetailLiquidity() {
                   <p className="mb-2 text-dark1">Liquidity</p>
                   <div className="flex font-light text-dark3">
                     <FormatNumber number={balanceOfDML} />
-                    <div>({(Number(balanceDML) / Number(totalSupply) * 100).toFixed(2)})%</div>
+                    <div>
+                      (
+                      {(
+                        (Number(balanceDML) / Number(totalSupply)) *
+                        100
+                      ).toFixed(2)}
+                      )%
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -288,7 +340,11 @@ export default function DetailLiquidity() {
                   <div className="flex items-center font-light text-dark3">
                     <FormatNumber number={reward} />
                     <span className="mb-1 ml-1">
-                      <EtherIcon width={18} height={18} className="fill-dark3" />
+                      <EtherIcon
+                        width={18}
+                        height={18}
+                        className="fill-dark3"
+                      />
                     </span>
                   </div>
                 </div>
@@ -303,7 +359,8 @@ export default function DetailLiquidity() {
               </div>
             </div>
           </div>
-        </div>) : (
+        </div>
+      ) : (
         <SkeletonPoolDetail />
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -322,29 +379,68 @@ export default function DetailLiquidity() {
             data={data}
             isOpenAddLiquidity={isOpenAddLiquidity}
             setIsOpenLiquidity={setIsOpenAddLiquidity}
-            setHash={setHash} setIsOpenSuccess={setIsOpenSuccessAdd} setIsOpenError={setIsOpenErrorAdd}
+            setHash={setHash}
+            setIsOpenSuccess={setIsOpenSuccessAdd}
+            setIsOpenError={setIsOpenErrorAdd}
           />
-          <ModalSuccess isOpenSuccess={isOpenSuccessAdd} transactionHash={hash} type="Add Liquidity Success" setIsOpenSuccess={setIsOpenSuccessAdd} />
-          <ModalError isOpenError={isOpenErrorAdd} transactionHash={hash} type="Add Liquidity Failed" setIsOpenError={setIsOpenErrorAdd} /></>
+          <ModalSuccess
+            isOpenSuccess={isOpenSuccessAdd}
+            transactionHash={hash}
+            type="Add Liquidity Success"
+            setIsOpenSuccess={setIsOpenSuccessAdd}
+          />
+          <ModalError
+            isOpenError={isOpenErrorAdd}
+            transactionHash={hash}
+            type="Add Liquidity Failed"
+            setIsOpenError={setIsOpenErrorAdd}
+          />
+        </>
       )}
       {data && account && (
         <>
           <ModalRemoveLiquidity
             data={data}
             routerAddress={routerAddress}
-            type='erc1155'
+            type="erc1155"
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             isERC721={false}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
-            setHash={setHash} setIsOpenSuccess={setIsOpenSuccessRemove} setIsOpenError={setIsOpenErrorRemove}
+            setHash={setHash}
+            setIsOpenSuccess={setIsOpenSuccessRemove}
+            setIsOpenError={setIsOpenErrorRemove}
           />
-          <ModalSuccess isOpenSuccess={isOpenSuccessRemove} transactionHash={hash} type="Remove Liquidity Success" setIsOpenSuccess={setIsOpenSuccessRemove} />
-          <ModalError isOpenError={isOpenErrorRemove} transactionHash={hash} type="Remove Liquidity Failed" setIsOpenError={setIsOpenErrorRemove} />
+          <ModalSuccess
+            isOpenSuccess={isOpenSuccessRemove}
+            transactionHash={hash}
+            type="Remove Liquidity Success"
+            setIsOpenSuccess={setIsOpenSuccessRemove}
+          />
+          <ModalError
+            isOpenError={isOpenErrorRemove}
+            transactionHash={hash}
+            type="Remove Liquidity Failed"
+            setIsOpenError={setIsOpenErrorRemove}
+          />
         </>
       )}
-      <ModalSuccess isOpenSuccess={isOpenSuccessCollect} transactionHash={hash} type="Collect Reward Success" setIsOpenSuccess={setIsOpenSuccessCollect} />
-      <ModalError isOpenError={isOpenErrorCollect} transactionHash={hash} type="Collect Reward Failed" setIsOpenError={setIsOpenErrorCollect} />
-      <ModalTransation isOpenTransation={isOpenTransation} setIsOpenTransaction={setIsOpenTransaction} isTransaction={true} />
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessCollect}
+        transactionHash={hash}
+        type="Collect Reward Success"
+        setIsOpenSuccess={setIsOpenSuccessCollect}
+      />
+      <ModalError
+        isOpenError={isOpenErrorCollect}
+        transactionHash={hash}
+        type="Collect Reward Failed"
+        setIsOpenError={setIsOpenErrorCollect}
+      />
+      <ModalTransation
+        isOpenTransation={isOpenTransation}
+        setIsOpenTransaction={setIsOpenTransaction}
+        isTransaction={true}
+      />
     </div>
   );
 }

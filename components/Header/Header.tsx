@@ -31,7 +31,7 @@ const style = {
   menuSub:
     "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
   itemSub:
-    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-medium",
+    "flex area_input_hover items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-medium",
   btnWallet:
     "flex items-center h-10 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
 };
@@ -190,11 +190,7 @@ export default function Header() {
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link href="https://demask.finance/" target="_blank">
-              <LogoDeMask
-                width={105}
-                height={24}
-                className="dark:fill-white"
-              />
+              <LogoDeMask width={105} height={24} className="dark:fill-white" />
             </Link>
           </div>
           <div className="hidden w-full lg:block">
@@ -252,7 +248,7 @@ export default function Header() {
                 interactive
                 render={(attrs) => (
                   <div
-                    className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1"
+                    className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1 area_input"
                     tabIndex={-1}
                     {...attrs}
                   >
@@ -282,10 +278,18 @@ export default function Header() {
               >
                 <div>
                   <div className={style.btnWallet}>
-                    <ProfileIcon width={20} height={20} className="dark:fill-white"/>
+                    <ProfileIcon
+                      width={20}
+                      height={20}
+                      className="dark:fill-white"
+                    />
                     {`${account.slice(0, 2)}...${account.slice(-4)}`}
                     <div className="items-center hidden pl-2 transition duration-150 ease-out border-l border-dark2 lg:flex">
-                      <WalletIcon width={20} height={20} className="dark:fill-white"/>
+                      <WalletIcon
+                        width={20}
+                        height={20}
+                        className="dark:fill-white"
+                      />
                       {isLoadingBalance ? (
                         <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 animate-pulse"></div>
                       ) : (
@@ -300,7 +304,11 @@ export default function Header() {
               </Tippy>
             ) : (
               <button className={style.btnWallet} onClick={handleOpen}>
-                <WalletIcon width={20} height={20} className="dark:fill-white" />
+                <WalletIcon
+                  width={20}
+                  height={20}
+                  className="dark:fill-white"
+                />
                 <p>
                   Connect{" "}
                   <span className="hidden lg:inline-block md:inline-block">

@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import Items from "./Items";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { SearchInventory } from "@/components/Search";
-import Tippy from "@tippyjs/react/headless";
-import "tippy.js/dist/tippy.css";
 import { DownIcon, FilterIcon, SearchIcon } from "@/components/Icons";
-import Created from "./Created";
+import Tippy from "@tippyjs/react/headless";
+import React from "react";
+import "tippy.js/dist/tippy.css";
 const styles = {
   itemSub:
-    "flex items-center justify-between text-sm  w-[182px] px-2 py-2 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
+    "flex items-center area_input justify-between text-sm  w-[182px] px-2 py-2 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
 };
 interface ClassifyProps {
   typeERC: string;
@@ -24,7 +20,6 @@ const Classify: React.FC<ClassifyProps> = ({
   setTypeERC,
   setSearchCollection,
 }) => {
-  const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "items"));
   const ERCType = [
     {
       type: "",
@@ -59,7 +54,7 @@ const Classify: React.FC<ClassifyProps> = ({
           placement="bottom"
           render={(attrs) => (
             <div
-              className="w-full p-2 bg-white shadow-home"
+              className="w-full p-2 bg-white shadow-home area_input"
               tabIndex={-1}
               {...attrs}
             >
@@ -76,7 +71,7 @@ const Classify: React.FC<ClassifyProps> = ({
             </div>
           )}
         >
-          <div className="flex items-center p-2 rounded-lg bg-dark5 group gap-x-8">
+          <div className="flex items-center p-2 rounded-lg bg-dark5 group gap-x-8 area_input">
             <p className="hidden lg:block">
               Token type:{" "}
               {`${
@@ -95,18 +90,20 @@ const Classify: React.FC<ClassifyProps> = ({
           </div>
         </Tippy>
         <div className="relative flex-grow">
-      <div className="flex h-full rounded-lg bg-dark5" >
-        <div className="flex items-center justify-center w-8 h-full">
-          <SearchIcon width={16} height={16} />
+          <div className="flex h-full rounded-lg bg-dark5 area_input">
+            <div className="flex items-center justify-center w-8 h-full">
+              <SearchIcon width={16} height={16} className="" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search by name"
+              onChange={(e) => {
+                setSearchCollection(e.target.value);
+              }}
+              className="relative w-full transition-all bg-transparent outline-none placeholder:text-xs"
+            />
+          </div>
         </div>
-        <input
-          type="text"
-          placeholder="Search by name"
-          onChange={(e)=>{setSearchCollection(e.target.value)}}
-          className="relative w-full transition-all bg-transparent outline-none placeholder:text-xs"
-        />
-        </div>
-      </div>
         <Tippy
           className=""
           interactive
@@ -114,7 +111,7 @@ const Classify: React.FC<ClassifyProps> = ({
           placement="bottom"
           render={(attrs) => (
             <div
-              className="w-full p-2 bg-white shadow-home"
+              className="w-full p-2 bg-white rounded-lg shadow-home area_input"
               tabIndex={-1}
               {...attrs}
             >
@@ -131,7 +128,7 @@ const Classify: React.FC<ClassifyProps> = ({
             </div>
           )}
         >
-          <div className="p-2 rounded-lg bg-dark5 group">
+          <div className="p-2 rounded-lg bg-dark5 group area_input">
             <FilterIcon
               width={24}
               height={24}
