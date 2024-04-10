@@ -10,6 +10,7 @@ import ChartLoading from "./ChartLoading";
 import ChartNoTransfers from "./ChartNoTransfers";
 import ModalWarningRemove from "../Modal/ModalWarningRemove";
 import formatNumber from "@/libs/utils/formatNumer";
+import { useTheme } from "next-themes";
 interface BarData {
   time: string;
   value: number;
@@ -93,10 +94,18 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       clearInterval(intervalId);
     };
   }, []);
-
+  const { theme } = useTheme();
   useEffect(() => {
     if (chartContainerRef.current) {
-      const chart = createChart(chartContainerRef.current, { autoSize: true });
+      const chart = createChart(chartContainerRef.current, {
+        autoSize: true,
+        layout: {
+          background: {
+            color: theme === "dark" ? "#141414" : "white",
+          },
+          textColor: "#ffffff",
+        },
+      });
       chart.applyOptions({
         grid: {
           vertLines: {
@@ -133,11 +142,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         borderUpColor: "rgb(14,203,129)",
         downColor: "rgb(246,70,93)",
         borderDownColor: "rgb(246,70,93)",
-        // priceFormat: {
-        //   type: "volume",
-        //   precision: 6,
-        //   minMove: 0.0001,
-        // },
+        priceFormat: {
+          type: "volume",
+          minMove: 0.0001,
+        },
       });
       const volumeSeries = chart.addHistogramSeries({
         priceFormat: {
@@ -206,8 +214,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         (chartContainerRef.current as HTMLElement).innerHTML = "";
       }
     };
-  }, [data, volume, newData]);
-  console.log(data);
+  }, [data, volume, newData, theme]);
 
   return (
     <div className="w-full h-full">
