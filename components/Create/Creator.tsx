@@ -8,8 +8,8 @@ const Creator = () => {
   return (
     <WithAuth>
       <BackgroundDefault>
-        <div className="container">
-          <div className="flex flex-col justify-center w-full">
+        <div className="container px-4 lg:px-0">
+          <div className="lg:translate-y-[10%] w-full ">
             <h2 className="flex items-center">
               <MagicIcon width={24} height={24} />
               <p className="text-xl font-semibold text_gradient">Choose Type</p>
@@ -18,30 +18,34 @@ const Creator = () => {
               Choose “NFTs” for one of a kind or “Collection” if you want to
               sell one collectible multiple times
             </p>
-            <div className="flex w-full mt-6 gap-x-6">
-              <Link href="/" className="basis-1/2">
+            <div className="w-full mt-6 lg:flex gap-x-6">
+              <Link href="/" className="block w-full mb-6 lg:w-1/2">
                 <div className="flex flex-col items-center justify-center px-8 py-6 cursor-pointer rounded-2xl bg-dark5 group hover:shadow-swiper hover:translate-y-1">
                   <DeployIcon
                     width={100}
                     height={100}
                     className="fill-secondary5"
                   />
-                  <p className="font-semibold text-dark1">Create Collection</p>
+                  <p className="mt-6 mb-2 font-semibold text-dark1">
+                    Create Collection
+                  </p>
                   <p className="text-sm text-dark3">
                     Deploy your own collection contract
                   </p>
                 </div>
               </Link>
-              <Link href="/" className="basis-1/2">
+              <Link href="/create/mint" className="block w-full lg:w-1/2">
                 <div className="flex flex-col items-center justify-center px-8 py-6 cursor-pointer rounded-2xl bg-dark5 group hover:shadow-swiper hover:translate-y-1">
                   <CreateIcon
                     width={100}
                     height={100}
                     className="group-hover:fill-secondary5"
                   />
-                  <p className="font-semibold text-dark1">Create Collection</p>
+                  <p className="mt-6 mb-2 font-semibold text-dark1">
+                    Create NFTs
+                  </p>
                   <p className="text-sm text-dark3">
-                    Deploy your own collection contract
+                    Mint new NFTs for your collection
                   </p>
                 </div>
               </Link>

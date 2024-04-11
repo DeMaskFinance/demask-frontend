@@ -1,11 +1,10 @@
-import { BackgroundFog } from "@/components/Backgrounds";
+import { BackgroundDefault } from "@/components/Backgrounds";
 import SwapDefault from "@/components/Swap/SwapDefault";
 
 export default function Swap() {
-
   return (
-    <BackgroundFog>
+    <BackgroundDefault>
       <SwapDefault />
-    </BackgroundFog>
-  )
+    </BackgroundDefault>
+  );
 }

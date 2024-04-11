@@ -7,7 +7,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
   const { demask, chainId } = useContext(AccountContext);
   const data = [
-    { id: 1, name: "Mint", url: "/mint" },
+    { id: 1, name: "Create", url: "/create" },
     { id: 2, name: "Launchpad", url: "/launchpad" },
     { id: 3, name: "Swap", url: `/swap` },
     { id: 4, name: "Pools", url: "/pools" },
@@ -19,15 +19,15 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   return (
     <div className="flex gap-x-8">
       <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">
-      {data.map((item) => (
-        <React.Fragment key={item.id}>
-          <li className="relative text-base text-dark3 hover:text-dark2 active:text-dark1">
-            <ActiveLink href={`${item?.url}?chain=${chainId}`}>
-              <p className="">{item.name}</p>
-            </ActiveLink>
-          </li>
-        </React.Fragment>
-      ))}
+        {data.map((item) => (
+          <React.Fragment key={item.id}>
+            <li className="relative text-base text-dark3 hover:text-dark2 active:text-dark1">
+              <ActiveLink href={`${item?.url}?chain=${chainId}`}>
+                <p className="">{item.name}</p>
+              </ActiveLink>
+            </li>
+          </React.Fragment>
+        ))}
       </ul>
       <Search isFocused={isFocused} handleFocus={handleFocus} />
     </div>

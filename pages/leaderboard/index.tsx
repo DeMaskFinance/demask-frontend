@@ -12,7 +12,7 @@ import "swiper/css/pagination";
 // import required modules
 import TableRank from "@/components/LeaderBoard/TableRank";
 import Cards from "@/components/LeaderBoard/Cards";
-import { BackgroundFog } from "@/components/Backgrounds";
+import { BackgroundDefault } from "@/components/Backgrounds";
 const updateMeta = {
   ...SEO,
   title: "Leaderboard",
@@ -26,7 +26,7 @@ const LeaderBoard = () => {
   return (
     <div>
       <NextSeo {...updateMeta} />
-      <BackgroundFog>
+      <BackgroundDefault>
         <div className="py-8 min-h-[80vh] max-w-[1048px] mx-auto flex flex-col gap-y-4 lg:gap-y-10">
           <h1 className="text-4xl h-[60px] lg:text-[60px] font-semibold bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent">
             Season 1
@@ -41,7 +41,7 @@ const LeaderBoard = () => {
           <Cards />
           <TableRank />
         </div>
-      </BackgroundFog>
+      </BackgroundDefault>
     </div>
   );
 };
