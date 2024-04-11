@@ -45,11 +45,20 @@
   .area_input {
     @apply dark:bg-darkBG2 dark:border-darkBG2;
   }
+  .area_darkBG1 {
+    @apply dark:bg-darkBG1 dark:border-darkBG1;
+  }
   .area_input_hover {
     @apply dark:hover:bg-dark0 dark:text-white;
   }
   .item_search {
     @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2 dark:hover:bg-dark0 dark:text-white;
+  }
+  .content_modal {
+    @apply flex justify-between text-lg font-semibold text-dark2 dark:text-white;
+  }
+  .title_modal {
+    @apply flex items-center mb-4 text-xl font-semibold text-dark1 dark:text-white;
   }
 }
 body {

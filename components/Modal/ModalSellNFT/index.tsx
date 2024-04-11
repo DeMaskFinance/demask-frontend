@@ -219,8 +219,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
           setIsOpenError(true);
         }
         setInputNFT("");
-        queryClient.refetchQueries(['collectionNFTBUY'])
-        queryClient.refetchQueries(['collectionNFTSell'])
+        queryClient.refetchQueries(["collectionNFTBUY"]);
+        queryClient.refetchQueries(["collectionNFTSell"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -231,10 +231,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     <Wrapper isOpen={isOpenSellNFT} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
-            Confirm Sell
-          </p>
-          <div className="flex justify-between text-lg font-semibold text-dark2">
+          <p className="title_modal">Confirm Sell</p>
+          <div className="content_modal">
             {inputNFT ? <p>{inputNFT}</p> : <p>{idNFT.length}</p>}
             <p>{data?.metadata?.symbol}</p>
           </div>
@@ -245,7 +243,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
               className="mx-auto cursor-pointer hover:fill-secondary5"
             />
           </div>
-          <div className="flex justify-between text-lg font-semibold text-dark2">
+          <div className="content_modal">
             <FormatNumber
               number={divideByDecimal(
                 totalProcessSell.toString(),

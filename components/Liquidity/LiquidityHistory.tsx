@@ -12,7 +12,6 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
   isFetching,
   isLoading,
 }) => {
-
   return (
     <>
       {isLoading || isFetching ? (
@@ -32,13 +31,18 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item: any, index: number) => (
             <div
-              className="grid gap-4 border-b rounded-lg py-2 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 "
+              className="grid gap-4  py-2 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 "
               key={index}
             >
-              <div className={`border text-xs w-fit ml-3 ${item.action === "Add"
-                ? "border-green text-green"
-                : "border-red text-red"
-                } p-1 rounded-lg`}>{item.action}</div>
+              <div
+                className={`border text-xs w-fit ml-3 ${
+                  item.action === "Add"
+                    ? "border-green text-green"
+                    : "border-red text-red"
+                } p-1 rounded-lg`}
+              >
+                {item.action}
+              </div>
               <div className="mx-auto">
                 <ModalNumber data={item.liquidity} />
               </div>

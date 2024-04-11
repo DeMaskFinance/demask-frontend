@@ -197,7 +197,7 @@ const Change = () => {
     setIsOpen(true);
   };
   const queryClient = useQueryClient();
-  
+
   const handleSwap = async () => {
     // setIsOpenSwapNFT(true);
     // document.body.style.overflowY = "hidden";
@@ -233,7 +233,7 @@ const Change = () => {
   };
   return (
     <div>
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2">
+      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2 area_darkBG1">
         <LightBulbIcon
           width={20}
           height={20}
@@ -280,8 +280,12 @@ const Change = () => {
                                 title={item.metadata.name}
                                 className="flex items-start gap-2 font-semibold uppercase"
                               >
-                                <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                  <ModalDocument data={item.metadata.name} />
+                                <span className="">
+                                  {item.metadata.name ? (
+                                    <ModalDocument data={item.metadata.name} />
+                                  ) : (
+                                    <p>--</p>
+                                  )}
                                 </span>
                               </h6>
                             </div>
@@ -300,7 +304,7 @@ const Change = () => {
           <p>No NFTs Found!</p>
         )}
       </div>
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2">
+      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2 area_darkBG1">
         <p>
           You have selected
           <span className="text-secondary5"> {idNFTInput.length} </span>
@@ -346,7 +350,11 @@ const Change = () => {
                                 className="flex items-start gap-2 font-semibold uppercase"
                               >
                                 <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                  <ModalDocument data={item.metadata.name} />
+                                  {item.metadata.name ? (
+                                    <ModalDocument data={item.metadata.name} />
+                                  ) : (
+                                    <p>--</p>
+                                  )}
                                 </span>
                               </h6>
                             </div>

@@ -10,7 +10,10 @@ import {
 } from "@/components/Modal/ModalTransation";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
-import { collectionListBuy, collectionListSell } from "@/libs/service/collectionService";
+import {
+  collectionListBuy,
+  collectionListSell,
+} from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
@@ -18,7 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
-const PoolItem = ({liquidity}:any) => {
+const PoolItem = ({ liquidity }: any) => {
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
@@ -39,7 +42,7 @@ const PoolItem = ({liquidity}:any) => {
   const collectionAddress =
     useRouter().query.collection ||
     ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
-    
+
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
   };
@@ -47,7 +50,7 @@ const PoolItem = ({liquidity}:any) => {
     setIsOpenRemoveLiquidity(true);
     document.body.style.overflowY = "hidden";
   };
-  
+
   const data = {
     reserveNFT: liquidity?.reserveNFT,
     reserveTokenDecimals: "18",
@@ -57,7 +60,11 @@ const PoolItem = ({liquidity}:any) => {
     nftAddress: collectionAddress,
     tokenAddress: nativeAddress,
   };
-  const { balanceDML, totalSupply } = useBananceOfDML(account, liquidity.dmlAddress, wallet);
+  const { balanceDML, totalSupply } = useBananceOfDML(
+    account,
+    liquidity.dmlAddress,
+    wallet
+  );
   const dmlTokenLiquidity = data.dmlAddress;
   useEffect(() => {
     const fetchDataReward = async () => {
@@ -98,11 +105,11 @@ const PoolItem = ({liquidity}:any) => {
       console.log("No account and DML");
     }
   };
-  
+
   return (
-    <div className="p-4 mb-4 border rounded-lg border-dark3">
+    <div className="p-4 mb-4 border rounded-lg border-dark3 area_darkBG1">
       <div className="flex flex-wrap justify-between gap-y-2">
-        <p className="text-xl font-semibold text-dark0">
+        <p className="text-xl font-semibold text-dark0 title">
           {liquidity.metadata.name}
         </p>
         <div className="flex gap-x-4">
@@ -129,7 +136,9 @@ const PoolItem = ({liquidity}:any) => {
               className="fill-dark2 ml-[-1px]"
             />
           </span>
-          <div>({(Number(balanceDML) / Number(totalSupply) * 100).toFixed(2)}%)</div>
+          <div>
+            ({((Number(balanceDML) / Number(totalSupply)) * 100).toFixed(2)}%)
+          </div>
         </div>
         <div className="flex items-center justify-between my-2">
           <div className="flex">
@@ -184,7 +193,7 @@ const PoolItem = ({liquidity}:any) => {
           // @ts-ignore */
             data={data}
             routerAddress={routerAddress}
-            type='erc721'
+            type="erc721"
             isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             isERC721={true}
             setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}

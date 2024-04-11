@@ -68,10 +68,10 @@ const TransactionCollection = () => {
     },
   ];
   return (
-    <div className="flex flex-col h-full p-3 border rounded-lg border-dark3">
+    <div className="flex flex-col h-full p-3 border rounded-lg border-dark3 dark:border-none">
       <div className="flex items-center justify-between mb-3 lg:mb-0 gap-x-2 lg:gap-x-8">
-      <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
-          <TabQuery TABS={TABS} initialItem="Buy"/>
+        <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
+          <TabQuery TABS={TABS} initialItem="Buy" />
         </div>
         <div className="flex items-center gap-x-2">
           {actions.map((action, index) => (

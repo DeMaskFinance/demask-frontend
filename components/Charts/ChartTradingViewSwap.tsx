@@ -101,7 +101,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         autoSize: true,
         layout: {
           background: {
-            color: theme === "dark" ? "#141414" : "white",
+            color: theme === "dark" ? "#1A1A1A" : "white",
           },
           textColor: "#ffffff",
         },
@@ -144,7 +144,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         borderDownColor: "rgb(246,70,93)",
         priceFormat: {
           type: "volume",
-          minMove: 0.0001,
+          precision: 6,
         },
       });
       const volumeSeries = chart.addHistogramSeries({
@@ -229,8 +229,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3">
-          <div className="flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3">
+        <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3 dark:bg-darkBG1 dark:border-darkBG1">
+          <div className="flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3 area_input ">
             <div className="flex items-center p-4 border-r border-dark3 text-dark2">
               <p className="mr-1 text-dark3">Price 1D:</p>
               <FormatNumber number={data[data.length - 1]?.closePrice} />(

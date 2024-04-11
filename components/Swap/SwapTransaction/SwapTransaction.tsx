@@ -303,7 +303,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   ];
   return (
     <div className="lg:w-[40%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
-      <div className="w-full p-6 border rounded-lg shadow-home">
+      <div className="w-full p-6 border rounded-lg shadow-home area_input">
         <div className="flex justify-between gap-4 mb-2 text-dark1">
           <div className="flex flex-col items-center ">
             <TabGroups

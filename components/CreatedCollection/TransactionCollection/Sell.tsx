@@ -212,7 +212,11 @@ const Sell = () => {
                               className="flex items-start gap-2 font-semibold uppercase"
                             >
                               <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                <ModalDocument data={item.metadata.name} />
+                                {item.metadata.name ? (
+                                  <ModalDocument data={item.metadata.name} />
+                                ) : (
+                                  <p>--</p>
+                                )}
                               </span>
                             </h6>
                           </div>

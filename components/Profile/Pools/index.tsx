@@ -95,7 +95,7 @@ export default function Pools() {
             <div className="px-6 pt-6 pb-0 overflow-x-scroll">
               <table className="w-full text-left">
                 <thead className="">
-                  <tr className="flex px-2 pb-2 text-sm border-b lg:text-base md:text-base">
+                  <tr className="flex px-2 pb-2 text-sm lg:text-base md:text-base">
                     <th className="flex justify-start md:basis-1/6 w-[140px]">
                       Liquidity
                     </th>

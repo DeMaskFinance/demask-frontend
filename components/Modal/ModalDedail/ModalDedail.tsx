@@ -21,17 +21,21 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   isOpenDetail,
 }) => {
   const { demask } = useContext(AccountContext);
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenDetail(false);
   };
-  const formattedDescription = data?.metadata?.description?.split("\n")?.map((line: number, index: number) => (
-    <React.Fragment key={index}>
-      {line}
-      <br />
-    </React.Fragment>
-  ));
+  const formattedDescription = data?.metadata?.description
+    ?.split("\n")
+    ?.map((line: number, index: number) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
@@ -40,10 +44,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
           <div className="h-fit w-[360px] md:w-[400px] lg:w-[550px] rounded-lg p-8 relative overflow-y-scroll">
             <div className="flex justify-between mb-4">
               <p className="py-2 text-xl font-medium">NFT Details</p>
-              <button
-                className="text-lg "
-                onClick={handleClose}
-              >
+              <button className="text-lg " onClick={handleClose}>
                 <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
               </button>
             </div>
@@ -59,8 +60,14 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                       <div className="w-6 h-6">
                         <MediaNFT data={data} isControls />
                       </div>
-                      <a href={data?.metadata?.uri} rel="noreferrer noopener"
-                        target="_blank" className="text-dark3 ">{data?.metadata?.name}</a>
+                      <a
+                        href={data?.metadata?.uri}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                        className="text-dark3 "
+                      >
+                        {data?.metadata?.name}
+                      </a>
                     </div>
                   </li>
                 )}
@@ -68,7 +75,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                   <li className="mb-4">
                     <p className="font-medium text-dark2">Symbol</p>
                     <div className="text-sm font-light text-dark3 max-w-[140px]">
-                      <ModalDocument data={data?.metadata?.symbol}/>
+                      <ModalDocument data={data?.metadata?.symbol} />
                     </div>
                   </li>
                 )}
@@ -79,7 +86,12 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 <li className="mb-4">
                   <p className="font-medium text-dark2">Contract Address</p>
                   <div className="flex gap-x-1">
-                    <a target="_blank" rel="noopener noreferrer" href={`${demask.urltxHash}address/${nftAddress}`} className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${demask.urltxHash}address/${nftAddress}`}
+                      className="text-sm font-light cursor-pointer text-secondary2"
+                    >{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</a>
                     <Copy content={nftAddress} />
                   </div>
                 </li>
@@ -89,19 +101,23 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
               {data.metadata?.description && (
                 <div className="mb-4">
                   <p className="font-medium text-dark2">Description</p>
-                  <p className="text-sm font-light text-dark3">{formattedDescription}</p>
+                  <p className="text-sm font-light text-dark3">
+                    {formattedDescription}
+                  </p>
                 </div>
               )}
               <div className="mb-4">
                 <p className="font-medium text-dark2">Attributes</p>
                 {data.metadata?.attributes.length > 0 ? (
                   <div className="text-sm font-light text-dark3">
-                    {data.metadata?.attributes.map((item: any, index: number) => (
-                      <ul className="flex gap-x-4" key={index}>
-                        <li>{item.trait_type}</li>
-                        <li>{item.value}</li>
-                      </ul>
-                    ))}
+                    {data.metadata?.attributes.map(
+                      (item: any, index: number) => (
+                        <ul className="flex flex-wrap gap-x-4" key={index}>
+                          <li>{item.trait_type}</li>
+                          <li>{item.value}</li>
+                        </ul>
+                      )
+                    )}
                   </div>
                 ) : (
                   <p className="text-sm font-light text-dark3">None</p>
@@ -112,11 +128,16 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                   <p className="mb-1 font-medium text-dark2">Category</p>
                   {data?.metadata?.category ? (
                     <div className="flex gap-x-4">
-                      {data.metadata?.category.map((item: any, index: number) => (
-                        <p className="px-4 py-1 text-sm font-medium border rounded-lg text-dark2 border-dark3" key={index}>
-                          {item}
-                        </p>
-                      ))}
+                      {data.metadata?.category.map(
+                        (item: any, index: number) => (
+                          <p
+                            className="px-4 py-1 text-sm font-medium border rounded-lg text-dark2 border-dark3"
+                            key={index}
+                          >
+                            {item}
+                          </p>
+                        )
+                      )}
                     </div>
                   ) : (
                     <p>None</p>
@@ -125,24 +146,35 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 <div>
                   <p className="font-medium text-dark2">Token ID</p>
                   <div className="flex items-center gap-x-1">
-                    <a target="_blank" rel="noopener noreferrer" href={data.uri} className="text-sm font-light cursor-pointer text-secondary5">{idNFT}</a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={data.uri}
+                      className="text-sm font-light cursor-pointer text-secondary5"
+                    >
+                      {idNFT}
+                    </a>
                     <Copy content={idNFT} />
                   </div>
                 </div>
                 <div>
                   <p className="font-medium text-dark2">Royalty Fee (%)</p>
-                  <p className="text-sm font-light text-dark3">{data?.royaltyFee}</p>
+                  <p className="text-sm font-light text-dark3">
+                    {data?.royaltyFee}
+                  </p>
                 </div>
                 <div>
                   <p className="font-medium text-dark2">Last Updated</p>
-                  <p className="text-sm font-light text-dark3">20 minutes ago</p>
+                  <p className="text-sm font-light text-dark3">
+                    20 minutes ago
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </Wrapper >
+    </Wrapper>
   );
 };
 

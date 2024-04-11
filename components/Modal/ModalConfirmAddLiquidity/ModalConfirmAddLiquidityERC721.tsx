@@ -186,10 +186,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     <Wrapper isOpen={isOpenConfirmAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
-            Create Pool
-          </p>
-          <div className="flex justify-between text-lg font-semibold text-dark2">
+          <p className="title_modal">Create Pool</p>
+          <div className="content_modal">
             <p>{inputNFT.length}</p>
             <div className="max-w-[60%]">
               <ModalDocument data="DM" />
@@ -198,7 +196,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
             +
           </div>
-          <div className="flex justify-between text-lg font-semibold text-dark2">
+          <div className="content_modal">
             <FormatNumber number={amountErcDesiredToDec} />
             <p>ETH</p>
           </div>

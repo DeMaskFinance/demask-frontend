@@ -134,7 +134,7 @@ const Created = () => {
                             </div>
                             <div className="flex items-center justify-between">
                               <LogoIconCard chainId={chainId} />
-                              <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase">
+                              <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase leading-[23px]">
                                 {item.type}
                               </p>
                             </div>

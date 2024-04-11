@@ -15,7 +15,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask } = useContext(AccountContext);
   return (
     <tr
-      className={`flex px-2 text-sm border-b rounded-lg hover:cursor-pointer  group hover:bg-slate-100 ${
+      className={`flex px-2 text-sm  hover:cursor-pointer  group hover:bg-slate-100 ${
         currentRank
           ? "bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]"
           : "text-dark2"

@@ -163,7 +163,7 @@ export default function DetailLiquidity() {
   };
 
   return (
-    <div className="py-8 min-h-[75vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
+    <div className="py-8 min-h-[80vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
       <NextSeo {...updateMeta} />
       {isLoading || isFetching ? (
         <SkeletonPoolDetail />

@@ -252,10 +252,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="flex items-center mb-4 text-xl font-semibold text-dark1">
-            You will receive
-          </p>
-          <div className="flex justify-between text-lg font-semibold text-dark2">
+          <p className="title_modal">You will receive</p>
+          <div className="content_modal">
             {reserveToken ? (
               <p>{amountNFTMin}</p>
             ) : (
@@ -266,7 +264,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
             +
           </div>
-          <div className="flex justify-between text-lg font-semibold text-dark2">
+          <div className="content_modal">
             <FormatNumber number={amountTokenDec} />
             <p>ETH</p>
           </div>

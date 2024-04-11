@@ -204,7 +204,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
-          <div className="flex items-center mb-4 text-xl font-semibold text-dark1">
+          <div className="title_modal">
             Add
             {data && (
               <div className="flex items-center leading-[16px] ml-1">
@@ -246,7 +246,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                                 className="flex items-start gap-2 font-semibold uppercase"
                               >
                                 <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                  <ModalDocument data={item.metadata.name} />
+                                  {item.metadata.name ? (
+                                    <ModalDocument data={item.metadata.name} />
+                                  ) : (
+                                    <p>--</p>
+                                  )}
                                 </span>
                               </h6>
                             </div>

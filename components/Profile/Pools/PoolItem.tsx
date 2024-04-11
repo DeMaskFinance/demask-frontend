@@ -18,7 +18,7 @@ const PoolItem = ({ item }: any) => {
   return (
     <div>
       <Link href={`/details/${item.dmlAddress}?chain=${chainId}`}>
-        <tr className="flex text-sm border-b rounded-lg lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
+        <tr className="flex text-sm  lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
           <td className="relative flex items-center justify-start py-2  md:basis-1/6 w-[140px]">
             <FormatNumber number={balanceOfDML} />
           </td>

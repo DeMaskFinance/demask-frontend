@@ -41,7 +41,7 @@ import { activeNFTPercent } from "@/libs/constants";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import Link from "next/link";
 const styles = {
-  title: "block mb-4 text-base font-medium text-black24",
+  title: "block mb-4 text-base font-medium text-black24 dark:text-white",
 };
 const updateMeta = {
   ...SEO,
@@ -260,7 +260,7 @@ export default function AddLiquidity() {
     },
   ];
   return (
-    <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[75vh] pb-24 lg:pb-8">
+    <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[80vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
@@ -271,7 +271,9 @@ export default function AddLiquidity() {
               className="cursor-pointer hover:fill-secondary5"
             />
           </Link>
-          <h2 className="text-2xl text-black24 ml-[18px]">Add Liquidity</h2>
+          <h2 className="text-2xl text-black24 ml-[18px] title">
+            Add Liquidity
+          </h2>
         </div>
         <div className="flex items-center gap-x-2">
           {actions.map((action, index) => (
@@ -352,7 +354,7 @@ export default function AddLiquidity() {
                 <span className="text-red">*</span>
               </p>
               <div>
-                <div className="flex justify-between mb-1 text-dark1">
+                <div className="flex justify-between mb-1 text-dark1 dark:text-white">
                   <p>NFT</p>
                   <p>Balance: {account ? formatNumber(balanceNFT) : 0}</p>
                 </div>
@@ -417,7 +419,7 @@ export default function AddLiquidity() {
                 )}
               </div>
               <div>
-                <div className="flex justify-between mt-4 mb-1 text-dark1">
+                <div className="flex justify-between mt-4 mb-1 text-dark1 dark:text-white">
                   <p>Token</p>
                   <p>Balance: {account ? formatNumber(balanceToken) : 0}</p>
                 </div>
