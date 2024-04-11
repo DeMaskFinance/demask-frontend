@@ -136,7 +136,7 @@ const TableRank = () => {
     <div className="px-2 py-4 mt-10 overflow-x-scroll border bg-white rounded-lg dark:bg-darkBG1 dark:border-darkBG1 border-dark4 shadow-home min-h-[500px] flex flex-col justify-between">
       <table className="w-full text-left border-collapse">
         <thead className="">
-          <tr className="flex px-2 pb-2 text-base border-b">
+          <tr className="flex px-2 pb-2 text-base">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
               Name

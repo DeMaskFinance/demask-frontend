@@ -1,1 +1,1 @@
-export {default as BackgroundFog} from './BackgroundFog'
+export { default as BackgroundDefault } from "./BackgroundDefault";

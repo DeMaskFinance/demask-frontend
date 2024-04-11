@@ -215,21 +215,29 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       }
     };
   }, [data, volume, newData, theme]);
-
+  const optionTime = [
+    { key: "15M" },
+    { key: "1H" },
+    { key: "4H" },
+    { key: "1D" },
+    { key: "1W" },
+    { key: "1Y" },
+    { key: "All" },
+  ];
   return (
     <div className="w-full h-full">
       {isLoading ? (
         <div className="h-full p-4 border rounded-lg lg:mt-0 border-dark3">
           <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-dark3 w-fit text-dark3">
-            <div className="w-20 h-4 p-2 rounded bg-slate-200"></div>
-            <div className="w-20 h-4 rounded bg-slate-200"></div>
-            <div className="w-20 h-4 rounded bg-slate-200"></div>
+            <div className="w-20 h-4 p-2 rounded bg-slate-200 dark:bg-slate-700"></div>
+            <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
+            <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
           </div>
-          <div className="h-4 w-[60%] bg-slate-200 rounded"></div>
+          <div className="h-4 w-[60%] bg-slate-200 dark:bg-slate-700 rounded"></div>
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3 dark:bg-darkBG1 dark:border-darkBG1">
+        <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3 area_darkBG1">
           <div className="flex-wrap hidden mb-2 text-sm font-medium border rounded-lg lg:flex border-dark3 w-fit text-dark3 area_input ">
             <div className="flex items-center p-4 border-r border-dark3 text-dark2">
               <p className="mr-1 text-dark3">Price 1D:</p>
@@ -333,13 +341,14 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <div ref={chartContainerRef} id="chart" className="w-full h-[80%]" />
           <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
-              <li className="cursor-pointer hover:text-secondary4">15m</li>
-              <li className="cursor-pointer hover:text-secondary4">1H</li>
-              <li className="cursor-pointer hover:text-secondary4">4H</li>
-              <li className="font-bold cursor-pointer text-secondary4">1D</li>
-              <li className="cursor-pointer hover:text-secondary4">1W</li>
-              <li className="cursor-pointer hover:text-secondary4">1Y</li>
-              <li className="cursor-pointer hover:text-secondary4">All</li>
+              {optionTime.map((item, index) => (
+                <li
+                  className="cursor-pointer hover:text-secondary4 dark:text-dark3"
+                  key={index}
+                >
+                  {item.key}
+                </li>
+              ))}
             </ul>
             <div>
               {currentHour}:{currentMinute}:{currentSecond}(UTC)

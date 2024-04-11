@@ -26,6 +26,7 @@ import Box from "./Box";
 import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
+import TabQuery from "@/components/NavChoice/TabQuery";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -204,7 +205,7 @@ export default function DetailLaunchPad() {
           {isLoading ? (
             <div className="h-[600px]">
               <div className="flex gap-8">
-                <div className="h-[600px] bg-slate-200 lg:w-full animate-pulse rounded-lg"></div>
+                <div className="h-[600px] bg-slate-200 dark:bg-slate-700 lg:w-full animate-pulse rounded-lg"></div>
               </div>
             </div>
           ) : (
@@ -223,7 +224,7 @@ export default function DetailLaunchPad() {
                     />
                   </div>
                 </div>
-                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper">
+                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper area_darkBG0">
                   <div className="w-full lg:w-[50%] relative">
                     <MediaNFT data={data} isControls />
                     <div className="absolute top-0 right-0 ">
@@ -323,7 +324,7 @@ export default function DetailLaunchPad() {
                     </div>
                     <div className="w-full lg:w-[80%]">
                       <p className="mb-2">Type</p>
-                      <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4">
+                      <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4 area_darkBG1">
                         <div className="flex item-center gap-x-2">
                           <div className="w-8 h-8">
                             <MediaNFT data={data} isControls hideAudio={true} />
@@ -470,7 +471,9 @@ export default function DetailLaunchPad() {
                                 )}
                                 <button
                                   disabled={
-                                    errors !== "" || !amount || +amount < 1 ? true : false
+                                    errors !== "" || !amount || +amount < 1
+                                      ? true
+                                      : false
                                   }
                                   onClick={() => {
                                     setIsOpenModal(!isOpenModal);
@@ -578,20 +581,10 @@ export default function DetailLaunchPad() {
           setIsOpenError={setIsOpenErrorRefund}
         />
       </div>
-      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0">
-        <ul className="flex p-2 mx-auto text-sm text-white rounded-lg lg:gap-4 bg-dark3 w-fit">
-          {TABS.map((data, index) => (
-            <li
-              key={index}
-              onClick={() => setStatus(data.key)}
-              className={`cursor-pointer p-2 ${
-                status === data.key ? "rounded-lg bg-secondary5" : ""
-              } `}
-            >
-              <h2 className="font-semibold">{data.title}</h2>
-            </li>
-          ))}
-        </ul>
+      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 area_darkBG1">
+        <div className="flex justify-center">
+          <TabQuery TABS={TABS} initialItem="rule" />
+        </div>
         {isLoading ? (
           <div>
             <BiLoaderAlt className="animate-spin text-secondary5" />

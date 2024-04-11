@@ -30,7 +30,7 @@ import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from "../../next-seo.config";
 import Tippy from "@tippyjs/react";
@@ -77,6 +77,10 @@ export default function AddLiquidity() {
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
+  const [widthBtn, setWidthBtn] = useState(0);
+  const buttonRefs = useRef<Array<HTMLButtonElement | null>>(
+    Array(activeNFTPercent.length).fill(null)
+  );
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -381,26 +385,41 @@ export default function AddLiquidity() {
                     onChange={handleGetNFT}
                   />
                   <div className="flex justify-end mt-8">
-                    {activeNFTPercent.map((item, index) => (
-                      <button
-                        type="button"
-                        className={`ml-3 text-[10px] text-dark3 p-1 border-dark3 border rounded-lg ${
-                          item.text === activeChoiceNFT &&
-                          "bg-secondary5 text-white"
-                        }`}
-                        key={index}
-                        onClick={() => {
-                          setInputNFT(
-                            Math.floor(
-                              item.percent * Number(balanceNFT)
-                            ).toString()
-                          );
-                          setActiveChoiceNFT(item.text);
-                        }}
-                      >
-                        {item.text}
-                      </button>
-                    ))}
+                    <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit area_darkBG0">
+                      <div
+                        className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-secondary5"
+                        style={{ width: `${widthBtn}px` }}
+                      ></div>
+                      {activeNFTPercent.map((item, index) => (
+                        <button
+                          type="button"
+                          ref={(el) => (buttonRefs.current[index] = el)}
+                          key={index}
+                          onClick={() => {
+                            setInputNFT(
+                              Math.floor(
+                                item.percent * Number(balanceNFT)
+                              ).toString()
+                            );
+                            setActiveChoiceNFT(item.text);
+                            setActiveChoiceNFT(item.text);
+                            const totalWidth = buttonRefs.current
+                              .slice(0, index + 1)
+                              .reduce(
+                                (acc, ref) =>
+                                  ref ? acc + ref.offsetWidth : acc,
+                                0
+                              );
+                            setWidthBtn(totalWidth);
+                          }}
+                          className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${
+                            item.text === activeChoiceNFT && " text-white"
+                          }`}
+                        >
+                          {item.text}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 

@@ -27,6 +27,9 @@
   }
 }
 @layer components {
+  .container {
+    @apply flex flex-col gap-6 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 min-h-[80vh];
+  }
   .title {
     @apply font-semibold text-dark1 dark:text-white;
   }
@@ -37,7 +40,7 @@
     @apply relative z-50 flex flex-col justify-center cursor-default h-fit bg-white dark:bg-darkBG1 rounded-lg;
   }
   .input_item {
-    @apply w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2;
+    @apply w-full py-2 pl-2 mb-4 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2 dark:bg-darkBG2 dark:border-darkBG2;
   }
   .pool_empty {
     @apply flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2 dark:bg-darkBG1;
@@ -47,6 +50,9 @@
   }
   .area_darkBG1 {
     @apply dark:bg-darkBG1 dark:border-darkBG1;
+  }
+  .area_darkBG0 {
+    @apply dark:bg-darkBG0 dark:border-darkBG0;
   }
   .area_input_hover {
     @apply dark:hover:bg-dark0 dark:text-white;

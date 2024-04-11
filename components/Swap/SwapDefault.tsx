@@ -234,7 +234,7 @@ export default function SwapDefault() {
                   </Button>
                 </div>
                 <div className="flex flex-col items-end">
-                  <ul className="flex p-2 mt-8 rounded-lg bg-dark4 w-fit">
+                  <ul className="flex p-2 mt-8 rounded-lg bg-dark4 w-fit area_darkBG0">
                     {activeNFTPercent.map((item, index) => (
                       <li
                         className={`text-[12px] w-10 flex justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${

@@ -289,7 +289,7 @@ export default function Header() {
                         className="dark:fill-white"
                       />
                       {isLoadingBalance ? (
-                        <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 animate-pulse"></div>
+                        <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
                       ) : (
                         <span className="ml-2">
                           {formatNumber(balanceToken)}

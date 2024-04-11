@@ -303,7 +303,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   ];
   return (
     <div className="lg:w-[40%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
-      <div className="w-full p-6 border rounded-lg shadow-home area_input">
+      <div className="w-full p-6 border rounded-lg shadow-home area_darkBG1">
         <div className="flex justify-between gap-4 mb-2 text-dark1">
           <div className="flex flex-col items-center ">
             <TabGroups
@@ -434,9 +434,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </div>
               </div>
               <div className="flex justify-end mt-8">
-                <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit">
+                <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit area_darkBG0">
                   <div
-                    className="absolute h-8 transition-transform duration-500 ease-linear rounded-l-lg bg-secondary5"
+                    className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-secondary5"
                     style={{ width: `${widthBtn}px` }}
                   ></div>
                   {activeNFTPercent.map((item, index) => (
@@ -538,7 +538,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             <div className="relative">
               {activeChoice === "Buy" ? (
-                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
+                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
                   {isLoadingBuy ? (
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   ) : (
@@ -551,7 +551,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   )}
                 </div>
               ) : (
-                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5">
+                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
                   {isLoadingSell ? (
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   ) : (

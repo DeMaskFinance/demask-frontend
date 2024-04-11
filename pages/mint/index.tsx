@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 
-import MintNFT from "@/components/Creator/MintNFT";
+import MintNFT from "@/components/Create/MintNFT";
 import { Category } from "@/libs/constants";
 import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
 import images from "@/public/images";
@@ -18,7 +18,8 @@ import { SEO } from "../../next-seo.config";
 import WithAuth from "@/components/Common/WithAuth";
 import { uploadFileIPFS } from "@/libs/service/IPFSService";
 import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
-import { PictureMint } from "@/components/Icons";
+import { InforIcon, PictureMint } from "@/components/Icons";
+import Tippy from "@tippyjs/react";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24 dark:text-dark4",
   btnActive: "rounded-lg bg-secondary5",
@@ -293,7 +294,11 @@ export default function Creator() {
                       onClick={handleClickFile}
                       className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center"
                     >
-                      <PictureMint width={160} height={160} className="mx-auto transition-all duration-200 group-hover:fill-dark2"/>
+                      <PictureMint
+                        width={160}
+                        height={160}
+                        className="mx-auto transition-all duration-200 group-hover:fill-dark2"
+                      />
                       <p className="font-semibold text-dark1">Upload</p>
                       <input
                         ref={inputRef}
@@ -478,15 +483,24 @@ export default function Creator() {
               <div>
                 <label
                   htmlFor="traits"
-                  className="block mb-1 text-base font-semibold text-black24"
+                  className="flex items-center mb-1 text-base font-semibold gap-x-1 text-black24"
                 >
                   <span>Traits</span>
+                  <Tippy
+                    interactive
+                    content={
+                      <span>
+                        Traits describe attributes of your items. They appear as
+                        filters inside your collection page and are also listed
+                        out inside your item page.
+                      </span>
+                    }
+                  >
+                    <div>
+                      <InforIcon width={16} height={16} />
+                    </div>
+                  </Tippy>
                 </label>
-                <p className="mb-4 text-sm font-normal text-dark2">
-                  Traits describe attributes of your items. They appear as
-                  filters inside your collection page and are also listed out
-                  inside your item page
-                </p>
                 {attributeItems.map((item) => (
                   <div className="flex items-center gap-x-2" key={item.id}>
                     <input

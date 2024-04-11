@@ -156,7 +156,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                           {item.nftBalance ? (
                             <FormatNumber number={item.nftBalance} />
                           ) : (
-                            <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
+                            <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200 dark:bg-slate-700"></span>
                           )}
                         </div>
                       </div>

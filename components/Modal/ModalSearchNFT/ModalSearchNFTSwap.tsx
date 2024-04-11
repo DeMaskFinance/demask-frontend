@@ -131,7 +131,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               ) : (
                 <>
                   {searchFetching ? (
-                    <div className="bg-slate-200 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
                     <span className="text-base text-secondary3">No Result</span>
                   )}

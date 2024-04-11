@@ -1,20 +1,16 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import { LogoIconCard } from "@/components/Logo/Logo";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import { SkeletonNFTTop } from "@/components/Skeleton";
-import SwiperCustom from "@/components/SwiperCustom";
+import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
+import { collectionListUserService } from "@/libs/service/collectionService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { SwiperSlide } from "swiper/react";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Classify from "../Classify";
-import { collectionListUserService } from "@/libs/service/collectionService";
-import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);

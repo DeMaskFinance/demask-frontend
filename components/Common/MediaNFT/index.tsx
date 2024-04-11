@@ -10,7 +10,9 @@ interface MediaNFTProps {
   hideAudio?: boolean;
 }
 const SkeletonImg = () => {
-  return <div className="w-full h-full animate-pulse bg-slate-200"></div>;
+  return (
+    <div className="w-full h-full animate-pulse bg-slate-200 dark:bg-slate-700"></div>
+  );
 };
 const MediaNFT: React.FC<MediaNFTProps> = ({
   data,
@@ -44,7 +46,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 loading="lazy"
               />
               <div
-                className={`w-full h-full rounded-lg animate-pulse bg-slate-200 ${
+                className={`w-full h-full rounded-lg animate-pulse bg-slate-200 dark:bg-slate-700 ${
                   loading ? "block" : "hidden"
                 }`}
               ></div>

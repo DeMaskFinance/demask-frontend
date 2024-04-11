@@ -149,7 +149,7 @@ const PoolItem = ({ liquidity }: any) => {
                   <FormatNumber number={reward} />
                 </div>
               ) : (
-                <p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>
+                <p className="w-10 h-4 rounded-full animate-pulse bg-slate-200 dark:bg-slate-700"></p>
               )}
             </div>
             <span>
