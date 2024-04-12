@@ -9,17 +9,20 @@ import React, {
   useState,
 } from "react";
 
+import WithAuth from "@/components/Common/WithAuth";
 import MintNFT from "@/components/Create/MintNFT";
+import {
+  BackIcon,
+  CreateIcon,
+  InforIcon,
+  PictureMint,
+} from "@/components/Icons";
 import { Category } from "@/libs/constants";
-import { uploadFileToIPFS } from "@/libs/utils/uploadFileIPFS";
-import images from "@/public/images";
+import { uploadFileIPFS } from "@/libs/service/IPFSService";
+import Tippy from "@tippyjs/react";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
-import WithAuth from "@/components/Common/WithAuth";
-import { uploadFileIPFS } from "@/libs/service/IPFSService";
-import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
-import { InforIcon, PictureMint } from "@/components/Icons";
-import Tippy from "@tippyjs/react";
+import { useRouter } from "next/router";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24 dark:text-dark4",
   btnActive: "rounded-lg bg-secondary5",
@@ -38,6 +41,7 @@ export default function Creator() {
   const [emptyInputs, setEmptyInputs] = useState<string[]>([]);
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
+  const router = useRouter();
   const [fileIPFS, setFileIPFS] = useState<any>(null);
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
@@ -211,9 +215,17 @@ export default function Creator() {
           {/* UpLoad File */}
           <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">
             <div className="sticky top-16">
-              <h2 className="text-2xl font-semibold">Create An Collection</h2>
+              <div className="flex items-center gap-x-2">
+                <div onClick={() => router.back()}>
+                  <BackIcon width={20} height={20} />
+                </div>
+                <h2 className="flex items-center text-2xl font-semibold text_gradient gap-x-1">
+                  <CreateIcon width={22} height={22} />
+                  Create New NFTs
+                </h2>
+              </div>
               <h3 className="my-2 font-normal text-dark2">
-                Deploy an ERC-1155 contract to create your NFT collection
+                Mint additional NFTs to grow your collection.
               </h3>
               <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
               <div

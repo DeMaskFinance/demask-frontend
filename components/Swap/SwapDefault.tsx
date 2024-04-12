@@ -88,11 +88,7 @@ export default function SwapDefault() {
     <div className="mb-[100px] lg:mb-0 py-8 mx-auto swap lg:px-primary md:px-14 px-4">
       <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
         <div onClick={() => router.back()}>
-          <BackIcon
-            width={20}
-            height={20}
-            className="cursor-pointer hover:fill-secondary5"
-          />
+          <BackIcon width={20} height={20} />
         </div>
         <div className="w-[32px] h-[32px] ">
           <Image

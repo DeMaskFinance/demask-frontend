@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import WithAuth from "../Common/WithAuth";
 import { CreateIcon, DeployIcon, MagicIcon } from "../Icons";
 import Link from "next/link";
 import { BackgroundDefault } from "../Backgrounds";
+import AccountContext from "@/context/AccountContext";
 
 const Creator = () => {
+  const { chainId } = useContext(AccountContext);
   return (
     <WithAuth>
       <BackgroundDefault>
@@ -19,7 +21,10 @@ const Creator = () => {
               sell one collectible multiple times
             </p>
             <div className="w-full mt-6 lg:flex gap-x-6">
-              <Link href="/" className="block w-full mb-6 lg:w-1/2">
+              <Link
+                href={`/create/deploy-contract?chain=${chainId}`}
+                className="block w-full mb-6 lg:w-1/2"
+              >
                 <div className="flex flex-col items-center justify-center px-8 py-6 cursor-pointer rounded-2xl bg-dark5 group hover:shadow-swiper hover:translate-y-1">
                   <DeployIcon
                     width={100}
@@ -34,7 +39,10 @@ const Creator = () => {
                   </p>
                 </div>
               </Link>
-              <Link href="/create/mint" className="block w-full lg:w-1/2">
+              <Link
+                href={`/create/mint?chain=${chainId}`}
+                className="block w-full lg:w-1/2"
+              >
                 <div className="flex flex-col items-center justify-center px-8 py-6 cursor-pointer rounded-2xl bg-dark5 group hover:shadow-swiper hover:translate-y-1">
                   <CreateIcon
                     width={100}

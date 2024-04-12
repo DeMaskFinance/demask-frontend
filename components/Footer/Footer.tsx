@@ -56,6 +56,15 @@ export default function Footer() {
                 Blog
               </a>
             </li>
+            <li className="transition-all duration-100 hover:text-dark2">
+              <a
+                href="https://docsend.com/view/nuc8dre4e9vp55s7"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Pitchdesk
+              </a>
+            </li>
           </ul>
           <ul className="flex font-semibold gap-x-8 text-dark3">
             <li>

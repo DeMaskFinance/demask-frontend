@@ -34,7 +34,7 @@ export const BackIcon: React.FunctionComponent<IconProps> = ({
 }) => {
   return (
     <svg
-      className={`${className} dark:fill-dark2 dark:hover:fill-dark1`}
+      className={`${className} dark:fill-dark2 dark:hover:fill-dark1 hover:fill-secondary5 cursor-pointer`}
       width={width}
       height={height}
       viewBox="0 0 24 24"
