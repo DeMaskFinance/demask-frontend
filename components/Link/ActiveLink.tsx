@@ -1,20 +1,20 @@
-import { useRouter } from 'next/router';
-import Link, { LinkProps } from 'next/link';
-import React, { ReactNode } from 'react';
-import type { Route } from 'next';
+import { useRouter } from "next/router";
+import Link, { LinkProps } from "next/link";
+import React, { ReactNode } from "react";
+import type { Route } from "next";
 
 const styles = {
-    active:'text-secondary5'
-}
+  active: "text-secondary5",
+};
 interface Props extends LinkProps {
   children: any;
-  href:string 
+  href: string;
 }
 
 const ActiveLink = ({ href, children, ...props }: Props) => {
   const router = useRouter();
- 
-  let className = children.props.className || '';
+
+  let className = children.props.className || "";
   if (router.asPath.includes(href)) {
     className = `${className} ${styles.active}`;
   }

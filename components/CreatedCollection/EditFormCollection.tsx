@@ -34,7 +34,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   data,
   refetch,
 }) => {
-  const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
@@ -163,7 +162,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
-      setLoading(true);
       await collectionService.updateCollection(
         {
           name: values.name,
@@ -204,8 +202,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       refetch();
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
   const initialValues = {

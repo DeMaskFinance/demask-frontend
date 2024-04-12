@@ -1,20 +1,47 @@
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import WithAuth from "../Common/WithAuth";
 import { SEO } from "@/next-seo.config";
-import { BackIcon, CreateIcon } from "../Icons";
+import { BackIcon, CreateIcon, DeployIcon, MonadIcon } from "../Icons";
+import UploadFile from "./UploadFile";
+import * as yup from "yup";
+import { Button } from "../Buttons";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import Image from "next/image";
 const updateMeta = {
   ...SEO,
-  title: "Mint NFTs",
+  title: "Deploy Contract",
 };
+const styles = {
+  title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
+  inputItem:
+    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3 dark:bg-darkBG2 dark:border-darkBG2",
+  btnActive: "rounded-full bg-base2",
+};
+const validationSchema = yup.object().shape({
+  contractName: yup.string().required("Name is a required").max(50),
+  symbol: yup.string().required("Symbol is a required").max(10),
+});
 const DeployCollection = () => {
   const router = useRouter();
+  const [fileIPFS, setFileIPFS] = useState<any>(null);
+  const initialValues = {
+    contractName: "",
+    symbol: "",
+  };
+  const onSubmit = async (values: any) => {
+    // Handle form submission
+    try {
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
-        <div className="flex flex-col gap-6 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 ">
+        <div className="flex flex-col gap-6 px-4 py-8 pb-24 mx-auto lg:px-0 lg:flex-row md:flex-row container-main lg:pb-8">
           {/* UpLoad File */}
           <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">
             <div className="sticky top-16">
@@ -23,127 +50,118 @@ const DeployCollection = () => {
                   <BackIcon width={20} height={20} />
                 </div>
                 <h2 className="flex items-center text-2xl font-semibold text_gradient gap-x-1">
-                  <CreateIcon width={22} height={22} />
-                  Create New NFTs
+                  <DeployIcon width={22} height={22} />
+                  Create An Collection
                 </h2>
               </div>
               <h3 className="my-2 font-normal text-dark2">
-                Mint additional NFTs to grow your collection.
+                Deploy an ERC-1155 contract to create your NFT collection
               </h3>
               <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
-              {/* <div
-                className="flex flex-col items-center w-full"
-                ref={uploadRef}
-              >
-                <div
-                  className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-dark2 rounded-2xl`}
-                  ref={itemRef}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleLeave}
-                  onDrop={handleDrop}
-                >
-                  {selectedFile ? (
-                    <div>
-                      {fileType?.startsWith("image/") && (
-                        <Image
-                          src={selectedFile}
-                          alt="pictureframe"
-                          width={504}
-                          height={160}
-                          sizes="100vw"
-                          quality={100}
-                          className="object-cover max-w-[504px] max-h-[590px] rounded-2xl"
-                        />
-                      )}
-                      {fileType?.startsWith("audio/") && (
-                        <div className="flex flex-col items-center">
-                          <Image
-                            src="/images/audio.svg"
-                            alt="audioImage"
-                            width={360}
-                            height={360}
-                            className="object-cover mt-6 mb-4 w-[540px] h-[360px] rounded-[2rem] mx-auto"
-                          />
-                          <audio
-                            autoPlay
-                            loop
-                            muted
-                            controls
-                            src={selectedFile}
-                          >
-                            Your browser does not support the
-                            <code>audio</code> element.
-                          </audio>
-                        </div>
-                      )}
-                      {fileType?.startsWith("video/") && (
-                        <video
-                          src={selectedFile}
-                          autoPlay
-                          loop
-                          muted
-                          controls
-                          width={504}
-                          height={288}
-                          className="rounded-2xl"
-                        />
-                      )}
-                      {fileType === "application/pdf" && (
-                        <embed
-                          src={selectedFile}
-                          width={504}
-                          height={500}
-                          type="application/pdf"
-                        />
-                      )}
-                      <input
-                        ref={inputRef}
-                        type="file"
-                        hidden
-                        onChange={handleChangeFile}
-                        accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, text/html, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf, application/zip"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      onClick={handleClickFile}
-                      className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center"
-                    >
-                      <PictureMint
-                        width={160}
-                        height={160}
-                        className="mx-auto transition-all duration-200 group-hover:fill-dark2"
-                      />
-                      <p className="font-semibold text-dark1">Upload</p>
-                      <input
-                        ref={inputRef}
-                        type="file"
-                        accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf"
-                        hidden
-                        onChange={handleChangeFile}
-                      />
-                      <div className="text-sm w-[254px] text-dark3 mb-6 transition-all duration-200 group-hover:text-dark2">
-                        <span>
-                          Video, audio, gif, pdf, and images supported.
-                        </span>{" "}
-                        <span className="text-dark2">Max size: 1GB.</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                {selectedFile && (
-                  <Button
-                    onClick={handleClickFile}
-                    className="mt-6 w-[160px] h-[34px]"
-                    primary
-                  >
-                    Edit file
-                  </Button>
-                )}
-              </div> */}
+              <UploadFile setFileIPFS={setFileIPFS} />
             </div>
           </div>
-          <div className="w-full lg:w-2/4 md:w-2/4"></div>
+          <div className="w-full lg:w-2/4 md:w-2/4">
+            <h4 className="text-xl font-semibold lg:text-2xl title">
+              You’ll need to deploy a contract
+            </h4>
+            <h3 className="mt-2 font-normal text-dark2">
+              You’ll need to deploy an ERC-721 or an ERC-1155 contract onto the
+              Blockchain before you can create a Collection
+            </h3>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+              enableReinitialize
+            >
+              {({
+                values,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                dirty,
+                setFieldValue,
+              }) => (
+                <Form className="mx-auto max-w-[600px]">
+                  <div className="flex flex-col">
+                    <label htmlFor="contractName" className={styles.title}>
+                      Contract Name
+                      <p className="text-red">*</p>
+                    </label>
+                    <Field
+                      type="text"
+                      id="contractName"
+                      name="contractName"
+                      value={values.contractName}
+                      onChange={handleChange}
+                      placeholder="Input contract name"
+                      className={styles.inputItem}
+                    />
+                    <ErrorMessage
+                      name="contractName"
+                      component="div"
+                      className="mt-2 text-xs text-red"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="symbol" className={styles.title}>
+                      Symbol
+                      <p className="text-red">*</p>
+                    </label>
+                    <Field
+                      as="textarea"
+                      type="text"
+                      id="symbol"
+                      name="symbol"
+                      value={values.symbol}
+                      placeholder="Symbol"
+                      className={styles.inputItem}
+                    />
+                    <ErrorMessage
+                      name="symbol"
+                      component="div"
+                      className="mt-2 text-xs text-red"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="name" className={styles.title}>
+                      Chain
+                      <p className="text-red">*</p>
+                    </label>
+                    <Field
+                      as="select"
+                      name="color"
+                      className={styles.inputItem}
+                    >
+                      <option value="Monad" className={styles.inputItem}>
+                        {/* <MonadIcon
+                          width={20}
+                          height={20}
+                          className="fill-dark1"
+                        /> */}
+                        <p>Monad</p>
+                      </option>
+                    </Field>
+                  </div>
+                  <label htmlFor="name" className={styles.title}>
+                    Initialization
+                  </label>
+                  <Button
+                    type="submit"
+                    primary={dirty && !isSubmitting}
+                    active={!dirty || isSubmitting}
+                    disabled={!dirty || isSubmitting}
+                    className="px-6 py-2"
+                    isLoadingBtn={isSubmitting}
+                  >
+                    Create
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </div>
         </div>
       </WithAuth>
     </>
