@@ -30,8 +30,8 @@ const LeaderBoard = () => {
       <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-10 mb-[100px] text-center">
         {chainId == "168587773" ? (
           <div>
-            <h1 className="text-3xl font-medium leading-normal lg:text-5xl bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent whitespace-nowrap">
-              Blast Big Bang Season
+            <h1 className="text-3xl font-medium leading-[normal] lg:text-5xl bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent whitespace-nowrap">
+              Monad Devnet Season
             </h1>
             {/* <h2 className="flex flex-wrap items-center justify-center mt-3 text-base italic font-normal lg:text-xl gap-x-2">
               <span className="text-dark1">Sharing</span>
@@ -42,7 +42,7 @@ const LeaderBoard = () => {
           </div>
         ) : (
           <div>
-            <h1 className="text-4xl leading-normal font-semibold bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent">
+            <h1 className="text-4xl leading-[normal] font-semibold bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent">
               Season 1
             </h1>
             <div className="flex justify-center mt-10">
