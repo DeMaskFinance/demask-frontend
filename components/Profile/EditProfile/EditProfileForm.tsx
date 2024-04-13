@@ -18,8 +18,6 @@ import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24",
-  inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3 dark:bg-darkBG2 dark:border-darkBG2",
   btnActive: "rounded-full bg-base2",
 };
 const validationSchema = yup.object().shape({
@@ -175,7 +173,7 @@ export default function EditProfileForm() {
                 value={values.name}
                 onChange={handleChange}
                 placeholder="Enter your name"
-                className={styles.inputItem}
+                className="input_item"
               />
               <ErrorMessage
                 name="name"
@@ -184,11 +182,15 @@ export default function EditProfileForm() {
               />
             </div>
 
-            <div className="flex flex-col overflow-hidden">
+            <div className="flex flex-col overflow-hidden ">
               <label htmlFor="userName" className={styles.title}>
                 Username
               </label>
-              <div className={`${styles.inputItem} flex`}>
+              <div
+                className={
+                  "w-full py-2 pl-2 mb-4 flex bg-dark5 rounded-lg transition-all duration-200 dark:bg-darkBG2"
+                }
+              >
                 <p className="mr-1">@</p>
                 {profile?.userName}
               </div>
@@ -204,7 +206,7 @@ export default function EditProfileForm() {
                 name="about"
                 value={values.about}
                 placeholder="Tell about yourself"
-                className={styles.inputItem}
+                className="input_item"
               />
               <ErrorMessage
                 name="about"
@@ -226,7 +228,7 @@ export default function EditProfileForm() {
                     id={item.name}
                     name={item.name}
                     placeholder={item.placeHolder}
-                    className={styles.inputItem}
+                    className="input_item"
                   />
                 </div>
                 <ErrorMessage

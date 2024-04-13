@@ -3,12 +3,19 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import WithAuth from "../Common/WithAuth";
 import { SEO } from "@/next-seo.config";
-import { BackIcon, CreateIcon, DeployIcon, MonadIcon } from "../Icons";
+import {
+  BackIcon,
+  BlastIcon,
+  CreateIcon,
+  DeployIcon,
+  MonadIcon,
+} from "../Icons";
 import UploadFile from "./UploadFile";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
+import { FaAngleDown } from "react-icons/fa";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -26,9 +33,24 @@ const validationSchema = yup.object().shape({
 const DeployCollection = () => {
   const router = useRouter();
   const [fileIPFS, setFileIPFS] = useState<any>(null);
+  const [isOpenChain, setIsOpenChain] = useState<boolean>(false);
+  const chainList = [
+    {
+      name: "Monad",
+      icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
+    },
+    {
+      name: "Blast",
+      icon: <BlastIcon className="fill-dark2 " width={20} height={20} />,
+    },
+  ];
   const initialValues = {
     contractName: "",
     symbol: "",
+    chain: {
+      name: "Monad",
+      icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
+    },
   };
   const onSubmit = async (values: any) => {
     // Handle form submission
@@ -95,9 +117,18 @@ const DeployCollection = () => {
                       id="contractName"
                       name="contractName"
                       value={values.contractName}
-                      onChange={handleChange}
                       placeholder="Input contract name"
-                      className={styles.inputItem}
+                      className="input_item"
+                      onChange={(e: any) => {
+                        handleChange(e);
+                        const firstLetter = e.target.value.charAt(0);
+                        handleChange({
+                          target: {
+                            name: "symbol",
+                            value: firstLetter.toUpperCase(),
+                          },
+                        });
+                      }}
                     />
                     <ErrorMessage
                       name="contractName"
@@ -117,7 +148,7 @@ const DeployCollection = () => {
                       name="symbol"
                       value={values.symbol}
                       placeholder="Symbol"
-                      className={styles.inputItem}
+                      className="input_item"
                     />
                     <ErrorMessage
                       name="symbol"
@@ -130,20 +161,32 @@ const DeployCollection = () => {
                       Chain
                       <p className="text-red">*</p>
                     </label>
-                    <Field
-                      as="select"
-                      name="color"
-                      className={styles.inputItem}
+                    <div
+                      className="relative flex items-center justify-between pr-3 input_item"
+                      onClick={() => setIsOpenChain(!isOpenChain)}
                     >
-                      <option value="Monad" className={styles.inputItem}>
-                        {/* <MonadIcon
-                          width={20}
-                          height={20}
-                          className="fill-dark1"
-                        /> */}
-                        <p>Monad</p>
-                      </option>
-                    </Field>
+                      <div className="flex items-center gap-x-2">
+                        {values.chain.icon}
+                        <p>{values.chain.name}</p>
+                      </div>
+                      <FaAngleDown className="text-dark2" />
+                      <ul
+                        className={`p-3 rounded-lg absolute w-full left-0 top-12  bg-dark5 transition-all duration-500 max-h-40 overflow-y-scroll ${
+                          isOpenChain ? "opacity-0" : "block opacity-100"
+                        }`}
+                      >
+                        {chainList.map((item, index) => (
+                          <li
+                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4"
+                            onClick={() => setFieldValue("chain", item)}
+                          >
+                            {item.icon}
+                            {item.name}
+                          </li>
+                        ))}
+                        <li></li>
+                      </ul>
+                    </div>
                   </div>
                   <label htmlFor="name" className={styles.title}>
                     Initialization

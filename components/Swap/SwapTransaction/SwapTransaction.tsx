@@ -410,7 +410,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     }
                   }}
                   min="1"
-                  className="text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
+                  className="w-1/2 text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
                   value={inputNFT}
                   onChange={(e) => {
                     setInputNFT(e.target.value);

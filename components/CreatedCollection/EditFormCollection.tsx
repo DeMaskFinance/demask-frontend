@@ -254,7 +254,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 value={values.name}
                 onChange={handleChange}
                 placeholder="Unnamed"
-                className={styles.inputItem}
+                className="input_item"
               />
               <ErrorMessage
                 name="name"
@@ -274,7 +274,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 name="description"
                 value={values.description}
                 placeholder="Add a description"
-                className={styles.inputItem}
+                className="input_item"
               />
               <ErrorMessage
                 name="description"
@@ -297,7 +297,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 value={values.url}
                 placeholder="https://Demask.finance/collection/abcdef"
                 onChange={handleChange}
-                className={styles.inputItem}
+                className="input_item"
               />
               <ErrorMessage
                 name="url"
@@ -422,7 +422,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                       value={values.collaborator}
                       placeholder="0x...123"
                       onChange={handleChange}
-                      className={styles.inputItem}
+                      className="input_item"
                     />
                     <Image
                       src={Icons.deleteIcon}
@@ -461,7 +461,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   value={values.creatorAddress}
                   placeholder="0x...123"
                   onChange={handleChange}
-                  className={styles.inputItem}
+                  className="input_item"
                 />
                 <div className="relative flex basis-16">
                   <Field
@@ -471,9 +471,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     value={values.Percent}
                     placeholder="0"
                     onChange={handleChange}
-                    className={`${styles.inputItem} `}
+                    className="input_item"
                   />
-                  <p className="absolute right-2 top-[50%] -translate-y-[50%]">
+                  <p className="absolute right-2 top-[50%] -translate-y-[80%]">
                     %
                   </p>
                 </div>
@@ -503,7 +503,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     id={item.name}
                     name={item.name}
                     placeholder={item.placeHolder}
-                    className={styles.inputItem}
+                    className="input_item"
                   />
                 </div>
                 <ErrorMessage

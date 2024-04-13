@@ -48,7 +48,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
       <div className="transition-all duration-150 ease-linear group-hover:brightness-50 h-[240px] w-full">
         <MediaNFT data={liquidity} isControls={false} />
       </div>
-      <div className="absolute top-0 left-0 translate-y-[100%] bg-secondary5 rounded-lg group-hover:translate-y-0 flex flex-col items-center justify-around w-full h-full py-4 text-white transition-all duration-150 ease-linear opacity-0 group-hover:opacity-100">
+      <div className="absolute top-0 left-0 translate-y-[100%] rounded-lg group-hover:translate-y-0 flex flex-col items-center justify-around w-full h-full py-4 text-white transition-all duration-150 ease-linear opacity-0 group-hover:opacity-100">
         <p className="font-semibold text-[18px] truncate">
           {liquidity.metadata.name}
         </p>

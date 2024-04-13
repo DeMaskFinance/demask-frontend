@@ -2,7 +2,13 @@ import { version } from "@/libs/constants";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../Buttons";
-import { EmailIcon, TeleIcon, TwitterIcon } from "../Icons";
+import {
+  DiscordIcon,
+  EmailIcon,
+  GithubIcon,
+  TeleIcon,
+  TwitterIcon,
+} from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import useSvgComponents from "../Picture/Picture";
 import { useTheme } from "next-themes";
@@ -131,10 +137,25 @@ export default function Footer() {
       </div>
       <div>
         <Link href="https://demask.finance/" target="_blank">
-          <LogoDeMask width={245} height={56} className="fill-white" />
+          <LogoDeMask
+            width={245}
+            height={56}
+            className="fill-purple dark:fill-white"
+          />
         </Link>
         <p className="text-xs font-semibold text-dark3">{version}</p>
         <div className="flex items-center mt-2 gap-x-4">
+          <a
+            href="https://twitter.com/DemaskFinance"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <TwitterIcon
+              width={20}
+              height={20}
+              className="cursor-pointer fill-dark3"
+            />
+          </a>
           <a
             href="https://t.me/DemaskFinance"
             target="_blank"
@@ -146,14 +167,26 @@ export default function Footer() {
               className="cursor-pointer fill-dark3"
             />
           </a>
+
           <a
-            href="https://twitter.com/DemaskFinance"
+            href="https://discord.com/invite/demaskfinance"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <TwitterIcon
-              width={20}
-              height={20}
+            <DiscordIcon
+              width={24}
+              height={24}
+              className="cursor-pointer fill-dark3"
+            />
+          </a>
+          <a
+            href="https://github.com/DeMaskFinance"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GithubIcon
+              width={24}
+              height={24}
               className="cursor-pointer fill-dark3"
             />
           </a>
