@@ -2,6 +2,7 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiDML from "@/abi/abiDML.json";
+import abiCollection from "@/abi/abiCreateCollection.json";
 const erc = async (wallet: string, address: string, abi: any) => {
   const providerChoice = await getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -76,11 +77,29 @@ const viewReward = async (
     }
   }
 };
+const fillCreate = async (
+  name: string,
+  symbol: string,
+  collection: string,
+  account: string,
+  wallet: string
+) => {
+  if (account && wallet) {
+    const contract = await ercContract.erc(wallet, collection, abiCollection);
+    try {
+      const result = await contract.fillCreate(name, symbol);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 const ercContract = {
   erc,
   approveNFT,
   getTotalSupply,
   getInforDML,
-  viewReward
+  viewReward,
+  fillCreate,
 };
 export default ercContract;

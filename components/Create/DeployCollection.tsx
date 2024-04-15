@@ -1,6 +1,6 @@
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import WithAuth from "../Common/WithAuth";
 import { SEO } from "@/next-seo.config";
 import {
@@ -16,6 +16,9 @@ import { Button } from "../Buttons";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
 import { FaAngleDown } from "react-icons/fa";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import AccountContext from "@/context/AccountContext";
+import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -33,6 +36,23 @@ const validationSchema = yup.object().shape({
 const DeployCollection = () => {
   const router = useRouter();
   const [fileIPFS, setFileIPFS] = useState<any>(null);
+  const { account, wallet, demask } = useContext(AccountContext);
+  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+  const [isProcess, setIsProcess] = useState<boolean>(false);
+  const [hash, setHash] = useState<string>("");
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (divRef.current && !divRef.current.contains(event.target as Node)) {
+        setIsOpenChain(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   const [isOpenChain, setIsOpenChain] = useState<boolean>(false);
   const chainList = [
     {
@@ -54,9 +74,27 @@ const DeployCollection = () => {
   };
   const onSubmit = async (values: any) => {
     // Handle form submission
+    console.log(values, fileIPFS);
+    setIsProcess(true);
+    const res = await ercContract.fillCreate(
+      values.contractName,
+      values.symbol,
+      demask.CREATE_COLLECTION,
+      account,
+      wallet
+    );
+    setHash(res.hash);
+    const check = await res.wait();
+    setIsProcess(false);
+    if (check.status === 1) {
+      setIsOpenSuccess(true);
+    } else {
+      setIsOpenSuccess(false);
+    }
     try {
     } catch (error) {
       console.error(error);
+      setIsProcess(false);
     }
   };
   return (
@@ -133,7 +171,7 @@ const DeployCollection = () => {
                     <ErrorMessage
                       name="contractName"
                       component="div"
-                      className="mt-2 text-xs text-red"
+                      className="text-xs text-red"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -153,7 +191,7 @@ const DeployCollection = () => {
                     <ErrorMessage
                       name="symbol"
                       component="div"
-                      className="mt-2 text-xs text-red"
+                      className="text-xs text-red"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -162,6 +200,7 @@ const DeployCollection = () => {
                       <p className="text-red">*</p>
                     </label>
                     <div
+                      ref={divRef}
                       className="relative flex items-center justify-between pr-3 input_item"
                       onClick={() => setIsOpenChain(!isOpenChain)}
                     >
@@ -169,15 +208,19 @@ const DeployCollection = () => {
                         {values.chain.icon}
                         <p>{values.chain.name}</p>
                       </div>
-                      <FaAngleDown className="text-dark2" />
+                      <FaAngleDown
+                        className={`text-dark2 transition-all duration-150 ${
+                          isOpenChain ? "rotate-180" : "rotate-0"
+                        }`}
+                      />
                       <ul
-                        className={`p-3 rounded-lg absolute w-full left-0 top-12  bg-dark5 transition-all duration-500 max-h-40 overflow-y-scroll ${
-                          isOpenChain ? "opacity-0" : "block opacity-100"
+                        className={`p-3 rounded-lg absolute w-full left-0 top-12  bg-dark5 transition-all duration-500 max-h-40 overflow-y-scroll area_input ${
+                          isOpenChain ? "block opacity-100" : "hidden opacity-0"
                         }`}
                       >
                         {chainList.map((item, index) => (
                           <li
-                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4"
+                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
                             onClick={() => setFieldValue("chain", item)}
                           >
                             {item.icon}
@@ -193,9 +236,9 @@ const DeployCollection = () => {
                   </label>
                   <Button
                     type="submit"
-                    primary={dirty && !isSubmitting}
-                    active={!dirty || isSubmitting}
-                    disabled={!dirty || isSubmitting}
+                    primary={!isSubmitting && fileIPFS}
+                    active={isSubmitting || !fileIPFS}
+                    disabled={isSubmitting || !fileIPFS}
                     className="px-6 py-2"
                     isLoadingBtn={isSubmitting}
                   >
@@ -207,6 +250,21 @@ const DeployCollection = () => {
           </div>
         </div>
       </WithAuth>
+      <ModalTransation
+        isOpenTransation={isProcess}
+        setIsOpenTransaction={setIsProcess}
+        isTransaction={true}
+      />
+      {isOpenSuccess && (
+        <ModalSuccess
+          isOpenSuccess={isOpenSuccess}
+          type=""
+          setIsOpenSuccess={setIsOpenSuccess}
+          transactionHash={hash}
+          isMint
+          metadataLink={fileIPFS}
+        />
+      )}
     </>
   );
 };

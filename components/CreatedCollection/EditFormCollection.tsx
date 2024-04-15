@@ -260,7 +260,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <ErrorMessage
                 name="name"
                 component="div"
-                className="mt-2 text-xs text-red"
+                className="text-xs text-red"
               />
             </div>
             <div className="flex flex-col">
@@ -280,7 +280,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <ErrorMessage
                 name="description"
                 component="div"
-                className="mt-2 text-xs text-red"
+                className="text-xs text-red"
               />
             </div>
             <div className="flex flex-col">
@@ -303,7 +303,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <ErrorMessage
                 name="url"
                 component="div"
-                className="mt-2 text-xs text-red"
+                className="text-xs text-red"
               />
             </div>
             <div>
@@ -431,7 +431,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   <ErrorMessage
                     name="collaborator"
                     component="div"
-                    className="mt-2 text-xs text-red"
+                    className="text-xs text-red"
                   />
                 </div>
               ) : (
@@ -478,12 +478,12 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <ErrorMessage
                 name="creatorAddress"
                 component="div"
-                className="mt-2 text-xs text-red"
+                className="text-xs text-red"
               />
               <ErrorMessage
                 name="Percent"
                 component="div"
-                className="mt-2 text-xs text-red"
+                className="text-xs text-red"
               />
             </div>
             <label className={styles.title}>Social link</label>
@@ -506,7 +506,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 <ErrorMessage
                   name={item.name}
                   component="div"
-                  className="mt-2 text-xs text-red"
+                  className="text-xs text-red"
                 />
               </div>
             ))}

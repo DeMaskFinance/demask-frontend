@@ -96,7 +96,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ setFileIPFS }) => {
         onDrop={handleDrop}
       >
         {selectedFile ? (
-          <div>
+          <div className="w-full">
             {fileType?.startsWith("image/") && (
               <Image
                 src={selectedFile}
@@ -105,7 +105,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ setFileIPFS }) => {
                 height={160}
                 sizes="100vw"
                 quality={100}
-                className="object-cover max-w-[504px] max-h-[590px] rounded-2xl"
+                className="object-cover w-full h-full rounded-2xl aspect-square"
               />
             )}
             {fileType?.startsWith("audio/") && (

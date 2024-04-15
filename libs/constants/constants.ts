@@ -1,14 +1,8 @@
 import {
-  MaticIcon,
-  USDCIcon,
-  USDTIcon,
-  PolygonIcon,
-  BscIcon,
-  EtherIcon,
-  ZkSyncIcon,
-  GoerliIcon,
   BlastIcon,
+  EtherIcon,
   MonadIcon,
+  ZkSyncIcon,
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -62,29 +56,10 @@ const BLAST_DEMASK = {
   WETH: process.env.NEXT_PUBLIC_WETH_BLAST,
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
-  USDT: process.env.NEXT_PUBLIC_USDT_BLAST,
-  USDC: process.env.NEXT_PUBLIC_USDC_BLAST,
+  CREATE_COLLECTION: process.env.NEXT_PUBLIC_CREATE_COLLECTION_BLAST,
   urltxHash: "https://testnet.blastscan.io/",
   chainName: "Blast Testnet",
   NAME: "Blast Testnet",
-  CURRENCY: "ETH",
-};
-const Zksync_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_Zksync,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_Zksync,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_Zksync,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_Zksync,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_Zksync,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_Zksync,
-  WETH: process.env.NEXT_PUBLIC_WETH_Zksync,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_Zksync,
-  USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
-  USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
-  ROYALTY: process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Zksync,
-  urltxHash: "https://goerli.explorer.zksync.io/",
-  chainName: "zkSync Testnet",
-  NAME: "zkSync Testnet",
   CURRENCY: "ETH",
 };
 const Goerli_DEMASK = {
@@ -185,16 +160,15 @@ const Category = [
   },
 ];
 export {
+  activeNFTPercent,
   amountNFT,
+  BLAST_DEMASK,
+  Category,
+  Goerli_DEMASK,
   mediaType,
   network,
-  BLAST_DEMASK,
-  Zksync_DEMASK,
-  Goerli_DEMASK,
-  tokenzkSync,
-  tokenGoerli,
   tokenBlast,
-  Category,
+  tokenGoerli,
+  tokenzkSync,
   version,
-  activeNFTPercent,
 };

@@ -332,7 +332,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           </div>
         </div>
         <div className="flex flex-col justify-center my-6">
-          <div className="w-40 mx-auto ">
+          <div className="w-40 h-40 mx-auto">
             <MediaNFT data={data} isControls={true} />
           </div>
           <p

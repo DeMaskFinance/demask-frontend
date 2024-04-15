@@ -8,17 +8,14 @@ interface MediaNFTProps {
   isControls: boolean;
   hover?: boolean;
   hideAudio?: boolean;
+  zoom?: boolean;
 }
-const SkeletonImg = () => {
-  return (
-    <div className="w-full h-full animate-pulse bg-slate-200 dark:bg-slate-700"></div>
-  );
-};
 const MediaNFT: React.FC<MediaNFTProps> = ({
   data,
   isControls,
   hover,
   hideAudio,
+  zoom,
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
   return (
@@ -26,14 +23,16 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
       {data?.metadata && (
         <div className="relative h-[inherit] w-full">
           {data.metadata?.image && (
-            <Fragment>
+            <div className="w-full h-full overflow-hidden rounded-lg">
               <img
                 src={formatLinkIPFS(data.metadata.image)}
                 alt="test"
                 width={680}
                 height={576}
                 sizes="(max-width: 770px) 100vw"
-                className={`w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover `}
+                className={`w-full rounded-lg h-full transition-transform duration-150 overflow-hidden lg:max-h-[calc(100vh-326px)] object-cover ${
+                  zoom ? "group-hover:scale-[1.05]" : ""
+                }`}
                 // blurDataURL="/Placeholder.png"
                 onError={(event: any) => {
                   event.target.srcset =
@@ -50,7 +49,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                   loading ? "block" : "hidden"
                 }`}
               ></div>
-            </Fragment>
+            </div>
           )}
           {!data.metadata?.image && data.metadata?.animation_url && (
             <video

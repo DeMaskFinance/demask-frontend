@@ -338,7 +338,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               </div>
             </div>
           </div>
-          <div ref={chartContainerRef} id="chart" className="w-full h-[80%]" />
+          <div ref={chartContainerRef} id="chart" className="w-full h-[78%]" />
           <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               {optionTime.map((item, index) => (

@@ -94,14 +94,14 @@ const Created = () => {
                       <Link
                         href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                       >
-                        <div className="items-center p-3 transition-all border rounded-md cursor-pointer hover:-translate-y-1 hover:shadow-home dark:border-dark1 dark:bg-darkBG2 ">
-                          <div className="h-[127px]">
+                        <div className="items-center p-3 border rounded-md cursor-pointer group hover:shadow-home dark:border-dark1 dark:bg-darkBG2 ">
+                          <div className="h-[127px] overflow-hidden rounded-lg">
                             {item.avatar ? (
                               <img
                                 src={item.avatar}
                                 width={620}
                                 height={620}
-                                className="object-cover w-full h-full rounded-lg"
+                                className="object-cover w-full h-full transition-all duration-150 rounded-lg group-hover:scale-[1.05]"
                                 alt="1"
                               />
                             ) : (

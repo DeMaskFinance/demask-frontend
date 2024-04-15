@@ -178,7 +178,7 @@ export default function EditProfileForm() {
               <ErrorMessage
                 name="name"
                 component="div"
-                className="mt-2 text-xs text-red"
+                className="text-xs text-red"
               />
             </div>
 
@@ -234,7 +234,7 @@ export default function EditProfileForm() {
                 <ErrorMessage
                   name={item.name}
                   component="div"
-                  className="mt-2 text-xs text-red"
+                  className="text-xs text-red"
                 />
               </div>
             ))}

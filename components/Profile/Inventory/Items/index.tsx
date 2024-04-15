@@ -60,7 +60,7 @@ export const ItemList: React.FC<ItemListProps> = ({
             <Fragment key={pageIndex}>
               {page?.data?.map((item: any, index: number) => (
                 <div key={index} className="relative overflow-hidden">
-                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer dark:border-dark1 dark:bg-darkBG2 group lg:text-base hover:shadow-home">
+                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group dark:border-dark1 dark:bg-darkBG2 lg:text-base hover:shadow-home">
                     <div className="relative h-[240px] overflow-hidden">
                       <div
                         onClick={() => {
@@ -70,7 +70,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                         }}
                         className="w-full h-full"
                       >
-                        <MediaNFT data={item} isControls={false} hover />
+                        <MediaNFT data={item} isControls={false} hover zoom />
                       </div>
                       <div className="absolute flex z-10 justify-between w-full opacity-0 group-hover:opacity-100 px-2 bottom-[-20%] transition-all duration-150 gap-x-2 group-hover:bottom-2">
                         <Link
