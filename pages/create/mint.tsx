@@ -24,6 +24,7 @@ import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
 import { useRouter } from "next/router";
 import UploadFile from "@/components/Create/UploadFile";
+import { CgClose } from "react-icons/cg";
 const styles = {
   title: "block mb-4 text-base font-semibold text-black24 dark:text-dark4",
   btnActive: "rounded-lg bg-secondary5",
@@ -354,12 +355,12 @@ export default function Creator() {
                       className={"input_item"}
                       onChange={(e) => handleChangeAttributeValue(e, item.id)}
                     />
-                    <Image
-                      src={Icons.deleteIcon}
-                      alt="Delete property"
-                      className="mb-[14px] ml-2 cursor-pointer"
-                      onClick={() => handleRemoveAttribute(item.id)}
-                    />
+                    <div className="my-auto">
+                      <CgClose
+                        className="mb-4 text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
+                        onClick={() => handleRemoveAttribute(item.id)}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

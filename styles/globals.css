@@ -60,6 +60,9 @@
   .item_search {
     @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2 dark:hover:bg-dark0 dark:text-white;
   }
+  .item_menu {
+    @apply flex area_input_hover items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-medium;
+  }
   .content_modal {
     @apply flex justify-between text-lg font-semibold text-dark2 dark:text-white;
   }

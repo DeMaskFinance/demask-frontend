@@ -2,7 +2,6 @@ import Button from "@/components/Buttons/Button";
 import MediaNFT from "@/components/Common/MediaNFT";
 import {
   BackIcon,
-  DownIcon,
   NFTIcon,
   RefetchIcon,
   SettingIcon,
@@ -40,6 +39,7 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import { activeNFTPercent } from "@/libs/constants";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import Link from "next/link";
+import { FaAngleDown } from "react-icons/fa";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24 dark:text-white",
 };
@@ -301,10 +301,10 @@ export default function AddLiquidity() {
                 <span className="text-red">*</span>
               </p>
               <div
-                className="w-full p-2 mb-4 border rounded-lg border-secondary5"
+                className="w-full p-2 mb-4 border rounded-lg border-secondary5 "
                 onClick={handleSearchNFT}
               >
-                <div className="flex justify-between cursor-pointer text-dark3">
+                <div className="flex items-center justify-between cursor-pointer text-dark3 group">
                   <div className="flex gap-x-2 text-secondary5">
                     <NFTIcon
                       width={24}
@@ -313,7 +313,7 @@ export default function AddLiquidity() {
                     />
                     <p>{data?.metadata?.name}</p>
                   </div>
-                  <DownIcon width={24} height={24} />
+                  <FaAngleDown className=" text-dark2" />
                 </div>
               </div>
             </div>
@@ -326,7 +326,7 @@ export default function AddLiquidity() {
                 className="w-full p-2 mb-4 border rounded-lg border-secondary5"
                 onClick={handleSearchToken}
               >
-                <div className="flex justify-between cursor-pointer text-dark3">
+                <div className="flex items-center justify-between cursor-pointer text-dark3">
                   <div className="flex gap-x-2 text-secondary5">
                     {tokenSymbolIcon ? (
                       <div>
@@ -348,7 +348,7 @@ export default function AddLiquidity() {
                     )}
                     {data?.tokenSymbol}
                   </div>
-                  <DownIcon width={24} height={24} />
+                  <FaAngleDown className="transition-all duration-150 text-dark2 group-hover:rotate-180" />
                 </div>
               </div>
             </div>

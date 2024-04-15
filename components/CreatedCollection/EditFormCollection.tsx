@@ -18,6 +18,7 @@ import {
 import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
 import { toast } from "react-toastify";
+import { CgClose } from "react-icons/cg";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
@@ -402,10 +403,8 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     <p>{`${item.slice(0, 6)}...${item.slice(-8)}`}</p>
                     {index === 0 && <p className="text-sm">Owner</p>}
                     {index !== 0 && account === values?.collaborators[0] && (
-                      <Image
-                        src={Icons.deleteIcon}
-                        alt="Delete property"
-                        className="ml-2 cursor-pointer"
+                      <CgClose
+                        className="text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
                         onClick={() => removeCollab(item)}
                       />
                     )}
@@ -424,10 +423,8 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                       onChange={handleChange}
                       className="input_item"
                     />
-                    <Image
-                      src={Icons.deleteIcon}
-                      alt="Delete property"
-                      className="ml-2 cursor-pointer"
+                    <CgClose
+                      className="mb-4 text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
                       onClick={() => setCheckCollaborator(false)}
                     />
                   </div>
@@ -514,12 +511,14 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               </div>
             ))}
             <div className="flex justify-center mx-auto my-6 gap-x-6">
-              <Link
-                href={`/profile?chain=${chainId}`}
-                className="px-6 py-2 text-sm font-medium text-white rounded-lg bg-dark3"
-              >
-                Cancel
-              </Link>
+              <Button active>
+                <Link
+                  href={`/profile?chain=${chainId}`}
+                  className="px-2 text-sm font-medium text-white rounded-lg"
+                >
+                  Cancel
+                </Link>
+              </Button>
               <Button
                 type="submit"
                 primary={dirty && !isSubmitting}

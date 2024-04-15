@@ -55,7 +55,7 @@ const Button: FunctionComponent<ButtonProps> = ({
           : ""
       }
       ${secondary ? "bg-white text-dark3" : ""}
-      ${outline ? " border border-dark3 " : ""}
+      ${outline ? " border border-dark3 dark:border-dark1 dark:text-white" : ""}
       ${className}
       `}
     >

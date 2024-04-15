@@ -35,10 +35,10 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
               key={index}
             >
               <div
-                className={`border text-xs w-fit ml-3 ${
+                className={`border text-xs ml-3 text-center bg-opacity-10 w-16 ${
                   item.action === "Add"
-                    ? "border-green text-green"
-                    : "border-red text-red"
+                    ? "border-green text-green bg-green"
+                    : "border-red text-red bg-red"
                 } p-1 rounded-lg`}
               >
                 {item.action}

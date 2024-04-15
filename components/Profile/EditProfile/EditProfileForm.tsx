@@ -217,8 +217,8 @@ export default function EditProfileForm() {
             <label className={styles.title}>Social link</label>
             {socialList.map((item, index) => (
               <div key={index}>
-                <div className="flex mt-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2 dark:bg-dark1 dark:text-white">
+                <div className="flex gap-x-4">
+                  <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2 dark:bg-dark1 dark:text-white h-fit">
                     {item.icon}
                     {item.title}
                   </div>
@@ -240,12 +240,14 @@ export default function EditProfileForm() {
             ))}
 
             <div className="flex justify-center mx-auto my-6 gap-x-6">
-              <Link
-                href={`/profile?chain=${chainId}`}
-                className="px-6 py-2 text-sm font-medium text-white rounded-lg bg-dark3"
-              >
-                Cancel
-              </Link>
+              <Button active>
+                <Link
+                  href={`/profile?chain=${chainId}`}
+                  className="px-2 text-sm font-medium text-white rounded-lg"
+                >
+                  Cancel
+                </Link>
+              </Button>
               <Button
                 type="submit"
                 primary={dirty}

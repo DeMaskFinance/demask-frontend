@@ -12,7 +12,9 @@ import {
 import { LogoDeMask } from "../Logo/Logo";
 import useSvgComponents from "../Picture/Picture";
 import { useTheme } from "next-themes";
-
+const styles = {
+  icon: "cursor-pointer fill-dark3 hover:fill-dark1 dark:fill-dark3 dark:hover:fill-dark5",
+};
 export default function Footer() {
   const svgComponents = useSvgComponents();
   const { theme, setTheme, systemTheme } = useTheme();
@@ -28,7 +30,6 @@ export default function Footer() {
     }
     theme === "dark" ? setTheme("light") : setTheme("dark");
   };
-  console.log(theme);
 
   return (
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-white border-dark5 border-t">
@@ -68,7 +69,7 @@ export default function Footer() {
                 rel="noreferrer noopener"
                 target="_blank"
               >
-                Pitchdesk
+                Pitch Desk
               </a>
             </li>
           </ul>
@@ -150,22 +151,14 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <TwitterIcon
-              width={20}
-              height={20}
-              className="cursor-pointer fill-dark3"
-            />
+            <TwitterIcon width={20} height={20} className={styles.icon} />
           </a>
           <a
             href="https://t.me/DemaskFinance"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <TeleIcon
-              width={24}
-              height={24}
-              className="cursor-pointer fill-dark3"
-            />
+            <TeleIcon width={24} height={24} className={styles.icon} />
           </a>
 
           <a
@@ -173,22 +166,14 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <DiscordIcon
-              width={24}
-              height={24}
-              className="cursor-pointer fill-dark3"
-            />
+            <DiscordIcon width={24} height={24} className={styles.icon} />
           </a>
           <a
             href="https://github.com/DeMaskFinance"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GithubIcon
-              width={24}
-              height={24}
-              className="cursor-pointer fill-dark3"
-            />
+            <GithubIcon width={24} height={24} className={styles.icon} />
           </a>
         </div>
       </div>

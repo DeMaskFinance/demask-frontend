@@ -25,15 +25,15 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
             data?.data?.map((item: any, idx: number) => (
               <tr
                 key={idx}
-                className="flex px-2 text-xs  hover:cursor-pointer text-dark2 group hover:bg-slate-100"
+                className="flex px-2 text-xs hover:cursor-pointer text-dark2 group hover:bg-slate-100"
               >
                 <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
                   <div className="flex items-center justify-end text-green">
                     <span
-                      className={`border text-xs ${
+                      className={`border text-xs bg-opacity-10 w-16 text-center ${
                         item.action === "Buy" || item.action === "Add"
-                          ? "border-green text-green"
-                          : "border-red text-red"
+                          ? "border-green text-green bg-green "
+                          : "border-red text-red bg-red"
                       } p-1 rounded-lg`}
                     >
                       {item.action}

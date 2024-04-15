@@ -1,6 +1,7 @@
 import { DownIcon, FilterIcon, SearchIcon } from "@/components/Icons";
 import Tippy from "@tippyjs/react/headless";
 import React from "react";
+import { FaAngleDown } from "react-icons/fa";
 import "tippy.js/dist/tippy.css";
 const styles = {
   itemSub:
@@ -54,14 +55,14 @@ const Classify: React.FC<ClassifyProps> = ({
           placement="bottom"
           render={(attrs) => (
             <div
-              className="w-full p-2 bg-white shadow-home area_input"
+              className="w-full p-2 bg-white rounded-lg shadow-home area_input"
               tabIndex={-1}
               {...attrs}
             >
               {ERCType.map((item) => (
                 <li
-                  className={`${styles.itemSub} gap-x-1 ${
-                    item.type === typeERC && "bg-dark5"
+                  className={`item_menu w-[182px] my-1 gap-x-1 ${
+                    item.type === typeERC && "bg-dark5 area_darkBG1"
                   }`}
                   onClick={() => setTypeERC(item.type)}
                 >
@@ -82,11 +83,7 @@ const Classify: React.FC<ClassifyProps> = ({
                   : "ERC - 1155"
               }`}
             </p>
-            <DownIcon
-              width={24}
-              height={24}
-              className="cursor-pointer group-hover:fill-secondary5"
-            />
+            <FaAngleDown className="transition-all duration-150 text-dark2 group-hover:rotate-180" />
           </div>
         </Tippy>
         <div className="relative flex-grow">
@@ -117,8 +114,8 @@ const Classify: React.FC<ClassifyProps> = ({
             >
               {subMenuCateData.map((cateItem) => (
                 <li
-                  className={`${styles.itemSub} ${
-                    cateItem.name === category && "bg-dark5"
+                  className={`item_menu w-[184px] my-1 ${
+                    cateItem.name === category && "bg-dark5 area_darkBG1"
                   }`}
                   onClick={() => setCategory(cateItem.type)}
                 >
