@@ -95,7 +95,7 @@ export default function SwapDefault() {
             alt="demask"
             width={32}
             height={32}
-            src="/logoIcon.png"
+            src="/logoIcon.svg"
             className="object-cover rounded-lg"
           />
         </div>
@@ -136,7 +136,7 @@ export default function SwapDefault() {
                 alt="demask"
                 width={240}
                 height={240}
-                src="/logoIcon.png"
+                src="/logoDefault.svg"
                 className="object-cover"
               />
             </div>
