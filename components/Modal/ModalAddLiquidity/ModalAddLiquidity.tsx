@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
-import { ModalError, ModalSuccess, ModalTransation } from "../ModalTransation";
+import { ModalError, ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";

@@ -8,12 +8,18 @@ import React, {
 } from "react";
 import { Button } from "../Buttons";
 import { PictureMint } from "../Icons";
-import { uploadFileIPFS } from "@/libs/service/IPFSService";
 interface UploadFileProps {
   setFileIPFS: any;
+  fileType?: string | null;
+  setFileType?: any;
+  uploadFile?: any;
 }
-const UploadFile: React.FC<UploadFileProps> = ({ setFileIPFS }) => {
-  const [fileType, setFileType] = useState<string | null>("");
+const UploadFile: React.FC<UploadFileProps> = ({
+  setFileIPFS,
+  setFileType,
+  fileType,
+  uploadFile,
+}) => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const uploadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -64,7 +70,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ setFileIPFS }) => {
           const fileURL = URL.createObjectURL(file);
           setFileType(fileType);
           setSelectedFile(fileURL);
-          setFileIPFS(await uploadFileIPFS(file));
+          setFileIPFS(await uploadFile(file));
         } else {
           alert("Please choose a file smaller than 1GB");
         }

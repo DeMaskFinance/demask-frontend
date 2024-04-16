@@ -249,13 +249,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       <div className="container_modal">
         <div className=" h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
           <p className="title_modal">Confirm Buy</p>
-          <p
-            onClick={() => {
-              queryClient.refetchQueries(["collectionNFTBUY"]);
-            }}
-          >
-            TEST
-          </p>
           <div className="content_modal">
             <FormatNumber
               number={divideByDecimal(

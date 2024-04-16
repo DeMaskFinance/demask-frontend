@@ -263,8 +263,8 @@ export const MagicIcon: React.FunctionComponent<IconProps> = ({
           y2="4.11616"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_200_44506"
@@ -274,8 +274,8 @@ export const MagicIcon: React.FunctionComponent<IconProps> = ({
           y2="15.503"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_200_44506"
@@ -285,8 +285,8 @@ export const MagicIcon: React.FunctionComponent<IconProps> = ({
           y2="9.32525"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_200_44506"
@@ -296,8 +296,8 @@ export const MagicIcon: React.FunctionComponent<IconProps> = ({
           y2="2.8102"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_200_44506"
@@ -307,8 +307,8 @@ export const MagicIcon: React.FunctionComponent<IconProps> = ({
           y2="8.39119"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
       </defs>
     </svg>
@@ -351,8 +351,8 @@ export const DeployIcon: React.FunctionComponent<IconProps> = ({
           y2="43.4199"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_207_46169"
@@ -362,8 +362,8 @@ export const DeployIcon: React.FunctionComponent<IconProps> = ({
           y2="90.366"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_207_46169"
@@ -373,8 +373,8 @@ export const DeployIcon: React.FunctionComponent<IconProps> = ({
           y2="107.279"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
       </defs>
     </svg>
@@ -399,8 +399,8 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
         fill="url(#paint0_linear_200_44524)"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M67.0219 8.78514C63.6616 8.33335 59.389 8.33342 54.0883 8.3335H45.911C40.6103 8.33342 36.3377 8.33335 32.9774 8.78514C29.4886 9.2542 26.5511 10.2577 24.2181 12.5907C21.8851 14.9237 20.8816 17.8612 20.4126 21.35C19.9608 24.7103 19.9609 28.9829 19.9609 34.2836V65.7167C19.9609 71.0175 19.9608 75.29 20.4126 78.6504C20.8816 82.1392 21.8851 85.0767 24.2181 87.4097C26.5511 89.7427 29.4886 90.7461 32.9774 91.2152C36.3377 91.667 40.6103 91.6669 45.911 91.6668H54.0883C59.389 91.6669 63.6616 91.667 67.0219 91.2152C70.5107 90.7461 73.4482 89.7427 75.7812 87.4097C78.1142 85.0767 79.1176 82.1392 79.5867 78.6504C80.0385 75.29 80.0384 71.0175 80.0383 65.7167V34.2836C80.0384 28.9829 80.0385 24.7103 79.5867 21.35C79.1176 17.8612 78.1142 14.9237 75.7812 12.5907C73.4482 10.2577 70.5107 9.2542 67.0219 8.78514ZM70.0352 69.2927L74.1438 73.6286C74.2223 71.3917 74.2244 68.731 74.2244 65.504V34.4963C74.2244 28.9327 74.2182 25.0524 73.8246 22.1247C73.4422 19.2806 72.7428 17.7745 71.6701 16.7018C70.5974 15.629 69.0913 14.9296 66.2472 14.5472C63.3195 14.1536 59.4392 14.1475 53.8756 14.1475H46.1237C40.5601 14.1475 36.6798 14.1536 33.7521 14.5472C30.908 14.9296 29.4019 15.629 28.3292 16.7018C27.2565 17.7745 26.5571 19.2806 26.1747 22.1247C25.7811 25.0524 25.7749 28.9327 25.7749 34.4963V53.767L25.7886 53.7529C29.6087 49.8335 35.5187 50.1021 39.0526 54.2459L51.3039 68.6117C52.2852 69.7624 53.5761 69.8147 54.5666 68.9985L55.4182 68.2966C59.9012 64.6023 66.0484 65.0853 70.0352 69.2927Z"
         fill="url(#paint1_linear_200_44524)"
       />
@@ -423,8 +423,8 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
           y2="15.3058"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_200_44524"
@@ -434,8 +434,8 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
           y2="15.3058"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_200_44524"
@@ -445,8 +445,8 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
           y2="36.1963"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_200_44524"
@@ -456,8 +456,8 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
           y2="36.1963"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
       </defs>
     </svg>

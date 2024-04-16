@@ -1,4 +1,4 @@
-import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import images from "@/public/images";
 import Image from "next/image";
 import React, { Fragment, Suspense, useEffect, useState } from "react";

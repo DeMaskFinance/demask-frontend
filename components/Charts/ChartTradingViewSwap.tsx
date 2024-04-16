@@ -1,6 +1,6 @@
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { formatPercent } from "@/libs/utils/formatToUnit";
+import { formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
 import { createChart } from "lightweight-charts";
 import { useContext, useEffect, useRef, useState } from "react";

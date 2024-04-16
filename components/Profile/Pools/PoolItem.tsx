@@ -2,7 +2,7 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
-import { formatToUnit } from "@/libs/utils/formatToUnit";
+import { formatToUnit } from "@/libs/utils/formatComon";
 import Link from "next/link";
 import { useContext } from "react";
 

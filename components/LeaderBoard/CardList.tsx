@@ -3,7 +3,7 @@ import React from "react";
 import { EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import { AvatarUser } from "../Avatars";
-import { formatToUnit } from "@/libs/utils/formatToUnit";
+import { formatToUnit } from "@/libs/utils/formatComon";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">

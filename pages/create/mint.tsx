@@ -1,38 +1,46 @@
 import Button from "@/components/Buttons/Button";
-import Icons from "@/public/icons/icon";
-import Image from "next/image";
-import React, {
-  ChangeEvent,
-  DragEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import WithAuth from "@/components/Common/WithAuth";
 import MintNFT from "@/components/Create/MintNFT";
+import UploadFile from "@/components/Create/UploadFile";
 import {
   BackIcon,
+  BlastIcon,
   CreateIcon,
   InforIcon,
-  PictureMint,
+  MonadIcon,
 } from "@/components/Icons";
 import { Category } from "@/libs/constants";
-import { uploadFileIPFS } from "@/libs/service/IPFSService";
 import Tippy from "@tippyjs/react";
 import { NextSeo } from "next-seo";
-import { SEO } from "../../next-seo.config";
 import { useRouter } from "next/router";
-import UploadFile from "@/components/Create/UploadFile";
 import { CgClose } from "react-icons/cg";
+import { SEO } from "../../next-seo.config";
+import { FaAngleDown } from "react-icons/fa";
+import Link from "next/link";
+import AccountContext from "@/context/AccountContext";
+import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
+
 const styles = {
-  title: "block mb-4 text-base font-semibold text-black24 dark:text-dark4",
+  title: "block my-4 text-base font-semibold text-black24 dark:text-dark4",
   btnActive: "rounded-lg bg-secondary5",
 };
 const updateMeta = {
   ...SEO,
   title: "Mint NFTs",
 };
+const collectionList = [
+  {
+    name: "DEMASK COLLECTION",
+    icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
+    address: "0x58d8d129a641a60976d5a4d81fa3c8f1f3f44ded",
+  },
+  {
+    name: "TEST COLLECTION",
+    icon: <BlastIcon className="fill-dark2 " width={20} height={20} />,
+    address: "123",
+  },
+];
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState<string>("");
@@ -46,12 +54,29 @@ export default function Creator() {
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
   ]);
+  const { chainId } = useContext(AccountContext);
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
-  const [validFee, setValidFee] = useState<boolean>(false);
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const divRef = useRef<HTMLDivElement>(null);
+  const [isOpenCollection, setIsOpenCollection] = useState<boolean>(false);
+  const [collection, setCollection] = useState<{
+    icon: JSX.Element;
+    name: String;
+  }>(collectionList[0]);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (divRef.current && !divRef.current.contains(event.target as Node)) {
+        setIsOpenCollection(false);
+      }
+    };
 
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   const handleChangeAttributeType = (
     e: ChangeEvent<HTMLInputElement>,
     id: number
@@ -124,19 +149,7 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
-  const handleChangeRoyalFee = (e: any) => {
-    const inputValue = e.target.value;
-    const isValidInput = /^[0-9]*[.,]?[0-9]*$/.test(inputValue);
-    if (!isValidInput) {
-      return;
-    }
-    setRoyaltiesFee(inputValue);
-    if (e.target.value < 0 || e.target.value > 100) {
-      setValidFee(true);
-    } else {
-      setValidFee(false);
-    }
-  };
+  console.log(fileIPFS);
 
   return (
     <>
@@ -159,11 +172,71 @@ export default function Creator() {
                 Mint additional NFTs to grow your collection.
               </h3>
               <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
-              <UploadFile setFileIPFS={setFileIPFS} />
+              <UploadFile
+                setFileIPFS={setFileIPFS}
+                fileType={fileType}
+                setFileType={setFileType}
+                uploadFile={uploadFileIPFSMint}
+              />
             </div>
           </div>
           <div className="w-full lg:w-2/4 md:w-2/4">
             <form id="creator">
+              <div>
+                <label htmlFor="collection" className={styles.title}>
+                  <span className="">Collection</span>
+                  <span className="text-red">*</span>
+                </label>
+                <div
+                  ref={divRef}
+                  className="relative flex items-center justify-between pr-3 cursor-pointer input_item"
+                  onClick={() => setIsOpenCollection(!isOpenCollection)}
+                >
+                  <div className="flex items-center gap-x-2">
+                    {collection.icon}
+                    <p className="font-semibold text-dark2">
+                      {collection.name}
+                    </p>
+                  </div>
+                  <FaAngleDown
+                    className={`text-dark2 transition-all duration-150 ${
+                      isOpenCollection ? "rotate-180" : "rotate-0"
+                    }`}
+                  />
+                  <ul
+                    className={`p-3 rounded-lg absolute w-full left-0 top-12 z-10 border bg-dark5 transition-all duration-500 max-h-60 overflow-y-scroll area_input ${
+                      isOpenCollection
+                        ? "block opacity-100"
+                        : "hidden opacity-0"
+                    }`}
+                  >
+                    <li>
+                      <Link
+                        href={`/create/deploy-contract?chain=${chainId}`}
+                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                      >
+                        <p className="font-semibold">+ Create Collection</p>
+                      </Link>
+                    </li>
+                    {collectionList.map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                        onClick={() => setCollection(item)}
+                      >
+                        {item.icon}
+                        <div>
+                          <p className="font-semibold text-dark2">
+                            {item.name}
+                          </p>
+                          <p className="text-sm text-dark2">{item.address}</p>
+                        </div>
+                      </li>
+                    ))}
+                    <li></li>
+                  </ul>
+                </div>
+              </div>
               <div>
                 <label htmlFor="name" className={styles.title}>
                   <span className="">Name</span>
@@ -218,7 +291,6 @@ export default function Creator() {
                   <span>Total Supply</span>
                   <span className="text-red">*</span>
                 </label>
-
                 <input
                   placeholder="10,000"
                   type="number"
@@ -247,38 +319,6 @@ export default function Creator() {
                     Required
                   </p>
                 )}
-                <label htmlFor="royaltiesFee" className={styles.title}>
-                  <span>Royalties Fee</span>
-                  <span className="text-red">*</span>
-                </label>
-                <input
-                  placeholder="100"
-                  pattern="^[0-9]*[.,]?[0-9]*$"
-                  type="text"
-                  id="royaltiesFee"
-                  autoComplete="off"
-                  spellCheck="false"
-                  minLength={1}
-                  maxLength={79}
-                  inputMode="decimal"
-                  value={royaltiesFee || ""}
-                  className={
-                    emptyInputs.includes("royaltiesFee")
-                      ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
-                      : "input_item"
-                  }
-                  onChange={(e) => handleChangeRoyalFee(e)}
-                />
-                {emptyInputs.includes("royaltiesFee") && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
-                    Required
-                  </p>
-                )}
-                {validFee && (
-                  <p className="mb-2 -mt-1 text-xs text-red" key="initial">
-                    Royalty fee must be less than or equal to 100%
-                  </p>
-                )}
               </div>
               <div>
                 <p className={styles.title}>Category</p>
@@ -288,7 +328,7 @@ export default function Creator() {
                       type="button"
                       active={selectedCategory.includes(item.value)}
                       outline
-                      className="px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2"
+                      className="px-3 py-1 mr-4 text-sm h-[34px] text-dark2"
                       key={item.id}
                       onClick={() => selectCategory(item.value)}
                     >
@@ -317,7 +357,7 @@ export default function Creator() {
               <div>
                 <label
                   htmlFor="traits"
-                  className="flex items-center mb-1 text-base font-semibold gap-x-1 text-black24"
+                  className={`${styles.title} flex gap-x-1 items-center`}
                 >
                   <span>Traits</span>
                   <Tippy
@@ -357,7 +397,7 @@ export default function Creator() {
                     />
                     <div className="my-auto">
                       <CgClose
-                        className="mb-4 text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
+                        className="text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
                         onClick={() => handleRemoveAttribute(item.id)}
                       />
                     </div>
@@ -369,7 +409,7 @@ export default function Creator() {
               )}
               <Button
                 type="button"
-                className="h-[37px] w-[150px] text-sm mb-4 text-secondary2 font-semibold border-secondary2 border-2 transition-all duration-300 ease-linear hover:bg-secondary2 hover:text-white"
+                className="h-[37px] w-[150px] text-sm my-4 text-secondary2 font-semibold border-secondary2 border-2 transition-all duration-300 ease-linear hover:bg-secondary2 hover:text-white"
                 onClick={handleAddAttribute}
                 disabled={!isValidBtn}
               >
@@ -396,7 +436,6 @@ export default function Creator() {
                 fileType={fileType}
                 totalSupply={totalSupply}
                 royaltiesFee={royaltiesFee}
-                validFee={validFee}
               />
             </form>
           </div>

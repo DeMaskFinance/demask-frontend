@@ -7,7 +7,8 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
-import { formatLinkIPFS } from "@/libs/utils/formatToUnit";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import Image from "next/image";
 
 interface ModalSuccessProps {
   isOpenSuccess: boolean;
@@ -24,13 +25,68 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
   setIsOpenSuccess,
   type,
   transactionHash,
+}) => {
+  const { demask, chainId } = useContext(AccountContext);
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    document.body.style.overflowY = "auto";
+    setIsOpenSuccess(false);
+  };
+  return (
+    <Wrapper isOpen={isOpenSuccess} onClick={handleClose} isTransaction>
+      <div className="container_modal">
+        <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
+          <div>
+            <h2 className="title_modal">{type}</h2>
+            <div className="flex flex-col items-center">
+              <SuccessIcon width={120} height={120} />
+              <p className="mt-6 mb-2 font-semibold text-green">
+                Transaction Submitted
+              </p>
+              <a
+                href={`${demask.urltxHash}tx/${transactionHash}`}
+                target="_blank"
+                className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+              >
+                <p>View on {demask.chainName}</p>
+                <p>
+                  <URLTransactionIcon
+                    width={16}
+                    height={16}
+                    className="group-hover:fill-secondary5"
+                  />
+                </p>
+              </a>
+              <Button primary className="p-2 mt-6" onClick={handleClose}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+        <button
+          className="absolute top-0 right-0 p-2 text-lg"
+          onClick={handleClose}
+        >
+          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+        </button>
+      </div>
+    </Wrapper>
+  );
+};
+const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
+  isOpenSuccess,
+  setIsOpenSuccess,
+  transactionHash,
   isMint,
   metadataLink,
 }) => {
-  const { demask, chainId, wallet } = useContext(AccountContext);
+  const { demask, chainId } = useContext(AccountContext);
   const [metadataRes, setMetadataRes] = useState<any>();
   const [isLoadingMeta, setIsLoadingMeta] = useState(false);
   const metadataIPFS = formatLinkIPFS(metadataLink!);
+  console.log(metadataIPFS);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoadingMeta(true);
@@ -66,63 +122,49 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
                   <MediaNFT data={metadataRes} isControls hideAudio={true} />
                 </div>
               ) : null}
-              <p className="font-semibold text-green">
-                Your collection has been created
-              </p>
-              <a
-                href={`${demask.urltxHash}tx/${transactionHash}`}
-                target="_blank"
-                className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
-              >
-                <p>View on {demask.chainName}</p>
-                <p>
-                  <URLTransactionIcon
-                    width={16}
-                    height={16}
-                    className="group-hover:fill-secondary5"
-                  />
-                </p>
-              </a>
-              <div className="flex items-center mt-6 gap-x-4">
-                <Link href={`/profile?tab=items&chain=${chainId}`}>
-                  <Button className="px-6 py-2 font-semibold " active>
-                    View collection
-                  </Button>
-                </Link>
-                <Button primary className="px-6 py-2 " onClick={handleClose}>
-                  Create an NFT
-                </Button>
-              </div>
             </div>
           ) : (
-            <div>
-              <h2 className="title_modal">{type}</h2>
-              <div className="flex flex-col items-center">
-                <SuccessIcon width={120} height={120} />
-                <p className="mt-6 mb-2 font-semibold text-green">
-                  Transaction Submitted
-                </p>
-                <a
-                  href={`${demask.urltxHash}tx/${transactionHash}`}
-                  target="_blank"
-                  className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
-                >
-                  <p>View on {demask.chainName}</p>
-                  <p>
-                    <URLTransactionIcon
-                      width={16}
-                      height={16}
-                      className="group-hover:fill-secondary5"
-                    />
-                  </p>
-                </a>
-                <Button primary className="p-2 mt-6" onClick={handleClose}>
-                  Close
-                </Button>
-              </div>
+            <div className="w-40 h-40 mx-auto mt-10 mb-6">
+              <Image
+                src={metadataIPFS}
+                width={160}
+                height={160}
+                alt="Img-Collection"
+                className="object-cover w-full h-full rounded-lg"
+              />
             </div>
           )}
+          <div className="flex flex-col items-center justify-center">
+            <p className="font-semibold text-center text-green">
+              Your collection has been created
+            </p>
+            <a
+              href={`${demask.urltxHash}tx/${transactionHash}`}
+              target="_blank"
+              className="flex items-center text-xs text-center cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+            >
+              <p>View on {demask.chainName}</p>
+              <p>
+                <URLTransactionIcon
+                  width={16}
+                  height={16}
+                  className="group-hover:fill-secondary5"
+                />
+              </p>
+            </a>
+          </div>
+          <div className="flex items-center justify-center mt-6 gap-x-4">
+            <Link href={`/profile?tab=items&chain=${chainId}`}>
+              <Button className="px-6 py-2 font-semibold " active>
+                View collection
+              </Button>
+            </Link>
+            <Button primary className="px-6 py-2 " onClick={handleClose}>
+              Create an NFT
+            </Button>
+          </div>
         </div>
+
         <button
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
@@ -133,5 +175,4 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
     </Wrapper>
   );
 };
-
-export default ModalSuccess;
+export { ModalSuccess, ModalSuccessCreate };

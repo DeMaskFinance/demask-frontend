@@ -229,14 +229,14 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       onClick={() => hanldeChoiceNFT(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                           idNFT.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""
                         }`}
                       >
-                        <div className="relative h-[78px] lg:h-[100px]">
-                          <MediaNFT data={item} isControls={false} hover />
+                        <div className="relative h-[78px] lg:h-[100px] group">
+                          <MediaNFT data={item} isControls={false} hover zoom />
                         </div>
                         <div className="w-full">
                           <div className="flex w-full mt-2">

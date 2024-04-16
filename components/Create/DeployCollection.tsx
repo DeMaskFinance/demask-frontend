@@ -13,12 +13,14 @@ import {
 import UploadFile from "./UploadFile";
 import * as yup from "yup";
 import { Button } from "../Buttons";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import Image from "next/image";
 import { FaAngleDown } from "react-icons/fa";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import AccountContext from "@/context/AccountContext";
-import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
+import { ModalTransation } from "../Modal/ModalTransation";
+import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
+import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -36,6 +38,7 @@ const validationSchema = yup.object().shape({
 const DeployCollection = () => {
   const router = useRouter();
   const [fileIPFS, setFileIPFS] = useState<any>(null);
+  const [fileType, setFileType] = useState<string | null>("");
   const { account, wallet, demask } = useContext(AccountContext);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
@@ -72,13 +75,16 @@ const DeployCollection = () => {
       icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
     },
   };
-  const onSubmit = async (values: any) => {
+  console.log(fileIPFS, demask.CREATE_COLLECTION);
+
+  const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
     // Handle form submission
     console.log(values, fileIPFS);
     setIsProcess(true);
     const res = await ercContract.fillCreate(
       values.contractName,
       values.symbol,
+      fileIPFS.nonce,
       demask.CREATE_COLLECTION,
       account,
       wallet
@@ -91,10 +97,13 @@ const DeployCollection = () => {
     } else {
       setIsOpenSuccess(false);
     }
+    resetForm();
+    // setFileIPFS(null);
     try {
     } catch (error) {
       console.error(error);
       setIsProcess(false);
+      resetForm();
     }
   };
   return (
@@ -118,7 +127,12 @@ const DeployCollection = () => {
                 Deploy an ERC-1155 contract to create your NFT collection
               </h3>
               <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
-              <UploadFile setFileIPFS={setFileIPFS} />
+              <UploadFile
+                setFileIPFS={setFileIPFS}
+                setFileType={setFileType}
+                fileType={fileType}
+                uploadFile={uploadFileIPFSCollection}
+              />
             </div>
           </div>
           <div className="w-full lg:w-2/4 md:w-2/4">
@@ -138,8 +152,6 @@ const DeployCollection = () => {
               {({
                 values,
                 handleChange,
-                handleBlur,
-                handleSubmit,
                 isSubmitting,
                 dirty,
                 setFieldValue,
@@ -256,13 +268,13 @@ const DeployCollection = () => {
         isTransaction={true}
       />
       {isOpenSuccess && (
-        <ModalSuccess
+        <ModalSuccessCreate
           isOpenSuccess={isOpenSuccess}
           type=""
           setIsOpenSuccess={setIsOpenSuccess}
           transactionHash={hash}
-          isMint
-          metadataLink={fileIPFS}
+          isMint={false}
+          metadataLink={fileIPFS.url}
         />
       )}
     </>

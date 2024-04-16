@@ -255,7 +255,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                       onClick={() => hanldeChoiceNFT(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                           idNFT.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""

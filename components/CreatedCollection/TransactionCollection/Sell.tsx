@@ -6,9 +6,9 @@ import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import {
   ModalError,
-  ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
@@ -22,7 +22,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -195,14 +194,14 @@ const Sell = () => {
                     onClick={() => hanldeChoiceNFT(item)}
                   >
                     <div
-                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                         idNFT.includes(Number(item.nftID))
                           ? "border-secondary5"
                           : ""
                       }`}
                     >
-                      <div className="relative h-[78px] lg:h-[100px]">
-                        <MediaNFT data={item} isControls={false} hover />
+                      <div className="relative h-[78px] lg:h-[100px] group">
+                        <MediaNFT data={item} isControls={false} hover zoom />
                       </div>
                       <div className="w-full">
                         <div className="flex w-full mt-2">
@@ -232,7 +231,7 @@ const Sell = () => {
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4">
+              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-white">
                 <li className="flex items-center">
                   Send:
                   <FormatNumber

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import Link, { LinkProps } from "next/link";
 import React, { ReactNode } from "react";
-import type { Route } from "next";
 
 const styles = {
   active: "text-secondary5",
@@ -15,7 +14,8 @@ const ActiveLink = ({ href, children, ...props }: Props) => {
   const router = useRouter();
 
   let className = children.props.className || "";
-  if (router.asPath.includes(href)) {
+
+  if (router.asPath.includes(href.split("?")[0])) {
     className = `${className} ${styles.active}`;
   }
 

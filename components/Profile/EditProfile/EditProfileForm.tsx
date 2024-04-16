@@ -188,7 +188,7 @@ export default function EditProfileForm() {
               </label>
               <div
                 className={
-                  "w-full py-2 pl-2 mb-4 flex bg-dark5 rounded-lg transition-all duration-200 dark:bg-darkBG2"
+                  "w-full py-2 pl-2 flex bg-dark5 rounded-lg transition-all duration-200 dark:bg-darkBG2"
                 }
               >
                 <p className="mr-1">@</p>
@@ -217,7 +217,7 @@ export default function EditProfileForm() {
             <label className={styles.title}>Social link</label>
             {socialList.map((item, index) => (
               <div key={index}>
-                <div className="flex gap-x-4">
+                <div className="flex mb-4 gap-x-4">
                   <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2 dark:bg-dark1 dark:text-white h-fit">
                     {item.icon}
                     {item.title}

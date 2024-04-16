@@ -1,5 +1,4 @@
-import { uploadFileIPFS, uploadMetadataIPFS } from "../service/IPFSService";
-import { uploadFileToIPFS } from "./uploadFileIPFS";
+import { uploadFileIPFSMint, uploadMetadataIPFS } from "../service/IPFSService";
 
 interface MetadataProps {
   attributeItems: object[];
@@ -23,8 +22,8 @@ const getMetadataUrl = async ({
     ({ trait_type, value }: any) => ({ trait_type, value })
   );
   const attributesMetadata = simplifiedAttributes.filter((attribute) => {
-      return attribute.trait_type !== "" || attribute.value !== "";
-    });
+    return attribute.trait_type !== "" || attribute.value !== "";
+  });
   const initialMetadata = {
     name: name,
     symbol: symbol,
@@ -41,7 +40,7 @@ const getMetadataUrl = async ({
     const response = await fetch(imagePath);
     const blob = await response.blob();
     const file = new File([blob], "audio.svg", { type: "image/svg" });
-    const audioImage = await uploadFileIPFS(file);
+    const audioImage = await uploadFileIPFSMint(file);
     initialMetadata.image = audioImage || "";
     initialMetadata.animation_url = await fileIPFS;
   } else {

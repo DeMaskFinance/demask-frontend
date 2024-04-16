@@ -1,4 +1,7 @@
-import { default as abiCreator, default as abiDemask } from "@/abi/abiCreator.json";
+import {
+  default as abiCreator,
+  default as abiDemask,
+} from "@/abi/abiCreator.json";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { getProvider } from "@/libs/connection/getProvider";
@@ -10,10 +13,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../Buttons/Button";
-import { ModalSuccess, ModalTransation } from "../Modal/ModalTransation";
+import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalWallet } from "../Modal/ModalWallet";
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 interface mintProps {
   amount: number;
   data: string;
@@ -42,26 +46,36 @@ export default function MintNFT({
   fileType,
   totalSupply,
   royaltiesFee,
-  validFee
+  validFee,
 }: any) {
-
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [idNFT, setIdNFT] = useState<number>(0);
-  const [hash, setHash] = useState<string>('');
-  const [metadataIPFS, setMetadataIPFS] = useState<string>('');
-  const { account, updateAccount, wallet, demask, chainId, updateChainId } = useContext(AccountContext);
-  const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+  const [hash, setHash] = useState<string>("");
+  const [metadataIPFS, setMetadataIPFS] = useState<string>("");
+  const { account, updateAccount, wallet, demask, chainId, updateChainId } =
+    useContext(AccountContext);
+  const [tab, setTab] = useQueryParam(
+    "chain",
+    withDefault(StringParam, chainId)
+  );
   const contractAddress = demask.CREATOR; // Creator
   useEffect(() => {
-    if (name || symbol || description || fileIPFS || totalSupply || royaltiesFee) {
-      setCheckExit(true)
+    if (
+      name ||
+      symbol ||
+      description ||
+      fileIPFS ||
+      totalSupply ||
+      royaltiesFee
+    ) {
+      setCheckExit(true);
     } else {
-      setCheckExit(false)
+      setCheckExit(false);
     }
-  }, [name, symbol, description, fileIPFS, totalSupply, royaltiesFee])
+  }, [name, symbol, description, fileIPFS, totalSupply, royaltiesFee]);
 
   usePreventUserFromErasingContent(checkExit);
   async function mintNFT({ amount, data, url, feeRoyal }: mintProps) {
@@ -73,7 +87,11 @@ export default function MintNFT({
     }
 
     try {
-      const contract = await ercContract.erc(wallet, contractAddress, abiDemask);
+      const contract = await ercContract.erc(
+        wallet,
+        contractAddress,
+        abiDemask
+      );
       const checkExists = async (id: number): Promise<boolean> => {
         const isExisting = await contract.exists(id);
         return isExisting;
@@ -81,7 +99,14 @@ export default function MintNFT({
       const generateRandomNumber = (): number => {
         return Math.floor(Math.random() * 10000000000);
       };
-      const networkSwitched = await changeNetwork(chainId, wallet, demask, setIsOpen, updateChainId, setTab);
+      const networkSwitched = await changeNetwork(
+        chainId,
+        wallet,
+        demask,
+        setIsOpen,
+        updateChainId,
+        setTab
+      );
       if (!networkSwitched) {
         return;
       }
@@ -93,14 +118,21 @@ export default function MintNFT({
           checkAndMint();
         } else {
           setIdNFT(randomID);
-          const tx = await contract.mint(account, randomID, exponentialToDecimal(amount), exponentialToDecimal(feeRoyal * 100), data, url);
+          const tx = await contract.mint(
+            account,
+            randomID,
+            exponentialToDecimal(amount),
+            exponentialToDecimal(feeRoyal * 100),
+            data,
+            url
+          );
           transactionHash = tx.hash;
           setHash(transactionHash);
           const check = await tx.wait();
           if (check.status === 1) {
             setIsOpenSuccess(true);
           } else {
-            setIsOpenSuccess(false)
+            setIsOpenSuccess(false);
           }
 
           setTotalSupply(null);
@@ -111,7 +143,7 @@ export default function MintNFT({
           setSelectedCategory([]);
           setSelectedFile(null);
           setFileIPFS(null);
-          setRoyaltiesFee(null)
+          setRoyaltiesFee(null);
         }
       };
       await checkAndMint();
@@ -121,7 +153,9 @@ export default function MintNFT({
     setIsProcess(false);
   }
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (account) {
       setIsProcess(true);
@@ -136,7 +170,11 @@ export default function MintNFT({
       if (totalSupply === 0 || totalSupply === undefined) {
         emptyInputFields.push("totalSupply");
       }
-      if (royaltiesFee === null || royaltiesFee === 0 || royaltiesFee === undefined) {
+      if (
+        royaltiesFee === null ||
+        royaltiesFee === 0 ||
+        royaltiesFee === undefined
+      ) {
         emptyInputFields.push("royaltiesFee");
       }
       if (fileIPFS === null) {
@@ -192,12 +230,21 @@ export default function MintNFT({
           </Button>
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-        <ModalTransation isOpenTransation={isProcess} setIsOpenTransaction={setIsProcess} isTransaction={true} />
-        {
-          isOpenSuccess && (
-            <ModalSuccess isOpenSuccess={isOpenSuccess} type="" setIsOpenSuccess={setIsOpenSuccess} transactionHash={hash} isMint metadataLink={metadataIPFS} />
-          )
-        }
+        <ModalTransation
+          isOpenTransation={isProcess}
+          setIsOpenTransaction={setIsProcess}
+          isTransaction={true}
+        />
+        {isOpenSuccess && (
+          <ModalSuccessCreate
+            isOpenSuccess={isOpenSuccess}
+            type=""
+            setIsOpenSuccess={setIsOpenSuccess}
+            transactionHash={hash}
+            isMint
+            metadataLink={metadataIPFS}
+          />
+        )}
       </div>
     </div>
   );

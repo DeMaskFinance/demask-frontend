@@ -80,14 +80,24 @@ const viewReward = async (
 const fillCreate = async (
   name: string,
   symbol: string,
+  id: number,
   collection: string,
   account: string,
   wallet: string
 ) => {
+  console.log({
+    name,
+    symbol,
+    id,
+    collection,
+    account,
+    wallet,
+  });
+
   if (account && wallet) {
     const contract = await ercContract.erc(wallet, collection, abiCollection);
     try {
-      const result = await contract.fillCreate(name, symbol);
+      const result = await contract.fillCreate(id, name, symbol);
       return result;
     } catch (error) {
       console.error(error);

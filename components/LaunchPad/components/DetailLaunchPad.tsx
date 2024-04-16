@@ -9,7 +9,7 @@ import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalCla
 import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
 import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import { ModalError, ModalSuccess } from "@/components/Modal/ModalTransation";
+import { ModalError } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import useInformationToken from "@/hooks/useInformationToken";
@@ -27,6 +27,7 @@ import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
 import TabQuery from "@/components/NavChoice/TabQuery";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");

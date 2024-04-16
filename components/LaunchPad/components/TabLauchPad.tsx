@@ -73,7 +73,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                           <li
                             title={item?.metadata?.name}
                             key={itemIndex}
-                            className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home dark:bg-darkBG1 dark:border-none"
+                            className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:bg-darkBG1 dark:border-none"
                           >
                             <ActiveLaunchItem item={item} query={query} />
                           </li>

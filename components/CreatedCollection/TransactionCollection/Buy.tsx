@@ -6,9 +6,9 @@ import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import {
   ModalError,
-  ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import {
   SkeletonCategory,
@@ -186,14 +186,14 @@ const Buy = () => {
                     onClick={() => hanldeChoiceNFT(item)}
                   >
                     <div
-                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                         idNFT.includes(Number(item.nftID))
                           ? "border-secondary5"
                           : ""
                       }`}
                     >
-                      <div className="relative h-[78px] lg:h-[100px]">
-                        <MediaNFT data={item} isControls={false} hover />
+                      <div className="relative h-[78px] lg:h-[100px] group">
+                        <MediaNFT data={item} isControls={false} hover zoom />
                       </div>
                       <div className="w-full">
                         <div className="flex w-full mt-2">
@@ -229,7 +229,7 @@ const Buy = () => {
                   <FormatNumber
                     number={(amountBuyDec / 1e18).toString()}
                   />{" "}
-                  <EtherIcon width={18} height={18} className="fill-white" />
+                  <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
@@ -239,7 +239,7 @@ const Buy = () => {
                   <FormatNumber
                     number={(amountTokenBuy / 1e18).toString()}
                   />{" "}
-                  <EtherIcon width={18} height={18} className="fill-white" />
+                  <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
               </ul>
             )}

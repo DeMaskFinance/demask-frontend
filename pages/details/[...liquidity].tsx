@@ -9,7 +9,6 @@ import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
   ModalError,
-  ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
@@ -31,6 +30,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SEO } from "../../next-seo.config";
 import TabQuery from "@/components/NavChoice/TabQuery";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",

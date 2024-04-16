@@ -4,9 +4,9 @@ import { LightBulbIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import {
   ModalError,
-  ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import {
   SkeletonCategory,
@@ -264,14 +264,14 @@ const Change = () => {
                       onClick={() => hanldeChoiceNFTInput(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                           idNFTInput.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""
                         }`}
                       >
-                        <div className="relative h-[78px] lg:h-[100px]">
-                          <MediaNFT data={item} isControls={false} hover />
+                        <div className="relative h-[78px] lg:h-[100px] group">
+                          <MediaNFT data={item} isControls={false} hover zoom />
                         </div>
                         <div className="w-full">
                           <div className="flex w-full mt-2">
@@ -333,14 +333,14 @@ const Change = () => {
                       onClick={() => hanldeChoiceNFTOutput(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home ${
+                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base  hover:shadow-home ${
                           idNFTOutput.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""
                         }`}
                       >
-                        <div className="relative h-[78px] lg:h-[100px]">
-                          <MediaNFT data={item} isControls={false} hover />
+                        <div className="relative h-[78px] lg:h-[100px] group">
+                          <MediaNFT data={item} isControls={false} hover zoom />
                         </div>
                         <div className="w-full">
                           <div className="flex w-full mt-2">

@@ -13,7 +13,6 @@ import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import {
   ModalError,
-  ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
@@ -40,6 +39,7 @@ import { activeNFTPercent } from "@/libs/constants";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import Link from "next/link";
 import { FaAngleDown } from "react-icons/fa";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24 dark:text-white",
 };

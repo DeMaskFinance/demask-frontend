@@ -5,19 +5,14 @@ import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
 import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
   ModalError,
-  ModalSuccess,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
-import {
-  collectionListBuy,
-  collectionListSell,
-} from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
