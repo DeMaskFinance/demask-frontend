@@ -2,12 +2,8 @@ import { getProvider } from "@/libs/connection/getProvider";
 import React, { createContext, useEffect, useState } from "react";
 import {
   Goerli_DEMASK,
-  tokenBsc,
-  tokenMatic,
   tokenGoerli,
   tokenBlast,
-  Zksync_DEMASK,
-  tokenzkSync,
   network,
   BLAST_DEMASK
 } from "@/libs/constants";
@@ -37,10 +33,7 @@ export const AccountProvider = ({ children }) => {
     }
   }, [account]);
   useEffect(() => {
-    if (chainId === "280") {
-      setDemask(Zksync_DEMASK);
-      setTokenDefault(tokenzkSync);
-    } else if (chainId === "5") {
+     if (chainId === "5") {
       setDemask(Goerli_DEMASK);
       setTokenDefault(tokenGoerli);
     } else if (chainId === "168587773") {

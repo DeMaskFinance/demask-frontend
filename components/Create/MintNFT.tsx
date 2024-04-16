@@ -1,28 +1,23 @@
 import {
-  default as abiCreator,
-  default as abiDemask,
+  default as abiDemask
 } from "@/abi/abiCreator.json";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
-import { getProvider } from "@/libs/connection/getProvider";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import getMetadataUrl from "@/libs/utils/getMetadata";
-import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Button from "../Buttons/Button";
 import { ModalTransation } from "../Modal/ModalTransation";
-import { ModalWallet } from "../Modal/ModalWallet";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
+import { ModalWallet } from "../Modal/ModalWallet";
 interface mintProps {
   amount: number;
-  data: string;
-  url: any;
-  feeRoyal: number;
+  url: string;
 }
 
 export default function MintNFT({
@@ -33,7 +28,6 @@ export default function MintNFT({
   fileIPFS,
   selectedCategory,
   setEmptyInputs,
-  emptyInputs,
   setName,
   setSelectedCategory,
   setFileIPFS,
@@ -42,63 +36,52 @@ export default function MintNFT({
   setSymbol,
   setSelectedFile,
   setTotalSupply,
-  setRoyaltiesFee,
   fileType,
   totalSupply,
-  royaltiesFee,
-  validFee,
+  contractAddress
 }: any) {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
-  const [idNFT, setIdNFT] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
-  const { account, updateAccount, wallet, demask, chainId, updateChainId } =
+  const { account,  wallet, demask, chainId, updateChainId } =
     useContext(AccountContext);
+    
   const [tab, setTab] = useQueryParam(
     "chain",
     withDefault(StringParam, chainId)
   );
-  const contractAddress = demask.CREATOR; // Creator
   useEffect(() => {
     if (
       name ||
       symbol ||
       description ||
       fileIPFS ||
-      totalSupply ||
-      royaltiesFee
+      totalSupply 
     ) {
       setCheckExit(true);
     } else {
       setCheckExit(false);
     }
-  }, [name, symbol, description, fileIPFS, totalSupply, royaltiesFee]);
+  }, [name, symbol, description, fileIPFS, totalSupply]);
 
   usePreventUserFromErasingContent(checkExit);
-  async function mintNFT({ amount, data, url, feeRoyal }: mintProps) {
+  async function mintNFT({ amount, url }: mintProps) {
     const ethereum = (window as any).ethereum;
     let transactionHash = "";
     if (typeof ethereum === "undefined") {
       console.log("Please install Wallet to mint NFTs.");
       return;
     }
-
     try {
+      setMetadataIPFS(url);
       const contract = await ercContract.erc(
         wallet,
         contractAddress,
         abiDemask
       );
-      const checkExists = async (id: number): Promise<boolean> => {
-        const isExisting = await contract.exists(id);
-        return isExisting;
-      };
-      const generateRandomNumber = (): number => {
-        return Math.floor(Math.random() * 10000000000);
-      };
       const networkSwitched = await changeNetwork(
         chainId,
         wallet,
@@ -110,43 +93,28 @@ export default function MintNFT({
       if (!networkSwitched) {
         return;
       }
-      const checkAndMint = async () => {
-        const randomID = generateRandomNumber();
-        const isExisting = await checkExists(randomID);
-        setMetadataIPFS(url);
-        if (isExisting) {
-          checkAndMint();
-        } else {
-          setIdNFT(randomID);
-          const tx = await contract.mint(
-            account,
-            randomID,
-            exponentialToDecimal(amount),
-            exponentialToDecimal(feeRoyal * 100),
-            data,
-            url
-          );
-          transactionHash = tx.hash;
-          setHash(transactionHash);
-          const check = await tx.wait();
-          if (check.status === 1) {
-            setIsOpenSuccess(true);
-          } else {
-            setIsOpenSuccess(false);
-          }
-
-          setTotalSupply(null);
-          setName("");
-          setDescription("");
-          setSymbol("");
-          setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
-          setSelectedCategory([]);
-          setSelectedFile(null);
-          setFileIPFS(null);
-          setRoyaltiesFee(null);
-        }
-      };
-      await checkAndMint();
+      const tx = await contract.safeMint(
+        account,
+        exponentialToDecimal(amount),
+        url
+      );
+      transactionHash = tx.hash;
+      setHash(transactionHash);
+      const check = await tx.wait();
+      if (check.status === 1) {
+        setIsOpenSuccess(true);
+      } else {
+        setIsOpenSuccess(false);
+      }
+  
+      setTotalSupply(null);
+      setName("");
+      setDescription("");
+      setSymbol("");
+      setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
+      setSelectedCategory([]);
+      setSelectedFile(null);
+      setFileIPFS(null);
     } catch (error) {
       console.error("Failed to mint NFT:", error);
     }
@@ -170,13 +138,6 @@ export default function MintNFT({
       if (totalSupply === 0 || totalSupply === undefined) {
         emptyInputFields.push("totalSupply");
       }
-      if (
-        royaltiesFee === null ||
-        royaltiesFee === 0 ||
-        royaltiesFee === undefined
-      ) {
-        emptyInputFields.push("royaltiesFee");
-      }
       if (fileIPFS === null) {
         emptyInputFields.push("fileIPFS");
         toast.error("File not found.Try again!", {
@@ -192,7 +153,7 @@ export default function MintNFT({
       }
 
       setEmptyInputs(emptyInputFields);
-      if (emptyInputFields.length === 0 && !validFee) {
+      if (emptyInputFields.length === 0 ) {
         const urlMetadata = getMetadataUrl({
           attributeItems,
           fileType,
@@ -204,9 +165,7 @@ export default function MintNFT({
         });
         mintNFT({
           amount: Number(totalSupply),
-          data: "0x",
           url: await urlMetadata,
-          feeRoyal: Number(royaltiesFee),
         });
       } else {
         setIsProcess(false);

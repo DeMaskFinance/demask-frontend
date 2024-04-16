@@ -154,7 +154,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
             </a>
           </div>
           <div className="flex items-center justify-center mt-6 gap-x-4">
-            <Link href={`/profile?tab=items&chain=${chainId}`}>
+            <Link href={`/profile?tab=created&chain=${chainId}`}>
               <Button className="px-6 py-2 font-semibold " active>
                 View collection
               </Button>

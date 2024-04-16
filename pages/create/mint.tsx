@@ -38,7 +38,7 @@ const collectionList = [
   {
     name: "TEST COLLECTION",
     icon: <BlastIcon className="fill-dark2 " width={20} height={20} />,
-    address: "123",
+    address: "0x58d8d129a641a60976d5a4d81fa3c8f1f3f44ded",
   },
 ];
 export default function Creator() {
@@ -56,7 +56,6 @@ export default function Creator() {
   ]);
   const { chainId } = useContext(AccountContext);
   const [totalSupply, setTotalSupply] = useState<number | null>();
-  const [royaltiesFee, setRoyaltiesFee] = useState<number | null>();
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
@@ -64,6 +63,7 @@ export default function Creator() {
   const [collection, setCollection] = useState<{
     icon: JSX.Element;
     name: String;
+    address:String;
   }>(collectionList[0]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -149,7 +149,6 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
-  console.log(fileIPFS);
 
   return (
     <>
@@ -432,10 +431,9 @@ export default function Creator() {
                 setSelectedCategory={setSelectedCategory}
                 setSelectedFile={setSelectedFile}
                 setTotalSupply={setTotalSupply}
-                setRoyaltiesFee={setRoyaltiesFee}
                 fileType={fileType}
                 totalSupply={totalSupply}
-                royaltiesFee={royaltiesFee}
+                contractAddress={collection.address}
               />
             </form>
           </div>

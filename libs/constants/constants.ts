@@ -20,15 +20,6 @@ const tokenGoerli = [
     symbolNative: "ETH",
   },
 ];
-const tokenzkSync = [
-  {
-    name: "zkSync Testnet",
-    symbol: "ETH",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
-    logo: ZkSyncIcon,
-    symbolNative: "WETH",
-  },
-];
 const tokenBlast = [
   {
     name: "Blast Testnet",
@@ -52,7 +43,6 @@ const BLAST_DEMASK = {
   ROUTER: process.env.NEXT_PUBLIC_ROUTER_BLAST,
   ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_BLAST,
   CREATOR: process.env.NEXT_PUBLIC_CREATOR_BLAST,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BLAST,
   WETH: process.env.NEXT_PUBLIC_WETH_BLAST,
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
@@ -70,7 +60,6 @@ const Goerli_DEMASK = {
   ROUTER: process.env.NEXT_PUBLIC_ROUTER_Goerli,
   ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_Goerli,
   CREATOR: process.env.NEXT_PUBLIC_CREATOR_Goerli,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_Goerli,
   WETH: process.env.NEXT_PUBLIC_WETH_Goerli,
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_Goerli,
@@ -169,6 +158,5 @@ export {
   network,
   tokenBlast,
   tokenGoerli,
-  tokenzkSync,
   version,
 };
