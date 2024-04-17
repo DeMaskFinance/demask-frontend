@@ -34,12 +34,12 @@ const collectionList = [
   {
     name: "DEMASK COLLECTION",
     icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
-    address: "0x58d8d129a641a60976d5a4d81fa3c8f1f3f44ded",
+    address: "0x4b8a6996f584240f3f20d6bab16989f5955ae8d2",
   },
   {
     name: "TEST COLLECTION",
     icon: <BlastIcon className="fill-dark2 " width={20} height={20} />,
-    address: "0x58d8d129a641a60976d5a4d81fa3c8f1f3f44ded",
+    address: "0x4b8a6996f584240f3f20d6bab16989f5955ae8d2",
   },
 ];
 export default function Creator() {

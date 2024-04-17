@@ -86,7 +86,6 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   const [metadataRes, setMetadataRes] = useState<any>();
   const [isLoadingMeta, setIsLoadingMeta] = useState(false);
   const metadataIPFS = formatLinkIPFS(metadataLink!);
-  console.log(metadataIPFS);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoadingMeta(true);
@@ -160,7 +159,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
               </Button>
             </Link>
             <Button primary className="px-6 py-2 " onClick={handleClose}>
-              Create an NFT
+              Create an {isMint ? "NFT" : "collection"}
             </Button>
           </div>
         </div>

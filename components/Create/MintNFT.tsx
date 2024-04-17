@@ -1,6 +1,4 @@
-import {
-  default as abiDemask
-} from "@/abi/abiCreator.json";
+import { default as abiDemask } from "@/abi/abiCreator.json";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
@@ -38,7 +36,7 @@ export default function MintNFT({
   setTotalSupply,
   fileType,
   totalSupply,
-  contractAddress
+  contractAddress,
 }: any) {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -46,21 +44,15 @@ export default function MintNFT({
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
-  const { account,  wallet, demask, chainId, updateChainId } =
+  const { account, wallet, demask, chainId, updateChainId } =
     useContext(AccountContext);
-    
+
   const [tab, setTab] = useQueryParam(
     "chain",
     withDefault(StringParam, chainId)
   );
   useEffect(() => {
-    if (
-      name ||
-      symbol ||
-      description ||
-      fileIPFS ||
-      totalSupply 
-    ) {
+    if (name || symbol || description || fileIPFS || totalSupply) {
       setCheckExit(true);
     } else {
       setCheckExit(false);
@@ -93,9 +85,10 @@ export default function MintNFT({
       if (!networkSwitched) {
         return;
       }
-      const tx = await contract.safeMint(
+      const tx = await contract.mint(
         account,
         exponentialToDecimal(amount),
+        "0x",
         url
       );
       transactionHash = tx.hash;
@@ -106,7 +99,7 @@ export default function MintNFT({
       } else {
         setIsOpenSuccess(false);
       }
-  
+
       setTotalSupply(null);
       setName("");
       setDescription("");
@@ -153,7 +146,7 @@ export default function MintNFT({
       }
 
       setEmptyInputs(emptyInputFields);
-      if (emptyInputFields.length === 0 ) {
+      if (emptyInputFields.length === 0) {
         const urlMetadata = getMetadataUrl({
           attributeItems,
           fileType,

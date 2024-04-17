@@ -48,7 +48,7 @@ export default function Footer() {
             </li>
             <li className="transition-all duration-100 hover:text-dark2">
               <a
-                href="https://cryptoviet.info/he-sinh-thai-cryptoviet/demask"
+                href="https://demask.substack.com/"
                 rel="noreferrer noopener"
                 target="_blank"
               >
