@@ -17,7 +17,7 @@ const styles = {
 };
 const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   setIsOpenSearchToken,
-  isOpenSearchToken
+  isOpenSearchToken,
 }) => {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const router = useRouter();
@@ -25,13 +25,14 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   const handleAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setTokenAddress(e.target.value);
   };
-  const { isLoading, data, isFetching, refetch, isPreviousData,isSuccess } = useQuery({
-    queryKey: ["searchToken", chainId, tokenAddress],
-    queryFn: async () => {
-      const res = await searchTokenService(tokenAddress, chainId);
-      return res;
-    },
-  });
+  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
+    useQuery({
+      queryKey: ["searchToken", chainId, tokenAddress],
+      queryFn: async () => {
+        const res = await searchTokenService(tokenAddress, chainId);
+        return res;
+      },
+    });
   const handleChangeRouteToken = () => {
     const { currency } = router.query;
     const { slug } = router.query;
@@ -45,10 +46,9 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
       newURL = currentURL.replace(slug[1], tokenAddress);
       router.push(newURL);
     }
-    setTokenAddress('');
+    setTokenAddress("");
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
-
   };
   const handleChangeRouteDefault = (address: string, symbol: string) => {
     const { currency } = router.query;
@@ -66,7 +66,9 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
   };
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
     setIsOpenSearchToken(false);
@@ -76,13 +78,11 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
     <Wrapper isOpen={isOpenSearchToken} onClick={handleClose}>
       <div className="container_modal">
         <div className=" h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 text-xl font-medium">
-            Select a Token
-          </p>
+          <p className="py-2 mb-4 text-xl font-medium">Select a Token</p>
           <div>
             <div className="relative">
               <input
-                className="input_item"
+                className="mb-4 input_item"
                 placeholder="Search Token Address"
                 value={tokenAddress}
                 onChange={handleAddressToken}

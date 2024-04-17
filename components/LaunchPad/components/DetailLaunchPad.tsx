@@ -28,6 +28,7 @@ import Rule from "./Rule";
 import Timeline from "./Timeline";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { NumericFormat } from "react-number-format";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -35,10 +36,6 @@ export default function DetailLaunchPad() {
   const [isMaxBuy, setIsMaxBuy] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isOpenModalRefund, setIsOpenModalRefund] = useState<boolean>(false);
-  const [status, setStatus] = useQueryParam(
-    "status",
-    withDefault(StringParam, "rule")
-  );
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputNFT, setInpuNFT] = useState<any>(1);
   const [amountLeave, setAmountLeave] = useState(0);
@@ -55,6 +52,7 @@ export default function DetailLaunchPad() {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
   const [errors, setErrors] = useState<string>("");
   const router = useRouter();
+  const [tab] = useQueryParam("tab", withDefault(StringParam, "rule"));
   const { detail } = router.query;
 
   useEffect(() => {
@@ -191,7 +189,7 @@ export default function DetailLaunchPad() {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  const selectedTab = TABS.find((data) => data.key === status);
+  const selectedTab = TABS.find((data) => data.key === tab);
   const blockNumber =
     data?.status === "Upcoming"
       ? data.startTime
@@ -431,11 +429,17 @@ export default function DetailLaunchPad() {
                                     className=" fill-secondary3"
                                   />
                                 </div>
-                                <input
+                                <NumericFormat
+                                  thousandSeparator=","
+                                  decimalScale={0}
                                   onChange={(e) => {
-                                    setAmount(e.target.value);
+                                    let newValue = e.target.value.replace(
+                                      /,/g,
+                                      ""
+                                    );
+                                    setAmount(newValue);
                                     if (
-                                      Number(e.target.value) >
+                                      Number(newValue) >
                                       Number(data.purchaseLimit - data.amount)
                                     ) {
                                       setIsMaxBuy(true);
@@ -443,20 +447,7 @@ export default function DetailLaunchPad() {
                                       setIsMaxBuy(false);
                                     }
                                   }}
-                                  inputMode="numeric"
-                                  onKeyDown={(event) => {
-                                    if (
-                                      !(event.key >= "0" && event.key <= "9") &&
-                                      event.key !== "Backspace" &&
-                                      event.key !== "ArrowLeft" &&
-                                      event.key !== "ArrowRight"
-                                    ) {
-                                      event.preventDefault();
-                                    }
-                                  }}
                                   min="1"
-                                  type="number"
-                                  // disabled={errors !== "" ? true : false}
                                   className="px-2 py-2 mb-2 border rounded-md outline-none"
                                   value={amount}
                                 />

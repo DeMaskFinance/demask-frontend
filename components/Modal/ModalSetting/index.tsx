@@ -7,6 +7,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
+import { NumericFormat } from "react-number-format";
 interface ModalSettingProps {
   isOpenSetting: boolean;
   setIsOpenSetting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -72,7 +73,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 </div>
               </Tippy>
             </div>
-            <div className="flex">
+            <div className="flex items-center">
               {Slippage.map((item, index) => (
                 <Button
                   key={index}
@@ -120,13 +121,14 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 </div>
               </Tippy>
             </div>
-            <input
+            <NumericFormat
               pattern="^[0-9]+$"
               value={time}
-              type="number"
+              thousandSeparator=","
+              decimalScale={0}
               className="w-1/2 p-2 mb-4 text-center border rounded-xl border-dark4"
               onChange={(e) => {
-                const inputValue = Number(e.target.value);
+                const inputValue = Number(e.target.value.replace(/,/g, ""));
                 setTime(inputValue);
                 updateTxDeadline(inputValue);
               }}

@@ -13,21 +13,13 @@ import { LogoDeMask } from "../Logo/Logo";
 import useSvgComponents from "../Picture/Picture";
 import { useTheme } from "next-themes";
 const styles = {
-  icon: "cursor-pointer fill-dark3 hover:fill-dark1 dark:fill-dark3 dark:hover:fill-dark5",
+  icon: "cursor-pointer fill-dark3 hover:fill-dark1 dark:fill-dark1 dark:hover:fill-white",
 };
 export default function Footer() {
   const svgComponents = useSvgComponents();
   const { theme, setTheme, systemTheme } = useTheme();
-  const [activeChoice, setActiveChoice] = useState<string>("Light");
   const currentTheme = theme === "system" ? systemTheme : theme;
-  const handleChoiceChange = (choice: string) => {
-    setActiveChoice(choice);
-    if (
-      (theme === "dark" && choice === "Dark") ||
-      (theme === "light" && choice === "Light")
-    ) {
-      return;
-    }
+  const handleChoiceChange = () => {
     theme === "dark" ? setTheme("light") : setTheme("dark");
   };
 
@@ -107,18 +99,18 @@ export default function Footer() {
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max">
             <div
               className={`p-2 cursor-pointer rounded-lg text-sm flex gap-2 items-center ${
-                activeChoice === "Light" ? "bg-secondary5" : ""
+                theme === "light" ? "bg-secondary5" : ""
               }`}
-              onClick={() => handleChoiceChange("Light")}
+              onClick={() => handleChoiceChange()}
             >
               <svgComponents.buttonLight />
             </div>
 
             <div
               className={`p-2 cursor-pointer rounded-lg text-sm flex items-center gap-2 ${
-                activeChoice === "Dark" ? "bg-dark0" : ""
+                theme === "dark" ? "bg-dark0" : ""
               }`}
-              onClick={() => handleChoiceChange("Dark")}
+              onClick={() => handleChoiceChange()}
             >
               <svgComponents.buttonDark />
             </div>

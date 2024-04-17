@@ -40,6 +40,7 @@ import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiqu
 import Link from "next/link";
 import { FaAngleDown } from "react-icons/fa";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { NumericFormat } from "react-number-format";
 const styles = {
   title: "block mb-4 text-base font-medium text-black24 dark:text-white",
 };
@@ -127,6 +128,7 @@ export default function AddLiquidity() {
     wallet,
     isOpenTransaction
   );
+  console.log(isLoading);
 
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
@@ -138,8 +140,8 @@ export default function AddLiquidity() {
     isOpenTransaction
   );
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputNFT(e.target.value);
-    if (Number(e.target.value) > Number(balanceNFT)) {
+    setInputNFT(e.target.value.replace(/,/g, ""));
+    if (Number(e.target.value.replace(/,/g, "")) > Number(balanceNFT)) {
       setIsSufficientNFT(true);
     } else {
       setIsSufficientNFT(false);
@@ -292,7 +294,9 @@ export default function AddLiquidity() {
           ))}
         </div>
       </div>
-      {isSuccess ? (
+      {isLoading || isFetching ? (
+        <SkeletonAddLiquidity />
+      ) : isSuccess ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
           <div className="order-2">
             <div>
@@ -367,21 +371,12 @@ export default function AddLiquidity() {
                     !inputNFT && isInputNFT && "border-red"
                   }`}
                 >
-                  <input
+                  <NumericFormat
                     className="font-semibold border-none outline-none text-dark3 placeholder:font-semibold"
-                    type="number"
                     placeholder="Input amount NFT"
+                    thousandSeparator=","
+                    decimalScale={0}
                     value={inputNFT}
-                    onKeyDown={(event) => {
-                      if (
-                        !(event.key >= "0" && event.key <= "9") &&
-                        event.key !== "Backspace" &&
-                        event.key !== "ArrowLeft" &&
-                        event.key !== "ArrowRight"
-                      ) {
-                        event.preventDefault();
-                      }
-                    }}
                     onChange={handleGetNFT}
                   />
                   <div className="flex justify-end mt-8">
@@ -437,7 +432,7 @@ export default function AddLiquidity() {
                   </p>
                 )}
               </div>
-              <div>
+              <div className="mb-4">
                 <div className="flex justify-between mt-4 mb-1 text-dark1 dark:text-white">
                   <p>Token</p>
                   <p>Balance: {account ? formatNumber(balanceToken) : 0}</p>
@@ -533,7 +528,7 @@ export default function AddLiquidity() {
       ) : (
         <SkeletonAddLiquidity />
       )}
-      {isLoading && !isSuccess && <SkeletonAddLiquidity />}
+      {/* {(isLoading || isFetching) && !isSuccess && <SkeletonAddLiquidity />} */}
       <ModalSearchNFT
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}

@@ -38,6 +38,7 @@ import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 interface SwapTransactionProps {
   data: DataBase;
@@ -391,29 +392,19 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               }`}
             >
               <div className="relative">
-                <input
-                  type="number"
+                <NumericFormat
                   name="amountNFT"
                   id="amountNFT"
                   autoComplete="off"
                   placeholder="Input amount NFT"
                   pattern="^[1-9][0-9]*$"
-                  inputMode="numeric"
-                  onKeyDown={(event) => {
-                    if (
-                      !(event.key >= "0" && event.key <= "9") &&
-                      event.key !== "Backspace" &&
-                      event.key !== "ArrowLeft" &&
-                      event.key !== "ArrowRight"
-                    ) {
-                      event.preventDefault();
-                    }
-                  }}
                   min="1"
+                  thousandSeparator=","
+                  decimalScale={0}
                   className="w-1/2 text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
                   value={inputNFT}
                   onChange={(e) => {
-                    setInputNFT(e.target.value);
+                    setInputNFT(e.target.value.replace(/,/g, ""));
                     setShowRequiredMessage(false);
                     setActiveChoiceNFT("");
                     setWidthBtn(0);

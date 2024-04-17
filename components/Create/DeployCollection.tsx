@@ -132,6 +132,7 @@ const DeployCollection = () => {
                 setFileType={setFileType}
                 fileType={fileType}
                 uploadFile={uploadFileIPFSCollection}
+                type="collection"
               />
             </div>
           </div>

@@ -126,6 +126,36 @@ const mediaType = {
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
+let validNFTsInput = [
+  "video/mp4",
+  "video/x-msvideo",
+  "video/x-matroska",
+  "video/quicktime",
+  "video/x-ms-wmv",
+  "video/x-flv",
+  "video/webm",
+  "audio/mpeg",
+  "audio/wav",
+  "audio/ogg",
+  "audio/aac",
+  "audio/flac",
+  "audio/x-ms-wma",
+  "application/pdf",
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/bmp",
+  "image/svg+xml",
+  "image/tiff",
+];
+let validCollectionInput = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/svg+xml",
+];
 const Category = [
   {
     id: 1,
@@ -159,4 +189,6 @@ export {
   tokenBlast,
   tokenGoerli,
   version,
+  validCollectionInput,
+  validNFTsInput,
 };

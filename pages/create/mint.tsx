@@ -20,6 +20,7 @@ import { FaAngleDown } from "react-icons/fa";
 import Link from "next/link";
 import AccountContext from "@/context/AccountContext";
 import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
+import { NumericFormat } from "react-number-format";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 dark:text-dark4",
@@ -63,7 +64,7 @@ export default function Creator() {
   const [collection, setCollection] = useState<{
     icon: JSX.Element;
     name: String;
-    address:String;
+    address: String;
   }>(collectionList[0]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -149,6 +150,7 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
+  console.log(totalSupply);
 
   return (
     <>
@@ -176,6 +178,7 @@ export default function Creator() {
                 fileType={fileType}
                 setFileType={setFileType}
                 uploadFile={uploadFileIPFSMint}
+                type="nfts"
               />
             </div>
           </div>
@@ -290,28 +293,22 @@ export default function Creator() {
                   <span>Total Supply</span>
                   <span className="text-red">*</span>
                 </label>
-                <input
+                <NumericFormat
                   placeholder="10,000"
-                  type="number"
                   id="totalSupply"
                   autoComplete="off"
                   value={totalSupply || ""}
-                  onKeyDown={(event) => {
-                    if (
-                      !(event.key >= "0" && event.key <= "9") &&
-                      event.key !== "Backspace" &&
-                      event.key !== "ArrowLeft" &&
-                      event.key !== "ArrowRight"
-                    ) {
-                      event.preventDefault();
-                    }
-                  }}
+                  thousandSeparator=","
+                  decimalScale={0}
                   className={
                     emptyInputs.includes("totalSupply")
                       ? "w-[200px] py-2 pl-2 mb-4 rounded-lg border-2 border-red"
                       : "input_item"
                   }
-                  onChange={(e) => setTotalSupply(Number(e.target.value))}
+                  onChange={(e) => {
+                    let newValue = e.target.value.replace(/,/g, "");
+                    setTotalSupply(Number(newValue));
+                  }}
                 />
                 {emptyInputs.includes("totalSupply") && (
                   <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">

@@ -1,24 +1,21 @@
 import Image from "next/image";
-import React, {
-  ChangeEvent,
-  DragEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { DragEvent, useRef, useState } from "react";
 import { Button } from "../Buttons";
 import { PictureMint } from "../Icons";
+import { validCollectionInput, validNFTsInput } from "@/libs/constants";
 interface UploadFileProps {
   setFileIPFS: any;
-  fileType?: string | null;
-  setFileType?: any;
-  uploadFile?: any;
+  fileType: string | null;
+  setFileType: any;
+  uploadFile: any;
+  type: string;
 }
 const UploadFile: React.FC<UploadFileProps> = ({
   setFileIPFS,
   setFileType,
   fileType,
   uploadFile,
+  type,
 }) => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const uploadRef = useRef<HTMLDivElement>(null);
@@ -42,31 +39,10 @@ const UploadFile: React.FC<UploadFileProps> = ({
   async function displayFile() {
     if (file) {
       let fileType = file.type;
-      let validExtensions = [
-        "video/mp4",
-        "video/x-msvideo",
-        "video/x-matroska",
-        "video/quicktime",
-        "video/x-ms-wmv",
-        "video/x-flv",
-        "video/webm",
-        "audio/mpeg",
-        "audio/wav",
-        "audio/ogg",
-        "audio/aac",
-        "audio/flac",
-        "audio/x-ms-wma",
-        "application/pdf",
-        "image/jpg",
-        "image/jpeg",
-        "image/png",
-        "image/gif",
-        "image/bmp",
-        "image/svg+xml",
-        "image/tiff",
-      ];
+      let validExtensions = validCollectionInput;
+      type === "collection" ? validCollectionInput : validNFTsInput;
       if (validExtensions.includes(fileType)) {
-        if (file.size < 1073741824) {
+        if (file.size < 52428800) {
           const fileURL = URL.createObjectURL(file);
           setFileType(fileType);
           setSelectedFile(fileURL);
@@ -92,6 +68,8 @@ const UploadFile: React.FC<UploadFileProps> = ({
   const handleClickFile = () => {
     inputRef.current?.click();
   };
+  console.log(type);
+
   return (
     <div className="flex flex-col items-center w-full" ref={uploadRef}>
       <div
@@ -154,13 +132,17 @@ const UploadFile: React.FC<UploadFileProps> = ({
               type="file"
               hidden
               onChange={handleChangeFile}
-              accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, text/html, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf, application/zip"
+              accept={`${
+                type === "collection"
+                  ? "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
+                  : "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
+              }`}
             />
           </div>
         ) : (
           <div
             onClick={handleClickFile}
-            className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center"
+            className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center w-full items-center"
           >
             <PictureMint
               width={160}
@@ -171,13 +153,21 @@ const UploadFile: React.FC<UploadFileProps> = ({
             <input
               ref={inputRef}
               type="file"
-              accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff, application/pdf"
               hidden
               onChange={handleChangeFile}
+              accept={`${
+                type === "collection"
+                  ? "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
+                  : "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
+              }`}
             />
-            <div className="text-sm w-[254px] text-dark3 mb-6 transition-all duration-200 group-hover:text-dark2">
-              <span>Video, audio, gif, pdf, and images supported.</span>{" "}
-              <span className="text-dark2">Max size: 1GB.</span>
+            <div className="text-sm w-[254px] text-dark3 mb-6 transition-all duration-200 group-hover:text-dark2 mt-2">
+              {type === "collection" ? (
+                <p>JPG,PNG,GIF,SVG supported.</p>
+              ) : (
+                <p>Video, audio, gif, pdf, and images supported.</p>
+              )}
+              <span className="text-dark2">Max size: 50MB.</span>
             </div>
           </div>
         )}

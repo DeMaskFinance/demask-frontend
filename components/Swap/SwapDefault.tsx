@@ -20,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
+import { NumericFormat } from "react-number-format";
 export default function SwapDefault() {
   const router = useRouter();
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -137,7 +138,7 @@ export default function SwapDefault() {
                 width={240}
                 height={240}
                 src="/logoDefault.svg"
-                className="object-cover"
+                className="object-cover rounded-xl"
               />
             </div>
           </div>
@@ -192,29 +193,20 @@ export default function SwapDefault() {
                 className={`relative p-2 rounded-lg bg-dark5 border border-dark5 hover:border-dark3 dark:bg-darkBG2 dark:border-darkBG2`}
               >
                 <div className="relative">
-                  <input
-                    type="number"
+                  <NumericFormat
                     name="amountNFT"
                     id="amountNFT"
                     autoComplete="off"
                     placeholder="Input amount NFT"
                     pattern="^[1-9][0-9]*$"
-                    inputMode="numeric"
-                    onKeyDown={(event) => {
-                      if (
-                        !(event.key >= "0" && event.key <= "9") &&
-                        event.key !== "Backspace" &&
-                        event.key !== "ArrowLeft" &&
-                        event.key !== "ArrowRight"
-                      ) {
-                        event.preventDefault();
-                      }
-                    }}
                     min="1"
+                    decimalScale={0}
+                    thousandSeparator=","
                     className="w-1/2 text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
                     value={inputNFT}
                     onChange={(e) => {
-                      setInputNFT(e.target.value);
+                      let newValue = e.target.value.replace(/,/g, "");
+                      setInputNFT(newValue);
                       setActiveChoiceNFT("");
                     }}
                   />

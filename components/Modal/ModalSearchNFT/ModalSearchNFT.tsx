@@ -104,7 +104,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
           <p className="py-2 mb-4 text-xl title">Select a NFT</p>
           <div>
-            <div className="relative">
+            <div className="relative mb-4">
               <input
                 className="input_item"
                 placeholder="Search address or paste address"

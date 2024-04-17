@@ -1,11 +1,3 @@
-// import WalletConnectProvider from "@walletconnect/web3-provider";
-// import { walletConnectRpc } from "./connector";
-
-// export const getWalletConnectProvider = () =>
-//   new WalletConnectProvider({
-//     rpc: walletConnectRpc,
-//   });
-
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 async function getWalletConnectProvider() {
@@ -16,7 +8,13 @@ async function getWalletConnectProvider() {
       optionalChains: [97, 80001, 280],
       showQrModal: true, // REQUIRED set to "true" to use @walletconnect/modal
       methods: ["eth_sendTransaction"],
-      events: ["eth_transactionHash","chainChanged", "accountsChanged", "connect", "disconnect"],
+      events: [
+        "eth_transactionHash",
+        "chainChanged",
+        "accountsChanged",
+        "connect",
+        "disconnect",
+      ],
       // optionalEvents, // OPTIONAL ethereum events
       rpcMap: {
         "1": "https://mainnet.eth.aragon.network",
@@ -25,7 +23,7 @@ async function getWalletConnectProvider() {
         "56": "https://bsc-dataseed.binance.org/",
         "280": "https://testnet.era.zksync.dev",
       },
-    })
+    });
     return provider;
   } catch (error) {
     console.error("Error create WalletConnect Provider:", error);
