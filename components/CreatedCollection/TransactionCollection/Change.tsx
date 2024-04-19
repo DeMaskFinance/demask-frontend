@@ -249,12 +249,12 @@ const Change = () => {
       </h5>
       <div className="my-2">
         {isInputDataLoading ? (
-          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
             <SkeletonItemTransaction />
           </div>
         ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
-            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
+            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
               {inputData?.pages.map((page: any, pageIndex: number) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (
@@ -264,7 +264,7 @@ const Change = () => {
                       onClick={() => hanldeChoiceNFTInput(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
+                        className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                           idNFTInput.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""
@@ -318,12 +318,12 @@ const Change = () => {
       <h5 className="font-semibold text-dark1">Select some output NFTs</h5>
       <div className="my-2">
         {isLoading ? (
-          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
             <SkeletonItemTransaction />
           </div>
         ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
           <div className="flex flex-col ">
-            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
+            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px] mb-8">
               {data?.pages.map((page: any, pageIndex: number) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (

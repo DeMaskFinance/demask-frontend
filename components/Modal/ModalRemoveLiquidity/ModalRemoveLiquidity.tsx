@@ -245,7 +245,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             )}
           </p>
           {type === "erc721" && isSuccess && (
-            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
+            <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
               {data721?.pages.map((page: any, pageIndex: number) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (
@@ -255,7 +255,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                       onClick={() => hanldeChoiceNFT(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
+                        className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                           idNFT.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""

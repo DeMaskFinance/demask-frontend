@@ -82,7 +82,7 @@ const Created = () => {
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
-        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
+        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
           {isLoading ? (
             <SkeletonSubCategory />
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (

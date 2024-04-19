@@ -215,11 +215,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             )}
           </div>
           {isLoading ? (
-            <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+            <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
               <SkeletonItemTransaction />
             </div>
           ) : (
-            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
+            <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll md:grid-cols-4 text-dark2 max-h-[200px] lg:max-h-[340px]">
               {data?.pages.map((page: any, pageIndex: number) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.map((item: any, index: number) => (
@@ -229,7 +229,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       onClick={() => hanldeChoiceNFT(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
+                        className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                           idNFT.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""

@@ -43,7 +43,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           />
         </div>
       </td>
-      <td className="py-2 flex items-center justify-start gap-x-1 lg:w-full md:w-full w-[100px]">
+      <td className="py-2 flex items-center justify-start gap-x-2 lg:w-full md:w-full w-[100px]">
         {item?.avatar ? (
           <Image
             src={item?.avatar}

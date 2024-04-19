@@ -179,12 +179,12 @@ const Sell = () => {
   return (
     <div>
       {isLoading ? (
-        <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-5">
+        <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
           <SkeletonItemTransaction />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <div className="flex flex-col ">
-          <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-5 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[542px]">
+          <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[542px] mb-8">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (
@@ -194,7 +194,7 @@ const Sell = () => {
                     onClick={() => hanldeChoiceNFT(item)}
                   >
                     <div
-                      className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
+                      className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
                         idNFT.includes(Number(item.nftID))
                           ? "border-secondary5"
                           : ""

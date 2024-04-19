@@ -156,7 +156,7 @@ export default function CreatedCollection() {
           </div>
         )}
       </div>
-      <div className="px-4 lg:px-14 xl:px-[164px] md:px-10">
+      <div className="px-4 lg:px-10 2xl:px-[164px] md:px-6">
         <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 dark:bg-darkBG1">
           <div className="items-center text-xs lg:flex gap-x-2 ">
             <div
@@ -288,7 +288,7 @@ export default function CreatedCollection() {
               </div>
             </div>
           </div>
-          <div className="flex self-center mt-4 overflow-auto rounded-lg lg:overflow-visible lg:p-4 lg:gap-x-20 gap-x-10 lg:mt-0">
+          <div className="flex self-center mt-4 overflow-auto rounded-lg lg:overflow-visible lg:p-4 lg:gap-x-14 gap-x-10 lg:mt-0">
             <div className="text-dark2">
               <p className="mb-1 text-sm whitespace-nowrap">Total Volume</p>
               <div className="flex items-center text-xl font-semibold ">
