@@ -25,12 +25,12 @@ export default function Layout({ children }: PropsWithChildren) {
     } else {
       updateChainId(router.query.chain);
     }
-    // const targetNetwork = network.find(
-    //   (item) => item.chain === chainId.toString()
-    // );
-    // if (!targetNetwork) {
-    //   updateChainId(network[0].chain);
-    // }
+    const targetNetwork = network.find(
+      (item) => item.chain === chainId.toString()
+    );
+    if (!targetNetwork) {
+      updateChainId(network[0].chain);
+    }
   }, [chainId, router.asPath, router.isReady]);
   console.log(chainId);
 
