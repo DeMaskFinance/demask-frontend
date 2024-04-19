@@ -94,6 +94,8 @@ const Change = () => {
           : page?.currentPage + 1,
     }
   );
+  console.log(inputData);
+
   useEffect(() => {
     if (inView) {
       fetchNextInputPage();
@@ -248,73 +250,92 @@ const Change = () => {
         Select some input NFTs from your wallet
       </h5>
       <div className="my-2">
-        {isInputDataLoading ? (
-          <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
-            <SkeletonItemTransaction />
-          </div>
-        ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
-          <div className="flex flex-col ">
-            <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
-              {inputData?.pages.map((page: any, pageIndex: number) => (
-                <Fragment key={pageIndex}>
-                  {page?.data?.map((item: any, index: number) => (
-                    <div
-                      key={index}
-                      className="relative overflow-hidden"
-                      onClick={() => hanldeChoiceNFTInput(item)}
-                    >
-                      <div
-                        className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
-                          idNFTInput.includes(Number(item.nftID))
-                            ? "border-secondary5"
-                            : ""
-                        }`}
-                      >
-                        <div className="relative h-[78px] lg:h-[100px] group">
-                          <MediaNFT data={item} isControls={false} hover zoom />
-                        </div>
-                        <div className="w-full">
-                          <div className="flex w-full mt-2">
+        {account ? (
+          <Fragment>
+            {isInputDataLoading ? (
+              <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
+                <SkeletonItemTransaction />
+              </div>
+            ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
+              <div className="flex flex-col ">
+                <div className="grid grid-cols-3 pb-[34px] gap-6 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[342px]">
+                  {inputData?.pages.map((page: any, pageIndex: number) => (
+                    <Fragment key={pageIndex}>
+                      {page?.data?.map((item: any, index: number) => (
+                        <div
+                          key={index}
+                          className="relative overflow-hidden"
+                          onClick={() => hanldeChoiceNFTInput(item)}
+                        >
+                          <div
+                            className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
+                              idNFTInput.includes(Number(item.nftID))
+                                ? "border-secondary5"
+                                : ""
+                            }`}
+                          >
+                            <div className="relative h-[78px] lg:h-[100px] group">
+                              <MediaNFT
+                                data={item}
+                                isControls={false}
+                                hover
+                                zoom
+                              />
+                            </div>
                             <div className="w-full">
-                              <h6
-                                title={item.metadata.name}
-                                className="flex items-start gap-2 font-semibold uppercase"
-                              >
-                                <span className="">
-                                  {item.metadata.name ? (
-                                    <ModalDocument data={item.metadata.name} />
-                                  ) : (
-                                    <p>--</p>
-                                  )}
-                                </span>
-                              </h6>
+                              <div className="flex w-full mt-2">
+                                <div className="w-full">
+                                  <h6
+                                    title={item.metadata.name}
+                                    className="flex items-start gap-2 font-semibold uppercase"
+                                  >
+                                    <span className="">
+                                      {item.metadata.name ? (
+                                        <ModalDocument
+                                          data={item.metadata.name}
+                                        />
+                                      ) : (
+                                        <p>--</p>
+                                      )}
+                                    </span>
+                                  </h6>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      ))}
+                    </Fragment>
                   ))}
-                </Fragment>
-              ))}
-              {isFetching && <SkeletonItemTransaction />}
-              <div ref={ref} style={{ height: "1px" }}></div>
-            </div>
-          </div>
+                  {isFetching && <SkeletonItemTransaction />}
+                  <div ref={ref} style={{ height: "1px" }}></div>
+                </div>
+                <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2 area_darkBG1">
+                  <p>
+                    You have selected
+                    <span className="text-secondary5">
+                      {" "}
+                      {idNFTInput.length}{" "}
+                    </span>
+                    input NFTs and 
+                    <span className="text-secondary5">
+                      {idNFTOutput.length} out of {data?.pages[0]?.totalRecords}
+                    </span>
+                      output NFTs
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p>No NFTs Found!</p>
+            )}
+          </Fragment>
         ) : (
-          <p>No NFTs Found!</p>
+          <Button className="w-full py-2 " primary onClick={handleOpen}>
+            CONNECT WALLET
+          </Button>
         )}
       </div>
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2 area_darkBG1">
-        <p>
-          You have selected
-          <span className="text-secondary5"> {idNFTInput.length} </span>
-          input NFTs and 
-          <span className="text-secondary5">
-            {idNFTOutput.length} out of {data?.pages[0]?.totalRecords}
-          </span>
-            output NFTs
-        </p>
-      </div>
+
       <h5 className="font-semibold text-dark1">Select some output NFTs</h5>
       <div className="my-2">
         {isLoading ? (
@@ -333,7 +354,7 @@ const Change = () => {
                       onClick={() => hanldeChoiceNFTOutput(item)}
                     >
                       <div
-                        className={`relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base  hover:shadow-home ${
+                        className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base dark:border-dark3 hover:shadow-home ${
                           idNFTOutput.includes(Number(item.nftID))
                             ? "border-secondary5"
                             : ""

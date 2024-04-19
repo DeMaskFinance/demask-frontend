@@ -19,6 +19,8 @@ import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
 import { toast } from "react-toastify";
 import { CgClose } from "react-icons/cg";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
@@ -39,8 +41,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
   const { account, chainId } = useContext(AccountContext);
+  const router = useRouter();
   const collectionAddress = useRouter().query.edit as string;
-
+  const typeERC = useRouter().query.type;
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required").max(50),
     description: yup.string().required("Description is a required").max(200),
@@ -160,6 +163,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     }
     setFieldValue("category", updatedCategories);
   };
+  const queryClient = useQueryClient();
+  console.log(typeERC);
+
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
@@ -200,7 +206,10 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         progress: undefined,
         theme: "light",
       });
-      refetch();
+      queryClient.refetchQueries(["detailCollection"]);
+      router.push(
+        `/collection/${collectionAddress}?typeERC=${typeERC}&chain=${chainId}`
+      );
     } catch (error) {
       console.error(error);
     }
@@ -470,7 +479,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     onChange={handleChange}
                     className="input_item"
                   />
-                  <p className="absolute right-2 top-[50%] -translate-y-[80%]">
+                  <p className="absolute right-2 top-[50%] -translate-y-[50%]">
                     %
                   </p>
                 </div>
@@ -490,7 +499,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             {socialList.map((item, index) => (
               <div key={index}>
                 <div className="flex mt-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2">
+                  <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2 area_darkBG1">
                     {item.icon}
                     {item.title}
                   </div>

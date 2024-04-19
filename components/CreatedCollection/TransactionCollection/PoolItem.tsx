@@ -156,7 +156,8 @@ const PoolItem = ({ liquidity }: any) => {
             </span>
           </div>
           <Button
-            className="px-6 py-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg bg-green hover:bg-white hover:text-green boder-white hover:border-green"
+            className="px-6 py-2 text-sm font-medium "
+            green
             onClick={handleGetReward}
           >
             COLLECT

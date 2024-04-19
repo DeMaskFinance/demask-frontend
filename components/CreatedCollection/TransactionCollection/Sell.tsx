@@ -177,129 +177,156 @@ const Sell = () => {
     tokenDecimals: "18",
   };
   return (
-    <div>
-      {isLoading ? (
-        <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
-          <SkeletonItemTransaction />
-        </div>
-      ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
-        <div className="flex flex-col ">
-          <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[542px] mb-8">
-            {data?.pages.map((page: any, pageIndex: number) => (
-              <Fragment key={pageIndex}>
-                {page?.data?.map((item: any, index: number) => (
-                  <div
-                    key={index}
-                    className="relative overflow-hidden"
-                    onClick={() => hanldeChoiceNFT(item)}
-                  >
-                    <div
-                      className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
-                        idNFT.includes(Number(item.nftID))
-                          ? "border-secondary5"
-                          : ""
-                      }`}
-                    >
-                      <div className="relative h-[78px] lg:h-[100px] group">
-                        <MediaNFT data={item} isControls={false} hover zoom />
-                      </div>
-                      <div className="w-full">
-                        <div className="flex w-full mt-2">
+    <Fragment>
+      {account ? (
+        <Fragment>
+          {isLoading ? (
+            <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
+              <SkeletonItemTransaction />
+            </div>
+          ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
+            <div className="flex flex-col ">
+              <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[542px] mb-8">
+                {data?.pages.map((page: any, pageIndex: number) => (
+                  <Fragment key={pageIndex}>
+                    {page?.data?.map((item: any, index: number) => (
+                      <div
+                        key={index}
+                        className="relative overflow-hidden"
+                        onClick={() => hanldeChoiceNFT(item)}
+                      >
+                        <div
+                          className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
+                            idNFT.includes(Number(item.nftID))
+                              ? "border-secondary5"
+                              : ""
+                          }`}
+                        >
+                          <div className="relative h-[78px] lg:h-[100px] group">
+                            <MediaNFT
+                              data={item}
+                              isControls={false}
+                              hover
+                              zoom
+                            />
+                          </div>
                           <div className="w-full">
-                            <h6
-                              title={item.metadata.name}
-                              className="flex items-start gap-2 font-semibold uppercase"
-                            >
-                              <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                {item.metadata.name ? (
-                                  <ModalDocument data={item.metadata.name} />
-                                ) : (
-                                  <p>--</p>
-                                )}
-                              </span>
-                            </h6>
+                            <div className="flex w-full mt-2">
+                              <div className="w-full">
+                                <h6
+                                  title={item.metadata.name}
+                                  className="flex items-start gap-2 font-semibold uppercase"
+                                >
+                                  <span className="flex-wrap max-w-full text-sm line-clamp-1">
+                                    {item.metadata.name ? (
+                                      <ModalDocument
+                                        data={item.metadata.name}
+                                      />
+                                    ) : (
+                                      <p>--</p>
+                                    )}
+                                  </span>
+                                </h6>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    ))}
+                  </Fragment>
                 ))}
-              </Fragment>
-            ))}
-            {isFetching && hasNextPage && <SkeletonItemTransaction />}
-            <div ref={ref} style={{ height: "1px" }}></div>
-          </div>
-          <div className="absolute bottom-0 w-full">
-            {idNFT.length > 0 && (
-              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-white">
-                <li className="flex items-center">
-                  Send:
-                  <FormatNumber
-                    number={(amountSellDec / 1e18).toString()}
-                  />{" "}
-                  <EtherIcon width={18} height={18} className="fill-dark2" />
-                </li>
-                <li className="flex items-center">
-                  Receive: {idNFT.length} NFTs
-                </li>
-                <li className="flex items-center">
-                  Price:
-                  <FormatNumber
-                    number={(amountTokenSell / 1e18).toString()}
-                  />{" "}
-                  <EtherIcon width={18} height={18} className="fill-dark2" />
-                </li>
-              </ul>
-            )}
-            {!account ? (
-              <Button className="w-full py-2" primary onClick={handleOpen}>
-                CONNECT WALLET
-              </Button>
-            ) : !isApprovedNFT ? (
-              <Button
-                className="w-full py-2"
-                primary
-                onClick={() =>
-                  handleApproveNFT(
-                    account,
-                    wallet,
-                    collectionAddress,
-                    setIsOpen,
-                    setIsOpenTransaction,
-                    routerAddress
-                  )
-                }
-              >
-                APPROVE NFT
-              </Button>
-            ) : (
-              <Button
-                disabled={
-                  idNFT.length === 0 ||
-                  !isSufficientTokenSell ||
-                  Math.floor(amountSellDec) === 0
-                }
-                primary={
-                  idNFT.length !== 0 ||
-                  isSufficientTokenSell ||
-                  Math.floor(amountSellDec) !== 0
-                }
-                className="w-full py-4"
-                active
-                onClick={handleSell}
-              >
-                SELL {idNFT.length} NFTs
-              </Button>
-            )}
-            {!isSufficientTokenSell && account && (
-              <p className="text-xs text-red" key="Tokenbalance">
-                Insufficient Token balance
-              </p>
-            )}
-          </div>
-        </div>
+                {isFetching && hasNextPage && <SkeletonItemTransaction />}
+                <div ref={ref} style={{ height: "1px" }}></div>
+              </div>
+              <div className="absolute bottom-0 w-full">
+                {idNFT.length > 0 && (
+                  <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-white">
+                    <li className="flex items-center">
+                      Send:
+                      <FormatNumber
+                        number={(amountSellDec / 1e18).toString()}
+                      />{" "}
+                      <EtherIcon
+                        width={18}
+                        height={18}
+                        className="fill-dark2"
+                      />
+                    </li>
+                    <li className="flex items-center">
+                      Receive: {idNFT.length} NFTs
+                    </li>
+                    <li className="flex items-center">
+                      Price:
+                      <FormatNumber
+                        number={(amountTokenSell / 1e18).toString()}
+                      />{" "}
+                      <EtherIcon
+                        width={18}
+                        height={18}
+                        className="fill-dark2"
+                      />
+                    </li>
+                  </ul>
+                )}
+                {!isApprovedNFT ? (
+                  <Button
+                    className="w-full py-2"
+                    primary
+                    onClick={() =>
+                      handleApproveNFT(
+                        account,
+                        wallet,
+                        collectionAddress,
+                        setIsOpen,
+                        setIsOpenTransaction,
+                        routerAddress
+                      )
+                    }
+                  >
+                    APPROVE NFT
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={
+                      idNFT.length === 0 ||
+                      !isSufficientTokenSell ||
+                      Math.floor(amountSellDec) === 0
+                    }
+                    primary={
+                      idNFT.length !== 0 &&
+                      isSufficientTokenSell &&
+                      Math.floor(amountSellDec) !== 0
+                    }
+                    className="w-full py-4"
+                    active={
+                      idNFT.length === 0 ||
+                      !isSufficientTokenSell ||
+                      Math.floor(amountSellDec) === 0
+                    }
+                    onClick={handleSell}
+                  >
+                    SELL {idNFT.length} NFTs
+                  </Button>
+                )}
+                {!isSufficientTokenSell && account && (
+                  <p className="text-xs text-red" key="Tokenbalance">
+                    Insufficient Token balance
+                  </p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <p className="mt-4">No data available.</p>
+          )}
+        </Fragment>
       ) : (
-        <p className="mt-4">No data available.</p>
+        <Button
+          className="absolute bottom-0 w-full py-2"
+          primary
+          onClick={handleOpen}
+        >
+          CONNECT WALLET
+        </Button>
       )}
       {data && account && (
         <ModalSellNFT
@@ -339,7 +366,7 @@ const Sell = () => {
         type="Sell NFT Failed"
         setIsOpenError={setIsOpenErrorSell}
       />
-    </div>
+    </Fragment>
   );
 };
 

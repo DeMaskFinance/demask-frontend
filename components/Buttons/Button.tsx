@@ -14,6 +14,7 @@ interface ButtonProps {
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
   third?: boolean;
+  green?: boolean;
   isLoadingBtn?: boolean;
 }
 
@@ -30,6 +31,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   className,
   type,
   third,
+  green,
   isLoadingBtn,
 }) => {
   return (
@@ -45,7 +47,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       justify-center
       ${
         primary
-          ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear dark:border-secondary2"
+          ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear dark:bg-se dark:border-secondary2"
           : ""
       }
       ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
@@ -56,6 +58,10 @@ const Button: FunctionComponent<ButtonProps> = ({
       }
       ${secondary ? "bg-white text-dark3" : ""}
       ${outline ? " border border-dark3 dark:border-dark1 dark:text-white" : ""}
+      ${
+        green &&
+        "bg-green hover:bg-white hover:text-green boder-green hover:border-green text-white transition-all duration-150 ease-linear border rounded-lg"
+      }
       ${className}
       `}
     >

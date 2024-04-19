@@ -295,8 +295,8 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             Output is estimated. You will receive at least {inputNFT} NFT or the
             transaction will revert
           </p>
-          <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
-            <div className="flex justify-between text-sm text-dark1">
+          <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3 area_input text-dark1 dark:text-dark3">
+            <div className="flex justify-between text-sm ">
               <p>Price</p>
               <div className="flex items-center">
                 <FormatNumber
@@ -315,7 +315,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 </p>
               </div>
             </div>
-            <div className="flex justify-between text-sm text-dark1">
+            <div className="flex justify-between text-sm ">
               <p>Maximum amount</p>
               <div className="flex gap-x-1">
                 <div className="flex items-center">
@@ -334,7 +334,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               </div>
             </div>
             <div
-              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1"
+              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 "
               onClick={() => setSeeDetail(!seeDetail)}
             >
               <div className="flex items-center gap-x-1">

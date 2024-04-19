@@ -252,13 +252,15 @@ export default function CreatedCollection() {
                   {dataDetail?.name}
                 </p>
                 {dataDetail?.collaborators.includes(account) && (
-                  <Link href={`/edit/${collectionAddress}?chain=${chainId}`}>
+                  <Link
+                    href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
+                  >
                     <EditIcon width={24} height={24} className="fill-dark3" />
                   </Link>
                 )}
               </div>
               <p className="text-xs">{dataDetail?.description}</p>
-              <div className="flex mt-4">
+              <div className="flex items-center mt-4">
                 <div className="flex gap-x-2">
                   {dataDetail?.socials?.website && (
                     <Link
@@ -266,7 +268,7 @@ export default function CreatedCollection() {
                       target="_blank"
                       className="mr-3"
                     >
-                      <WebsiteIcon width={24} height={24} />
+                      <WebsiteIcon width={20} height={20} />
                     </Link>
                   )}
                   {dataDetail?.socials?.twitter && (
@@ -275,12 +277,12 @@ export default function CreatedCollection() {
                       target="_blank"
                       className="mr-3"
                     >
-                      <TwitterIcon width={24} height={24} />
+                      <TwitterIcon width={20} height={20} />
                     </Link>
                   )}
                 </div>
                 <div className="flex gap-x-6">
-                  <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap">
+                  <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap dark:bg-dark1">
                     {dataDetail?.type}
                   </p>
                   <LogoIconCard chainId={chainId} />

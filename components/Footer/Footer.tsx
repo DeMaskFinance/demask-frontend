@@ -20,9 +20,9 @@ export default function Footer() {
   const { theme, setTheme, systemTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const handleChoiceChange = () => {
-    theme === "dark" ? setTheme("light") : setTheme("dark");
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
   };
-
   return (
     <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-white border-dark5 border-t">
       <div>
@@ -99,7 +99,7 @@ export default function Footer() {
           <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max">
             <div
               className={`p-2 cursor-pointer rounded-lg text-sm flex gap-2 items-center ${
-                theme === "light" ? "bg-secondary5" : ""
+                currentTheme === "light" ? "bg-secondary5" : ""
               }`}
               onClick={() => handleChoiceChange()}
             >
@@ -108,7 +108,7 @@ export default function Footer() {
 
             <div
               className={`p-2 cursor-pointer rounded-lg text-sm flex items-center gap-2 ${
-                theme === "dark" ? "bg-dark0" : ""
+                currentTheme === "dark" ? "bg-dark0" : ""
               }`}
               onClick={() => handleChoiceChange()}
             >

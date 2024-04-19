@@ -59,7 +59,7 @@ const Pool = () => {
       </div>
       {!account ? (
         <Button
-          className="flex items-end w-full py-2"
+          className="absolute bottom-0 flex items-end w-full py-2"
           primary
           onClick={handleOpen}
         >

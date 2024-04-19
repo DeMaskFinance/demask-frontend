@@ -186,7 +186,7 @@ const Buy = () => {
                     onClick={() => hanldeChoiceNFT(item)}
                   >
                     <div
-                      className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home ${
+                      className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
                         idNFT.includes(Number(item.nftID))
                           ? "border-secondary5"
                           : ""
@@ -223,7 +223,7 @@ const Buy = () => {
           </div>
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4">
+              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-dark3">
                 <li className="flex items-center">
                   Send:
                   <FormatNumber
@@ -273,12 +273,16 @@ const Buy = () => {
                   Math.floor(amountBuyDec) === 0
                 }
                 primary={
-                  idNFT.length !== 0 ||
-                  isSufficientTokenBuy ||
+                  idNFT.length !== 0 &&
+                  isSufficientTokenBuy &&
                   Math.floor(amountBuyDec) !== 0
                 }
                 className="w-full py-4"
-                active
+                active={
+                  idNFT.length === 0 ||
+                  !isSufficientTokenBuy ||
+                  Math.floor(amountBuyDec) === 0
+                }
                 onClick={handleBuy}
               >
                 BUY {idNFT.length} NFTs
