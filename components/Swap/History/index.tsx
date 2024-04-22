@@ -57,10 +57,11 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     { key: "Add", title: "Add" },
     { key: "Remove", title: "Remove" },
   ];
+  const indexChoice = options.findIndex((item) => item.key === tab);
   return (
     <div className="w-full mt-[15px]  mb-14 lg:mb-0">
       <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible area_input">
-        <TabQuery TABS={options} initialItem="All" />
+        <TabQuery TABS={options} initialItem="All" indexChoice={indexChoice} />
         <table className="w-full mt-2 text-left border-collapse">
           <thead className="">
             <tr className="flex pb-2 text-sm ">

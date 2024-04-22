@@ -319,7 +319,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   Required
                 </p>
               )}
-              <div>
+              <div className="mt-3">
                 <TabGroups
                   choices={["25%", "50%", "75%", "100%"]}
                   activeChoice={activeChoice}
@@ -331,7 +331,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               <div className="flex justify-between my-4 text-dark2">
                 <p className="font-semibold">You will recieve</p>
               </div>
-              <div className="input_item">
+              <div className="mb-4 input_item">
                 <div className="flex justify-between">
                   {data.reserveTokenDecimals ? (
                     <p>{amountNFTMin}</p>

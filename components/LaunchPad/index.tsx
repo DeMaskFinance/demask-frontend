@@ -52,22 +52,24 @@ export default function Launchpad() {
     },
   ];
   const selectedTab = listTab.find((item) => item.key === tab);
-
+  const indexChoice = listTab.findIndex((item) => item.key === tab);
   return (
     <section className="launchpad">
       <NextSeo {...updateMeta} />
 
       <div className="max-w-6xl min-h-screen pb-20 mx-auto lg:pb-0">
         <div className="flex flex-wrap justify-between pt-10 pb-6 gap-y-2">
-        <div className="flex items-center gap-x-2">
-          <LaunchpadGradientIcon width={20} height={20}/>
-          <h1 className="text-2xl font-semibold text_gradient">
-            Launchpad
-          </h1>
-        </div>
-        <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
-          <TabQuery TABS={listTab} initialItem="Active"/>
-        </div>
+          <div className="flex items-center gap-x-2">
+            <LaunchpadGradientIcon width={20} height={20} />
+            <h1 className="text-2xl font-semibold text_gradient">Launchpad</h1>
+          </div>
+          <div className="flex flex-col justify-between gap-4 overflow-hidden rounded-lg lg:flex-row">
+            <TabQuery
+              TABS={listTab}
+              initialItem="Active"
+              indexChoice={indexChoice}
+            />
+          </div>
         </div>
         <div>{selectedTab?.component}</div>
       </div>

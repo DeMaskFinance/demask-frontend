@@ -29,15 +29,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
     return data;
   };
 
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery(
+  const { data, fetchNextPage, isSuccess, isLoading } = useInfiniteQuery(
     ["LaunchpadTab", chainId, query],
     ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, query),
     {

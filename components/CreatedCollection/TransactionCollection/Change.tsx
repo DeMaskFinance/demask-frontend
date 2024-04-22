@@ -172,7 +172,7 @@ const Change = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  const hanldeChoiceNFTInput = (item: any) => {
+  const handleChoiceNFTInput = (item: any) => {
     const isExist = idNFTInput.includes(Number(item.nftID));
     if (isExist) {
       const arr = idNFTInput.filter((itemArr) => {
@@ -183,7 +183,7 @@ const Change = () => {
       setIdNFTInput([...idNFTInput, Number(item.nftID)]);
     }
   };
-  const hanldeChoiceNFTOutput = (item: any) => {
+  const handleChoiceNFTOutput = (item: any) => {
     const isExist = idNFTOutput.includes(Number(item.nftID));
     if (isExist) {
       const arr = idNFTOutput.filter((itemArr) => {
@@ -264,8 +264,8 @@ const Change = () => {
                       {page?.data?.map((item: any, index: number) => (
                         <div
                           key={index}
-                          className="relative overflow-hidden"
-                          onClick={() => hanldeChoiceNFTInput(item)}
+                          className="relative"
+                          onClick={() => handleChoiceNFTInput(item)}
                         >
                           <div
                             className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
@@ -289,7 +289,7 @@ const Change = () => {
                                     title={item.metadata.name}
                                     className="flex items-start gap-2 font-semibold uppercase"
                                   >
-                                    <span className="">
+                                    <span className="flex-wrap max-w-full text-sm line-clamp-1">
                                       {item.metadata.name ? (
                                         <ModalDocument
                                           data={item.metadata.name}
@@ -351,7 +351,7 @@ const Change = () => {
                     <div
                       key={index}
                       className="relative overflow-hidden"
-                      onClick={() => hanldeChoiceNFTOutput(item)}
+                      onClick={() => handleChoiceNFTOutput(item)}
                     >
                       <div
                         className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base dark:border-dark3 hover:shadow-home ${

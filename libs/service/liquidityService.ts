@@ -3,7 +3,7 @@ import request from "../utils/httpRequest";
 const liquidityListAPI = async (
   accountUser: string,
   page: number,
-  type:string,
+  type: string,
   chainId: string | string[]
 ) => {
   try {
@@ -44,4 +44,22 @@ const liquidityUser = async (
     console.error(error);
   }
 };
-export { liquidityListAPI, liquidityHistory, liquidityUser };
+const liquidityUserERC721 = async (
+  collectionAddress: string,
+  chainId: string | string[]
+) => {
+  try {
+    const res = await request.get(
+      `pool-info?chainId=168587773&type=erc721&collectionAddress=0x58d8d129a641a60976d5a4d81fa3c8f1f3f44ded`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export {
+  liquidityListAPI,
+  liquidityHistory,
+  liquidityUser,
+  liquidityUserERC721,
+};

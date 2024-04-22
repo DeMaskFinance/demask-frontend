@@ -1,5 +1,3 @@
-import { swapAPI } from "@/libs/service";
-import { useQuery } from "@tanstack/react-query";
 import ChartTradingViewSwap from "../Charts/ChartTradingViewSwap";
 import TransactionCollection from "../CreatedCollection/TransactionCollection";
 import { SkeletonSwap } from "../Skeleton";

@@ -105,7 +105,7 @@ const PoolItem = ({ liquidity }: any) => {
     <div className="p-4 mb-4 border rounded-lg border-dark3 area_darkBG1">
       <div className="flex flex-wrap justify-between gap-y-2">
         <p className="text-xl font-semibold text-dark0 title">
-          {liquidity.metadata.name}
+          {liquidity.name}
         </p>
         <div className="flex gap-x-4">
           <Button className="py-2" active onClick={handleAddLiquidity}>

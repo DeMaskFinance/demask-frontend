@@ -137,7 +137,7 @@ export default function DetailLaunchPad() {
       key: "timeline",
     },
   ];
-
+  const indexChoice = TABS.findIndex((item) => item.key === tab);
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
@@ -575,7 +575,7 @@ export default function DetailLaunchPad() {
       </div>
       <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 area_darkBG1">
         <div className="flex justify-center">
-          <TabQuery TABS={TABS} initialItem="rule" />
+          <TabQuery TABS={TABS} initialItem="rule" indexChoice={indexChoice} />
         </div>
         {isLoading ? (
           <div>

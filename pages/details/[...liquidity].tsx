@@ -115,6 +115,7 @@ export default function DetailLiquidity() {
     { key: "Add", title: "Add" },
     { key: "Remove", title: "Remove" },
   ];
+  const indexChoice = options.findIndex((item) => item.key === tab);
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -229,7 +230,11 @@ export default function DetailLiquidity() {
                 {account && isSuccess && data.liquidityHistory.length > 0 ? (
                   <div>
                     <div className="p-2 mt-6 overflow-y-scroll border border-gray-200 rounded-lg min-h-[315px]">
-                      <TabQuery TABS={options} initialItem="All" />
+                      <TabQuery
+                        TABS={options}
+                        initialItem="All"
+                        indexChoice={indexChoice}
+                      />
                       <div className="mt-6 ">
                         <div className="">
                           <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold title">

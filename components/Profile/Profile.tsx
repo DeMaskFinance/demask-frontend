@@ -67,6 +67,7 @@ const Profile = () => {
     },
   ];
   const selectedTab = TABS.find((item) => item.key === tab);
+  const indexChoice = TABS.findIndex((item) => item.key === tab);
   useEffect(() => {
     const closeTippy = () => {
       setVisible(false);
@@ -134,7 +135,7 @@ const Profile = () => {
       <div className="flex items-center justify-start px-4 mt-6 md:justify-center">
         {/* PC */}
         <div className="hidden md:block">
-          <TabQuery TABS={TABS} initialItem="items" />
+          <TabQuery TABS={TABS} initialItem="items" indexChoice={indexChoice} />
         </div>
         {/* mobile-tablet */}
         <div className="md:hidden">

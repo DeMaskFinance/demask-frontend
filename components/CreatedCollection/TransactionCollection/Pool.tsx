@@ -2,10 +2,12 @@ import { Button } from "@/components/Buttons";
 import { LightBulbIcon, PoolListIcon } from "@/components/Icons";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
-import { liquidityListAPI } from "@/libs/service/liquidityService";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { liquidityUserERC721 } from "@/libs/service/liquidityService";
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import PoolItem from "./PoolItem";
+import { useQuery } from "@tanstack/react-query";
+import { BiLoaderAlt } from "react-icons/bi";
 
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -14,39 +16,16 @@ const Pool = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  const fetchDataListLiquidity = async (
-    accountUser: string,
-    pageParam = 1,
-    chainId: string | string[],
-    type: string
-  ) => {
-    const data = await liquidityListAPI(
-      accountUser.toLowerCase(),
-      pageParam,
-      type,
-      chainId
-    );
-    return data;
-  };
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery(
-    ["LiquidityList", account, chainId],
-    ({ pageParam = 1 }) =>
-      fetchDataListLiquidity(account, pageParam, chainId, "erc721"),
-    {
-      getNextPageParam: (page: any) =>
-        page?.currentPage < page?.totalPages
-          ? page?.currentPage + 1
-          : undefined,
-    }
-  );
+  const collectionAddress = useRouter().query.collection as string;
+
+  const { isLoading, data, isSuccess } = useQuery({
+    queryKey: ["poolERC721", collectionAddress, chainId],
+    queryFn: async () => {
+      const res = await liquidityUserERC721(collectionAddress, chainId);
+      return res.data;
+    },
+  });
+
   return (
     <div className="h-full text-dark3 ">
       <div className="flex items-center px-6 py-4 my-4 text-sm rounded-lg bg-dark5 gap-x-2 area_darkBG1">
@@ -66,29 +45,26 @@ const Pool = () => {
           CONNECT WALLET
         </Button>
       ) : (
-        // <PoolItem />
         <div>
-          {data?.pages[0]?.combinedRecords.length === 0 && !isLoading && (
-            <div className="pool_empty">
-              <PoolListIcon width={72} height={72} />
-              Your active liquidity positions will appear here.
-            </div>
+          {isLoading ? (
+            <BiLoaderAlt className="mb-6 text-2xl animate-spin text-secondary5" />
+          ) : (
+            isSuccess && (
+              <>
+                {data?.dmlAddress ===
+                "0x0000000000000000000000000000000000000000" ? (
+                  <div className="pool_empty">
+                    <PoolListIcon width={72} height={72} />
+                    Your active liquidity positions will appear here.
+                  </div>
+                ) : (
+                  <div className="w-full mx-auto">
+                    <PoolItem liquidity={data} />
+                  </div>
+                )}
+              </>
+            )
           )}
-          {isSuccess &&
-            data?.pages[0]?.combinedRecords.length !== 0 &&
-            data.pages &&
-            data.pages.map((page: any, index: number) => (
-              <div key={index}>
-                {page?.combinedRecords &&
-                  page.combinedRecords.map(
-                    (liquidity: any, subIndex: number) => (
-                      <div key={subIndex} className="w-full mx-auto">
-                        <PoolItem liquidity={liquidity} />
-                      </div>
-                    )
-                  )}
-              </div>
-            ))}
         </div>
       )}
 
