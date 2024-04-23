@@ -51,6 +51,7 @@ export const changeNetwork = async (
           setIsWrongNetwork(false);
           document.body.style.overflowY = "auto";
         } else {
+          console.error("Failed:", errors);
           return false;
         }
       }
