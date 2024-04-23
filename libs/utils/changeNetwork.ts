@@ -18,6 +18,7 @@ export const changeNetwork = async (
       networkId,
       chainId,
       wallet,
+      provider,
     });
 
     if (networkId !== chainId) {
