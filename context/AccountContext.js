@@ -5,7 +5,9 @@ import {
   tokenGoerli,
   tokenBlast,
   network,
-  BLAST_DEMASK
+  BLAST_DEMASK,
+  BSC_DEMASK,
+  tokenBsc
 } from "@/libs/constants";
 const AccountContext = createContext();
 
@@ -33,9 +35,9 @@ export const AccountProvider = ({ children }) => {
     }
   }, [account]);
   useEffect(() => {
-     if (chainId === "5") {
-      setDemask(Goerli_DEMASK);
-      setTokenDefault(tokenGoerli);
+     if (chainId === "97") {
+      setDemask(BSC_DEMASK);
+      setTokenDefault(tokenBsc);
     } else if (chainId === "168587773") {
       setDemask(BLAST_DEMASK);
       setTokenDefault(tokenBlast);

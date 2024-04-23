@@ -1,7 +1,11 @@
 import {
   BlastIcon,
+  BscIcon,
   EtherIcon,
+  GoerliIcon,
   MonadIcon,
+  USDCIcon,
+  USDTIcon,
   ZkSyncIcon,
 } from "../../components/Icons";
 interface NetworkItem {
@@ -18,6 +22,27 @@ const tokenGoerli = [
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
     logo: EtherIcon,
     symbolNative: "ETH",
+  },
+];
+const tokenBsc = [
+  {
+    name: "Smart Chain",
+    symbol: "BNB",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
+    logo: BscIcon,
+    symbolNative: "WBNB",
+  },
+  {
+    name: "Tether",
+    symbol: "USDT",
+    address: process.env.NEXT_PUBLIC_USDT_BSC,
+    logo: USDTIcon,
+  },
+  {
+    name: "USD Coin",
+    symbol: "USDC",
+    address: process.env.NEXT_PUBLIC_USDC_BSC,
+    logo: USDCIcon,
   },
 ];
 const tokenBlast = [
@@ -71,6 +96,23 @@ const Goerli_DEMASK = {
   NAME: "Goerli Testnet",
   CURRENCY: "ETH",
 };
+const BSC_DEMASK = {
+  RPC: process.env.NEXT_PUBLIC_RPC_BSC,
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_BSC,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_BSC,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_BSC,
+  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BSC,
+  WETH: process.env.NEXT_PUBLIC_WETH_BSC,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
+  USDT: process.env.NEXT_PUBLIC_USDT_BSC,
+  USDC: process.env.NEXT_PUBLIC_USDC_BSC,
+  urltxHash: "https://testnet.bscscan.com/tx/",
+  chainName: "BNB Smart Chain Testnet",
+  NAME: "BNB Smart Chain Testnet",
+  CURRENCY: "tBNB",
+};
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
@@ -81,6 +123,11 @@ if (PORT === "3000") {
       name: "Blast Testnet",
       logo: BlastIcon,
       chain: "168587773",
+    },
+    {
+      name: "BNB Testnet",
+      logo: BscIcon,
+      chain: "97",
     },
     {
       name: "Monad Devnet",
@@ -191,4 +238,6 @@ export {
   version,
   validCollectionInput,
   validNFTsInput,
+  BSC_DEMASK,
+  tokenBsc,
 };
