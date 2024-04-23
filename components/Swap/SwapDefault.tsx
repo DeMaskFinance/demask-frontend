@@ -132,7 +132,7 @@ export default function SwapDefault() {
             </div>
           </div>
           <div className="flex flex-col justify-center my-6">
-            <div className="mx-auto w-60 ">
+            <div className="mx-auto w-36 3xl:w-60 ">
               <Image
                 alt="demask"
                 width={240}
