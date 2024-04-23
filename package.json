@@ -11,6 +11,8 @@
     "redeploy": "git pull origin && npm run build && pm2 start npm --name demask-frontend -- start"
   },
   "dependencies": {
+    "@dicebear/collection": "^8.0.1",
+    "@dicebear/core": "^8.0.1",
     "@reduxjs/toolkit": "^2.0.1",
     "@tanstack/react-query": "^4.29.25",
     "@tippyjs/react": "^4.2.6",

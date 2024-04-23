@@ -32,7 +32,6 @@ export default function Layout({ children }: PropsWithChildren) {
       updateChainId(network[0].chain);
     }
   }, [chainId, router.asPath, router.isReady]);
-  console.log(chainId);
 
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {

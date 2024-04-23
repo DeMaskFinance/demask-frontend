@@ -28,12 +28,13 @@ const TabQuery: React.FC<TabQueryProps> = ({
     setTranslateX(totalWidth);
   };
   useEffect(() => {
-    if (buttonRefs.current[indexChoice]) {
+    if (buttonRefs.current && buttonRefs.current[indexChoice]) {
+      // @ts-ignore
       setWidthBtn(buttonRefs.current[indexChoice].offsetWidth);
     }
     const totalWidth = buttonRefs.current
       .slice(0, indexChoice)
-      .reduce((acc, ref) => (ref ? acc + ref.offsetWidth : acc), 0);
+      .reduce((acc, ref) => (ref ? acc + (ref.offsetWidth || 0) : acc), 0);
     setTranslateX(totalWidth);
   }, [tab, TABS]);
 
