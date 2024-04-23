@@ -81,7 +81,7 @@ const collectionListUserService = async (
 const updateCollection = async (
   body: CollectionInterface,
   collectionAddress: string,
-  chainID:string
+  chainID: string
 ) => {
   try {
     const res = await request.patch(
@@ -99,14 +99,30 @@ const uploadFileCollection = async (params: any) => {
     if (params.avatar) {
       formData.append("avatar", params.avatar);
     }
-    
+
     if (params.banner) {
       formData.append("banner", params.banner);
     }
     if (params.featureImage) {
       formData.append("featureImage", params.featureImage);
     }
-    const res = await request.postForm(`upload-collection?chainId=${params.chainId}&contractAddress=${params.collectionAddress}`, formData);
+    const res = await request.postForm(
+      `upload-collection?chainId=${params.chainId}&contractAddress=${params.collectionAddress}`,
+      formData
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const collectionListUser = async (
+  account: string,
+  chainId: string | string[]
+) => {
+  try {
+    const res = await request.get(
+      `get-owner-collection?chainId=${chainId}&userAddress=${account}`
+    );
     return res.data;
   } catch (error) {
     console.error(error);
@@ -119,5 +135,6 @@ export {
   collectionListSell,
   collectionListUserService,
   updateCollection,
-  uploadFileCollection
+  uploadFileCollection,
+  collectionListUser,
 };

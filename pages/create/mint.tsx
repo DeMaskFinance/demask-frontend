@@ -1,5 +1,12 @@
 import Button from "@/components/Buttons/Button";
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import WithAuth from "@/components/Common/WithAuth";
 import MintNFT from "@/components/Create/MintNFT";
 import UploadFile from "@/components/Create/UploadFile";
@@ -21,6 +28,9 @@ import Link from "next/link";
 import AccountContext from "@/context/AccountContext";
 import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
 import { NumericFormat } from "react-number-format";
+import { useQuery } from "@tanstack/react-query";
+import { collectionListUser } from "@/libs/service/collectionService";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 dark:text-dark4",
@@ -30,18 +40,7 @@ const updateMeta = {
   ...SEO,
   title: "Mint NFTs",
 };
-const collectionList = [
-  {
-    name: "DEMASK COLLECTION",
-    icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
-    address: "0x4b8a6996f584240f3f20d6bab16989f5955ae8d2",
-  },
-  {
-    name: "TEST COLLECTION",
-    icon: <BlastIcon className="fill-dark2 " width={20} height={20} />,
-    address: "0x4b8a6996f584240f3f20d6bab16989f5955ae8d2",
-  },
-];
+
 export default function Creator() {
   const itemRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState<string>("");
@@ -55,16 +54,38 @@ export default function Creator() {
   const [attributeItems, setAttributeItems] = useState([
     { id: 0, trait_type: "", value: "" },
   ]);
-  const { chainId } = useContext(AccountContext);
+  const { chainId, account, demask } = useContext(AccountContext);
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [isOpenCollection, setIsOpenCollection] = useState<boolean>(false);
+  const collectionList = [
+    {
+      name: "DEMASK COLLECTION",
+      img: (
+        <img
+          src="/logoDefault.png"
+          className="w-8 h-8 rounded-lg"
+          alt="img_collection"
+        />
+      ),
+      collectionAddress: demask.CREATE_COLLECTION,
+    },
+  ];
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["listCollectionUser", chainId, account],
+    queryFn: async () => {
+      const res = await collectionListUser(account, chainId);
+      return res.data;
+    },
+  });
+  console.log(data);
+
   const [collection, setCollection] = useState<{
-    icon: JSX.Element;
+    img: JSX.Element;
     name: String;
-    address: String;
+    collectionAddress: String;
   }>(collectionList[0]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -150,7 +171,6 @@ export default function Creator() {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);
-  console.log(totalSupply);
 
   return (
     <>
@@ -195,7 +215,7 @@ export default function Creator() {
                   onClick={() => setIsOpenCollection(!isOpenCollection)}
                 >
                   <div className="flex items-center gap-x-2">
-                    {collection.icon}
+                    {collection.img}
                     <p className="font-semibold text-dark2">
                       {collection.name}
                     </p>
@@ -226,15 +246,54 @@ export default function Creator() {
                         className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
                         onClick={() => setCollection(item)}
                       >
-                        {item.icon}
+                        {item.img}
                         <div>
                           <p className="font-semibold text-dark2">
                             {item.name}
                           </p>
-                          <p className="text-sm text-dark2">{item.address}</p>
+                          <p className="text-sm text-dark2">
+                            {item.collectionAddress}
+                          </p>
                         </div>
                       </li>
                     ))}
+                    {isSuccess && (
+                      <Fragment>
+                        {data.map((item: any, index: number) => (
+                          <li
+                            key={index}
+                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                            onClick={() =>
+                              setCollection({
+                                img: (
+                                  <img
+                                    src={formatLinkIPFS(item.url)}
+                                    alt="list_collection"
+                                    className="object-cover w-8 h-8 rounded-lg"
+                                  />
+                                ),
+                                name: item.name,
+                                collectionAddress: item.collectionAddress,
+                              })
+                            }
+                          >
+                            <img
+                              src={formatLinkIPFS(item.url)}
+                              alt="list_collection"
+                              className="object-cover w-8 h-8 rounded-lg"
+                            />
+                            <div>
+                              <p className="font-semibold text-dark2">
+                                {item.name}
+                              </p>
+                              <p className="text-sm text-dark2">
+                                {item.collectionAddress}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </Fragment>
+                    )}
                     <li></li>
                   </ul>
                 </div>
@@ -430,7 +489,7 @@ export default function Creator() {
                 setTotalSupply={setTotalSupply}
                 fileType={fileType}
                 totalSupply={totalSupply}
-                contractAddress={collection.address}
+                contractAddress={collection.collectionAddress}
               />
             </form>
           </div>
