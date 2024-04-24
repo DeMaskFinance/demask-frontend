@@ -227,6 +227,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         }
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
+        queryClient.refetchQueries(["detailCollection"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -303,19 +304,18 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               </Button>
             )}
             {isApprovedLiquidity && (
-              <button
-                type="button"
-                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
-                  isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
-                } rounded-lg text-sm text-white mx-auto block`}
-                disabled={isLoadingInforDML || preFectch}
-                onClick={removeLiquidity}
-              >
-                CONFIRM
-                {isLoadingInforDML && (
-                  <BiLoaderAlt className="text-white animate-spin" />
-                )}
-              </button>
+              <Button
+              disabled={isLoadingInforDML || preFectch}
+              primary={!isLoadingInforDML && !preFectch}
+              className="w-[144px] py-2"
+              active={isLoadingInforDML || preFectch}
+              onClick={removeLiquidity}
+            >
+              REMOVE
+              {isLoadingInforDML && (
+                <BiLoaderAlt className="ml-1 text-white animate-spin" />
+              )}
+            </Button>
             )}
           </div>
         </div>

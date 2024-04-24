@@ -237,6 +237,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         setInputNFT("");
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
+        queryClient.refetchQueries(["detailCollection"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -401,19 +402,18 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           </div>
           <div className="flex flex-col items-center mt-6">
             {isApprovedToken ? (
-              <button
-                type="button"
+              <Button
                 disabled={isLoadingInforDML || preFectch}
-                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
-                  isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
-                } rounded-lg text-sm text-white mx-auto block`}
+                primary={!isLoadingInforDML && !preFectch}
+                className="w-[144px] py-2"
+                active={isLoadingInforDML || preFectch}
                 onClick={handleBuyNFT}
               >
                 BUY NFT
                 {isLoadingInforDML && (
-                  <BiLoaderAlt className="text-white animate-spin" />
+                  <BiLoaderAlt className="ml-1 text-white animate-spin" />
                 )}
-              </button>
+              </Button>
             ) : (
               <Button
                 className="w-[126px] py-2 mx-auto"

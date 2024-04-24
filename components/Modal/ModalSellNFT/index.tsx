@@ -221,6 +221,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
         setInputNFT("");
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
+        queryClient.refetchQueries(["detailCollection"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -284,8 +285,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             </span>
             <span> or the transaction will revert</span>
           </div>
-          <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3">
-            <div className="flex justify-between text-sm text-dark1">
+          <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3 area_input text-dark1 dark:text-dark3">
+            <div className="flex justify-between text-sm ">
               <p>Price</p>
               <div className="flex items-center">
                 <FormatNumber
@@ -303,7 +304,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                 </p>
               </div>
             </div>
-            <div className="flex justify-between text-sm text-dark1">
+            <div className="flex justify-between text-sm ">
               <p>Minimum received</p>
               <div className="flex items-center">
                 <FormatNumber
@@ -318,7 +319,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
               </div>
             </div>
             <div
-              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1"
+              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 text-dark1 dark:text-dark3"
               onClick={() => setSeeDetail(!seeDetail)}
             >
               <div className="flex items-center gap-x-1">
@@ -387,19 +388,18 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             )}
           </div>
           <div className="flex flex-col items-center mt-6">
-            <button
-              type="button"
+            <Button
               disabled={isLoadingInforDML || preFectch}
-              className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
-                isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
-              } rounded-lg text-sm text-white mx-auto block`}
+              primary={!isLoadingInforDML && !preFectch}
+              className="w-[144px] py-2"
+              active={isLoadingInforDML || preFectch}
               onClick={handleSellNFT}
             >
               SELL NFT
               {isLoadingInforDML && (
-                <BiLoaderAlt className="text-white animate-spin" />
+                <BiLoaderAlt className="ml-1 text-white animate-spin" />
               )}
-            </button>
+            </Button>
           </div>
         </div>
         <button

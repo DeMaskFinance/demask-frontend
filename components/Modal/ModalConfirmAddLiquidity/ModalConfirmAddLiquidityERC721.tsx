@@ -168,6 +168,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         }
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
+        queryClient.refetchQueries(["detailCollection"]);
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -235,19 +236,18 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             or the transaction will revert
           </p>
           <div className="flex flex-col items-center mt-6">
-            <button
-              type="button"
+            <Button
               disabled={isLoadingInforDML || preFectch}
-              className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
-                isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
-              } rounded-lg text-sm text-white mx-auto block`}
+              primary={!isLoadingInforDML && !preFectch}
+              className="w-[144px] py-2"
+              active={isLoadingInforDML || preFectch}
               onClick={addLiquidity}
             >
-              Create pool
+              CREATE POOL
               {isLoadingInforDML && (
-                <BiLoaderAlt className="text-white animate-spin" />
+                <BiLoaderAlt className="ml-1 text-white animate-spin" />
               )}
-            </button>
+            </Button>
           </div>
         </div>
         <button
