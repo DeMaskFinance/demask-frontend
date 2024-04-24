@@ -2,7 +2,7 @@ import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
-import { createChart } from "lightweight-charts";
+import { createChart, CrosshairMode, LineStyle, PriceScaleMode } from "lightweight-charts";
 import { useContext, useEffect, useRef, useState } from "react";
 import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";
@@ -59,6 +59,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   useEffect(() => {
     setLegendData(volume[volume.length - 1]);
   }, [volume]);
+  console.log(data);
+  
   useEffect(() => {
     if (Array.isArray(data)) {
       const convertedData = data?.map((item: DataItem) => ({
@@ -104,8 +106,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             color: theme === "dark" ? "#1A1A1A" : "white",
           },
           textColor: "#ffffff",
+          fontSize: 10
         },
       });
+
       chart.applyOptions({
         grid: {
           vertLines: {
@@ -135,8 +139,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               return parseFloat(price.toPrecision(6));
             }
           },
+          locale: "en-US",
         },
       });
+      chart.timeScale().fitContent();
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: "rgb(14,203,129)",
         borderUpColor: "rgb(14,203,129)",
@@ -144,14 +150,15 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         borderDownColor: "rgb(246,70,93)",
         priceFormat: {
           type: "volume",
-          precision: 6,
+          precision: 3,
         },
+        priceScaleId: "candles",
       });
       const volumeSeries = chart.addHistogramSeries({
         priceFormat: {
           type: "volume",
         },
-        priceScaleId: "",
+        priceScaleId: "volume",
       });
       volumeSeries.priceScale().applyOptions({
         // set the positioning of the volume series
@@ -179,6 +186,16 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       //     minMove: 0.0001,
       //   },
       // });
+      chart.priceScale('right').applyOptions({
+        borderColor: "#D6DCDE",
+        autoScale: true,
+        mode: PriceScaleMode.Normal,
+      });
+
+      // Setting the border color for the horizontal axis
+      chart.timeScale().applyOptions({
+        borderColor: "#D6DCDE",
+      });
       chart.timeScale().scrollToPosition(50, false);
       chart
         .timeScale()
@@ -340,7 +357,11 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               </div>
             </div>
           </div>
-          <div ref={chartContainerRef} id="chart" className="w-full h-[78%]" />
+          <div
+            ref={chartContainerRef}
+            id="chart"
+            className="w-full h-[calc(100%-120px)]"
+          />
           <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               {optionTime.map((item, index) => (

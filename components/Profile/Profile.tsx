@@ -7,7 +7,7 @@ import History from "./History";
 import Pools from "./Pools";
 import Referral from "./Referral";
 import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
-import { AvatarUser } from "../Avatars";
+import { AvatarCustom, AvatarUser } from "../Avatars";
 import Copy from "../Common/Copy";
 import AccountContext from "@/context/AccountContext";
 import { EditIcon } from "../Icons";
@@ -108,7 +108,7 @@ const Profile = () => {
               className="object-cover rounded-full w-[120px] h-[120px]"
             />
           ) : (
-            <AvatarUser width={120} height={120} />
+            <AvatarCustom size={120} seed={account} />
           )}
           <div>
             <div className="flex items-center gap-x-2">

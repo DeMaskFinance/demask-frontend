@@ -102,7 +102,7 @@ const Search: FunctionComponent<SearchProps> = ({
   }, [active]);
 
   const handleResultItemClick = (item: any) => {
-    setSearchTerm(item.metadata.name);
+    setSearchTerm(item.metadata?.name);
     let newURL = "";
     const { slug } = router.query;
     if (slug) {
@@ -121,7 +121,7 @@ const Search: FunctionComponent<SearchProps> = ({
     // setShowSearch(false);
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
-        historyItem.metadata.name === item.metadata.name &&
+        historyItem.metadata.name === item.metadata?.name &&
         historyItem.dmlAddress === item.dmlAddress
     );
 
@@ -229,7 +229,7 @@ const Search: FunctionComponent<SearchProps> = ({
                             <div className="flex flex-col items-baseline">
                               <span className="block text-sm font-semibold">
                                 <span className="line-clamp-1">
-                                  {item.metadata.name}
+                                  {item.metadata?.name}
                                 </span>
                               </span>
                               <span className="flex text-xs item-center">

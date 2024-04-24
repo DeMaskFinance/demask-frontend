@@ -1,4 +1,4 @@
-import { AvatarUser } from "@/components/Avatars";
+import { AvatarCustom, AvatarUser } from "@/components/Avatars";
 import { EditIcon } from "@/components/Icons";
 import { uploadFile } from "@/libs/service/userService";
 import { selectProfile, userData } from "@/store/profileSlice";
@@ -37,6 +37,8 @@ export default function EditProfile() {
       setAvatarLoading(false);
     }
   };
+  console.log(profile);
+  
   return (
     <div className="px-4 pb-20 lg:px-0 lg:pb-0">
       <div className="relative cursor-pointer group h-[120px] lg:h-[240px]">
@@ -84,7 +86,7 @@ export default function EditProfile() {
                 className="object-cover rounded-full w-[120px] h-[120px]"
               />
             ) : (
-              <AvatarUser width={120} height={120} />
+              <AvatarCustom size={120} seed={profile.userAddress!} />
             )}
           </div>
           {avatarLoading ? (

@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
-import { AvatarUser } from "../Avatars";
+import { AvatarCustom, AvatarUser } from "../Avatars";
 import { formatToUnit } from "@/libs/utils/formatComon";
 export const CardListLoading = () => {
   return (
@@ -28,6 +28,8 @@ export const CardListLoading = () => {
   );
 };
 const CardList = ({ data }: any) => {
+  console.log(data);
+  
   return (
     <div
       className={`flex flex-col bg-white dark:bg-darkBG1 items-center justify-center p-2 border dark:text-white rounded-lg text-dark1 w-full h-fit ${
@@ -46,10 +48,10 @@ const CardList = ({ data }: any) => {
           height={600}
           alt="leaderboardImg"
           src={data?.avatar}
-          className="rounded-full object-cover    w-[120px] h-[120px]"
+          className="rounded-full object-cover  w-[120px] h-[120px]"
         />
       ) : (
-        <AvatarUser width={120} height={120} />
+        <AvatarCustom size={120} seed={data?.userAddress}/>
       )}
       <h2 className="mt-2 mb-6 text-lg font-semibold lg:text-2xl">
         {data?.name}

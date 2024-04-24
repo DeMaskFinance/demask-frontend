@@ -1,6 +1,7 @@
 interface UserInterface {
   name?: string;
   userName?: string;
+  userAddress?: string;
   avatar?: string;
   socials?: Socials;
   banner?: string;

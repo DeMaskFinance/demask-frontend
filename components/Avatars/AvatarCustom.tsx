@@ -3,11 +3,13 @@ import { createAvatar } from "@dicebear/core";
 import { bottts, identicon, pixelArt } from "@dicebear/collection";
 interface AvatarProps {
   size: number;
+  seed:string;
 }
-const AvatarCustom: FunctionComponent<AvatarProps> = ({ size }) => {
-  const avatar = createAvatar(pixelArt, {
+const AvatarCustom: FunctionComponent<AvatarProps> = ({ size, seed }) => {
+  const avatar = createAvatar(identicon, {
     size: size,
     backgroundType: ["gradientLinear", "solid"],
+    seed: seed
   });
   const svgHTML = { __html: avatar };
   const svg = avatar.toString();
@@ -15,7 +17,7 @@ const AvatarCustom: FunctionComponent<AvatarProps> = ({ size }) => {
   return (
     <div>
       {/* @ts-ignore */}
-      <svg dangerouslySetInnerHTML={svgHTML} />
+      <div dangerouslySetInnerHTML={svgHTML} />
     </div>
   );
 };

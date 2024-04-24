@@ -529,7 +529,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             <div className="relative">
               {activeChoice === "Buy" ? (
-                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
+                <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
                   {isLoadingBuy ? (
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   ) : (
@@ -542,7 +542,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   )}
                 </div>
               ) : (
-                <div className="block w-full py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
+                <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
                   {isLoadingSell ? (
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   ) : (
@@ -561,6 +561,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
           </div>
         </form>
+        <div className="h-4">
         {inputNFTValue &&
           activeChoice === "Buy" &&
           Math.floor(amountBuyDec) === 0 && (
@@ -572,6 +573,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           Math.floor(amountSellDec) === 0 && (
             <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
           )}
+        </div>
         <div className="flex justify-center w-full">
           {activeChoice === "Buy" && account && (
             <button

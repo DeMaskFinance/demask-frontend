@@ -270,7 +270,7 @@ const Change = () => {
                           <div
                             className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
                               idNFTInput.includes(Number(item.nftID))
-                                ? "border-secondary5"
+                                ? "border-secondary5 dark:border-secondary5"
                                 : ""
                             }`}
                           >
@@ -286,13 +286,13 @@ const Change = () => {
                               <div className="flex w-full mt-2">
                                 <div className="w-full">
                                   <h6
-                                    title={item.metadata.name}
+                                    title={item.metadata?.name}
                                     className="flex items-start gap-2 font-semibold uppercase"
                                   >
                                     <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                      {item.metadata.name ? (
+                                      {item.metadata?.name ? (
                                         <ModalDocument
-                                          data={item.metadata.name}
+                                          data={item.metadata?.name}
                                         />
                                       ) : (
                                         <p>--</p>
@@ -356,7 +356,7 @@ const Change = () => {
                       <div
                         className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base dark:border-dark3 hover:shadow-home ${
                           idNFTOutput.includes(Number(item.nftID))
-                            ? "border-secondary5"
+                            ? "border-secondary5 dark:border-secondary5"
                             : ""
                         }`}
                       >
@@ -367,12 +367,12 @@ const Change = () => {
                           <div className="flex w-full mt-2">
                             <div className="w-full">
                               <h6
-                                title={item.metadata.name}
+                                title={item.metadata?.name}
                                 className="flex items-start gap-2 font-semibold uppercase"
                               >
                                 <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                  {item.metadata.name ? (
-                                    <ModalDocument data={item.metadata.name} />
+                                  {item.metadata?.name ? (
+                                    <ModalDocument data={item.metadata?.name} />
                                   ) : (
                                     <p>--</p>
                                   )}

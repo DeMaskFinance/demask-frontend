@@ -7,7 +7,7 @@ import { SkeletonTable } from "../Skeleton";
 import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import AccountContext from "@/context/AccountContext";
 import { useQuery } from "@tanstack/react-query";
-import { AvatarUser } from "../Avatars";
+import { AvatarCustom, AvatarUser } from "../Avatars";
 import Link from "next/link";
 import axios from "axios";
 
@@ -50,10 +50,10 @@ const ItemTableRank = ({ item, currentRank }: any) => {
             width={120}
             alt="userIMG"
             height={120}
-            className="object-cover w-6 h-6 mr-2 rounded-lg"
+            className="object-cover w-6 h-6 rounded-lg"
           />
         ) : (
-          <AvatarUser width={24} height={24} />
+          <AvatarCustom size={24} seed={item?.userAddress} />
         )}
         <p>{item?.name}</p>
       </td>

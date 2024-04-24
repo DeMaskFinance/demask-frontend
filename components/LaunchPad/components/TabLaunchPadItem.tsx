@@ -35,10 +35,10 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
             <div className="flex flex-col justify-between flex-grow">
               <div>
                 <div
-                  title={item.metadata.name}
+                  title={item.metadata?.name}
                   className="flex items-start gap-2 py-2 text-xl font-medium uppercase title"
                 >
-                  <ModalDocument data={item.metadata.name} />
+                  <ModalDocument data={item.metadata?.name} />
                   <svg
                     className="flex-shrink-0"
                     width="25"
