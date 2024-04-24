@@ -70,7 +70,7 @@ export default function Creator() {
           alt="img_collection"
         />
       ),
-      collectionAddress: demask.CREATE_COLLECTION,
+      collectionAddress: demask.CREATOR,
     },
   ];
   const { data, isLoading, isSuccess } = useQuery({
