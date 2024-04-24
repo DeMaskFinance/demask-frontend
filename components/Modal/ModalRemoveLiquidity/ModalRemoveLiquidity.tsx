@@ -341,7 +341,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <p className="text-dark3">NFT</p>
                 </div>
               </div>
-              <div className="input_item">
+              <div className="mb-4 input_item">
                 <div className="flex justify-between">
                   <FormatNumber number={amountTokenDec} />
                   <p className="text-dark3">{data.tokenSymbol}</p>

@@ -273,6 +273,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     <p className="font-semibold">Token</p>
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
+                  <div className="mb-4">
                   {dmlToken === "0x0000000000000000000000000000000000000000" ? (
                     <input
                       className="input_item"
@@ -294,6 +295,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       )}
                     </div>
                   )}
+                  </div>
                   {isSufficientToken && (
                     <p
                       className="mb-2 ml-3 -mt-1 text-xs text-red"
