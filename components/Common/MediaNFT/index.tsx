@@ -20,7 +20,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   return (
     <>
-      {data?.metadata && (
+      {data?.metadata ? (
         <div className="relative h-[inherit] w-full">
           {data.metadata?.image && (
             <div className="w-full h-full overflow-hidden rounded-lg">
@@ -98,6 +98,16 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
             />
           )}
         </div>
+      ):(
+        <Image
+        src="/Placeholder.png"
+        alt="test"
+        width={680}
+        height={576}
+        sizes="(max-width: 770px) 100vw"
+        className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
+        blurDataURL={`${images.blur}`}
+      />
       )}
     </>
   );

@@ -137,8 +137,8 @@ export default function SwapDefault() {
                 alt="demask"
                 width={240}
                 height={240}
-                src="/logoDefault.png"
-                className="object-cover rounded-lg"
+                src="/logoSwap.png"
+                className="object-cover w-full h-full rounded-xl"
               />
             </div>
           </div>
