@@ -18,15 +18,17 @@ const style = {
 };
 interface networkProps {
   name: string;
-  logo: React.FC;
+  logo: any;
   chain: string;
+  sign: string;
+  disable?: boolean;
 }
 const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
   const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(
     network[0]
   );
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
-  const { updateChainId, chainId, wallet, demask, account } =
+  const { updateChainId, chainId, wallet, demask, account,chainName,updateChainName } =
     useContext(AccountContext);
   const [tab, setTab] = useQueryParam(
     "chain",
@@ -34,97 +36,97 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
   );
   const router = useRouter();
   const { isLoggedIn } = useSelector(selectProfile);
-  const handleChangeNetwork = async (chain: string) => {
-    if (account && wallet && isLoggedIn) {
-      const check = await changeNetwork(
-        chain,
-        wallet,
-        demask,
-        setIsWrongNetwork,
-        updateChainId,
-        setTab
-      );
-      if (check) {
-        router.replace(`/swap?chain=${chain}`);
-      }
-    } else {
-      updateChainId(chain);
-      setTab(chain);
-      router.replace(`/swap?chain=${chain}`);
+  // const handleChangeNetwork = async (chain: string) => {
+  //   if (account && wallet && isLoggedIn) {
+  //     const check = await changeNetwork(
+  //       chain,
+  //       wallet,
+  //       demask,
+  //       setIsWrongNetwork,
+  //       updateChainId,
+  //       setTab
+  //     );
+  //     if (check) {
+  //       router.replace(`/swap?chain=${chain}`);
+  //     }
+  //   } else {
+  //     updateChainId(chain);
+  //     setTab(chain);
+  //     router.replace(`/swap?chain=${chain}`);
+  //   }
+  // };
+  const handleChangeNetwork = (item: any) => {
+    if (item.chain !== "1") {
+      updateChainId(item.chain);
+      updateChainName(item.sign);
     }
   };
   useEffect(() => {
-    if (router.query.chain) {
-      const foundNetwork = network.find(
-        (item) => item.chain === router.query.chain
-      );
+    if (chainName) {
+      const foundNetwork = network.find((item) => item.sign === chainName);
       setFilterNetwork(foundNetwork);
     } else {
-      setFilterNetwork(network[0]);
+      setFilterNetwork(network[1]);
     }
-  }, [router.query.chain, router.isReady]);
+  }, [chainName]);
 
   const LogoComponent: any = filterNetwork?.logo;
   return (
     <Tippy
-      className=""
-      interactive
-      render={(attrs) => (
-        <div
-          className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
-          tabIndex={-1}
-          {...attrs}
-        >
-          <p className="p-2 text-base border-b-[1px] border-dark3">
-            Select a network
-          </p>
-          <ul className="flex flex-col mt-2 font-normal gap-y-3">
-            {network.map((item, index) => (
-              <li
-                key={index}
-                className={`${
-                  style.itemSub
-                } gap-x-2 group justify-between items-center ${
-                  item.disable ? "hover:cursor-no-drop" : ""
-                } `}
-                onClick={() => !item.disable && handleChangeNetwork(item.chain)}
-              >
-                <div className="flex items-center gap-x-2">
-                  <item.logo
-                    width={24}
-                    height={24}
-                    className={`fill-dark2  group-hover:fill-secondary4 ${
-                      filterNetwork?.chain === item.chain && "fill-secondary4"
-                    }`}
-                  />
-                  <p
-                    className={`${
-                      filterNetwork?.chain === item.chain &&
-                      "text-secondary2 font-medium"
-                    }`}
-                  >
-                    {item.name}
-                  </p>
-                </div>
-                {item.disable && <p className="right-0 text-xs">Upcoming</p>}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    >
-      <button className={`${style.btnWallet} flex`}>
-        <LogoComponent
-          width={24}
-          height={24}
-          className=" fill-white group-hover:fill-secondary5"
-        />
-        <p className="hidden lg:block">{filterNetwork?.name}</p>
-        <span className="lg:hidden">
-          <BsCaretDownFill />
-        </span>
-      </button>
-    </Tippy>
+    className=""
+    interactive
+    render={(attrs) => (
+      <div
+        className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
+        tabIndex={-1}
+        {...attrs}
+      >
+        <p className="p-2 text-base border-b-[1px] border-dark3">
+          Select a network
+        </p>
+        <ul className="flex flex-col mt-2 font-normal gap-y-3">
+          {network.map((item, index) => (
+            <li
+              key={index}
+              className={`${
+                style.itemSub
+              } gap-x-2 group justify-between items-center active:bg-dark4 ${
+                item.disable ? "hover:cursor-no-drop" : ""
+              } `}
+              onClick={() => handleChangeNetwork(item)}
+            >
+              <div className="flex items-center gap-x-2">
+                <item.logo
+                  width={24}
+                  height={24}
+                  className={`fill-dark2  ${
+                    filterNetwork?.sign === item.sign && "fill-secondary5"
+                  }`}
+                />
+                <p
+                  className={`${
+                    filterNetwork?.sign === item.sign &&
+                    "text-secondary5 font-medium"
+                  }`}
+                >
+                  {item.name}
+                </p>
+              </div>
+              {item.disable && <p className="right-0 text-xs">Upcoming</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  >
+    <button className={`${style.btnWallet} flex`}>
+      <LogoComponent width={24} height={24} className=" fill-white" />
+      <p className="hidden 2xl:block">{filterNetwork?.name}</p>
+      <span className="2xl:hidden">
+        <BsCaretDownFill />
+      </span>
+    </button>
+  </Tippy>
   );
 };
 

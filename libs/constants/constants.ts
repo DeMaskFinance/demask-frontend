@@ -14,6 +14,7 @@ interface NetworkItem {
   name: string;
   logo: any;
   chain: string;
+  sign:string;
   disable?: boolean;
 }
 const version = "Version 0.1.8";
@@ -106,19 +107,21 @@ const Goerli_DEMASK = {
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
-const chainBlast = "168587773";
+const chainBlast = "5";
 if (PORT === "3000") {
   network = [
     {
-      name: "Blast Testnet",
-      logo: BlastIcon,
-      chain: "168587773",
-    },
-    {
       name: "Monad Devnet",
       logo: MonadIcon,
-      chain: "1",
-      disable: true,
+      chain: "5",
+      sign: "monad-devnet",
+      // disable: true,
+    },
+    {
+      name: "Goerli Testnet",
+      logo: GoerliIcon,
+      chain: "5",
+      sign: "goerli-testnet",
     },
   ];
 } else if (PORT === "1307") {
@@ -127,6 +130,7 @@ if (PORT === "3000") {
       name: "Blast Testnet",
       logo: BlastIcon,
       chain: "168587773",
+      sign: "goerli-testnet",
     },
   ];
 }

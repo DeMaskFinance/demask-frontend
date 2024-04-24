@@ -19,12 +19,14 @@ export const AccountProvider = ({ children }) => {
   const [chainId, setChainId] = useState(network[0]?.chain);
   const [demask, setDemask] = useState("");
   const [tokenDefault, setTokenDefault] = useState("");
+  const [chainName, setChainName] = useState(network[0]?.sign);
   const [slippage, setSlippage] = useState(5);
   const [txDeadline, setTxDeadline] = useState(20);
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
     const storedChainId = localStorage.getItem("CHAINID");
+    const storedChainName = localStorage.getItem("CHAINNAME_DEMASK");
     if (storedAccount) {
       setAccount(storedAccount);
     }
@@ -33,6 +35,9 @@ export const AccountProvider = ({ children }) => {
     }
     if (storedChainId) {
       setChainId(storedChainId);
+    }
+    if (storedChainName) {
+      setChainName(storedChainName);
     }
   }, [account]);
   useEffect(() => {
@@ -63,7 +68,10 @@ export const AccountProvider = ({ children }) => {
     setAccount(newAccount);
     localStorage.setItem("ACCOUNT_DEMASK", newAccount);
   };
-
+  const updateChainName = (newChainName) => {
+    setChainName(newChainName);
+    localStorage.setItem("CHAINNAME_DEMASK_ECO", newChainName);
+  };
   const updateWallet = (newWallet) => {
     setWallet(newWallet);
     localStorage.setItem("WALLET_DEMASK", newWallet);
@@ -89,7 +97,9 @@ export const AccountProvider = ({ children }) => {
         updateWallet,
         wallet,
         updateChainId,
+        updateChainName,
         chainId,
+        chainName,
         demask,
         tokenDefault,
         txDeadline,

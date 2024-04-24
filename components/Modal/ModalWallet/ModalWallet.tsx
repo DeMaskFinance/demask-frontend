@@ -18,7 +18,7 @@ interface ModalWalletProps {
 }
 const styles = {
   walletItem:
-    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 rounded-lg cursor-pointer",
+    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 rounded-lg cursor-not-allowed",
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
@@ -98,21 +98,21 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
         <div className="mt-4 font-medium">
           <div
             className={styles.walletItem}
-            onClick={() => connectWallet("Metamask")}
+            // onClick={() => connectWallet("Metamask")}
           >
             <Image src={images.metamaskWallet} alt="Metamask" className="w-8" />
             <p>MetaMask</p>
           </div>
           <div
             className={styles.walletItem}
-            onClick={() => connectWallet("Coinbase")}
+            // onClick={() => connectWallet("Coinbase")}
           >
             <Image src={images.coinbaseWallet} alt="Coinbase" className="w-8" />
             <p>Coinbase</p>
           </div>
           <div
             className={styles.walletItem}
-            onClick={() => connectWallet("WalletConnect")}
+            // onClick={() => connectWallet("WalletConnect")}
           >
             <Image
               src={images.walletConnect}
@@ -123,7 +123,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           </div>
           <div
             className={styles.walletItem}
-            onClick={() => connectWallet("Binance")}
+            // onClick={() => connectWallet("Binance")}
           >
             <Image
               src={images.binanceWallet}
