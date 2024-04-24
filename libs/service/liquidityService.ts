@@ -50,7 +50,7 @@ const liquidityUserERC721 = async (
 ) => {
   try {
     const res = await request.get(
-      `pool-info?chainId=168587773&type=erc721&collectionAddress=0x58d8d129a641a60976d5a4d81fa3c8f1f3f44ded`
+      `pool-info?chainId=${chainId}&type=erc721&collectionAddress=${collectionAddress}`
     );
     return res.data;
   } catch (error) {

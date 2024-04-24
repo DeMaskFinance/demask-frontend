@@ -301,7 +301,11 @@ export default function CreatedCollection() {
             <div className="text-dark2">
               <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
               <div className="flex items-center text-xl font-semibold ">
-                <FormatNumber number={dataDetail?.totalSale} />
+                {
+                  dataDetail?.totalSale  ?(
+                    <FormatNumber number={dataDetail?.totalSale} />
+                  ):0
+                }
                 <EtherIcon width={16} height={16} className="fill-dark2" />
               </div>
             </div>
