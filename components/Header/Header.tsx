@@ -268,7 +268,7 @@ export default function Header() {
                 </div>
               </Tippy>
             ) : (
-              <button className={style.btnWallet} onClick={handleOpen}>
+              <button className={`${style.btnWallet} cursor-not-allowed`}>
                 <Image
                   className="hidden group-hover:block"
                   src={Icons.wallet}

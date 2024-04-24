@@ -298,8 +298,8 @@ export default function DetailLiquidity() {
               </div>
               <div className="flex justify-center mt-4">
                 <Button
-                  className="px-6 py-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg bg-green hover:bg-white hover:text-green boder-white hover:border-green"
-                  onClick={handleGetReward}
+                  className="px-6 py-2 text-sm font-medium text-white transition-all duration-150 ease-linear border rounded-lg cursor-not-allowed bg-green hover:bg-white hover:text-green boder-white hover:border-green"
+                  // onClick={handleGetReward}
                 >
                   {account ? "COLLECT" : "CONNECT WALLET"}
                 </Button>

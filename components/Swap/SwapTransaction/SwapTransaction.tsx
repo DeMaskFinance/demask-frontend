@@ -446,9 +446,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({ data, 
           {
             !account && (
               <Button
-                className="w-[144px] py-2"
+                className="w-[144px] py-2 cursor-not-allowed"
                 primary
-                onClick={handleOpen}
+                // onClick={handleOpen}
               >
                 CONNECT WALLET
               </Button>

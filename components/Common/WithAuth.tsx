@@ -28,9 +28,9 @@ function WithAuth({ children }: any) {
                 ) : (
                     <div className='pt-6'>
                         <Button
-                            className="w-[140px] py-2 block mx-auto"
+                            className="w-[140px] py-2 block mx-auto cursor-not-allowed"
                             primary
-                            onClick={handleOpen}
+                            // onClick={handleOpen}
                         >
                             CONNECT WALLET
                         </Button>

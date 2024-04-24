@@ -427,9 +427,9 @@ export default function DetailLaunchPad() {
                           </>
                         ) : (
                           <Button
-                            className="w-[144px] py-2 mt-2"
+                            className="w-[144px] py-2 mt-2 cursor-not-allowed"
                             primary
-                            onClick={handleOpen}
+                            // onClick={handleOpen}
                           >
                             CONNECT WALLET
                           </Button>
