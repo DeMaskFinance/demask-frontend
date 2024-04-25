@@ -11,7 +11,7 @@ import * as userService from "@/libs/service/userService";
 import { getProvider } from "@/libs/connection/getProvider";
 import { network } from "@/libs/constants";
 export default function Layout({ children }: PropsWithChildren) {
-  const { chainId, updateChainId, updateAccount, wallet } =
+  const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
   const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
@@ -85,7 +85,7 @@ export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className="box-border w-full overflow-hidden">
       <Header />
-      <main className="mt-[64px] lg:px-primary md:px-14 px-4">{children}</main>
+      <main className={`${isEvent ? "mt-[104px]" : "mt-16"}`}>{children}</main>
       <Footer />
       <NavFooter />
     </div>

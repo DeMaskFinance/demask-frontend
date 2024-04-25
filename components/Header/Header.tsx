@@ -40,8 +40,15 @@ export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
-  const { account, updateAccount, wallet, chainId, demask } =
-    useContext(AccountContext);
+  const {
+    account,
+    updateAccount,
+    wallet,
+    chainId,
+    demask,
+    isEvent,
+    setIsEvent,
+  } = useContext(AccountContext);
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -107,7 +114,10 @@ export default function Header() {
         if (headerRef.current) {
           const headerClassList = headerRef.current.classList;
           headerClassList.toggle("translate-y-0", isScrolledUp);
-          headerClassList.toggle("translate-y-[-100%]", !isScrolledUp);
+          headerClassList.toggle(
+            "translate-y-[-100%]",
+            !isScrolledUp && currentScrollPos > 120
+          );
         }
 
         prevScrollPos = currentScrollPos;
@@ -127,6 +137,33 @@ export default function Header() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
     >
+      {isEvent && (
+        <div>
+          <a
+            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa/GCPvPthuAt"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="block cursor-pointer text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-sm font-light"
+          >
+            <Marquee autoFill pauseOnHover gradient gradientColor="#7F57E8">
+              <div className="flex items-center justify-center h-10 mr-20 gap-x-3">
+                <span>
+                  <LightIcon width={24} height={24} />
+                </span>
+                <span>The First Campaign - Join Demask Finance Genesis</span>
+              </div>
+            </Marquee>
+          </a>
+          <button
+            onClick={() => {
+              setIsEvent(false);
+            }}
+            className={`absolute top-2 right-4 flex items-center p-1 z-[60]`}
+          >
+            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+          </button>
+        </div>
+      )}
       <header className="flex items-center justify-between w-full gap-2 shadow-md bg-secondary1 h-header lg:px-primary md:px-14">
         <div className="flex items-center flex-shrink-0 gap-2">
           <div className="text-center">
@@ -268,7 +305,9 @@ export default function Header() {
                 </div>
               </Tippy>
             ) : (
-              <button className={`flex items-center justify-center py-1 pl-2 lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2 group cursor-not-allowed`}>
+              <button
+                className={`flex items-center justify-center py-1 pl-2 lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2 group cursor-not-allowed`}
+              >
                 <Image
                   className="hidden group-hover:block"
                   src={Icons.wallet}

@@ -22,6 +22,7 @@ export const AccountProvider = ({ children }) => {
   const [chainName, setChainName] = useState(network[0]?.sign);
   const [slippage, setSlippage] = useState(5);
   const [txDeadline, setTxDeadline] = useState(20);
+  const [isEvent, setIsEvent] = useState(true);
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
@@ -106,6 +107,8 @@ export const AccountProvider = ({ children }) => {
         updateTxDeadline,
         slippage,
         updateSlippage,
+        isEvent,
+        setIsEvent
       }}
     >
       {children}
