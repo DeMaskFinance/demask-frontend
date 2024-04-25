@@ -140,7 +140,7 @@ export default function Header() {
       {isEvent && (
         <div>
           <a
-            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa/GCPvPthuAt"
+            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
             rel="noopener noreferrer"
             target="_blank"
             className="block cursor-pointer text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-sm font-light"
@@ -150,7 +150,7 @@ export default function Header() {
                 <span>
                   <LightIcon width={24} height={24} />
                 </span>
-                <span>The First Campaign - Join Demask Finance Genesis</span>
+                <span>The Campaigns on Galxe, NOW LIVE!</span>
               </div>
             </Marquee>
           </a>
