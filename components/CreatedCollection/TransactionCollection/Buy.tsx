@@ -176,7 +176,7 @@ const Buy = () => {
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <div className="flex flex-col ">
-          <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[542px] mb-8">
+          <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] mb-8">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (

@@ -97,6 +97,13 @@ const fillCreate = async (
   if (account && wallet) {
     const contract = await ercContract.erc(wallet, collection, abiCollection);
     try {
+      // const estimatedGas = await contract.estimateGas.fillCreate(
+      //   id,
+      //   name,
+      //   symbol
+      // );
+      // console.log(estimatedGas);
+
       const result = await contract.fillCreate(id, name, symbol);
       return result;
     } catch (error) {

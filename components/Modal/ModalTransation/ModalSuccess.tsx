@@ -3,7 +3,7 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { SuccessIcon, URLTransactionIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
@@ -111,57 +111,99 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           {isMint ? (
-            <div className="flex flex-col items-center">
-              {isLoadingMeta ? (
-                <div className="flex items-center justify-center w-40 h-40 mx-auto mt-10 mb-6">
-                  <BiLoaderAlt className="mb-6 text-5xl animate-spin text-secondary5" />
-                </div>
-              ) : metadataRes ? (
-                <div className="w-40 h-40 mx-auto mt-10 mb-6">
-                  <MediaNFT data={metadataRes} isControls hideAudio={true} />
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <div className="w-40 h-40 mx-auto mt-10 mb-6">
-              <Image
-                src={metadataIPFS}
-                width={160}
-                height={160}
-                alt="Img-Collection"
-                className="object-cover w-full h-full rounded-lg"
-              />
-            </div>
-          )}
-          <div className="flex flex-col items-center justify-center">
-            <p className="font-semibold text-center text-green">
-              Your collection has been created
-            </p>
-            <a
-              href={`${demask.urltxHash}tx/${transactionHash}`}
-              target="_blank"
-              className="flex items-center text-xs text-center cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
-            >
-              <p>View on {demask.chainName}</p>
-              <p>
-                <URLTransactionIcon
-                  width={16}
-                  height={16}
-                  className="group-hover:fill-secondary5"
+            <Fragment>
+              <div className="flex flex-col items-center">
+                {isLoadingMeta ? (
+                  <div className="flex items-center justify-center w-40 h-40 mx-auto mt-10 mb-6">
+                    <BiLoaderAlt className="mb-6 text-5xl animate-spin text-secondary5" />
+                  </div>
+                ) : metadataRes ? (
+                  <div className="w-40 h-40 mx-auto mt-10 mb-6">
+                    <MediaNFT data={metadataRes} isControls hideAudio={true} />
+                  </div>
+                ) : null}
+              </div>
+              <div className="w-40 h-40 mx-auto mt-10 mb-6">
+                <Image
+                  src={metadataIPFS}
+                  width={160}
+                  height={160}
+                  alt="Img-Collection"
+                  className="object-cover w-full h-full rounded-lg"
                 />
-              </p>
-            </a>
-          </div>
-          <div className="flex items-center justify-center mt-6 gap-x-4">
-            <Link href={`/profile?tab=created&chain=${chainId}`}>
-              <Button className="px-6 py-2 font-semibold " active>
-                View collection
-              </Button>
-            </Link>
-            <Button primary className="px-6 py-2 " onClick={handleClose}>
-              Create an {isMint ? "NFT" : "collection"}
-            </Button>
-          </div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <p className="font-semibold text-center text-green">
+                  Your NFT has been created
+                </p>
+                <a
+                  href={`${demask.urltxHash}tx/${transactionHash}`}
+                  target="_blank"
+                  className="flex items-center text-xs text-center cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+                >
+                  <p>View on {demask.chainName}</p>
+                  <p>
+                    <URLTransactionIcon
+                      width={16}
+                      height={16}
+                      className="group-hover:fill-secondary5"
+                    />
+                  </p>
+                </a>
+              </div>
+              <div className="flex items-center justify-center mt-6 gap-x-4">
+                <Link href={`/profile?tab=items&chain=${chainId}`}>
+                  <Button className="px-6 py-2 font-semibold " active>
+                    View NFTs
+                  </Button>
+                </Link>
+                <Button primary className="px-6 py-2 " onClick={handleClose}>
+                  Create an NFT
+                </Button>
+              </div>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <div className="w-40 h-40 mx-auto mt-10 mb-6">
+                <Image
+                  src={metadataIPFS}
+                  width={160}
+                  height={160}
+                  alt="Img-Collection"
+                  className="object-cover w-full h-full rounded-lg"
+                />
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <p className="font-semibold text-center text-green">
+                  Your collection has been created
+                </p>
+                <a
+                  href={`${demask.urltxHash}tx/${transactionHash}`}
+                  target="_blank"
+                  className="flex items-center text-xs text-center cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+                >
+                  <p>View on {demask.chainName}</p>
+                  <p>
+                    <URLTransactionIcon
+                      width={16}
+                      height={16}
+                      className="group-hover:fill-secondary5"
+                    />
+                  </p>
+                </a>
+              </div>
+              <div className="flex items-center justify-center mt-6 gap-x-4">
+                <Link href={`/profile?tab=created&chain=${chainId}`}>
+                  <Button className="px-6 py-2 font-semibold " active>
+                    View collection
+                  </Button>
+                </Link>
+                <Button primary className="px-6 py-2 " onClick={handleClose}>
+                  Create an collection
+                </Button>
+              </div>
+            </Fragment>
+          )}
         </div>
 
         <button

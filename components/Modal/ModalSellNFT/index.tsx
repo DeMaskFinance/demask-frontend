@@ -66,8 +66,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const [isSufficientTokenSell, setIsSufficientTokenSell] =
-    useState<boolean>(false);
   const { bigNumberBalance } = useInformationToken(
     account,
     tokenAddress,
@@ -130,11 +128,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       }
     };
     checkReservesNFT();
-    if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
-      setIsSufficientTokenSell(false);
-    } else {
-      setIsSufficientTokenSell(true);
-    }
   }, [inputNFT, account, amountSellDec]);
   useEffect(() => {
     if (data && amountTokenSell) {
@@ -174,7 +167,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     }
     if (
       isSufficientNFT &&
-      isSufficientTokenSell &&
       Number(reserveNFT) > 0 &&
       Number(reserveToken) > 0 &&
       Math.floor(amountSellDec) > 0
@@ -376,11 +368,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             {!isSufficientNFT && reserveNFT && (
               <p className="text-xs text-red" key="NFTbalance">
                 Insufficient NFT balance
-              </p>
-            )}
-            {!isSufficientTokenSell && reserveToken && (
-              <p className="text-xs text-red" key="Tokenbalance">
-                Insufficient Token balance
               </p>
             )}
             {Math.floor(amountSellDec) === 0 && inputNFT && (

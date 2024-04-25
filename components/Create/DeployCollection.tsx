@@ -1,26 +1,19 @@
+import AccountContext from "@/context/AccountContext";
+import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import { SEO } from "@/next-seo.config";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import WithAuth from "../Common/WithAuth";
-import { SEO } from "@/next-seo.config";
-import {
-  BackIcon,
-  BlastIcon,
-  CreateIcon,
-  DeployIcon,
-  MonadIcon,
-} from "../Icons";
-import UploadFile from "./UploadFile";
+import { useContext, useEffect, useRef, useState } from "react";
+import { FaAngleDown } from "react-icons/fa";
 import * as yup from "yup";
 import { Button } from "../Buttons";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import Image from "next/image";
-import { FaAngleDown } from "react-icons/fa";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import AccountContext from "@/context/AccountContext";
+import WithAuth from "../Common/WithAuth";
+import { BackIcon, BlastIcon, DeployIcon, MonadIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import UploadFile from "./UploadFile";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -42,6 +35,7 @@ const DeployCollection = () => {
   const { account, wallet, demask } = useContext(AccountContext);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<any>(null);
   const [hash, setHash] = useState<string>("");
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -75,11 +69,9 @@ const DeployCollection = () => {
       icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
     },
   };
-  console.log(fileIPFS, demask.CREATE_COLLECTION);
 
   const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
     // Handle form submission
-    console.log(values, fileIPFS);
     setIsProcess(true);
     const res = await ercContract.fillCreate(
       values.contractName,
@@ -98,7 +90,7 @@ const DeployCollection = () => {
       setIsOpenSuccess(false);
     }
     resetForm();
-    // setFileIPFS(null);
+    setSelectedFile(null);
     try {
     } catch (error) {
       console.error(error);
@@ -132,6 +124,8 @@ const DeployCollection = () => {
                 setFileType={setFileType}
                 fileType={fileType}
                 uploadFile={uploadFileIPFSCollection}
+                selectedFile={selectedFile}
+                setSelectedFile={setSelectedFile}
                 type="collection"
               />
             </div>
@@ -141,8 +135,8 @@ const DeployCollection = () => {
               You’ll need to deploy a contract
             </h4>
             <h3 className="mt-2 font-normal text-dark2">
-              You’ll need to deploy an ERC-721 or an ERC-1155 contract onto the
-              Blockchain before you can create a Collection
+              You’ll need to deploy an ERC-1155 contract onto the Blockchain
+              before you can create a Collection
             </h3>
             <Formik
               initialValues={initialValues}

@@ -6,6 +6,7 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import AccountContext from "@/context/AccountContext";
 import TabQuery from "@/components/NavChoice/TabQuery";
+import { TabGroups } from "@/components/NavChoice";
 interface HistorySwapProps {
   data: DataBase;
   typeERC: string;
@@ -15,10 +16,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
   typeERC,
 }) => {
   const [page, setPage] = useState(1);
-  const [tab, setTab] = useQueryParam(
-    "historyType",
-    withDefault(StringParam, "All")
-  );
+  const [activeChoice, setActiveChoice] = useState<string>("All");
   const { account, wallet, chainId, demask } = useContext(AccountContext);
   const {
     isLoading,
@@ -27,10 +25,10 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     refetch,
     isPreviousData,
   } = useQuery({
-    queryKey: ["historySwap", chainId, tab],
+    queryKey: ["historySwap", chainId, activeChoice],
     queryFn: async () => {
       const res = await categoryAPI(
-        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${tab}&type=${typeERC}`
+        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${activeChoice}&type=${typeERC}`
       );
       return res;
     },
@@ -44,24 +42,18 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
   useEffect(() => {
     refetch();
   }, [page, refetch]);
-  const options = [
-    {
-      key: "All",
-      title: "All",
-    },
-    {
-      key: "Buy",
-      title: "Buy",
-    },
-    { key: "Sell", title: "Sell" },
-    { key: "Add", title: "Add" },
-    { key: "Remove", title: "Remove" },
-  ];
-  const indexChoice = options.findIndex((item) => item.key === tab);
+  const options = ["All", "Buy", "Sell", "Add", "Remove"];
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
+  };
   return (
     <div className="w-full mt-[15px]  mb-14 lg:mb-0">
       <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible area_input">
-        <TabQuery TABS={options} initialItem="All" indexChoice={indexChoice} />
+        <TabGroups
+          choices={options}
+          activeChoice={activeChoice}
+          onChoiceChange={handleChoiceChange}
+        />
         <table className="w-full mt-2 text-left border-collapse">
           <thead className="">
             <tr className="flex pb-2 text-sm ">

@@ -42,7 +42,6 @@ const updateMeta = {
 };
 
 export default function Creator() {
-  const itemRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState<string>("");
   const [symbol, setSymbol] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -80,7 +79,6 @@ export default function Creator() {
       return res.data;
     },
   });
-  console.log(data);
 
   const [collection, setCollection] = useState<{
     img: JSX.Element;
@@ -166,12 +164,6 @@ export default function Creator() {
       Math.max(scrollHeight, clientHeight, minHeight) + "px";
   };
 
-  useEffect(() => {
-    if (selectedFile === null) {
-      itemRef.current?.classList.add("border");
-    }
-  }, [selectedFile]);
-
   return (
     <>
       <NextSeo {...updateMeta} />
@@ -197,6 +189,8 @@ export default function Creator() {
                 setFileIPFS={setFileIPFS}
                 fileType={fileType}
                 setFileType={setFileType}
+                selectedFile={selectedFile}
+                setSelectedFile={setSelectedFile}
                 uploadFile={uploadFileIPFSMint}
                 type="nfts"
               />
@@ -294,7 +288,6 @@ export default function Creator() {
                         ))}
                       </Fragment>
                     )}
-                    <li></li>
                   </ul>
                 </div>
               </div>

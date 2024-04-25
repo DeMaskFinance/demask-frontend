@@ -235,14 +235,14 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
           <p className="title_modal">
-            Remove
-            {data && (
+            Remove Liquidity
+            {/* {data && (
               <div className="flex items-center leading-[16px] ml-1">
                 <span> {data?.metadata?.symbol}</span>
                 <span className="overflow-hidden">/</span>
                 <span>ETH</span>
               </div>
-            )}
+            )} */}
           </p>
           {type === "erc721" && isSuccess && (
             <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">

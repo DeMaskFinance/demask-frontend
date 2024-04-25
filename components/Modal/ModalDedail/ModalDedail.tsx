@@ -36,6 +36,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
+  console.log(data);
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
@@ -64,9 +65,9 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                         href={data?.metadata?.uri}
                         rel="noreferrer noopener"
                         target="_blank"
-                        className="text-dark3 "
+                        className="text-dark3 max-w-[140px]"
                       >
-                        {data?.metadata?.name}
+                        <ModalDocument data={data?.metadata?.name} />
                       </a>
                     </div>
                   </li>
@@ -81,7 +82,9 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 )}
                 <li className="mb-4">
                   <p className="font-medium text-dark2">Type</p>
-                  <p className="text-sm font-light text-dark3">ERC-1155</p>
+                  <p className="text-sm font-light uppercase text-dark3">
+                    {data.type}
+                  </p>
                 </li>
                 <li className="mb-4">
                   <p className="font-medium text-dark2">Contract Address</p>

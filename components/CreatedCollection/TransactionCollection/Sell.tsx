@@ -35,8 +35,6 @@ const Sell = () => {
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
   const [totalProcessSell, setTotalProcessSell] = useState<number>(0);
-  const [isSufficientTokenSell, setIsSufficientTokenSell] =
-    useState<boolean>(false);
   const {
     ROUTER_721: routerAddress,
     RPC: rpc,
@@ -129,14 +127,6 @@ const Sell = () => {
     routerAddress,
     true
   );
-
-  useEffect(() => {
-    if (Number(amountSellDec.toFixed()) > Number(bigNumberBalance)) {
-      setIsSufficientTokenSell(false);
-    } else {
-      setIsSufficientTokenSell(true);
-    }
-  }, [account, amountSellDec, data, isOpenSellNFT]);
   useEffect(() => {
     if (data && amountTokenSell) {
       setAmountSellDec(
@@ -186,7 +176,7 @@ const Sell = () => {
             </div>
           ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
             <div className="flex flex-col ">
-              <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] lg:max-h-[542px] mb-8">
+              <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] mb-8">
                 {data?.pages.map((page: any, pageIndex: number) => (
                   <Fragment key={pageIndex}>
                     {page?.data?.map((item: any, index: number) => (
@@ -288,30 +278,19 @@ const Sell = () => {
                 ) : (
                   <Button
                     disabled={
-                      idNFT.length === 0 ||
-                      !isSufficientTokenSell ||
-                      Math.floor(amountSellDec) === 0
+                      idNFT.length === 0 || Math.floor(amountSellDec) === 0
                     }
                     primary={
-                      idNFT.length !== 0 &&
-                      isSufficientTokenSell &&
-                      Math.floor(amountSellDec) !== 0
+                      idNFT.length !== 0 && Math.floor(amountSellDec) !== 0
                     }
                     className="w-full py-4"
                     active={
-                      idNFT.length === 0 ||
-                      !isSufficientTokenSell ||
-                      Math.floor(amountSellDec) === 0
+                      idNFT.length === 0 || Math.floor(amountSellDec) === 0
                     }
                     onClick={handleSell}
                   >
                     SELL {idNFT.length} NFTs
                   </Button>
-                )}
-                {!isSufficientTokenSell && account && (
-                  <p className="text-xs text-red" key="Tokenbalance">
-                    Insufficient Token balance
-                  </p>
                 )}
               </div>
             </div>

@@ -8,14 +8,10 @@ import {
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import {
-  SkeletonCategory,
-  SkeletonItemTransaction,
-} from "@/components/Skeleton/SkeletonCategory";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
 import {
   collectionListBuy,
   collectionListSell,
@@ -25,9 +21,8 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 const Change = () => {
@@ -42,7 +37,6 @@ const Change = () => {
   const [isOpenErrorSwap, setIsOpenErrorSwap] = useState<boolean>(false);
   const collectionAddress = useRouter().query.collection as string;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isOpenSwapNFT, setIsOpenSwapNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const {
     ROUTER_721: routerAddress,
@@ -140,9 +134,10 @@ const Change = () => {
       fetchNextPage();
     }
   }, [inViewOutput]);
+  const dmlToken = data?.pages[0]?.dmlAddress;
   const { amountTokenBuy } = useAmountInMax(
     "",
-    "0x2d4c46bac8817558f80b4219a6e5020d5f78672b",
+    dmlToken,
     nativeAddress,
     collectionAddress,
     idNFTInput,
@@ -330,9 +325,7 @@ const Change = () => {
             )}
           </Fragment>
         ) : (
-          <Button className="w-full py-2 " primary onClick={handleOpen}>
-            CONNECT WALLET
-          </Button>
+          <p className="text-dark1">Please connect wallet</p>
         )}
       </div>
 

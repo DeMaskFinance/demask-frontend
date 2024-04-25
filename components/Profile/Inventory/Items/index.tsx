@@ -50,11 +50,11 @@ export const ItemList: React.FC<ItemListProps> = ({
     }
   }, [inView]);
   console.log(data);
-  
+
   return (
     <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
       {isLoading ? (
-        <SkeletonSubCategory />
+        <SkeletonSubCategory length={5} />
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <Fragment>
           {data?.pages.map((page: any, pageIndex: number) => (
@@ -128,7 +128,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                       <div className="flex w-full">
                         <h6
                           title={item.metadata?.name}
-                          className="flex items-start gap-2 font-medium uppercase text-dark1"
+                          className="flex items-start w-full gap-2 font-medium uppercase text-dark1"
                         >
                           <span className="flex-wrap max-w-full text-lg line-clamp-1">
                             {item.metadata?.name ? (
@@ -167,7 +167,7 @@ export const ItemList: React.FC<ItemListProps> = ({
               ))}
             </Fragment>
           ))}
-          {isFetching && hasNextPage && <SkeletonSubCategory />}
+          {isFetching && hasNextPage && <SkeletonSubCategory length={4} />}
           <div ref={ref} style={{ height: "1px" }}></div>
         </Fragment>
       ) : (

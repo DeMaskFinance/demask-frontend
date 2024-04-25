@@ -1,7 +1,10 @@
 import React, { Fragment } from "react";
-const array = Array.from({ length: 4 }, (_, index) => index);
+interface SkeletonProps {
+  length: number;
+}
 
-const SkeletonSubCategory = () => {
+const SkeletonSubCategory: React.FC<SkeletonProps> = ({ length }) => {
+  const array = Array.from({ length: length }, (_, index) => index);
   return (
     <Fragment>
       {array.map((item, index) => (
@@ -20,6 +23,7 @@ const SkeletonSubCategory = () => {
   );
 };
 const SkeletonCategory = () => {
+  const array = Array.from({ length: 4 }, (_, index) => index);
   return (
     <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto animate-pulse lg:grid-cols-4 md:grid-cols-2 text-dark2">
       {array.map((item, index) => (
@@ -38,6 +42,7 @@ const SkeletonCategory = () => {
   );
 };
 const SkeletonItemTransaction = () => {
+  const array = Array.from({ length: 4 }, (_, index) => index);
   return (
     <Fragment>
       {array.map((item, index) => (

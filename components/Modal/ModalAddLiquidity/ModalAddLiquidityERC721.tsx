@@ -200,19 +200,21 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
+  console.log(data);
+
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
           <div className="title_modal">
-            Add
-            {data && (
+            Add Liquidity
+            {/* {data && (
               <div className="flex items-center leading-[16px] ml-1">
                 <span> DeMask</span>
                 <span className="overflow-hidden">/</span>
                 <span>ETH</span>
               </div>
-            )}
+            )} */}
           </div>
           {isLoading ? (
             <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
@@ -274,27 +276,28 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
                   <div className="mb-4">
-                  {dmlToken === "0x0000000000000000000000000000000000000000" ? (
-                    <input
-                      className="input_item"
-                      type="number"
-                      placeholder="Input amount Token"
-                      value={inputToken}
-                      onChange={handleGetToken}
-                    />
-                  ) : (
-                    <div>
-                      {data ? (
-                        <div className="input_item">
-                          {amountErcDesiredToDec}
-                        </div>
-                      ) : (
-                        <div className="input_item">
-                          <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    {dmlToken ===
+                    "0x0000000000000000000000000000000000000000" ? (
+                      <input
+                        className="input_item"
+                        type="number"
+                        placeholder="Input amount Token"
+                        value={inputToken}
+                        onChange={handleGetToken}
+                      />
+                    ) : (
+                      <div>
+                        {data ? (
+                          <div className="input_item">
+                            {amountErcDesiredToDec}
+                          </div>
+                        ) : (
+                          <div className="input_item">
+                            <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   {isSufficientToken && (
                     <p
@@ -316,8 +319,16 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
               {isApprovedNFT ? (
                 <Button
                   className="w-[126px] py-2 mx-auto whitespace-nowrap"
-                  primary={idNFT.length > 0}
-                  active={idNFT.length === 0}
+                  primary={
+                    idNFT.length > 0 &&
+                    amountErcDesiredToDec > 0 &&
+                    !isSufficientToken
+                  }
+                  active={
+                    idNFT.length === 0 ||
+                    amountErcDesiredToDec === 0 ||
+                    isSufficientToken
+                  }
                   onClick={handleAddLiquidity}
                 >
                   ADD LIQUIDITY
@@ -360,6 +371,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         idNFT={""}
         inputNFT={idNFT}
         inputToken={inputToken}
+        setIdNFT={setIdNFT}
         setInputToken={setInputToken}
         setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
         setHash={setHash}

@@ -100,10 +100,10 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       })
       .nullable(),
     website: yup.string().url().nullable(),
-    Percent: yup
+    royalty: yup
       .number()
-      .min(0, "Must be greater than 0%")
-      .max(10, "Must be less than 10%"),
+      .min(0, "Royalty must be greater than 0%")
+      .max(10, "Royalty must be less than 10%"),
   });
   const socialList = [
     {
@@ -164,7 +164,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     setFieldValue("category", updatedCategories);
   };
   const queryClient = useQueryClient();
-  console.log(typeERC);
+  console.log(data);
 
   const onSubmit = async (values: any) => {
     // Handle form submission
@@ -184,7 +184,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             telegram: values.telegram,
             website: values.website,
           },
-          creatorAddress: values.creatorAddress,
+          creatorEarning: values.creatorEarning,
+          royalty: values.royalty,
+          category: values.category,
         },
         collectionAddress,
         chainId
@@ -220,9 +222,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     url: data?.url,
     collaborators: data?.collaborators,
     collaborator: "",
-    creatorAddress: data?.creatorAddress,
-    category: [] as string[],
-    Percent: "",
+    creatorEarning: data?.creatorEarning,
+    category: data?.category as string[],
+    royalty: data?.royalty,
     featureImage: data?.featureImage,
     twitter: data?.socials?.twitter,
     facebook: data?.socials?.facebook,
@@ -462,9 +464,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <div className="flex gap-x-4">
                 <Field
                   type="text"
-                  id="creatorAddress"
-                  name="creatorAddress"
-                  value={values.creatorAddress}
+                  id="creatorEarning"
+                  name="creatorEarning"
+                  value={values.creatorEarning}
                   placeholder="0x...123"
                   onChange={handleChange}
                   className="input_item"
@@ -472,9 +474,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 <div className="relative flex basis-16">
                   <Field
                     type="text"
-                    id="Percent"
-                    name="Percent"
-                    value={values.Percent}
+                    id="royalty"
+                    name="royalty"
+                    value={values.royalty}
                     placeholder="0"
                     onChange={handleChange}
                     className="input_item"
@@ -485,12 +487,12 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 </div>
               </div>
               <ErrorMessage
-                name="creatorAddress"
+                name="creatorEarning"
                 component="div"
                 className="text-xs text-red"
               />
               <ErrorMessage
-                name="Percent"
+                name="royalty"
                 component="div"
                 className="text-xs text-red"
               />

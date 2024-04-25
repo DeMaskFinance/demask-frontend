@@ -1,23 +1,26 @@
 import Image from "next/image";
-import React, { DragEvent, useRef, useState } from "react";
+import React, { DragEvent, useEffect, useRef, useState } from "react";
 import { Button } from "../Buttons";
 import { PictureMint } from "../Icons";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
 interface UploadFileProps {
   setFileIPFS: any;
   fileType: string | null;
+  selectedFile: string;
   setFileType: any;
+  setSelectedFile: any;
   uploadFile: any;
   type: string;
 }
 const UploadFile: React.FC<UploadFileProps> = ({
   setFileIPFS,
   setFileType,
+  selectedFile,
+  setSelectedFile,
   fileType,
   uploadFile,
   type,
 }) => {
-  const [selectedFile, setSelectedFile] = useState<any>(null);
   const uploadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
@@ -68,8 +71,11 @@ const UploadFile: React.FC<UploadFileProps> = ({
   const handleClickFile = () => {
     inputRef.current?.click();
   };
-  console.log(type);
-
+  useEffect(() => {
+    if (selectedFile === null) {
+      itemRef.current?.classList.add("border");
+    }
+  }, [selectedFile]);
   return (
     <div className="flex flex-col items-center w-full" ref={uploadRef}>
       <div

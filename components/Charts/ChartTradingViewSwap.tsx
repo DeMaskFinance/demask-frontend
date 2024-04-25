@@ -2,7 +2,12 @@ import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
-import { createChart, CrosshairMode, LineStyle, PriceScaleMode } from "lightweight-charts";
+import {
+  createChart,
+  CrosshairMode,
+  LineStyle,
+  PriceScaleMode,
+} from "lightweight-charts";
 import { useContext, useEffect, useRef, useState } from "react";
 import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";
@@ -59,8 +64,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   useEffect(() => {
     setLegendData(volume[volume.length - 1]);
   }, [volume]);
-  console.log(data);
-  
+
   useEffect(() => {
     if (Array.isArray(data)) {
       const convertedData = data?.map((item: DataItem) => ({
@@ -106,7 +110,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             color: theme === "dark" ? "#1A1A1A" : "white",
           },
           textColor: "#ffffff",
-          fontSize: 10
+          fontSize: 10,
         },
       });
 
@@ -186,7 +190,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       //     minMove: 0.0001,
       //   },
       // });
-      chart.priceScale('right').applyOptions({
+      chart.priceScale("right").applyOptions({
         borderColor: "#D6DCDE",
         autoScale: true,
         mode: PriceScaleMode.Normal,

@@ -26,6 +26,7 @@ interface ModalConfirmAddLiquidityERC721Props {
   isOpenTransaction: boolean;
   inputNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
+  setIdNFT: React.Dispatch<React.SetStateAction<number[]>>;
   setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setInputToken: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,6 +44,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   isOpenTransaction,
   inputNFT,
   setIsOpenTransaction,
+  setIdNFT,
   setIsOpenConfirmAddLiquidity,
   setInputToken,
   setIsOpenLiquidity,
@@ -157,6 +159,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         setIsOpenTransaction(false);
         setInputToken("");
         setAmountErcDesiredToDec("");
+        setIdNFT([]);
         setIsOpenConfirmAddLiquidity(false);
         if (setIsOpenLiquidity) {
           setIsOpenLiquidity(false);
@@ -237,10 +240,22 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           </p>
           <div className="flex flex-col items-center mt-6">
             <Button
-              disabled={isLoadingInforDML || preFectch}
-              primary={!isLoadingInforDML && !preFectch}
+              disabled={
+                isLoadingInforDML ||
+                preFectch ||
+                Math.floor(amountErcDesired) === 0
+              }
+              primary={
+                !isLoadingInforDML &&
+                !preFectch &&
+                Math.floor(amountErcDesired) > 0
+              }
               className="w-[144px] py-2"
-              active={isLoadingInforDML || preFectch}
+              active={
+                isLoadingInforDML ||
+                preFectch ||
+                Math.floor(amountErcDesired) === 0
+              }
               onClick={addLiquidity}
             >
               CREATE POOL
@@ -262,18 +277,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
-      {/* <ModalSuccess
-        isOpenSuccess={isOpenSuccessAdd}
-        transactionHash={'123'}
-        type="Add Liquidity Success"
-        setIsOpenSuccess={setIsOpenSuccessAdd}
-      />
-      <ModalError
-        isOpenError={isOpenErrorAdd}
-        transactionHash={'123'}
-        type="Add Liquidity Failed"
-        setIsOpenError={setIsOpenErrorAdd}
-      /> */}
     </Wrapper>
   );
 };

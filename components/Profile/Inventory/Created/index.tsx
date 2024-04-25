@@ -84,7 +84,7 @@ const Created = () => {
       <div className="mt-4">
         <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
           {isLoading ? (
-            <SkeletonSubCategory />
+            <SkeletonSubCategory length={4} />
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
             <Fragment>
               {data.pages.map((page, pageIndex) => (
@@ -154,7 +154,7 @@ const Created = () => {
                   ))}
                 </Fragment>
               ))}
-              {isFetching && <SkeletonSubCategory />}
+              {isFetching && <SkeletonSubCategory length={4} />}
               <div ref={ref} style={{ height: "1px" }}></div>
             </Fragment>
           ) : (
