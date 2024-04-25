@@ -179,7 +179,7 @@ const Profile = () => {
           </Tippy>
         </div>
       </div>
-      <div className="px-4 py-8 pb-20 mt-4 lg:pb-0 lg:px-14 2xl:px-secondary md:px-14">
+      <div className="px-4 py-8 pb-20 mt-4 lg:pb-0 3xl:px-secondary md:px-10 lg:px-24">
         {selectedTab ? selectedTab.panel() : null}
       </div>
     </div>

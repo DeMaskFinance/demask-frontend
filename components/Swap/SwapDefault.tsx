@@ -263,7 +263,7 @@ export default function SwapDefault() {
             </div>
           </form>
           <div className="flex justify-center w-full">
-            {activeChoice === "BUY" && account && (
+            {activeChoice === "Buy" && account && (
               <button
                 type="button"
                 className="py-2 w-[144px] bg-green hover:text-green hover:bg-white hover:border-green border rounded-lg text-sm text-white"
@@ -271,7 +271,7 @@ export default function SwapDefault() {
                 BUY NFT
               </button>
             )}
-            {activeChoice === "SELL" && account && (
+            {activeChoice === "Sell" && account && (
               <button
                 type="button"
                 className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"

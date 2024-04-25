@@ -62,7 +62,7 @@ export const ItemList: React.FC<ItemListProps> = ({
               {page?.data?.map((item: any, index: number) => (
                 <div key={index} className="relative overflow-hidden">
                   <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group dark:border-dark1 dark:bg-darkBG2 lg:text-base hover:shadow-home">
-                    <div className="relative h-[240px] overflow-hidden">
+                    <div className="relative h-[140px] overflow-hidden">
                       <div
                         onClick={() => {
                           setSelectedItem(item);
