@@ -228,7 +228,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     <div
                       key={index}
                       className="relative"
-                      onClick={() => hanldeChoiceNFT(item)}
+                      onClick={() => handleChoiceNFT(item)}
                     >
                       <div
                         className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
