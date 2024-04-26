@@ -8,6 +8,7 @@ import { Button } from "../Buttons";
 import FormatNumber from "../Common/FormatNumber";
 import MediaNFT from "../Common/MediaNFT";
 import { EtherIcon, NFTIcon } from "../Icons";
+import Image from "next/image";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -46,12 +47,26 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   return (
     <div className="relative w-full overflow-hidden group">
       <div className="transition-all duration-150 ease-linear group-hover:brightness-50 h-[240px] w-full">
-        <MediaNFT data={liquidity} isControls={false} />
+        {liquidity?.metadata ? (
+          <MediaNFT data={liquidity} isControls={false} />
+        ) : (
+          <Image
+            src={liquidity?.avatar!}
+            alt="banner"
+            width={600}
+            height={600}
+            className="object-cover w-full h-full rounded-lg"
+          />
+        )}
       </div>
       <div className="absolute top-0 left-0 translate-y-[100%] bg-opacity-50 bg-black rounded-lg group-hover:translate-y-0 flex flex-col items-center justify-around w-full h-full py-4 text-white transition-all duration-150 ease-linear opacity-0 group-hover:opacity-100">
-        <p className="font-semibold text-[18px] truncate">
-          {liquidity.metadata.name}
-        </p>
+        <div className="font-semibold text-[18px] truncate">
+          {liquidity?.metadata ? (
+            <p>{liquidity?.metadata?.name}</p>
+          ) : (
+            <p>{liquidity?.name}</p>
+          )}
+        </div>
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center text-sm ">
             <div className="flex items-center mr-2">

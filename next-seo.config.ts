@@ -1,10 +1,10 @@
 import { DefaultSeoProps } from "next-seo";
 
 export const SEO: DefaultSeoProps = {
-  titleTemplate: "%s | DeMask",
-  defaultTitle: "DeMask",
+  titleTemplate: "%s | App DeMask",
+  defaultTitle: "App DeMask",
   description:
-    "Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program.",
+    "Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program. TEST",
   twitter: {
     cardType: "summary_large_image",
     handle: "@DemaskFinance",
@@ -17,7 +17,7 @@ export const SEO: DefaultSeoProps = {
       "DeMask is the leading platform to find solutions to increase liquidity for the market for trading crypto collectibles. ",
     images: [
       {
-        url: "https://demask.infura-ipfs.io/ipfs/QmfAAXAgAWFqkAovUa4u8iwtr4zYCCdqs35Fu3kAt2n4DH",
+        url: "https://file.demask.finance/701b9f6b7fe60df3446bbfae7aed2929.png",
       },
     ],
   },

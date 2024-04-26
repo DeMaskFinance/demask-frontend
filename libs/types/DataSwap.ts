@@ -13,4 +13,6 @@ interface DataBase {
   tokenAddress: string;
   dmlDecimals: string;
   isDeleted: boolean;
+  name?: string;
+  avatar?: string;
 }

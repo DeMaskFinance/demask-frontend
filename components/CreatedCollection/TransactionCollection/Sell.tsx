@@ -142,7 +142,7 @@ const Sell = () => {
     }
   }, [data, slippage, amountTokenSell]);
 
-  const hanldeChoiceNFT = (item: any) => {
+  const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
       const arr = idNFT.filter((itemArr) => {
@@ -183,7 +183,7 @@ const Sell = () => {
                       <div
                         key={index}
                         className="relative overflow-hidden"
-                        onClick={() => hanldeChoiceNFT(item)}
+                        onClick={() => handleChoiceNFT(item)}
                       >
                         <div
                           className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${

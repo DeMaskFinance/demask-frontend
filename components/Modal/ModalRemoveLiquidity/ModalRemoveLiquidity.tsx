@@ -218,7 +218,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       fetchNextPage();
     }
   }, [inView]);
-  const hanldeChoiceNFT = (item: any) => {
+  const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
       const arr = idNFT.filter((itemArr) => {

@@ -36,7 +36,6 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
-  console.log(data);
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>

@@ -29,7 +29,6 @@ import { QueryParamProvider } from "use-query-params";
 import { Provider } from "react-redux";
 import store, { persistor } from "../store";
 import { PersistGate } from "redux-persist/integration/react";
-import { useEffect } from "react";
 import { ThemeProvider } from "next-themes";
 // import { ThemeProvider } from "next-themes";
 type NextPageWithLayout<P = any> = NextPage<P> & {
@@ -66,20 +65,7 @@ export default function App({
   pageProps,
 }: AppProps & { Component: NextPageWithLayout }) {
   const isMaintenanceMode = false;
-  useEffect(() => {
-    const threeScript = document.createElement("script");
-    threeScript.setAttribute("id", "threeScript");
-    threeScript.setAttribute(
-      "src",
-      "https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"
-    );
-    document.getElementsByTagName("head")[0].appendChild(threeScript);
-    return () => {
-      if (threeScript) {
-        threeScript.remove();
-      }
-    };
-  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
