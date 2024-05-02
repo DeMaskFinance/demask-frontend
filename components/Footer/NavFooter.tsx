@@ -5,7 +5,7 @@ import {
   CreateIcon,
   LaunchpadIcon,
   OthersIcon,
-  OverviewIcon,
+  SwapIcon,
   TradeIcon,
 } from "../Icons/Mobile/IconMobile";
 import { RankIcon } from "../Icons";
@@ -21,9 +21,9 @@ export default function NavFooter() {
   }, [activeChoice]);
   const router = useRouter();
   const data = [
-    { id: 1, name: "Mint", url: "/mint", icon: OverviewIcon },
+    { id: 1, name: "Mint", url: "/create", icon: CreateIcon },
     { id: 2, name: "Launchpad", url: "/launchpad", icon: LaunchpadIcon },
-    { id: 3, name: "Swap", url: `/swap`, icon: CreateIcon },
+    { id: 3, name: "Swap", url: `/swap`, icon: SwapIcon },
     { id: 4, name: "Pools", url: "/pools", icon: TradeIcon },
     { id: 5, name: "Leaderboard", url: `/leaderboard`, icon: RankIcon },
     {

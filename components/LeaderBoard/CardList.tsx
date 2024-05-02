@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { Fragment } from "react";
 import { EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import { AvatarCustom, AvatarUser } from "../Avatars";
@@ -29,7 +29,7 @@ export const CardListLoading = () => {
 };
 const CardList = ({ data }: any) => {
   console.log(data);
-  
+
   return (
     <div
       className={`flex flex-col bg-white dark:bg-darkBG1 items-center justify-center p-2 border dark:text-white rounded-lg text-dark1 w-full h-fit ${
@@ -48,10 +48,17 @@ const CardList = ({ data }: any) => {
           height={600}
           alt="leaderboardImg"
           src={data?.avatar}
-          className="rounded-full object-cover  w-[120px] h-[120px]"
+          className="rounded-full object-cover w-[60px] h-[60px] lg:w-[120px] lg:h-[120px]"
         />
       ) : (
-        <AvatarCustom size={120} seed={data?.userAddress}/>
+        <Fragment>
+          <div className="hidden lg:block">
+            <AvatarCustom size={120} seed={data?.userAddress} />
+          </div>
+          <div className="block lg:hidden">
+            <AvatarCustom size={60} seed={data?.userAddress} />
+          </div>
+        </Fragment>
       )}
       <h2 className="mt-2 mb-6 text-lg font-semibold lg:text-2xl">
         {data?.name}

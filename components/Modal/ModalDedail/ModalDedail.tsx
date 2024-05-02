@@ -125,7 +125,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                   <p className="text-sm font-light text-dark3">None</p>
                 )}
               </div>
-              <div className="grid grid-cols-2 gap-y-4">
+              <div className="flex justify-between mb-4">
                 <div className="">
                   <p className="mb-1 font-medium text-dark2">Category</p>
                   {data?.metadata?.category ? (
@@ -159,6 +159,8 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                     <Copy content={idNFT} />
                   </div>
                 </div>
+              </div>
+              <div className="flex justify-between">
                 <div>
                   <p className="font-medium text-dark2">Royalty Fee (%)</p>
                   <p className="text-sm font-light text-dark3">

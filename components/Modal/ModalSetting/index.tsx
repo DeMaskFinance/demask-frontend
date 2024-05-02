@@ -53,11 +53,11 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
           <h2 className="flex items-center mb-3 text-xl font-semibold text-dark1 title">
-            Settings swap & liquidity
+            Transaction Configurations
           </h2>
-          <div className="flex flex-col items-center">
+          <div className="text-dark3">
             <div className="flex items-center my-2 gap-x-2">
-              <h2 className="font-semibold text-dark2">Slippage Tolerance</h2>
+              <h2 className="font-semibold ">Slippage Tolerance</h2>
               <Tippy
                 interactive
                 content={
@@ -69,36 +69,45 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 }
               >
                 <div>
-                  <TokenIconNotDefine width={16} height={16} />
+                  <TokenIconNotDefine
+                    width={16}
+                    height={16}
+                    className="fill-dark3"
+                  />
                 </div>
               </Tippy>
             </div>
-            <div className="flex items-center">
-              {Slippage.map((item, index) => (
-                <Button
-                  key={index}
-                  className="w-10 py-2 mr-2 font-semibold border border-dark4 text-dark3"
-                  onClick={() => {
-                    setSlippageTo(item);
-                    updateSlippage(item);
+            <div className="flex items-center justify-between w-full input_item">
+              <div>
+                <input
+                  type="number"
+                  value={slippageTo}
+                  className="w-[60%] h-full pb-2 pt-[6px] mr-2 font-semibold bg-dark5 outline-none"
+                  onChange={(e) => handleChangeSlippage(e)}
+                  onBlur={() => {
+                    if (slippageTo > 100) {
+                      setSlippageTo(0.5);
+                      updateSlippage(0.5);
+                    }
                   }}
-                >
-                  {item}
-                </Button>
-              ))}
-              <input
-                type="number"
-                value={slippageTo}
-                className="w-10 text-center justify-center h-full pb-2 pt-[6px] mr-2 font-semibold border rounded-lg border-dark4 text-dark3"
-                onChange={(e) => handleChangeSlippage(e)}
-                onBlur={() => {
-                  if (slippageTo > 100) {
-                    setSlippageTo(0.5);
-                    updateSlippage(0.5);
-                  }
-                }}
-              />
-              <span>%</span>
+                />
+                <span>%</span>
+              </div>
+              <div className="flex">
+                {Slippage.map((item, index) => (
+                  <Button
+                    key={index}
+                    className="w-20 py-1 mr-2 font-semibold border border-dark4 text-dark3 area_darkBG1"
+                    primary={slippage === item}
+                    onClick={() => {
+                      setSlippageTo(item);
+                      updateSlippage(item);
+                    }}
+                  >
+                    {item}%
+                  </Button>
+                ))}
+              </div>
             </div>
             {(slippageTo > 5 || slippageTo === 0) && (
               <p className="mt-2 mb-2 text-xs text-yellow" key="NFTbalance">
@@ -106,7 +115,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
               </p>
             )}
             <div className="flex items-center my-2 gap-x-2">
-              <h2 className="font-semibold text-dark1">Tx deadline (mins)</h2>
+              <h2 className="font-semibold ">Tx deadline (mins)</h2>
               <Tippy
                 interactive
                 content={
@@ -117,7 +126,11 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 }
               >
                 <div>
-                  <TokenIconNotDefine width={16} height={16} />
+                  <TokenIconNotDefine
+                    width={16}
+                    height={16}
+                    className="fill-dark3"
+                  />
                 </div>
               </Tippy>
             </div>
@@ -126,7 +139,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
               value={time}
               thousandSeparator=","
               decimalScale={0}
-              className="w-1/2 p-2 mb-4 text-center border rounded-xl border-dark4"
+              className="input_item"
               onChange={(e) => {
                 const inputValue = Number(e.target.value.replace(/,/g, ""));
                 setTime(inputValue);

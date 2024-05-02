@@ -260,7 +260,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       ) : data && newData?.length > 0 ? (
         <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-dark3 area_darkBG1">
           <div>
-            <div className="flex mb-2 text-sm font-medium rounded-lg bg-dark5 w-fit text-dark3 area_input ">
+            <div className="hidden mb-2 text-sm font-medium rounded-lg lg:flex bg-dark5 w-fit text-dark3 area_input ">
               <div className="flex items-center px-2 py-4 border-r border-dark3 text-dark2">
                 <p className="mr-1 text-dark3">Price 1D:</p>
                 <FormatNumber number={data[data.length - 1]?.closePrice} />(

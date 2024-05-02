@@ -1,4 +1,4 @@
-export const OverviewIcon: React.FunctionComponent<IconProps> = ({
+export const CreateIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
   height,
@@ -182,7 +182,7 @@ export const CategoryIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
-export const CreateIcon: React.FunctionComponent<IconProps> = ({
+export const SwapIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
   height,

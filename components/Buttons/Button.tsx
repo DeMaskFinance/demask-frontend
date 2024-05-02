@@ -47,7 +47,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       justify-center
       ${
         primary
-          ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear dark:bg-se dark:border-secondary2"
+          ? "bg-secondary2 text-white font-medium hover:bg-secondary5 border boder-white hover:border-secondary5 active:bg-secondary4 rounded-lg transition-all duration-150 ease-linear dark:bg-se dark:border-secondary2"
           : ""
       }
       ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}

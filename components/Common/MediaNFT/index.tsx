@@ -17,14 +17,14 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
   hideAudio,
   zoom,
 }) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loaded, setLoaded] = useState(false);
   return (
     <>
       {data?.metadata ? (
         <div className="relative h-[inherit] w-full">
           {data.metadata?.image && (
             <div className="w-full h-full overflow-hidden rounded-lg">
-              <img
+              <Image
                 src={formatLinkIPFS(data.metadata.image)}
                 alt="test"
                 width={680}
@@ -32,23 +32,25 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 sizes="(max-width: 770px) 100vw"
                 className={`w-full rounded-lg h-full transition-transform duration-150 overflow-hidden lg:max-h-[calc(100vh-326px)] object-cover ${
                   zoom ? "group-hover:scale-[1.05]" : ""
-                }`}
-                // blurDataURL="/Placeholder.png"
+                } ${!loaded ? "opacity-0" : "opacity-100"}`}
+                blurDataURL="/Placeholder.png"
                 onError={(event: any) => {
                   event.target.srcset =
                     "https://api.demask.finance/media/default_image.jpg";
                 }}
-                onLoad={(e) => {
-                  setLoading(false);
-                }}
+                unoptimized
+                onLoadingComplete={() => setLoaded(true)}
+                // onLoad={(e) => {
+                //   setLoading(false);
+                // }}
                 placeholder="blur"
                 loading="lazy"
               />
-              <div
-                className={`w-full h-full rounded-lg animate-pulse bg-slate-200 dark:bg-slate-700 ${
-                  loading ? "block" : "hidden"
-                }`}
-              ></div>
+              {!loaded && (
+                <div
+                  className={`w-full h-full rounded-lg animate-pulse bg-slate-200 dark:bg-slate-700 `}
+                ></div>
+              )}
             </div>
           )}
           {!data.metadata?.image && data.metadata?.animation_url && (
@@ -98,16 +100,16 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
             />
           )}
         </div>
-      ):(
+      ) : (
         <Image
-        src="/Placeholder.png"
-        alt="test"
-        width={680}
-        height={576}
-        sizes="(max-width: 770px) 100vw"
-        className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
-        blurDataURL={`${images.blur}`}
-      />
+          src="/Placeholder.png"
+          alt="test"
+          width={680}
+          height={576}
+          sizes="(max-width: 770px) 100vw"
+          className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
+          blurDataURL={`${images.blur}`}
+        />
       )}
     </>
   );

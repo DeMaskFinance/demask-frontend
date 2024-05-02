@@ -135,7 +135,7 @@ const Change = () => {
     }
   }, [inViewOutput]);
   const dmlToken = data?.pages[0]?.dmlAddress;
-  const { amountTokenBuy } = useAmountInMax(
+  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
     dmlToken,
     nativeAddress,
@@ -147,6 +147,8 @@ const Change = () => {
     routerAddress,
     true
   );
+  console.log(amountTokenBuy, idNFTInput, idNFTOutput);
+
   useEffect(() => {
     if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
       setIsSufficientToken(false);
@@ -415,23 +417,27 @@ const Change = () => {
                 idNFTOutput.length === 0 ||
                 !isSufficientToken ||
                 idNFTInput.length !== idNFTOutput.length ||
-                Math.floor(amountTokenBuy) === 0
+                Math.floor(amountTokenBuy) === 0 ||
+                isLoadingBuy
               }
               primary={
                 idNFTInput.length !== 0 &&
                 idNFTOutput.length !== 0 &&
                 isSufficientToken &&
                 idNFTInput.length === idNFTOutput.length &&
-                Math.floor(amountTokenBuy) !== 0
+                Math.floor(amountTokenBuy) !== 0 &&
+                !isLoadingBuy
               }
               active={
                 idNFTInput.length === 0 ||
                 idNFTOutput.length === 0 ||
                 !isSufficientToken ||
                 idNFTInput.length !== idNFTOutput.length ||
-                Math.floor(amountTokenBuy) === 0
+                Math.floor(amountTokenBuy) === 0 ||
+                isLoadingBuy
               }
               className="w-full py-4"
+              isLoadingBtn={isLoadingBuy}
               onClick={handleSwap}
             >
               Swap
