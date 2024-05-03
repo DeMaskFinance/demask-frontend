@@ -109,16 +109,15 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     wallet,
     isOpenTransaction
   );
-  const { balanceToken, bigNumberBalance, allowanceToken } =
-    useInformationToken(
-      account,
-      tokenAddress,
-      wallet,
-      routerAddress,
-      rpc,
-      nativeAddress,
-      isOpenTransaction
-    );
+  const { balanceToken, bigNumberBalance } = useInformationToken(
+    account,
+    tokenAddress,
+    wallet,
+    routerAddress,
+    rpc,
+    nativeAddress,
+    isOpenTransaction
+  );
   usePreventUserFromErasingContent(checkExit);
   useEffect(() => {
     const checkApproveNFT = async () => {

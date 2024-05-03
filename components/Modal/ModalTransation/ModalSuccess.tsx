@@ -123,15 +123,6 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                   </div>
                 ) : null}
               </div>
-              <div className="w-40 h-40 mx-auto mt-10 mb-6">
-                <Image
-                  src={metadataIPFS}
-                  width={160}
-                  height={160}
-                  alt="Img-Collection"
-                  className="object-cover w-full h-full rounded-lg"
-                />
-              </div>
               <div className="flex flex-col items-center justify-center">
                 <p className="font-semibold text-center text-green">
                   Your NFT has been created
