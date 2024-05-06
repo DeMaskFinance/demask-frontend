@@ -540,7 +540,7 @@ export default function AddLiquidity() {
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data?.metadata && (
         <ModalDetail
-          data={data}
+          type="erc1155"
           idNFT={idNFT}
           nftAddress={nftAddress}
           setIsOpenDetail={setIsOpenDetail}

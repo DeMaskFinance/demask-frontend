@@ -15,7 +15,7 @@ import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import useDebounce from "@/hooks/useDebounce";
 interface ModalDetailProps {
-  data: any;
+  type: string;
   nftAddress: string;
   nftID: string;
   setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
@@ -49,7 +49,6 @@ export const ItemList: React.FC<ItemListProps> = ({
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   return (
     <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
@@ -175,7 +174,7 @@ export const ItemList: React.FC<ItemListProps> = ({
       )}
       {selectedItem && (
         <ModalDetail
-          data={selectedItem}
+          type={selectedItem?.type}
           idNFT={selectedItem?.nftID}
           nftAddress={selectedItem?.nftAddress}
           setIsOpenDetail={setIsOpenDetail}

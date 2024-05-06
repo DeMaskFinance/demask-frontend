@@ -1,13 +1,11 @@
+import { Button } from "@/components/Buttons";
+import { SkeletonTable } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
-import { liquidityUser } from "@/libs/service/liquidityService";
+import { historyUserService } from "@/libs/service/profileService";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { Pagination } from "@/components/Common";
-import { SkeletonTable } from "@/components/Skeleton";
-import { historyUserService } from "@/libs/service/profileService";
 import HistoryItem from "./HistoryItem";
-import { Button } from "@/components/Buttons";
 
 export default function History() {
   const [page, setPage] = useState(1);
