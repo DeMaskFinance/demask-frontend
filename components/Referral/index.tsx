@@ -9,6 +9,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Tippy from "@tippyjs/react/headless";
 import { BsCaretDownFill } from "react-icons/bs";
 import StaticTable from "./StaticTable";
+import ReferralUser from "./ReferralUser";
 const style = {
   btnWallet:
     "flex items-center h-10 hover:border-dark2 dark:hover:bg-dark2 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
@@ -45,24 +46,36 @@ const Referral = () => {
   const indexChoice = TABS.findIndex((item) => item.key === tab);
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-center text_gradient">
+      <h1 className="mb-6 text-3xl font-semibold text_gradient">
         Refer and Earn together!
       </h1>
       <div className="mx-auto">
-        <div className="">
-          <Image
-            src="/images/referral.png"
-            width={470}
-            height={300}
-            alt="img_referral"
-            className="object-cover my-6"
-          />
-          <p>Receive DM Points.+10% forever!</p>
-          <p>Recieve 5% ($Monad)trading fee rebate.</p>
-          <p>Accepting a referral boosts your DM Points by 5%.</p>
-          <p className={`text-secondary5 font-semibold cursor-pointer mb-6`}>
-            How is referral working?
-          </p>
+        <div className="flex justify-between mb-6">
+          <div className="">
+            <Image
+              src="/images/referral.png"
+              width={470}
+              height={200}
+              alt="img_referral"
+              className="object-cover my-6 h-[100px] w-full"
+            />
+            <p>
+              Receive DM Points.<span className="text-secondary5">+10%</span>{" "}
+              forever!
+            </p>
+            <p>
+              Recieve<span className="text-secondary5"> 5% ($Monad)</span>
+               trading fee rebate.
+            </p>
+            <p>
+              Accepting a referral boosts your DM Points by 
+              <span className="text-secondary5">5%</span>.
+            </p>
+            <p className={`text-secondary5 font-semibold cursor-pointer mb-6`}>
+              How is referral working?
+            </p>
+          </div>
+          <ReferralUser />
         </div>
         <StaticTable />
         <div className="border rounded-lg border-dark4 min-h-[610px] p-6 mt-6 area_input">
