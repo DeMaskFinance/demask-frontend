@@ -32,7 +32,10 @@ const ModalDocument = ({ data }: { data: string }) => {
     <>
       {isTruncated ? (
         <Tippy theme="light" maxWidth="100vw" content={<span>{data}</span>}>
-          <h2 ref={containerRef} className="w-full truncate document__truncate">
+          <h2
+            ref={containerRef}
+            className="w-full truncate document__truncate dark:text-white"
+          >
             {data}
           </h2>
         </Tippy>

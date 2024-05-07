@@ -8,8 +8,8 @@ import TabQuery from "../NavChoice/TabQuery";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Tippy from "@tippyjs/react/headless";
 import { BsCaretDownFill } from "react-icons/bs";
+import StaticTable from "./StaticTable";
 const style = {
-  title: "font-normal text-center text-dark3",
   btnWallet:
     "flex items-center h-10 hover:border-dark2 dark:hover:bg-dark2 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
 };
@@ -49,22 +49,23 @@ const Referral = () => {
         Refer and Earn together!
       </h1>
       <div className="mx-auto">
-        <Image
-          src="/images/referral.png"
-          width={470}
-          height={300}
-          alt="img_referral"
-          className="object-cover mx-auto my-6"
-        />
-        <p className={style.title}>Receive DM Points.+10% forever!</p>
-        <p className={style.title}>Recieve 5% ($Monad)trading fee rebate.</p>
-        <p className={style.title}>
-          Accepting a referral boosts your DM Points by 5%.
-        </p>
-        <p className={`${style.title} text-darkBG2`}>
-          How is referral working?
-        </p>
-        <div className="border rounded-lg border-dark4 min-h-[610px] p-6 mt-6">
+        <div className="">
+          <Image
+            src="/images/referral.png"
+            width={470}
+            height={300}
+            alt="img_referral"
+            className="object-cover my-6"
+          />
+          <p>Receive DM Points.+10% forever!</p>
+          <p>Recieve 5% ($Monad)trading fee rebate.</p>
+          <p>Accepting a referral boosts your DM Points by 5%.</p>
+          <p className={`text-secondary5 font-semibold cursor-pointer mb-6`}>
+            How is referral working?
+          </p>
+        </div>
+        <StaticTable />
+        <div className="border rounded-lg border-dark4 min-h-[610px] p-6 mt-6 area_input">
           <div className="flex items-center mb-4">
             {/* PC */}
             <div className="hidden md:block">
