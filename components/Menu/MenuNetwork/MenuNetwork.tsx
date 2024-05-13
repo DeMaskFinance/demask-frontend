@@ -62,6 +62,12 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     } else {
       setFilterNetwork(network[0]);
     }
+    const targetNetwork = network.find(
+      (item) => item.chain === chainId.toString()
+    );
+    if (!targetNetwork) {
+      updateChainId(network[0].chain);
+    }
   }, [router.query.chain, router.isReady]);
 
   const LogoComponent: any = filterNetwork?.logo;

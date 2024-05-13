@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, selectProfile, userData } from "@/store/profileSlice";
 import * as userService from "@/libs/service/userService";
 import { getProvider } from "@/libs/connection/getProvider";
-import { network } from "@/libs/constants";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
@@ -17,19 +16,15 @@ export default function Layout({ children }: PropsWithChildren) {
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!router.query.chain) {
-      router.push({
-        pathname: router.pathname,
-        query: { ...router.query, chain: chainId },
-      });
-    } else {
-      updateChainId(router.query.chain);
-    }
-    const targetNetwork = network.find(
-      (item) => item.chain === chainId.toString()
-    );
-    if (!targetNetwork) {
-      updateChainId(network[0].chain);
+    if (router.isReady) {
+      if (!router.query.chain) {
+        router.push({
+          pathname: router.pathname,
+          query: { ...router.query, chain: chainId },
+        });
+      } else {
+        updateChainId(router.query.chain);
+      }
     }
   }, [chainId, router.asPath, router.isReady]);
 

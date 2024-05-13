@@ -66,16 +66,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const { bigNumberBalance } = useInformationToken(
-    account,
-    tokenAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    isOpenTransaction,
-    isOpenSellNFT
-  );
 
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>

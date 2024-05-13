@@ -184,8 +184,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             telegram: values.telegram,
             website: values.website,
           },
-          creatorEarning: values.creatorEarning,
-          royalty: values.royalty,
           category: values.category,
         },
         collectionAddress,
@@ -222,9 +220,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     url: data?.url,
     collaborators: data?.collaborators,
     collaborator: "",
-    creatorEarning: data?.creatorEarning,
     category: data?.category as string[],
-    royalty: data?.royalty,
     featureImage: data?.featureImage,
     twitter: data?.socials?.twitter,
     facebook: data?.socials?.facebook,
@@ -453,49 +449,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   + Add collaborator
                 </p>
               )}
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="name" className={styles.title}>
-                Creator earning
-              </label>
-              <p className="mb-4 text-dark2">
-                Setting your earning Creator address.
-              </p>
-              <div className="flex gap-x-4">
-                <Field
-                  type="text"
-                  id="creatorEarning"
-                  name="creatorEarning"
-                  value={values.creatorEarning}
-                  placeholder="0x...123"
-                  onChange={handleChange}
-                  className="input_item"
-                />
-                <div className="relative flex basis-16">
-                  <Field
-                    type="text"
-                    id="royalty"
-                    name="royalty"
-                    value={values.royalty}
-                    placeholder="0"
-                    onChange={handleChange}
-                    className="input_item"
-                  />
-                  <p className="absolute right-2 top-[50%] -translate-y-[50%]">
-                    %
-                  </p>
-                </div>
-              </div>
-              <ErrorMessage
-                name="creatorEarning"
-                component="div"
-                className="text-xs text-red"
-              />
-              <ErrorMessage
-                name="royalty"
-                component="div"
-                className="text-xs text-red"
-              />
             </div>
             <label className={styles.title}>Social link</label>
             {socialList.map((item, index) => (

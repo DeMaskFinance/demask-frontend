@@ -8,4 +8,34 @@ const referralInfor = async (account: string) => {
     console.error(error);
   }
 };
-export { referralInfor };
+const referralApply = async (account: string, code: string) => {
+  try {
+    const res = await request.get(
+      `apply-ref?userAddress=${account}&referralCode=${code}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const referralHistoryUser = async (account: string, chain: string) => {
+  try {
+    const res = await request.get(
+      `user-point-history-list?chainId=${chain}&userAddress=${account}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const referralPointUser = async (account: string, chain: string) => {
+  try {
+    const res = await request.get(
+      `user-point?userAddress=${account}&chainId=${chain}&seasonNumber=`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export { referralInfor, referralApply, referralHistoryUser, referralPointUser };

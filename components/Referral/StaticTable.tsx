@@ -2,7 +2,7 @@ import React from "react";
 
 const StaticTable = () => {
   return (
-    <div className="flex flex-col border rounded-lg border-dark4 area_input">
+    <div className="flex flex-col p-4 border rounded-lg border-dark4 area_input">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
           <div className="overflow-hidden">

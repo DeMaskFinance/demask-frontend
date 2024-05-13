@@ -17,7 +17,7 @@ export const SEO: DefaultSeoProps = {
       "DeMask is the leading platform to find solutions to increase liquidity for the market for trading crypto collectibles. ",
     images: [
       {
-        url: "https://file.demask.finance/701b9f6b7fe60df3446bbfae7aed2929.png",
+        url: "https://file.demask.finance/d39fc733640a02ea90bf4891a9a9ca50.png",
       },
     ],
   },

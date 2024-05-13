@@ -50,7 +50,7 @@ const Referral = () => {
         Refer and Earn together!
       </h1>
       <div className="mx-auto">
-        <div className="flex justify-between mb-6">
+        <div className="flex flex-col justify-between mb-6 md:flex-row gap-y-6">
           <div className="">
             <Image
               src="/images/referral.png"
@@ -71,9 +71,14 @@ const Referral = () => {
               Accepting a referral boosts your DM Points by 
               <span className="text-secondary5">5%</span>.
             </p>
-            <p className={`text-secondary5 font-semibold cursor-pointer mb-6`}>
+            <a
+              href="https://docs.demask.finance/programs/refer-friends-to-earn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-secondary5 font-semibold cursor-pointer`}
+            >
               How is referral working?
-            </p>
+            </a>
           </div>
           <ReferralUser />
         </div>

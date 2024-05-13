@@ -1,6 +1,21 @@
-import React from "react";
+import AccountContext from "@/context/AccountContext";
+import { referralHistoryUser } from "@/libs/service/referralService";
+import { useQuery } from "@tanstack/react-query";
+import React, { useContext } from "react";
+import { SkeletonTable } from "../Skeleton";
+import ModalNumber from "../Modal/ModalLength/ModalNumber";
 
 const Rewards = () => {
+  const { chainId, account } = useContext(AccountContext);
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["myRewards", chainId, account],
+    queryFn: async () => {
+      const res = await referralHistoryUser(account, chainId);
+      return res;
+    },
+  });
+  console.log(data);
+
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -27,27 +42,28 @@ const Rewards = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
-                  <td className="px-6 py-4 whitespace-nowrap w-14">1</td>
-                  <td className="px-10 py-4 whitespace-nowrap">Mark</td>
-                  <td className="px-6 py-4 whitespace-nowrap">Otto</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@mdo</td> 
-                </tr>
-                <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
-                  <td className="px-6 py-4 whitespace-nowrap w-14">2</td>
-                  <td className="px-10 py-4 whitespace-nowrap">Jacob</td>
-                  <td className="px-6 py-4 whitespace-nowrap">Thornton</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@fat</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
-                </tr>
-                <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
-                  <td className="px-6 py-4 whitespace-nowrap w-14">3</td>
-                  <td className="px-10 py-4 whitespace-nowrap">Larry</td>
-                  <td className="px-6 py-4 whitespace-nowrap">Wild</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@twitter</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
-                </tr>
+                {isLoading ? (
+                  <SkeletonTable length={9} />
+                ) : (
+                  isSuccess &&
+                  data &&
+                  data.data.map((item: any, index: number) => (
+                    <tr
+                      key={index}
+                      className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {index + 1}
+                      </td>
+                      <td className="px-10 py-4 whitespace-nowrap">Mark</td>
+                      <td className="px-6 py-4 whitespace-nowrap">Otto</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <ModalNumber data={item.point} />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

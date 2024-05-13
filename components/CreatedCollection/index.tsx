@@ -22,8 +22,11 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import DetailERC721 from "../ERC721/DetailERC721";
 import * as collectionService from "@/libs/service/collectionService";
 import { BiLoaderAlt } from "react-icons/bi";
+import ModalRoyalty from "../Modal/ModalRoyalty";
+import { FiEdit } from "react-icons/fi";
 export default function CreatedCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
+  const [isOpenRoyalty, setIsOpenRoyalty] = useState<boolean>(false);
   const inputAvatar = useRef(null);
   const inputBanner = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
@@ -112,6 +115,7 @@ export default function CreatedCollection() {
       setAvatarLoading(false);
     }
   };
+  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[80vh] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0 ">
@@ -252,11 +256,23 @@ export default function CreatedCollection() {
                   {dataDetail?.name}
                 </p>
                 {dataDetail?.collaborators.includes(account) && (
-                  <Link
-                    href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
-                  >
-                    <EditIcon width={24} height={24} className="fill-dark3" />
-                  </Link>
+                  <div className="flex items-center gap-x-2">
+                    <Link
+                      href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
+                    >
+                      <EditIcon width={24} height={24} className="fill-dark3" />
+                    </Link>
+                    <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-secondary5 bg-opacity-40 text-secondary3 flex-nowrap">
+                      Royalties 5%
+                      <FiEdit
+                        className="cursor-pointer"
+                        onClick={() => {
+                          document.body.style.overflowY = "hidden";
+                          setIsOpenRoyalty(true);
+                        }}
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
               <p className="text-xs">{dataDetail?.description}</p>
@@ -301,11 +317,11 @@ export default function CreatedCollection() {
             <div className="text-dark2">
               <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
               <div className="flex items-center text-xl font-semibold ">
-                {
-                  dataDetail?.totalSale  ?(
-                    <FormatNumber number={dataDetail?.totalSale} />
-                  ):0
-                }
+                {dataDetail?.totalSale ? (
+                  <FormatNumber number={dataDetail?.totalSale} />
+                ) : (
+                  0
+                )}
                 <EtherIcon width={16} height={16} className="fill-dark2" />
               </div>
             </div>
@@ -341,6 +357,10 @@ export default function CreatedCollection() {
           />
         )}
       </div>
+      <ModalRoyalty
+        isOpenRoyalty={isOpenRoyalty}
+        setIsOpenRoyalty={setIsOpenRoyalty}
+      />
     </div>
   );
 }

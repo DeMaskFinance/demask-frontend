@@ -5,6 +5,7 @@ import Copy from "../Common/Copy";
 import { useQuery } from "@tanstack/react-query";
 import { referralInfor } from "@/libs/service/referralService";
 import AccountContext from "@/context/AccountContext";
+import { MdDone } from "react-icons/md";
 
 const ReferralUser = () => {
   const { account } = useContext(AccountContext);
@@ -29,26 +30,20 @@ const ReferralUser = () => {
     </div> */}
           <p>Referral link</p>
           <div className="flex mt-2 mb-4 gap-x-2">
-            <p className="flex items-center w-full px-4 py-2 font-semibold rounded-lg gap-x-2 area_input text-dark2 bg-dark4 dark:bg-darkBG2">
-              https://test.demask.finance/invite?code={data?.referralCode}
+            <div className="flex items-center w-full px-4 py-2 font-semibold rounded-lg whitespace-nowrap flex-nowrap gap-x-2 area_input text-dark2 bg-dark4 dark:bg-darkBG2">
+              <span className="">https://test.demask.finance/invite?code=</span>
+              <span>{data?.referralCode}</span>
               <Copy
                 content={`https://test.demask.finance/invite?code=${data?.referralCode}`}
               />
-            </p>
+            </div>
           </div>
           <p>Accept a Referral</p>
           <div className="flex mt-2 gap-x-2">
             <div className="flex w-full px-4 py-2 font-semibold rounded-lg area_input text-dark2 bg-dark4 dark:bg-darkBG2 gap-x-2">
               {data?.referredBy ? (
-                <div>
-                  <span>
-                    <TickSuccessIcon
-                      width={20}
-                      height={20}
-                      className="fill-green"
-                    />
-                  </span>
-                  You're in! Referred by{" "}
+                <div className="flex items-center gap-x-2">
+                  <MdDone className="text-green" /> You're in! Referred by{" "}
                   <span className="text-secondary5"> {data?.referredBy}</span>
                 </div>
               ) : (
