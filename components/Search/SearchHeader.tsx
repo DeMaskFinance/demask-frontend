@@ -326,7 +326,7 @@ const Search: FunctionComponent<SearchProps> = ({
                             <div
                               onClick={() => handleResultItemClick(item)}
                               className="flex-1"
-                              //
+                              key={index}
                             >
                               <div className="item_search">
                                 <div className="flex items-center gap-2">

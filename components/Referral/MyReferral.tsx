@@ -6,6 +6,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import { SkeletonTable } from "../Skeleton";
+import TableRowSkeleton from "../Skeleton/SkeletonTablev2";
 
 const MyReferral = () => {
   const { chainId, account } = useContext(AccountContext);
@@ -42,7 +43,7 @@ const MyReferral = () => {
               </thead>
               <tbody>
                 {isLoading ? (
-                  <SkeletonTable length={9} />
+                  <TableRowSkeleton length={9} col={4} />
                 ) : (
                   isSuccess &&
                   data &&

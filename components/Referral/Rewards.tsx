@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import { SkeletonTable } from "../Skeleton";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
+import TableRowSkeleton from "../Skeleton/SkeletonTablev2";
 
 const Rewards = () => {
-  const { chainId, account } = useContext(AccountContext);
+  const { chainId, account, demask } = useContext(AccountContext);
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["myRewards", chainId, account],
     queryFn: async () => {
@@ -43,7 +44,7 @@ const Rewards = () => {
               </thead>
               <tbody>
                 {isLoading ? (
-                  <SkeletonTable length={9} />
+                  <TableRowSkeleton length={9} col={4} />
                 ) : (
                   isSuccess &&
                   data &&
@@ -55,12 +56,36 @@ const Rewards = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         {index + 1}
                       </td>
-                      <td className="px-10 py-4 whitespace-nowrap">Mark</td>
-                      <td className="px-6 py-4 whitespace-nowrap">Otto</td>
+                      <td className="px-10 py-4 whitespace-nowrap">
+                        {item.pointSource.map((type: any, index: number) => (
+                          <span
+                            key={index}
+                            className={`border text-xs bg-opacity-10 w-16 text-center ${
+                              type.action === "Buy" || type.action === "Add"
+                                ? "border-green text-green bg-green"
+                                : "border-red text-red bg-red"
+                            } p-1 rounded-lg`}
+                          >
+                            {type.action}
+                          </span>
+                        ))}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-secondary5">
+                        <a
+                          href={`${demask.urltxHash}tx/${item.transactionHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.transactionHash?.slice(0, 4)}...
+                          {item.transactionHash?.slice(-8)}
+                        </a>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <ModalNumber data={item.point} />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {item.blockTime}
+                      </td>
                     </tr>
                   ))
                 )}
