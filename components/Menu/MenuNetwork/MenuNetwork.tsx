@@ -54,15 +54,13 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     }
   };
   useEffect(() => {
-    if (router.query.chain) {
-      const foundNetwork = network.find(
-        (item) => item.chain === router.query.chain
-      );
+    if (chainId) {
+      const foundNetwork = network.find((item) => item.chain === chainId);
       setFilterNetwork(foundNetwork);
     } else {
       setFilterNetwork(network[0]);
     }
-  }, [router.query.chain, router.isReady]);
+  }, [chainId, router.isReady]);
 
   const LogoComponent: any = filterNetwork?.logo;
   return (

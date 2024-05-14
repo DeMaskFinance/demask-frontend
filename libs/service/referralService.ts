@@ -10,7 +10,7 @@ const referralInfor = async (account: string) => {
 };
 const referralApply = async (account: string, code: string) => {
   try {
-    const res = await request.get(
+    const res = await request.post(
       `apply-ref?userAddress=${account}&referralCode=${code}`
     );
     return res.data;

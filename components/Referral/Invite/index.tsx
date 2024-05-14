@@ -74,13 +74,13 @@ const Invite = () => {
       {check && account && (
         <Fragment>
           {check.isSuccess ? (
-            <div className="p-4 rounded-lg bg-red dark:bg-opacity-20">
-              <p className="font-semibold text-rose-800">Success</p>
+            <div className="p-4 rounded-lg bg-green dark:bg-opacity-20">
+              <p className="font-semibold text-[#21735f]">Success</p>
               <p className="mt-4 text-sm text-white">{check.message}</p>
             </div>
           ) : (
-            <div className="p-4 rounded-lg bg-green">
-              <p className="font-semibold text-[#21735f] ">Failed</p>
+            <div className="p-4 rounded-lg bg-red">
+              <p className="font-semibold text-rose-800">Failed</p>
               <p className="mt-4 text-sm text-white">
                 Addition failed. Please check your information and try again.
               </p>

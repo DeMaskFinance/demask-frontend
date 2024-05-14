@@ -161,7 +161,7 @@ export default function CreatedCollection() {
         )}
       </div>
       <div className="px-4 lg:px-10 2xl:px-[164px] md:px-6">
-        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 dark:bg-darkBG1">
+        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 dark:bg-darkBG1 gap-x-10 2xl:gap-x-80">
           <div className="items-center text-xs lg:flex gap-x-2 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
@@ -250,7 +250,7 @@ export default function CreatedCollection() {
                 className="hidden"
               />
             </div>
-            <div className="lg:max-w-[45%] mt-4 lg:mt-0">
+            <div className="mt-4 lg:mt-0">
               <div className="flex items-center gap-x-2">
                 <p className="text-2xl font-semibold whitespace-nowrap">
                   {dataDetail?.name}

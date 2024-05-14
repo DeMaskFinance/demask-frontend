@@ -15,6 +15,7 @@ const ReferralUser = () => {
       const res = await referralInfor(account);
       return res.data;
     },
+    enabled: !!account,
   });
   console.log(data);
 
@@ -31,8 +32,10 @@ const ReferralUser = () => {
           <p>Referral link</p>
           <div className="flex mt-2 mb-4 gap-x-2">
             <div className="flex items-center w-full px-4 py-2 font-semibold rounded-lg whitespace-nowrap flex-nowrap gap-x-2 area_input text-dark2 bg-dark4 dark:bg-darkBG2">
-              <span className="">https://test.demask.finance/invite?code=</span>
-              <span>{data?.referralCode}</span>
+              <span className="">
+                https://test.demask.finance/invite?code={data?.referralCode}
+              </span>
+
               <Copy
                 content={`https://test.demask.finance/invite?code=${data?.referralCode}`}
               />

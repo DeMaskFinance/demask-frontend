@@ -24,16 +24,22 @@ export default function Layout({ children }: PropsWithChildren) {
           query: { ...router.query, chain: chainId },
         });
       } else {
-        updateChainId(router.query.chain);
+        const targetNetwork = network.find(
+          (item) => item.chain === router.query.chain
+        );
+        console.log(targetNetwork);
+        if (!targetNetwork) {
+          updateChainId(network[0].chain);
+          router.push({
+            pathname: router.pathname,
+            query: { ...router.query, chain: network[0].chain },
+          });
+        } else {
+          updateChainId(router.query.chain);
+        }
       }
     }
-    const targetNetwork = network.find(
-      (item) => item.chain === chainId.toString()
-    );
-    if (!targetNetwork) {
-      updateChainId(network[0].chain);
-    }
-  }, [chainId, router.asPath, router.isReady]);
+  }, [chainId, router.asPath, router.isReady, network]);
 
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
