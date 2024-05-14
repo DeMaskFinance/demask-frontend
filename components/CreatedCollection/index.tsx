@@ -115,7 +115,6 @@ export default function CreatedCollection() {
       setAvatarLoading(false);
     }
   };
-  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[80vh] mx-auto flex flex-col gap-y-6 mb-[100px] lg:mb-0 ">

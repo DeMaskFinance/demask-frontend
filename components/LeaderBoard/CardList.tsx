@@ -28,8 +28,6 @@ export const CardListLoading = () => {
   );
 };
 const CardList = ({ data }: any) => {
-  console.log(data);
-
   return (
     <div
       className={`flex flex-col bg-white dark:bg-darkBG1 items-center justify-center p-2 border dark:text-white rounded-lg text-dark1 w-full h-fit ${

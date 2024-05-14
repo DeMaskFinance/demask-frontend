@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import MediaNFT from "@/components/Common/MediaNFT";
 import ModalDocument from "../ModalLength/ModalDocument";
 import { useInView } from "react-intersection-observer";
+import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: DataBase;
@@ -200,6 +201,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     data: data721,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
     isSuccess,
     isLoading,
     isFetching,
@@ -245,50 +247,14 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             )} */}
           </p>
           {type === "erc721" && isSuccess && (
-            <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll md:grid-cols-3 text-dark2 max-h-[200px] lg:max-h-[340px]">
-              {data721?.pages.map((page: any, pageIndex: number) => (
-                <Fragment key={pageIndex}>
-                  {page?.data?.map((item: any, index: number) => (
-                    <div
-                      key={index}
-                      className="relative"
-                      onClick={() => handleChoiceNFT(item)}
-                    >
-                      <div
-                        className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
-                          idNFT.includes(Number(item.nftID))
-                            ? "border-secondary5 dark:border-secondary5"
-                            : ""
-                        }`}
-                      >
-                        <div className="relative h-[78px] lg:h-[100px]">
-                          <MediaNFT data={item} isControls={false} hover />
-                        </div>
-                        <div className="w-full">
-                          <div className="flex w-full mt-2">
-                            <div className="w-full">
-                              <h6
-                                title={item.metadata?.name}
-                                className="flex items-start gap-2 font-semibold uppercase"
-                              >
-                                <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                  {item.metadata?.name ? (
-                                    <ModalDocument data={item.metadata?.name} />
-                                  ) : (
-                                    <p>--</p>
-                                  )}
-                                </span>
-                              </h6>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Fragment>
-              ))}
-              <div ref={ref} style={{ height: "1px" }}></div>
-            </div>
+            <NFTGrid
+              data={data721}
+              isFetching={isFetching}
+              hasNextPage={hasNextPage}
+              ref={ref}
+              handleChoiceNFT={handleChoiceNFT}
+              idNFT={idNFT}
+            />
           )}
           <div>
             <div className="relative">

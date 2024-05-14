@@ -89,7 +89,13 @@ const Invite = () => {
         </Fragment>
       )}
 
-      <Button primary className="px-6 py-2 mt-4" onClick={handleSubmit}>
+      <Button
+        primary={account}
+        active={!account}
+        disabled={!account}
+        className="px-6 py-2 mt-4"
+        onClick={handleSubmit}
+      >
         Confirm
       </Button>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

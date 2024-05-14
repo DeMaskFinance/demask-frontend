@@ -6,7 +6,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import { SkeletonTable } from "../Skeleton";
-import TableRowSkeleton from "../Skeleton/SkeletonTablev2";
+import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
 
 const MyReferral = () => {
   const { chainId, account } = useContext(AccountContext);
@@ -17,7 +17,6 @@ const MyReferral = () => {
       return res;
     },
   });
-  console.log(data);
 
   return (
     <div className="flex flex-col">

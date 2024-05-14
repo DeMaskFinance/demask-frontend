@@ -27,7 +27,6 @@ export default function Layout({ children }: PropsWithChildren) {
         const targetNetwork = network.find(
           (item) => item.chain === router.query.chain
         );
-        console.log(targetNetwork);
         if (!targetNetwork) {
           updateChainId(network[0].chain);
           router.push({

@@ -44,6 +44,14 @@ const collectionListBuy = async (
     console.error(error);
   }
 };
+const fetchDataBuyNFTs = async (
+  collectionAddress: string,
+  pageParam = 1,
+  chain: string | string[]
+) => {
+  const data = await collectionListBuy(collectionAddress, chain, pageParam, 10);
+  return data.data;
+};
 const collectionListSell = async (
   userAddress: string,
   contractAddress: string | string[],
@@ -59,6 +67,21 @@ const collectionListSell = async (
   } catch (error) {
     console.error(error);
   }
+};
+const fetchDataSellNFTs = async (
+  collectionAddress: string,
+  pageParam = 1,
+  chain: string | string[],
+  account: string
+) => {
+  const data = await collectionListSell(
+    account,
+    collectionAddress,
+    chain,
+    pageParam,
+    10
+  );
+  return data.data;
 };
 const collectionListUserService = async (
   account: string,
@@ -137,4 +160,6 @@ export {
   updateCollection,
   uploadFileCollection,
   collectionListUser,
+  fetchDataSellNFTs,
+  fetchDataBuyNFTs,
 };

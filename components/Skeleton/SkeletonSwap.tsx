@@ -1,5 +1,5 @@
 import { ChartLoading } from "../Charts";
-import SkeletonTable from "./SkeletonTable";
+import { SkeletonTable } from "./SkeletonTable";
 
 export default function SkeletonSwap() {
   return (

@@ -17,7 +17,6 @@ const ReferralUser = () => {
     },
     enabled: !!account,
   });
-  console.log(data);
 
   return (
     <div>

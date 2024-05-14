@@ -9,18 +9,9 @@ export const changeNetwork = async (
   updateChainId: any,
   setTab?: any
 ) => {
-  console.log(chainId);
-
   try {
     const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
-    console.log({
-      networkId,
-      chainId,
-      wallet,
-      provider,
-    });
-
     if (networkId !== chainId) {
       try {
         await provider.request({

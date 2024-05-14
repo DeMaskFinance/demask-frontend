@@ -244,7 +244,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       }
     }
   };
-  console.log(data);
   return (
     <Wrapper isOpen={isOpenBuyNFT} onClick={handleClose}>
       <div className="container_modal">

@@ -37,8 +37,7 @@ export default function EditProfile() {
       setAvatarLoading(false);
     }
   };
-  console.log(profile);
-  
+
   return (
     <div className="px-4 pb-20 lg:px-0 lg:pb-0">
       <div className="relative cursor-pointer group h-[120px] lg:h-[240px]">

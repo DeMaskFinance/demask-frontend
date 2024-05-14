@@ -13,7 +13,6 @@ const Leaderboard = () => {
         return res;
       },
     });
-  console.log(data);
 
   return (
     <div className="flex flex-col">

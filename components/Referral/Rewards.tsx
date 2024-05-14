@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import { SkeletonTable } from "../Skeleton";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
-import TableRowSkeleton from "../Skeleton/SkeletonTablev2";
+import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
 
 const Rewards = () => {
   const { chainId, account, demask } = useContext(AccountContext);
@@ -15,7 +15,6 @@ const Rewards = () => {
       return res;
     },
   });
-  console.log(data);
 
   return (
     <div className="flex flex-col">

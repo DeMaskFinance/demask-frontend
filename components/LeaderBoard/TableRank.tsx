@@ -3,13 +3,13 @@ import { EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import Image from "next/image";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { SkeletonTable } from "../Skeleton";
 import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import AccountContext from "@/context/AccountContext";
 import { useQuery } from "@tanstack/react-query";
 import { AvatarCustom, AvatarUser } from "../Avatars";
 import Link from "next/link";
 import axios from "axios";
+import { SkeletonTable } from "../Skeleton/SkeletonTable";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask } = useContext(AccountContext);

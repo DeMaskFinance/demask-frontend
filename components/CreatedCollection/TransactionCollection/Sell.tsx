@@ -15,13 +15,17 @@ import AccountContext from "@/context/AccountContext";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationToken from "@/hooks/useInformationToken";
-import { collectionListSell } from "@/libs/service/collectionService";
+import {
+  collectionListSell,
+  fetchDataSellNFTs,
+} from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import NFTGrid from "./NFTsGrids";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -52,21 +56,6 @@ const Sell = () => {
     nativeAddress,
     isOpenTransaction
   );
-  const fetchDataNFTs = async (
-    collectionAddress: string,
-    pageParam = 1,
-    chain: string | string[],
-    account: string
-  ) => {
-    const data = await collectionListSell(
-      account,
-      collectionAddress,
-      chain,
-      pageParam,
-      10
-    );
-    return data.data;
-  };
 
   const {
     data,
@@ -79,7 +68,7 @@ const Sell = () => {
   } = useInfiniteQuery(
     ["collectionNFTSell", chainId, account, collectionAddress],
     ({ pageParam = 1 }) =>
-      fetchDataNFTs(collectionAddress, pageParam, chainId, account),
+      fetchDataSellNFTs(collectionAddress, pageParam, chainId, account),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -87,8 +76,12 @@ const Sell = () => {
           : page?.currentPage + 1,
     }
   );
+  console.log(data);
+
   useEffect(() => {
     if (inView) {
+      console.log("123");
+
       fetchNextPage();
     }
   }, [inView]);
@@ -176,58 +169,14 @@ const Sell = () => {
             </div>
           ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
             <div className="flex flex-col ">
-              <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] mb-8">
-                {data?.pages.map((page: any, pageIndex: number) => (
-                  <Fragment key={pageIndex}>
-                    {page?.data?.map((item: any, index: number) => (
-                      <div
-                        key={index}
-                        className="relative overflow-hidden"
-                        onClick={() => handleChoiceNFT(item)}
-                      >
-                        <div
-                          className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
-                            idNFT.includes(Number(item.nftID))
-                              ? "border-secondary5 dark:border-secondary5"
-                              : ""
-                          }`}
-                        >
-                          <div className="relative h-[78px] lg:h-[100px] group">
-                            <MediaNFT
-                              data={item}
-                              isControls={false}
-                              hover
-                              zoom
-                            />
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full mt-2">
-                              <div className="w-full">
-                                <h6
-                                  title={item.metadata?.name}
-                                  className="flex items-start gap-2 font-semibold uppercase"
-                                >
-                                  <span className="flex-wrap max-w-full text-sm line-clamp-1">
-                                    {item.metadata?.name ? (
-                                      <ModalDocument
-                                        data={item.metadata?.name}
-                                      />
-                                    ) : (
-                                      <p>--</p>
-                                    )}
-                                  </span>
-                                </h6>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </Fragment>
-                ))}
-                {isFetching && hasNextPage && <SkeletonItemTransaction />}
-                <div ref={ref} style={{ height: "1px" }}></div>
-              </div>
+              <NFTGrid
+                data={data}
+                isFetching={isFetching}
+                hasNextPage={hasNextPage}
+                ref={ref}
+                handleChoiceNFT={handleChoiceNFT}
+                idNFT={idNFT}
+              />
               <div className="absolute bottom-0 w-full">
                 {idNFT.length > 0 && (
                   <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-white">

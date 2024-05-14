@@ -72,7 +72,6 @@ const TransactionCollection = () => {
     },
   ];
   const indexChoice = TABS.findIndex((item) => item.key === tab);
-  console.log(visible);
 
   return (
     <div className="relative flex flex-col h-full p-3 border rounded-lg border-dark3 dark:border-none">

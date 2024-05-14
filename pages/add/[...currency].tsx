@@ -128,7 +128,6 @@ export default function AddLiquidity() {
     wallet,
     isOpenTransaction
   );
-  console.log(isLoading);
 
   const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
     account,
