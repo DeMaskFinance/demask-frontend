@@ -72,6 +72,7 @@ const BLAST_DEMASK = {
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
   CREATE_COLLECTION: process.env.NEXT_PUBLIC_CREATE_COLLECTION_BLAST,
+  FEE_MANAGER: process.env.NEXT_PUBLIC_FEE_MANAGER_BLAST,
   urltxHash: "https://sepolia.blastscan.io/",
   chainName: "Blast Testnet",
   NAME: "Blast Testnet",
@@ -124,11 +125,11 @@ if (PORT === "3000") {
       logo: BlastIcon,
       chain: "168587773",
     },
-    {
-      name: "BNB Testnet",
-      logo: BscIcon,
-      chain: "97",
-    },
+    // {
+    //   name: "BNB Testnet",
+    //   logo: BscIcon,
+    //   chain: "97",
+    // },
     {
       name: "Monad Devnet",
       logo: MonadIcon,

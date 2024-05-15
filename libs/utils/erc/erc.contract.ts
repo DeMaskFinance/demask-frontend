@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiDML from "@/abi/abiDML.json";
 import abiCollection from "@/abi/abiCreateCollection.json";
+import abiFeeManager from "@/abi/abiFeeManager.json";
 const erc = async (wallet: string, address: string, abi: any) => {
   const providerChoice = await getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -95,6 +96,32 @@ const fillCreate = async (
     }
   }
 };
+const setRoyalty = async (
+  feeManager: string,
+  dmlToken: string,
+  royaltyReceiver: string,
+  royaltyPercent: number,
+  blockTime: number,
+  signature: string,
+  account: string,
+  wallet: string
+) => {
+  if (dmlToken && account && wallet) {
+    const contract = await ercContract.erc(wallet, feeManager, abiFeeManager);
+    try {
+      const result = await contract.setRoyalty(
+        dmlToken,
+        royaltyReceiver,
+        royaltyPercent,
+        blockTime,
+        signature
+      );
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 const ercContract = {
   erc,
   approveNFT,
@@ -102,5 +129,6 @@ const ercContract = {
   getInforDML,
   viewReward,
   fillCreate,
+  setRoyalty,
 };
 export default ercContract;

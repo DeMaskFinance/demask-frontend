@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import PoolItem from "./PoolItem";
-import { Pagination } from "@/components/Common";
 import { SkeletonTable } from "@/components/Skeleton";
 import { poolsUserService } from "@/libs/service/profileService";
 import { Button } from "@/components/Buttons";

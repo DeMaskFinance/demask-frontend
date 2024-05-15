@@ -151,6 +151,22 @@ const collectionListUser = async (
     console.error(error);
   }
 };
+const getSignature = async (
+  dmlAddress: string,
+  creatorEarning: string,
+  royalty: number,
+  chainId: string | string[],
+  blockTime: number
+) => {
+  try {
+    const res = await request.get(
+      `signature?chainId=${chainId}&dmlAddress=${dmlAddress}&royaltyReceive=${creatorEarning}&royaltyPercent=${royalty}&blockTime=${blockTime}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 export {
   collectionDetail,
   collectionListERC1155,
@@ -162,4 +178,5 @@ export {
   collectionListUser,
   fetchDataSellNFTs,
   fetchDataBuyNFTs,
+  getSignature,
 };

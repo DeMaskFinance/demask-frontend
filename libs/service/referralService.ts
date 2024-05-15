@@ -18,24 +18,70 @@ const referralApply = async (account: string, code: string) => {
     console.error(error);
   }
 };
-const referralHistoryUser = async (account: string, chain: string) => {
+const referralHistoryUser = async (
+  account: string,
+  chain: string,
+  page: number
+) => {
   try {
     const res = await request.get(
-      `user-point-history-list?chainId=${chain}&userAddress=${account}`
+      `user-point-history-list?chainId=${chain}&userAddress=${account}&page=${page}`
     );
     return res.data;
   } catch (error) {
     console.error(error);
   }
 };
-const referralPointUser = async (account: string, chain: string) => {
+const referralPointUser = async (
+  account: string,
+  chain: string,
+  page: number
+) => {
   try {
     const res = await request.get(
-      `user-point?userAddress=${account}&chainId=${chain}&seasonNumber=`
+      `user-point?userAddress=${account}&chainId=${chain}&page=${page}&seasonNumber=`
     );
     return res.data;
   } catch (error) {
     console.error(error);
   }
 };
-export { referralInfor, referralApply, referralHistoryUser, referralPointUser };
+const referralTopUser = async (account: string, chain: string) => {
+  try {
+    const res = await request.get(
+      `top-point-referral-code-list?chainId=${chain}&userAddress=${account}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const referralLeaderboardUser = async (account: string, page: number) => {
+  try {
+    const res = await request.get(
+      `top-referral-code-list?userAddress=${account}&page=${page}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const referralStaticUser = async (account: string, chain: string) => {
+  try {
+    const res = await request.get(
+      `user-referral-stats?userAddress=${account}&seasonNumber=0&chainId=${chain}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export {
+  referralInfor,
+  referralApply,
+  referralHistoryUser,
+  referralPointUser,
+  referralTopUser,
+  referralLeaderboardUser,
+  referralStaticUser,
+};

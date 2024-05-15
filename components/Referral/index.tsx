@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import MyReferral from "./MyReferral";
 import Rewards from "./Rewards";
 import Others from "./Others";
@@ -10,6 +10,7 @@ import Tippy from "@tippyjs/react/headless";
 import { BsCaretDownFill } from "react-icons/bs";
 import StaticTable from "./StaticTable";
 import ReferralUser from "./ReferralUser";
+import AccountContext from "@/context/AccountContext";
 const style = {
   btnWallet:
     "flex items-center h-10 hover:border-dark2 dark:hover:bg-dark2 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
@@ -20,6 +21,7 @@ const Referral = () => {
     withDefault(StringParam, "referrals")
   );
   const [visible, setVisible] = useState(true);
+  const { chainId, account } = useContext(AccountContext);
   const TABS = [
     {
       title: "My Referrals",
@@ -82,7 +84,7 @@ const Referral = () => {
           </div>
           <ReferralUser />
         </div>
-        <StaticTable />
+        {account && <StaticTable />}
         <div className="border rounded-lg border-dark4 min-h-[610px] p-6 mt-6 area_input">
           <div className="flex items-center mb-4">
             {/* PC */}

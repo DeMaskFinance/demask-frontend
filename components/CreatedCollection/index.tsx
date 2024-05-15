@@ -85,6 +85,8 @@ export default function CreatedCollection() {
       }
     },
   });
+  console.log(dataDetail);
+
   const handleUploadBanner = async (file: any) => {
     try {
       setBannerLoading(true);
@@ -168,7 +170,7 @@ export default function CreatedCollection() {
               }`}
             >
               <div
-                className={`${
+                className={` w-[120px] h-[120px]${
                   dataDetail?.collaborators.includes(account) &&
                   "group-hover:brightness-[0.8]"
                 }`}
@@ -179,7 +181,7 @@ export default function CreatedCollection() {
                     alt="banner"
                     width={600}
                     height={600}
-                    className="object-cover rounded-lg w-[120px] h-[120px]"
+                    className="object-cover w-full h-full rounded-lg "
                   />
                 ) : (
                   <Image
@@ -262,7 +264,7 @@ export default function CreatedCollection() {
                       <EditIcon width={24} height={24} className="fill-dark3" />
                     </Link>
                     <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-secondary5 bg-opacity-40 text-secondary3 flex-nowrap">
-                      Royalties 5%
+                      Royalties {dataDetail.royalty}%
                       <FiEdit
                         className="cursor-pointer"
                         onClick={() => {
@@ -356,10 +358,13 @@ export default function CreatedCollection() {
           />
         )}
       </div>
-      <ModalRoyalty
-        isOpenRoyalty={isOpenRoyalty}
-        setIsOpenRoyalty={setIsOpenRoyalty}
-      />
+      {dataDetail?.dmlAddress && (
+        <ModalRoyalty
+          isOpenRoyalty={isOpenRoyalty}
+          setIsOpenRoyalty={setIsOpenRoyalty}
+          dmlAddress={dataDetail.dmlAddress}
+        />
+      )}
     </div>
   );
 }

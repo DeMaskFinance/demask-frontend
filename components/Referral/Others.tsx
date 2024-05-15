@@ -24,24 +24,12 @@ const Others = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
+                {/* <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
                   <td className="px-6 py-4 whitespace-nowrap">1</td>
                   <td className="px-10 py-4 whitespace-nowrap">Mark</td>
                   <td className="px-6 py-4 whitespace-nowrap">Otto</td>
                   <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
-                </tr>
-                <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
-                  <td className="px-6 py-4 whitespace-nowrap">2</td>
-                  <td className="px-10 py-4 whitespace-nowrap">Jacob</td>
-                  <td className="px-6 py-4 whitespace-nowrap">Thornton</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@fat</td>
-                </tr>
-                <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
-                  <td className="px-6 py-4 whitespace-nowrap">3</td>
-                  <td className="px-10 py-4 whitespace-nowrap">Larry</td>
-                  <td className="px-6 py-4 whitespace-nowrap">Wild</td>
-                  <td className="px-6 py-4 whitespace-nowrap">@twitter</td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>

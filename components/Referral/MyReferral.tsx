@@ -2,21 +2,26 @@ import AccountContext from "@/context/AccountContext";
 import {
   referralHistoryUser,
   referralPointUser,
+  referralTopUser,
 } from "@/libs/service/referralService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SkeletonTable } from "../Skeleton";
 import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
+import { TablePagination } from "../Common/Pagination";
 
 const MyReferral = () => {
   const { chainId, account } = useContext(AccountContext);
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ["myReferral", chainId, account],
-    queryFn: async () => {
-      const res = await referralPointUser(account, chainId);
-      return res;
-    },
-  });
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
+    useQuery({
+      queryKey: ["myReferral", chainId, account],
+      queryFn: async () => {
+        const res = await referralTopUser(account, chainId);
+        return res.data;
+      },
+      enabled: !!account,
+    });
 
   return (
     <div className="flex flex-col">
@@ -46,20 +51,35 @@ const MyReferral = () => {
                 ) : (
                   isSuccess &&
                   data &&
-                  data.data.map((item: any, index: number) => (
+                  data.map((item: any, index: number) => (
                     <tr
                       key={index}
                       className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">1</td>
-                      <td className="px-10 py-4 whitespace-nowrap">Mark</td>
-                      <td className="px-6 py-4 whitespace-nowrap">Otto</td>
-                      <td className="px-6 py-4 whitespace-nowrap">@mdo</td>
+                      <td className="px-10 py-4 whitespace-nowrap">
+                        {item?.userAddress}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {item?.totalPoints}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {item?.blockTime}
+                      </td>
                     </tr>
                   ))
                 )}
               </tbody>
             </table>
+            <TablePagination
+              data={data}
+              page={page}
+              setPage={setPage}
+              totalPages={data?.totalPages || 1}
+              isFetching={isFetching}
+              refetch={refetch}
+              isPreviousData={isPreviousData}
+            />
           </div>
         </div>
       </div>

@@ -8,6 +8,10 @@ import { toast } from "react-toastify";
 import * as collectionService from "@/libs/service/collectionService";
 import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
+import { Button } from "@/components/Buttons";
+import { ModalTransation } from "../ModalTransation";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import showToast, { ToastType } from "@/components/Toast/ToastCustom";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
@@ -17,14 +21,16 @@ const styles = {
 interface ModalRoyaltyProps {
   isOpenRoyalty: boolean;
   setIsOpenRoyalty: React.Dispatch<React.SetStateAction<boolean>>;
+  dmlAddress: string;
 }
 const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
   isOpenRoyalty,
   setIsOpenRoyalty,
+  dmlAddress,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const collectionAddress = useRouter().query.edit as string;
-  const { chainId } = useContext(AccountContext);
+  const [isProcess, setIsProcess] = useState<boolean>(false);
+  const { chainId, demask, account, wallet } = useContext(AccountContext);
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -37,34 +43,50 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
     royalty: "",
   };
   const validationSchema = yup.object().shape({
+    creatorEarning: yup
+      .string()
+      .required("Creator Address is a required")
+      .matches(
+        /^(0x[a-fA-F0-9]{40}|[a-zA-Z0-9-]+\.eth)$/i,
+        "Invalid address or ENS name"
+      ),
     royalty: yup
       .number()
+      .required()
       .min(0, "Royalty must be greater than 0%")
       .max(10, "Royalty must be less than 10%"),
   });
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
-      await collectionService.updateCollection(
-        {
-          creatorEarning: values.creatorEarning,
-          royalty: values.royalty,
-        },
-        collectionAddress,
-        chainId
+      const blockTime = Math.floor(Date.now() / 1000);
+      setIsProcess(true);
+      const res = await collectionService.getSignature(
+        dmlAddress,
+        values.creatorEarning,
+        values.royalty,
+        chainId,
+        blockTime
       );
-      toast.success("Update successed!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+
+      const trans = await ercContract.setRoyalty(
+        demask.FEE_MANAGER,
+        dmlAddress,
+        values.creatorEarning,
+        values.royalty,
+        blockTime,
+        res.signature,
+        account,
+        wallet
+      );
+      const check = await trans.wait();
+      setIsProcess(false);
+      setIsOpenRoyalty(false);
+      showToast("Set Royalty successed!", ToastType.Success);
+      console.log(res);
     } catch (error) {
       console.error(error);
+      setIsProcess(false);
     }
   };
   return (
@@ -85,6 +107,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
               isSubmitting,
               dirty,
               setFieldValue,
+              isValid,
             }) => (
               <Form className="mx-auto max-w-[600px]">
                 <div className="flex flex-col">
@@ -122,14 +145,24 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
                   <ErrorMessage
                     name="creatorEarning"
                     component="div"
-                    className="text-xs text-red"
+                    className="mt-1 text-xs text-red"
                   />
                   <ErrorMessage
                     name="royalty"
                     component="div"
-                    className="text-xs text-red"
+                    className="mt-1 text-xs text-red"
                   />
                 </div>
+                <Button
+                  type="submit"
+                  primary={dirty && !isSubmitting && isValid}
+                  active={!dirty || isSubmitting || !isValid}
+                  disabled={!dirty || isSubmitting || !isValid}
+                  className="px-6 py-2 mx-auto mt-4"
+                  isLoadingBtn={isSubmitting}
+                >
+                  Set royalty
+                </Button>
               </Form>
             )}
           </Formik>
@@ -142,6 +175,11 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ModalTransation
+        isOpenTransation={isProcess}
+        setIsOpenTransaction={setIsProcess}
+        isTransaction={true}
+      />
     </Wrapper>
   );
 };

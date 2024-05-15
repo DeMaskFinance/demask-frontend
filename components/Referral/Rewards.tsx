@@ -1,20 +1,24 @@
 import AccountContext from "@/context/AccountContext";
 import { referralHistoryUser } from "@/libs/service/referralService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SkeletonTable } from "../Skeleton";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
 import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
+import { TablePagination } from "../Common/Pagination";
 
 const Rewards = () => {
   const { chainId, account, demask } = useContext(AccountContext);
-  const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ["myRewards", chainId, account],
-    queryFn: async () => {
-      const res = await referralHistoryUser(account, chainId);
-      return res;
-    },
-  });
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
+    useQuery({
+      queryKey: ["myRewards", chainId, account],
+      queryFn: async () => {
+        const res = await referralHistoryUser(account, chainId, page);
+        return res.data;
+      },
+    });
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -47,13 +51,13 @@ const Rewards = () => {
                 ) : (
                   isSuccess &&
                   data &&
-                  data.data.map((item: any, index: number) => (
+                  data.map((item: any, index: number) => (
                     <tr
                       key={index}
                       className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {index + 1}
+                        {item.index}
                       </td>
                       <td className="px-10 py-4 whitespace-nowrap">
                         {item.pointSource.map((type: any, index: number) => (
@@ -90,6 +94,15 @@ const Rewards = () => {
                 )}
               </tbody>
             </table>
+            <TablePagination
+              data={data}
+              page={page}
+              setPage={setPage}
+              totalPages={data?.totalPages || 1}
+              isFetching={isFetching}
+              refetch={refetch}
+              isPreviousData={isPreviousData}
+            />
           </div>
         </div>
       </div>
