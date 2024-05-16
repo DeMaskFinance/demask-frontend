@@ -85,7 +85,7 @@ const Referral = () => {
           <ReferralUser />
         </div>
         {account && <StaticTable />}
-        <div className="border rounded-lg border-dark4 min-h-[610px] p-6 mt-6 area_input">
+        <div className="p-6 mt-6 border rounded-lg border-dark4 area_input">
           <div className="flex items-center mb-4">
             {/* PC */}
             <div className="hidden md:block">

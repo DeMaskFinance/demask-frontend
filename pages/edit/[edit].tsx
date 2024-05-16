@@ -26,7 +26,7 @@ const EditCollection = () => {
   });
 
   return (
-    <div className="py-6 min-h-[80vh] max-w-[1440px] mx-auto mb-[100px] lg:mb-0 lg:px-primary md:px-14 px-4">
+    <div className="py-6 min-h-[80vh] max-w-[1440px] mx-auto lg:mb-0 lg:px-primary md:px-14 px-4">
       <NextSeo {...updateMeta} />
       {data ? (
         <EditFormCollection data={data} refetch={refetch} />

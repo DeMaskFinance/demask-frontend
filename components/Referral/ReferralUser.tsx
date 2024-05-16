@@ -17,6 +17,7 @@ const ReferralUser = () => {
     },
     enabled: !!account,
   });
+  console.log(data);
 
   return (
     <div>
@@ -43,10 +44,13 @@ const ReferralUser = () => {
           <p>Accept a Referral</p>
           <div className="flex mt-2 gap-x-2">
             <div className="flex w-full px-4 py-2 font-semibold rounded-lg area_input text-dark2 bg-dark4 dark:bg-darkBG2 gap-x-2">
-              {data?.referredBy ? (
+              {data?.referredByAddress ? (
                 <div className="flex items-center gap-x-2">
                   <MdDone className="text-green" /> You're in! Referred by{" "}
-                  <span className="text-secondary5"> {data?.referredBy}</span>
+                  <span className="text-secondary5">
+                    {" "}
+                    {data?.referredByAddress}
+                  </span>
                 </div>
               ) : (
                 <span>You haven't a referral</span>

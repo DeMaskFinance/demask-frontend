@@ -2,8 +2,9 @@ import Image from "next/image";
 import React, { Fragment } from "react";
 import { EtherIcon, RankIcon } from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
-import { AvatarCustom, AvatarUser } from "../Avatars";
+import { AvatarCustom } from "../Avatars";
 import { formatToUnit } from "@/libs/utils/formatComon";
+import { AvatarDiceBear } from "../Avatars/AvatarCustom";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
@@ -51,10 +52,10 @@ const CardList = ({ data }: any) => {
       ) : (
         <Fragment>
           <div className="hidden lg:block">
-            <AvatarCustom size={120} seed={data?.userAddress} />
+            <AvatarDiceBear size={120} seed={data?.userAddress} />
           </div>
           <div className="block lg:hidden">
-            <AvatarCustom size={60} seed={data?.userAddress} />
+            <AvatarDiceBear size={60} seed={data?.userAddress} />
           </div>
         </Fragment>
       )}

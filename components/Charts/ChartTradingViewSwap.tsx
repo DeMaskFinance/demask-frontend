@@ -2,20 +2,14 @@ import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
-import {
-  createChart,
-  CrosshairMode,
-  LineStyle,
-  PriceScaleMode,
-} from "lightweight-charts";
+import { createChart, PriceScaleMode } from "lightweight-charts";
+import { useTheme } from "next-themes";
 import { useContext, useEffect, useRef, useState } from "react";
 import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";
 import ChartLoading from "./ChartLoading";
 import ChartNoTransfers from "./ChartNoTransfers";
-import ModalWarningRemove from "../Modal/ModalWarningRemove";
-import formatNumber from "@/libs/utils/formatNumer";
-import { useTheme } from "next-themes";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface BarData {
   time: string;
   value: number;
@@ -49,6 +43,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   const { chainId } = useContext(AccountContext);
   const [newData, setNewData] = useState<any>([]);
   const [volume, setVolume] = useState<BarData[]>([]);
+  const [intervalTime, setIntervalTime] = useQueryParam(
+    "1h",
+    withDefault(StringParam, chainId)
+  );
   const [legendData, setLegendData] = useState<any>(
     newData[newData.length - 1]
   );
@@ -56,7 +54,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC],
     queryFn: async () => {
       const res = await categoryAPI(
-        `chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}&type=${typeERC}`
+        `chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}&type=${typeERC}&interval=1h`
       );
       return res;
     },
@@ -235,16 +233,18 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         (chartContainerRef.current as HTMLElement).innerHTML = "";
       }
     };
-  }, [data, volume, newData, theme]);
+  }, [data, volume, newData, theme, intervalTime]);
   const optionTime = [
-    { key: "15M" },
-    { key: "1H" },
-    { key: "4H" },
-    { key: "1D" },
-    { key: "1W" },
-    { key: "1Y" },
-    { key: "All" },
+    { key: "5m" },
+    { key: "15m" },
+    { key: "1h" },
+    { key: "1d" },
+    // { key: "1W" },
+    // { key: "1Y" },
+    // { key: "All" },
   ];
+  console.log(intervalTime, data);
+
   return (
     <div className="w-full h-full">
       {isLoading ? (
@@ -370,8 +370,9 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <ul className="flex mt-2 gap-x-3">
               {optionTime.map((item, index) => (
                 <li
-                  className="cursor-pointer hover:text-secondary4 dark:text-dark3"
+                  className=""
                   key={index}
+                  onClick={() => setIntervalTime(item.key)}
                 >
                   {item.key}
                 </li>

@@ -1,15 +1,22 @@
 import React, { FunctionComponent } from "react";
 import { createAvatar } from "@dicebear/core";
 import { bottts, identicon, pixelArt } from "@dicebear/collection";
+import Image from "next/image";
 interface AvatarProps {
   size: number;
-  seed:string;
+  seed: string;
 }
-const AvatarCustom: FunctionComponent<AvatarProps> = ({ size, seed }) => {
+interface AvatarCustomProps {
+  avatarUrl?: string;
+  userAddress: string;
+  size: number;
+  className: string;
+}
+const AvatarDiceBear: FunctionComponent<AvatarProps> = ({ size, seed }) => {
   const avatar = createAvatar(identicon, {
     size: size,
     backgroundType: ["gradientLinear", "solid"],
-    seed: seed
+    seed: seed,
   });
   const svgHTML = { __html: avatar };
   const svg = avatar.toString();
@@ -21,5 +28,27 @@ const AvatarCustom: FunctionComponent<AvatarProps> = ({ size, seed }) => {
     </div>
   );
 };
-
+const AvatarCustom: FunctionComponent<AvatarCustomProps> = ({
+  avatarUrl,
+  userAddress,
+  size,
+  className,
+}) => {
+  return (
+    <>
+      {avatarUrl ? (
+        <Image
+          src={avatarUrl}
+          width={600}
+          height={600}
+          alt="user avatar"
+          className={`object-cover ${className}`}
+        />
+      ) : (
+        <AvatarDiceBear size={size} seed={userAddress} />
+      )}
+    </>
+  );
+};
 export default AvatarCustom;
+export { AvatarDiceBear };

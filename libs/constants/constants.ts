@@ -54,6 +54,15 @@ const tokenBlast = [
     symbolNative: "WETH",
   },
 ];
+const tokenSepolia = [
+  {
+    name: "Sepolia Testnet",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
+    logo: BscIcon,
+    symbolNative: "ETH",
+  },
+];
 const activeNFTPercent = [
   { text: "25%", percent: 0.25 },
   { text: "50%", percent: 0.5 },
@@ -61,14 +70,13 @@ const activeNFTPercent = [
   { text: "MAX", percent: 1 },
 ];
 const BLAST_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_BLAST,
+  RPC: "https://rpc.ankr.com/blast_testnet_sepolia",
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BLAST,
   FACTORY: process.env.NEXT_PUBLIC_FACTORY_BLAST,
   FACTORY_721: process.env.NEXT_PUBLIC_FACTORY_721_BLAST,
   ROUTER: process.env.NEXT_PUBLIC_ROUTER_BLAST,
   ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_BLAST,
   CREATOR: process.env.NEXT_PUBLIC_CREATOR_BLAST,
-  WETH: process.env.NEXT_PUBLIC_WETH_BLAST,
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
   CREATE_COLLECTION: process.env.NEXT_PUBLIC_CREATE_COLLECTION_BLAST,
@@ -76,6 +84,23 @@ const BLAST_DEMASK = {
   urltxHash: "https://sepolia.blastscan.io/",
   chainName: "Blast Testnet",
   NAME: "Blast Testnet",
+  CURRENCY: "ETH",
+};
+const SEPOLIA_DEMASK = {
+  RPC: "https://rpc.sepolia.org",
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_SEPOLIA,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_SEPOLIA,
+  FACTORY_721: process.env.NEXT_PUBLIC_FACTORY_721_SEPOLIA,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_SEPOLIA,
+  ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_SEPOLIA,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_SEPOLIA,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
+  CREATE_COLLECTION: process.env.NEXT_PUBLIC_CREATE_COLLECTION_SEPOLIA,
+  FEE_MANAGER: process.env.NEXT_PUBLIC_FEE_MANAGER_SEPOLIA,
+  urltxHash: "https://sepolia.etherscan.io/",
+  chainName: "Sepolia Testnet",
+  NAME: "Sepolia Testnet",
   CURRENCY: "ETH",
 };
 const Goerli_DEMASK = {
@@ -86,33 +111,12 @@ const Goerli_DEMASK = {
   ROUTER: process.env.NEXT_PUBLIC_ROUTER_Goerli,
   ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_Goerli,
   CREATOR: process.env.NEXT_PUBLIC_CREATOR_Goerli,
-  WETH: process.env.NEXT_PUBLIC_WETH_Goerli,
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_Goerli,
-  USDT: process.env.NEXT_PUBLIC_USDT_Goerli,
-  USDC: process.env.NEXT_PUBLIC_USDC_Goerli,
-  ROYALTY: process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Goerli,
   urltxHash: "https://goerli.etherscan.io/",
   chainName: "Goerli Testnet",
   NAME: "Goerli Testnet",
   CURRENCY: "ETH",
-};
-const BSC_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_BSC,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_BSC,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_BSC,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_BSC,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BSC,
-  WETH: process.env.NEXT_PUBLIC_WETH_BSC,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
-  USDT: process.env.NEXT_PUBLIC_USDT_BSC,
-  USDC: process.env.NEXT_PUBLIC_USDC_BSC,
-  urltxHash: "https://testnet.bscscan.com/tx/",
-  chainName: "BNB Smart Chain Testnet",
-  NAME: "BNB Smart Chain Testnet",
-  CURRENCY: "tBNB",
 };
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
@@ -125,11 +129,11 @@ if (PORT === "3000") {
       logo: BlastIcon,
       chain: "168587773",
     },
-    // {
-    //   name: "BNB Testnet",
-    //   logo: BscIcon,
-    //   chain: "97",
-    // },
+    {
+      name: "Sepolia Testnet",
+      logo: BscIcon,
+      chain: "11155111",
+    },
     {
       name: "Monad Devnet",
       logo: MonadIcon,
@@ -239,6 +243,6 @@ export {
   version,
   validCollectionInput,
   validNFTsInput,
-  BSC_DEMASK,
-  tokenBsc,
+  SEPOLIA_DEMASK,
+  tokenSepolia,
 };

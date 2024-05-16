@@ -113,7 +113,9 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     >
       <button className={`${style.btnWallet} flex`}>
         <LogoComponent width={24} height={24} className="dark:fill-white" />
-        <p className="hidden 2xl:block">{filterNetwork?.name}</p>
+        <p className="hidden 2xl:block whitespace-nowrap">
+          {filterNetwork?.name}
+        </p>
         <span className="2xl:hidden">
           <BsCaretDownFill />
         </span>

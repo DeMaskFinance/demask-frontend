@@ -20,15 +20,16 @@ const swapChartAPI = async (
   tokenAddress: string,
   chainId: string | string[],
   nftAddress: string,
-  idNFT: string
+  idNFT: string,
+  interval: string
 ) => {
   try {
     const res = await request.get(
-      `DML-chart?nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}&chainId=${chainId}`
+      `chart?nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}&chainId=${chainId}&interval=${interval}`
     );
     return res.data;
   } catch (error) {
     console.error(error);
   }
 };
-export {swapAPI,swapChartAPI}
+export { swapAPI, swapChartAPI };

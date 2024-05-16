@@ -93,7 +93,9 @@ export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className="box-border w-full overflow-hidden">
       <Header />
-      <main className={`${isEvent ? "mt-[104px]" : "mt-16"}`}>{children}</main>
+      <main className={` mb-[100px] ${isEvent ? "mt-[104px]" : "mt-16"}`}>
+        {children}
+      </main>
       <Footer />
       <NavFooter />
     </div>

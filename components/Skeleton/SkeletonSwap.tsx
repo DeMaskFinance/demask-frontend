@@ -10,7 +10,7 @@ export default function SkeletonSwap() {
           <div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700"></div>
           <div className="w-40 h-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
         </div>
-        <div className="flex flex-col-reverse gap-x-10 md:flex-row">
+        <div className="flex flex-col-reverse gap-10 md:flex-row">
           <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center">
             <div className="w-full h-full p-4 border rounded-lg lg:mt-0 border-dark3 dark:border-dark0">
               <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-dark3 w-fit text-dark3 dark:border-dark0">

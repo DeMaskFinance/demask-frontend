@@ -1,4 +1,4 @@
-import { AvatarCustom, AvatarUser } from "@/components/Avatars";
+import { AvatarCustom } from "@/components/Avatars";
 import { EditIcon } from "@/components/Icons";
 import { uploadFile } from "@/libs/service/userService";
 import { selectProfile, userData } from "@/store/profileSlice";
@@ -76,17 +76,12 @@ export default function EditProfile() {
       <div className="flex justify-center my-6">
         <div className="relative rounded-full cursor-pointer w-fit h-fit group">
           <div className="group-hover:brightness-50">
-            {profile?.avatar ? (
-              <Image
-                src={profile?.avatar}
-                alt="banner"
-                width={600}
-                height={600}
-                className="object-cover rounded-full w-[120px] h-[120px]"
-              />
-            ) : (
-              <AvatarCustom size={120} seed={profile.userAddress!} />
-            )}
+            <AvatarCustom
+              avatarUrl={profile?.avatar}
+              size={120}
+              userAddress={profile.userAddress!}
+              className="w-[120px] h-[120px] rounded-full"
+            />
           </div>
           {avatarLoading ? (
             <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-full bg-slate-600/[.7]">

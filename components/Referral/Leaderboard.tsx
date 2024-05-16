@@ -3,25 +3,29 @@ import { referralLeaderboardUser } from "@/libs/service/referralService";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import { TableRowSkeleton } from "../Skeleton";
+import { AvatarCustom } from "../Avatars";
+import { TablePagination } from "../Common/Pagination";
 
 const Leaderboard = () => {
   const { chainId, demask, account } = useContext(AccountContext);
   const [page, setPage] = useState(1);
   const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
-    useQuery({
-      queryKey: ["referralLeaderboard", chainId, account],
-      queryFn: async () => {
+    useQuery(
+      ["referralLeaderboard", account, page],
+      async () => {
         const res = await referralLeaderboardUser(account, page);
         return res.data;
       },
-      enabled: !!account,
-    });
-  console.log(data);
+      {
+        enabled: !!account,
+      }
+    );
+  console.log(data, !!account, isLoading);
 
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div className="min-w-full py-2 sm:px-6 lg:px-8 min-h-[500px] flex flex-col justify-between">
           <div className="overflow-hidden">
             <table className="min-w-full text-left text-surface dark:text-white">
               <thead className="">
@@ -57,7 +61,15 @@ const Leaderboard = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         {item?.rank}
                       </td>
-                      <td className="px-10 py-4 whitespace-nowrap">DangVu</td>
+                      <td className="flex px-10 py-4 whitespace-nowrap gap-x-2">
+                        <AvatarCustom
+                          avatarUrl={item?.avatar}
+                          size={24}
+                          userAddress={item.userAddress!}
+                          className="w-6 h-6 rounded-lg"
+                        />
+                        <p>{item?.name}</p>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <p>{`${item?.userAddress.slice(
                           0,
@@ -65,7 +77,7 @@ const Leaderboard = () => {
                         )}...${item?.userAddress.slice(-8)}`}</p>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {item?.referralCode}
+                        {item?.count}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {item?.referralCode}
@@ -76,6 +88,15 @@ const Leaderboard = () => {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            data={data}
+            page={page}
+            setPage={setPage}
+            totalPages={data?.totalPages || 1}
+            isFetching={isFetching}
+            refetch={refetch}
+            isPreviousData={isPreviousData}
+          />
         </div>
       </div>
     </div>

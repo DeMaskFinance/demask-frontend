@@ -1,23 +1,23 @@
+import AccountContext from "@/context/AccountContext";
+import { selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
+import Image from "next/image";
+import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { BsCaretDownFill } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import History from "./History";
-import Pools from "./Pools";
-import Referral from "./Referral";
-import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
-import { AvatarCustom, AvatarUser } from "../Avatars";
+import { AvatarCustom } from "../Avatars";
 import Copy from "../Common/Copy";
-import AccountContext from "@/context/AccountContext";
 import { EditIcon } from "../Icons";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import { selectProfile } from "@/store/profileSlice";
-import Image from "next/image";
-import Items from "./Inventory/Items";
-import Created from "./Inventory/Created";
 import TabQuery from "../NavChoice/TabQuery";
+import History from "./History";
+import Created from "./Inventory/Created";
+import Items from "./Inventory/Items";
+import Pools from "./Pools";
+import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
+import Referral from "./Referral";
 const style = {
   itemSub:
     "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
@@ -99,17 +99,12 @@ const Profile = () => {
           )}
         </div>
         <div className="flex items-center justify-center mt-6 gap-x-2">
-          {profile?.avatar ? (
-            <Image
-              src={profile?.avatar}
-              alt="banner"
-              width={600}
-              height={600}
-              className="object-cover rounded-full w-[120px] h-[120px]"
-            />
-          ) : (
-            <AvatarCustom size={120} seed={account} />
-          )}
+          <AvatarCustom
+            avatarUrl={profile?.avatar}
+            size={120}
+            userAddress={profile.userAddress!}
+            className="w-[120px] h-[120px] rounded-full"
+          />
           <div>
             <div className="flex items-center gap-x-2">
               <p className="text-2xl font-semibold">{profile?.name}</p>

@@ -6,7 +6,7 @@ import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import AccountContext from "@/context/AccountContext";
 import { useQuery } from "@tanstack/react-query";
-import { AvatarCustom, AvatarUser } from "../Avatars";
+import { AvatarCustom } from "../Avatars";
 import Link from "next/link";
 import axios from "axios";
 import { SkeletonTable } from "../Skeleton/SkeletonTable";
@@ -44,7 +44,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
         </div>
       </td>
       <td className="py-2 flex items-center justify-start gap-x-2 lg:w-full md:w-full w-[100px]">
-        {item?.avatar ? (
+        {/* {item?.avatar ? (
           <Image
             src={item?.avatar}
             width={120}
@@ -54,7 +54,13 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           />
         ) : (
           <AvatarCustom size={24} seed={item?.userAddress} />
-        )}
+        )} */}
+        <AvatarCustom
+          avatarUrl={item?.avatar}
+          size={24}
+          userAddress={item.userAddress!}
+          className="w-6 h-6 rounded-lg"
+        />
         <p>{item?.name}</p>
       </td>
       <td
