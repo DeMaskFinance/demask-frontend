@@ -15,14 +15,14 @@ const MyReferral = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
     useQuery({
-      queryKey: ["myReferral", chainId, account],
+      queryKey: ["myReferral", chainId, account, page],
       queryFn: async () => {
         const res = await referralTopUser(account, chainId);
-        return res.data;
+        return res;
       },
       enabled: !!account,
     });
-  console.log(!!account);
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -52,7 +52,7 @@ const MyReferral = () => {
                 ) : (
                   isSuccess &&
                   data &&
-                  data.map((item: any, index: number) => (
+                  data.data.map((item: any, index: number) => (
                     <tr
                       key={index}
                       className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
@@ -74,7 +74,7 @@ const MyReferral = () => {
             </table>
           </div>
           <TablePagination
-            data={data}
+            data={data?.data}
             page={page}
             setPage={setPage}
             totalPages={data?.totalPages || 1}

@@ -12,13 +12,13 @@ const Rewards = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
     useQuery({
-      queryKey: ["myRewards", chainId, account],
+      queryKey: ["myRewards", chainId, account, page],
       queryFn: async () => {
         const res = await referralHistoryUser(account, chainId, page);
-        return res.data;
+        return res;
       },
     });
-  console.log(data);
+  console.log(data, page);
 
   return (
     <div className="flex flex-col">
@@ -47,11 +47,11 @@ const Rewards = () => {
               </thead>
               <tbody>
                 {isLoading ? (
-                  <TableRowSkeleton length={9} col={4} />
+                  <TableRowSkeleton length={10} col={4} />
                 ) : (
                   isSuccess &&
                   data &&
-                  data.map((item: any, index: number) => (
+                  data.data.map((item: any, index: number) => (
                     <tr
                       key={index}
                       className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
@@ -96,10 +96,10 @@ const Rewards = () => {
             </table>
           </div>
           <TablePagination
-            data={data}
+            data={data?.data}
             page={page}
             setPage={setPage}
-            totalPages={data?.totalPages || 1}
+            totalPages={data?.totalPages | 1}
             isFetching={isFetching}
             refetch={refetch}
             isPreviousData={isPreviousData}

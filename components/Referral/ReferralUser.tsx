@@ -48,8 +48,10 @@ const ReferralUser = () => {
                 <div className="flex items-center gap-x-2">
                   <MdDone className="text-green" /> You're in! Referred by{" "}
                   <span className="text-secondary5">
-                    {" "}
-                    {data?.referredByAddress}
+                    {`${data?.referredByAddress.slice(
+                      0,
+                      3
+                    )}...${data?.referredByAddress.slice(-6)}`}
                   </span>
                 </div>
               ) : (

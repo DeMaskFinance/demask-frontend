@@ -90,18 +90,18 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       setVolume(convertedDataVolume);
     }
   }, [data]);
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     const currentTime = new Date();
-  //     setCurrentHour(currentTime.getHours());
-  //     setCurrentMinute(currentTime.getMinutes());
-  //     setCurrentSecond(currentTime.getSeconds());
-  //   }, 1000);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const currentTime = new Date();
+      setCurrentHour(currentTime.getHours());
+      setCurrentMinute(currentTime.getMinutes());
+      setCurrentSecond(currentTime.getSeconds());
+    }, 1000);
 
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
   const { theme } = useTheme();
   useEffect(() => {
     if (chartContainerRef.current) {
@@ -148,7 +148,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           locale: "en-US",
         },
       });
-      chart.timeScale().fitContent();
+      // chart.timeScale().fitContent();
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: "rgb(14,203,129)",
         borderUpColor: "rgb(14,203,129)",
@@ -234,12 +234,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           }
         }
       });
-      // window.addEventListener('resize', () => {
-      //   // Resize chart based on container dimensions
-      //   const containerWidth = chartContainerRef.current.offsetWidth;
-      //   const containerHeight = chartContainerRef.current.offsetHeight;
-      //   chart.applyOptions({ width: containerWidth, height: containerHeight - 120 }); // Recalculate height
-      // });
     }
     return () => {
       // Remove chart when component unmounts
@@ -383,7 +377,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               height: `${height}px`,
             }}
           />
-          <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
+          <div className="flex justify-between text-[12px] text-[#222] dark:text-dark5 font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               {optionTime.map((item, index) => (
                 <li

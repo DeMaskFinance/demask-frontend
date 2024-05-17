@@ -14,13 +14,12 @@ const Leaderboard = () => {
       ["referralLeaderboard", account, page],
       async () => {
         const res = await referralLeaderboardUser(account, page);
-        return res.data;
+        return res;
       },
       {
         enabled: !!account,
       }
     );
-  console.log(data, !!account, isLoading);
 
   return (
     <div className="flex flex-col">
@@ -53,7 +52,7 @@ const Leaderboard = () => {
                 ) : (
                   isSuccess &&
                   data &&
-                  data.map((item: any, index: number) => (
+                  data.data.map((item: any, index: number) => (
                     <tr
                       key={index}
                       className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
@@ -89,7 +88,7 @@ const Leaderboard = () => {
             </table>
           </div>
           <TablePagination
-            data={data}
+            data={data?.data}
             page={page}
             setPage={setPage}
             totalPages={data?.totalPages || 1}
