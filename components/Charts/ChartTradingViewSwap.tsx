@@ -1,6 +1,6 @@
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { formatPercent } from "@/libs/utils/formatComon";
+import { formatDate, formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
 import { createChart, PriceScaleMode } from "lightweight-charts";
 import { useTheme } from "next-themes";
@@ -27,14 +27,17 @@ interface DataItem {
   date: string;
   changePrice: string;
   volume: string;
+  dayStartTimestamp: string;
 }
 interface ChartSwapProps {
   dataSwap: DataBase;
   typeERC: string;
+  height: number;
 }
 const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   dataSwap,
   typeERC,
+  height,
 }) => {
   const chartContainerRef = useRef(null);
   const [currentHour, setCurrentHour] = useState(0);
@@ -44,17 +47,17 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   const [newData, setNewData] = useState<any>([]);
   const [volume, setVolume] = useState<BarData[]>([]);
   const [intervalTime, setIntervalTime] = useQueryParam(
-    "1h",
-    withDefault(StringParam, chainId)
+    "intervalTime",
+    withDefault(StringParam, "1d")
   );
   const [legendData, setLegendData] = useState<any>(
     newData[newData.length - 1]
   );
   const { data, isLoading } = useQuery({
-    queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC],
+    queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC, intervalTime],
     queryFn: async () => {
       const res = await categoryAPI(
-        `chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}&type=${typeERC}&interval=1h`
+        `chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}&type=${typeERC}&interval=${intervalTime}`
       );
       return res;
     },
@@ -70,12 +73,13 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         high: parseFloat(item.highPrice),
         low: parseFloat(item.lowPrice),
         open: parseFloat(item.openPrice),
-        time: item.date,
+        time: Number(item.dayStartTimestamp),
         change: item.changePrice,
       }));
       setNewData(convertedData);
+      // @ts-ignore
       const convertedDataVolume: BarData[] = data?.map((item: DataItem) => ({
-        time: item.date,
+        time: Number(item.dayStartTimestamp),
         value: parseFloat(item.volume),
         close: parseFloat(item.closePrice),
         high: parseFloat(item.highPrice),
@@ -86,18 +90,18 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       setVolume(convertedDataVolume);
     }
   }, [data]);
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const currentTime = new Date();
-      setCurrentHour(currentTime.getHours());
-      setCurrentMinute(currentTime.getMinutes());
-      setCurrentSecond(currentTime.getSeconds());
-    }, 1000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     const currentTime = new Date();
+  //     setCurrentHour(currentTime.getHours());
+  //     setCurrentMinute(currentTime.getMinutes());
+  //     setCurrentSecond(currentTime.getSeconds());
+  //   }, 1000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
   const { theme } = useTheme();
   useEffect(() => {
     if (chartContainerRef.current) {
@@ -202,8 +206,12 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       chart
         .timeScale()
         .setVisibleLogicalRange({ from: 0, to: newData.length + 80 });
+
       chart.subscribeCrosshairMove((param) => {
-        if (param.time) {
+        if (param.point === undefined) {
+          // Mouse is outside the chart area
+          setLegendData(volume[volume.length - 1]);
+        } else if (param.time) {
           const candleData: any = param.seriesData.get(candlestickSeries);
           const VolumeData: any = param.seriesData.get(volumeSeries);
           if (candleData && VolumeData) {
@@ -226,6 +234,12 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           }
         }
       });
+      // window.addEventListener('resize', () => {
+      //   // Resize chart based on container dimensions
+      //   const containerWidth = chartContainerRef.current.offsetWidth;
+      //   const containerHeight = chartContainerRef.current.offsetHeight;
+      //   chart.applyOptions({ width: containerWidth, height: containerHeight - 120 }); // Recalculate height
+      // });
     }
     return () => {
       // Remove chart when component unmounts
@@ -243,7 +257,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     // { key: "1Y" },
     // { key: "All" },
   ];
-  console.log(intervalTime, data);
 
   return (
     <div className="w-full h-full">
@@ -307,7 +320,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap">
               <div className="flex">
                 <span className="text-xs text-dark3">Time:</span>
-                <span>{legendData?.time}</span>
+                <span>{formatDate(legendData?.time)}</span>
               </div>
               <div className="flex ">
                 <span className="text-xs text-dark3">O:</span>
@@ -364,13 +377,20 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <div
             ref={chartContainerRef}
             id="chart"
-            className="w-full h-[calc(100%-120px)]"
+            // className="w-full h-[calc(100%-120px)]"
+            className={`w-full `}
+            style={{
+              height: `${height}px`,
+            }}
           />
           <div className="flex justify-between text-[12px] text-[#222] font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               {optionTime.map((item, index) => (
                 <li
-                  className=""
+                  className={`cursor-pointer ${
+                    item.key === intervalTime &&
+                    " text-secondary5 font-semibold"
+                  }`}
                   key={index}
                   onClick={() => setIntervalTime(item.key)}
                 >

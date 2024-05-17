@@ -22,7 +22,11 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
             {data && (
               <div className="flex gap-x-6">
                 <div className="hidden lg:w-[60%] md:w-2/4 w-full md:block max-h-[570px]">
-                  <ChartTradingViewSwap dataSwap={data} typeERC="erc721" />
+                  <ChartTradingViewSwap
+                    dataSwap={data}
+                    typeERC="erc721"
+                    height={410}
+                  />
                 </div>
                 <div className="lg:w-[40%] md:w-2/4 w-full">
                   <TransactionCollection />

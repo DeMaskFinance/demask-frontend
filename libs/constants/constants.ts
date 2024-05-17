@@ -4,6 +4,7 @@ import {
   EtherIcon,
   GoerliIcon,
   MonadIcon,
+  SepoliaIcon,
   USDCIcon,
   USDTIcon,
   ZkSyncIcon,
@@ -131,7 +132,7 @@ if (PORT === "3000") {
     },
     {
       name: "Sepolia Testnet",
-      logo: BscIcon,
+      logo: SepoliaIcon,
       chain: "11155111",
     },
     {

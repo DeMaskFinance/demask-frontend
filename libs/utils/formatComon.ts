@@ -25,7 +25,23 @@ const formatPercent = (number: string) => {
   }
 };
 const ipfsGateway = "https://cf-ipfs.com/ipfs/";
-const formatLinkIPFS = (link:string) =>{
+const formatLinkIPFS = (link: string) => {
   return link?.replace("ipfs://", ipfsGateway);
-}
-export { formatToUnit, formatPercent ,formatLinkIPFS};
+};
+const formatDate = (timestamp: number): string => {
+  const date = new Date(timestamp * 1000);
+  const formattedDate =
+    [
+      ("0" + date.getDate()).slice(-2), // Day
+      ("0" + (date.getMonth() + 1)).slice(-2), // Month
+      date.getFullYear(), // Year
+    ].join("/") +
+    " " +
+    [
+      ("0" + date.getHours()).slice(-2), // Hours
+      ("0" + date.getMinutes()).slice(-2), // Minutes
+    ].join(":");
+
+  return formattedDate;
+};
+export { formatToUnit, formatPercent, formatLinkIPFS, formatDate };

@@ -596,6 +596,28 @@ export const InforIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+export const SepoliaIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 16 22"
+      fill="#636977"
+    >
+      <path d="M0.520087 16.1937C0.0350869 14.1622 0.353337 12.2189 1.22259 10.6182L6.70634 0.64394C7.35559 -0.21481 8.64559 -0.21481 9.29484 0.64394L9.83484 1.77444L14.2718 9.80994C15.1758 11.0729 15.7083 12.6204 15.7083 14.2922C15.7083 19.1492 11.2158 22.9582 6.15659 21.7859C3.41034 21.1499 1.17434 18.9354 0.520087 16.1937Z" />
+      <path
+        d="M11.346 11.0257C11.1132 11.0257 10.888 10.9024 10.7672 10.6847L8.4007 6.39917C8.22445 6.07967 8.34046 5.67867 8.65971 5.50267C8.97846 5.32642 9.3802 5.44242 9.5567 5.76042L11.9232 10.0459C12.0995 10.3654 11.9835 10.7664 11.6642 10.9424C11.5635 10.9984 11.454 11.0257 11.346 11.0257Z"
+        fill="#A3A9B9"
+      />
+    </svg>
+  );
+};
 export const DiamondIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,

@@ -70,7 +70,11 @@ const Swap: React.FC = () => {
           <div className="flex flex-col-reverse gap-x-10 md:flex-row">
             <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center">
               {data && (
-                <ChartTradingViewSwap dataSwap={data} typeERC="erc1155" />
+                <ChartTradingViewSwap
+                  dataSwap={data}
+                  typeERC="erc1155"
+                  height={468}
+                />
               )}
             </div>
             <SwapTransaction
