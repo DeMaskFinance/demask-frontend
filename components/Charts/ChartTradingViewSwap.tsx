@@ -148,17 +148,16 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           locale: "en-US",
         },
       });
-      // chart.timeScale().fitContent();
       const candlestickSeries = chart.addCandlestickSeries({
         upColor: "rgb(14,203,129)",
         borderUpColor: "rgb(14,203,129)",
         downColor: "rgb(246,70,93)",
         borderDownColor: "rgb(246,70,93)",
-        priceFormat: {
-          type: "volume",
-          precision: 3,
-        },
-        priceScaleId: "candles",
+        // priceFormat: {
+        //   type: "volume",
+        //   precision: 3,
+        // },
+        // priceScaleId: "candles",
       });
       const volumeSeries = chart.addHistogramSeries({
         priceFormat: {
@@ -202,10 +201,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       chart.timeScale().applyOptions({
         borderColor: "#D6DCDE",
       });
-      chart.timeScale().scrollToPosition(50, false);
-      chart
-        .timeScale()
-        .setVisibleLogicalRange({ from: 0, to: newData.length + 80 });
+      chart.timeScale().scrollToPosition(30, false);
+      // chart
+      //   .timeScale()
+      //   .setVisibleLogicalRange({ from: 0, to: 100 });
 
       chart.subscribeCrosshairMove((param) => {
         if (param.point === undefined) {
