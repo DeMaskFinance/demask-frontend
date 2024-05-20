@@ -1,30 +1,25 @@
-import { ActiveLink } from "@/components/Link";
 import AccountContext from "@/context/AccountContext";
+import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
-import Icons from "@/public/icons/icon";
+import formatNumber from "@/libs/utils/formatNumer";
+import { logout, selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { ethers } from "ethers";
-import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { MdLogout } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
-import { LightIcon, ProfileIcon, SearchIcon, WalletIcon } from "../Icons";
-import { LogoDeMask, LogoDeMaskBeta } from "../Logo/Logo";
+import Maintenance from "../Common/Maintenance";
+import { ProfileIcon, SearchIcon, WalletIcon } from "../Icons";
+import { LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
-import Search from "../Search/SearchHeader";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
-import { useRouter } from "next/router";
-import useInformationToken from "@/hooks/useInformationToken";
-import formatNumber from "@/libs/utils/formatNumer";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectProfile } from "@/store/profileSlice";
-import Maintenance from "../Common/Maintenance";
-import Marquee from "react-fast-marquee";
+import Search from "../Search/SearchHeader";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:

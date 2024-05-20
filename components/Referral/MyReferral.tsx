@@ -14,15 +14,16 @@ const MyReferral = () => {
   const { chainId, account } = useContext(AccountContext);
   const [page, setPage] = useState(1);
   const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
-    useQuery({
-      queryKey: ["myReferral", chainId, account, page],
-      queryFn: async () => {
+    useQuery(
+      ["myReferral", chainId, account, page],
+      async () => {
         const res = await referralTopUser(account, chainId);
         return res;
       },
-      enabled: !!account,
-    });
-  console.log(data);
+      {
+        enabled: !!account,
+      }
+    );
 
   return (
     <div className="flex flex-col">

@@ -111,7 +111,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           background: {
             color: theme === "dark" ? "#1A1A1A" : "white",
           },
-          textColor: "#ffffff",
+          textColor: "#A3A9B9",
           fontSize: 10,
         },
       });
@@ -129,15 +129,44 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             style: 1,
           },
         },
-        localization: {
-          priceFormatter: (price: number) => {
+        // localization: {
+        //   priceFormatter: (price: number) => {
+        //     const countDecimals = (price: number) => {
+        //       if (Math.floor(price) !== price) {
+        //         return (price.toString().split(".")[1]?.length || 0) + 1;
+        //       }
+        //       return 0;
+        //     };
+        //     if (price <= 0) {
+        //       return 0;
+        //     } else if (price < 0.000001) {
+        //       return price.toFixed(countDecimals(price));
+        //     } else if (price >= 0.000001 && price < 1) {
+        //       return parseFloat(price.toPrecision(6));
+        //     } else {
+        //       return parseFloat(price.toPrecision(6));
+        //     }
+        //   },
+        //   locale: "en-US",
+        // },
+      });
+      const candlestickSeries = chart.addCandlestickSeries({
+        upColor: "rgb(14,203,129)",
+        borderUpColor: "rgb(14,203,129)",
+        downColor: "rgb(246,70,93)",
+        borderDownColor: "rgb(246,70,93)",
+        priceFormat: {
+          type: "custom",
+          formatter: (price: number) => {
             const countDecimals = (price: number) => {
               if (Math.floor(price) !== price) {
                 return (price.toString().split(".")[1]?.length || 0) + 1;
               }
               return 0;
             };
-            if (price < 0.000001) {
+            if (price <= 0) {
+              return 0;
+            } else if (price < 0.000001) {
               return price.toFixed(countDecimals(price));
             } else if (price >= 0.000001 && price < 1) {
               return parseFloat(price.toPrecision(6));
@@ -145,18 +174,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               return parseFloat(price.toPrecision(6));
             }
           },
-          locale: "en-US",
         },
-      });
-      const candlestickSeries = chart.addCandlestickSeries({
-        upColor: "rgb(14,203,129)",
-        borderUpColor: "rgb(14,203,129)",
-        downColor: "rgb(246,70,93)",
-        borderDownColor: "rgb(246,70,93)",
-        // priceFormat: {
-        //   type: "volume",
-        //   precision: 3,
-        // },
         // priceScaleId: "candles",
       });
       const volumeSeries = chart.addHistogramSeries({
@@ -184,13 +202,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           })
         )
       );
-      // volumeSeries.applyOptions({
-      //   priceFormat: {
-      //     type: "volume",
-      //     precision: 6,
-      //     minMove: 0.0001,
-      //   },
-      // });
       chart.priceScale("right").applyOptions({
         borderColor: "#D6DCDE",
         autoScale: true,
@@ -200,11 +211,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       // Setting the border color for the horizontal axis
       chart.timeScale().applyOptions({
         borderColor: "#D6DCDE",
+        timeVisible: true,
+        // rightBarStaysOnScroll: true,
       });
       chart.timeScale().scrollToPosition(30, false);
-      // chart
-      //   .timeScale()
-      //   .setVisibleLogicalRange({ from: 0, to: 100 });
 
       chart.subscribeCrosshairMove((param) => {
         if (param.point === undefined) {
@@ -250,6 +260,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     // { key: "1Y" },
     // { key: "All" },
   ];
+  console.log(data);
 
   return (
     <div className="w-full h-full">
@@ -310,7 +321,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               fontFamily: "unset",
             }}
           >
-            <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap">
+            <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap h-[18px]">
               <div className="flex">
                 <span className="text-xs text-dark3">Time:</span>
                 <span>{formatDate(legendData?.time)}</span>
