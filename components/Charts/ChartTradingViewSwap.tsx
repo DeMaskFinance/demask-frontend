@@ -260,7 +260,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     // { key: "1Y" },
     // { key: "All" },
   ];
-  console.log(data);
 
   return (
     <div className="w-full h-full">

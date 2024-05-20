@@ -12,7 +12,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { AiOutlineClose } from "react-icons/ai";
 import { CgClose } from "react-icons/cg";
 import MediaNFT from "../Common/MediaNFT";
 import { SearchIcon } from "../Icons";
@@ -118,7 +117,8 @@ const Search: FunctionComponent<SearchProps> = ({
       );
     }
     document.body.style.overflowY = "auto";
-    // setShowSearch(false);
+    // @ts-ignore
+    setShowSearch(false);
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata?.name &&
@@ -170,7 +170,7 @@ const Search: FunctionComponent<SearchProps> = ({
             onClick={() => {
               setClick(true);
             }}
-            className={`hide-clear rounded-xl w-full relative duration-200 ease-linear bg-dark5 placeholder:text-dark2 transition-all ${
+            className={`hide-clear rounded-xl w-full relative duration-200 ease-linear bg-dark4 border-dark3 lg:border-none border p-2 placeholder:text-dark2 transition-all  ${
               active
                 ? "w-full lg:h-[32px] h-[40px] lg:pl-10"
                 : " lg:w-0 lg:h-[32px] h-[40px] bg-transparent"
@@ -199,7 +199,7 @@ const Search: FunctionComponent<SearchProps> = ({
         <ul
           className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 area_input ${
             click ? "block" : "block lg:hidden"
-          }  bg-dark5 w-full rounded-lg mt-3 lg:mt-1 py-4 lg:px-4 absolute top-8 right-0 left-0`}
+          }  bg-dark5 w-full rounded-lg mt-3 lg:mt-1 p-4 lg:px-4 absolute top-12 right-0 left-0`}
         >
           <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
             <p className="block mb-2 text-sm text-dark2">

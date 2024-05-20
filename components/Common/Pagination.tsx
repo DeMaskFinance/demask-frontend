@@ -169,9 +169,9 @@ const TablePagination: React.FC<PaginationProps> = ({
     }
   }, [totalPages]);
 
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [page]);
 
   return (
     <Fragment>

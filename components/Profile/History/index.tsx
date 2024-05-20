@@ -1,19 +1,17 @@
-import { Button } from "@/components/Buttons";
+import { TablePagination } from "@/components/Common/Pagination";
 import { SkeletonTable } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
 import { historyUserService } from "@/libs/service/profileService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useEffect, useState } from "react";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
+import { useContext, useState } from "react";
 import HistoryItem from "./HistoryItem";
 
 export default function History() {
   const [page, setPage] = useState(1);
-  const [pageNumberInput, setPageNumberInput] = useState("");
   const { account, chainId } = useContext(AccountContext);
   const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } =
     useQuery({
-      queryKey: ["historyUser", chainId],
+      queryKey: ["historyUser", chainId, page],
       queryFn: async () => {
         const res = await historyUserService(
           account.toLowerCase(),
@@ -24,72 +22,13 @@ export default function History() {
       },
     });
 
-  const goToPage = (pageNum: number) => {
-    const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
-    setPage(newPageNumber);
-    setPageNumberInput(String(newPageNumber));
-  };
-  const generatePagination = (currentPage: number, totalPages: any) => {
-    const buttons = [];
-    const maxButtonsToShow = 3;
-
-    if (totalPages <= maxButtonsToShow + 2) {
-      for (let i = 1; i <= totalPages; i++) {
-        buttons.push(i);
-      }
-    } else {
-      const showFirstDots = currentPage > maxButtonsToShow;
-      const showLastDots = currentPage < totalPages - maxButtonsToShow + 1;
-
-      buttons.push(1);
-      buttons.push(2);
-
-      if (showFirstDots) {
-        buttons.push("...");
-      }
-
-      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-        if (i > 2 && i < totalPages - 1) {
-          buttons.push(i);
-        }
-      }
-
-      if (showLastDots) {
-        buttons.push("...");
-      }
-
-      buttons.push(totalPages - 1);
-      buttons.push(totalPages);
-    }
-
-    return buttons;
-  };
-
-  const prevPage = () => {
-    const prevPageNumber = Math.max(page - 1, 1);
-    setPage(prevPageNumber);
-  };
-
-  const nextPage = () => {
-    const nextPageNumber = Math.min(page + 1, data?.totalPages);
-    setPage(nextPageNumber);
-  };
-
-  useEffect(() => {
-    if (data === null) {
-      setPage(1);
-    }
-  }, [data]);
-  useEffect(() => {
-    refetch();
-  }, [page]);
   return (
     <div>
       {isLoading || isFetching ? (
-        <SkeletonTable length={4} />
+        <SkeletonTable length={10} />
       ) : isSuccess && data.userTransactionList.length > 0 ? (
         <div className="transactionList">
-          <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home">
+          <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home min-h-[550px]">
             <div className="px-6 pt-6 pb-0 overflow-x-scroll">
               <table className="w-full text-left">
                 <thead className="">
@@ -124,72 +63,15 @@ export default function History() {
               </table>
             </div>
           </div>
-          <div className="flex justify-center w-full mx-auto text-sm">
-            <div className="flex flex-col gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
-              <div className="flex gap-1 lg:gap-10 md:gap-8">
-                <button
-                  onClick={prevPage}
-                  disabled={isPreviousData || page === 1}
-                  className={`${
-                    isPreviousData || page === 1
-                      ? "text-dark3 hover:border-red"
-                      : "text-dark2"
-                  }`}
-                >
-                  <MdNavigateBefore className="text-xl border border-transparent" />
-                </button>
-                {generatePagination(page, data?.totalPages).map(
-                  (pageNum, index) => (
-                    <React.Fragment key={index}>
-                      {pageNum === "..." ? (
-                        <span>...</span>
-                      ) : (
-                        <button
-                          className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${
-                            pageNum === page ? "bg-secondary2 text-white" : ""
-                          }`}
-                          onClick={() => goToPage(pageNum)}
-                        >
-                          {pageNum}
-                        </button>
-                      )}
-                    </React.Fragment>
-                  )
-                )}
-                <button
-                  onClick={nextPage}
-                  disabled={isPreviousData || page === data?.totalPages}
-                  className={`${
-                    isPreviousData || page === data?.totalPages
-                      ? "text-dark3 hover:border"
-                      : ""
-                  }`}
-                >
-                  <MdOutlineNavigateNext className="text-xl text-dark2" />
-                </button>
-              </div>
-              <div className="flex items-center justify-center gap-4 ml-4 text-dark2">
-                <span>Go to page </span>
-                <div className="flex gap-x-2">
-                  <input
-                    type="number"
-                    min="1"
-                    max={data?.totalPages || 1}
-                    value={pageNumberInput}
-                    onChange={(e) => setPageNumberInput(e.target.value)}
-                    className="w-12 px-2 py-1 text-sm text-center border rounded outline-none max-w-fit"
-                  />{" "}
-                  <Button
-                    onClick={() => goToPage(parseInt(pageNumberInput))}
-                    primary
-                    className="px-2 py-1"
-                  >
-                    Go
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TablePagination
+            data={data?.userTransactionList}
+            page={page}
+            setPage={setPage}
+            totalPages={data?.totalPages || 1}
+            isFetching={isFetching}
+            refetch={refetch}
+            isPreviousData={isPreviousData}
+          />
         </div>
       ) : (
         <div>
