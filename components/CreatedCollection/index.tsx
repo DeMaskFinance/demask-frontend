@@ -162,7 +162,7 @@ export default function CreatedCollection() {
         )}
       </div>
       <div className="px-4 lg:px-10 2xl:px-[164px] md:px-6">
-        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 dark:bg-darkBG1 gap-x-10 2xl:gap-x-80">
+        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 dark:bg-darkBG1 gap-x-10 3xl:gap-x-80">
           <div className="items-center text-xs lg:flex gap-x-2 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
@@ -264,7 +264,7 @@ export default function CreatedCollection() {
                       <EditIcon width={24} height={24} className="fill-dark3" />
                     </Link>
                     <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-secondary5 bg-opacity-40 text-secondary3 flex-nowrap">
-                      Royalties {dataDetail.royalty}%
+                      <p className="whitespace-nowrap">Royalties {dataDetail.royalty}%</p>
                       <FiEdit
                         className="cursor-pointer"
                         onClick={() => {
@@ -276,7 +276,7 @@ export default function CreatedCollection() {
                   </div>
                 )}
               </div>
-              <p className="text-xs">{dataDetail?.description}</p>
+              <p className="text-xs mt-2">{dataDetail?.description}</p>
               <div className="flex items-center mt-4">
                 <div className="flex gap-x-2">
                   {dataDetail?.socials?.website && (
