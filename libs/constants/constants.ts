@@ -126,11 +126,6 @@ let network: NetworkItem[] = [];
 if (PORT === "3000") {
   network = [
     {
-      name: "Blast Testnet",
-      logo: BlastIcon,
-      chain: "168587773",
-    },
-    {
       name: "Sepolia Testnet",
       logo: SepoliaIcon,
       chain: "11155111",
