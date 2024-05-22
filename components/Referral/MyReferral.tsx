@@ -9,6 +9,7 @@ import React, { useContext, useState } from "react";
 import { SkeletonTable } from "../Skeleton";
 import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
 import { TablePagination } from "../Common/Pagination";
+import ModalNumber from "../Modal/ModalLength/ModalNumber";
 
 const MyReferral = () => {
   const { chainId, account } = useContext(AccountContext);
@@ -63,7 +64,7 @@ const MyReferral = () => {
                         {item?.userAddress}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {item?.totalPoints}
+                        <ModalNumber data={item?.totalPoints}/>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {item?.blockTime}
