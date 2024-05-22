@@ -23,13 +23,22 @@ const getAmountBuy = async (
         amountNFT
       );
     } else {
-      const contract721 = new ethers.Contract(routerAddress, abiRouter721, provider);
-      amountAFee = await contract721.getAmountBuy(
+      console.log({
         tokenAddress,
         nftAddress,
         idNFT,
+      });
+
+      const contract721 = new ethers.Contract(
+        routerAddress,
+        abiRouter721,
+        provider
       );
-      
+      amountAFee = await contract721.getAmountBuy(
+        tokenAddress,
+        nftAddress,
+        idNFT
+      );
     }
     return amountAFee;
   } catch (error) {

@@ -59,12 +59,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
-  const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const { RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const { allowanceToken, bigNumberBalance } = useInformationToken(
@@ -95,7 +92,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     updatePrice
   );
 
-  const { amountTokenBuy, feeTradingBuy } = useAmountInMax(
+  const { amountTokenBuy } = useAmountInMax(
     inputNFT,
     data.dmlAddress,
     tokenAddress,
@@ -107,24 +104,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     routerAddress,
     updatePrice
   );
-
-  useEffect(() => {
-    if (data && amountTokenBuy) {
-      setAmountBuyDec(
-        amountTokenBuy * (1 + slippage / 100) +
-          (amountTokenBuy * Number(data.royaltyFee)) / 100
-      );
-      setTotalProcessBuy(
-        Number(amountTokenBuy) +
-          (amountTokenBuy * Number(data.royaltyFee)) / 100
-      );
-      setRoyaltiesFeeBuy((amountTokenBuy * Number(data.royaltyFee)) / 100);
-    } else {
-      setAmountBuyDec(0);
-      setTotalProcessBuy(0);
-      setRoyaltiesFeeBuy(0);
-    }
-  }, [inputNFT, data, slippage, amountTokenBuy]);
 
   useEffect(() => {
     const load = setInterval(() => {
@@ -140,41 +119,19 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   }, [isOpenBuyNFT, preFectch]);
 
   useEffect(() => {
-    if (Number(inputNFT) <= Number(reserveNFT)) {
+    if (Number(inputNFT) < Number(reserveNFT)) {
       setIsSufficientNFT(true);
     } else {
       setIsSufficientNFT(false);
     }
-    if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [inputNFT, account, amountBuyDec, data, reserveNFT, isOpenBuyNFT]);
+  }, [inputNFT, account, data, reserveNFT, isOpenBuyNFT]);
+  console.log(amountTokenBuy);
 
-  useEffect(() => {
-    const checkApproveToken = async () => {
-      if (tokenAddress !== nativeAddress) {
-        if (Number(allowanceToken) < Number(amountBuyDec)) {
-          setIsApprovedToken(false);
-        } else {
-          setIsApprovedToken(true);
-        }
-      } else {
-        setIsApprovedToken(true);
-      }
-    };
-    checkApproveToken();
-  }, [
-    account,
-    wallet,
-    data,
-    inputNFT,
-    amountBuyDec,
-    isOpenTransaction,
-    tokenAddress,
-    allowanceToken,
-  ]);
   const queryClient = useQueryClient();
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -185,18 +142,13 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     if (
       Number(reserveNFT) > 1 &&
       Number(reserveToken) > 0 &&
-      Math.floor(amountBuyDec) > 0 &&
+      Math.floor(amountTokenBuy) > 0 &&
       isSufficientNFT &&
       isSufficientTokenBuy
     ) {
       try {
         let result;
         setIsOpenTransaction(true);
-        const fee = data.royaltyFee === 0 ? 5000 : data.royaltyFee! * 10000;
-        const value =
-          tokenAddress === nativeAddress
-            ? exponentialToDecimal(Math.floor(amountBuyDec))
-            : 0;
         if (inputNFT) {
           result = await erc1155Contract.buyERC20ERC1155(
             wallet,
@@ -204,12 +156,10 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenAddress,
             idNFT,
             routerAddress,
-            amountBuyDec,
+            amountTokenBuy,
             inputNFT,
-            fee,
             account,
-            txDeadline,
-            value
+            txDeadline
           );
         } else {
           result = await ercContract721.buyERC20ERC721(
@@ -218,11 +168,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenAddress,
             idNFT,
             routerAddress,
-            amountBuyDec,
-            0,
+            amountTokenBuy,
             account,
-            txDeadline,
-            value
+            txDeadline
           );
         }
         setHash(result.hash);
@@ -252,7 +200,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           <div className="content_modal">
             <FormatNumber
               number={divideByDecimal(
-                totalProcessBuy.toString(),
+                amountTokenBuy.toString(),
                 data.tokenDecimals
               ).toString()}
             />
@@ -322,7 +270,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                   <FormatNumber
                     number={Number(
                       divideByDecimal(
-                        amountBuyDec.toString(),
+                        amountTokenBuy.toString(),
                         data.tokenDecimals
                       )
                     ).toString()}
@@ -348,12 +296,12 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 </div>
               </div>
               <div className="flex items-center">
-                <FormatNumber
+                {/* <FormatNumber
                   number={divideByDecimal(
                     (+feeTradingBuy + +royaltiesFeeBuy).toString(),
                     data.tokenDecimals
                   ).toString()}
-                />
+                /> */}
                 <p>
                   <EtherIcon width={14} height={14} className="fill-dark2" />
                 </p>
@@ -367,12 +315,12 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <div className="flex justify-between mb-4 text-sm text-dark1">
                 <p>Trading fee</p>
                 <div className="flex items-center">
-                  <FormatNumber
+                  {/* <FormatNumber
                     number={divideByDecimal(
                       feeTradingBuy.toString(),
                       data.tokenDecimals
                     ).toString()}
-                  />
+                  /> */}
                   <p>
                     <EtherIcon width={14} height={14} className="fill-dark2" />
                   </p>
@@ -381,7 +329,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <div className="flex justify-between text-sm text-dark1">
                 <p>Royalties Fee</p>
                 <div className="flex items-center">
-                  <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} />
+                  {/* <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} /> */}
                   <p>
                     <EtherIcon width={14} height={14} className="fill-dark2" />
                   </p>
@@ -400,39 +348,18 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             )}
           </div>
           <div className="flex flex-col items-center mt-6">
-            {isApprovedToken ? (
-              <Button
-                disabled={isLoadingInforDML || preFectch}
-                primary={!isLoadingInforDML && !preFectch}
-                className="w-[144px] py-2"
-                active={isLoadingInforDML || preFectch}
-                onClick={handleBuyNFT}
-              >
-                BUY NFT
-                {isLoadingInforDML && (
-                  <BiLoaderAlt className="ml-1 text-white animate-spin" />
-                )}
-              </Button>
-            ) : (
-              <Button
-                className="w-[126px] py-2 mx-auto"
-                type="button"
-                primary
-                onClick={() =>
-                  handleApproveToken(
-                    account,
-                    wallet,
-                    tokenAddress,
-                    amountBuyDec,
-                    routerAddress,
-                    setIsOpen,
-                    setIsOpenTransaction
-                  )
-                }
-              >
-                APPROVE TOKEN
-              </Button>
-            )}
+            <Button
+              disabled={isLoadingInforDML || preFectch}
+              primary={!isLoadingInforDML && !preFectch}
+              className="w-[144px] py-2"
+              active={isLoadingInforDML || preFectch}
+              onClick={handleBuyNFT}
+            >
+              BUY NFT
+              {isLoadingInforDML && (
+                <BiLoaderAlt className="ml-1 text-white animate-spin" />
+              )}
+            </Button>
           </div>
         </div>
         <button

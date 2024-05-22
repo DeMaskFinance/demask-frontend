@@ -1,32 +1,23 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import {
   ModalError,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import {
-  SkeletonCategory,
-  SkeletonItemTransaction,
-  SkeletonSubCategory,
-} from "@/components/Skeleton/SkeletonCategory";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
-import {
-  collectionListBuy,
-  fetchDataBuyNFTs,
-} from "@/libs/service/collectionService";
+import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import NFTGrid from "./NFTsGrids";
 const Buy = () => {
@@ -39,9 +30,7 @@ const Buy = () => {
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
-  const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const {
@@ -51,7 +40,6 @@ const Buy = () => {
   } = demask;
   const collectionAddress = useRouter().query.collection as string;
   const { ref, inView } = useInView();
-  const royaltyFee = 0;
   const { bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -99,7 +87,7 @@ const Buy = () => {
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
   const dmlToken = data?.pages[0]?.dmlAddress;
-  const { amountTokenBuy, isLoadingBuy, feeTradingBuy } = useAmountInMax(
+  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
     dmlToken,
     nativeAddress,
@@ -111,27 +99,15 @@ const Buy = () => {
     routerAddress,
     true
   );
+  console.log(amountTokenBuy);
+
   useEffect(() => {
-    if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [account, amountBuyDec, data, isOpenBuyNFT]);
-  useEffect(() => {
-    if (data && amountTokenBuy) {
-      setAmountBuyDec(
-        amountTokenBuy * (1 + slippage / 100) +
-          (amountTokenBuy * Number(royaltyFee)) / 100
-      );
-      setTotalProcessBuy(
-        Number(amountTokenBuy) + (amountTokenBuy * Number(royaltyFee)) / 100
-      );
-    } else {
-      setAmountBuyDec(0);
-      setTotalProcessBuy(0);
-    }
-  }, [data, slippage, amountTokenBuy]);
+  }, [account, amountTokenBuy, data, isOpenBuyNFT]);
 
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
@@ -155,7 +131,6 @@ const Buy = () => {
   };
   const dataFake = {
     dmlAddress: data?.pages[0]?.dmlAddress,
-    royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
 
@@ -181,7 +156,7 @@ const Buy = () => {
                 <li className="flex items-center">
                   Send:
                   <FormatNumber
-                    number={(amountBuyDec / 1e18).toString()}
+                    number={(amountTokenBuy / 1e18).toString()}
                   />{" "}
                   <EtherIcon width={18} height={18} className="fill-dark2" />
                 </li>
@@ -224,18 +199,18 @@ const Buy = () => {
                 disabled={
                   idNFT.length === 0 ||
                   !isSufficientTokenBuy ||
-                  Math.floor(amountBuyDec) === 0
+                  Math.floor(amountTokenBuy) === 0
                 }
                 primary={
                   idNFT.length !== 0 &&
                   isSufficientTokenBuy &&
-                  Math.floor(amountBuyDec) !== 0
+                  Math.floor(amountTokenBuy) !== 0
                 }
                 className="w-full py-4"
                 active={
                   idNFT.length === 0 ||
                   !isSufficientTokenBuy ||
-                  Math.floor(amountBuyDec) === 0
+                  Math.floor(amountTokenBuy) === 0
                 }
                 onClick={handleBuy}
               >

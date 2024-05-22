@@ -135,10 +135,15 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIsSufficientToken(false);
     }
   };
+  console.log(inputToken, dmlToken);
 
   useEffect(() => {
     let amountErcDesired;
-    if (collectionAddress !== null && data && idNFT) {
+    if (
+      dmlToken !== "0x0000000000000000000000000000000000000000" &&
+      data &&
+      idNFT
+    ) {
       amountErcDesired =
         ((Number(idNFT.length) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
@@ -189,6 +194,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
+  console.log(idNFT, amountErcDesiredToDec, isSufficientToken);
 
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>

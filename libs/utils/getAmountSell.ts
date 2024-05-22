@@ -1,4 +1,4 @@
-import  abiRouter721  from '@/abi/erc721/abiRouter.json';
+import abiRouter721 from "@/abi/erc721/abiRouter.json";
 import abiRouter from "@/abi/abiRouter.json";
 import { ethers } from "ethers";
 
@@ -8,8 +8,8 @@ const getAmountSell = async (
   nftAddress: string,
   idNFT: string | number[],
   amountNFT: string,
-  rpc:string,
-  routerAddress:string,
+  rpc: string,
+  routerAddress: string
 ) => {
   const provider = new ethers.providers.JsonRpcProvider(rpc);
   const contract = new ethers.Contract(routerAddress, abiRouter, provider);
@@ -23,11 +23,15 @@ const getAmountSell = async (
         amountNFT
       );
     } else {
-      const contract721 = new ethers.Contract(routerAddress, abiRouter721, provider);
+      const contract721 = new ethers.Contract(
+        routerAddress,
+        abiRouter721,
+        provider
+      );
       amountAFee = await contract721.getAmountSell(
         tokenAddress,
         nftAddress,
-        idNFT,
+        idNFT
       );
     }
     return amountAFee;

@@ -13,7 +13,6 @@ const useAmountOutMin = (
   updatePrice: boolean
 ) => {
   const [amountTokenSell, setAmountTokenSell] = useState(0);
-  const [feeTradingSell, setFeeTradingSell] = useState(0);
   const [isLoadingSell, setIsLoadingSell] = useState<boolean>(false);
   useEffect(() => {
     const getAmountOutMin = async () => {
@@ -29,11 +28,9 @@ const useAmountOutMin = (
           routerAddress
         );
         if (amountAFee) {
-          setAmountTokenSell(amountAFee[0].toString());
-          setFeeTradingSell(amountAFee[1].toString());
+          setAmountTokenSell(amountAFee.toString());
         }
       } else {
-        setFeeTradingSell(0);
         setAmountTokenSell(0);
       }
       setIsLoadingSell(false);
@@ -51,7 +48,7 @@ const useAmountOutMin = (
     updatePrice,
   ]);
 
-  return { amountTokenSell, isLoadingSell, feeTradingSell };
+  return { amountTokenSell, isLoadingSell };
 };
 
 export default useAmountOutMin;

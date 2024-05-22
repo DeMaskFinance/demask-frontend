@@ -27,6 +27,7 @@ import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useDebounce from "@/hooks/useDebounce";
+import useFee from "@/hooks/useFee";
 import useInformationToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { activeNFTPercent } from "@/libs/constants";
@@ -36,7 +37,7 @@ import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
@@ -71,12 +72,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     useState<boolean>(false);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [inputNFT, setInputNFT] = useState<string>("");
-  const [amountBuyDec, setAmountBuyDec] = useState<number>(0);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
-  const [totalProcessBuy, setTotalProcessBuy] = useState<number>(0);
-  const [totalProcessSell, setTotalProcessSell] = useState<number>(0);
-  const [royaltiesFeeBuy, setRoyaltiesFeeBuy] = useState<number>(0);
-  const [royaltiesFeeSell, setRoyaltiesFeeSell] = useState<number>(0);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -85,15 +81,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>(
     Array(activeNFTPercent.length).fill(null)
   );
-  const {
-    account,
-    wallet,
-    chainId,
-    demask,
-    tokenDefault,
-    slippage,
-    txDeadline,
-  } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, slippage } =
+    useContext(AccountContext);
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const {
     ROUTER: routerAddress,
@@ -162,40 +151,28 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     routerAddress,
     true
   );
+  const { totalFee } = useFee(
+    amountTokenSell,
+    data.dmlAddress,
+    wallet,
+    account,
+    rpc,
+    demask.FEE_MANAGER,
+    true
+  );
 
   useEffect(() => {
-    if (inputNFTValue && data && amountTokenBuy && amountTokenSell) {
-      setAmountBuyDec(
-        amountTokenBuy * (1 + slippage / 100) +
-          (amountTokenBuy * Number(data.royaltyFee)) / 100
-      );
-      setAmountSellDec(
-        amountTokenSell * (1 - slippage / 100) -
-          (amountTokenSell * Number(data.royaltyFee)) / 100
-      );
-      setTotalProcessBuy(
-        Number(amountTokenBuy) +
-          (amountTokenBuy * Number(data.royaltyFee)) / 100
-      );
-      setTotalProcessSell(
-        amountTokenSell - (amountTokenSell * Number(data.royaltyFee)) / 100
-      );
-      setRoyaltiesFeeBuy((amountTokenBuy * Number(data.royaltyFee)) / 100);
-      setRoyaltiesFeeSell((amountTokenSell * Number(data.royaltyFee)) / 100);
+    if (inputNFTValue && data && amountTokenSell) {
+      setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
     } else {
-      setAmountBuyDec(0);
       setAmountSellDec(0);
-      setRoyaltiesFeeBuy(0);
-      setRoyaltiesFeeSell(0);
-      setTotalProcessBuy(0);
-      setTotalProcessSell(0);
     }
-  }, [inputNFTValue, slippage, amountTokenBuy, amountTokenSell, activeChoice]);
+  }, [inputNFTValue, slippage, amountTokenSell, activeChoice, totalFee]);
 
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "Buy") {
-        if (data && Number(inputNFTValue) <= Number(data.reserveNFT)) {
+        if (data && Number(inputNFTValue) < Number(data.reserveNFT)) {
           setIsSufficientNFT(true);
         } else {
           setIsSufficientNFT(false);
@@ -209,12 +186,13 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       }
     };
     checkReservesNFT();
-    if (Number(amountBuyDec.toFixed()) > Number(bigNumberBalance)) {
+    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [inputNFTValue, activeChoice, account, amountBuyDec, amountSellDec, data]);
+  }, [inputNFTValue, activeChoice, account, data, balanceNFT]);
+
   useEffect(() => {
     setInputNFT("");
     setActiveChoiceNFT("");
@@ -234,7 +212,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       isSufficientNFT &&
       isSufficientTokenBuy &&
       data.dmlAddress !== null &&
-      Math.floor(amountBuyDec) !== 0
+      Math.floor(amountTokenBuy) !== 0
     ) {
       setIsOpenBuyNFT(true);
       document.body.style.overflowY = "hidden";
@@ -461,8 +439,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </div>
             </div>
             {data.dmlAddress !== null &&
-              !isSufficientNFT &&
-              balanceNFT &&
+              isSufficientNFT === false &&
+              // balanceNFT &&
               data.reserveNFT &&
               account && (
                 <p className="mt-1 mb-2 ml-3 text-xs text-red" key="NFTbalance">
@@ -501,13 +479,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   <div className="flex text-sm">
                     <p className="mr-1">Royalties Fee: </p>
                     {activeChoice === "Buy" ? (
-                      <FormatNumber
-                        number={(royaltiesFeeBuy / 1e18).toString()}
-                      />
+                      <FormatNumber number={(0 / 1e18).toString()} />
                     ) : (
-                      <FormatNumber
-                        number={(royaltiesFeeSell / 1e18).toString()}
-                      />
+                      <FormatNumber number={(0 / 1e18).toString()} />
                     )}
                     <p>({data?.royaltyFee}%)</p>
                   </div>
@@ -522,7 +496,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   ) : (
                     <FormatNumber
                       number={divideByDecimal(
-                        totalProcessBuy.toString(),
+                        amountTokenBuy.toString(),
                         data.tokenDecimals
                       )}
                     />
@@ -533,12 +507,18 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   {isLoadingSell ? (
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   ) : (
-                    <FormatNumber
-                      number={divideByDecimal(
-                        totalProcessSell.toString(),
-                        data.tokenDecimals
+                    <Fragment>
+                      {inputNFTValue ? (
+                        <FormatNumber
+                          number={divideByDecimal(
+                            amountTokenSell.toString(),
+                            data.tokenDecimals
+                          )}
+                        />
+                      ) : (
+                        0
                       )}
-                    />
+                    </Fragment>
                   )}
                 </div>
               )}
@@ -551,7 +531,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <div className="h-4">
           {inputNFTValue &&
             activeChoice === "Buy" &&
-            Math.floor(amountBuyDec) === 0 && (
+            Math.floor(amountTokenBuy) === 0 && (
               <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
             )}
 

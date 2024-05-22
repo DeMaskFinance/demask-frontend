@@ -67,6 +67,8 @@ export default function Liquidity() {
     setActiveChoice(choice);
     choice === "Item pool" ? setType("erc1155") : setType("erc721");
   };
+  console.log(account, isLoading);
+
   return (
     <div className="py-8 max-w-screen-xl  mx-auto min-h-[80vh] pb-40 lg:pb-0 px-4 md:px-0">
       <NextSeo {...updateMeta} />

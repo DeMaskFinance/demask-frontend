@@ -26,6 +26,7 @@ import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import NFTGrid from "./NFTsGrids";
+import useFee from "@/hooks/useFee";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -38,7 +39,6 @@ const Sell = () => {
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
-  const [totalProcessSell, setTotalProcessSell] = useState<number>(0);
   const {
     ROUTER_721: routerAddress,
     RPC: rpc,
@@ -46,16 +46,6 @@ const Sell = () => {
   } = demask;
   const collectionAddress = useRouter().query.collection as string;
   const { ref, inView } = useInView();
-  const royaltyFee = 0;
-  const { balanceToken, bigNumberBalance } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    isOpenTransaction
-  );
 
   const {
     data,
@@ -76,12 +66,9 @@ const Sell = () => {
           : page?.currentPage + 1,
     }
   );
-  console.log(data);
 
   useEffect(() => {
     if (inView) {
-      console.log("123");
-
       fetchNextPage();
     }
   }, [inView]);
@@ -108,7 +95,7 @@ const Sell = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  const { amountTokenSell, isLoadingSell, feeTradingSell } = useAmountOutMin(
+  const { amountTokenSell } = useAmountOutMin(
     "",
     dmlToken,
     nativeAddress,
@@ -120,20 +107,23 @@ const Sell = () => {
     routerAddress,
     true
   );
+  const { totalFee } = useFee(
+    amountTokenSell,
+    dmlToken,
+    wallet,
+    account,
+    rpc,
+    demask.FEE_MANAGER,
+    true
+  );
   useEffect(() => {
     if (data && amountTokenSell) {
-      setAmountSellDec(
-        amountTokenSell * (1 + slippage / 100) +
-          (amountTokenSell * Number(royaltyFee)) / 100
-      );
-      setTotalProcessSell(
-        Number(amountTokenSell) + (amountTokenSell * Number(royaltyFee)) / 100
-      );
+      setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
     } else {
       setAmountSellDec(0);
-      setTotalProcessSell(0);
     }
   }, [data, slippage, amountTokenSell]);
+  console.log(totalFee, amountSellDec, amountTokenSell);
 
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
@@ -156,7 +146,6 @@ const Sell = () => {
   };
   const dataFake = {
     dmlAddress: dmlToken,
-    royaltyFee: royaltyFee,
     tokenDecimals: "18",
   };
   return (

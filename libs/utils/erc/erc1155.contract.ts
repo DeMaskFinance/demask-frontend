@@ -61,12 +61,10 @@ const buyERC20ERC1155 = async (
   tokenAddress: string,
   idNFT: string | number[],
   routerAddress: string,
-  amountBuyDec: number,
+  amountTokenBuy: number,
   inputNFT: string,
-  fee: number,
   account: string,
-  txDeadline: number,
-  value: string | 0
+  txDeadline: number
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
@@ -74,23 +72,25 @@ const buyERC20ERC1155 = async (
     nftAddress,
     idNFT,
     inputNFT,
-    exponentialToDecimal(Math.floor(amountBuyDec)),
-    fee,
+    exponentialToDecimal(Math.floor(amountTokenBuy)),
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { value }
+    { value: exponentialToDecimal(Math.floor(amountTokenBuy)) }
   );
+  console.log(estimatedGas);
 
   const result = await contract.buyERC20ERC1155(
     tokenAddress,
     nftAddress,
     idNFT,
     inputNFT,
-    exponentialToDecimal(Math.floor(amountBuyDec)),
-    fee,
+    exponentialToDecimal(Math.floor(amountTokenBuy)),
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { gasLimit: estimatedGas, value: value }
+    {
+      gasLimit: estimatedGas,
+      value: exponentialToDecimal(Math.floor(amountTokenBuy)),
+    }
   );
   return result;
 };
@@ -102,9 +102,8 @@ const sellERC20ERC1155 = async (
   routerAddress: string,
   amountSellDec: number,
   inputNFT: string,
-  fee: number,
   account: string,
-  txDeadline: number,
+  txDeadline: number
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   const estimatedGas = await contract.estimateGas.sellERC20ERC1155(
@@ -113,7 +112,6 @@ const sellERC20ERC1155 = async (
     idNFT,
     inputNFT,
     exponentialToDecimal(Math.floor(amountSellDec)),
-    fee,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
   );
@@ -123,7 +121,6 @@ const sellERC20ERC1155 = async (
     idNFT,
     inputNFT,
     exponentialToDecimal(Math.floor(amountSellDec)),
-    fee,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: estimatedGas }
@@ -211,6 +208,6 @@ const erc1155Contract = {
   buyERC20ERC1155,
   removeERC20ERC1155,
   addERC20ERC1155,
-  sellERC20ERC1155
+  sellERC20ERC1155,
 };
 export default erc1155Contract;

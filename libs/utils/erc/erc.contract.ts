@@ -122,6 +122,30 @@ const setRoyalty = async (
     }
   }
 };
+const getFeeManager = async (
+  feeManager: string,
+  amount: number,
+  rpc: string,
+  dmlToken: string
+): Promise<{ totalFee: any }> => {
+  const provider = new ethers.providers.JsonRpcProvider(rpc);
+  const contract = new ethers.Contract(feeManager, abiFeeManager, provider);
+  try {
+    let totalFee = 0; // Default value
+    if (amount) {
+      totalFee = await contract.getTotalFee(dmlToken, amount);
+    }
+    return {
+      totalFee,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      totalFee: 0, // Return default value in case of error
+    };
+  }
+};
+
 const ercContract = {
   erc,
   approveNFT,
@@ -130,5 +154,6 @@ const ercContract = {
   viewReward,
   fillCreate,
   setRoyalty,
+  getFeeManager,
 };
 export default ercContract;

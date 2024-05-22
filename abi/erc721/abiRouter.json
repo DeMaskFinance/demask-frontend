@@ -1,14 +1,13 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_feeManager", "type": "address" },
       {
         "internalType": "address",
         "name": "_factoryERC20ERC721",
         "type": "address"
       },
       { "internalType": "address", "name": "_WETH", "type": "address" },
-      { "internalType": "address", "name": "_royaltyEngine", "type": "address" }
+      { "internalType": "address", "name": "_feeManager", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -262,7 +261,6 @@
       { "internalType": "address", "name": "NFT", "type": "address" },
       { "internalType": "uint256[]", "name": "tokenId", "type": "uint256[]" },
       { "internalType": "uint256", "name": "amountInMax", "type": "uint256" },
-      { "internalType": "uint256", "name": "royaltyFee", "type": "uint256" },
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "deadline", "type": "uint256" }
     ],
@@ -301,8 +299,7 @@
     ],
     "name": "getAmountBuy",
     "outputs": [
-      { "internalType": "uint256", "name": "amountAFee", "type": "uint256" },
-      { "internalType": "uint256", "name": "feeBuy", "type": "uint256" }
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -315,22 +312,7 @@
     ],
     "name": "getAmountSell",
     "outputs": [
-      { "internalType": "uint256", "name": "amountAFee", "type": "uint256" },
-      { "internalType": "uint256", "name": "feeSell", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "NFT", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "getRoyalty",
-    "outputs": [
-      { "internalType": "bool", "name": "status", "type": "bool" },
-      { "internalType": "address", "name": "receiver", "type": "address" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -385,49 +367,17 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "royaltyEngine",
-    "outputs": [
-      {
-        "internalType": "contract IRoyaltyEngineV1",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "address", "name": "token", "type": "address" },
       { "internalType": "address", "name": "NFT", "type": "address" },
       { "internalType": "uint256[]", "name": "tokenId", "type": "uint256[]" },
       { "internalType": "uint256", "name": "amountOutMin", "type": "uint256" },
-      { "internalType": "uint256", "name": "royaltyFee", "type": "uint256" },
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "deadline", "type": "uint256" }
     ],
     "name": "sellERC20ERC721",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "NFT", "type": "address" },
-      { "internalType": "address", "name": "token", "type": "address" },
-      {
-        "internalType": "uint256[]",
-        "name": "tokenIdFrom",
-        "type": "uint256[]"
-      },
-      { "internalType": "uint256[]", "name": "tokenIdTo", "type": "uint256[]" },
-      { "internalType": "address", "name": "to", "type": "address" },
-      { "internalType": "uint256", "name": "deadline", "type": "uint256" }
-    ],
-    "name": "swap",
-    "outputs": [],
-    "stateMutability": "payable",
     "type": "function"
   },
   {

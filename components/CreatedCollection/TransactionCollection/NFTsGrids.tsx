@@ -17,7 +17,6 @@ interface NFTGridProps {
 
 const NFTGrid = forwardRef<HTMLDivElement, NFTGridProps>(
   ({ data, isFetching, hasNextPage, handleChoiceNFT, idNFT }, ref) => {
-    console.log(data);
     const { demask, chainId } = useContext(AccountContext);
     const handleReset = async (e: MouseEvent<HTMLDivElement>, item: any) => {
       e.stopPropagation();
