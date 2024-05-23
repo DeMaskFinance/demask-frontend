@@ -107,7 +107,7 @@ const Search: FunctionComponent<SearchProps> = ({
     );
     document.body.style.overflowY = "auto";
     // @ts-ignore
-    // setShowSearch(false);
+    setShowSearch(false);
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata?.name &&
@@ -166,7 +166,7 @@ const Search: FunctionComponent<SearchProps> = ({
             } outline-none text-sm  text-dark2`}
             onFocus={handleActive}
           />
-          {debouncedSearch && (
+          {debouncedSearch && click && (
             <div
               className="absolute right-2 top-[50%] -translate-y-1/2 cursor-pointer"
               onClick={() => setSearchTerm("")}

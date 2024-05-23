@@ -237,7 +237,7 @@ export default function DetailLiquidity() {
                       />
                       <div className="mt-6 ">
                         <div className="">
-                          <div className="grid gap-x-4 border-b lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold title">
+                          <div className="grid gap-x-4 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold title">
                             <p className="pl-3">Action</p>
                             <p className="mx-auto">Liquidity</p>
                             <p className="mx-auto">NFT</p>

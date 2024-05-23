@@ -7,10 +7,11 @@ import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
 import { useRouter } from "next/router";
 const styles = {
+  itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
   menuSub:
-    "pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
+    "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium area_input",
   itemSub:
-    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-semibold",
+    "flex area_input_hover items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-medium",
   btnWallet:
     "flex items-center 2xl:w-[184px] hover:border-dark2 dark:hover:bg-dark2 py-2 pl-2 lg:px-4 pr-2 dark:bg-dark1 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 dark:text-white gap-x-2 ",
   active:
@@ -95,7 +96,11 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           </React.Fragment>
         ))}
       </ul>
-      <Search isFocused={isFocused} handleFocus={handleFocus} />
+      <Search
+        isFocused={isFocused}
+        handleFocus={handleFocus}
+        setShowSearch={setIsFocused}
+      />
     </div>
   );
 };

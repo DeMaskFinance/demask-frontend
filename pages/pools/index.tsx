@@ -92,23 +92,18 @@ export default function Liquidity() {
         <p className="mt-2 mb-6 text-dark title">
           List of your liquidity positions
         </p>
-        {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
-          !isLoading && (
-            <div className="pool_empty">
-              <PoolListIcon width={72} height={72} />
-              Your active liquidity positions will appear here.
-            </div>
-          )}
+        {account && (
+          <div className="flex justify-center mb-6">
+            <TabGroups
+              choices={["Item pool", "Collection pool"]}
+              activeChoice={activeChoice}
+              onChoiceChange={handleChoiceChange}
+            />
+          </div>
+        )}
         {account && data?.pages[0]?.combinedRecords.length !== 0 && (
           <div>
-            <div className="flex justify-center">
-              <TabGroups
-                choices={["Item pool", "Collection pool"]}
-                activeChoice={activeChoice}
-                onChoiceChange={handleChoiceChange}
-              />
-            </div>
-            <div className="mt-6 rounded-lg bg-dark5 dark:bg-dark0">
+            <div className="rounded-lg bg-dark5 dark:bg-dark0">
               <div className="">
                 {isSuccess &&
                   data.pages.map((page: any, index: number) => (
@@ -145,6 +140,13 @@ export default function Liquidity() {
             </div>
           </div>
         )}
+        {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
+          !isLoading && (
+            <div className="pool_empty">
+              <PoolListIcon width={72} height={72} />
+              Your active liquidity positions will appear here.
+            </div>
+          )}
         {isLoading && account && (
           <div>
             <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
