@@ -61,25 +61,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   };
 
   const handleSelectNFT = (item: any) => {
-    const { currency } = router.query;
-    const { slug } = router.query;
-    let newURL = "";
-    const currentURL = router.asPath;
-    if (currency) {
-      newURL = currentURL
-        .replace(currency[0], item.nftAddress)
-        .replace(currency[2], item.nftID);
-      router.push(newURL);
-    } else if (slug) {
-      newURL = currentURL
-        .replace(slug[0], item.nftAddress)
-        .replace(slug[2], item.nftID);
-      router.push(newURL);
-    } else {
-      router.replace(
-        `/swap/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
-      );
-    }
+    router.replace(
+      `/swap/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
+    );
     document.body.style.overflowY = "auto";
     setActiveChoiceNFT("");
     setIsOpenSearchNFT(false);

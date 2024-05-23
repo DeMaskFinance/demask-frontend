@@ -102,23 +102,12 @@ const Search: FunctionComponent<SearchProps> = ({
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata?.name);
-    let newURL = "";
-    const { slug } = router.query;
-    if (slug) {
-      const currentURL = router.asPath;
-      newURL = currentURL
-        .replace(slug[0], item.nftAddress)
-        .replace(slug[1], item.tokenAddress)
-        .replace(slug[2], item.nftID);
-      router.push(newURL);
-    } else {
-      router.replace(
-        `/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`
-      );
-    }
+    router.replace(
+      `/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`
+    );
     document.body.style.overflowY = "auto";
     // @ts-ignore
-    setShowSearch(false);
+    // setShowSearch(false);
     const existingItemIndex = searchHistory.findIndex(
       (historyItem) =>
         historyItem.metadata.name === item.metadata?.name &&

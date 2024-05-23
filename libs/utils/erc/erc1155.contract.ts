@@ -61,7 +61,7 @@ const buyERC20ERC1155 = async (
   tokenAddress: string,
   idNFT: string | number[],
   routerAddress: string,
-  amountTokenBuy: number,
+  amountInMax: number,
   inputNFT: string,
   account: string,
   txDeadline: number
@@ -72,24 +72,23 @@ const buyERC20ERC1155 = async (
     nftAddress,
     idNFT,
     inputNFT,
-    exponentialToDecimal(Math.floor(amountTokenBuy)),
+    exponentialToDecimal(Math.floor(amountInMax)),
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { value: exponentialToDecimal(Math.floor(amountTokenBuy)) }
+    { value: exponentialToDecimal(Math.floor(amountInMax)) }
   );
-  console.log(estimatedGas);
 
   const result = await contract.buyERC20ERC1155(
     tokenAddress,
     nftAddress,
     idNFT,
     inputNFT,
-    exponentialToDecimal(Math.floor(amountTokenBuy)),
+    exponentialToDecimal(Math.floor(amountInMax)),
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     {
       gasLimit: estimatedGas,
-      value: exponentialToDecimal(Math.floor(amountTokenBuy)),
+      value: exponentialToDecimal(Math.floor(amountInMax)),
     }
   );
   return result;

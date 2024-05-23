@@ -5,11 +5,9 @@ import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
-import handleApproveToken from "@/libs/utils/handleApproveToken";
 import { useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -54,7 +52,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   setHash,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
+  const [amountInMax, setAmountInMax] = useState<number>(0);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
@@ -124,16 +122,31 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     } else {
       setIsSufficientNFT(false);
     }
-    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
+    if (Number(amountInMax) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [inputNFT, account, data, reserveNFT, isOpenBuyNFT]);
-  console.log(amountTokenBuy);
+  }, [inputNFT, account, data, reserveNFT, isOpenBuyNFT, amountInMax]);
+  useEffect(() => {
+    if (data && amountTokenBuy) {
+      setAmountInMax(amountTokenBuy * (1 + slippage / 100));
+    } else {
+      setAmountInMax(0);
+    }
+  }, [slippage, amountTokenBuy]);
+  console.log(amountTokenBuy, amountInMax);
 
   const queryClient = useQueryClient();
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log({
+      reserveNFT,
+      reserveToken,
+      amountInMax,
+      isSufficientNFT,
+      isSufficientTokenBuy,
+    });
+
     e.preventDefault();
     if (!account) {
       setIsOpen(true);
@@ -142,7 +155,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     if (
       Number(reserveNFT) > 1 &&
       Number(reserveToken) > 0 &&
-      Math.floor(amountTokenBuy) > 0 &&
+      Math.floor(amountInMax) > 0 &&
       isSufficientNFT &&
       isSufficientTokenBuy
     ) {
@@ -156,7 +169,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenAddress,
             idNFT,
             routerAddress,
-            amountTokenBuy,
+            amountInMax,
             inputNFT,
             account,
             txDeadline
@@ -168,7 +181,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenAddress,
             idNFT,
             routerAddress,
-            amountTokenBuy,
+            amountInMax,
             account,
             txDeadline
           );

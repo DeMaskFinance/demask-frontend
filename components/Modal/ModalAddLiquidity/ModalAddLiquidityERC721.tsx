@@ -194,7 +194,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
-  console.log(idNFT, amountErcDesiredToDec, isSufficientToken);
 
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>

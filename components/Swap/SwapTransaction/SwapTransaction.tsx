@@ -73,6 +73,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [inputNFT, setInputNFT] = useState<string>("");
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
+  const [amountInMax, setAmountInMax] = useState<number>(0);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -162,12 +163,14 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   );
 
   useEffect(() => {
-    if (inputNFTValue && data && amountTokenSell) {
+    if (inputNFTValue && data && amountTokenSell && amountTokenBuy) {
       setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
+      setAmountInMax(amountTokenBuy * (1 + slippage / 100));
     } else {
       setAmountSellDec(0);
+      setAmountInMax(0);
     }
-  }, [inputNFTValue, slippage, amountTokenSell, activeChoice, totalFee]);
+  }, [slippage, amountTokenSell, totalFee, amountTokenBuy]);
 
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -186,7 +189,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       }
     };
     checkReservesNFT();
-    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
+    if (Number(amountInMax) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
@@ -197,11 +200,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setInputNFT("");
     setActiveChoiceNFT("");
   }, [activeChoice]);
-  useEffect(() => {
-    if (inputNFTValue === "") {
-      setIsSufficientNFT(true);
-    }
-  }, []);
+
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -212,7 +211,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       isSufficientNFT &&
       isSufficientTokenBuy &&
       data.dmlAddress !== null &&
-      Math.floor(amountTokenBuy) !== 0
+      Math.floor(amountInMax) !== 0
     ) {
       setIsOpenBuyNFT(true);
       document.body.style.overflowY = "hidden";
@@ -271,6 +270,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       onClick: () => setIsOpenSetting(true),
     },
   ];
+
   return (
     <div className="lg:w-[32%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
       <div className="w-full p-6 border rounded-lg shadow-home area_darkBG1">
@@ -440,6 +440,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             {data.dmlAddress !== null &&
               isSufficientNFT === false &&
+              inputNFT &&
               // balanceNFT &&
               data.reserveNFT &&
               account && (
@@ -488,59 +489,45 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </label>
               </div>
             </div>
-            <div className="relative">
-              {activeChoice === "Buy" ? (
+            {inputNFTValue ? (
+              <div className="relative">
                 <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
                   {isLoadingBuy ? (
+                    <BiLoaderAlt className="animate-spin text-secondary5" />
+                  ) : isLoadingSell ? (
                     <BiLoaderAlt className="animate-spin text-secondary5" />
                   ) : (
                     <FormatNumber
                       number={divideByDecimal(
-                        amountTokenBuy.toString(),
+                        activeChoice === "Buy"
+                          ? amountTokenBuy
+                          : amountTokenSell,
                         data.tokenDecimals
                       )}
                     />
                   )}
                 </div>
-              ) : (
-                <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
-                  {isLoadingSell ? (
-                    <BiLoaderAlt className="animate-spin text-secondary5" />
-                  ) : (
-                    <Fragment>
-                      {inputNFTValue ? (
-                        <FormatNumber
-                          number={divideByDecimal(
-                            amountTokenSell.toString(),
-                            data.tokenDecimals
-                          )}
-                        />
-                      ) : (
-                        0
-                      )}
-                    </Fragment>
-                  )}
+                <div className="absolute px-2 py-1 right-1 top-2">
+                  <EtherIcon width={16} height={16} className="fill-dark2" />
                 </div>
-              )}
-              <div className="absolute px-2 py-1 right-1 top-2">
-                <EtherIcon width={16} height={16} className="fill-dark2" />
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
+                0
+              </div>
+            )}
           </div>
         </form>
-        <div className="h-4">
-          {inputNFTValue &&
-            activeChoice === "Buy" &&
-            Math.floor(amountTokenBuy) === 0 && (
+        {inputNFTValue && (
+          <div className="h-4">
+            {activeChoice === "Buy" && Math.floor(amountInMax) === 0 && (
               <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
             )}
-
-          {inputNFTValue &&
-            activeChoice === "Sell" &&
-            Math.floor(amountSellDec) === 0 && (
+            {activeChoice === "Sell" && Math.floor(amountSellDec) === 0 && (
               <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
             )}
-        </div>
+          </div>
+        )}
         <div className="flex justify-center w-full">
           {activeChoice === "Buy" && account && (
             <button

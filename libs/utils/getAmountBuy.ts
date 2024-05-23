@@ -23,12 +23,6 @@ const getAmountBuy = async (
         amountNFT
       );
     } else {
-      console.log({
-        tokenAddress,
-        nftAddress,
-        idNFT,
-      });
-
       const contract721 = new ethers.Contract(
         routerAddress,
         abiRouter721,

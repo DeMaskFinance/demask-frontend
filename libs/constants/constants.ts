@@ -59,7 +59,7 @@ const tokenSepolia = [
   {
     name: "Sepolia Testnet",
     symbol: "ETH",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
     logo: BscIcon,
     symbolNative: "ETH",
   },

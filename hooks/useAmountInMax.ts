@@ -20,15 +20,6 @@ const useAmountInMax = (
       setIsLoadingBuy(true);
 
       if (dmlToken !== "0x0000000000000000000000000000000000000000") {
-        console.log({
-          wallet,
-          tokenAddress,
-          nftAddress,
-          idNFT,
-          inputNFT,
-          rpc,
-          routerAddress,
-        });
         const amountAFee = await getAmountBuy(
           wallet,
           tokenAddress,

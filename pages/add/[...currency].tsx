@@ -179,6 +179,7 @@ export default function AddLiquidity() {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
+  console.log(tokenDefault, tokenDefault);
 
   useEffect(() => {
     if (tokenAddress) {

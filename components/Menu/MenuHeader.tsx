@@ -35,7 +35,6 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const isMatchingUrl = subMenuRewardData.some((menu) =>
     router.pathname.startsWith(menu.url)
   );
-  console.log(isMatchingUrl);
 
   const handleFocus = () => {
     setIsFocused(true);

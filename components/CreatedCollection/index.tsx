@@ -85,7 +85,6 @@ export default function CreatedCollection() {
       }
     },
   });
-  console.log(dataDetail);
 
   const handleUploadBanner = async (file: any) => {
     try {
@@ -264,7 +263,9 @@ export default function CreatedCollection() {
                       <EditIcon width={24} height={24} className="fill-dark3" />
                     </Link>
                     <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-secondary5 bg-opacity-40 text-secondary3 flex-nowrap">
-                      <p className="whitespace-nowrap">Royalties {dataDetail.royalty}%</p>
+                      <p className="whitespace-nowrap">
+                        Royalties {dataDetail.royalty}%
+                      </p>
                       <FiEdit
                         className="cursor-pointer"
                         onClick={() => {
@@ -276,7 +277,7 @@ export default function CreatedCollection() {
                   </div>
                 )}
               </div>
-              <p className="text-xs mt-2">{dataDetail?.description}</p>
+              <p className="mt-2 text-xs">{dataDetail?.description}</p>
               <div className="flex items-center mt-4">
                 <div className="flex gap-x-2">
                   {dataDetail?.socials?.website && (

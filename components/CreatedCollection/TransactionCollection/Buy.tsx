@@ -30,6 +30,7 @@ const Buy = () => {
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
+  const [amountInMax, setAmountInMax] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
@@ -99,16 +100,21 @@ const Buy = () => {
     routerAddress,
     true
   );
-  console.log(amountTokenBuy);
 
   useEffect(() => {
-    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
+    if (Number(amountInMax) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [account, amountTokenBuy, data, isOpenBuyNFT]);
-
+  }, [account, amountInMax, data, isOpenBuyNFT]);
+  useEffect(() => {
+    if (data && amountTokenBuy) {
+      setAmountInMax(amountTokenBuy * (1 + slippage / 100));
+    } else {
+      setAmountInMax(0);
+    }
+  }, [data, slippage, amountTokenBuy]);
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
@@ -199,18 +205,18 @@ const Buy = () => {
                 disabled={
                   idNFT.length === 0 ||
                   !isSufficientTokenBuy ||
-                  Math.floor(amountTokenBuy) === 0
+                  Math.floor(amountInMax) === 0
                 }
                 primary={
                   idNFT.length !== 0 &&
                   isSufficientTokenBuy &&
-                  Math.floor(amountTokenBuy) !== 0
+                  Math.floor(amountInMax) !== 0
                 }
                 className="w-full py-4"
                 active={
                   idNFT.length === 0 ||
                   !isSufficientTokenBuy ||
-                  Math.floor(amountTokenBuy) === 0
+                  Math.floor(amountInMax) === 0
                 }
                 onClick={handleBuy}
               >
