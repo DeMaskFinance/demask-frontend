@@ -1,15 +1,10 @@
 import AccountContext from "@/context/AccountContext";
-import {
-  referralHistoryUser,
-  referralPointUser,
-  referralTopUser,
-} from "@/libs/service/referralService";
+import { referralTopUser } from "@/libs/service/referralService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
-import { SkeletonTable } from "../Skeleton";
-import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
+import { useContext, useState } from "react";
 import { TablePagination } from "../Common/Pagination";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
+import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
 
 const MyReferral = () => {
   const { chainId, account } = useContext(AccountContext);
@@ -49,28 +44,41 @@ const MyReferral = () => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading ? (
-                  <TableRowSkeleton length={9} col={4} />
-                ) : (
-                  isSuccess &&
-                  data &&
-                  data.data.map((item: any, index: number) => (
-                    <tr
-                      key={index}
-                      className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">1</td>
-                      <td className="px-10 py-4 whitespace-nowrap">
-                        {item?.userAddress}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <ModalNumber data={item?.totalPoints}/>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {item?.blockTime}
-                      </td>
-                    </tr>
-                  ))
+                {account && (
+                  <>
+                    {isLoading ? (
+                      <TableRowSkeleton length={9} col={4} />
+                    ) : isSuccess && data && data.data.length > 0 ? (
+                      data.data.map((item: any, index: number) => (
+                        <tr
+                          key={index}
+                          className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
+                        >
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {item?.rank}
+                          </td>
+                          <td className="px-10 py-4 whitespace-nowrap">
+                            {item?.userAddress}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <ModalNumber data={item?.totalPoints} />
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {item?.blockTime}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={4}
+                          className="px-6 py-4 text-center whitespace-nowrap"
+                        >
+                          No data
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 )}
               </tbody>
             </table>

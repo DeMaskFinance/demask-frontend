@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { EtherIcon, RankIcon } from "../Icons";
-import FormatNumber from "../Common/FormatNumber";
-import Image from "next/image";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import AccountContext from "@/context/AccountContext";
+import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import { useQuery } from "@tanstack/react-query";
-import { AvatarCustom } from "../Avatars";
 import Link from "next/link";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
+import { AvatarCustom } from "../Avatars";
+import FormatNumber from "../Common/FormatNumber";
+import { EtherIcon, RankIcon } from "../Icons";
 import { SkeletonTable } from "../Skeleton/SkeletonTable";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
@@ -221,5 +219,5 @@ const TableRank = () => {
     </div>
   );
 };
-
+export { ItemTableRank };
 export default TableRank;

@@ -5,21 +5,17 @@ import React, { useContext, useState } from "react";
 import { TableRowSkeleton } from "../Skeleton";
 import { AvatarCustom } from "../Avatars";
 import { TablePagination } from "../Common/Pagination";
+import { ItemTableRank } from "../LeaderBoard/TableRank";
 
 const Leaderboard = () => {
   const { chainId, demask, account } = useContext(AccountContext);
   const [page, setPage] = useState(1);
   const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
-    useQuery(
-      ["referralLeaderboard", account, page],
-      async () => {
-        const res = await referralLeaderboardUser(account, page);
-        return res;
-      },
-      {
-        enabled: !!account,
-      }
-    );
+    useQuery(["referralLeaderboard", account, page], async () => {
+      const res = await referralLeaderboardUser(account, page);
+      return res;
+    });
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -49,40 +45,70 @@ const Leaderboard = () => {
               <tbody>
                 {isLoading ? (
                   <TableRowSkeleton length={9} col={4} />
+                ) : isSuccess && data && data.data.length > 0 ? (
+                  <>
+                    {account && (
+                      <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600 bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {data.userRank?.rank}
+                        </td>
+                        <td className="flex px-10 py-4 whitespace-nowrap gap-x-2">
+                          <AvatarCustom
+                            avatarUrl={data.userRank?.avatar}
+                            size={24}
+                            userAddress={data.userRank.userAddress!}
+                            className="w-6 h-6 rounded-lg"
+                          />
+                          <p>{data.userRank?.name}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <p>{`${data.userRank?.userAddress.slice(
+                            0,
+                            6
+                          )}...${data.userRank?.userAddress.slice(-8)}`}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {data.userRank?.count}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {data.userRank?.referralCode}
+                        </td>
+                      </tr>
+                    )}
+                    {data.data.map((item: any, index: number) => (
+                      <tr
+                        key={index}
+                        className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {item?.rank}
+                        </td>
+                        <td className="flex px-10 py-4 whitespace-nowrap gap-x-2">
+                          <AvatarCustom
+                            avatarUrl={item?.avatar}
+                            size={24}
+                            userAddress={item.userAddress!}
+                            className="w-6 h-6 rounded-lg"
+                          />
+                          <p>{item?.name}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <p>{`${item?.userAddress.slice(
+                            0,
+                            6
+                          )}...${item?.userAddress.slice(-8)}`}</p>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {item?.count}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {item?.referralCode}
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 ) : (
-                  isSuccess &&
-                  data &&
-                  data.data.map((item: any, index: number) => (
-                    <tr
-                      key={index}
-                      className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {item?.rank}
-                      </td>
-                      <td className="flex px-10 py-4 whitespace-nowrap gap-x-2">
-                        <AvatarCustom
-                          avatarUrl={item?.avatar}
-                          size={24}
-                          userAddress={item.userAddress!}
-                          className="w-6 h-6 rounded-lg"
-                        />
-                        <p>{item?.name}</p>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <p>{`${item?.userAddress.slice(
-                          0,
-                          6
-                        )}...${item?.userAddress.slice(-8)}`}</p>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {item?.count}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {item?.referralCode}
-                      </td>
-                    </tr>
-                  ))
+                  <p></p>
                 )}
               </tbody>
             </table>

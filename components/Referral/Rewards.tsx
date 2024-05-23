@@ -46,51 +46,58 @@ const Rewards = () => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading ? (
-                  <TableRowSkeleton length={10} col={4} />
-                ) : (
-                  isSuccess &&
-                  data &&
-                  data.data.map((item: any, index: number) => (
-                    <tr
-                      key={index}
-                      className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {item.index}
-                      </td>
-                      <td className="px-10 py-4 whitespace-nowrap">
-                        {item.pointSource.map((type: any, index: number) => (
-                          <span
-                            key={index}
-                            className={`border text-xs bg-opacity-10 w-16 text-center ${
-                              type.action === "Buy" || type.action === "Add"
-                                ? "border-green text-green bg-green"
-                                : "border-red text-red bg-red"
-                            } p-1 rounded-lg`}
-                          >
-                            {type.action}
-                          </span>
-                        ))}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-secondary5">
-                        <a
-                          href={`${demask.urltxHash}tx/${item.transactionHash}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                {account && (
+                  <>
+                    {isLoading ? (
+                      <TableRowSkeleton length={10} col={4} />
+                    ) : (
+                      isSuccess &&
+                      data &&
+                      data.data.map((item: any, index: number) => (
+                        <tr
+                          key={index}
+                          className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
                         >
-                          {item.transactionHash?.slice(0, 4)}...
-                          {item.transactionHash?.slice(-8)}
-                        </a>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <ModalNumber data={item.point} />
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {item.blockTime}
-                      </td>
-                    </tr>
-                  ))
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {item.index}
+                          </td>
+                          <td className="px-10 py-4 whitespace-nowrap">
+                            {item.pointSource.map(
+                              (type: any, index: number) => (
+                                <span
+                                  key={index}
+                                  className={`border text-xs bg-opacity-10 w-16 text-center ${
+                                    type.action === "Buy" ||
+                                    type.action === "Add"
+                                      ? "border-green text-green bg-green"
+                                      : "border-red text-red bg-red"
+                                  } p-1 rounded-lg`}
+                                >
+                                  {type.action}
+                                </span>
+                              )
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-secondary5">
+                            <a
+                              href={`${demask.urltxHash}tx/${item.transactionHash}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {item.transactionHash?.slice(0, 4)}...
+                              {item.transactionHash?.slice(-8)}
+                            </a>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <ModalNumber data={item.point} />
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {item.blockTime}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </>
                 )}
               </tbody>
             </table>
