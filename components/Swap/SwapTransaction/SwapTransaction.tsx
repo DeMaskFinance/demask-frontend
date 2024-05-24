@@ -194,7 +194,14 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [inputNFTValue, activeChoice, account, data, balanceNFT]);
+  }, [
+    inputNFTValue,
+    activeChoice,
+    account,
+    data,
+    bigNumberBalance,
+    balanceNFT,
+  ]);
 
   useEffect(() => {
     setInputNFT("");
