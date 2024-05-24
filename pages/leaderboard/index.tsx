@@ -28,7 +28,6 @@ const LeaderBoard = () => {
     <div>
       <NextSeo {...updateMeta} />
       <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-10 mb-[100px] text-center">
-        TEST
         {chainId === "5" ? (
           <div>
             <h1 className="text-3xl font-medium leading-[normal] lg:text-5xl bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent whitespace-nowrap">

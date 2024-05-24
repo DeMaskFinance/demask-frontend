@@ -16,24 +16,23 @@ export default function Layout({ children }: PropsWithChildren) {
   const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   if (router.isReady) {
-  //     if (!router.query.chain) {
-  //       router.push({
-  //         pathname: router.pathname,
-  //         query: { ...router.query, chain: chainId },
-  //       });
-  //     } else {
-  //       updateChainId(router.query.chain);
-  //     }
-  //   }
-  //   // const targetNetwork = network.find(
-  //   //   (item) => item.chain === chainId.toString()
-  //   // );
-  //   // if (!targetNetwork) {
-  //   //   updateChainId(network[0].chain);
-  //   // }
-  // }, [chainId, router.asPath, router.isReady]);
+  useEffect(() => {
+    if (!router.query?.chain) {
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, chain: chainId },
+      });
+    } else {
+      const targetNetwork = network.find(
+        (item) => item.chain === router.query.chain
+      );
+      if (targetNetwork) {
+        updateChainId(router.query.chain);
+      } else {
+        updateChainId(network[0].chain); // Use default chain if target not found
+      }
+    }
+  }, [chainId, router.asPath, router.isReady]);
   console.log(chainId);
 
   useEffect(() => {
