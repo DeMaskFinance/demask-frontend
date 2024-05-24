@@ -17,28 +17,31 @@ export default function Layout({ children }: PropsWithChildren) {
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (router.isReady) {
-      if (!router.query.chain) {
-        router.push({
-          pathname: router.pathname,
-          query: { ...router.query, chain: chainId },
-        });
+    if (!router.query?.chain) {
+      console.log("hehee");
+
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, chain: chainId },
+      });
+      // updateChainId(chainId);
+    } else {
+      const targetNetwork = network.find(
+        (item) => item.chain === router.query.chain
+      );
+      console.log(targetNetwork);
+
+      if (!targetNetwork) {
+        updateChainId(network[0].chain);
+        // router.push({
+        //   pathname: router.pathname,
+        //   query: { ...router.query, chain: network[0].chain },
+        // });
       } else {
-        const targetNetwork = network.find(
-          (item) => item.chain === router.query.chain
-        );
-        if (!targetNetwork) {
-          updateChainId(network[0].chain);
-          router.push({
-            pathname: router.pathname,
-            query: { ...router.query, chain: network[0].chain },
-          });
-        } else {
-          updateChainId(router.query.chain);
-        }
+        updateChainId(router.query.chain);
       }
     }
-  }, [chainId, router.asPath, router.isReady, network]);
+  }, [chainId, router.asPath, router.isReady, network, router.query.chain]);
 
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
@@ -68,7 +71,8 @@ export default function Layout({ children }: PropsWithChildren) {
 
           const handleChainChanged = (networkId: string) => {
             if (
-              (PORT === "3000" && (networkId === "280" || networkId === "5")) ||
+              (PORT === "3000" &&
+                (networkId === "11155111" || networkId === "5")) ||
               (PORT === "1307" && networkId === "168587773")
             ) {
               updateChainId(networkId);

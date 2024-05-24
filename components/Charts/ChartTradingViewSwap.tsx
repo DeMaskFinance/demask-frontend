@@ -129,8 +129,24 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             style: 1,
           },
         },
-        // localization: {
-        //   priceFormatter: (price: number) => {
+        watermark: {
+          text: "DEMASK",
+          fontSize: 56,
+          color: "rgba(256, 256, 256, 0.1)",
+          visible: true,
+          fontFamily: "Roboto",
+        },
+      });
+      const candlestickSeries = chart.addCandlestickSeries({
+        upColor: "rgb(14,203,129)",
+        borderUpColor: "rgb(14,203,129)",
+        downColor: "rgb(246,70,93)",
+        borderDownColor: "rgb(246,70,93)",
+        // priceFormat: {
+        //   type: "custom",
+        //   formatter: (price: number) => {
+        //     console.log(price);
+
         //     const countDecimals = (price: number) => {
         //       if (Math.floor(price) !== price) {
         //         return (price.toString().split(".")[1]?.length || 0) + 1;
@@ -147,41 +163,14 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         //       return parseFloat(price.toPrecision(6));
         //     }
         //   },
-        //   locale: "en-US",
         // },
-      });
-      const candlestickSeries = chart.addCandlestickSeries({
-        upColor: "rgb(14,203,129)",
-        borderUpColor: "rgb(14,203,129)",
-        downColor: "rgb(246,70,93)",
-        borderDownColor: "rgb(246,70,93)",
-        priceFormat: {
-          type: "custom",
-          formatter: (price: number) => {
-            const countDecimals = (price: number) => {
-              if (Math.floor(price) !== price) {
-                return (price.toString().split(".")[1]?.length || 0) + 1;
-              }
-              return 0;
-            };
-            if (price <= 0) {
-              return 0;
-            } else if (price < 0.000001) {
-              return price.toFixed(countDecimals(price));
-            } else if (price >= 0.000001 && price < 1) {
-              return parseFloat(price.toPrecision(6));
-            } else {
-              return parseFloat(price.toPrecision(6));
-            }
-          },
-        },
         // priceScaleId: "candles",
       });
       const volumeSeries = chart.addHistogramSeries({
         priceFormat: {
           type: "volume",
         },
-        priceScaleId: "volume",
+        priceScaleId: "",
       });
       volumeSeries.priceScale().applyOptions({
         // set the positioning of the volume series
@@ -212,7 +201,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       chart.timeScale().applyOptions({
         borderColor: "#D6DCDE",
         timeVisible: true,
-        // rightBarStaysOnScroll: true,
       });
       chart.timeScale().scrollToPosition(30, false);
 
@@ -256,9 +244,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     { key: "15m" },
     { key: "1h" },
     { key: "1d" },
-    // { key: "1W" },
-    // { key: "1Y" },
-    // { key: "All" },
   ];
 
   return (
