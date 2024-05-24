@@ -17,13 +17,15 @@ export default function Layout({ children }: PropsWithChildren) {
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!router.query.chain) {
-      router.push({
-        pathname: router.pathname,
-        query: { ...router.query, chain: chainId },
-      });
-    } else {
-      updateChainId(router.query.chain);
+    if (router.isReady) {
+      if (!router.query.chain) {
+        router.push({
+          pathname: router.pathname,
+          query: { ...router.query, chain: chainId },
+        });
+      } else {
+        updateChainId(router.query.chain);
+      }
     }
     // const targetNetwork = network.find(
     //   (item) => item.chain === chainId.toString()
@@ -32,6 +34,8 @@ export default function Layout({ children }: PropsWithChildren) {
     //   updateChainId(network[0].chain);
     // }
   }, [chainId, router.asPath, router.isReady]);
+  console.log(chainId);
+
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {
