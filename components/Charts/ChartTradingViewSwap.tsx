@@ -109,7 +109,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         autoSize: true,
         layout: {
           background: {
-            color: "#1A1A1A",
+            color: "#13151A",
           },
           textColor: "#A3A9B9",
           fontSize: 10,
@@ -249,8 +249,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   return (
     <div className="w-full h-full">
       {isLoading ? (
-        <div className="h-full p-4 border rounded-lg lg:mt-0 border-shader_500 area_shader_800 ">
-          <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-shader_500 w-fit text-shader_500">
+        <div className="h-full p-4 lg:mt-0 ">
+          <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-shader_500 w-fit text-shader_200">
             <div className="w-20 h-4 p-2 rounded bg-slate-200 dark:bg-slate-700"></div>
             <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
             <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
@@ -259,43 +259,34 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full h-full py-4 pl-4 mt-6 border rounded-lg lg:mt-0 border-shader_500 area_shader_800">
+        <div className="w-full h-full">
           <div>
-            <div className="hidden mb-2 text-sm font-medium rounded-lg lg:flex bg-shader_600 w-fit text-shader_500 bg-shader_700 border-shader_700 ">
-              <div className="flex items-center px-2 py-4 border-r border-shader_500 text-shader_600">
-                <p className="mr-1 text-shader_500">Price 1D:</p>
+            <div className="hidden text-sm font-semibold lg:flex w-fit text-primary_300 ">
+              <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
+                <p className="mr-1 text-shader_200">Price 1D</p>
                 <FormatNumber number={data[data.length - 1]?.closePrice} />(
                 {formatPercent(data[data.length - 1]?.changePrice)}%)
               </div>
-              <div className="flex items-center px-2 py-4 border-r border-shader_500 text-shader_600">
-                <p className="mr-1 text-shader_500">Volume 1D:</p>
-                <div className="flex items-center">
+              <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
+                <p className="mr-1 text-shader_200">Volume 1D</p>
+                <div className="flex items-center gap-x-1">
                   <FormatNumber number={data[data.length - 1]?.volume} />
-                  <EtherIcon
-                    width={16}
-                    height={16}
-                    className="fill-shader_600"
-                  />
+                  <EtherIcon width={16} height={16} />
                 </div>
               </div>
-              <div className="flex items-center p-4 text-shader_600">
-                <div className="flex items-center text-sm ">
-                  <div className="flex items-center mr-2">
-                    <span className="text-shader_500">LP:</span>
-                    <FormatNumber number={dataSwap.reserveNFT} />
-                    <NFTIcon
-                      width={24}
-                      height={24}
-                      className="fill-shader_600 ml-[2px]"
-                    />
-                  </div>
+              <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
+                <p className="mr-1 text-shader_200">Reserve NFT</p>
+                <div className="flex items-center gap-x-1">
+                  <FormatNumber number={data[data.length - 1]?.volume} />
+                  <EtherIcon width={16} height={16} />
+                </div>
+              </div>
+              <div className="flex items-center p-4 border-r border-shader_500">
+                <div className="flex items-center text-sm gap-x-1">
+                  <p className="text-shader_200">Reserve Token</p>
                   <FormatNumber number={dataSwap.reserveToken} />
                   <span>
-                    <EtherIcon
-                      width={16}
-                      height={16}
-                      className="fill-shader_600 ml-[-1px]"
-                    />
+                    <EtherIcon width={16} height={16} />
                   </span>
                 </div>
               </div>
@@ -309,13 +300,13 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               fontFamily: "unset",
             }}
           >
-            <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-xs flex-wrap h-[18px]">
-              <div className="flex">
-                <span className="text-xs text-shader_500">Time:</span>
+            <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-sm flex-wrap h-[33px] bg-shader_600 pl-4">
+              <div className="flex text-shader_200 item-center">
+                <span className="">Time:</span>
                 <span>{formatDate(legendData?.time)}</span>
               </div>
-              <div className="flex ">
-                <span className="text-xs text-shader_500">O:</span>
+              <div className="flex item-center">
+                <span className="text-shader_200">O:</span>
                 <div
                   className={`${
                     legendData?.change ? "text-red" : "text-green"
@@ -324,8 +315,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                   <FormatNumber number={legendData?.open} />
                 </div>
               </div>
-              <div className="flex ">
-                <span className="text-xs text-shader_500">L:</span>
+              <div className="flex item-center">
+                <span className="text-shader_200">L:</span>
                 <div
                   className={`${
                     legendData?.change ? "text-red" : "text-green"
@@ -334,8 +325,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                   <FormatNumber number={legendData?.low} />
                 </div>
               </div>
-              <div className="flex ">
-                <span className="text-xs text-shader_500">H:</span>
+              <div className="flex item-center">
+                <span className="text-shader_200">H:</span>
                 <div
                   className={`${
                     legendData?.change ? "text-red" : "text-green"
@@ -344,8 +335,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                   <FormatNumber number={legendData?.high} />
                 </div>
               </div>
-              <div className="flex text-xs ">
-                <span className="text-xs text-shader_500">C:</span>
+              <div className="flex item-center">
+                <span className="text-shader_200">C:</span>
                 <div
                   className={`${
                     legendData?.change ? "text-red" : "text-green"
@@ -354,8 +345,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                   <FormatNumber number={legendData?.close} />
                 </div>
               </div>
-              <div className="flex ">
-                <span className="text-xs text-shader_500">Vol:</span>
+              <div className="flex item-center">
+                <span className="text-shader_200">Vol:</span>
                 <div
                   className={`${
                     legendData?.change ? "text-red" : "text-green"
@@ -375,7 +366,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               height: `${height}px`,
             }}
           />
-          <div className="flex justify-between text-[12px] text-[#222] dark:text-shader_600 font-medium items-center pr-4">
+          <div className="flex justify-between text-[12px] text-[#222] dark: font-medium items-center pr-4">
             <ul className="flex mt-2 gap-x-3">
               {optionTime.map((item, index) => (
                 <li

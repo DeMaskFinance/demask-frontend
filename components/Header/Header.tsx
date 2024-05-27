@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
 import Maintenance from "../Common/Maintenance";
-import { EtherIcon, ProfileIcon, SearchIcon, WalletIcon } from "../Icons";
+import { EtherIcon, SearchIcon, WalletIcon } from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
@@ -231,7 +231,7 @@ export default function Header() {
                 }}
                 className={`absolute top-2 right-4 flex items-center p-1 rounded-full shadow-md bg-white`}
               >
-                <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
               </button>
             </div>
             <MenuNetwork />
@@ -278,12 +278,12 @@ export default function Header() {
                     </div>
                   )}
                 >
-                  <div>
+                  <div className="flex items-center justify-center border-2 rounded-full cursor-pointer border-primary_400 h-9 w-9">
                     <AvatarCustom
                       avatarUrl={profile?.avatar}
-                      size={36}
+                      size={20}
                       userAddress={profile.userAddress!}
-                      className="border-2 rounded-full cursor-pointer w-9 h-9 border-primary_400"
+                      className="w-full h-full rounded-full"
                     />
                   </div>
                 </Tippy>

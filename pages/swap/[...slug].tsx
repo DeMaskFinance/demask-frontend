@@ -46,21 +46,14 @@ const Swap: React.FC = () => {
   }, [slug]);
 
   return (
-    <div className="px-4 py-8 mx-auto max-w-screen-3xl swap lg:px-primary md:px-14">
+    <div className="">
       <NextSeo {...updateMeta} />
       {isLoading || isFetching ? (
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-shader_900 dark:text-white">
-            <div className="w-[30px] h-[30px]">
-              <MediaNFT data={data} isControls={false} />
-            </div>
-            <p>{data?.metadata?.name}</p>
-            <p>({data?.metadata?.symbol}/ETH)</p>
-          </div>
-          <div className="flex flex-col-reverse gap-x-10 md:flex-row">
-            <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center">
+          <div className="flex flex-col-reverse border-y md:flex-row border-shader_600">
+            <div className="flex flex-col items-center w-full md:w-[75%]">
               {data && (
                 <ChartTradingViewSwap
                   dataSwap={data}

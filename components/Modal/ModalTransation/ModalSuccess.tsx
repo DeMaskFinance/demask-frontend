@@ -41,8 +41,8 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
           <div>
             <h2 className="title_modal">{type}</h2>
             <div className="flex flex-col items-center">
-              <SuccessIcon width={120} height={120} />
-              <p className="mt-6 mb-2 font-semibold text-green">
+              <SuccessIcon width={80} height={80} />
+              <p className="mt-6 mb-2 font-bold text-green">
                 Transaction Submitted
               </p>
               <a
@@ -69,7 +69,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
         </button>
       </div>
     </Wrapper>
@@ -203,7 +203,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
         </button>
       </div>
     </Wrapper>

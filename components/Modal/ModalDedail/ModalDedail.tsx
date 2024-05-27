@@ -68,7 +68,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                       </div>
                     </div>
                     <button className="text-lg " onClick={handleClose}>
-                      <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+                      <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white" />
                     </button>
                   </div>
                   <div className="flex gap-x-4">

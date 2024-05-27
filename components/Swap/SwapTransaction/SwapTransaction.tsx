@@ -252,9 +252,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     {
       icon: (
         <RefetchIcon
-          width={24}
-          height={24}
-          className="cursor-pointer hover:fill-shader_600"
+          width={18}
+          height={18}
+          className="cursor-pointer text-yellow"
         />
       ),
       content: "Refresh",
@@ -262,17 +262,21 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     },
     {
       icon: (
-        <PoolIcon width={24} height={24} className="hover:fill-shader_600" />
+        <PoolIcon
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
+        />
       ),
       content: "Pool",
-      link: `/add/${nftAddress}/${tokenAddress}/${idNFT}?chain=${chainId}`,
+      link: `/add/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`,
     },
     {
       icon: (
         <SettingIcon
-          width={24}
-          height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-shader_600"
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
         />
       ),
       content: "Setting",
@@ -281,16 +285,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   ];
 
   return (
-    <div className="lg:w-[32%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
-      <div className="w-full p-6 border rounded-lg shadow-home area_shader_800">
-        <div className="flex justify-between gap-4 mb-2 text-shader_700">
-          <div className="flex flex-col items-center ">
-            <TabGroups
-              choices={["Buy", "Sell"]}
-              activeChoice={activeChoice}
-              onChoiceChange={handleChoiceChange}
-            />
-          </div>
+    <div className="flex flex-grow border-l h-fit gap-y-1 lg:gap-y-12 border-shader_600">
+      <div className="w-full p-4">
+        <div className="flex justify-between gap-4 mb-2">
+          <p className="text-xl text-white">Demask Swaps</p>
           <div className="flex items-center gap-x-2">
             {actions.map((action, index) => (
               <Tippy
@@ -299,16 +297,27 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 theme="dark"
                 placement="bottom"
               >
-                {action.link ? (
-                  <Link href={action.link} className="group">
-                    {action.icon}
-                  </Link>
-                ) : (
-                  <div onClick={action.onClick}>{action.icon}</div>
-                )}
+                <div className="border rounded-full border-shader_400 p-[7px]">
+                  {action.link ? (
+                    <Link href={action.link} className="group">
+                      {action.icon}
+                    </Link>
+                  ) : (
+                    <div onClick={action.onClick} className="">
+                      {action.icon}
+                    </div>
+                  )}
+                </div>
               </Tippy>
             ))}
           </div>
+        </div>
+        <div className="flex flex-col items-center my-4">
+          <TabGroups
+            choices={["Buy", "Sell"]}
+            activeChoice={activeChoice}
+            onChoiceChange={handleChoiceChange}
+          />
         </div>
         <div className="flex flex-col justify-center my-6">
           <div className="w-40 h-40 mx-auto">

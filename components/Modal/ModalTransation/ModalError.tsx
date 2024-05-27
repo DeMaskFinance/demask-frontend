@@ -36,9 +36,7 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
           <h2 className="title_modal">{type}</h2>
           <div className="flex flex-col items-center">
             <ErrorIcon width={120} height={120} />
-            <p className="mt-6 mb-2 font-semibold text-red">
-              Sorry! Something seems wrong.
-            </p>
+            <p className="mt-6 mb-2 font-bold text-red">Transaction Failed</p>
             <a
               href={`${demask.urltxHash}tx/${transactionHash}`}
               target="_blank"
@@ -74,7 +72,7 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
         </button>
       </div>
     </Wrapper>

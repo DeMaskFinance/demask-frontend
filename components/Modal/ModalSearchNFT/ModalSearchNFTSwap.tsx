@@ -9,6 +9,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
 import TopNFT from "./TopNFT";
+import { SearchIcon } from "@/components/Icons";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: React.Dispatch<React.SetStateAction<boolean>>;
@@ -73,11 +74,16 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 text-xl font-medium title">Select a NFT</p>
+          <p className="py-2 mb-4 title">Select a NFT</p>
           <div>
             <div className="relative mb-4">
+              <SearchIcon
+                width={20}
+                height={20}
+                className="absolute -translate-y-1/2 top-1/2 left-2"
+              />
               <input
-                className="input_item"
+                className="pl-8 input_item"
                 placeholder="Search NFTs"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -133,7 +139,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
             className="absolute top-0 right-0 p-2 text-lg"
             onClick={handleClose}
           >
-            <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
       </div>

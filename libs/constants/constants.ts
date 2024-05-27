@@ -2,12 +2,10 @@ import {
   BlastIcon,
   BscIcon,
   EtherIcon,
-  GoerliIcon,
   MonadIcon,
   SepoliaIcon,
   USDCIcon,
-  USDTIcon,
-  ZkSyncIcon,
+  USDTIcon
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -60,7 +58,7 @@ const tokenSepolia = [
     name: "Sepolia Testnet",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
-    logo: BscIcon,
+    logo: SepoliaIcon,
     symbolNative: "ETH",
   },
 ];
@@ -233,12 +231,7 @@ export {
   Category,
   Goerli_DEMASK,
   mediaType,
-  network,
-  tokenBlast,
-  tokenGoerli,
-  version,
-  validCollectionInput,
-  validNFTsInput,
-  SEPOLIA_DEMASK,
-  tokenSepolia,
+  network, SEPOLIA_DEMASK, tokenBlast,
+  tokenGoerli, tokenSepolia, validCollectionInput,
+  validNFTsInput, version
 };

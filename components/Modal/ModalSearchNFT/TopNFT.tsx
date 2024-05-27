@@ -38,18 +38,18 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
                 className="flex-1"
               >
                 <div className="item_search">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
+                  <div className="flex items-center gap-x-[10px]">
+                    <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
                       <MediaNFT data={item} isControls={false} />
                     </div>
-                    <div className="flex flex-col items-baseline">
-                      <span className="block text-sm font-semibold">
+                    <div className="flex flex-col justify-center">
+                      <span className="block text-sm font-semibold text-white">
                         <span className="line-clamp-1">
                           {item?.metadata?.name}
                         </span>
                       </span>
                       <span className="flex text-xs item-center">
-                        <span className="block pb-2 mr-1 font-semibold">
+                        <span className="block pb-2 mr-1 font-normal text-shader_200">
                           {item.dmlAddress?.slice(0, 4)}...
                           {item.dmlAddress?.slice(-8)}
                         </span>

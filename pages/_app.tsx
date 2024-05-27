@@ -41,7 +41,7 @@ const roboto = Roboto_Mono({
   adjustFontFallback: false,
 });
 const titillium = Titillium_Web({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   weight: ["200", "300", "400", "900", "600", "700"],
   display: "swap",
   adjustFontFallback: false,

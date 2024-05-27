@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin')
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -65,6 +66,11 @@ module.exports = {
       fontSize: {
         customDate: "15px",
       },
+      textShadow: {
+        sm: '0 0 12px var(--tw-shadow-color)',
+        DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+        lg: '0 8px 16px var(--tw-shadow-color)',
+      },
       boxShadow: {
         home: "0px 4px 12px 0px rgba(0, 0, 0, 0.08)",
         swiper: "rgba(0, 0, 0, 0.15) 0px 4px 10px",
@@ -75,22 +81,10 @@ module.exports = {
         scrollUpHeader: {
           "0%": { transform: "translateY(-64px)" },
           "100%": { transform: "translateY(0)" },
-        },
-        loadingTransaction: {
-          "0%": {
-            transform: "rotate(45deg) rotateX(-25deg) rotateY(25deg)",
-          },
-          "50%": {
-            transform: "rotate(45deg) rotateX(-385deg) rotateY(25deg)",
-          },
-          "100%": {
-            transform: "rotate(45deg) rotateX(-385deg) rotateY(385deg)",
-          },
-        },
+        }
       },
       animation: {
         scrollUpHeader: "scrollUpHeader 0.3s ease-in-out",
-        loadingTransaction: "loadingTransaction 1s ease-in-out infinite",
         "spin-360": "spin 0.5s linear",
       },
       container: {
@@ -103,12 +97,22 @@ module.exports = {
     },
   },
   plugins: [
-    function ({ addBase, theme }) {
+    plugin(function ({ addBase, theme }) {
       addBase({
         body: {
           "--bg-url": "none",
         },
       });
-    },
+    }),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    }),
   ],
 };

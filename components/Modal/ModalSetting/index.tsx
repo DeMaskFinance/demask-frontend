@@ -1,4 +1,4 @@
-import { TokenIconNotDefine } from "@/components/Icons";
+import { NoteIcon, TokenIconNotDefine } from "@/components/Icons";
 import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,10 +52,13 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
     <Wrapper isOpen={isOpenSetting} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <h2 className="flex items-center mb-3 text-xl font-semibold text-shader_700 title">
+          <h2 className="flex items-center justify-between mb-3 text-xl font-semibold text-white title">
             Transaction Configurations
+            <button className="text-lg " onClick={handleClose}>
+              <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+            </button>
           </h2>
-          <div className="text-shader_500">
+          <div className="text-shader_200">
             <div className="flex items-center my-2 gap-x-2">
               <h2 className="font-semibold ">Slippage Tolerance</h2>
               <Tippy
@@ -69,11 +72,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 }
               >
                 <div>
-                  <TokenIconNotDefine
-                    width={16}
-                    height={16}
-                    className="fill-shader_500"
-                  />
+                  <NoteIcon width={14} height={14} />
                 </div>
               </Tippy>
             </div>
@@ -97,7 +96,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 {Slippage.map((item, index) => (
                   <Button
                     key={index}
-                    className="w-20 py-1 mr-2 font-semibold border border-shader_500 text-shader_500 area_shader_800"
+                    className="w-20 py-1 mr-2 font-semibold border border-shader_200 text-shader_200"
                     primary={slippage === item}
                     onClick={() => {
                       setSlippageTo(item);
@@ -126,11 +125,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 }
               >
                 <div>
-                  <TokenIconNotDefine
-                    width={16}
-                    height={16}
-                    className="fill-shader_500"
-                  />
+                  <NoteIcon width={14} height={14} />
                 </div>
               </Tippy>
             </div>
@@ -164,12 +159,6 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
             />
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
-        </button>
       </div>
     </Wrapper>
   );
