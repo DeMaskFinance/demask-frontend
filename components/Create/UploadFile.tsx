@@ -79,7 +79,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
   return (
     <div className="flex flex-col items-center w-full" ref={uploadRef}>
       <div
-        className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-dark2 rounded-2xl`}
+        className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-shader_600 rounded-2xl`}
         ref={itemRef}
         onDragOver={handleDragOver}
         onDragLeave={handleLeave}
@@ -153,9 +153,9 @@ const UploadFile: React.FC<UploadFileProps> = ({
             <PictureMint
               width={160}
               height={160}
-              className="mx-auto transition-all duration-200 group-hover:fill-dark2"
+              className="mx-auto transition-all duration-200 group-hover:fill-shader_600"
             />
-            <p className="font-semibold text-dark1 title">Upload</p>
+            <p className="font-semibold text-shader_700 title">Upload</p>
             <input
               ref={inputRef}
               type="file"
@@ -167,13 +167,13 @@ const UploadFile: React.FC<UploadFileProps> = ({
                   : "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
               }`}
             />
-            <div className="text-sm w-[254px] text-dark3 mb-6 transition-all duration-200 group-hover:text-dark2 mt-2">
+            <div className="text-sm w-[254px] text-shader_500 mb-6 transition-all duration-200 group-hover:text-shader_600 mt-2">
               {type === "collection" ? (
                 <p>JPG,PNG,GIF,SVG supported.</p>
               ) : (
                 <p>Video, audio, gif, pdf, and images supported.</p>
               )}
-              <span className="text-dark2">Max size: 50MB.</span>
+              <span className="text-shader_600">Max size: 50MB.</span>
             </div>
           </div>
         )}

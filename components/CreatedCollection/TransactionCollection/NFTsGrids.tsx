@@ -39,7 +39,7 @@ const NFTGrid = forwardRef<HTMLDivElement, NFTGridProps>(
       }
     };
     return (
-      <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3 text-dark2 max-h-[400px] mb-8">
+      <div className="grid grid-cols-3 pb-[34px] gap-3 mt-4 overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3 text-shader_600 max-h-[400px] mb-8">
         {data?.pages.map((page: any, pageIndex: number) => (
           <Fragment key={pageIndex}>
             {page?.data?.map((item: any, index: number) => (
@@ -49,16 +49,16 @@ const NFTGrid = forwardRef<HTMLDivElement, NFTGridProps>(
                 onClick={() => handleChoiceNFT(item)}
               >
                 <div
-                  className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-dark2 ${
+                  className={`relative items-center p-1 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:border-shader_600 ${
                     idNFT.includes(Number(item.nftID))
-                      ? "border-secondary5 dark:border-secondary5"
+                      ? "border-primary_400 dark:border-primary_400"
                       : ""
                   }`}
                 >
                   <div className="relative h-[78px] lg:h-[100px] group">
                     <MediaNFT data={item} isControls={false} hover zoom />
                     <div
-                      className="absolute top-0 right-0 z-10 p-[2px] text-sm bg-white cursor-pointer rounded-bl-md text-dark2"
+                      className="absolute top-0 right-0 z-10 p-[2px] text-sm bg-white cursor-pointer rounded-bl-md text-shader_600"
                       onClick={async (e) => {
                         e.stopPropagation();
                         toast.success("Please wait a moment!", {

@@ -158,13 +158,17 @@ const Buy = () => {
           />
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-dark3">
+              <ul className="flex flex-wrap px-4 py-2 text-sm bg-shader_600 text-shader_600 gap-x-4 bg-shader_700 border-shader_700 dark:text-shader_500">
                 <li className="flex items-center">
                   Send:
                   <FormatNumber
                     number={(amountTokenBuy / 1e18).toString()}
                   />{" "}
-                  <EtherIcon width={18} height={18} className="fill-dark2" />
+                  <EtherIcon
+                    width={18}
+                    height={18}
+                    className="fill-shader_600"
+                  />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
@@ -174,7 +178,11 @@ const Buy = () => {
                   <FormatNumber
                     number={(amountTokenBuy / 1e18).toString()}
                   />{" "}
-                  <EtherIcon width={18} height={18} className="fill-dark2" />
+                  <EtherIcon
+                    width={18}
+                    height={18}
+                    className="fill-shader_600"
+                  />
                 </li>
               </ul>
             )}

@@ -223,7 +223,7 @@ export default function DetailLaunchPad() {
                     />
                   </div>
                 </div>
-                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper area_darkBG0">
+                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper area_shader_900">
                   <div className="w-full lg:w-[50%] relative">
                     <MediaNFT data={data} isControls />
                     <div className="absolute top-0 right-0 ">
@@ -232,9 +232,9 @@ export default function DetailLaunchPad() {
                         height={80}
                         className={`${
                           data.status === "Active"
-                            ? "fill-secondary5"
+                            ? "fill-primary_400"
                             : data.status === "Upcoming"
-                            ? "fill-dark3"
+                            ? "fill-shader_500"
                             : data.isSuccess
                             ? "fill-green"
                             : "fill-red"
@@ -252,24 +252,24 @@ export default function DetailLaunchPad() {
                     </div>
                   </div>
                   <div className=" w-full lg:w-[50%] mt-4 lg:mt-0">
-                    <div className="relative max-w-full text-2xl font-semibold text-dark1">
+                    <div className="relative max-w-full text-2xl font-semibold text-shader_700">
                       <ModalDocument data={data.metadata.name} />
                     </div>
-                    <div className="flex items-center text-3xl font-semibold datas-center text-secondary3">
+                    <div className="flex items-center text-3xl font-semibold datas-center text-primary_400">
                       <FormatNumber number={(data.price / 1e18).toString()} />
                       <EtherIcon
                         width={20}
                         height={20}
-                        className="mb-2 fill-secondary3"
+                        className="mb-2 fill-primary_400"
                       />
                     </div>
                     {account && (
-                      <div className="p-2 border rounded-lg text-dark1 border-dark2 w-fit">
+                      <div className="p-2 border rounded-lg text-shader_700 border-shader_600 w-fit">
                         <p className="mb-2 font-normal">Your NFT Balance</p>
                         <p className="font-semibold">{data?.amount}</p>
                       </div>
                     )}
-                    <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-dark1">
+                    <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-shader_700">
                       <div>
                         <p>Supported</p>
                         <div className="flex justify-start">
@@ -290,7 +290,7 @@ export default function DetailLaunchPad() {
                           <EtherIcon
                             width={16}
                             height={16}
-                            className="mb-1 fill-dark1"
+                            className="mb-1 fill-shader_700"
                           />
                         </div>
                       </div>
@@ -303,7 +303,7 @@ export default function DetailLaunchPad() {
                           <EtherIcon
                             width={16}
                             height={16}
-                            className="mb-1 fill-dark1"
+                            className="mb-1 fill-shader_700"
                           />
                         </div>
                       </div>
@@ -316,23 +316,23 @@ export default function DetailLaunchPad() {
                           <EtherIcon
                             width={16}
                             height={16}
-                            className="mb-1 fill-dark1"
+                            className="mb-1 fill-shader_700"
                           />
                         </div>
                       </div>
                     </div>
                     <div className="w-full lg:w-[80%]">
                       <p className="mb-2">Type</p>
-                      <div className="flex justify-between p-2 rounded-lg datas-center bg-dark4 area_darkBG1">
+                      <div className="flex justify-between p-2 rounded-lg datas-center bg-shader_500 area_shader_800">
                         <div className="flex item-center gap-x-2">
                           <div className="w-8 h-8">
                             <MediaNFT data={data} isControls hideAudio={true} />
                           </div>
-                          <div className="relative font-semibold text-dark1 max-w-[250px] flex items-center">
+                          <div className="relative font-semibold text-shader_700 max-w-[250px] flex items-center">
                             <ModalDocument data={data.metadata.name} />
                           </div>
                         </div>
-                        <div className="flex items-center text-sm font-semibold text-secondary4">
+                        <div className="flex items-center text-sm font-semibold text-primary_400">
                           <FormatNumber
                             number={(data.totalSold / 1e18).toString()}
                           />
@@ -368,7 +368,7 @@ export default function DetailLaunchPad() {
                                       // disabled={data.status === null ? true : !data.status}
                                       className={`border ${
                                         !data.status
-                                          ? "text-white  bg-dark4"
+                                          ? "text-white  bg-shader_500"
                                           : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
                                       } px-6 py-2 rounded-lg transition-all text-sm font-medium`}
                                       onClick={() => {
@@ -383,7 +383,7 @@ export default function DetailLaunchPad() {
                                       className={`${
                                         Number(data.amount) >=
                                         Number(data.softcap)
-                                          ? "text-white  bg-dark4"
+                                          ? "text-white  bg-shader_500"
                                           : "text-red border border-red hover:border-red hover:text-white hover:bg-red"
                                       }  px-6 py-2 rounded-lg transition-all text-sm font-medium`}
                                       onClick={() => {
@@ -418,15 +418,15 @@ export default function DetailLaunchPad() {
                                     )
                                   </div>
                                 </div>
-                                <div className="text-dark2 text-[10px] font-medium mb-2 flex items-center">
+                                <div className="text-shader_600 text-[10px] font-medium mb-2 flex items-center">
                                   The maximum number of Tokens you can buy is{" "}
-                                  <span className="ml-1 text-xs font-semibold text-secondary5">
+                                  <span className="ml-1 text-xs font-semibold text-primary_400">
                                     {Number(data.purchaseLimit) / 1e18}
                                   </span>
                                   <EtherIcon
                                     width={12}
                                     height={12}
-                                    className=" fill-secondary3"
+                                    className=" fill-primary_400"
                                   />
                                 </div>
                                 <NumericFormat
@@ -473,7 +473,7 @@ export default function DetailLaunchPad() {
                                   className={`px-6 py-2 rounded-md text-sm text-white  ${
                                     errors !== "" || !amount || +amount < 1
                                       ? "bg-slate-400"
-                                      : "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear"
+                                      : "bg-primary_500 text-white font-medium hover:bg-white hover:text-primary_400 border boder-white hover:border-primary_400 rounded-lg transition-all duration-150 ease-linear"
                                   }`}
                                 >
                                   Buy
@@ -573,13 +573,13 @@ export default function DetailLaunchPad() {
           setIsOpenError={setIsOpenErrorRefund}
         />
       </div>
-      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 area_darkBG1">
+      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 area_shader_800">
         <div className="flex justify-center">
           <TabQuery TABS={TABS} initialItem="rule" indexChoice={indexChoice} />
         </div>
         {isLoading ? (
           <div>
-            <BiLoaderAlt className="animate-spin text-secondary5" />
+            <BiLoaderAlt className="animate-spin text-primary_400" />
           </div>
         ) : (
           isSuccess &&

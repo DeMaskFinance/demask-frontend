@@ -13,7 +13,7 @@ const SkeletonPoolDetail = () => {
           </div>
           <div className="w-40 h-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
         </div>
-        <div className="w-full p-4 mt-6 border rounded-lg border-dark3">
+        <div className="w-full p-4 mt-6 border rounded-lg border-shader_500">
           <SkeletonTable length={6} />
         </div>
       </div>

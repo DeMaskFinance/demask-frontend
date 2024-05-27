@@ -8,7 +8,7 @@ const SkeletonTable: React.FC<SkeletonTableProps> = ({ length }) => {
   const skeletonRows = Array.from({ length }, (item, index) => (
     <tr
       key={index}
-      className="flex text-sm lg:text-base md:text-base text-dark2"
+      className="flex text-sm lg:text-base md:text-base text-shader_600"
     >
       <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
         <p className="w-[100%] h-8 bg-slate-200 dark:bg-slate-700 animate-pulse mr-2 rounded-xl" />
@@ -45,7 +45,7 @@ const TableRowSkeleton: React.FC<TableRowSkeletonProps> = ({ length, col }) => {
       {Array.from({ length }, (_, rowIndex) => (
         <tr
           key={rowIndex}
-          className="text-dark2 text-base max-md:text-[12px] bg-transparent rounded-lg border-gray-700 bg-white hover:bg-slate-100 cursor-pointer"
+          className="text-shader_600 text-base max-md:text-[12px] bg-transparent rounded-lg border-gray-700 bg-white hover:bg-slate-100 cursor-pointer"
         >
           <td
             scope="row"

@@ -168,7 +168,7 @@ const Sell = () => {
               />
               <div className="absolute bottom-0 w-full">
                 {idNFT.length > 0 && (
-                  <ul className="flex flex-wrap px-4 py-2 text-sm bg-dark5 text-dark2 gap-x-4 area_input dark:text-white">
+                  <ul className="flex flex-wrap px-4 py-2 text-sm bg-shader_600 text-shader_600 gap-x-4 bg-shader_700 border-shader_700 dark:text-white">
                     <li className="flex items-center">
                       Send:
                       <FormatNumber
@@ -177,7 +177,7 @@ const Sell = () => {
                       <EtherIcon
                         width={18}
                         height={18}
-                        className="fill-dark2"
+                        className="fill-shader_600"
                       />
                     </li>
                     <li className="flex items-center">
@@ -191,7 +191,7 @@ const Sell = () => {
                       <EtherIcon
                         width={18}
                         height={18}
-                        className="fill-dark2"
+                        className="fill-shader_600"
                       />
                     </li>
                   </ul>

@@ -60,7 +60,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[350px] p-4 relative rounded-lg">
           <h3 className="title_modal">Confirm refund</h3>
           <div className="h-32 p-2 mx-auto text-center">
-            <p className="font-semibold text-dark2">Amount refund</p>
+            <p className="font-semibold text-shader_600">Amount refund</p>
             <div className="relative flex items-center justify-center gap-2 mx-auto w-fit">
               <input
                 type="number"
@@ -75,7 +75,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
                 className={`${
                   amount === Number(amountLeave)
                     ? "text-gray-300"
-                    : "text-secondary5"
+                    : "text-primary_400"
                 }  text-sm absolute right-6 cursor-pointer`}
                 onClick={() => {
                   setAmount(amountLeave);

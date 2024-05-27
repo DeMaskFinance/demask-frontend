@@ -18,7 +18,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         skeleton.map((item, index) => (
           <div
             key={index}
-            className="grid gap-4 grid-cols-[80px,repeat(3,2fr),4fr] text-dark3 text-sm font-light mb-2 animate-pulse h-4"
+            className="grid gap-4 grid-cols-[80px,repeat(3,2fr),4fr] text-shader_500 text-sm font-light mb-2 animate-pulse h-4"
           >
             <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
             <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
@@ -31,7 +31,7 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item: any, index: number) => (
             <div
-              className="grid gap-4  py-2 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px]  text-dark1 "
+              className="grid gap-4  py-2 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px]  text-shader_700 "
               key={index}
             >
               <div

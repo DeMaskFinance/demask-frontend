@@ -127,8 +127,8 @@ export default function Pools() {
                   disabled={isPreviousData || page === 1}
                   className={`${
                     isPreviousData || page === 1
-                      ? "text-dark3 hover:border-red"
-                      : "text-dark2"
+                      ? "text-shader_500 hover:border-red"
+                      : "text-shader_600"
                   }`}
                 >
                   <MdNavigateBefore className="text-xl border border-transparent" />
@@ -140,8 +140,8 @@ export default function Pools() {
                         <span>...</span>
                       ) : (
                         <button
-                          className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${
-                            pageNum === page ? "bg-secondary2 text-white" : ""
+                          className={`text-sm min-w-[32px] rounded-lg text-shader_600 p-1 ${
+                            pageNum === page ? "bg-primary_500 text-white" : ""
                           }`}
                           onClick={() => goToPage(pageNum)}
                         >
@@ -156,14 +156,14 @@ export default function Pools() {
                   disabled={isPreviousData || page === data?.totalPages}
                   className={`${
                     isPreviousData || page === data?.totalPages
-                      ? "text-dark3 hover:border"
+                      ? "text-shader_500 hover:border"
                       : ""
                   }`}
                 >
-                  <MdOutlineNavigateNext className="text-xl text-dark2" />
+                  <MdOutlineNavigateNext className="text-xl text-shader_600" />
                 </button>
               </div>
-              <div className="flex items-center justify-center gap-4 ml-4 text-dark2">
+              <div className="flex items-center justify-center gap-4 ml-4 text-shader_600">
                 <span>Go to page </span>
                 <div className="flex gap-x-2">
                   <input

@@ -7,10 +7,10 @@ export default function ChartNoTransfers() {
       <div className="flex items-center justify-center h-[80%]">
         <div className="flex flex-col items-center justify-center">
           <BsClock className="w-8 h-8 mb-6" />
-          <p className="text-sm font-medium text-dark1">
+          <p className="text-sm font-medium text-shader_700">
             No events in this time range
           </p>
-          <p className="text-sm text-dark2">
+          <p className="text-sm text-shader_600">
             Try a different time range or check back later.
           </p>
         </div>

@@ -102,9 +102,9 @@ const PoolItem = ({ liquidity }: any) => {
   };
 
   return (
-    <div className="p-4 mb-4 border rounded-lg border-dark3 area_darkBG1">
+    <div className="p-4 mb-4 border rounded-lg border-shader_500 area_shader_800">
       <div className="flex flex-wrap justify-between gap-y-2">
-        <p className="text-xl font-semibold text-dark0 title">
+        <p className="text-xl font-semibold text-shader_900 title">
           {liquidity.name}
         </p>
         <div className="flex gap-x-4">
@@ -121,14 +121,18 @@ const PoolItem = ({ liquidity }: any) => {
           <div className="flex items-center mr-2">
             <span>LP:</span>
             <FormatNumber number={liquidity?.reserveToken} />
-            <NFTIcon width={24} height={24} className="fill-dark2 ml-[2px]" />
+            <NFTIcon
+              width={24}
+              height={24}
+              className="fill-shader_600 ml-[2px]"
+            />
           </div>
           <FormatNumber number={liquidity?.reserveNFT} />
           <span>
             <EtherIcon
               width={20}
               height={20}
-              className="fill-dark2 ml-[-1px]"
+              className="fill-shader_600 ml-[-1px]"
             />
           </span>
           <div>
@@ -151,7 +155,7 @@ const PoolItem = ({ liquidity }: any) => {
               <EtherIcon
                 width={20}
                 height={20}
-                className="fill-dark2 ml-[-1px]"
+                className="fill-shader_600 ml-[-1px]"
               />
             </span>
           </div>

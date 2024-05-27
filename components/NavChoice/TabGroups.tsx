@@ -31,9 +31,11 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
       setWidthBtn(buttonRefs.current[0].offsetWidth);
     }
   }, []);
+  console.log(activeChoice);
+
   return (
     <div
-      className={`flex relative items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max ${
+      className={`flex relative items-center p-1 text-sm text-center text-white rounded-lg bg-shader_600 dark:bg-shader_700 w-full ${
         isOverview ? "lg:hidden" : ""
       }`}
     >
@@ -43,7 +45,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
             ? "bg-green"
             : activeChoice === "Sell"
             ? "bg-red"
-            : "bg-secondary5"
+            : "bg-primary_400"
         }`}
         style={{
           transform: `translateX(${translateX}px)`,
@@ -55,8 +57,9 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
           key={choice}
           ref={(el) => (buttonRefs.current[index] = el)}
           type="button"
-          className={`py-2 px-3 lg:px-6 rounded-lg text-sm z-10 ""
-            }`}
+          className={`py-2 w-1/2 rounded-lg z-10 font-bold ${
+            activeChoice === choice ? "text-white" : "text-shader_300"
+          }`}
           onClick={() => handleButtonClick(choice, index)}
         >
           {choice}

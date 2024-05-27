@@ -31,7 +31,7 @@ const EditCollection = () => {
       {data ? (
         <EditFormCollection data={data} refetch={refetch} />
       ) : (
-        <BiLoaderAlt className="text-2xl animate-spin text-secondary5" />
+        <BiLoaderAlt className="text-2xl animate-spin text-primary_400" />
       )}
     </div>
   );

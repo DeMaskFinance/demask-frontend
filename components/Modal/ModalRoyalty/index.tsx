@@ -15,7 +15,7 @@ import showToast, { ToastType } from "@/components/Toast/ToastCustom";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3 dark:bg-darkBG2 dark:border-darkBG2",
+    "block w-full py-2 pl-2 border rounded-lg outline-none border-shader_500 placeholder:text-sm hover:border-primary_400 focus:border-primary_400 dark:bg-shader_700 dark:border-shader_700",
   btnActive: "rounded-full bg-base2",
 };
 interface ModalRoyaltyProps {
@@ -114,7 +114,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
                   <label htmlFor="name" className={styles.title}>
                     Creator earning
                   </label>
-                  <p className="mb-4 text-dark2">
+                  <p className="mb-4 text-shader_600">
                     Setting your earning Creator address.
                   </p>
                   <div className="flex gap-x-4">

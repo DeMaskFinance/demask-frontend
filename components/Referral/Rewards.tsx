@@ -78,7 +78,7 @@ const Rewards = () => {
                               )
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-secondary5">
+                          <td className="px-6 py-4 whitespace-nowrap text-primary_400">
                             <a
                               href={`${demask.urltxHash}tx/${item.transactionHash}`}
                               target="_blank"

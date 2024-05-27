@@ -1,173 +1,103 @@
 import { version } from "@/libs/constants";
 import Link from "next/link";
-import { useState } from "react";
-import { Button } from "../Buttons";
 import {
   DiscordIcon,
-  EmailIcon,
   GithubIcon,
+  GmailIcon,
   TeleIcon,
   TwitterIcon,
 } from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
-import useSvgComponents from "../Picture/Picture";
-import { useTheme } from "next-themes";
 const styles = {
-  icon: "cursor-pointer fill-dark3 hover:fill-dark1 dark:fill-dark1 dark:hover:fill-white",
+  icon: "cursor-pointer",
 };
 export default function Footer() {
-  const svgComponents = useSvgComponents();
-  const { theme, setTheme, systemTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
-  const handleChoiceChange = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-  };
+  const links = [
+    { href: "https://demask.finance/", text: "About" },
+    { href: "https://demask.substack.com/", text: "Blog" },
+    { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Desk" },
+    { href: "https://demask.finance/", text: "Developer" },
+    { href: "https://docs.demask.finance/", text: "Docs" },
+    { href: "https://demask.finance/media-kit", text: "Branding & Media Kit" },
+  ];
+  const policy = [
+    { href: "https://demask.finance/", text: "Terms" },
+    { href: "https://demask.finance/", text: "Privacy Policy" },
+  ];
   return (
-    <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex 2xl:px-[140px] md:px-14 bg-white border-dark5 border-t">
-      <div>
-        <div className="flex gap-x-[120px]">
-          <ul className="flex font-semibold gap-x-8 text-dark3">
-            <li>
-              <Link
-                href="https://demask.finance/"
-                target="_blank"
-                className="text-dark1 dark:text-dark5"
-              >
-                About
-              </Link>
-            </li>
-            <li className="transition-all duration-100 hover:text-dark2 whitespace-nowrap">
-              <a
-                href="https://demask.finance/media-kit"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Branding & Media Kit
-              </a>
-            </li>
-            <li className="transition-all duration-100 hover:text-dark2">
-              <a
-                href="https://demask.substack.com/"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Blog
-              </a>
-            </li>
-            <li className="transition-all duration-100 hover:text-dark2 whitespace-nowrap">
-              <a
-                href="https://docsend.com/view/nuc8dre4e9vp55s7"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Pitch Desk
-              </a>
-            </li>
-          </ul>
-          <ul className="flex font-semibold gap-x-8 text-dark3">
-            <li>
-              <Link
-                href="https://demask.finance/"
-                target="_blank"
-                className="text-dark1 dark:text-dark5"
-              >
-                Developer
-              </Link>
-            </li>
-            <li className="transition-all duration-100 hover:text-dark2">
-              <a
-                href="https://github.com/DeMaskFinance"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Github
-              </a>
-            </li>
-            <li className="transition-all duration-100 hover:text-dark2">
-              <a
-                href=" https://docs.demask.finance/"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Documentation
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div className="flex items-center mt-8 gap-x-8">
-          <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 dark:bg-dark1 w-max">
-            <div
-              className={`p-2 cursor-pointer rounded-lg text-sm flex gap-2 items-center ${
-                currentTheme === "light" ? "bg-secondary5" : ""
-              }`}
-              onClick={() => handleChoiceChange()}
+    <footer className="hidden overflow-hidden border-t lg:block border-shader_600 ">
+      <div className="flex items-center justify-between pt-8 pb-10 bg-shader_900 px-4 2xl:px-[150px] md:px-14">
+        <div>
+          <Link href="https://demask.finance/" target="_blank">
+            <LogoDeMask width={200} height={56} className="fill-white" />
+          </Link>
+          <p className="text-xs font-semibold text-primary_400 mb-[20px]">
+            {version}
+          </p>
+          <div className="flex items-center mt-2 gap-x-4">
+            <a href="mailto:contact@demask.finance">
+              <GmailIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://twitter.com/DemaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <svgComponents.buttonLight />
-            </div>
+              <TwitterIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://t.me/DemaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <TeleIcon width={32} height={32} className={styles.icon} />
+            </a>
 
-            <div
-              className={`p-2 cursor-pointer rounded-lg text-sm flex items-center gap-2 ${
-                currentTheme === "dark" ? "bg-dark0" : ""
-              }`}
-              onClick={() => handleChoiceChange()}
+            <a
+              href="https://discord.com/invite/demaskfinance"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <svgComponents.buttonDark />
-            </div>
+              <DiscordIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://github.com/DeMaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubIcon width={32} height={32} className={styles.icon} />
+            </a>
           </div>
-          <a href="mailto:contact@demask.finance">
-            <Button
-              active
-              className="flex items-center h-full px-6 py-3 font-semibold transition-all duration-200 ease-in-out border gap-x-2 group"
-            >
-              <span>Contact Us</span>
-              <span>
-                <EmailIcon width={24} height={24} className="" />
-              </span>
-            </Button>
-          </a>
+        </div>
+        <div>
+          <ul className="flex font-semibold text-white gap-x-8">
+            {links.map((link, index) => (
+              <li
+                key={index}
+                className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+              >
+                <a href={link.href} rel="noreferrer noopener" target="_blank">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-      <div>
-        <Link href="https://demask.finance/" target="_blank">
-          <LogoDeMask
-            width={245}
-            height={56}
-            className="fill-purple dark:fill-white"
-          />
-        </Link>
-        <p className="text-xs font-semibold text-dark3">{version}</p>
-        <div className="flex items-center mt-2 gap-x-4">
-          <a
-            href="https://twitter.com/DemaskFinance"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <TwitterIcon width={20} height={20} className={styles.icon} />
-          </a>
-          <a
-            href="https://t.me/DemaskFinance"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <TeleIcon width={24} height={24} className={styles.icon} />
-          </a>
-
-          <a
-            href="https://discord.com/invite/demaskfinance"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <DiscordIcon width={24} height={24} className={styles.icon} />
-          </a>
-          <a
-            href="https://github.com/DeMaskFinance"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <GithubIcon width={24} height={24} className={styles.icon} />
-          </a>
-        </div>
+      <div className="flex justify-between text-sm px-4 2xl:px-[150px] md:px-14 bg-shader_700 text-shader_200 py-4 font-semibold">
+        <p>Copyright © 2024 Demask. All rights reserved.</p>
+        <ul className="flex gap-x-4">
+          {policy.map((link, index) => (
+            <li
+              key={index}
+              className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+            >
+              <a href={link.href} rel="noreferrer noopener" target="_blank">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

@@ -3,7 +3,7 @@ import Link, { LinkProps } from "next/link";
 import React, { ReactNode } from "react";
 
 const styles = {
-  active: "text-secondary5",
+  active: "text-primary_300",
 };
 interface Props extends LinkProps {
   children: any;

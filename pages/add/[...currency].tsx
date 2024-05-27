@@ -1,7 +1,7 @@
 import Button from "@/components/Buttons/Button";
 import MediaNFT from "@/components/Common/MediaNFT";
 import {
-  BackIcon,
+  LeftIcon,
   NFTIcon,
   RefetchIcon,
   SettingIcon,
@@ -247,7 +247,7 @@ export default function AddLiquidity() {
         <RefetchIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:fill-dark2"
+          className="cursor-pointer hover:fill-shader_600"
         />
       ),
       content: "Refresh",
@@ -258,7 +258,7 @@ export default function AddLiquidity() {
         <SettingIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-dark2"
+          className="cursor-pointer hover:rotate-90 hover:fill-shader_600"
         />
       ),
       content: "Setting",
@@ -271,10 +271,10 @@ export default function AddLiquidity() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <Link href={`/pools?chain=${chainId}`}>
-            <BackIcon
+            <LeftIcon
               width={20}
               height={20}
-              className="cursor-pointer hover:fill-secondary5"
+              className="cursor-pointer hover:fill-primary_400"
             />
           </Link>
           <h2 className="text-2xl text-black24 ml-[18px] title">
@@ -305,19 +305,19 @@ export default function AddLiquidity() {
                 <span className="text-red">*</span>
               </p>
               <div
-                className="w-full p-2 mb-4 border rounded-lg border-secondary5 "
+                className="w-full p-2 mb-4 border rounded-lg border-primary_400 "
                 onClick={handleSearchNFT}
               >
-                <div className="flex items-center justify-between cursor-pointer text-dark3 group">
-                  <div className="flex gap-x-2 text-secondary5">
+                <div className="flex items-center justify-between cursor-pointer text-shader_500 group">
+                  <div className="flex gap-x-2 text-primary_400">
                     <NFTIcon
                       width={24}
                       height={24}
-                      className="fill-secondary5"
+                      className="fill-primary_400"
                     />
                     <p>{data?.metadata?.name}</p>
                   </div>
-                  <FaAngleDown className=" text-dark2" />
+                  <FaAngleDown className=" text-shader_600" />
                 </div>
               </div>
             </div>
@@ -327,18 +327,18 @@ export default function AddLiquidity() {
                 <span className="text-red">*</span>
               </p>
               <div
-                className="w-full p-2 mb-4 border rounded-lg border-secondary5"
+                className="w-full p-2 mb-4 border rounded-lg border-primary_400"
                 onClick={handleSearchToken}
               >
-                <div className="flex items-center justify-between cursor-pointer text-dark3">
-                  <div className="flex gap-x-2 text-secondary5">
+                <div className="flex items-center justify-between cursor-pointer text-shader_500">
+                  <div className="flex gap-x-2 text-primary_400">
                     {tokenSymbolIcon ? (
                       <div>
                         {/* @ts-ignore */}
                         <tokenSymbolIcon.logo
                           width={24}
                           height={24}
-                          className="fill-secondary5"
+                          className="fill-primary_400"
                         />
                       </div>
                     ) : (
@@ -346,13 +346,13 @@ export default function AddLiquidity() {
                         <TokenIconNotDefine
                           width={24}
                           height={24}
-                          className="fill-secondary5"
+                          className="fill-primary_400"
                         />
                       </div>
                     )}
                     {data?.tokenSymbol}
                   </div>
-                  <FaAngleDown className="transition-all duration-150 text-dark2 group-hover:rotate-180" />
+                  <FaAngleDown className="transition-all duration-150 text-shader_600 group-hover:rotate-180" />
                 </div>
               </div>
             </div>
@@ -362,17 +362,17 @@ export default function AddLiquidity() {
                 <span className="text-red">*</span>
               </p>
               <div>
-                <div className="flex justify-between mb-1 text-dark1 dark:text-white">
+                <div className="flex justify-between mb-1 text-shader_700 dark:text-white">
                   <p>NFT</p>
                   <p>Balance: {account ? formatNumber(balanceNFT) : 0}</p>
                 </div>
                 <div
-                  className={`relative p-2 border rounded-lg border-dark3 dark:bg-darkBG2 dark:border-darkBG2 ${
+                  className={`relative p-2 border rounded-lg border-shader_500 dark:bg-shader_700 dark:border-shader_700 ${
                     !inputNFT && isInputNFT && "border-red"
                   }`}
                 >
                   <NumericFormat
-                    className="font-semibold border-none outline-none text-dark3 placeholder:font-semibold"
+                    className="font-semibold border-none outline-none text-shader_500 placeholder:font-semibold"
                     placeholder="Input amount NFT"
                     thousandSeparator=","
                     decimalScale={0}
@@ -380,9 +380,9 @@ export default function AddLiquidity() {
                     onChange={handleGetNFT}
                   />
                   <div className="flex justify-end mt-8">
-                    <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit area_darkBG0">
+                    <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit area_shader_900">
                       <div
-                        className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-secondary5"
+                        className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-primary_400"
                         style={{ width: `${widthBtn}px` }}
                       ></div>
                       {activeNFTPercent.map((item, index) => (
@@ -407,7 +407,7 @@ export default function AddLiquidity() {
                               );
                             setWidthBtn(totalWidth);
                           }}
-                          className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${
+                          className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-shader_500 font-semibold text-shader_500 ${
                             item.text === activeChoiceNFT && " text-white"
                           }`}
                         >
@@ -433,7 +433,7 @@ export default function AddLiquidity() {
                 )}
               </div>
               <div className="mb-4">
-                <div className="flex justify-between mt-4 mb-1 text-dark1 dark:text-white">
+                <div className="flex justify-between mt-4 mb-1 text-shader_700 dark:text-white">
                   <p>Token</p>
                   <p>Balance: {account ? formatNumber(balanceToken) : 0}</p>
                 </div>
@@ -458,7 +458,7 @@ export default function AddLiquidity() {
                       </div>
                     ) : (
                       <div className="input_item">
-                        <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                        <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
                       </div>
                     )}
                   </div>
@@ -517,7 +517,7 @@ export default function AddLiquidity() {
             <div className="flex flex-col items-center w-full h-full ">
               <MediaNFT data={data} isControls={true} />
               <p
-                className="mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3"
+                className="mt-2 text-xs text-primary_400 hover:cursor-pointer hover:text-primary_400"
                 onClick={handleShowDetail}
               >
                 Show detail

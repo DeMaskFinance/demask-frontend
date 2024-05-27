@@ -87,8 +87,8 @@ const Pagination = ({
             disabled={isPreviousData || page === 1}
             className={`${
               isPreviousData || page === 1
-                ? "text-dark3 hover:border-red"
-                : "text-dark2"
+                ? "text-shader_500 hover:border-red"
+                : "text-shader_600"
             }`}
           >
             <MdNavigateBefore className="text-xl border border-transparent" />
@@ -99,8 +99,8 @@ const Pagination = ({
                 <span>...</span>
               ) : (
                 <button
-                  className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${
-                    pageNum === page ? "bg-secondary2 text-white" : ""
+                  className={`text-sm min-w-[32px] rounded-lg text-shader_600 p-1 ${
+                    pageNum === page ? "bg-primary_500 text-white" : ""
                   }`}
                   onClick={() => goToPage(pageNum)}
                 >
@@ -114,14 +114,14 @@ const Pagination = ({
             disabled={isPreviousData || page === data?.totalPages}
             className={`${
               isPreviousData || page === data?.totalPages
-                ? "text-dark3 hover:border"
+                ? "text-shader_500 hover:border"
                 : ""
             }`}
           >
-            <MdOutlineNavigateNext className="text-xl text-dark2" />
+            <MdOutlineNavigateNext className="text-xl text-shader_600" />
           </button>
         </div>
-        <div className="flex items-center justify-center gap-4 ml-4 text-dark2">
+        <div className="flex items-center justify-center gap-4 ml-4 text-shader_600">
           <span>Go to page </span>
           <div>
             <input
@@ -134,7 +134,7 @@ const Pagination = ({
             />{" "}
             <button
               onClick={() => goToPage(parseInt(pageNumberInput!))}
-              className="px-2 py-1 text-white border rounded bg-secondary2 hover:translate-x-1 transtion-all"
+              className="px-2 py-1 text-white border rounded bg-primary_500 hover:translate-x-1 transtion-all"
             >
               Go
             </button>
@@ -183,16 +183,16 @@ const TablePagination: React.FC<PaginationProps> = ({
             className={`${
               isPreviousData || page === 1 || isFetching
                 ? "text-white bg-slate-300"
-                : "hover:text-white hover:bg-secondary2 transition-all"
+                : "hover:text-white hover:bg-primary_500 transition-all"
             } w-5 flex items-center text-center justify-center rounded-full transition-all`}
           >
             <MdNavigateBefore />
           </button>
           <p>
             Page
-            <span className="px-2 font-medium text-secondary2">{page}</span> of
+            <span className="px-2 font-medium text-primary_500">{page}</span> of
             <span
-              className="px-2 font-medium cursor-pointer text-secondary2"
+              className="px-2 font-medium cursor-pointer text-primary_500"
               onClick={() => page !== totalPages && setPage(totalPages)}
             >
               {totalPages}
@@ -204,7 +204,7 @@ const TablePagination: React.FC<PaginationProps> = ({
             className={`${
               isPreviousData || page === totalPages || isFetching
                 ? "text-white bg-slate-300"
-                : "hover:text-white hover:bg-secondary2 transition-all"
+                : "hover:text-white hover:bg-primary_500 transition-all"
             } w-5 flex items-center text-center justify-center rounded-full transition-all`}
           >
             <MdOutlineNavigateNext />

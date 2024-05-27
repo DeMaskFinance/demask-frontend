@@ -12,9 +12,8 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface MenuNetworkProps {}
 const style = {
   itemSub:
-    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-semibold",
-  btnWallet:
-    "flex items-center 2xl:w-[184px] hover:border-dark2 dark:hover:bg-dark2 py-2 pl-2 lg:px-4 pr-2 dark:bg-dark1 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 dark:text-white gap-x-2 ",
+    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-semibold",
+  btnWallet: " ",
 };
 interface networkProps {
   name: string;
@@ -70,36 +69,29 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       interactive
       render={(attrs) => (
         <div
-          className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium dark:bg-darkBG0 dark:border-none"
+          className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-semibold dark:bg-shader_500"
           tabIndex={-1}
           {...attrs}
         >
-          <p className="p-2 text-base border-b-[1px] border-dark3">
+          <p className="p-2 text-base border-b-[1px] border-shader_500">
             Select a network
           </p>
-          <ul className="flex flex-col mt-2 font-normal gap-y-3">
+          <ul className="flex flex-col mt-2 gap-y-3">
             {network.map((item, index) => (
               <li
                 key={index}
                 className={`${
                   style.itemSub
-                } gap-x-2 group justify-between area_input_hover items-center active:bg-dark4 ${
+                } gap-x-2 group justify-between  items-center active:bg-shader_500 ${
                   item.disable ? "hover:cursor-no-drop" : ""
                 } `}
                 onClick={() => !item.disable && handleChangeNetwork(item.chain)}
               >
-                <div className="flex items-center gap-x-2">
-                  <item.logo
-                    width={24}
-                    height={24}
-                    className={`fill-dark2  ${
-                      filterNetwork?.chain === item.chain && "fill-secondary5"
-                    }`}
-                  />
+                <div className="flex items-center font-semibold gap-x-2">
+                  <item.logo width={24} height={24} />
                   <p
                     className={`${
-                      filterNetwork?.chain === item.chain &&
-                      "text-secondary5 font-medium"
+                      filterNetwork?.chain === item.chain && "text-primary_400"
                     }`}
                   >
                     {item.name}
@@ -112,12 +104,14 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
         </div>
       )}
     >
-      <button className={`${style.btnWallet} flex`}>
-        <LogoComponent width={24} height={24} className="dark:fill-white" />
+      <button
+        className={`flex items-center 2xl:w-[184px] h-10 py-2 pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
+      >
+        <LogoComponent width={20} height={20} className="" />
         <p className="hidden 2xl:block whitespace-nowrap">
           {filterNetwork?.name}
         </p>
-        <span className="2xl:hidden">
+        <span className="text-shader_100 2xl:hidden">
           <BsCaretDownFill />
         </span>
       </button>

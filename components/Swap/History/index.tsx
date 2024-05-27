@@ -48,7 +48,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
   };
   return (
     <div className="w-full mt-[15px]  mb-14 lg:mb-0">
-      <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible area_input">
+      <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-shader_500 lg:overflow-visible bg-shader_700 border-shader_700">
         <TabGroups
           choices={options}
           activeChoice={activeChoice}
@@ -93,23 +93,23 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center gap-10 pt-4 pb-2 text-dark2">
+      <div className="flex justify-center gap-10 pt-4 pb-2 text-shader_600">
         <button
           onClick={prevPage}
           disabled={isPreviousData || page === 1 || isFetching}
           className={`${
             isPreviousData || page === 1 || isFetching
               ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-secondary2 transition-all"
+              : "hover:text-white hover:bg-primary_500 transition-all"
           } w-6 flex items-center text-center justify-center rounded-full transition-all`}
         >
           <MdNavigateBefore />
         </button>
         <p>
           Page
-          <span className="px-2 font-medium text-secondary2">{page}</span> of
+          <span className="px-2 font-medium text-primary_500">{page}</span> of
           <span
-            className="px-2 font-medium cursor-pointer text-secondary2"
+            className="px-2 font-medium cursor-pointer text-primary_500"
             onClick={() =>
               page !== dataHistory?.totalPages &&
               setPage(dataHistory?.totalPages)
@@ -126,7 +126,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
           className={`${
             isPreviousData || page === dataHistory?.totalPages || isFetching
               ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-secondary2 transition-all"
+              : "hover:text-white hover:bg-primary_500 transition-all"
           } w-6 flex items-center text-center justify-center rounded-full transition-all`}
         >
           <MdOutlineNavigateNext />

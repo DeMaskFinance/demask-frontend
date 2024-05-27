@@ -23,20 +23,24 @@ const SearchInventory = () => {
   // }, [showSearch]);
   return (
     <div className="relative flex-grow">
-      <div className="flex h-full rounded-lg bg-dark5" ref={inputRef}>
+      <div className="flex h-full rounded-lg bg-shader_600" ref={inputRef}>
         <div className="flex items-center justify-center w-8 h-full">
-          <SearchIcon width={16} height={16} />
+          <SearchIcon width={20} height={20} />
         </div>
         <input
           type="text"
           placeholder="Search by name"
-          onChange={(e)=>{setSearchCollection(e.target.value)}}
-          onClick={()=>{setShowSearch(true)}}
+          onChange={(e) => {
+            setSearchCollection(e.target.value);
+          }}
+          onClick={() => {
+            setShowSearch(true);
+          }}
           className="relative w-full transition-all bg-transparent outline-none placeholder:text-xs"
         />
       </div>
       {/* {showSearch && (
-        <div className="absolute left-0 w-full bg-dark5 top-[120%] p-4">
+        <div className="absolute left-0 w-full bg-shader_600 top-[120%] p-4">
           <p className="font-semibold">Collections</p>
         </div>
       )} */}

@@ -254,14 +254,16 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <RefetchIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:fill-dark2"
+          className="cursor-pointer hover:fill-shader_600"
         />
       ),
       content: "Refresh",
       onClick: () => refetch(),
     },
     {
-      icon: <PoolIcon width={24} height={24} className="hover:fill-dark2" />,
+      icon: (
+        <PoolIcon width={24} height={24} className="hover:fill-shader_600" />
+      ),
       content: "Pool",
       link: `/add/${nftAddress}/${tokenAddress}/${idNFT}?chain=${chainId}`,
     },
@@ -270,7 +272,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <SettingIcon
           width={24}
           height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-dark2"
+          className="cursor-pointer hover:rotate-90 hover:fill-shader_600"
         />
       ),
       content: "Setting",
@@ -280,8 +282,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
 
   return (
     <div className="lg:w-[32%] md:w-2/4 w-full h-fit flex gap-y-1 lg:gap-y-12">
-      <div className="w-full p-6 border rounded-lg shadow-home area_darkBG1">
-        <div className="flex justify-between gap-4 mb-2 text-dark1">
+      <div className="w-full p-6 border rounded-lg shadow-home area_shader_800">
+        <div className="flex justify-between gap-4 mb-2 text-shader_700">
           <div className="flex flex-col items-center ">
             <TabGroups
               choices={["Buy", "Sell"]}
@@ -313,7 +315,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             <MediaNFT data={data} isControls={true} />
           </div>
           <p
-            className="mx-auto mt-1 text-xs cursor-pointer text-dark3 hover:text-secondary3"
+            className="mx-auto mt-1 text-xs cursor-pointer text-shader_500 hover:text-primary_400"
             onClick={handleShowDetail}
           >
             Show detail
@@ -324,32 +326,36 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             <div className="flex flex-wrap items-center justify-between mb-4">
               <div>
                 {account && activeChoice === "Buy" && (
-                  <div className="flex items-center text-sm text-dark1">
+                  <div className="flex items-center text-sm text-shader_700">
                     <p className="mr-1">Your balance:</p>
                     {formatNumber(balanceToken)}
-                    <EtherIcon width={16} height={16} className="fill-dark2" />
+                    <EtherIcon
+                      width={16}
+                      height={16}
+                      className="fill-shader_600"
+                    />
                   </div>
                 )}
                 {account && activeChoice === "Sell" && (
-                  <div className="flex items-center text-sm text-dark1">
+                  <div className="flex items-center text-sm text-shader_700">
                     <p className="mr-1">Your balance:</p>
                     <p>{formatNumber(balanceNFT)}</p>
                     <NFTIcon
                       width={24}
                       height={24}
-                      className="fill-dark1 ml-[2px]"
+                      className="fill-shader_700 ml-[2px]"
                     />
                   </div>
                 )}
               </div>
-              <div className="flex items-center text-sm text-dark1">
+              <div className="flex items-center text-sm text-shader_700">
                 <div className="flex items-center mr-2">
                   <span className="mr-1">LP:</span>
                   <FormatNumber number={data.reserveNFT} />
                   <NFTIcon
                     width={24}
                     height={24}
-                    className="fill-dark1 ml-[2px]"
+                    className="fill-shader_700 ml-[2px]"
                   />
                 </div>
                 <FormatNumber number={data.reserveToken} />
@@ -357,13 +363,13 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   <EtherIcon
                     width={20}
                     height={20}
-                    className="fill-dark1 ml-[-1px]"
+                    className="fill-shader_700 ml-[-1px]"
                   />
                 </span>
               </div>
             </div>
             <div
-              className={`relative p-2  rounded-lg bg-dark5 border border-dark5 hover:border-dark3 dark:bg-darkBG2 dark:border-darkBG2 ${
+              className={`relative p-2  rounded-lg bg-shader_600 border border-shader_600 hover:border-shader_500 dark:bg-shader_700 dark:border-shader_700 ${
                 showRequiredMessage && "border-red"
               }`}
             >
@@ -377,7 +383,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   min="1"
                   thousandSeparator=","
                   decimalScale={0}
-                  className="w-1/2 text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
+                  className="w-1/2 text-sm font-semibold border-none outline-none text-shader_600 bg-shader_600 placeholder:text-shader_600 placeholder:font-medium"
                   value={inputNFT}
                   onChange={(e) => {
                     setInputNFT(e.target.value.replace(/,/g, ""));
@@ -388,7 +394,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   }}
                 />
                 <div
-                  className="absolute min-h-[80%] px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-secondary5 active:bg-secondary3 text-secondary5 right-1 top-1 border-secondary5 "
+                  className="absolute min-h-[80%] px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-primary_400 active:bg-primary_400 text-primary_400 right-1 top-1 border-primary_400 "
                   onClick={handleSearchNFT}
                 >
                   <div className="w-16 text-center">
@@ -401,9 +407,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </div>
               </div>
               <div className="flex justify-end mt-8">
-                <div className="relative flex items-center h-8 rounded-lg bg-dark4 w-fit area_darkBG0">
+                <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit area_shader_900">
                   <div
-                    className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-secondary5"
+                    className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-primary_400"
                     style={{ width: `${widthBtn}px` }}
                   ></div>
                   {activeNFTPercent.map((item, index) => (
@@ -435,7 +441,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                           );
                         setWidthBtn(totalWidth);
                       }}
-                      className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${
+                      className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-shader_500 font-semibold text-shader_500 ${
                         item.text === activeChoiceNFT && " text-white"
                       }`}
                     >
@@ -481,9 +487,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
 
           <div className="mt-4">
             <div className="flex justify-between mb-4">
-              <div className="text-sm text-dark1">Total Proceeds:</div>
+              <div className="text-sm text-shader_700">Total Proceeds:</div>
               <div className="">
-                <label htmlFor="data.royaltyFee" className=" text-dark1">
+                <label htmlFor="data.royaltyFee" className=" text-shader_700">
                   <div className="flex text-sm">
                     <p className="mr-1">Royalties Fee: </p>
                     {activeChoice === "Buy" ? (
@@ -498,11 +504,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             {inputNFTValue ? (
               <div className="relative">
-                <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
+                <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-shader_700 bg-shader_600 area_shader_900">
                   {isLoadingBuy ? (
-                    <BiLoaderAlt className="animate-spin text-secondary5" />
+                    <BiLoaderAlt className="animate-spin text-primary_400" />
                   ) : isLoadingSell ? (
-                    <BiLoaderAlt className="animate-spin text-secondary5" />
+                    <BiLoaderAlt className="animate-spin text-primary_400" />
                   ) : (
                     <FormatNumber
                       number={divideByDecimal(
@@ -515,11 +521,15 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   )}
                 </div>
                 <div className="absolute px-2 py-1 right-1 top-2">
-                  <EtherIcon width={16} height={16} className="fill-dark2" />
+                  <EtherIcon
+                    width={16}
+                    height={16}
+                    className="fill-shader_600"
+                  />
                 </div>
               </div>
             ) : (
-              <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-dark1 bg-dark5 area_darkBG0">
+              <div className="flex items-center w-full h-10 py-2 pl-2 mb-2 rounded-lg text-shader_700 bg-shader_600 area_shader_900">
                 0
               </div>
             )}

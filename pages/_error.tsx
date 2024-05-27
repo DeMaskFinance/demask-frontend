@@ -14,13 +14,15 @@ function Error({ statusCode, statusMessage }: ErrorProps) {
     //       : 'An error occurred on client'}
     //   </p>
     <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <h2 className="text-2xl font-semibold text-dark1">{statusMessage}</h2>
+      <h2 className="text-2xl font-semibold text-shader_700">
+        {statusMessage}
+      </h2>
       <div className="">
         <Logo404Page width={492} height={376} className="w-full h-full" />
       </div>
-      <h3 className="text-xl font-semibold text-dark2">{statusCode}</h3>
+      <h3 className="text-xl font-semibold text-shader_600">{statusCode}</h3>
       <p
-        className="mt-2 text-sm font-semibold cursor-pointer text-secondary2"
+        className="mt-2 text-sm font-semibold cursor-pointer text-primary_500"
         onClick={() => router.refresh()}
       >
         Try again

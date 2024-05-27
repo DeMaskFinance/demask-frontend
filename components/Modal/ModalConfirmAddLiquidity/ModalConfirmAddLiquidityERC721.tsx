@@ -197,7 +197,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               <ModalDocument data="DM" />
             </div>
           </div>
-          <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
+          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
             +
           </div>
           <div className="content_modal">
@@ -215,12 +215,12 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             </p>
           )}
           {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
               <p className="text-xs">Price Updated</p>
               <Button
                 disabled={isLoadingInforDML}
                 primary
-                className="px-6 py-2 bg-secondary5"
+                className="px-6 py-2 bg-primary_400"
                 onClick={() => {
                   setUpdatePrice(!updatePrice);
                   setPreFetch(false);
@@ -230,11 +230,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               </Button>
             </div>
           )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
+          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
             <p>Slippage tolerance</p>
             <p>{slippage}%</p>
           </div>
-          <p className="mt-2 mb-6 text-sm text-dark2">
+          <p className="mt-2 mb-6 text-sm text-shader_600">
             Output is estimated. You will receive at least {inputNFT.length} NFT
             or the transaction will revert
           </p>

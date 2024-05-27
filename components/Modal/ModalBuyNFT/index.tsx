@@ -223,7 +223,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             <DownIcon
               width={24}
               height={24}
-              className="mx-auto cursor-pointer hover:fill-secondary5"
+              className="mx-auto cursor-pointer hover:fill-primary_400"
             />
           </div>
           <div className="content_modal">
@@ -233,12 +233,12 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             </div>
           </div>
           {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
               <p className="text-xs">Price Updated</p>
               <Button
                 disabled={isLoadingInforDML}
                 primary
-                className="px-6 py-2 bg-secondary5"
+                className="px-6 py-2 bg-primary_400"
                 onClick={() => {
                   setUpdatePrice(!updatePrice);
                   setPreFetch(false);
@@ -248,15 +248,15 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               </Button>
             </div>
           )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
+          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
             <p>Slippage tolerance</p>
             <p>{slippage}%</p>
           </div>
-          <p className="mt-2 mb-6 text-sm text-dark2">
+          <p className="mt-2 mb-6 text-sm text-shader_600">
             Output is estimated. You will receive at least {inputNFT} NFT or the
             transaction will revert
           </p>
-          <div className="flex flex-col p-4 rounded-lg bg-dark4 gap-y-3 area_input text-dark1 dark:text-dark3">
+          <div className="flex flex-col p-4 rounded-lg bg-shader_500 gap-y-3 bg-shader_700 border-shader_700 text-shader_700 dark:text-shader_500">
             <div className="flex justify-between text-sm ">
               <p>Price</p>
               <div className="flex items-center">
@@ -272,7 +272,11 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 />
 
                 <p>
-                  <EtherIcon width={14} height={14} className="fill-dark2" />
+                  <EtherIcon
+                    width={14}
+                    height={14}
+                    className="fill-shader_600"
+                  />
                 </p>
               </div>
             </div>
@@ -289,13 +293,17 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                     ).toString()}
                   />
                   <p>
-                    <EtherIcon width={14} height={14} className="fill-dark2" />
+                    <EtherIcon
+                      width={14}
+                      height={14}
+                      className="fill-shader_600"
+                    />
                   </p>
                 </div>
               </div>
             </div>
             <div
-              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-dark3 "
+              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-shader_500 "
               onClick={() => setSeeDetail(!seeDetail)}
             >
               <div className="flex items-center gap-x-1">
@@ -316,7 +324,11 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                   ).toString()}
                 /> */}
                 <p>
-                  <EtherIcon width={14} height={14} className="fill-dark2" />
+                  <EtherIcon
+                    width={14}
+                    height={14}
+                    className="fill-shader_600"
+                  />
                 </p>
               </div>
             </div>
@@ -325,7 +337,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 seeDetail ? "h-[56px] opacity-100" : "h-0 opacity-0"
               } transition-all duration-100 ease-linear`}
             >
-              <div className="flex justify-between mb-4 text-sm text-dark1">
+              <div className="flex justify-between mb-4 text-sm text-shader_700">
                 <p>Trading fee</p>
                 <div className="flex items-center">
                   {/* <FormatNumber
@@ -335,16 +347,24 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                     ).toString()}
                   /> */}
                   <p>
-                    <EtherIcon width={14} height={14} className="fill-dark2" />
+                    <EtherIcon
+                      width={14}
+                      height={14}
+                      className="fill-shader_600"
+                    />
                   </p>
                 </div>
               </div>
-              <div className="flex justify-between text-sm text-dark1">
+              <div className="flex justify-between text-sm text-shader_700">
                 <p>Royalties Fee</p>
                 <div className="flex items-center">
                   {/* <FormatNumber number={(royaltiesFeeBuy / 1e18).toString()} /> */}
                   <p>
-                    <EtherIcon width={14} height={14} className="fill-dark2" />
+                    <EtherIcon
+                      width={14}
+                      height={14}
+                      className="fill-shader_600"
+                    />
                   </p>
                 </div>
               </div>

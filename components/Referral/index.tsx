@@ -13,7 +13,7 @@ import ReferralUser from "./ReferralUser";
 import AccountContext from "@/context/AccountContext";
 const style = {
   btnWallet:
-    "flex items-center h-10 hover:border-dark2 dark:hover:bg-dark2 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
+    "flex items-center h-10 hover:border-shader_600 dark:hover:bg-shader_600 pl-2 lg:px-4 pr-2 justify-center dark:bg-shader_700 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
 };
 const Referral = () => {
   const [tab, setTab] = useQueryParam(
@@ -62,22 +62,22 @@ const Referral = () => {
               className="object-cover my-6 h-[100px] w-full"
             />
             <p>
-              Receive DM Points.<span className="text-secondary5">+10%</span>{" "}
+              Receive DM Points.<span className="text-primary_400">+10%</span>{" "}
               forever!
             </p>
             <p>
-              Recieve<span className="text-secondary5"> 5% ($Monad)</span>
+              Recieve<span className="text-primary_400"> 5% ($Monad)</span>
                trading fee rebate.
             </p>
             <p>
               Accepting a referral boosts your DM Points by 
-              <span className="text-secondary5">5%</span>.
+              <span className="text-primary_400">5%</span>.
             </p>
             <a
               href="https://docs.demask.finance/programs/refer-friends-to-earn"
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-secondary5 font-semibold cursor-pointer`}
+              className={`text-primary_400 font-semibold cursor-pointer`}
             >
               How is referral working?
             </a>
@@ -85,7 +85,7 @@ const Referral = () => {
           <ReferralUser />
         </div>
         {account && <StaticTable />}
-        <div className="p-6 mt-6 border rounded-lg border-dark4 area_input">
+        <div className="p-6 mt-6 border rounded-lg border-shader_500 bg-shader_700 border-shader_700">
           <div className="flex items-center mb-4">
             {/* PC */}
             <div className="hidden md:block">
@@ -105,7 +105,7 @@ const Referral = () => {
                 onClickOutside={() => setVisible(false)}
                 render={(attrs) => (
                   <div
-                    className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium area_input"
+                    className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 border-shader_700"
                     tabIndex={-1}
                     {...attrs}
                   >
@@ -114,8 +114,8 @@ const Referral = () => {
                         <li
                           key={index}
                           onClick={() => setTab(item.key)}
-                          className={`cursor-pointer area_input_hover p-2 ${
-                            tab === item.key ? "rounded-lg bg-secondary5" : ""
+                          className={`cursor-pointer  p-2 ${
+                            tab === item.key ? "rounded-lg bg-primary_400" : ""
                           } `}
                         >
                           <h2 className="font-semibold">{item.title}</h2>

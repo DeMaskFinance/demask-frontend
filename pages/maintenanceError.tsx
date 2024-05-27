@@ -43,14 +43,14 @@ function MaintenanceError() {
   }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <h2 className="text-2xl font-semibold text-dark1">Maintenance</h2>
+      <h2 className="text-2xl font-semibold text-shader_700">Maintenance</h2>
       <div className="my-8">
         <LogoMaintenance width={350} height={288} className="w-full h-full" />
       </div>
-      <h3 className="text-xl font-semibold text-center text-dark2">
+      <h3 className="text-xl font-semibold text-center text-shader_600">
         {days} days, {hours} hours, {minutes} minutes, {seconds} seconds
       </h3>
-      <p className="mt-2 text-sm font-semibold cursor-pointer text-secondary2">
+      <p className="mt-2 text-sm font-semibold cursor-pointer text-primary_500">
         We are coming back soon!
       </p>
     </div>

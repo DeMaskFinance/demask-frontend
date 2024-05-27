@@ -23,12 +23,12 @@ const Referral = () => {
   }, [isCopy]);
   return (
     <div className="w-full mx-auto">
-      {/* <div className='flex flex-col p-8 mb-6 border rounded-lg border-dark3 text-dark2 gap-y-2 shadow-home'>
-                <p className='text-secondary5'>Invite your friends to DEMASK, if they sign up</p>
+      {/* <div className='flex flex-col p-8 mb-6 border rounded-lg border-shader_500 text-shader_600 gap-y-2 shadow-home'>
+                <p className='text-primary_400'>Invite your friends to DEMASK, if they sign up</p>
                 <h1 className='my-6 font-semibold'>Refer Friends To Earn</h1>
                 <p>Experience a new way of earning rewards by inviting your friends to join DeMask & earn up to 10% commission every time they trade on DeMask.</p>
                 <div className='flex mt-6'>
-                    <div className='w-[75%] mr-4 p-2 border rounded-lg border-dark3 text-secondary5'>https://test.demask.finance...{`${account.slice(-4)}`}&chain={chainId}</div>
+                    <div className='w-[75%] mr-4 p-2 border rounded-lg border-shader_500 text-primary_400'>https://test.demask.finance...{`${account.slice(-4)}`}&chain={chainId}</div>
                     <Tippy theme='light'
                         visible={isCopy}
                         content={<span>Copied</span>}>
@@ -39,7 +39,7 @@ const Referral = () => {
                 </div>
             </div>
             <SkeletonTable length={8}/> */}
-      <p className="text-dark2">Upcoming</p>
+      <p className="text-shader_600">Upcoming</p>
     </div>
   );
 };

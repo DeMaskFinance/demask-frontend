@@ -89,7 +89,7 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
               />
               {isLoading && (
                 <div className="absolute top-[50%] right-2 -translate-y-1/2">
-                  <BiLoaderAlt className="animate-spin text-secondary5" />
+                  <BiLoaderAlt className="animate-spin text-primary_400" />
                 </div>
               )}
             </div>
@@ -104,12 +104,12 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
           </div>
           {isSuccess && (
             <div
-              className="flex items-center pl-2 rounded-lg cursor-pointer hover:bg-dark4"
+              className="flex items-center pl-2 rounded-lg cursor-pointer hover:bg-shader_500"
               onClick={handleChangeRouteToken}
             >
               <div>
                 <h2 className="font-medium">{data.tokenSymbol}</h2>
-                <p className="text-sm text-dark3">{data.tokenName}</p>
+                <p className="text-sm text-shader_500">{data.tokenName}</p>
               </div>
             </div>
           )}
@@ -118,21 +118,21 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
               {tokenDefault?.map((item: any, index: number) => (
                 <div
                   key={index}
-                  className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3"
+                  className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-primary_400 group active:text-primary_400"
                   onClick={() =>
                     handleChangeRouteDefault(item.address, item.symbol)
                   }
                 >
                   <div>
                     <item.logo
-                      className="transition-all duration-200 ease-linear logo group-hover:fill-secondary5"
+                      className="transition-all duration-200 ease-linear logo group-hover:fill-primary_400"
                       width={24}
                       height={24}
                     />
                   </div>
                   <div>
                     <p className="font-medium">{item.symbol}</p>
-                    <p className="text-sm text-dark3 group-hover:text-secondary5">
+                    <p className="text-sm text-shader_500 group-hover:text-primary_400">
                       {item.name}
                     </p>
                   </div>

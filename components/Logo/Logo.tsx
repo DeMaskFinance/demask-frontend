@@ -986,7 +986,7 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
   chainId,
 }) => {
   return (
-    <div className="flex items-center justify-center float-right px-2 py-1 text-sm rounded-lg gap-x-1 bg-dark4 text-dark1 area_darkBG1">
+    <div className="flex items-center justify-center float-right px-2 py-1 text-sm rounded-lg gap-x-1 bg-shader_500 text-shader_700 area_shader_800">
       {chainId === "280" ? (
         <>
           <ZkSyncIcon className={className} width={width} height={height} />
@@ -1016,22 +1016,22 @@ export const LogoIconCard: React.FunctionComponent<LogoProps> = ({
     <div className="my-1">
       {chainId === "280" ? (
         <div className="flex items-center gap-x-1">
-          <ZkSyncIcon width={18} height={12} className="fill-secondary3" />
-          <p className="text-[11px] font-semibold text-secondary3">
+          <ZkSyncIcon width={18} height={12} className="fill-primary_400" />
+          <p className="text-[11px] font-semibold text-primary_400">
             zKsync Era
           </p>
         </div>
       ) : chainId === "5" ? (
         <div className="flex items-center gap-x-1">
-          <GoerliIcon width={18} height={12} className="fill-secondary3" />
-          <p className="text-[12px] font-semibold text-secondary3 whitespace-nowrap">
+          <GoerliIcon width={18} height={12} className="fill-primary_400" />
+          <p className="text-[12px] font-semibold text-primary_400 whitespace-nowrap">
             Goerli Testnet
           </p>
         </div>
       ) : (
         <div className="flex items-center gap-x-1">
-          <BlastIcon width={18} height={12} className="fill-secondary3" />
-          <p className="text-[12px] font-semibold text-secondary3">Blast</p>
+          <BlastIcon width={18} height={12} className="fill-primary_400" />
+          <p className="text-[12px] font-semibold text-primary_400">Blast</p>
         </div>
       )}
     </div>

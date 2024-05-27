@@ -8,9 +8,9 @@ const updateMeta = {
 };
 export default function Swap() {
   return (
-    <BackgroundDefault>
+    <>
       <NextSeo {...updateMeta} />
       <SwapDefault />
-    </BackgroundDefault>
+    </>
   );
 }

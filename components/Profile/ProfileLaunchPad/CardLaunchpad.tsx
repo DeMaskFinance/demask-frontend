@@ -55,7 +55,7 @@ export default function CardLaunchpad() {
               {isSuccess && data?.pages[0]?.data.length > 0 ? (
                 data.pages.map((page, pageIndex) => (
                   <Fragment key={pageIndex}>
-                    <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
+                    <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
                       {page?.data?.map((item: any, itemIndex: number) => (
                         <li
                           title={item?.metadata?.name}

@@ -47,7 +47,11 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
             <p>Total buy</p>
             <div className="flex items-center justify-center py-4 text-xl font-semibold">
               <FormatNumber number={inputNFT.toString()} />
-              <EtherIcon width={16} height={16} className="mb-1 fill-dark1" />
+              <EtherIcon
+                width={16}
+                height={16}
+                className="mb-1 fill-shader_700"
+              />
             </div>
           </div>
 

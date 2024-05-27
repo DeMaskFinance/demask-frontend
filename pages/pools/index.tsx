@@ -89,7 +89,7 @@ export default function Liquidity() {
             + Add Liquidity
           </Button>
         </div>
-        <p className="mt-2 mb-6 text-dark title">
+        <p className="mt-2 mb-6 textshader_900 title">
           List of your liquidity positions
         </p>
         {account && (
@@ -103,7 +103,7 @@ export default function Liquidity() {
         )}
         {account && data?.pages[0]?.combinedRecords.length !== 0 && (
           <div>
-            <div className="rounded-lg bg-dark5 dark:bg-dark0">
+            <div className="rounded-lg bg-shader_600 dark:bg-shader_900">
               <div className="">
                 {isSuccess &&
                   data.pages.map((page: any, index: number) => (
@@ -126,7 +126,7 @@ export default function Liquidity() {
                 {hasNextPage && (
                   <p
                     onClick={() => fetchNextPage()}
-                    className="mt-4 text-sm cursor-pointer text-secondary4"
+                    className="mt-4 text-sm cursor-pointer text-primary_400"
                   >
                     See more
                   </p>
@@ -134,7 +134,7 @@ export default function Liquidity() {
               </div>
               {isFetchingNextPage && (
                 <div>
-                  <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
+                  <BiLoaderAlt className="mb-6 text-3xl animate-spin text-primary_400" />
                 </div>
               )}
             </div>
@@ -149,7 +149,7 @@ export default function Liquidity() {
           )}
         {isLoading && account && (
           <div>
-            <BiLoaderAlt className="mb-6 text-3xl animate-spin text-secondary5" />
+            <BiLoaderAlt className="mb-6 text-3xl animate-spin text-primary_400" />
           </div>
         )}
       </div>

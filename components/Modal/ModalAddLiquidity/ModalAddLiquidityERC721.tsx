@@ -218,7 +218,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             <div className="relative">
               <div>
                 <div>
-                  <div className="flex justify-between mb-4 text-dark2">
+                  <div className="flex justify-between mb-4 text-shader_600">
                     <p className="font-semibold">Token</p>
                     <p>Balance: {formatNumber(balanceToken)}</p>
                   </div>
@@ -240,7 +240,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                           </div>
                         ) : (
                           <div className="input_item">
-                            <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                            <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
                           </div>
                         )}
                       </div>

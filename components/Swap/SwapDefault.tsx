@@ -1,7 +1,9 @@
 import { Button } from "@/components/Buttons";
 import {
-  BackIcon,
+  BgDefaultIcon,
   EtherIcon,
+  EyeIcon,
+  ImgIcon,
   NFTIcon,
   PoolIcon,
   RefetchIcon,
@@ -34,7 +36,7 @@ export default function SwapDefault() {
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [inputNFT, setInputNFT] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
+  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("25%");
   const { balanceToken } = useInformationToken(
     account,
     nativeAddress,
@@ -45,6 +47,9 @@ export default function SwapDefault() {
   );
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
+  };
+  const handleChoicePercent = (choice: string) => {
+    setActiveChoiceNFT(choice);
   };
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
@@ -58,9 +63,9 @@ export default function SwapDefault() {
     {
       icon: (
         <RefetchIcon
-          width={24}
-          height={24}
-          className="cursor-pointer hover:fill-dark2"
+          width={18}
+          height={18}
+          className="cursor-pointer text-yellow"
         />
       ),
       content: "Refresh",
@@ -69,16 +74,22 @@ export default function SwapDefault() {
       },
     },
     {
-      icon: <PoolIcon width={24} height={24} className="hover:fill-dark2" />,
+      icon: (
+        <PoolIcon
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
+        />
+      ),
       content: "Pool",
       link: `/add/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`,
     },
     {
       icon: (
         <SettingIcon
-          width={24}
-          height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-dark2"
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
         />
       ),
       content: "Setting",
@@ -86,32 +97,11 @@ export default function SwapDefault() {
     },
   ];
   return (
-    <div className="px-4 py-8 mx-auto  lg:mb-0 swap lg:px-primary md:px-14">
-      <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0">
-        <div onClick={() => router.back()}>
-          <BackIcon width={20} height={20} />
-        </div>
-        <div className="w-[32px] h-[32px] ">
-          <Image
-            alt="demask"
-            width={32}
-            height={32}
-            src="/logoIcon.svg"
-            className="object-cover rounded-lg"
-          />
-        </div>
-        <p className="title">DEMASK</p>
-      </div>
+    <div className="px-4 pt-24 pb-32 mx-auto lg:mb-0 swap lg:px-primary md:px-14">
       <div className="max-w-[480px] h-fit flex gap-y-1 lg:gap-y-12 mx-auto">
-        <div className="w-full p-6 bg-white border rounded-lg shadow-home dark:bg-darkBG1 dark:border-none">
-          <div className="flex justify-between gap-4 mb-2 text-dark1">
-            <div className="flex flex-col items-center ">
-              <TabGroups
-                choices={["Buy", "Sell"]}
-                activeChoice={activeChoice}
-                onChoiceChange={handleChoiceChange}
-              />
-            </div>
+        <div className="w-full p-6 font-semibold border rounded-lg bg-shader_800 border-shader_600">
+          <div className="flex justify-between gap-4 mb-2">
+            <p className="text-xl text-white">Demask Swaps</p>
             <div className="flex items-center gap-x-2">
               {actions.map((action, index) => (
                 <Tippy
@@ -120,89 +110,55 @@ export default function SwapDefault() {
                   theme="dark"
                   placement="bottom"
                 >
-                  {action.link ? (
-                    <Link href={action.link} className="group">
-                      {action.icon}
-                    </Link>
-                  ) : (
-                    <div onClick={action.onClick}>{action.icon}</div>
-                  )}
+                  <div className="border rounded-full border-shader_400 p-[7px]">
+                    {action.link ? (
+                      <Link href={action.link} className="group">
+                        {action.icon}
+                      </Link>
+                    ) : (
+                      <div onClick={action.onClick} className="">
+                        {action.icon}
+                      </div>
+                    )}
+                  </div>
                 </Tippy>
               ))}
             </div>
           </div>
-          <div className="flex flex-col justify-center my-6">
-            <div className="mx-auto w-36 3xl:w-60 ">
-              <Image
-                alt="demask"
-                width={240}
-                height={240}
-                src="/logoSwap.png"
-                className="object-cover w-full h-full rounded-xl"
-              />
-            </div>
+          <div className="flex flex-col items-center my-4">
+            <TabGroups
+              choices={["Buy", "Sell"]}
+              activeChoice={activeChoice}
+              onChoiceChange={handleChoiceChange}
+            />
           </div>
-          <form className="mt-5">
+          <div className="flex flex-col justify-center my-6 rounded-lg bg-shader_600 h-[300px]">
+            <div className="mx-auto rounded-lg p-[10px] bg-primary_500 bg-opacity-10">
+              <BgDefaultIcon width={87} height={87} />
+            </div>
+            <Button
+              className="flex mx-auto mt-4 whitespace-nowrap gap-x-2"
+              green_2
+              onClick={handleSearchNFT}
+            >
+              <ImgIcon width={20} height={20} />
+              Select NFT
+            </Button>
+          </div>
+          <form className="mt-5 text-sm text-shader_200">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  {account && activeChoice === "Buy" && (
-                    <div className="flex items-center text-sm text-dark1">
-                      <p className="mr-1">Your balance:</p>
-                      {formatNumber(balanceToken)}
-                      <EtherIcon
-                        width={16}
-                        height={16}
-                        className="fill-dark2"
-                      />
-                    </div>
-                  )}
-                  {account && activeChoice === "Sell" && (
-                    <div className="flex items-center text-sm text-dark1">
-                      <p className="mr-1">Your balance:</p>
-                      <p>0</p>
-                      <NFTIcon
-                        width={24}
-                        height={24}
-                        className="fill-dark1 ml-[2px]"
-                      />
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center text-sm text-dark1">
-                  <div className="flex items-center mr-2">
-                    <span className="mr-1">LP:</span>
-                    0.0
-                    <NFTIcon
-                      width={24}
-                      height={24}
-                      className="fill-dark1 ml-[2px]"
-                    />
-                  </div>
-                  0.0
-                  <span>
-                    <EtherIcon
-                      width={20}
-                      height={20}
-                      className="fill-dark1 ml-[-1px]"
-                    />
-                  </span>
-                </div>
-              </div>
-              <div
-                className={`relative p-2 rounded-lg bg-dark5 border border-dark5 hover:border-dark3 dark:bg-darkBG2 dark:border-darkBG2`}
-              >
-                <div className="relative">
+              <div className="flex gap-x-2">
+                <div className="relative w-[60%]">
                   <NumericFormat
                     name="amountNFT"
                     id="amountNFT"
                     autoComplete="off"
-                    placeholder="Input amount NFT"
+                    placeholder="NFT quantity"
                     pattern="^[1-9][0-9]*$"
                     min="1"
                     decimalScale={0}
                     thousandSeparator=","
-                    className="w-1/2 text-sm font-semibold border-none outline-none text-dark2 bg-dark5 placeholder:text-dark2 placeholder:font-medium"
+                    className="w-full h-full pl-2 font-semibold text-white border-none rounded-lg outline-none bg-shader_600 placeholder:text-shader_300 placeholder:font-medium"
                     value={inputNFT}
                     onChange={(e) => {
                       let newValue = e.target.value.replace(/,/g, "");
@@ -210,40 +166,21 @@ export default function SwapDefault() {
                       setActiveChoiceNFT("");
                     }}
                   />
-                  <Button
-                    className="absolute px-4 py-2 font-semibold transition duration-150 ease-out rounded-lg cursor-pointer right-1 top-1 "
-                    onClick={handleSearchNFT}
-                    active
-                    type="button"
-                  >
-                    <div className="text-center">
-                      <h2 className="">Select NFT</h2>
-                    </div>
-                  </Button>
                 </div>
-                <div className="flex flex-col items-end">
-                  <ul className="flex p-2 mt-8 rounded-lg bg-dark4 w-fit area_darkBG0">
-                    {activeNFTPercent.map((item, index) => (
-                      <li
-                        className={`text-[12px] w-10 flex justify-center last:border-none border-r border-dark3 font-semibold text-dark3 ${
-                          item.text === activeChoiceNFT &&
-                          "bg-secondary5 text-white"
-                        }`}
-                        key={index}
-                      >
-                        {item.text}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="flex flex-col items-end w-[40%]">
+                  <TabGroups
+                    choices={["25%", "50%", "75%", "100%"]}
+                    activeChoice={activeChoiceNFT}
+                    onChoiceChange={handleChoicePercent}
+                  />
                 </div>
               </div>
             </div>
-
             <div className="mt-4">
               <div className="justify-between block mb-4 lg:flex">
-                <div className="text-sm text-dark1">Total Proceeds:</div>
+                <div className="">Total Proceeds:</div>
                 <div className="">
-                  <label htmlFor="data.royaltyFee" className=" text-dark1">
+                  <label htmlFor="data.royaltyFee" className="">
                     <div className="flex text-sm">
                       <p className="mr-1">Royalties Fee: </p>
                       0.00
@@ -253,11 +190,15 @@ export default function SwapDefault() {
                 </div>
               </div>
               <div className="relative">
-                <div className="block w-full py-2 pl-2 mb-2 font-semibold rounded-lg text-dark2 bg-dark4 dark:bg-darkBG2">
+                <div className="block w-full py-2 pl-2 mb-2 font-semibold rounded-lg bg-shader_500">
                   0.0
                 </div>
                 <div className="absolute px-2 py-1 right-1 top-2">
-                  <EtherIcon width={16} height={16} className="fill-dark2" />
+                  <EtherIcon
+                    width={16}
+                    height={16}
+                    className="fill-shader_600"
+                  />
                 </div>
               </div>
             </div>
@@ -268,7 +209,7 @@ export default function SwapDefault() {
                 type="button"
                 className="py-2 w-[144px] bg-green hover:text-green hover:bg-white hover:border-green border rounded-lg text-sm text-white"
               >
-                BUY NFT
+                Buy NFT
               </button>
             )}
             {activeChoice === "Sell" && account && (
@@ -276,13 +217,17 @@ export default function SwapDefault() {
                 type="button"
                 className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
               >
-                SELL NFT
+                Sell NFT
               </button>
             )}
 
             {!account && (
-              <Button className="w-[144px] py-2" primary onClick={handleOpen}>
-                CONNECT WALLET
+              <Button
+                className="w-[144px] py-2 font-semibold"
+                gradient
+                onClick={handleOpen}
+              >
+                Connect Wallet
               </Button>
             )}
           </div>

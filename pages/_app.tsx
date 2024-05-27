@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "@/components/Layouts";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
-import { Poppins, Roboto_Mono } from "next/font/google";
+import { Poppins, Roboto_Mono, Titillium_Web } from "next/font/google";
 import MaintenanceError from "./maintenanceError";
 import {
   EthereumClient,
@@ -37,6 +37,12 @@ type NextPageWithLayout<P = any> = NextPage<P> & {
 const roboto = Roboto_Mono({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
+  display: "swap",
+  adjustFontFallback: false,
+});
+const titillium = Titillium_Web({
+  subsets: ["latin", "latin-ext"],
+  weight: ["200", "300", "400", "900", "600", "700"],
   display: "swap",
   adjustFontFallback: false,
 });
@@ -102,7 +108,7 @@ export default function App({
             <QueryParamProvider adapter={NextAdapterPages}>
               <style jsx global>{`
                 html {
-                  font-family: ${roboto.style.fontFamily};
+                  font-family: ${titillium.style.fontFamily};
                 }
               `}</style>
               <ThemeProvider attribute="class">

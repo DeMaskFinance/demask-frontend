@@ -15,7 +15,9 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   third?: boolean;
   green?: boolean;
+  gradient?: boolean;
   isLoadingBtn?: boolean;
+  green_2?: boolean;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -33,6 +35,8 @@ const Button: FunctionComponent<ButtonProps> = ({
   third,
   green,
   isLoadingBtn,
+  gradient,
+  green_2,
 }) => {
   return (
     <button
@@ -47,20 +51,29 @@ const Button: FunctionComponent<ButtonProps> = ({
       justify-center
       ${
         primary
-          ? "bg-secondary2 text-white font-medium hover:bg-secondary5 border boder-white hover:border-secondary5 active:bg-secondary4 rounded-lg transition-all duration-150 ease-linear dark:bg-se dark:border-secondary2"
+          ? "bg-primary_500 text-white font-medium hover:bg-primary_400 border boder-white hover:border-primary_400 active:bg-primary_400 rounded-lg transition-all duration-150 ease-linear dark:bg-se dark:border-primary_500"
           : ""
       }
-      ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
+      ${third ? "bg-primary_400 text-white font-medium text-sm" : ""}
       ${
         active
-          ? "bg-dark3 px-3 py-2 text-white hover:bg-dark2 dark:bg-dark1 dark:border-dark1 border border-dark3 hover:border-dark2 dark:hover:bg-dark2"
+          ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 dark:bg-shader_700 dark:border-shader_700 border border-shader_500 hover:border-shader_600 dark:hover:bg-shader_600"
           : ""
       }
-      ${secondary ? "bg-white text-dark3" : ""}
-      ${outline ? " border border-dark3 dark:border-dark1 dark:text-white" : ""}
+      ${secondary ? "bg-white text-shader_500" : ""}
+      ${
+        outline
+          ? " border border-shader_500 dark:border-shader_700 dark:text-white"
+          : ""
+      }
       ${
         green &&
         "bg-green hover:bg-white hover:text-green boder-green hover:border-green text-white transition-all duration-150 ease-linear border rounded-lg"
+      }
+      ${gradient && "bg_gradient text-white"}
+      ${
+        green_2 &&
+        "bg-green text-white bg-opacity-[15%] py-2 px-3 hover:bg-opacity-[25%] border border-green w-max"
       }
       ${className}
       `}

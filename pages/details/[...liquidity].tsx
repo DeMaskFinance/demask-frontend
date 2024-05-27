@@ -1,7 +1,7 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { BackIcon, EtherIcon } from "@/components/Icons";
+import { EtherIcon, LeftIcon } from "@/components/Icons";
 import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -33,7 +33,7 @@ import TabQuery from "@/components/NavChoice/TabQuery";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 const style = {
   btnWallet:
-    "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-secondary5 active:bg-secondary3 text-secondary4 hover:text-white gap-x-2 border-secondary5",
+    "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-primary_400 active:bg-primary_400 text-primary_400 hover:text-white gap-x-2 border-primary_400",
 };
 const updateMeta = {
   ...SEO,
@@ -179,10 +179,10 @@ export default function DetailLiquidity() {
                       href={`/pools?chain=${chainId}`}
                       className="p-1 rounded-lg group"
                     >
-                      <BackIcon
+                      <LeftIcon
                         width={20}
                         height={20}
-                        className="hover:fill-secondary2"
+                        className="hover:fill-primary_500"
                       />
                     </Link>
                     <div className="w-[30px] h-[30px] ml-4">
@@ -190,7 +190,7 @@ export default function DetailLiquidity() {
                     </div>
                     <Link
                       href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`}
-                      className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-dark1 title"
+                      className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-shader_700 title"
                     >
                       <div className="relative truncate max-w-[160px]">
                         <ModalDocument data={data?.metadata?.name} />
@@ -237,7 +237,7 @@ export default function DetailLiquidity() {
                       />
                       <div className="mt-6 ">
                         <div className="">
-                          <div className="grid gap-x-4 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-dark1 font-semibold title">
+                          <div className="grid gap-x-4 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-shader_700 font-semibold title">
                             <p className="pl-3">Action</p>
                             <p className="mx-auto">Liquidity</p>
                             <p className="mx-auto">NFT</p>
@@ -252,26 +252,26 @@ export default function DetailLiquidity() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex justify-center gap-5 py-8 text-sm text-dark2 ">
+                    <div className="flex justify-center gap-5 py-8 text-sm text-shader_600 ">
                       <button
                         onClick={prevPage}
                         disabled={isPreviousData || page === 1 || isFetching}
                         className={`${
                           isPreviousData || page === 1 || isFetching
                             ? "text-white bg-slate-300"
-                            : "hover:text-white hover:bg-secondary2 transition-all"
+                            : "hover:text-white hover:bg-primary_500 transition-all"
                         } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                       >
                         <MdNavigateBefore />
                       </button>
                       <p>
                         Page
-                        <span className="px-2 font-medium text-secondary2">
+                        <span className="px-2 font-medium text-primary_500">
                           {page}
                         </span>{" "}
                         of
                         <span
-                          className="px-2 font-medium cursor-pointer text-secondary2"
+                          className="px-2 font-medium cursor-pointer text-primary_500"
                           onClick={() =>
                             page !== data?.totalPages &&
                             setPage(data?.totalPages)
@@ -292,7 +292,7 @@ export default function DetailLiquidity() {
                           page === data?.totalPages ||
                           isFetching
                             ? "text-white bg-slate-300"
-                            : "hover:text-white hover:bg-secondary2 transition-all"
+                            : "hover:text-white hover:bg-primary_500 transition-all"
                         } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
                       >
                         <MdOutlineNavigateNext />
@@ -302,7 +302,7 @@ export default function DetailLiquidity() {
                 ) : (
                   <div className="flex items-center mt-8 gap-x-2">
                     <BsClock className="w-5 h-5" />
-                    <p className="text-sm font-medium text-dark1">
+                    <p className="text-sm font-medium text-shader_700">
                       No events in this time range
                     </p>
                   </div>
@@ -310,14 +310,14 @@ export default function DetailLiquidity() {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-[400px] mb-20 lg:mb-0 dark:bg-darkBG2 rounded-lg">
+          <div className="w-full lg:w-[400px] mb-20 lg:mb-0 dark:bg-shader_700 rounded-lg">
             <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
               {account && data?.metadata && (
                 <div className="justify-end max-w-[350px] mb-6 mx-auto">
                   <MediaNFT data={data} isControls={true} />
                   <div className="w-full">
                     <p
-                      className="block mx-auto mt-2 text-xs text-secondary5 hover:cursor-pointer hover:text-secondary3 w-fit"
+                      className="block mx-auto mt-2 text-xs text-primary_400 hover:cursor-pointer hover:text-primary_400 w-fit"
                       onClick={handleShowDetail}
                     >
                       Show detail
@@ -327,8 +327,8 @@ export default function DetailLiquidity() {
               )}
               <div className="flex flex-wrap justify-between">
                 <div>
-                  <p className="mb-2 text-dark1">Liquidity</p>
-                  <div className="flex font-light text-dark3">
+                  <p className="mb-2 text-shader_700">Liquidity</p>
+                  <div className="flex font-light text-shader_500">
                     <FormatNumber number={balanceOfDML} />
                     <div>
                       (
@@ -341,14 +341,14 @@ export default function DetailLiquidity() {
                   </div>
                 </div>
                 <div>
-                  <p className="mb-2 text-dark1">Reward</p>
-                  <div className="flex items-center font-light text-dark3">
+                  <p className="mb-2 text-shader_700">Reward</p>
+                  <div className="flex items-center font-light text-shader_500">
                     <FormatNumber number={reward} />
                     <span className="mb-1 ml-1">
                       <EtherIcon
                         width={18}
                         height={18}
-                        className="fill-dark3"
+                        className="fill-shader_500"
                       />
                     </span>
                   </div>

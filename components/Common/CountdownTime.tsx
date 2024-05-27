@@ -36,13 +36,13 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
     <div>
       {query !== "Ended" ? (
         <div className="">
-          <p className="text-xs text-center text-dark3">
+          <p className="text-xs text-center text-shader_500">
             {query === "Active"
               ? "The next phase will end in:"
               : "The next phase will begin in"}
           </p>
           {minutes > 0 && seconds > 0 && (
-            <div className="flex justify-center mt-1 text-secondary2 gap-x-2">
+            <div className="flex justify-center mt-1 text-primary_500 gap-x-2">
               <div className="flex gap-1 mb-2">
                 <span className="font-semibold">{days}d</span>:
                 <span className="font-semibold">{hours}h</span>:
@@ -54,7 +54,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
                   {seconds > 9 ? seconds : "0" + seconds}s
                 </span>
               </div>
-              <div className="text-[10px] border border-secondary2  text-secondary2 transition-all duration-150 hover:text-white hover:bg-secondary2 rounded-lg h-6 px-2 datas-end leading-6">
+              <div className="text-[10px] border border-primary_500  text-primary_500 transition-all duration-150 hover:text-white hover:bg-primary_500 rounded-lg h-6 px-2 datas-end leading-6">
                 <Link href={`/launchpad?choice=${query}?chain=${chainId}`}>
                   {query}
                 </Link>
@@ -64,7 +64,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
         </div>
       ) : (
         <div>
-          <p className="text-xs text-center text-dark3">This phase has:</p>
+          <p className="text-xs text-center text-shader_500">This phase has:</p>
           <div
             className={`text-[10px] border  transition-all duration-150  rounded-lg h-6 px-2 datas-end leading-6 ${
               isSuccess

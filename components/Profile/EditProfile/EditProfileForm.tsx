@@ -87,7 +87,7 @@ export default function EditProfileForm() {
       value: profile?.socials?.facebook,
     },
     {
-      icon: <TeleIcon width={24} height={24} className="fill-dark2" />,
+      icon: <TeleIcon width={24} height={24} className="fill-shader_600" />,
       title: "Telegram",
       name: "telegram",
       placeHolder: "https://t.me/",
@@ -188,7 +188,7 @@ export default function EditProfileForm() {
               </label>
               <div
                 className={
-                  "w-full py-2 pl-2 flex bg-dark5 rounded-lg transition-all duration-200 dark:bg-darkBG2"
+                  "w-full py-2 pl-2 flex bg-shader_600 rounded-lg transition-all duration-200 dark:bg-shader_700"
                 }
               >
                 <p className="mr-1">@</p>
@@ -218,7 +218,7 @@ export default function EditProfileForm() {
             {socialList.map((item, index) => (
               <div key={index}>
                 <div className="flex mb-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2 dark:bg-dark1 dark:text-white h-fit">
+                  <div className="flex p-2 font-normal rounded-lg bg-shader_500 min-w-[132px] gap-x-2 text-shader_600 dark:bg-shader_700 dark:text-white h-fit">
                     {item.icon}
                     {item.title}
                   </div>

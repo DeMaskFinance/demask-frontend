@@ -149,7 +149,7 @@ const Search: FunctionComponent<SearchProps> = ({
       <div className="relative w-full">
         <div
           ref={inputRef}
-          className={`flex ${isFocused} text-secondary5  rounded-lg`}
+          className={`flex ${isFocused} text-primary_400  rounded-lg items-center relative `}
         >
           <input
             value={searchTerm}
@@ -159,11 +159,9 @@ const Search: FunctionComponent<SearchProps> = ({
             onClick={() => {
               setClick(true);
             }}
-            className={`hide-clear rounded-xl w-full relative duration-200 ease-linear bg-dark4 border-dark3 lg:border-none border p-2 placeholder:text-dark2 transition-all  ${
-              active
-                ? "w-full lg:h-[32px] h-[40px] lg:pl-10"
-                : " lg:w-0 lg:h-[32px] h-[40px] bg-transparent"
-            } outline-none text-sm  text-dark2`}
+            className={`hide-clear rounded-lg w-full h-10 relative duration-200 ease-linear bg-shader_600 border-shader_500 lg:border-none border p-2 placeholder:text-shader_200 transition-all  ${
+              active ? "w-full  lg:pl-8" : " lg:w-0  bg-transparent"
+            } outline-none text-sm  text-shader_600`}
             onFocus={handleActive}
           />
           {debouncedSearch && click && (
@@ -176,25 +174,25 @@ const Search: FunctionComponent<SearchProps> = ({
           )}
           <div onClick={handleActive}>
             <SearchIcon
-              width={32}
-              height={32}
+              width={20}
+              height={20}
               className={`${
                 active ? "" : ""
-              } cursor-pointer absolute top-0 right-0 left-0 bottom-0 hidden lg:block`}
+              } cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 hidden lg:block -translate-y-1/2`}
             />
           </div>
         </div>
 
         <ul
-          className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 area_input ${
+          className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 bg-shader_700 border-shader_700 ${
             click ? "block" : "block lg:hidden"
-          }  bg-dark5 w-full rounded-lg mt-3 lg:mt-1 p-4 lg:px-4 absolute top-12 right-0 left-0`}
+          }  bg-shader_600 w-full rounded-lg mt-3 lg:mt-1 p-4 lg:px-4 absolute top-12 right-0 left-0`}
         >
           <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
-            <p className="block mb-2 text-sm text-dark2">
+            <p className="block mb-2 text-sm text-shader_600">
               <span className="">Searched</span>
               {isMounted && (
-                <span className="text-sm text-dark2">
+                <span className="text-sm text-shader_600">
                   ({searchHistory.length})
                 </span>
               )}
@@ -205,7 +203,7 @@ const Search: FunctionComponent<SearchProps> = ({
                   <div key={index}>
                     {isMounted && (
                       <div
-                        className={`flex justify-between items-center text-dark2 hover:bg-dark4 rounded-lg area_input_hover`}
+                        className={`flex justify-between items-center text-shader_600 hover:bg-shader_500 rounded-lg `}
                       >
                         <div
                           onClick={() => handleResultItemClick(item)}
@@ -235,9 +233,9 @@ const Search: FunctionComponent<SearchProps> = ({
                             e.stopPropagation(); // Prevent click from reaching document
                             handleRemoveItem(index);
                           }}
-                          className="p-1 rounded-lg text-dark2 h-fit hover:text-white"
+                          className="p-1 rounded-lg text-shader_600 h-fit hover:text-white"
                         >
-                          <CgClose className="text-xl transition-colors duration-100 ease-linear text-dark2 hover:text-red" />
+                          <CgClose className="text-xl transition-colors duration-100 ease-linear text-shader_600 hover:text-red" />
                         </button>
                       </div>
                     )}
@@ -248,7 +246,7 @@ const Search: FunctionComponent<SearchProps> = ({
           </div>
           {debouncedSearch ? (
             <div className="">
-              <p className="pb-2 text-sm font-semibold text-dark2">
+              <p className="pb-2 text-sm font-semibold text-shader_600">
                 Collections
               </p>
               {searchData && searchData.length > 0 ? (
@@ -267,7 +265,7 @@ const Search: FunctionComponent<SearchProps> = ({
                         className="flex-1"
                         //
                       >
-                        <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4">
+                        <div className="flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-shader_500">
                           <div className="flex items-center gap-2">
                             <div className="flex-shrink-0 w-8 h-8 mr-2 overflow-hidden rounded-lg">
                               <MediaNFT data={item} isControls={false} />
@@ -296,7 +294,9 @@ const Search: FunctionComponent<SearchProps> = ({
                   {searchFetching ? (
                     <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
-                    <span className="text-base text-secondary3">No Result</span>
+                    <span className="text-base text-primary_400">
+                      No Result
+                    </span>
                   )}
                 </>
               )}
@@ -346,7 +346,7 @@ const Search: FunctionComponent<SearchProps> = ({
                       {topNftFetching ? (
                         <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                       ) : (
-                        <span className="text-base text-secondary3"></span>
+                        <span className="text-base text-primary_400"></span>
                       )}
                     </>
                   )}
@@ -356,7 +356,7 @@ const Search: FunctionComponent<SearchProps> = ({
                   {topNftFetching ? (
                     <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
-                    <span className="text-base text-secondary3"></span>
+                    <span className="text-base text-primary_400"></span>
                   )}
                 </>
               )}

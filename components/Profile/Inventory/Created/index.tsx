@@ -82,7 +82,7 @@ const Created = () => {
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
-        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
+        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
           {isLoading ? (
             <SkeletonSubCategory length={4} />
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
@@ -94,7 +94,7 @@ const Created = () => {
                       <Link
                         href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                       >
-                        <div className="items-center p-3 border rounded-md cursor-pointer group hover:shadow-home dark:border-dark1 dark:bg-darkBG2 ">
+                        <div className="items-center p-3 border rounded-md cursor-pointer group hover:shadow-home dark:border-shader_700 dark:bg-shader_700 ">
                           <div className="h-[127px] overflow-hidden rounded-lg">
                             {item.avatar ? (
                               <img
@@ -130,7 +130,7 @@ const Created = () => {
                             </div>
                             <div className="flex items-center justify-between">
                               <LogoIconCard chainId={chainId} />
-                              <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase leading-[23px]">
+                              <p className="px-2 h-[23px] rounded-full bg-shader_500 text-[10px] uppercase leading-[23px]">
                                 {item.type}
                               </p>
                             </div>
@@ -138,7 +138,7 @@ const Created = () => {
                               <p>Total Volume</p>
                               <p>Total Items</p>
                             </div>
-                            <div className="flex justify-between font-semibold text-dark2">
+                            <div className="flex justify-between font-semibold text-shader_600">
                               <div>
                                 <FormatNumber number={item?.volume} />
                               </div>

@@ -11,10 +11,10 @@ import WithAuth from "@/components/Common/WithAuth";
 import MintNFT from "@/components/Create/MintNFT";
 import UploadFile from "@/components/Create/UploadFile";
 import {
-  BackIcon,
   BlastIcon,
   CreateIcon,
   InforIcon,
+  LeftIcon,
   MonadIcon,
 } from "@/components/Icons";
 import { Category } from "@/libs/constants";
@@ -33,8 +33,8 @@ import { collectionListUser } from "@/libs/service/collectionService";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 
 const styles = {
-  title: "block my-4 text-base font-semibold text-black24 dark:text-dark4",
-  btnActive: "rounded-lg bg-secondary5",
+  title: "block my-4 text-base font-semibold text-black24 dark:text-shader_500",
+  btnActive: "rounded-lg bg-primary_400",
 };
 const updateMeta = {
   ...SEO,
@@ -174,14 +174,14 @@ export default function Creator() {
             <div className="sticky top-16">
               <div className="flex items-center gap-x-2">
                 <div onClick={() => router.back()}>
-                  <BackIcon width={20} height={20} />
+                  <LeftIcon width={20} height={20} />
                 </div>
                 <h2 className="flex items-center text-2xl font-semibold text_gradient gap-x-1">
                   <CreateIcon width={22} height={22} />
                   Create New NFTs
                 </h2>
               </div>
-              <h3 className="my-2 font-normal text-dark2">
+              <h3 className="my-2 font-normal text-shader_600">
                 Mint additional NFTs to grow your collection.
               </h3>
               <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
@@ -210,17 +210,17 @@ export default function Creator() {
                 >
                   <div className="flex items-center gap-x-2">
                     {collection.img}
-                    <p className="font-semibold text-dark2">
+                    <p className="font-semibold text-shader_600">
                       {collection.name}
                     </p>
                   </div>
                   <FaAngleDown
-                    className={`text-dark2 transition-all duration-150 ${
+                    className={`text-shader_600 transition-all duration-150 ${
                       isOpenCollection ? "rotate-180" : "rotate-0"
                     }`}
                   />
                   <ul
-                    className={`p-3 rounded-lg absolute w-full left-0 top-12 z-10 border bg-dark5 transition-all duration-500 max-h-60 overflow-y-scroll area_input ${
+                    className={`p-3 rounded-lg absolute w-full left-0 top-12 z-10 border bg-shader_600 transition-all duration-500 max-h-60 overflow-y-scroll bg-shader_700 border-shader_700 ${
                       isOpenCollection
                         ? "block opacity-100"
                         : "hidden opacity-0"
@@ -229,7 +229,7 @@ export default function Creator() {
                     <li>
                       <Link
                         href={`/create/deploy-contract?chain=${chainId}`}
-                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
                       >
                         <p className="font-semibold">+ Create Collection</p>
                       </Link>
@@ -237,15 +237,15 @@ export default function Creator() {
                     {collectionList.map((item, index) => (
                       <li
                         key={index}
-                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
                         onClick={() => setCollection(item)}
                       >
                         {item.img}
                         <div>
-                          <p className="font-semibold text-dark2">
+                          <p className="font-semibold text-shader_600">
                             {item.name}
                           </p>
-                          <p className="text-sm text-dark2">
+                          <p className="text-sm text-shader_600">
                             {item.collectionAddress}
                           </p>
                         </div>
@@ -256,7 +256,7 @@ export default function Creator() {
                         {data.map((item: any, index: number) => (
                           <li
                             key={index}
-                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
                             onClick={() =>
                               setCollection({
                                 img: (
@@ -277,10 +277,10 @@ export default function Creator() {
                               className="object-cover w-8 h-8 rounded-lg"
                             />
                             <div>
-                              <p className="font-semibold text-dark2">
+                              <p className="font-semibold text-shader_600">
                                 {item.name}
                               </p>
-                              <p className="text-sm text-dark2">
+                              <p className="text-sm text-shader_600">
                                 {item.collectionAddress}
                               </p>
                             </div>
@@ -376,7 +376,7 @@ export default function Creator() {
                       type="button"
                       active={selectedCategory.includes(item.value)}
                       outline
-                      className="px-3 py-1 mr-4 text-sm h-[34px] text-dark2"
+                      className="px-3 py-1 mr-4 text-sm h-[34px] text-shader_600"
                       key={item.id}
                       onClick={() => selectCategory(item.value)}
                     >
@@ -457,7 +457,7 @@ export default function Creator() {
               )}
               <Button
                 type="button"
-                className="h-[37px] w-[150px] text-sm my-4 text-secondary2 font-semibold border-secondary2 border-2 transition-all duration-300 ease-linear hover:bg-secondary2 hover:text-white"
+                className="h-[37px] w-[150px] text-sm my-4 text-primary_500 font-semibold border-primary_500 border-2 transition-all duration-300 ease-linear hover:bg-primary_500 hover:text-white"
                 onClick={handleAddAttribute}
                 disabled={!isValidBtn}
               >

@@ -104,13 +104,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               />
               {isLoading && (
                 <div className="absolute top-[50%] right-2 -translate-y-1/2">
-                  <BiLoaderAlt className="animate-spin text-secondary5" />
+                  <BiLoaderAlt className="animate-spin text-primary_400" />
                 </div>
               )}
             </div>
             <ul className={`${debouncedNFT ? "hidden" : "block"}`}>
               <li
-                className="flex items-center cursor-pointer gap-x-2 hover:text-secondary5 group active:text-secondary3"
+                className="flex items-center cursor-pointer gap-x-2 hover:text-primary_400 group active:text-primary_400"
                 onClick={() => setNftAddress(demask.CREATOR)}
               >
                 <span>
@@ -149,17 +149,17 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
           </div>
           {isSuccessNFT && dataNFT[0]?.metadata && (
             <div
-              className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group gap-x-2"
+              className="flex items-center rounded-lg cursor-pointer hover:bg-shader_500 group gap-x-2"
               onClick={handleChangeRouteNFT}
             >
               <div className="w-8 h-8">
                 <MediaNFT data={dataNFT[0]} isControls={false} />
               </div>
               <div>
-                <h2 className="font-medium group-hover:text-secondary5">
+                <h2 className="font-medium group-hover:text-primary_400">
                   {dataNFT[0]?.metadata?.symbol}
                 </h2>
-                <p className="text-sm text-dark3">
+                <p className="text-sm text-shader_500">
                   {dataNFT[0]?.metadata?.name}
                 </p>
               </div>

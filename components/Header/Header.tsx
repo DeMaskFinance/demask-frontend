@@ -13,21 +13,22 @@ import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
 import Maintenance from "../Common/Maintenance";
-import { ProfileIcon, SearchIcon, WalletIcon } from "../Icons";
+import { EtherIcon, ProfileIcon, SearchIcon, WalletIcon } from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
+import { AvatarCustom } from "../Avatars";
 const style = {
-  itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
+  itemNav: `flex 3xl:gap-x-8 text-shader_600 text-lg gap-x-4 font-medium`,
   menuSub:
-    "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
+    "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-medium",
   itemSub:
-    "flex area_input_hover items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-medium",
+    "flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-medium",
   btnWallet:
-    "flex items-center h-10 hover:border-dark2 dark:hover:bg-dark2 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
+    "flex items-center h-10  pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold transition duration-150 ease-out rounded-lg group bg_gradient active:bg-primary_400 text-white gap-x-2 ",
 };
 
 export default function Header() {
@@ -47,7 +48,7 @@ export default function Header() {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const { isLoggedIn } = useSelector(selectProfile);
+  const { isLoggedIn, profile } = useSelector(selectProfile);
   const { balanceToken, isLoadingBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -112,22 +113,20 @@ export default function Header() {
             headerClassList.add(
               "border-b",
               "border-solid",
-              "border-gray-300",
-              "dark:border-none"
+              "border-shader_500"
             );
           } else {
             headerClassList.remove(
               "border-b",
               "border-solid",
-              "border-gray-300",
-              "dark:border-none"
+              "border-shader_500"
             );
           }
           if (currentScrollPos === 0) {
             headerClassList.remove(
               "border-b",
               "border-solid",
-              "border-gray-300"
+              "border-shader_500"
             );
           }
         }
@@ -147,7 +146,7 @@ export default function Header() {
   return (
     <div
       ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+      className="fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ease-in-out"
     >
       {/* {isEvent && (
         <div>
@@ -179,11 +178,11 @@ export default function Header() {
           </button>
         </div>
       )} */}
-      <header className="flex items-center justify-between gap-2 px-4 ease-in-out bg-white shadow-md lg:shadow-none h-header lg:px-primary md:px-14">
+      <header className="flex items-center justify-between gap-2 px-4 ease-in-out shadow-md lg:shadow-none h-header">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link href="https://demask.finance/" target="_blank">
-              <LogoDeMask width={105} height={24} className="dark:fill-white" />
+              <LogoDeMask width={105} height={24} className="fill-white" />
             </Link>
           </div>
           <div className="hidden w-full lg:block">
@@ -201,15 +200,15 @@ export default function Header() {
               showSearch ? "block" : "hidden"
             } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
-          <div className="flex items-center lg:gap-x-6 gap-x-4">
+          <div className="flex items-center gap-x-2">
             <div
-              className="text-secondary5 lg:hidden"
+              className="text-primary_400 lg:hidden"
               onClick={() => {
                 setShowSearch(!showSearch);
                 document.body.style.overflowY = "hidden";
               }}
             >
-              <SearchIcon width={30} height={30} className="cursor-pointer" />
+              <SearchIcon width={20} height={20} className="cursor-pointer" />
             </div>
 
             <div
@@ -236,76 +235,66 @@ export default function Header() {
               </button>
             </div>
             <MenuNetwork />
+
             {isLoggedIn && account ? (
-              <Tippy
-                interactive
-                render={(attrs) => (
-                  <div
-                    className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1 area_input"
-                    tabIndex={-1}
-                    {...attrs}
-                  >
-                    <ul className="pb-2 mt-2">
-                      <Link
-                        href={`/profile?chain=${chainId}`}
-                        className={`${style.itemSub}`}
-                      >
-                        Profile
-                      </Link>
-                      <Link
-                        href={`/profile/edit?chain=${chainId}`}
-                        className={`${style.itemSub}`}
-                      >
-                        Edit profile
-                      </Link>
-                      <li
-                        className={`${style.itemSub} justify-between mb-2`}
-                        onClick={disconnectWallet}
-                      >
-                        <div>Disconnect</div>
-                        <MdLogout />
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              >
-                <div>
-                  <div className={style.btnWallet}>
-                    <ProfileIcon
-                      width={20}
-                      height={20}
-                      className="dark:fill-white"
-                    />
-                    {`${account.slice(0, 2)}...${account.slice(-4)}`}
-                    <div className="items-center hidden pl-2 transition duration-150 ease-out border-l border-dark2 lg:flex">
-                      <WalletIcon
-                        width={20}
-                        height={20}
-                        className="dark:fill-white"
-                      />
-                      {isLoadingBalance ? (
-                        <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
-                      ) : (
-                        <span className="ml-2">
-                          {formatNumber(balanceToken)}
-                        </span>
-                      )}
-                      <span className="ml-1">ETH</span>
-                    </div>
-                  </div>
+              <div className="flex items-center gap-x-2">
+                <div className="flex items-center px-3 py-2 font-bold text-white rounded-lg gap-x-2 bg-shader_700">
+                  {isLoadingBalance ? (
+                    <div className="w-12 h-6 border rounded-lg bg-slate-200 animate-pulse"></div>
+                  ) : (
+                    <span className="">{formatNumber(balanceToken)}</span>
+                  )}
+                  <EtherIcon width={16} height={16} />
                 </div>
-              </Tippy>
+                <Tippy
+                  interactive
+                  render={(attrs) => (
+                    <div
+                      className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-shader_500 pb-1 pt-1 bg-shader_700 border-shader_700"
+                      tabIndex={-1}
+                      {...attrs}
+                    >
+                      <ul className="pb-2 mt-2">
+                        <Link
+                          href={`/profile?chain=${chainId}`}
+                          className={`${style.itemSub}`}
+                        >
+                          Profile
+                        </Link>
+                        <Link
+                          href={`/profile/edit?chain=${chainId}`}
+                          className={`${style.itemSub}`}
+                        >
+                          Edit profile
+                        </Link>
+                        <li
+                          className={`${style.itemSub} justify-between mb-2`}
+                          onClick={disconnectWallet}
+                        >
+                          <div>Disconnect</div>
+                          <MdLogout />
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                >
+                  <div>
+                    <AvatarCustom
+                      avatarUrl={profile?.avatar}
+                      size={36}
+                      userAddress={profile.userAddress!}
+                      className="border-2 rounded-full cursor-pointer w-9 h-9 border-primary_400"
+                    />
+                  </div>
+                </Tippy>
+              </div>
             ) : (
               <button className={style.btnWallet} onClick={handleOpen}>
-                <WalletIcon
-                  width={20}
-                  height={20}
-                  className="dark:fill-white"
-                />
+                <WalletIcon width={20} height={20} className="" />
                 <p>
                   Connect{" "}
                   <span className="hidden lg:inline-block md:inline-block">
-                    to wallet
+                    wallet
                   </span>
                 </p>
               </button>

@@ -84,7 +84,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               />
               {searchLoading && (
                 <div className="absolute top-[50%] right-2 -translate-y-[100%]">
-                  <BiLoaderAlt className="animate-spin text-secondary5" />
+                  <BiLoaderAlt className="animate-spin text-primary_400" />
                 </div>
               )}
             </div>
@@ -94,17 +94,17 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                   {searchData.map((item: any, index: number) => (
                     <div key={index}>
                       <div
-                        className="flex items-center rounded-lg cursor-pointer hover:bg-dark4 group gap-x-2"
+                        className="flex items-center rounded-lg cursor-pointer hover:bg-shader_500 group gap-x-2"
                         onClick={() => handleSelectNFT(item)}
                       >
                         <div className="w-8 h-8">
                           <MediaNFT data={item} isControls={false} />
                         </div>
                         <div>
-                          <h2 className="font-medium group-hover:text-secondary5">
+                          <h2 className="font-medium group-hover:text-primary_400">
                             {item?.metadata?.symbol}
                           </h2>
-                          <p className="text-sm text-dark3">
+                          <p className="text-sm text-shader_500">
                             {item?.metadata?.name}
                           </p>
                         </div>
@@ -117,7 +117,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                   {searchFetching ? (
                     <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
-                    <span className="text-base text-secondary3">No Result</span>
+                    <span className="text-base text-primary_400">
+                      No Result
+                    </span>
                   )}
                 </>
               )

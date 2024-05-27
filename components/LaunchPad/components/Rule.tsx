@@ -82,9 +82,9 @@ const Rule: React.FC<{ data: LaunchpadData }> = ({ data }) => {
           <p>{data?.metadata?.description}</p>
           <div className="flex items-center mt-2 gap-x-4">
             <p className="font-semibold">Website</p>
-            <div className="px-2 py-1 cursor-pointer bg-dark4 gap-x-1 area_input">
+            <div className="px-2 py-1 cursor-pointer bg-shader_500 gap-x-1 bg-shader_700 border-shader_700">
               <a
-                className="flex items-center gap-x-1 hover:text-secondary2"
+                className="flex items-center gap-x-1 hover:text-primary_500"
                 rel="noreferrer noopener"
                 target="_blank"
                 href={`${data?.launchpadInfo?.website}`}
@@ -105,7 +105,7 @@ const Rule: React.FC<{ data: LaunchpadData }> = ({ data }) => {
                 <TwitterIcon
                   width={20}
                   height={20}
-                  className="fill-dark3 hover:fill-secondary5"
+                  className="fill-shader_500 hover:fill-primary_400"
                 />
               </a>
               <a
@@ -116,7 +116,7 @@ const Rule: React.FC<{ data: LaunchpadData }> = ({ data }) => {
                 <TeleIcon
                   width={20}
                   height={20}
-                  className="fill-dark3 hover:fill-secondary5"
+                  className="fill-shader_500 hover:fill-primary_400"
                 />
               </a>
             </div>

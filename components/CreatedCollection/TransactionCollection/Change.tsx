@@ -203,7 +203,7 @@ const Change = () => {
   };
   return (
     <div>
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2 area_darkBG1">
+      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 area_shader_800">
         <LightBulbIcon
           width={20}
           height={20}
@@ -214,7 +214,7 @@ const Change = () => {
           NFTs in the pool and pay a small fee.
         </p>
       </div>
-      <h5 className="font-semibold text-dark1">
+      <h5 className="font-semibold text-shader_700">
         Select some input NFTs from your wallet
       </h5>
       <div className="my-2">
@@ -234,15 +234,15 @@ const Change = () => {
                   handleChoiceNFT={handleChoiceNFTInput}
                   idNFT={idNFTInput}
                 />
-                <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-dark5 text-dark3 gap-x-2 area_darkBG1">
+                <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 area_shader_800">
                   <p>
                     You have selected
-                    <span className="text-secondary5">
+                    <span className="text-primary_400">
                       {" "}
                       {idNFTInput.length}{" "}
                     </span>
                     input NFTs and 
-                    <span className="text-secondary5">
+                    <span className="text-primary_400">
                       {idNFTOutput.length} out of {data?.pages[0]?.totalRecords}
                     </span>
                       output NFTs
@@ -254,11 +254,11 @@ const Change = () => {
             )}
           </Fragment>
         ) : (
-          <p className="text-dark1">Please connect wallet</p>
+          <p className="text-shader_700">Please connect wallet</p>
         )}
       </div>
 
-      <h5 className="font-semibold text-dark1">Select some output NFTs</h5>
+      <h5 className="font-semibold text-shader_700">Select some output NFTs</h5>
       <div className="my-2">
         {isLoading ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">

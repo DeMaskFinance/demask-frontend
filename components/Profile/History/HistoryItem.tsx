@@ -7,7 +7,7 @@ import { useContext } from "react";
 const HistoryItem = ({ item }: any) => {
   const { demask, chainId } = useContext(AccountContext);
   return (
-    <tr className="flex text-sm  lg:text-base md:text-base text-dark2 hover:bg-slate-100 lg:px-2">
+    <tr className="flex text-sm  lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
       <td className="flex justify-start items-center md:basis-1/6 w-[140px]">
         {item.action}
       </td>
@@ -38,7 +38,7 @@ const HistoryItem = ({ item }: any) => {
       <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px]">
         <FormatNumber number={item.price} />
       </td>
-      <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] text-secondary4">
+      <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] text-primary_400">
         <a
           href={`${demask.urltxHash}tx/${item.transactionHash}`}
           target="_blank"

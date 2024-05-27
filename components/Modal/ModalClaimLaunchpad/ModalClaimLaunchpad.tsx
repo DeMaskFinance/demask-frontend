@@ -49,8 +49,8 @@ const ModalClaimLaunchpad: React.FunctionComponent<ModalConfirmClaimProps> = ({
           <p className="title_modal">Confirm claim</p>
           <div className="flex flex-col items-center">
             <div>
-              <p className="font-semibold text-dark2">Amount</p>
-              <p className="text-xl text-center text-dark3">
+              <p className="font-semibold text-shader_600">Amount</p>
+              <p className="text-xl text-center text-shader_500">
                 {Number(data.vesting) > 0 ? release.toString() : data.amount}
               </p>
             </div>
@@ -61,7 +61,7 @@ const ModalClaimLaunchpad: React.FunctionComponent<ModalConfirmClaimProps> = ({
               disabled={release.toString() === "0"}
               className={`border ${
                 release.toString() === "0"
-                  ? "text-white  bg-dark4"
+                  ? "text-white  bg-shader_500"
                   : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
               } px-6 mx-auto mt-2 py-2 rounded-lg transition-all text-sm font-medium`}
               onClick={() => {

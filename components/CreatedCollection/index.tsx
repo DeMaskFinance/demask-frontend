@@ -136,7 +136,7 @@ export default function CreatedCollection() {
             }`}
           />
         ) : (
-          <div className="w-full h-full bg-dark4 "></div>
+          <div className="w-full h-full bg-shader_500 "></div>
         )}
         {dataDetail?.collaborators.includes(account) && (
           <div>
@@ -161,7 +161,7 @@ export default function CreatedCollection() {
         )}
       </div>
       <div className="px-4 lg:px-10 2xl:px-[164px] md:px-6">
-        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-dark5 dark:bg-darkBG1 gap-x-10 3xl:gap-x-80">
+        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-shader_600 dark:bg-shader_800 gap-x-10 3xl:gap-x-80">
           <div className="items-center text-xs lg:flex gap-x-2 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
@@ -260,9 +260,13 @@ export default function CreatedCollection() {
                     <Link
                       href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
                     >
-                      <EditIcon width={24} height={24} className="fill-dark3" />
+                      <EditIcon
+                        width={24}
+                        height={24}
+                        className="fill-shader_500"
+                      />
                     </Link>
-                    <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-secondary5 bg-opacity-40 text-secondary3 flex-nowrap">
+                    <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-primary_400 bg-opacity-40 text-primary_400 flex-nowrap">
                       <p className="whitespace-nowrap">
                         Royalties {dataDetail.royalty}%
                       </p>
@@ -300,7 +304,7 @@ export default function CreatedCollection() {
                   )}
                 </div>
                 <div className="flex gap-x-6">
-                  <p className="px-2 py-1 uppercase rounded-full bg-dark4 whitespace-nowrap dark:bg-dark1">
+                  <p className="px-2 py-1 uppercase rounded-full bg-shader_500 whitespace-nowrap dark:bg-shader_700">
                     {dataDetail?.type}
                   </p>
                   <LogoIconCard chainId={chainId} />
@@ -309,14 +313,14 @@ export default function CreatedCollection() {
             </div>
           </div>
           <div className="flex self-center mt-4 overflow-auto rounded-lg lg:overflow-visible lg:p-4 lg:gap-x-14 gap-x-10 lg:mt-0">
-            <div className="text-dark2">
+            <div className="text-shader_600">
               <p className="mb-1 text-sm whitespace-nowrap">Total Volume</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber number={dataDetail?.volume} />
-                <EtherIcon width={16} height={16} className="fill-dark2" />
+                <EtherIcon width={16} height={16} className="fill-shader_600" />
               </div>
             </div>
-            <div className="text-dark2">
+            <div className="text-shader_600">
               <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
               <div className="flex items-center text-xl font-semibold ">
                 {dataDetail?.totalSale ? (
@@ -324,17 +328,17 @@ export default function CreatedCollection() {
                 ) : (
                   0
                 )}
-                <EtherIcon width={16} height={16} className="fill-dark2" />
+                <EtherIcon width={16} height={16} className="fill-shader_600" />
               </div>
             </div>
-            <div className="text-dark2 gird">
+            <div className="text-shader_600 gird">
               <p className="mb-1 text-sm whitespace-nowrap">Listed/Supply</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber number={dataDetail?.countNFTsInPool} />/
                 <FormatNumber number={dataDetail?.totalSupply} />
               </div>
             </div>
-            <div className="text-dark2">
+            <div className="text-shader_600">
               <p className="mb-1 text-sm whitespace-nowrap">Owner</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber number={dataDetail?.countOwner} />

@@ -258,7 +258,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           )}
           <div>
             <div className="relative">
-              <div className="flex justify-between mb-4 text-dark2">
+              <div className="flex justify-between mb-4 text-shader_600">
                 <p className="font-semibold">Liquidity</p>
                 <div className="flex">
                   Balance: <FormatNumber number={balanceOfDML} />
@@ -294,7 +294,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               </div>
             </div>
             <div>
-              <div className="flex justify-between my-4 text-dark2">
+              <div className="flex justify-between my-4 text-shader_600">
                 <p className="font-semibold">You will recieve</p>
               </div>
               <div className="mb-4 input_item">
@@ -302,15 +302,15 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   {data.reserveTokenDecimals ? (
                     <p>{amountNFTMin}</p>
                   ) : (
-                    <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+                    <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
                   )}
-                  <p className="text-dark3">NFT</p>
+                  <p className="text-shader_500">NFT</p>
                 </div>
               </div>
               <div className="mb-4 input_item">
                 <div className="flex justify-between">
                   <FormatNumber number={amountTokenDec} />
-                  <p className="text-dark3">{data.tokenSymbol}</p>
+                  <p className="text-shader_500">{data.tokenSymbol}</p>
                 </div>
               </div>
               {Number(amountTokenMin) < 1 && inputLiquidity && (

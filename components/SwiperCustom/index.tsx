@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import React, { useRef, useState } from "react";
+import { LeftIcon } from "../Icons";
 
 const SwiperCustom = ({ children }: any) => {
   const swiperRef = useRef<any>(null);
@@ -23,13 +24,13 @@ const SwiperCustom = ({ children }: any) => {
   };
   const handleSlideChange = () => {
     const swiperInstance = swiperRef.current.swiper;
-  
+
     if (swiperInstance.isBeginning) {
       setShowPrevButton(false);
     } else {
       setShowPrevButton(true);
     }
-  
+
     if (swiperInstance.isEnd) {
       setShowNextButton(false);
     } else {
@@ -41,12 +42,12 @@ const SwiperCustom = ({ children }: any) => {
       <div className="relative swiper-custom">
         <button
           type="button"
-          className={`flex items-center justify-center text-3xl text-dark1 swiper-button-prev-custom ${
+          className={`flex items-center justify-center text-3xl text-shader_700 swiper-button-prev-custom ${
             !showPrevButton && "hidden"
           }`}
           onClick={goPrev}
         >
-          <GoChevronLeft />
+          <LeftIcon />
         </button>
         <Swiper
           navigation={true}
@@ -79,7 +80,7 @@ const SwiperCustom = ({ children }: any) => {
         </Swiper>
         <button
           type="button"
-          className="flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom"
+          className="flex items-center justify-center text-3xl text-shader_700 swiper-button-next-custom"
           onClick={goNext}
         >
           <GoChevronRight />

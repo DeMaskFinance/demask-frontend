@@ -264,7 +264,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
               <ModalDocument data={data?.metadata?.symbol} />
             </div>
           </div>
-          <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
+          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
             +
           </div>
           <div className="content_modal">
@@ -287,12 +287,12 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                                 </p>
                             )} */}
           {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
               <p className="text-xs">Price Updated</p>
               <Button
                 disabled={isLoadingInforDML}
                 primary
-                className="px-6 py-2 bg-secondary5"
+                className="px-6 py-2 bg-primary_400"
                 onClick={() => {
                   setUpdatePrice(!updatePrice);
                   setPreFetch(false);
@@ -302,11 +302,11 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
               </Button>
             </div>
           )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
+          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
             <p>Slippage tolerance</p>
             <p>{slippage}%</p>
           </div>
-          <p className="mt-2 mb-6 text-sm text-dark2">
+          <p className="mt-2 mb-6 text-sm text-shader_600">
             Output is estimated. You will receive at least {inputNFT} NFT or the
             transaction will revert
           </p>
@@ -315,8 +315,10 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
               <button
                 type="button"
                 disabled={isLoadingInforDML || preFectch}
-                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-secondary5 hover:border-secondary5 ${
-                  isLoadingInforDML || preFectch ? "bg-dark4" : "bg-secondary5"
+                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-primary_400 hover:border-primary_400 ${
+                  isLoadingInforDML || preFectch
+                    ? "bg-shader_500"
+                    : "bg-primary_400"
                 } rounded-lg text-sm text-white mx-auto block`}
                 onClick={addLiquidity}
               >

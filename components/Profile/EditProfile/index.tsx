@@ -50,7 +50,7 @@ export default function EditProfile() {
             className="w-full group-hover:brightness-[0.8] h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-dark4 group-hover:brightness-[0.8]"></div>
+          <div className="w-full h-full bg-shader_500 group-hover:brightness-[0.8]"></div>
         )}
         {bannerLoading ? (
           <div className="absolute top-0 bottom-0 flex items-center justify-center w-full h-full bg-slate-600/[.7]">

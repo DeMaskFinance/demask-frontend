@@ -20,9 +20,9 @@ import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
 import Referral from "./Referral";
 const style = {
   itemSub:
-    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
+    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-primary_400 border-white hover:text-primary_400 active:text-primary_400",
   btnWallet:
-    "flex items-center h-10 hover:border-dark2 dark:hover:bg-dark2 pl-2 lg:px-4 pr-2 justify-center dark:bg-dark1 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-dark4 bg-dark5 active:bg-dark3 text-dark2 gap-x-2 ",
+    "flex items-center h-10 hover:border-shader_600 dark:hover:bg-shader_600 pl-2 lg:px-4 pr-2 justify-center dark:bg-shader_700 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
 };
 const Profile = () => {
   const { account, chainId } = useContext(AccountContext);
@@ -62,7 +62,7 @@ const Profile = () => {
     },
     {
       title: "KYC",
-      panel: () => <div className="text-dark2">Upcoming</div>,
+      panel: () => <div className="text-shader_600">Upcoming</div>,
       key: "kyc",
     },
   ];
@@ -95,7 +95,7 @@ const Profile = () => {
               className="w-full group-hover:brightness-[0.8] h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-dark4 group-hover:brightness-[0.8]"></div>
+            <div className="w-full h-full bg-shader_500 group-hover:brightness-[0.8]"></div>
           )}
         </div>
         <div className="flex items-center justify-center mt-6 gap-x-2">
@@ -109,18 +109,18 @@ const Profile = () => {
             <div className="flex items-center gap-x-2">
               <p className="text-2xl font-semibold">{profile?.name}</p>
               <Link href={`/profile/edit?chain=${chainId}`}>
-                <EditIcon width={24} height={24} className="fill-dark3" />
+                <EditIcon width={24} height={24} className="fill-shader_500" />
               </Link>
             </div>
             <div className="flex items-center gap-x-2">
-              <span className="text-secondary1">{`${account.slice(
+              <span className="text-primary_500">{`${account.slice(
                 0,
                 6
               )}...${account.slice(-4)}`}</span>
               <Copy content={account} />
             </div>
             <div className="flex items-center gap-x-2">
-              <span className="text-dark3">
+              <span className="text-shader_500">
                 Joined {monthName} {fullTime.getFullYear()}
               </span>
             </div>
@@ -142,7 +142,7 @@ const Profile = () => {
             onClickOutside={() => setVisible(false)}
             render={(attrs) => (
               <div
-                className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium area_input"
+                className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 border-shader_700"
                 tabIndex={-1}
                 {...attrs}
               >
@@ -151,8 +151,8 @@ const Profile = () => {
                     <li
                       key={index}
                       onClick={() => setTab(item.key)}
-                      className={`cursor-pointer area_input_hover p-2 ${
-                        tab === item.key ? "rounded-lg bg-secondary5" : ""
+                      className={`cursor-pointer  p-2 ${
+                        tab === item.key ? "rounded-lg bg-primary_400" : ""
                       } `}
                     >
                       <h2 className="font-semibold">{item.title}</h2>

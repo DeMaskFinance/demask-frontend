@@ -258,11 +258,11 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             {reserveToken ? (
               <p>{amountNFTMin}</p>
             ) : (
-              <BiLoaderAlt className="text-3xl animate-spin text-secondary5" />
+              <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
             )}
             <p>{data?.metadata?.symbol}</p>
           </div>
-          <div className="flex justify-center mx-auto text-xl font-semibold text-dark2">
+          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
             +
           </div>
           <div className="content_modal">
@@ -270,12 +270,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             <p>ETH</p>
           </div>
           {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-secondary5">
+            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
               <p className="text-xs">Price Updated</p>
               <Button
                 disabled={isLoadingInforDML}
                 primary
-                className="px-6 py-2 bg-secondary5"
+                className="px-6 py-2 bg-primary_400"
                 onClick={() => {
                   setUpdatePrice(!updatePrice);
                   setPreFetch(false);
@@ -285,11 +285,11 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               </Button>
             </div>
           )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-secondary1">
+          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
             <p>Slippage tolerance</p>
             <p>{slippage}%</p>
           </div>
-          <p className="mt-2 mb-6 text-sm text-dark2">
+          <p className="mt-2 mb-6 text-sm text-shader_600">
             Output is estimated. You will receive at least {amountNFTMin} NFT or
             the transaction will revert
           </p>
@@ -305,17 +305,17 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             )}
             {isApprovedLiquidity && (
               <Button
-              disabled={isLoadingInforDML || preFectch}
-              primary={!isLoadingInforDML && !preFectch}
-              className="w-[144px] py-2"
-              active={isLoadingInforDML || preFectch}
-              onClick={removeLiquidity}
-            >
-              REMOVE
-              {isLoadingInforDML && (
-                <BiLoaderAlt className="ml-1 text-white animate-spin" />
-              )}
-            </Button>
+                disabled={isLoadingInforDML || preFectch}
+                primary={!isLoadingInforDML && !preFectch}
+                className="w-[144px] py-2"
+                active={isLoadingInforDML || preFectch}
+                onClick={removeLiquidity}
+              >
+                REMOVE
+                {isLoadingInforDML && (
+                  <BiLoaderAlt className="ml-1 text-white animate-spin" />
+                )}
+              </Button>
             )}
           </div>
         </div>

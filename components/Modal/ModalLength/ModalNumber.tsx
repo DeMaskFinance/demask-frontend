@@ -9,7 +9,7 @@ const ModalNumber = ({ data }: { data: string }) => {
         <Tippy
           content={
             <div>
-              <span className="text-sm font-normal text-dark0">
+              <span className="text-sm font-normal text-shader_900">
                 {Number(data).toLocaleString("en")}
               </span>
             </div>

@@ -27,8 +27,8 @@ const Pool = () => {
   });
 
   return (
-    <div className="h-full text-dark3 ">
-      <div className="flex items-center px-6 py-4 my-4 text-sm rounded-lg bg-dark5 gap-x-2 area_darkBG1">
+    <div className="h-full text-shader_500 ">
+      <div className="flex items-center px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 gap-x-2 area_shader_800">
         <LightBulbIcon
           width={20}
           height={20}
@@ -47,7 +47,7 @@ const Pool = () => {
       ) : (
         <div>
           {isLoading ? (
-            <BiLoaderAlt className="mb-6 text-2xl animate-spin text-secondary5" />
+            <BiLoaderAlt className="mb-6 text-2xl animate-spin text-primary_400" />
           ) : (
             isSuccess && (
               <>

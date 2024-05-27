@@ -39,7 +39,7 @@ export default function NavFooter() {
         onClick={() => {
           setActive(false);
         }}
-        className={`bg-dark ${
+        className={`bgshader_900 ${
           active ? "block" : "hidden"
         } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
       ></div>
@@ -54,16 +54,16 @@ export default function NavFooter() {
                 <Link
                   href={`${item.url}?chain=${chainId}`}
                   className={`flex flex-col items-center gap-2 ${
-                    router.pathname === "/overview" ? "text-secondary3" : ""
+                    router.pathname === "/overview" ? "text-primary_400" : ""
                   }`}
                 >
                   {
                     <item.icon
                       width={24}
                       height={24}
-                      className={`fill-dark2 ${
+                      className={`fill-shader_600 ${
                         router.asPath.includes(item.url.split("?")[0])
-                          ? "fill-secondary3"
+                          ? "fill-primary_400"
                           : ""
                       }`}
                     />
@@ -71,7 +71,7 @@ export default function NavFooter() {
                   <p
                     className={`${
                       router.asPath.includes(item.url.split("?")[0])
-                        ? "text-secondary3"
+                        ? "text-primary_400"
                         : ""
                     }`}
                   >

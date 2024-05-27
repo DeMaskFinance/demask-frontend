@@ -25,7 +25,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3 dark:bg-darkBG2 dark:border-darkBG2",
+    "block w-full py-2 pl-2 border rounded-lg outline-none border-shader_500 placeholder:text-sm hover:border-primary_400 focus:border-primary_400 dark:bg-shader_700 dark:border-shader_700",
   btnActive: "rounded-full bg-base2",
 };
 
@@ -128,7 +128,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       value: 53342,
     },
     {
-      icon: <TeleIcon width={24} height={24} className="fill-dark2" />,
+      icon: <TeleIcon width={24} height={24} className="fill-shader_600" />,
       title: "Telegram",
       name: "telegram",
       placeHolder: "https://t.me/",
@@ -294,7 +294,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <label htmlFor="name" className={styles.title}>
                 URL
               </label>
-              <p className="mb-4 text-dark2">
+              <p className="mb-4 text-shader_600">
                 Customize your URL on Demask. Must only contain lowercase
                 letters, numbers, and hyphens.
               </p>
@@ -321,9 +321,9 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     type="button"
                     name="category"
                     id="category"
-                    className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-dark2 border rounded-lg ${
+                    className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-shader_600 border rounded-lg ${
                       values.category.includes(item.value) &&
-                      "bg-dark3 text-white"
+                      "bg-shader_500 text-white"
                     }`}
                     key={item.id}
                     value={item.value}
@@ -338,7 +338,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <label htmlFor="name" className={styles.title}>
                 Featured image
               </label>
-              <p className="mb-4 text-dark2">
+              <p className="mb-4 text-shader_600">
                 This image will be used for featuring your collection on the
                 homepage, category pages, or other display areas of Demask
               </p>
@@ -368,7 +368,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                       (imgCollection.current as HTMLInputElement).click();
                     }
                   }}
-                  className="flex flex-col items-center justify-center py-6 border rounded-lg cursor-pointer border-dark4"
+                  className="flex flex-col items-center justify-center py-6 border rounded-lg cursor-pointer border-shader_500"
                 >
                   {selectedImage ? (
                     <img
@@ -387,7 +387,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                       className="object-cover w-[120px] rounded-[2rem] mx-auto"
                     />
                   )}
-                  <div className="text-sm text-dark3 ">
+                  <div className="text-sm text-shader_500 ">
                     <span>Recommended size: 500 x 500</span>
                   </div>
                 </div>
@@ -397,14 +397,14 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               <label htmlFor="name" className={styles.title}>
                 Collaborators
               </label>
-              <p className="mb-4 text-dark2">
+              <p className="mb-4 text-shader_600">
                 Collaborators can only edit how this collection or drop appears
                 on Demask
               </p>
               {values?.collaborators &&
                 values.collaborators.map((item: string, index: number) => (
                   <div
-                    className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-dark5 text-dark2"
+                    className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-shader_600 text-shader_600"
                     key={index}
                   >
                     <p>{`${item.slice(0, 6)}...${item.slice(-8)}`}</p>
@@ -443,7 +443,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 </div>
               ) : (
                 <p
-                  className="text-sm font-semibold cursor-pointer text-secondary2"
+                  className="text-sm font-semibold cursor-pointer text-primary_500"
                   onClick={() => setCheckCollaborator(true)}
                 >
                   + Add collaborator
@@ -454,7 +454,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             {socialList.map((item, index) => (
               <div key={index}>
                 <div className="flex mt-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-dark4 min-w-[132px] gap-x-2 text-dark2 area_darkBG1">
+                  <div className="flex p-2 font-normal rounded-lg bg-shader_500 min-w-[132px] gap-x-2 text-shader_600 area_shader_800">
                     {item.icon}
                     {item.title}
                   </div>

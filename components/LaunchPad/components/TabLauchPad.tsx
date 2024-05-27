@@ -59,13 +59,13 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
               {isSuccess && data?.pages[0]?.data.length > 0 ? (
                 data.pages.map((page, pageIndex) => (
                   <Fragment key={pageIndex}>
-                    <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
+                    <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
                       {page?.data?.map(
                         (item: LaunchpadData, itemIndex: number) => (
                           <li
                             title={item?.metadata?.name}
                             key={itemIndex}
-                            className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:bg-darkBG1 dark:border-none"
+                            className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:bg-shader_800 dark:border-none"
                           >
                             <ActiveLaunchItem item={item} query={query} />
                           </li>

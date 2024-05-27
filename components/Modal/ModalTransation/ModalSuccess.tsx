@@ -48,14 +48,14 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
               <a
                 href={`${demask.urltxHash}tx/${transactionHash}`}
                 target="_blank"
-                className="flex items-center text-xs cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+                className="flex items-center text-xs cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
               >
                 <p>View on {demask.chainName}</p>
                 <p>
                   <URLTransactionIcon
                     width={16}
                     height={16}
-                    className="group-hover:fill-secondary5"
+                    className="group-hover:fill-primary_400"
                   />
                 </p>
               </a>
@@ -117,7 +117,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
               <div className="flex flex-col items-center">
                 {isLoadingMeta ? (
                   <div className="flex items-center justify-center w-40 h-40 mx-auto mt-10 mb-6">
-                    <BiLoaderAlt className="mb-6 text-5xl animate-spin text-secondary5" />
+                    <BiLoaderAlt className="mb-6 text-5xl animate-spin text-primary_400" />
                   </div>
                 ) : metadataRes ? (
                   <div className="w-40 h-40 mx-auto mt-10 mb-6">
@@ -132,14 +132,14 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                 <a
                   href={`${demask.urltxHash}tx/${transactionHash}`}
                   target="_blank"
-                  className="flex items-center text-xs text-center cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+                  className="flex items-center text-xs text-center cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
                 >
                   <p>View on {demask.chainName}</p>
                   <p>
                     <URLTransactionIcon
                       width={16}
                       height={16}
-                      className="group-hover:fill-secondary5"
+                      className="group-hover:fill-primary_400"
                     />
                   </p>
                 </a>
@@ -173,14 +173,14 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                 <a
                   href={`${demask.urltxHash}tx/${transactionHash}`}
                   target="_blank"
-                  className="flex items-center text-xs text-center cursor-pointer text-dark2 gap-x-1 hover:text-secondary5 group"
+                  className="flex items-center text-xs text-center cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
                 >
                   <p>View on {demask.chainName}</p>
                   <p>
                     <URLTransactionIcon
                       width={16}
                       height={16}
-                      className="group-hover:fill-secondary5"
+                      className="group-hover:fill-primary_400"
                     />
                   </p>
                 </a>

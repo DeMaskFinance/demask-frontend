@@ -25,7 +25,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
             data?.data?.map((item: any, idx: number) => (
               <tr
                 key={idx}
-                className="flex px-2 text-xs hover:cursor-pointer text-dark2 group hover:bg-slate-100"
+                className="flex px-2 text-xs hover:cursor-pointer text-shader_600 group hover:bg-slate-100"
               >
                 <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
                   <div className="flex items-center justify-end text-green">
@@ -46,29 +46,37 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <div className="flex items-center justify-between md:gap-2">
                     <FormatNumber number={item.price} />
-                    <EtherIcon width={18} height={18} className="fill-dark2" />
+                    <EtherIcon
+                      width={18}
+                      height={18}
+                      className="fill-shader_600"
+                    />
                   </div>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <div className="flex items-center justify-end md:gap-2">
                     <FormatNumber number={item.amountToken} />
-                    <EtherIcon width={18} height={18} className="fill-dark2" />
+                    <EtherIcon
+                      width={18}
+                      height={18}
+                      className="fill-shader_600"
+                    />
                   </div>
                 </td>
                 <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
-                  <div className="flex items-center justify-end md:gap-2 text-secondary5">
+                  <div className="flex items-center justify-end md:gap-2 text-primary_400">
                     <Link
                       href={`${demask.urltxHash}address/${item.sender}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-secondary5"
+                      className="text-primary_400"
                     >
                       {item.sender.slice(0, 4) + "..." + item.sender.slice(-4)}
                     </Link>
                   </div>
                 </td>
                 <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
-                  <div className="flex justify-end pr-2 text-secondary5">
+                  <div className="flex justify-end pr-2 text-primary_400">
                     <Link
                       target="_blank"
                       href={`${demask.urltxHash}tx/${item.transactionHash}`}

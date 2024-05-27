@@ -32,15 +32,15 @@ const Invite = () => {
         Join now to start earning points! Accepting a referral boosts your
         points by 5% forever.
       </p>
-      <p className="text-secondary5">Complete to Join:</p>
-      <div className="p-6 mt-6 mb-4 border rounded-lg border-dark4 area_input">
+      <p className="text-primary_400">Complete to Join:</p>
+      <div className="p-6 mt-6 mb-4 border rounded-lg border-shader_500 bg-shader_700 border-shader_700">
         <div className="flex h-20 gap-x-6">
           <div className="relative h-full">
-            <div className="flex items-center justify-center w-8 h-8 text-white rounded-full bg-secondary5">
+            <div className="flex items-center justify-center w-8 h-8 text-white rounded-full bg-primary_400">
               {account ? <MdDone /> : <BiLoaderAlt className="animate-spin" />}
-              <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-secondary5 absolute bg-opacity-20"></div>
+              <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-primary_400 absolute bg-opacity-20"></div>
             </div>
-            <div className="absolute w-[1px] h-[100%] bg-secondary5 top-[11%] -z-40 left-[50%]"></div>
+            <div className="absolute w-[1px] h-[100%] bg-primary_400 top-[11%] -z-40 left-[50%]"></div>
           </div>
           {account ? (
             "Connected"
@@ -51,7 +51,7 @@ const Invite = () => {
           )}
         </div>
         <div className="flex items-center gap-x-6">
-          <div className="flex items-center justify-center w-8 h-8 text-white rounded-full bg-secondary5">
+          <div className="flex items-center justify-center w-8 h-8 text-white rounded-full bg-primary_400">
             {!account ? (
               <p className="leading-snug">x</p>
             ) : isLoading ? (
@@ -61,11 +61,11 @@ const Invite = () => {
             ) : (
               <p className="leading-snug">x</p>
             )}
-            <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-secondary5 absolute bg-opacity-20"></div>
+            <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-primary_400 absolute bg-opacity-20"></div>
           </div>
           <div>
             Referral Check
-            <div className="p-2 px-4 text-center border rounded-lg borer-dark4">
+            <div className="p-2 px-4 text-center border rounded-lg borer-shader_500">
               {referral}
             </div>
           </div>

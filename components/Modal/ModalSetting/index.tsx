@@ -52,10 +52,10 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
     <Wrapper isOpen={isOpenSetting} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <h2 className="flex items-center mb-3 text-xl font-semibold text-dark1 title">
+          <h2 className="flex items-center mb-3 text-xl font-semibold text-shader_700 title">
             Transaction Configurations
           </h2>
-          <div className="text-dark3">
+          <div className="text-shader_500">
             <div className="flex items-center my-2 gap-x-2">
               <h2 className="font-semibold ">Slippage Tolerance</h2>
               <Tippy
@@ -72,7 +72,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                   <TokenIconNotDefine
                     width={16}
                     height={16}
-                    className="fill-dark3"
+                    className="fill-shader_500"
                   />
                 </div>
               </Tippy>
@@ -82,7 +82,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 <input
                   type="number"
                   value={slippageTo}
-                  className="w-[60%] h-full pb-2 pt-[6px] mr-2 font-semibold bg-dark5 outline-none"
+                  className="w-[60%] h-full pb-2 pt-[6px] mr-2 font-semibold bg-shader_600 outline-none"
                   onChange={(e) => handleChangeSlippage(e)}
                   onBlur={() => {
                     if (slippageTo > 100) {
@@ -97,7 +97,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 {Slippage.map((item, index) => (
                   <Button
                     key={index}
-                    className="w-20 py-1 mr-2 font-semibold border border-dark4 text-dark3 area_darkBG1"
+                    className="w-20 py-1 mr-2 font-semibold border border-shader_500 text-shader_500 area_shader_800"
                     primary={slippage === item}
                     onClick={() => {
                       setSlippageTo(item);
@@ -129,7 +129,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                   <TokenIconNotDefine
                     width={16}
                     height={16}
-                    className="fill-dark3"
+                    className="fill-shader_500"
                   />
                 </div>
               </Tippy>

@@ -3,27 +3,26 @@
 @tailwind utilities;
 @layer base {
   body {
-    @apply dark:bg-darkBG0 bg-white dark:text-dark3;
+    @apply bg-shader_900 text-shader_500;
   }
-  header,
-  footer {
-    @apply dark:bg-darkBG1 bg-white dark:border-none;
+  header {
+    @apply bg-shader_900 border-none;
   }
   input,
   textarea {
-    @apply dark:bg-darkBG2 dark:border-darkBG2;
+    @apply dark:bg-shader_700 dark:border-shader_700;
   }
   label {
-    @apply dark:text-dark4;
+    @apply dark:text-shader_500;
   }
   tr {
-    @apply dark:border-dark2;
+    @apply dark:border-shader_600;
   }
   thead > tr {
     @apply dark:text-white;
   }
   tbody tr {
-    @apply dark:hover:bg-dark0 dark:hover:text-dark4;
+    @apply dark:hover:bg-shader_900 dark:hover:text-shader_500;
   }
 }
 @layer components {
@@ -31,43 +30,46 @@
     @apply flex flex-col gap-6 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 min-h-[80vh];
   }
   .title {
-    @apply font-semibold text-dark1 dark:text-white;
+    @apply font-semibold text-shader_700 dark:text-white;
   }
   .text_gradient {
     @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
   }
   .container_modal {
-    @apply relative z-50 flex flex-col justify-center cursor-default h-fit bg-white dark:bg-darkBG1 rounded-lg;
+    @apply relative z-50 flex flex-col justify-center cursor-default h-fit bg-white dark:bg-shader_800 rounded-lg;
   }
   .input_item {
-    @apply w-full py-2 pl-2 border-dark5 border bg-dark5 rounded-lg transition-all duration-200 hover:border-dark3 placeholder:text-dark2 dark:bg-darkBG2 outline-none dark:border-darkBG2 focus:border-dark2 focus:bg-transparent dark:focus:border-dark;
+    @apply w-full py-2 pl-2  border rounded-lg transition-all duration-200  placeholder:text-shader_600 bg-shader_700 outline-none border-shader_700  focus:bg-transparent focus:border-shader_900;
   }
   .pool_empty {
-    @apply flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-dark4 text-dark2 dark:bg-darkBG1;
+    @apply flex flex-col items-center w-full mb-6 font-medium text-center rounded-lg gap-y-4 py-14 bg-shader_500 text-shader_600 dark:bg-shader_800;
   }
-  .area_input {
-    @apply dark:bg-darkBG2 dark:border-darkBG2;
+  .bg_gradient {
+    @apply bg-gradient-to-r from-[#BA8DE6] to-[#7B54E8];
   }
-  .area_darkBG1 {
-    @apply dark:bg-darkBG1 dark:border-darkBG1;
+  .area_shader_800 {
+    @apply dark:bg-shader_800 dark:border-shader_800;
   }
-  .area_darkBG0 {
-    @apply dark:bg-darkBG0 dark:border-darkBG0;
+  .area_shader_900 {
+    @apply dark:bg-shader_900 dark:border-shader_900;
   }
-  .area_input_hover {
-    @apply dark:hover:bg-dark0 dark:text-white;
+  . {
+    @apply dark:hover:bg-shader_900 dark:text-white;
+  }
+  .area_shader_700 {
+    @apply bg-shader_700 text-white;
   }
   .item_search {
-    @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-dark4 text-dark2 dark:hover:bg-dark0 dark:text-white;
+    @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-shader_500 text-shader_600 dark:hover:bg-shader_900 dark:text-white;
   }
   .item_menu {
-    @apply flex area_input_hover items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-dark5 text-dark2 font-medium;
+    @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-medium;
   }
   .content_modal {
-    @apply flex justify-between text-lg font-semibold text-dark2 dark:text-white;
+    @apply flex justify-between text-lg font-semibold text-shader_600 dark:text-white;
   }
   .title_modal {
-    @apply flex items-center mb-4 text-xl font-semibold text-dark1 dark:text-white;
+    @apply flex items-center mb-4 text-xl font-semibold text-shader_700 dark:text-white;
   }
 }
 body {

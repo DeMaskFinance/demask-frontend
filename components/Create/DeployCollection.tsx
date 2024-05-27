@@ -10,7 +10,7 @@ import { FaAngleDown } from "react-icons/fa";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import WithAuth from "../Common/WithAuth";
-import { BackIcon, BlastIcon, DeployIcon, MonadIcon } from "../Icons";
+import { BlastIcon, DeployIcon, LeftIcon, MonadIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import UploadFile from "./UploadFile";
@@ -21,7 +21,7 @@ const updateMeta = {
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
   inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-dark3 placeholder:text-sm hover:border-secondary3 focus:border-secondary3 dark:bg-darkBG2 dark:border-darkBG2",
+    "block w-full py-2 pl-2 border rounded-lg outline-none border-shader_500 placeholder:text-sm hover:border-primary_400 focus:border-primary_400 dark:bg-shader_700 dark:border-shader_700",
   btnActive: "rounded-full bg-base2",
 };
 const validationSchema = yup.object().shape({
@@ -54,11 +54,11 @@ const DeployCollection = () => {
   const chainList = [
     {
       name: "Monad",
-      icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
+      icon: <MonadIcon className="fill-shader_600 " width={20} height={20} />,
     },
     {
       name: "Blast",
-      icon: <BlastIcon className="fill-dark2 " width={20} height={20} />,
+      icon: <BlastIcon className="fill-shader_600 " width={20} height={20} />,
     },
   ];
   const initialValues = {
@@ -66,7 +66,7 @@ const DeployCollection = () => {
     symbol: "",
     chain: {
       name: "Monad",
-      icon: <MonadIcon className="fill-dark2 " width={20} height={20} />,
+      icon: <MonadIcon className="fill-shader_600 " width={20} height={20} />,
     },
   };
 
@@ -108,14 +108,14 @@ const DeployCollection = () => {
             <div className="sticky top-16">
               <div className="flex items-center gap-x-2">
                 <div onClick={() => router.back()}>
-                  <BackIcon width={20} height={20} />
+                  <LeftIcon width={20} height={20} />
                 </div>
                 <h2 className="flex items-center text-2xl font-semibold text_gradient gap-x-1">
                   <DeployIcon width={22} height={22} />
                   Create An Collection
                 </h2>
               </div>
-              <h3 className="my-2 font-normal text-dark2">
+              <h3 className="my-2 font-normal text-shader_600">
                 Deploy an ERC-1155 contract to create your NFT collection
               </h3>
               <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
@@ -134,7 +134,7 @@ const DeployCollection = () => {
             <h4 className="text-xl font-semibold lg:text-2xl title">
               You’ll need to deploy a contract
             </h4>
-            <h3 className="mt-2 font-normal text-dark2">
+            <h3 className="mt-2 font-normal text-shader_600">
               You’ll need to deploy an ERC-1155 contract onto the Blockchain
               before you can create a Collection
             </h3>
@@ -216,18 +216,18 @@ const DeployCollection = () => {
                         <p>{values.chain.name}</p>
                       </div>
                       <FaAngleDown
-                        className={`text-dark2 transition-all duration-150 ${
+                        className={`text-shader_600 transition-all duration-150 ${
                           isOpenChain ? "rotate-180" : "rotate-0"
                         }`}
                       />
                       <ul
-                        className={`p-3 rounded-lg absolute w-full left-0 top-12  bg-dark5 transition-all duration-500 max-h-40 overflow-y-scroll area_input ${
+                        className={`p-3 rounded-lg absolute w-full left-0 top-12  bg-shader_600 transition-all duration-500 max-h-40 overflow-y-scroll bg-shader_700 border-shader_700 ${
                           isOpenChain ? "block opacity-100" : "hidden opacity-0"
                         }`}
                       >
                         {chainList.map((item, index) => (
                           <li
-                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-dark4 area_input_hover"
+                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
                             onClick={() => setFieldValue("chain", item)}
                           >
                             {item.icon}

@@ -51,7 +51,7 @@ export const ItemList: React.FC<ItemListProps> = ({
   }, [inView]);
 
   return (
-    <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-dark2">
+    <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-5 md:grid-cols-3 text-shader_600">
       {isLoading ? (
         <SkeletonSubCategory length={5} />
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
@@ -60,7 +60,7 @@ export const ItemList: React.FC<ItemListProps> = ({
             <Fragment key={pageIndex}>
               {page?.data?.map((item: any, index: number) => (
                 <div key={index} className="relative overflow-hidden">
-                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group dark:border-dark1 dark:bg-darkBG2 lg:text-base hover:shadow-home">
+                  <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer group dark:border-shader_700 dark:bg-shader_700 lg:text-base hover:shadow-home">
                     <div className="relative h-[140px] overflow-hidden">
                       <div
                         onClick={() => {
@@ -81,12 +81,12 @@ export const ItemList: React.FC<ItemListProps> = ({
                           }
                           className="basis-1/2"
                         >
-                          <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-dark1 bg-dark5 hover:bg-dark3 gap-x-2">
+                          <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-shader_700 bg-shader_600 hover:bg-shader_500 gap-x-2">
                             <div>
                               <AddIcon
                                 width={20}
                                 height={20}
-                                className="fill-dark1"
+                                className="fill-shader_700"
                               />
                             </div>
                             <p>Add</p>
@@ -100,12 +100,12 @@ export const ItemList: React.FC<ItemListProps> = ({
                           }
                           className="basis-1/2"
                         >
-                          <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-dark1 bg-dark5 hover:bg-dark3 gap-x-2">
+                          <Button className="flex items-center w-full py-3 font-semibold transition-all duration-100 text-shader_700 bg-shader_600 hover:bg-shader_500 gap-x-2">
                             <div>
                               <SwapIconProfile
                                 width={20}
                                 height={20}
-                                className="fill-dark1"
+                                className="fill-shader_700"
                               />
                             </div>
                             <p>Swap</p>
@@ -116,7 +116,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                     <div className="w-full">
                       <Link
                         href={`/collection/${item.nftAddress}?typeERC=${item.type}`}
-                        className="flex-wrap max-w-full mt-2 text-xs font-semibold hover:underline text-dark3 line-clamp-1 hover:underline-offset-1"
+                        className="flex-wrap max-w-full mt-2 text-xs font-semibold hover:underline text-shader_500 line-clamp-1 hover:underline-offset-1"
                       >
                         {item?.collectionName ? (
                           <ModalDocument data={item?.collectionName} />
@@ -127,7 +127,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                       <div className="flex w-full">
                         <h6
                           title={item.metadata?.name}
-                          className="flex items-start w-full gap-2 font-medium uppercase text-dark1"
+                          className="flex items-start w-full gap-2 font-medium uppercase text-shader_700"
                         >
                           <span className="flex-wrap max-w-full text-lg line-clamp-1">
                             {item.metadata?.name ? (
@@ -140,15 +140,15 @@ export const ItemList: React.FC<ItemListProps> = ({
                       </div>
                       <div className="flex items-center justify-between">
                         <LogoIconCard chainId={chainId} />
-                        <p className="px-2 h-[23px] rounded-full bg-dark4 text-[10px] uppercase leading-[23px]">
+                        <p className="px-2 h-[23px] rounded-full bg-shader_500 text-[10px] uppercase leading-[23px]">
                           {item.type}
                         </p>
                       </div>
-                      <div className="flex justify-between text-sm text-dark3">
+                      <div className="flex justify-between text-sm text-shader_500">
                         <p>Floor price</p>
                         <p>Balance</p>
                       </div>
-                      <div className="flex justify-between font-semibold text-dark2">
+                      <div className="flex justify-between font-semibold text-shader_600">
                         <div>
                           <FormatNumber number={item.floorPrice} />
                         </div>

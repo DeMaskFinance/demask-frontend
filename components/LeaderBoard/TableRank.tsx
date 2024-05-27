@@ -16,7 +16,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
       className={`flex px-2 text-sm  hover:cursor-pointer  group hover:bg-slate-100 ${
         currentRank
           ? "bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]"
-          : "text-dark2"
+          : "text-shader_600"
       }`}
     >
       <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
@@ -63,7 +63,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
       </td>
       <td
         className={`py-2 flex ${
-          currentRank ? "text-white" : "text-secondary5"
+          currentRank ? "text-white" : "text-primary_400"
         } items-center justify-center lg:w-full md:w-full w-[140px]`}
       >
         <Link
@@ -79,7 +79,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           <EtherIcon
             width={18}
             height={18}
-            className={`${currentRank ? "fill-white" : "fill-dark2"}`}
+            className={`${currentRank ? "fill-white" : "fill-shader_600"}`}
           />
         </div>
       </td>
@@ -89,7 +89,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           <EtherIcon
             width={18}
             height={18}
-            className={`${currentRank ? "fill-white" : "fill-dark2"}`}
+            className={`${currentRank ? "fill-white" : "fill-shader_600"}`}
           />
         </div>
       </td>
@@ -99,7 +99,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           <EtherIcon
             width={18}
             height={18}
-            className={`${currentRank ? "fill-white" : "fill-dark2"}`}
+            className={`${currentRank ? "fill-white" : "fill-shader_600"}`}
           />
         </div>
       </td>
@@ -137,7 +137,7 @@ const TableRank = () => {
   }, [page, refetch, account]);
 
   return (
-    <div className="px-2 py-4 mt-10 overflow-x-scroll border bg-white rounded-lg dark:bg-darkBG1 dark:border-darkBG1 border-dark4 shadow-home min-h-[500px] flex flex-col justify-between">
+    <div className="px-2 py-4 mt-10 overflow-x-scroll border bg-white rounded-lg dark:bg-shader_800 dark:border-shader_800 border-shader_500 shadow-home min-h-[500px] flex flex-col justify-between">
       <table className="w-full text-left border-collapse">
         <thead className="">
           <tr className="flex px-2 pb-2 text-base">
@@ -187,16 +187,16 @@ const TableRank = () => {
           className={`${
             isPreviousData || page === 1 || isFetching
               ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-secondary2 transition-all"
+              : "hover:text-white hover:bg-primary_500 transition-all"
           } w-5 flex items-center text-center justify-center rounded-full transition-all`}
         >
           <MdNavigateBefore />
         </button>
         <p>
           Page
-          <span className="px-2 font-medium text-secondary2">{page}</span> of
+          <span className="px-2 font-medium text-primary_500">{page}</span> of
           <span
-            className="px-2 font-medium cursor-pointer text-secondary2"
+            className="px-2 font-medium cursor-pointer text-primary_500"
             onClick={() =>
               page !== data?.totalPages && setPage(data?.totalPages)
             }
@@ -210,7 +210,7 @@ const TableRank = () => {
           className={`${
             isPreviousData || page === data?.totalPages || isFetching
               ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-secondary2 transition-all"
+              : "hover:text-white hover:bg-primary_500 transition-all"
           } w-5 flex items-center text-center justify-center rounded-full transition-all`}
         >
           <MdOutlineNavigateNext />

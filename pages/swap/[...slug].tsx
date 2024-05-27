@@ -1,6 +1,5 @@
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { BackIcon } from "@/components/Icons";
 import { SkeletonSwap } from "@/components/Skeleton";
 import HistorySwap from "@/components/Swap/History";
 import SwapTransaction from "@/components/Swap/SwapTransaction/SwapTransaction";
@@ -53,14 +52,7 @@ const Swap: React.FC = () => {
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[80vh]">
-          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-dark0 dark:text-white">
-            <Link href={`/swap?chain=${chainId}`}>
-              <BackIcon
-                width={24}
-                height={24}
-                className="cursor-pointer hover:fill-secondary5"
-              />
-            </Link>
+          <div className="flex items-center mb-6 text-xl font-semibold gap-x-2 text-shader_900 dark:text-white">
             <div className="w-[30px] h-[30px]">
               <MediaNFT data={data} isControls={false} />
             </div>

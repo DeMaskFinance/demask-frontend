@@ -25,7 +25,7 @@ const SkeletonSubCategory: React.FC<SkeletonProps> = ({ length }) => {
 const SkeletonCategory = () => {
   const array = Array.from({ length: 4 }, (_, index) => index);
   return (
-    <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto animate-pulse lg:grid-cols-4 md:grid-cols-2 text-dark2">
+    <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto animate-pulse lg:grid-cols-4 md:grid-cols-2 text-shader_600">
       {array.map((item, index) => (
         <div className="flex flex-col gap-4" key={index}>
           <div className="h-[188px] p-2 rounded-lg bg-slate-200 dark:bg-slate-700"></div>

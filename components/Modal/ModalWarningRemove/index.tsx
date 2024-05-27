@@ -30,7 +30,7 @@ const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({
           <h2 className="title_modal">Notification</h2>
           <div className="flex flex-col items-center my-6">
             <WarningSwapIcon width={120} height={120} />
-            <p className="mt-6 font-normal text-center text-dark2">
+            <p className="mt-6 font-normal text-center text-shader_600">
               Due to a violation of out regulations, the NFT set is currently
               not tradable directly on the DeMask interface.
             </p>

@@ -22,7 +22,7 @@ const ReferralUser = () => {
   return (
     <div>
       {account && (
-        <div className="p-6 border rounded-lg border-dark4 area_darkBG1">
+        <div className="p-6 border rounded-lg border-shader_500 area_shader_800">
           {/* <div className="flex justify-between w-full px-4 py-2 mb-6 font-semibold text-white bg-opacity-50 rounded-lg bg-green ">
       <div>
         <p>Referral status</p>
@@ -31,7 +31,7 @@ const ReferralUser = () => {
     </div> */}
           <p>Referral link</p>
           <div className="flex mt-2 mb-4 gap-x-2">
-            <div className="flex items-center w-full px-4 py-2 font-semibold rounded-lg whitespace-nowrap flex-nowrap gap-x-2 area_input text-dark2 bg-dark4 dark:bg-darkBG2">
+            <div className="flex items-center w-full px-4 py-2 font-semibold rounded-lg whitespace-nowrap flex-nowrap gap-x-2 bg-shader_700 border-shader_700 text-shader_600 bg-shader_500 dark:bg-shader_700">
               <span className="">
                 https://test.demask.finance/invite?code={data?.referralCode}
               </span>
@@ -43,11 +43,11 @@ const ReferralUser = () => {
           </div>
           <p>Accept a Referral</p>
           <div className="flex mt-2 gap-x-2">
-            <div className="flex w-full px-4 py-2 font-semibold rounded-lg area_input text-dark2 bg-dark4 dark:bg-darkBG2 gap-x-2">
+            <div className="flex w-full px-4 py-2 font-semibold rounded-lg bg-shader_700 border-shader_700 text-shader_600 bg-shader_500 dark:bg-shader_700 gap-x-2">
               {data?.referredByAddress ? (
                 <div className="flex items-center gap-x-2">
                   <MdDone className="text-green" /> You're in! Referred by{" "}
-                  <span className="text-secondary5">
+                  <span className="text-primary_400">
                     {`${data?.referredByAddress.slice(
                       0,
                       3
