@@ -25,9 +25,9 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
             data?.data?.map((item: any, idx: number) => (
               <tr
                 key={idx}
-                className="flex px-2 text-xs hover:cursor-pointer text-shader_600 group hover:bg-slate-100"
+                className="flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
               >
-                <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
+                <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
                   <div className="flex items-center justify-end text-green">
                     <span
                       className={`border text-xs bg-opacity-10 w-16 text-center ${
@@ -40,30 +40,22 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                     </span>
                   </div>
                 </td>
-                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[100px]">
+                <td className="py-4 flex items-center justify-center lg:w-full md:w-full w-[100px]">
                   <FormatNumber number={item.amountNFT} />
                 </td>
-                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <div className="flex items-center justify-between md:gap-2">
                     <FormatNumber number={item.price} />
-                    <EtherIcon
-                      width={18}
-                      height={18}
-                      className="fill-shader_600"
-                    />
+                    <EtherIcon width={18} height={18} />
                   </div>
                 </td>
-                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <div className="flex items-center justify-end md:gap-2">
                     <FormatNumber number={item.amountToken} />
-                    <EtherIcon
-                      width={18}
-                      height={18}
-                      className="fill-shader_600"
-                    />
+                    <EtherIcon width={18} height={18} />
                   </div>
                 </td>
-                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
+                <td className="py-4 flex items-center justify-center lg:w-full md:w-full w-[140px]">
                   <div className="flex items-center justify-end md:gap-2 text-primary_400">
                     <Link
                       href={`${demask.urltxHash}address/${item.sender}`}
@@ -75,7 +67,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                     </Link>
                   </div>
                 </td>
-                <td className="py-2 flex items-center justify-center lg:w-full md:w-full w-[140px]">
+                <td className="py-4 flex items-center justify-center lg:w-full md:w-full w-[140px]">
                   <div className="flex justify-end pr-2 text-primary_400">
                     <Link
                       target="_blank"
@@ -88,7 +80,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                     </Link>
                   </div>
                 </td>
-                <td className="py-2 lg:w-full md:w-[175px] w-[200px]">
+                <td className="py-4 lg:w-full md:w-[175px] w-[200px]">
                   <div className="flex items-center justify-end transition-all w-[inherit]">
                     {item.blockTime}
                   </div>

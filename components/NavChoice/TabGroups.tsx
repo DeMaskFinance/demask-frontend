@@ -31,7 +31,8 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
       setWidthBtn(buttonRefs.current[0].offsetWidth);
     }
   }, []);
-  console.log(activeChoice);
+  // const isInclude = choices.includes(`${activeChoice}%`);
+  // console.log(isInclude);
 
   return (
     <div
@@ -49,7 +50,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
         }`}
         style={{
           transform: `translateX(${translateX}px)`,
-          width: `${widthBtn}px`,
+          width: `${activeChoice ? widthBtn : 0}px`,
         }}
       ></div>
       {choices.map((choice, index) => (

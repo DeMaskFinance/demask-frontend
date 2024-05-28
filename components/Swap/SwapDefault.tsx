@@ -66,7 +66,7 @@ export default function SwapDefault() {
         <RefetchIcon
           width={18}
           height={18}
-          className="cursor-pointer text-yellow"
+          className="cursor-pointer text-primary_200"
         />
       ),
       content: "Refresh",
@@ -174,7 +174,7 @@ export default function SwapDefault() {
                     }}
                   />
                 </div>
-                <div className="flex flex-col items-end w-[40%]">
+                <div className="w-[40%]">
                   <TabGroups
                     choices={["25%", "50%", "75%", "100%"]}
                     activeChoice={activeChoiceNFT}
@@ -206,20 +206,14 @@ export default function SwapDefault() {
           </form>
           <div className="flex justify-center w-full">
             {activeChoice === "Buy" && account && (
-              <button
-                type="button"
-                className="py-2 w-[144px] bg-green hover:text-green hover:bg-white hover:border-green border rounded-lg text-sm text-white"
-              >
-                Buy NFT
-              </button>
+              <Button type="button" green className="py-2 w-[144px]">
+                Buy Now
+              </Button>
             )}
             {activeChoice === "Sell" && account && (
-              <button
-                type="button"
-                className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
-              >
-                Sell NFT
-              </button>
+              <Button type="button" red className="py-2 w-[144px]">
+                Sell Now
+              </Button>
             )}
 
             {!account && (

@@ -8,6 +8,7 @@ import "tippy.js/dist/tippy.css";
 import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
 import { NumericFormat } from "react-number-format";
+import { TabGroups } from "@/components/NavChoice";
 interface ModalSettingProps {
   isOpenSetting: boolean;
   setIsOpenSetting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +35,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
     }
   }, [txDeadline]);
 
-  const Slippage = [0.1, 0.5, 1];
+  const Slippage = ["0.1%", "0.5%", "1%"];
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -47,6 +48,11 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
     setSlippageTo(Number(e.target.value));
     updateSlippage(Number(e.target.value));
   };
+  const handleChoiceChange = (item: string) => {
+    setSlippageTo(parseFloat(item));
+    updateSlippage(parseFloat(item));
+  };
+  console.log(slippage);
 
   return (
     <Wrapper isOpen={isOpenSetting} onClick={handleClose}>
@@ -76,12 +82,12 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 </div>
               </Tippy>
             </div>
-            <div className="flex items-center justify-between w-full input_item">
-              <div>
+            <div className="flex items-center justify-between w-full gap-x-2">
+              <div className="rounded-lg border_500 bg-shader_600">
                 <input
                   type="number"
                   value={slippageTo}
-                  className="w-[60%] h-full pb-2 pt-[6px] mr-2 font-semibold bg-shader_600 outline-none"
+                  className="w-[60%] h-full py-[10px] mr-2 font-semibold bg-shader_600 outline-none pl-2"
                   onChange={(e) => handleChangeSlippage(e)}
                   onBlur={() => {
                     if (slippageTo > 100) {
@@ -92,21 +98,11 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 />
                 <span>%</span>
               </div>
-              <div className="flex">
-                {Slippage.map((item, index) => (
-                  <Button
-                    key={index}
-                    className="w-20 py-1 mr-2 font-semibold border border-shader_200 text-shader_200"
-                    primary={slippage === item}
-                    onClick={() => {
-                      setSlippageTo(item);
-                      updateSlippage(item);
-                    }}
-                  >
-                    {item}%
-                  </Button>
-                ))}
-              </div>
+              <TabGroups
+                choices={Slippage}
+                activeChoice={`${slippage}%`}
+                onChoiceChange={handleChoiceChange}
+              />
             </div>
             {(slippageTo > 5 || slippageTo === 0) && (
               <p className="mt-2 mb-2 text-xs text-yellow" key="NFTbalance">

@@ -18,6 +18,7 @@ interface ButtonProps {
   gradient?: boolean;
   isLoadingBtn?: boolean;
   green_2?: boolean;
+  red?: boolean;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -37,6 +38,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   isLoadingBtn,
   gradient,
   green_2,
+  red,
 }) => {
   return (
     <button
@@ -49,26 +51,28 @@ const Button: FunctionComponent<ButtonProps> = ({
       flex
       items-center
       justify-center
+      transition-all duration-150 ease-linear
+      font-semibold
       ${
         primary
-          ? "bg-primary_500 text-white font-medium hover:bg-primary_400 border boder-white hover:border-primary_400 active:bg-primary_400 rounded-lg transition-all duration-150 ease-linear dark:bg-se dark:border-primary_500"
+          ? "bg-primary_500 text-white  hover:bg-primary_400 border boder-white hover:border-primary_400 active:bg-primary_400 rounded-lg"
           : ""
       }
-      ${third ? "bg-primary_400 text-white font-medium text-sm" : ""}
+      ${third ? "bg-primary_400 text-white  text-sm" : ""}
       ${
         active
           ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600 font-semibold"
           : ""
       }
       ${secondary ? "bg-white text-shader_500" : ""}
-      ${
-        outline
-          ? " border border-shader_500 dark:border-shader_700 dark:text-white"
-          : ""
-      }
+      ${outline ? " border border-shader_500 dark:border-shader_700 " : ""}
       ${
         green &&
-        "bg-green hover:bg-white hover:text-green boder-green hover:border-green text-white transition-all duration-150 ease-linear border rounded-lg"
+        "bg-green border-green hover:bg-opacity-80 text-white  border rounded-lg"
+      }
+      ${
+        red &&
+        "bg-red border-red hover:bg-opacity-80 text-white  border rounded-lg"
       }
       ${gradient && "bg_gradient text-white font-semibold"}
       ${

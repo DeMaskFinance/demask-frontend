@@ -55,29 +55,29 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
           onChoiceChange={handleChoiceChange}
         />
         <table className="w-full mt-2 text-left border-collapse">
-          <thead className="">
-            <tr className="flex pb-2 text-sm ">
+          <thead className=" bg-shader_600 text-shader_200">
+            <tr className="flex px-4 py-3 text-sm">
               <th className="flex justify-start pl-2 md:w-[70%] w-[100px]">
-                Type
+                TYPE
               </th>
               <th className="flex justify-center lg:w-full md:w-full w-[100px]">
-                NFT amount
+                NFT AMOUNT
               </th>
               <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                Price
+                PRICE
               </th>
               <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                Total
+                TOTAL
               </th>
               <th className="flex justify-center lg:w-full md:w-full w-[140px]">
-                From
+                FROM
               </th>
               <th className="flex justify-center lg:w-full md:w-full w-[140px]">
-                Tx
+                TX
               </th>
               <th className="flex  lg:w-full md:w-full w-[200px] pr-2">
                 <p className="lg:w-full flex items-center justify-end md:w-[175px] w-[200px]">
-                  Time
+                  TIME
                 </p>
               </th>
             </tr>
