@@ -42,7 +42,7 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
               target="_blank"
               className="flex items-center text-xs cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
             >
-              <p>View on {demask.chainName}</p>
+              <p className="text-shader_200">View on {demask.chainName}</p>
               <p>
                 <URLTransactionIcon
                   width={16}
@@ -51,21 +51,6 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
                 />
               </p>
             </a>
-            <div className="flex items-center mt-6 gap-x-4">
-              <Button
-                className="px-6 py-2 font-semibold text-white bg-shader_500"
-                onClick={handleClose}
-              >
-                Close
-              </Button>
-              <Button
-                primary
-                className="px-6 py-2 "
-                onClick={() => router.refresh()}
-              >
-                Try again
-              </Button>
-            </div>
           </div>
         </div>
         <button

@@ -37,7 +37,7 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
               <div
                 key={index}
                 onClick={() => handleSelectNFT(item)}
-                className="flex-1 p-3 border-y border-shader_600 hover:bg-shader_500"
+                className="flex-1 p-3 cursor-pointer border-y border-shader_600 hover:bg-shader_500"
               >
                 <div className="flex items-center gap-x-[10px]">
                   <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">

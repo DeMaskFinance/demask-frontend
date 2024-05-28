@@ -288,7 +288,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   ];
 
   return (
-    <div className="flex flex-grow border-l h-fit gap-y-1 lg:gap-y-12 border-shader_600">
+    <div className="flex w-full md:w-[34%] border-l h-fit gap-y-1 lg:gap-y-12 border-shader_600">
       <div className="w-full p-4">
         <div className="flex justify-between gap-4 mb-2">
           <p className="text-xl text-white">Demask Swaps</p>
@@ -684,25 +684,25 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       <ModalSuccess
         isOpenSuccess={isOpenSuccessBuy}
         transactionHash={hash}
-        type="Buy NFT Success"
+        type="Buy NFT"
         setIsOpenSuccess={setIsOpenSuccessBuy}
       />
       <ModalError
         isOpenError={isOpenErrorBuy}
         transactionHash={hash}
-        type="Buy NFT Failed"
+        type="Buy NFT"
         setIsOpenError={setIsOpenErrorBuy}
       />
       <ModalSuccess
         isOpenSuccess={isOpenSuccessSell}
         transactionHash={hash}
-        type="Sell NFT Success"
+        type="Sell NFT"
         setIsOpenSuccess={setIsOpenSuccessSell}
       />
       <ModalError
         isOpenError={isOpenErrorSell}
         transactionHash={hash}
-        type="Sell NFT Failed"
+        type="Sell NFT"
         setIsOpenError={setIsOpenErrorSell}
       />
     </div>

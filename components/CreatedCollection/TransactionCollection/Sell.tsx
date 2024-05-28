@@ -274,13 +274,13 @@ const Sell = () => {
       <ModalSuccess
         isOpenSuccess={isOpenSuccessSell}
         transactionHash={hash}
-        type="Sell NFT Success"
+        type="Sell NFT"
         setIsOpenSuccess={setIsOpenSuccessSell}
       />
       <ModalError
         isOpenError={isOpenErrorSell}
         transactionHash={hash}
-        type="Sell NFT Failed"
+        type="Sell NFT"
         setIsOpenError={setIsOpenErrorSell}
       />
     </Fragment>

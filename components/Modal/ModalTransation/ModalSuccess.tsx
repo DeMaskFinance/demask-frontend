@@ -39,7 +39,12 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           <div>
-            <h2 className="title_modal">{type}</h2>
+            <div className="flex justify-between">
+              <h2 className="title_modal">{type}</h2>
+              <button className="text-lg " onClick={handleClose}>
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+              </button>
+            </div>
             <div className="flex flex-col items-center">
               <SuccessIcon width={80} height={80} />
               <p className="mt-6 mb-2 font-bold text-green">
@@ -50,7 +55,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
                 target="_blank"
                 className="flex items-center text-xs cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
               >
-                <p>View on {demask.chainName}</p>
+                <p className="text-shader_200">View on {demask.chainName}</p>
                 <p>
                   <URLTransactionIcon
                     width={16}
@@ -59,18 +64,9 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
                   />
                 </p>
               </a>
-              <Button primary className="p-2 mt-6" onClick={handleClose}>
-                Close
-              </Button>
             </div>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
-        </button>
       </div>
     </Wrapper>
   );
@@ -134,7 +130,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                   target="_blank"
                   className="flex items-center text-xs text-center cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
                 >
-                  <p>View on {demask.chainName}</p>
+                  <p className="text-shader_200">View on {demask.chainName}</p>
                   <p>
                     <URLTransactionIcon
                       width={16}
@@ -175,7 +171,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                   target="_blank"
                   className="flex items-center text-xs text-center cursor-pointer text-shader_600 gap-x-1 hover:text-primary_400 group"
                 >
-                  <p>View on {demask.chainName}</p>
+                  <p className="text-shader_200">View on {demask.chainName}</p>
                   <p>
                     <URLTransactionIcon
                       width={16}
