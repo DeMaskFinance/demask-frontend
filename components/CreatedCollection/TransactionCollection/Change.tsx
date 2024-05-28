@@ -281,7 +281,7 @@ const Change = () => {
         <div className="absolute bottom-0 w-full">
           {!account ? (
             <Button className="w-full py-2" primary onClick={handleOpen}>
-              CONNECT WALLET
+              Connect Wallet
             </Button>
           ) : !isApprovedNFT ? (
             <Button

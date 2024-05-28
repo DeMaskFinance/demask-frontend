@@ -70,7 +70,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         green &&
         "bg-green hover:bg-white hover:text-green boder-green hover:border-green text-white transition-all duration-150 ease-linear border rounded-lg"
       }
-      ${gradient && "bg_gradient text-white"}
+      ${gradient && "bg_gradient text-white font-semibold"}
       ${
         green_2 &&
         "bg-green text-white bg-opacity-[15%] py-2 px-3 hover:bg-opacity-[25%] border border-green w-max"

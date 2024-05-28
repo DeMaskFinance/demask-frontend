@@ -189,7 +189,7 @@ const Buy = () => {
 
             {!account ? (
               <Button className="w-full py-2" primary onClick={handleOpen}>
-                CONNECT WALLET
+                Connect Wallet
               </Button>
             ) : !isApprovedNFT ? (
               <Button

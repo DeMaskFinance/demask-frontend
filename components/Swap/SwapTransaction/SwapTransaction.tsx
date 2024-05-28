@@ -592,8 +592,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </Button>
           )}
           {!account && (
-            <Button className="w-[144px] py-2" primary onClick={handleOpen}>
-              CONNECT WALLET
+            <Button className="w-[144px] py-2" gradient onClick={handleOpen}>
+              Connect Wallet
             </Button>
           )}
         </div>

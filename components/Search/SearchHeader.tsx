@@ -308,7 +308,7 @@ const Search: FunctionComponent<SearchProps> = ({
                   {topNftData && topNftData?.nftDataList?.length > 0 ? (
                     <div>
                       <div className="block mb-2">
-                        <span className="title">NFTs Top</span>
+                        <span className="title">Top NFT</span>
                         {topNftData.nftDataList
                           .slice(0, 4)
                           .map((item: any, index: number) => (

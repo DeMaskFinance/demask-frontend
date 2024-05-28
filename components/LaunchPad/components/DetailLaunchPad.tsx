@@ -509,7 +509,7 @@ export default function DetailLaunchPad() {
                             primary
                             onClick={handleOpen}
                           >
-                            CONNECT WALLET
+                            Connect Wallet
                           </Button>
                         )}
                       </div>

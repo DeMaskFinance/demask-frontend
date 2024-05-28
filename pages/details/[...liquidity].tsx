@@ -360,7 +360,7 @@ export default function DetailLiquidity() {
                   green
                   onClick={handleGetReward}
                 >
-                  {account ? "COLLECT" : "CONNECT WALLET"}
+                  {account ? "COLLECT" : "Connect Wallet"}
                 </Button>
               </div>
             </div>

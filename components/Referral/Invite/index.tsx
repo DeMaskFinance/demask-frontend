@@ -46,7 +46,7 @@ const Invite = () => {
             "Connected"
           ) : (
             <Button className="h-10 px-8" primary onClick={handleOpen}>
-              CONNECT WALLET
+              Connect Wallet
             </Button>
           )}
         </div>

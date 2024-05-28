@@ -502,7 +502,7 @@ export default function AddLiquidity() {
             )}
             {!account && (
               <Button className="w-[144px] py-2" primary onClick={handleOpen}>
-                CONNECT WALLET
+                Connect Wallet
               </Button>
             )}
             {Math.floor(amountErcDesired) === 0 &&

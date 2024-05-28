@@ -242,7 +242,7 @@ const Sell = () => {
           primary
           onClick={handleOpen}
         >
-          CONNECT WALLET
+          Connect Wallet
         </Button>
       )}
       {data && account && (

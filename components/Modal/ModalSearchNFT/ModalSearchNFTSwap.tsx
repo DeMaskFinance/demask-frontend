@@ -73,10 +73,15 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 title">Select a NFT</p>
-          <div>
-            <div className="relative mb-4">
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
+          <div className="p-4 border-b border-shader_600">
+            <div className="flex items-center justify-between mb-3">
+              <p className=" title">Select a NFT</p>
+              <button className="text-lg " onClick={handleClose}>
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+              </button>
+            </div>
+            <div className="relative">
               <SearchIcon
                 width={20}
                 height={20}
@@ -94,25 +99,36 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </div>
               )}
             </div>
+          </div>
+          <div>
             {searchTerm ? (
               isSuccess && searchData.length > 0 ? (
                 <div className="overflow-y-auto max-h-40">
                   {searchData.map((item: any, index: number) => (
                     <div key={index}>
                       <div
-                        className="flex items-center rounded-lg cursor-pointer hover:bg-shader_500 group gap-x-2"
+                        className="flex items-center p-3 cursor-pointer hover:bg-shader_500 group gap-x-2 border-y border-shader_600"
                         onClick={() => handleSelectNFT(item)}
                       >
-                        <div className="w-8 h-8">
-                          <MediaNFT data={item} isControls={false} />
-                        </div>
-                        <div>
-                          <h2 className="font-medium group-hover:text-primary_400">
-                            {item?.metadata?.symbol}
-                          </h2>
-                          <p className="text-sm text-shader_500">
-                            {item?.metadata?.name}
-                          </p>
+                        <div className="item_search">
+                          <div className="flex items-center gap-x-[10px]">
+                            <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
+                              <MediaNFT data={item} isControls={false} />
+                            </div>
+                            <div className="flex flex-col justify-center">
+                              <span className="block text-sm font-semibold text-white">
+                                <span className="line-clamp-1">
+                                  {item?.metadata?.name}
+                                </span>
+                              </span>
+                              <span className="flex text-xs item-center">
+                                <span className="block font-normal text-shader_200">
+                                  {item.dmlAddress?.slice(0, 4)}...
+                                  {item.dmlAddress?.slice(-8)}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -135,12 +151,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               </div>
             )}
           </div>
-          <button
-            className="absolute top-0 right-0 p-2 text-lg"
-            onClick={handleClose}
-          >
-            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
-          </button>
         </div>
       </div>
     </Wrapper>
