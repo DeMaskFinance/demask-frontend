@@ -10,6 +10,7 @@ import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";
 import TopNFT from "./TopNFT";
 import { SearchIcon } from "@/components/Icons";
+import SearchNotFound from "@/components/Search/SearchNotFound";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: React.Dispatch<React.SetStateAction<boolean>>;
@@ -73,7 +74,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative min-h-[45vh] flex flex-col">
           <div className="p-4 border-b border-shader_600">
             <div className="flex items-center justify-between mb-3">
               <p className=" title">Select a NFT</p>
@@ -85,7 +86,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               <SearchIcon
                 width={20}
                 height={20}
-                className="absolute -translate-y-1/2 top-1/2 left-2"
+                className="absolute text-white -translate-y-1/2 top-1/2 left-2"
               />
               <input
                 className="pl-8 input_item"
@@ -94,13 +95,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               {searchLoading && (
-                <div className="absolute top-[50%] right-2 -translate-y-[100%]">
+                <div className="absolute top-[50%] right-2 -translate-y-[50%]">
                   <BiLoaderAlt className="animate-spin text-primary_400" />
                 </div>
               )}
             </div>
           </div>
-          <div>
+          <>
             {searchTerm ? (
               isSuccess && searchData.length > 0 ? (
                 <div className="overflow-y-auto max-h-40">
@@ -137,11 +138,9 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               ) : (
                 <>
                   {searchFetching ? (
-                    <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    <div className="bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
-                    <span className="text-base text-primary_400">
-                      No Result
-                    </span>
+                    <SearchNotFound />
                   )}
                 </>
               )
@@ -150,7 +149,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 <TopNFT handleSelectNFT={handleSelectNFT} />
               </div>
             )}
-          </div>
+          </>
         </div>
       </div>
     </Wrapper>

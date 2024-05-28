@@ -29,7 +29,7 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
     <div className="">
       {topNftData && topNftData.nftDataList.length > 0 ? (
         <div>
-          <div className="block mb-2 max-h-[250px] overflow-y-scroll">
+          <div className="block mb-2 max-h-[300px] overflow-y-scroll">
             {/* <span className="text-sm font-semibold text-primary_400">
               Top NFT
             </span> */}
@@ -64,7 +64,7 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
       ) : (
         <>
           {topNftFetching ? (
-            <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
+            <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg"></div>
           ) : (
             <span className="text-base text-primary_400"></span>
           )}

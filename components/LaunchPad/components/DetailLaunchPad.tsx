@@ -204,7 +204,7 @@ export default function DetailLaunchPad() {
           {isLoading ? (
             <div className="h-[600px]">
               <div className="flex gap-8">
-                <div className="h-[600px] bg-slate-200 dark:bg-slate-700 lg:w-full animate-pulse rounded-lg"></div>
+                <div className="h-[600px] bg-slate-700  lg:w-full animate-pulse rounded-lg"></div>
               </div>
             </div>
           ) : (

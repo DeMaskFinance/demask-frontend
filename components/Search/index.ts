@@ -1,2 +1,3 @@
-export {default as SearchHeader} from './SearchHeader'
-export {default as SearchInventory} from './SearchInventory'
+export * from "./SearchHeader";
+export * from "./SearchInventory";
+export * from "./SearchNotFound";

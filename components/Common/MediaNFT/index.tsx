@@ -48,7 +48,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               />
               {!loaded && (
                 <div
-                  className={`w-full h-full rounded-lg animate-pulse bg-slate-200 dark:bg-slate-700 `}
+                  className={`w-full h-full rounded-lg animate-pulse bg-slate-700  `}
                 ></div>
               )}
             </div>

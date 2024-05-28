@@ -87,9 +87,9 @@ const Classify: React.FC<ClassifyProps> = ({
           </div>
         </Tippy>
         <div className="relative flex-grow">
-          <div className="flex h-full rounded-lg bg-shader_600 bg-shader_700 border-shader_700">
+          <div className="flex h-full rounded-lg bg-shader_600 border-shader_700">
             <div className="flex items-center justify-center w-8 h-full">
-              <SearchIcon width={20} height={20} className="" />
+              <SearchIcon width={20} height={20} className="text-white" />
             </div>
             <input
               type="text"

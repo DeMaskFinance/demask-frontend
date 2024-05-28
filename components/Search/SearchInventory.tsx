@@ -25,7 +25,7 @@ const SearchInventory = () => {
     <div className="relative flex-grow">
       <div className="flex h-full rounded-lg bg-shader_600" ref={inputRef}>
         <div className="flex items-center justify-center w-8 h-full">
-          <SearchIcon width={20} height={20} />
+          <SearchIcon width={20} height={20} className="text-white" />
         </div>
         <input
           type="text"

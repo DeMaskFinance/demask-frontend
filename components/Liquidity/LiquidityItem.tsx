@@ -93,7 +93,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
                 <FormatNumber number={reward} />
               </div>
             ) : (
-              <p className="w-10 h-4 rounded-full animate-pulse bg-slate-200 dark:bg-slate-700"></p>
+              <p className="w-10 h-4 rounded-full animate-pulse bg-slate-700 "></p>
             )}
             <span>
               <EtherIcon

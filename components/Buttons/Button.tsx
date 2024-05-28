@@ -57,7 +57,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       ${third ? "bg-primary_400 text-white font-medium text-sm" : ""}
       ${
         active
-          ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 dark:bg-shader_700 dark:border-shader_700 border border-shader_500 hover:border-shader_600 dark:hover:bg-shader_600"
+          ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600 font-semibold"
           : ""
       }
       ${secondary ? "bg-white text-shader_500" : ""}

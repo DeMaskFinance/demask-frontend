@@ -1,8 +1,11 @@
 import { Button } from "@/components/Buttons";
+import Copy from "@/components/Common/Copy";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import {
   EtherIcon,
+  EyeIcon,
+  ImgIcon,
   NFTIcon,
   PoolIcon,
   RefetchIcon,
@@ -319,16 +322,61 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             onChoiceChange={handleChoiceChange}
           />
         </div>
-        <div className="flex flex-col justify-center my-6">
-          <div className="w-40 h-40 mx-auto">
-            <MediaNFT data={data} isControls={true} />
+        <div className="p-4 border rounded-lg border-shader_500 bg-shader_700">
+          <div>
+            <div className="flex pb-5 border-b gap-x-5 border-shader_500">
+              <div className="w-[157px] h-[157px]">
+                <MediaNFT data={data} isControls={true} />
+              </div>
+              <div className="flex-grow font-semibold text-white ">
+                <div className="flex gap-x-1">
+                  <h4>{data.metadata.name}</h4>
+                  <p>#{idNFT}</p>
+                </div>
+                <div className="flex items-center gap-x-1">
+                  <h4 className="font-normal text-shader_200">{`${nftAddress.slice(
+                    0,
+                    6
+                  )}...${nftAddress.slice(-5)}`}</h4>
+                  <Copy content={nftAddress} />
+                </div>
+                <p className="mt-2 mb-2 text-primary_400">Liquidity Pool:</p>
+                <div className="flex gap-x-2">
+                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
+                    <p className="font-normal text-primary_200">Reserve NFT</p>
+                    <p>{data.reserveNFT}</p>
+                  </div>
+                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
+                    <p className="font-normal text-primary_200">
+                      Reserve Token
+                    </p>
+                    <div className="flex items-center gap-x-1">
+                      <FormatNumber number={data.reserveToken} />
+                      <EtherIcon width={16} height={16} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center mx-auto mt-5 gap-x-2">
+              <Button
+                active
+                className="border-2 gap-x-2"
+                onClick={handleShowDetail}
+              >
+                <EyeIcon width={20} height={20} className="text-shader_200" />
+                View detail
+              </Button>
+              <Button
+                className="flex whitespace-nowrap gap-x-2"
+                green_2
+                onClick={handleSearchNFT}
+              >
+                <ImgIcon width={20} height={20} />
+                Select NFT
+              </Button>
+            </div>
           </div>
-          <p
-            className="mx-auto mt-1 text-xs cursor-pointer text-shader_500 hover:text-primary_400"
-            onClick={handleShowDetail}
-          >
-            Show detail
-          </p>
         </div>
         <form className="mt-5">
           <div>
@@ -357,28 +405,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   </div>
                 )}
               </div>
-              <div className="flex items-center text-sm text-shader_700">
-                <div className="flex items-center mr-2">
-                  <span className="mr-1">LP:</span>
-                  <FormatNumber number={data.reserveNFT} />
-                  <NFTIcon
-                    width={24}
-                    height={24}
-                    className="fill-shader_700 ml-[2px]"
-                  />
-                </div>
-                <FormatNumber number={data.reserveToken} />
-                <span>
-                  <EtherIcon
-                    width={20}
-                    height={20}
-                    className="fill-shader_700 ml-[-1px]"
-                  />
-                </span>
-              </div>
             </div>
             <div
-              className={`relative p-2  rounded-lg bg-shader_600 border border-shader_600 hover:border-shader_500 dark:bg-shader_700 dark:border-shader_700 ${
+              className={`relative p-2  rounded-lg bg-shader_600 border border-shader_600 hover:border-shader_500 ${
                 showRequiredMessage && "border-red"
               }`}
             >
@@ -402,21 +431,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     setCheckExit(true);
                   }}
                 />
-                <div
-                  className="absolute min-h-[80%] px-2 py-1 transition duration-150 ease-out bg-white border rounded-lg cursor-pointer hover:text-white hover:bg-primary_400 active:bg-primary_400 text-primary_400 right-1 top-1 border-primary_400 "
-                  onClick={handleSearchNFT}
-                >
-                  <div className="w-16 text-center">
-                    <h2 className="truncate">
-                      {data.metadata?.symbol
-                        ? data.metadata?.symbol
-                        : data.metadata?.name}
-                    </h2>
-                  </div>
-                </div>
               </div>
               <div className="flex justify-end mt-8">
-                <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit area_shader_900">
+                <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit">
                   <div
                     className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-primary_400"
                     style={{ width: `${widthBtn}px` }}

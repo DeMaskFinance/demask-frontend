@@ -178,7 +178,7 @@ const Search: FunctionComponent<SearchProps> = ({
               height={20}
               className={`${
                 active ? "" : ""
-              } cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 hidden lg:block -translate-y-1/2`}
+              } cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 hidden lg:block -translate-y-1/2 text-white`}
             />
           </div>
         </div>
@@ -292,7 +292,7 @@ const Search: FunctionComponent<SearchProps> = ({
               ) : (
                 <>
                   {searchFetching ? (
-                    <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
                     <span className="text-base text-primary_400">
                       No Result
@@ -344,7 +344,7 @@ const Search: FunctionComponent<SearchProps> = ({
                   ) : (
                     <>
                       {topNftFetching ? (
-                        <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
+                        <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg"></div>
                       ) : (
                         <span className="text-base text-primary_400"></span>
                       )}
@@ -354,7 +354,7 @@ const Search: FunctionComponent<SearchProps> = ({
               ) : (
                 <>
                   {topNftFetching ? (
-                    <div className="bg-slate-200 dark:bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
+                    <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg"></div>
                   ) : (
                     <span className="text-base text-primary_400"></span>
                   )}

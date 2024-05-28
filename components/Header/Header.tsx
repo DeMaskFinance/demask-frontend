@@ -208,7 +208,11 @@ export default function Header() {
                 document.body.style.overflowY = "hidden";
               }}
             >
-              <SearchIcon width={20} height={20} className="cursor-pointer" />
+              <SearchIcon
+                width={20}
+                height={20}
+                className="text-white cursor-pointer"
+              />
             </div>
 
             <div
@@ -240,7 +244,7 @@ export default function Header() {
               <div className="flex items-center gap-x-2">
                 <div className="flex items-center px-3 py-2 font-bold text-white rounded-lg gap-x-2 bg-shader_700">
                   {isLoadingBalance ? (
-                    <div className="w-12 h-6 border rounded-lg bg-slate-200 animate-pulse"></div>
+                    <div className="w-12 h-6 border rounded-lg bg-slate-700 animate-pulse"></div>
                   ) : (
                     <span className="">{formatNumber(balanceToken)}</span>
                   )}

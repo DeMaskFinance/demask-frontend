@@ -20,11 +20,11 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
             key={index}
             className="grid gap-4 grid-cols-[80px,repeat(3,2fr),4fr] text-shader_500 text-sm font-light mb-2 animate-pulse h-4"
           >
-            <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
-            <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
-            <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
-            <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
-            <p className="rounded-full bg-slate-200 dark:bg-slate-700"></p>
+            <p className="rounded-full bg-slate-700 "></p>
+            <p className="rounded-full bg-slate-700 "></p>
+            <p className="rounded-full bg-slate-700 "></p>
+            <p className="rounded-full bg-slate-700 "></p>
+            <p className="rounded-full bg-slate-700 "></p>
           </div>
         ))
       ) : (

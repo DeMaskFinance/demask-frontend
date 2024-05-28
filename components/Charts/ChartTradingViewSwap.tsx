@@ -251,11 +251,11 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       {isLoading ? (
         <div className="h-full p-4 lg:mt-0 ">
           <div className="flex-wrap hidden p-2 mb-2 text-sm font-medium border rounded-lg gap-x-2 lg:flex border-shader_500 w-fit text-shader_200">
-            <div className="w-20 h-4 p-2 rounded bg-slate-200 dark:bg-slate-700"></div>
-            <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
-            <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
+            <div className="w-20 h-4 p-2 rounded bg-slate-700 "></div>
+            <div className="w-20 h-4 rounded bg-slate-700 "></div>
+            <div className="w-20 h-4 rounded bg-slate-700 "></div>
           </div>
-          <div className="h-4 w-[60%] bg-slate-200 dark:bg-slate-700 rounded"></div>
+          <div className="h-4 w-[60%] bg-slate-700  rounded"></div>
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (

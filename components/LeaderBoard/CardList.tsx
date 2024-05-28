@@ -8,9 +8,9 @@ import { AvatarDiceBear } from "../Avatars/AvatarCustom";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-shader_700 mb-10 h-fit border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
-      <div className="w-[80px] h-[80px] rounded-full bg-slate-200 dark:bg-slate-700" />
+      <div className="w-[80px] h-[80px] rounded-full bg-slate-700 " />
       <div className="mt-2 mb-6 text-2xl font-semibold">
-        <div className="w-20 h-4 rounded bg-slate-200 dark:bg-slate-700"></div>
+        <div className="w-20 h-4 rounded bg-slate-700 "></div>
       </div>
 
       <div className="bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative">
@@ -18,10 +18,10 @@ export const CardListLoading = () => {
           <RankIcon width={24} height={24} className="fill-[#1D85E8]" />
         </div>
         <div className="pb-2 font-semibold border-b border-shader_700 w-[60%] text-center">
-          <div className="h-4 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+          <div className="h-4 rounded-full bg-slate-700 "></div>
         </div>
         <div className="flex my-2 text-sm font-semibold">
-          <div className="w-20 h-4 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+          <div className="w-20 h-4 rounded-full bg-slate-700 "></div>
         </div>
         <p className="text-xs font-medium whitespace-nowrap">Season Volume</p>
       </div>
