@@ -23,10 +23,6 @@ import Search from "../Search/SearchHeader";
 import { AvatarCustom } from "../Avatars";
 const style = {
   itemNav: `flex 3xl:gap-x-8 text-shader_600 text-lg gap-x-4 font-medium`,
-  menuSub:
-    "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-medium",
-  itemSub:
-    "flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-medium",
   btnWallet:
     "flex items-center h-10  pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold transition duration-150 ease-out rounded-lg group bg_gradient active:bg-primary_400 text-white gap-x-2 ",
 };
@@ -254,25 +250,25 @@ export default function Header() {
                   interactive
                   render={(attrs) => (
                     <div
-                      className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-shader_500 pb-1 pt-1 bg-shader_700 border-shader_700"
+                      className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-shader_500 pb-1 pt-1"
                       tabIndex={-1}
                       {...attrs}
                     >
                       <ul className="pb-2 mt-2">
                         <Link
                           href={`/profile?chain=${chainId}`}
-                          className={`${style.itemSub}`}
+                          className="item_menu"
                         >
                           Profile
                         </Link>
                         <Link
                           href={`/profile/edit?chain=${chainId}`}
-                          className={`${style.itemSub}`}
+                          className="item_menu"
                         >
                           Edit profile
                         </Link>
                         <li
-                          className={`${style.itemSub} justify-between mb-2`}
+                          className={`item_menu justify-between mb-2`}
                           onClick={disconnectWallet}
                         >
                           <div>Disconnect</div>

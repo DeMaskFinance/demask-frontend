@@ -7,6 +7,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import AccountContext from "@/context/AccountContext";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import { TabGroups } from "@/components/NavChoice";
+import TabTable from "@/components/NavChoice/TabTable";
 interface HistorySwapProps {
   data: DataBase;
   typeERC: string;
@@ -49,7 +50,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
   return (
     <div className="w-full mt-[15px]  mb-14 lg:mb-0">
       <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-shader_500 lg:overflow-visible bg-shader_700 border-shader_700">
-        <TabGroups
+        <TabTable
           choices={options}
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}

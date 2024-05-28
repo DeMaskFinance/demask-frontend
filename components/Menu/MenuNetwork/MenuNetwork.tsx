@@ -68,21 +68,15 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       className=""
       interactive
       render={(attrs) => (
-        <div
-          className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-semibold dark:bg-shader_500"
-          tabIndex={-1}
-          {...attrs}
-        >
-          <p className="p-2 text-base border-b-[1px] border-shader_500">
+        <div className="w-[280px] menu" tabIndex={-1} {...attrs}>
+          <p className="p-2 text-base border-b-[1px] border-shader_300">
             Select a network
           </p>
           <ul className="flex flex-col mt-2 gap-y-3">
             {network.map((item, index) => (
               <li
                 key={index}
-                className={`${
-                  style.itemSub
-                } gap-x-2 group justify-between  items-center active:bg-shader_500 ${
+                className={`item_menu gap-x-2 group justify-between  items-center  ${
                   item.disable ? "hover:cursor-no-drop" : ""
                 } `}
                 onClick={() => !item.disable && handleChangeNetwork(item.chain)}

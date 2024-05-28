@@ -1,26 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-interface TabQueryProps {
-  TABS: any[];
-  initialItem: string;
-  indexChoice: number;
+import { useEffect, useRef, useState } from "react";
+
+interface TabGroupProps {
+  choices: string[];
+  activeChoice: string;
+  onChoiceChange: (choice: string) => void;
 }
-const TabTable: React.FC<TabQueryProps> = ({
-  TABS,
-  initialItem,
-  indexChoice,
+
+const TabGroups: React.FunctionComponent<TabGroupProps> = ({
+  choices,
+  activeChoice,
+  onChoiceChange,
 }) => {
-  const [tab, setTab] = useQueryParam(
-    "tab",
-    withDefault(StringParam, initialItem)
-  );
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>(
-    Array(TABS.length).fill(null)
+    Array(choices.length).fill(null)
   );
   const [translateX, setTranslateX] = useState(0);
   const [widthBtn, setWidthBtn] = useState(0);
-  const handleButtonClick = (item: any, index: number) => {
-    setTab(item.key);
+  const handleButtonClick = (choice: string, index: number) => {
+    onChoiceChange(choice);
     setWidthBtn(buttonRefs.current[index]?.offsetWidth ?? 0);
     const totalWidth = buttonRefs.current
       .slice(0, index)
@@ -28,37 +25,39 @@ const TabTable: React.FC<TabQueryProps> = ({
     setTranslateX(totalWidth);
   };
   useEffect(() => {
-    if (buttonRefs.current && buttonRefs.current[indexChoice]) {
-      // @ts-ignore
-      setWidthBtn(buttonRefs.current[indexChoice].offsetWidth);
+    if (buttonRefs.current[0]) {
+      setWidthBtn(buttonRefs.current[0].offsetWidth);
     }
-    const totalWidth = buttonRefs.current
-      .slice(0, indexChoice)
-      .reduce((acc, ref) => (ref ? acc + (ref.offsetWidth || 0) : acc), 0);
-    setTranslateX(totalWidth);
-  }, [tab, TABS]);
+  }, []);
+  // const isInclude = choices.includes(`${activeChoice}%`);
+  // console.log(isInclude);
 
   return (
-    <div className="relative flex items-center p-1 text-base text-center text-white rounded-lg bg-shader_500 border_500 w-max">
+    <div
+      className={`flex relative items-center p-1 text-sm text-center text-white rounded-lg bg-shader_600 border_500`}
+    >
       <div
-        className="absolute transition-transform duration-100 ease-linear rounded-lg h-9 bg-primary_400"
+        className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-[1px] bg-primary_400`}
         style={{
           transform: `translateX(${translateX}px)`,
-          width: `${widthBtn}px`,
+          width: `${activeChoice ? widthBtn : 0}px`,
         }}
       ></div>
-      {TABS.map((item, index) => (
+      {choices.map((choice, index) => (
         <button
-          key={index}
+          key={choice}
           ref={(el) => (buttonRefs.current[index] = el)}
-          onClick={() => handleButtonClick(item, index)}
-          className={`cursor-pointer py-2 px-6 z-10 text-sm`}
+          type="button"
+          className={`py-2 w-1/2 rounded-lg z-10 font-bold ${
+            activeChoice === choice ? "text-white" : "text-shader_300"
+          }`}
+          onClick={() => handleButtonClick(choice, index)}
         >
-          <h2 className="font-semibold">{item.title}</h2>
+          {choice}
         </button>
       ))}
     </div>
   );
 };
 
-export default TabTable;
+export default TabGroups;

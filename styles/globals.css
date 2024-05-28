@@ -50,13 +50,16 @@
     @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-shader_500 text-shader_600 dark:hover:bg-shader_900 dark:text-white;
   }
   .item_menu {
-    @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-medium;
+    @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer font-medium;
   }
   .content_modal {
     @apply flex justify-between text-lg font-semibold text-shader_800 dark:text-white;
   }
   .title_modal {
     @apply flex items-center mb-4 text-xl font-semibold text-white;
+  }
+  .menu {
+    @apply flex flex-col px-2  gap-y-2 bg-shader_500 rounded-lg text-white text-sm p-2;
   }
 }
 body {
