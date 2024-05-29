@@ -104,7 +104,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
           <>
             {searchTerm ? (
               isSuccess && searchData.length > 0 ? (
-                <div className="overflow-y-auto max-h-40">
+                <div className="overflow-y-auto max-h-[300px]">
                   {searchData.map((item: any, index: number) => (
                     <div key={index}>
                       <div

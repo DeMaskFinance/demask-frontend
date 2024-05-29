@@ -17,7 +17,7 @@
     @apply border border-shader_500;
   }
   .title {
-    @apply font-bold text-white;
+    @apply font-semibold text-white;
   }
   .text_gradient {
     @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
@@ -50,13 +50,13 @@
     @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-shader_500 text-shader_600 dark:hover:bg-shader_900 dark:text-white;
   }
   .item_menu {
-    @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer font-medium;
+    @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer font-semibold hover:bg-shader_300;
   }
   .content_modal {
     @apply flex justify-between text-lg font-semibold text-shader_800 dark:text-white;
   }
   .title_modal {
-    @apply flex items-center mb-4 text-xl font-semibold text-white;
+    @apply text-base font-bold text-white;
   }
   .menu {
     @apply flex flex-col px-2  gap-y-2 bg-shader_500 rounded-lg text-white text-sm p-2;
@@ -181,7 +181,7 @@ html *::-webkit-scrollbar-track {
   clip-path: polygon(50% 50%, 0 0, 100% 0);
 }
 /* table border-radius */
-table tbody tr {
+/* table tbody tr {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border-bottom-left-radius: 6px;
@@ -196,7 +196,7 @@ td:last-child {
   border-right-style: solid;
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
-}
+} */
 .Timeline_lineBright__iam07:not(:last-child):before {
   position: absolute;
   content: "";

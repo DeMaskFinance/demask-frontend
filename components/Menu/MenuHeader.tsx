@@ -45,7 +45,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                         {subMenuRewardData.map((item) => (
                           <ActiveLink href={item.url} key={item.id}>
                             <li
-                              className={`py-2 pl-3 ${
+                              className={`item_menu ${
                                 router.asPath.startsWith(item.url)
                                   ? "bg-shader_500"
                                   : ""

@@ -102,7 +102,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       clearInterval(intervalId);
     };
   }, []);
-  const { theme } = useTheme();
   useEffect(() => {
     if (chartContainerRef.current) {
       const chart = createChart(chartContainerRef.current, {
@@ -120,19 +119,19 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         grid: {
           vertLines: {
             visible: true,
-            color: "#D6DCDE",
+            color: "#262A35",
             style: 1,
           },
           horzLines: {
             visible: true,
-            color: "#D6DCDE",
+            color: "#262A35",
             style: 1,
           },
         },
         watermark: {
           text: "DEMASK",
           fontSize: 56,
-          color: "rgba(256, 256, 256, 0.1)",
+          color: "#21242D",
           visible: true,
           fontFamily: "Roboto",
         },
@@ -192,14 +191,14 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         )
       );
       chart.priceScale("right").applyOptions({
-        borderColor: "#D6DCDE",
+        borderColor: "#262A35",
         autoScale: true,
         mode: PriceScaleMode.Normal,
       });
 
       // Setting the border color for the horizontal axis
       chart.timeScale().applyOptions({
-        borderColor: "#D6DCDE",
+        borderColor: "#262A35",
         timeVisible: true,
       });
       chart.timeScale().scrollToPosition(30, false);
@@ -366,13 +365,20 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               height: `${height}px`,
             }}
           />
-          <div className="flex justify-between text-[12px] text-[#222] dark: font-medium items-center pr-4">
-            <ul className="flex mt-2 gap-x-3">
+          <div className="flex items-center justify-between h-10 pl-3 text-sm font-semibold text-white bg-shader_500">
+            <div className="flex items-center gap-x-2">
+              <span className="relative flex w-2 h-2">
+                <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>
+                <span className="relative inline-flex w-2 h-2 rounded-full bg-primary_500"></span>
+              </span>
+              {currentHour}:{currentMinute}:{currentSecond} (UTC)
+            </div>
+            <ul className="flex items-center h-full gap-x-3">
               {optionTime.map((item, index) => (
                 <li
-                  className={`cursor-pointer ${
+                  className={`cursor-pointer w-11 text-center leading-10 h-full ${
                     item.key === intervalTime &&
-                    " text-primary_400 font-semibold"
+                    " text-primary_400 bg-primary_500 bg-opacity-10  "
                   }`}
                   key={index}
                   onClick={() => setIntervalTime(item.key)}
@@ -381,9 +387,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                 </li>
               ))}
             </ul>
-            <div>
-              {currentHour}:{currentMinute}:{currentSecond}(UTC)
-            </div>
           </div>
         </div>
       ) : (

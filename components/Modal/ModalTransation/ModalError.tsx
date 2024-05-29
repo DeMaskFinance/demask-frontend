@@ -33,9 +33,14 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
     <Wrapper isOpen={isOpenError} onClick={handleClose} isTransaction>
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
-          <h2 className="title_modal">{type}</h2>
-          <div className="flex flex-col items-center">
-            <ErrorIcon width={120} height={120} />
+          <div className="flex justify-between">
+            <h2 className="title_modal">{type}</h2>
+            <button className="" onClick={handleClose}>
+              <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+            </button>
+          </div>
+          <div className="flex flex-col items-center h-[250px] justify-center">
+            <ErrorIcon width={80} height={80} />
             <p className="mt-6 mb-2 font-bold text-red">Transaction Failed</p>
             <a
               href={`${demask.urltxHash}tx/${transactionHash}`}
@@ -44,21 +49,11 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
             >
               <p className="text-shader_200">View on {demask.chainName}</p>
               <p>
-                <URLTransactionIcon
-                  width={16}
-                  height={16}
-                  className="group-hover:fill-primary_400"
-                />
+                <URLTransactionIcon width={16} height={16} />
               </p>
             </a>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
-        </button>
       </div>
     </Wrapper>
   );

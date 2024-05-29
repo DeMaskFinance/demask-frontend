@@ -249,12 +249,8 @@ export default function Header() {
                 <Tippy
                   interactive
                   render={(attrs) => (
-                    <div
-                      className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-shader_500 pb-1 pt-1"
-                      tabIndex={-1}
-                      {...attrs}
-                    >
-                      <ul className="pb-2 mt-2">
+                    <div className="" tabIndex={-1} {...attrs}>
+                      <ul className="pb-2 w-[200px] menu">
                         <Link
                           href={`/profile?chain=${chainId}`}
                           className="item_menu"

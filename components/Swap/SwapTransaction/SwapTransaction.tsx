@@ -340,7 +340,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </div>
               <div className="flex-grow font-semibold text-white ">
                 <div className="flex gap-x-1">
-                  <h4>{data.metadata.name}</h4>
+                  <h4>{data?.metadata?.name}</h4>
                   <p>#{idNFT}</p>
                 </div>
                 <div className="flex items-center gap-x-1">
@@ -351,7 +351,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   <Copy content={nftAddress} />
                 </div>
                 <p className="mt-2 mb-2 text-primary_400">Liquidity Pool:</p>
-                <div className="flex gap-x-2">
+                <div className="flex gap-x-2 whitespace-nowrap">
                   <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
                     <p className="font-normal text-primary_200">Reserve NFT</p>
                     <p>{data.reserveNFT}</p>
@@ -390,31 +390,32 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         </div>
         <form className="mt-5">
           <div>
-            <div className="flex flex-wrap items-center justify-between mb-4">
-              <div>
-                {account && activeChoice === "Buy" && (
-                  <div className="flex items-center text-sm text-shader_700">
-                    <p className="mr-1">Your balance:</p>
-                    {formatNumber(balanceToken)}
-                    <EtherIcon
-                      width={16}
-                      height={16}
-                      className="fill-shader_600"
-                    />
-                  </div>
-                )}
-                {account && activeChoice === "Sell" && (
-                  <div className="flex items-center text-sm text-shader_700">
-                    <p className="mr-1">Your balance:</p>
-                    <p>{formatNumber(balanceNFT)}</p>
-                    <NFTIcon
-                      width={24}
-                      height={24}
-                      className="fill-shader_700 ml-[2px]"
-                    />
-                  </div>
-                )}
-              </div>
+            <div className="flex flex-wrap items-center justify-between mb-2">
+              {account && (
+                <div className="w-full font-semibold text-primary_300">
+                  {activeChoice === "Buy" ? (
+                    <div className="flex items-center justify-between">
+                      <p>Your balance (ETH)</p>
+                      <div className="flex items-center font-bold text-white gap-x-1">
+                        {formatNumber(balanceToken)}
+                        <EtherIcon
+                          width={16}
+                          height={16}
+                          className="fill-shader_600"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between ">
+                      <p>Your NFT balance:</p>
+                      <div className="flex items-center font-bold text-white gap-x-1">
+                        <p>{formatNumber(balanceNFT)}</p>
+                        <NFTIcon width={12} height={14} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="relative flex gap-x-2">
               <div className="relative w-[60%]">
@@ -478,7 +479,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             )}
           </div>
 
-          <div className="mt-4 text-slate-200">
+          <div className="mt-2 text-slate-200">
             <div className="items-center justify-between block mb-4 lg:flex">
               <p className="mr-1 text-xs font-normal">Royalties Fee: </p>
               <div className="">
@@ -492,7 +493,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             {inputNFTValue ? (
               <div className="relative h-10">
-                <div className="relative flex items-center justify-between w-full h-10 py-2 pl-2 mb-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+                <div className="relative flex items-center justify-between w-full h-10 py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                   {isLoadingBuy ? (
                     <BiLoaderAlt className="animate-spin text-primary_400" />
                   ) : isLoadingSell ? (
@@ -517,7 +518,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="relative flex items-center justify-between w-full h-10 py-2 pl-2 mb-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+              <div className="relative flex items-center justify-between w-full h-10 py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                 0
               </div>
             )}
@@ -534,24 +535,25 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           </div>
         )}
         <div className="flex justify-center w-full">
-          {activeChoice === "Buy" && account && (
+          {isApprovedNFT && activeChoice === "Buy" && account && (
             <Button
               type="button"
               className="py-2 w-[144px]"
               green
               onClick={handleBuy}
             >
-              Buy NFT
+              Buy Now
             </Button>
           )}
           {isApprovedNFT && activeChoice === "Sell" && account && (
-            <button
+            <Button
               type="button"
-              className="py-2 w-[144px] bg-red rounded-lg text-sm text-white"
+              className="py-2 w-[144px]"
+              red
               onClick={handleSell}
             >
-              Sell NFT
-            </button>
+              Sell Now
+            </Button>
           )}
           {!isApprovedNFT && account && activeChoice === "Sell" && (
             <Button

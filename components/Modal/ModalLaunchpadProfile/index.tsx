@@ -128,7 +128,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white" />
+          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
         </button>
       </div>
       {/* <ModalTransation

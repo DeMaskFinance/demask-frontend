@@ -3,38 +3,46 @@ import { EtherIcon } from "@/components/Icons";
 import Link from "next/link";
 import React from "react";
 import { SkeletonTable } from "@/components/Skeleton";
+import SearchNotFound from "@/components/Search/SearchNotFound";
 interface HistorySwapProps {
   data: any;
   isLoading: boolean;
   isFetching: boolean;
+  isSuccess: boolean;
   demask: any;
 }
+
 const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
   data,
   isLoading,
   isFetching,
+  isSuccess,
   demask,
 }) => {
+  console.log(data);
+
   return (
     <>
       {isLoading || isFetching ? (
         <SkeletonTable length={9} />
       ) : (
         <>
-          {data &&
-            data?.data?.map((item: any, idx: number) => (
+          {isSuccess && data && data.totalRecords > 0 ? (
+            data.data.map((item: any, idx: number) => (
               <tr
                 key={idx}
                 className="flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
               >
                 <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
-                  <div className="flex items-center justify-end text-green">
+                  <div className="flex items-center justify-end ">
                     <span
-                      className={`border text-xs bg-opacity-10 w-16 text-center ${
-                        item.action === "Buy" || item.action === "Add"
-                          ? "border-green text-green bg-green "
-                          : "border-red text-red bg-red"
-                      } p-1 rounded-lg`}
+                      className={`bg-opacity-[0.15] w-[73px] text-center ${
+                        item.action === "Buy"
+                          ? "bg-green text-green"
+                          : item.action === "Add"
+                          ? "bg-primary_300 text-primary_300"
+                          : "bg-red text-red"
+                      } py-2 rounded-lg`}
                     >
                       {item.action}
                     </span>
@@ -86,7 +94,12 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <div className="h-[350px]">
+              <SearchNotFound />
+            </div>
+          )}
         </>
       )}
     </>

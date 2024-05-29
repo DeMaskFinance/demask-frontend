@@ -19,7 +19,7 @@ export default function Copy({ content }: { content: string }) {
     }
   }, [isCopy]);
   return (
-    <div>
+    <div className="leading-[100%]">
       <Tippy theme="dark" visible={isCopy} content={<span>Copied</span>}>
         <button onClick={copyToClipboard}>
           <CopyIcon width={16} height={16} className="text-primary_400" />

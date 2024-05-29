@@ -58,7 +58,7 @@ const Swap: React.FC = () => {
                 <ChartTradingViewSwap
                   dataSwap={data}
                   typeERC="erc1155"
-                  height={468}
+                  height={518}
                 />
               )}
             </div>

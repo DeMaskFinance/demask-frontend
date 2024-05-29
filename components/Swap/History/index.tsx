@@ -24,6 +24,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     data: dataHistory,
     isFetching,
     refetch,
+    isSuccess,
     isPreviousData,
   } = useQuery({
     queryKey: ["historySwap", chainId, activeChoice],
@@ -48,14 +49,14 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     setActiveChoice(choice);
   };
   return (
-    <div className="w-full mt-[15px]  mb-14 lg:mb-0">
-      <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-shader_500 lg:overflow-visible bg-shader_700 border-shader_700">
+    <div className="w-full font-semibold mb-14 lg:mb-0">
+      <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_700">
         <TabTable
           choices={options}
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}
         />
-        <table className="w-full mt-2 text-left border-collapse">
+        <table className="w-full text-left border-collapse">
           <thead className=" bg-shader_600 text-shader_200">
             <tr className="flex px-4 py-3 text-sm">
               <th className="flex justify-start pl-2 md:w-[70%] w-[100px]">
@@ -88,6 +89,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
             <HistoryItem
               data={dataHistory}
               isFetching={isFetching}
+              isSuccess={isSuccess}
               isLoading={isLoading}
               demask={demask}
             />

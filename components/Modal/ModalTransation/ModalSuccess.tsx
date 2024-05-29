@@ -45,7 +45,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
                 <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
               </button>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center h-[250px] justify-center">
               <SuccessIcon width={80} height={80} />
               <p className="mt-6 mb-2 font-bold text-green">
                 Transaction Submitted
@@ -57,11 +57,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
               >
                 <p className="text-shader_200">View on {demask.chainName}</p>
                 <p>
-                  <URLTransactionIcon
-                    width={16}
-                    height={16}
-                    className="group-hover:fill-primary_400"
-                  />
+                  <URLTransactionIcon width={16} height={16} />
                 </p>
               </a>
             </div>
@@ -132,11 +128,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                 >
                   <p className="text-shader_200">View on {demask.chainName}</p>
                   <p>
-                    <URLTransactionIcon
-                      width={16}
-                      height={16}
-                      className="group-hover:fill-primary_400"
-                    />
+                    <URLTransactionIcon width={16} height={16} />
                   </p>
                 </a>
               </div>
@@ -173,11 +165,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                 >
                   <p className="text-shader_200">View on {demask.chainName}</p>
                   <p>
-                    <URLTransactionIcon
-                      width={16}
-                      height={16}
-                      className="group-hover:fill-primary_400"
-                    />
+                    <URLTransactionIcon width={16} height={16} />
                   </p>
                 </a>
               </div>

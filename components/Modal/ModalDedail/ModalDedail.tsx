@@ -1,14 +1,19 @@
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
-import React, { memo, useContext } from "react";
-import MediaNFT from "@/components/Common/MediaNFT";
 import Copy from "@/components/Common/Copy";
-import AccountContext from "@/context/AccountContext";
-import ModalDocument from "../ModalLength/ModalDocument";
+import MediaNFT from "@/components/Common/MediaNFT";
 import { RefetchIcon } from "@/components/Icons";
-import { useQuery } from "@tanstack/react-query";
+import AccountContext from "@/context/AccountContext";
 import { refreshNFTService } from "@/libs/service/nftService";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
+import React, { memo, useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
+import { HiChevronDown } from "react-icons/hi2";
+import Wrapper from "../Wrapper";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -47,12 +52,13 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
+  console.log(data);
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
         <div className="cursor-default container_modal">
-          <div className="w-[360px] md:w-[400px] lg:w-[550px] h-[560px] rounded-lg p-8 relative overflow-y-scroll">
+          <div className="w-[42vw] h-[560px] rounded-lg relative overflow-y-scroll">
             {isLoading || isFetching ? (
               <div className="flex items-center justify-center h-full">
                 <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
@@ -60,158 +66,155 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
             ) : (
               isSuccess && (
                 <div>
-                  <div className="flex justify-between mb-4">
-                    <div className="flex items-center gap-x-3">
-                      <p className="py-2 text-xl font-medium">NFT Details</p>
-                      <div className="cursor-pointer" onClick={() => refetch()}>
-                        <RefetchIcon width={20} height={20} />
-                      </div>
-                    </div>
-                    <button className="text-lg " onClick={handleClose}>
-                      <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white" />
-                    </button>
-                  </div>
-                  <div className="flex gap-x-4">
-                    <div className="w-[240px] h-[240px]">
-                      <MediaNFT data={data} isControls />
-                    </div>
-                    <ul>
-                      {data?.metadata?.name && (
-                        <li className="mb-4">
-                          <p className="font-medium text-shader_600">Name</p>
-                          <div className="flex gap-x-2">
-                            <div className="w-6 h-6">
-                              <MediaNFT data={data} isControls />
-                            </div>
-                            <a
-                              href={data?.metadata?.uri}
-                              rel="noreferrer noopener"
-                              target="_blank"
-                              className="text-shader_500 max-w-[140px]"
-                            >
-                              <ModalDocument data={data?.metadata?.name} />
-                            </a>
-                          </div>
-                        </li>
-                      )}
-                      {data?.metadata?.symbol && (
-                        <li className="mb-4">
-                          <p className="font-medium text-shader_600">Symbol</p>
-                          <div className="text-sm font-light text-shader_500 max-w-[140px]">
-                            <ModalDocument data={data?.metadata?.symbol} />
-                          </div>
-                        </li>
-                      )}
-                      <li className="mb-4">
-                        <p className="font-medium text-shader_600">Type</p>
-                        <p className="text-sm font-light uppercase text-shader_500">
-                          {type}
-                        </p>
-                      </li>
-                      <li className="mb-4">
-                        <p className="font-medium text-shader_600">
-                          Contract Address
-                        </p>
-                        <div className="flex gap-x-1">
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={`${demask.urltxHash}address/${nftAddress}`}
-                            className="text-sm font-light cursor-pointer text-primary_500"
-                          >{`${nftAddress.slice(0, 2)}...${nftAddress.slice(
-                            -4
-                          )}`}</a>
-                          <Copy content={nftAddress} />
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="mt-4">
-                    {data.metadata?.description && (
-                      <div className="mb-4">
-                        <p className="font-medium text-shader_600">
-                          Description
-                        </p>
-                        <p className="text-sm font-light text-shader_500">
-                          {formattedDescription}
-                        </p>
-                      </div>
-                    )}
-                    <div className="mb-4">
-                      <p className="font-medium text-shader_600">Attributes</p>
-                      {data.metadata?.attributes.length > 0 ? (
-                        <div className="text-sm font-light text-shader_500">
-                          {data.metadata?.attributes.map(
-                            (item: any, index: number) => (
-                              <ul
-                                className="flex flex-wrap gap-x-4"
-                                key={index}
-                              >
-                                <li>{item.trait_type}</li>
-                                <li>{item.value}</li>
-                              </ul>
-                            )
-                          )}
-                        </div>
-                      ) : (
-                        <p className="text-sm font-light text-shader_500">
-                          None
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex justify-between mb-4">
-                      <div className="">
-                        <p className="mb-1 font-medium text-shader_600">
-                          Category
-                        </p>
-                        {data?.metadata?.category ? (
-                          <div className="flex flex-wrap gap-4">
-                            {data.metadata?.category.map(
-                              (item: any, index: number) => (
-                                <p
-                                  className="px-4 py-1 text-sm font-medium border rounded-lg text-shader_600 border-shader_500"
-                                  key={index}
-                                >
-                                  {item}
-                                </p>
-                              )
-                            )}
-                          </div>
-                        ) : (
-                          <p>None</p>
-                        )}
-                      </div>
+                  <div className="px-4 pt-4">
+                    <div className="flex justify-between pb-4 border-b text-primary_200 border-shader_500">
                       <div>
-                        <p className="font-medium text-shader_600">Token ID</p>
-                        <div className="flex items-center gap-x-1">
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={data.uri}
-                            className="text-sm font-light cursor-pointer text-primary_400"
+                        <div className="flex items-center gap-x-[6px]">
+                          <p className="text-lg font-semibold text-white ">
+                            {data?.metadata?.name}
+                          </p>
+                          <div className="px-2 py-1 text-sm font-normal rounded-lg bg-primary_500 bg-opacity-[0.15]">
+                            762
+                          </div>
+                          <div
+                            className="border rounded-full border-shader_400 p-[7px]"
+                            onClick={() => refetch()}
                           >
-                            {idNFT}
-                          </a>
-                          <Copy content={idNFT} />
+                            <RefetchIcon
+                              width={16}
+                              height={16}
+                              className="cursor-pointer text-primary_200"
+                            />
+                          </div>
                         </div>
+                        <p className="text-primary_300">
+                          {data?.metadata?.symbol}
+                        </p>
+                      </div>
+                      <div onClick={handleClose}>
+                        <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
                       </div>
                     </div>
-                    <div className="flex justify-between">
-                      <div>
-                        <p className="font-medium text-shader_600">
-                          Royalty Fee (%)
-                        </p>
-                        <p className="text-sm font-light text-shader_500">
-                          {data?.royaltyFee}
-                        </p>
+                  </div>
+                  <div className="p-4">
+                    <div className="flex gap-x-4">
+                      <div className="w-[40%] max-h-[350px] aspect-square">
+                        <MediaNFT data={data} isControls />
                       </div>
-                      <div>
-                        <p className="font-medium text-shader_600">
-                          Last Updated
-                        </p>
-                        <p className="text-sm font-light text-shader_500">
-                          20 minutes ago
-                        </p>
+                      <div className="flex-grow">
+                        <div className="w-full max-w-lg mx-auto ">
+                          <Disclosure
+                            as="div"
+                            className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
+                            defaultOpen={true}
+                          >
+                            <DisclosureButton className="flex items-center justify-between w-full group">
+                              <span className="title">Description</span>
+                              <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
+                            </DisclosureButton>
+                            <DisclosurePanel className="mt-2 text-sm text-shader_200">
+                              {data?.metadata?.description ? (
+                                <p>{formattedDescription}</p>
+                              ) : (
+                                <p>No data</p>
+                              )}
+                            </DisclosurePanel>
+                          </Disclosure>
+                          <Disclosure
+                            as="div"
+                            className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
+                            defaultOpen={true}
+                          >
+                            <DisclosureButton className="flex items-center justify-between w-full group">
+                              <span className="title">Attributes</span>
+                              <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
+                            </DisclosureButton>
+                            <DisclosurePanel className="mt-2 text-sm ">
+                              {data.metadata?.attributes.length > 0 ? (
+                                <div className="grid grid-cols-3 gap-x-4 ">
+                                  {data.metadata?.attributes.map(
+                                    (item: any, index: number) => (
+                                      <ul
+                                        className="p-3 rounded-lg bg-primary_500 bg-opacity-10"
+                                        key={index}
+                                      >
+                                        <li className="text-primary_200">
+                                          {item.trait_type}
+                                        </li>
+                                        <li className="font-bold text-white">
+                                          {item.value}
+                                        </li>
+                                      </ul>
+                                    )
+                                  )}
+                                </div>
+                              ) : (
+                                <p className="">No data</p>
+                              )}
+                            </DisclosurePanel>
+                          </Disclosure>
+                          <Disclosure
+                            as="div"
+                            className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
+                            defaultOpen={true}
+                          >
+                            <DisclosureButton className="flex items-center justify-between w-full group">
+                              <span className="title">Detail</span>
+                              <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
+                            </DisclosureButton>
+                            <DisclosurePanel className="text-sm text-shader_200">
+                              <ul>
+                                <li className="flex justify-between py-2 border-b border-shader_500">
+                                  <p>Name</p>
+                                  <p className="font-semibold text-shader_100">
+                                    {data?.metadata?.name}
+                                  </p>
+                                </li>
+                                <li className="flex justify-between py-2 border-b border-shader_500">
+                                  <p>Type</p>
+                                  <p className="font-semibold text-shader_100">
+                                    Art
+                                  </p>
+                                </li>
+                                <li className="flex justify-between py-2 border-b border-shader_500">
+                                  <p>Token Standard</p>
+                                  <p className="font-semibold uppercase text-shader_100">
+                                    {type}
+                                  </p>
+                                </li>
+                                <li className="flex justify-between py-2 border-b border-shader_500">
+                                  <p>ID</p>
+                                  <div className="flex items-center font-semibold text-primary_400 gap-x-1">
+                                    761
+                                    <Copy content="761" />
+                                  </div>
+                                </li>
+                                <li className="flex justify-between py-2 border-b border-shader_500">
+                                  <p>Contract</p>
+                                  <div className="flex items-center font-semibold text-primary_400 gap-x-1">
+                                    <a
+                                      href={`${demask.urltxHash}address/${nftAddress}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {`${nftAddress.slice(
+                                        0,
+                                        6
+                                      )}...${nftAddress.slice(-8)}`}
+                                    </a>
+                                    <Copy content={nftAddress} />
+                                  </div>
+                                </li>
+                                <li className="flex justify-between pt-2">
+                                  <p>Last Update</p>
+                                  <p className="font-semibold text-shader_100">
+                                    {data?.updatedTime}
+                                  </p>
+                                </li>
+                              </ul>
+                            </DisclosurePanel>
+                          </Disclosure>
+                        </div>
                       </div>
                     </div>
                   </div>

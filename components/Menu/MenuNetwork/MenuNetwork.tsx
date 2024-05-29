@@ -68,7 +68,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       className=""
       interactive
       render={(attrs) => (
-        <div className="w-[280px] menu" tabIndex={-1} {...attrs}>
+        <div className="w-[280px] menu font-semibold" tabIndex={-1} {...attrs}>
           <p className="p-2 text-base border-b-[1px] border-shader_300">
             Select a network
           </p>
@@ -81,7 +81,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                 } `}
                 onClick={() => !item.disable && handleChangeNetwork(item.chain)}
               >
-                <div className="flex items-center font-semibold gap-x-2">
+                <div className="flex items-center gap-x-2">
                   <item.logo width={24} height={24} />
                   <p
                     className={`${
