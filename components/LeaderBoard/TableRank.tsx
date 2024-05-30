@@ -13,13 +13,13 @@ const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask } = useContext(AccountContext);
   return (
     <tr
-      className={`flex px-2 text-sm  hover:cursor-pointer  group hover:bg-slate-100 ${
+      className={`flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 ${
         currentRank
           ? "bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]"
-          : "text-shader_600"
+          : "text-white"
       }`}
     >
-      <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
+      <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
         <div className="flex items-center justify-end gap-x-1">
           {item?.rank}
           <RankIcon
@@ -41,18 +41,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           />
         </div>
       </td>
-      <td className="py-2 flex items-center justify-start gap-x-2 lg:w-full md:w-full w-[100px]">
-        {/* {item?.avatar ? (
-          <Image
-            src={item?.avatar}
-            width={120}
-            alt="userIMG"
-            height={120}
-            className="object-cover w-6 h-6 rounded-lg"
-          />
-        ) : (
-          <AvatarCustom size={24} seed={item?.userAddress} />
-        )} */}
+      <td className="py-4 flex items-center justify-start gap-x-2 lg:w-full md:w-full w-[100px]">
         <AvatarCustom
           avatarUrl={item?.avatar}
           size={24}
@@ -62,7 +51,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
         <p>{item?.name}</p>
       </td>
       <td
-        className={`py-2 flex ${
+        className={`py-4 flex ${
           currentRank ? "text-white" : "text-primary_400"
         } items-center justify-center lg:w-full md:w-full w-[140px]`}
       >
@@ -73,34 +62,22 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           {`${item?.userAddress.slice(0, 4)}...${item?.userAddress.slice(-4)}`}
         </Link>
       </td>
-      <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+      <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
         <div className="flex items-center justify-end md:gap-2">
           -
-          <EtherIcon
-            width={18}
-            height={18}
-            className={`${currentRank ? "fill-white" : "fill-shader_600"}`}
-          />
+          <EtherIcon width={18} height={18} />
         </div>
       </td>
-      <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+      <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
         <div className="flex items-center justify-end md:gap-2">
           <FormatNumber number={item?.volume} />
-          <EtherIcon
-            width={18}
-            height={18}
-            className={`${currentRank ? "fill-white" : "fill-shader_600"}`}
-          />
+          <EtherIcon width={18} height={18} />
         </div>
       </td>
-      <td className="py-2 lg:w-full md:w-[175px] w-[200px]">
+      <td className="py-4 lg:w-full md:w-[175px] w-[200px]">
         <div className="flex items-center justify-end md:gap-2">
           <FormatNumber number={item?.volume} />
-          <EtherIcon
-            width={18}
-            height={18}
-            className={`${currentRank ? "fill-white" : "fill-shader_600"}`}
-          />
+          <EtherIcon width={18} height={18} />
         </div>
       </td>
     </tr>
@@ -137,9 +114,9 @@ const TableRank = () => {
   }, [page, refetch, account]);
 
   return (
-    <div className="px-2 py-4 mt-10 overflow-x-scroll border bg-white rounded-lg dark:bg-shader_800 dark:border-shader_800 border-shader_500 shadow-home min-h-[500px] flex flex-col justify-between">
+    <div className=" mt-10 overflow-x-scroll overflow-y-hidden border rounded-lg bg-shader_800 text-shader_200 border-shader_500 shadow-home min-h-[500px] flex flex-col justify-between">
       <table className="w-full text-left border-collapse">
-        <thead className="">
+        <thead className="bg-shader_600 text-shader_200">
           <tr className="flex px-2 pb-2 text-base">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
