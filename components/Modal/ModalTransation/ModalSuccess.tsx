@@ -112,7 +112,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                     <BiLoaderAlt className="mb-6 text-5xl animate-spin text-primary_400" />
                   </div>
                 ) : metadataRes ? (
-                  <div className="w-40 h-40 mx-auto mt-10 mb-6">
+                  <div className="w-40 h-40 mx-auto mt-10 mb-6 overflow-hidden rounded-lg">
                     <MediaNFT data={metadataRes} isControls hideAudio={true} />
                   </div>
                 ) : null}

@@ -7,13 +7,13 @@ import { useContext } from "react";
 const HistoryItem = ({ item }: any) => {
   const { demask, chainId } = useContext(AccountContext);
   return (
-    <tr className="flex text-sm  lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
+    <tr className="flex text-sm lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
       <td className="flex justify-start items-center md:basis-1/6 w-[140px]">
         {item.action}
       </td>
 
       <td className="flex items-center justify-start py-2 md:basis-1/6 w-[200px]">
-        <div className="w-8 h-8 mr-1">
+        <div className="w-8 h-8 mr-1 overflow-hidden rounded-lg">
           <MediaNFT data={item} isControls={false} />
         </div>
         <div className="max-w-[120px] truncate">

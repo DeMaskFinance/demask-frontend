@@ -34,15 +34,6 @@
   .bg_gradient {
     @apply bg-gradient-to-r from-[#BA8DE6] to-[#7B54E8];
   }
-  .area_shader_800 {
-    @apply dark:bg-shader_800 dark:border-shader_800;
-  }
-  .area_shader_900 {
-    @apply dark:bg-shader_900 dark:border-shader_900;
-  }
-  . {
-    @apply dark:hover:bg-shader_900 dark:text-white;
-  }
   .area_shader_700 {
     @apply bg-shader_700 text-white;
   }

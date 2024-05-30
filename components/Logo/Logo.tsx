@@ -986,7 +986,7 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
   chainId,
 }) => {
   return (
-    <div className="flex items-center justify-center float-right px-2 py-1 text-sm rounded-lg gap-x-1 bg-shader_500 text-shader_700 area_shader_800">
+    <div className="flex items-center justify-center float-right px-2 py-1 text-sm rounded-lg gap-x-1 bg-shader_500 text-shader_700 ">
       {chainId === "280" ? (
         <>
           <ZkSyncIcon className={className} width={width} height={height} />

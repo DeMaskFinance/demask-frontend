@@ -380,7 +380,7 @@ export default function AddLiquidity() {
                     onChange={handleGetNFT}
                   />
                   <div className="flex justify-end mt-8">
-                    <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit area_shader_900">
+                    <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit ">
                       <div
                         className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-primary_400"
                         style={{ width: `${widthBtn}px` }}
@@ -515,7 +515,9 @@ export default function AddLiquidity() {
           </div>
           <div className="order-1 w-full lg:order-2">
             <div className="flex flex-col items-center w-full h-full ">
-              <MediaNFT data={data} isControls={true} />
+              <div className="overflow-hidden rounded-xl">
+                <MediaNFT data={data} isControls={true} />
+              </div>
               <p
                 className="mt-2 text-xs text-primary_400 hover:cursor-pointer hover:text-primary_400"
                 onClick={handleShowDetail}

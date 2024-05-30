@@ -18,7 +18,7 @@ const PoolItem = ({ item }: any) => {
   return (
     <div>
       <Link href={`/details/${item.dmlAddress}?chain=${chainId}`}>
-        <tr className="flex text-sm  lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
+        <tr className="flex text-sm lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
           <td className="relative flex items-center justify-start py-2  md:basis-1/6 w-[140px]">
             <FormatNumber number={balanceOfDML} />
           </td>
@@ -37,7 +37,7 @@ const PoolItem = ({ item }: any) => {
             <span className="">{formatToUnit(notionSize.toString())}</span>
           </td>
           <td className="flex items-center justify-start py-2 md:basis-1/6 w-[140px] gap-x-2">
-            <div className="w-8 h-8">
+            <div className="w-8 h-8 overflow-hidden rounded-lg">
               <MediaNFT data={item} isControls={false} />
             </div>
             <div className="flex items-center">

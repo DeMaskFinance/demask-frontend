@@ -37,11 +37,18 @@ const TabQuery: React.FC<TabQueryProps> = ({
       .reduce((acc, ref) => (ref ? acc + (ref.offsetWidth || 0) : acc), 0);
     setTranslateX(totalWidth);
   }, [tab, TABS]);
+  console.log(tab);
 
   return (
-    <div className="relative flex items-center p-1 text-base text-center text-white rounded-lg bg-shader_500 border_500 w-max">
+    <div className="relative flex items-center w-full p-1 text-base text-center text-white rounded-lg bg-shader_500 border_500">
       <div
-        className="absolute transition-transform duration-100 ease-linear rounded-lg h-9 bg-primary_400"
+        className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-9 ${
+          tab === "buy"
+            ? "bg-green"
+            : tab === "sell"
+            ? "bg-red"
+            : "bg-primary_400"
+        }`}
         style={{
           transform: `translateX(${translateX}px)`,
           width: `${widthBtn}px`,
@@ -52,7 +59,9 @@ const TabQuery: React.FC<TabQueryProps> = ({
           key={index}
           ref={(el) => (buttonRefs.current[index] = el)}
           onClick={() => handleButtonClick(item, index)}
-          className={`cursor-pointer py-2 px-6 z-10 text-sm`}
+          className={`cursor-pointer py-2 w-1/2 z-10 text-sm font-bold ${
+            item.key === tab ? "text-white" : "text-shader_100"
+          }`}
         >
           <h2 className="font-semibold">{item.title}</h2>
         </button>

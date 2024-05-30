@@ -454,7 +454,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
             {socialList.map((item, index) => (
               <div key={index}>
                 <div className="flex mt-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-shader_500 min-w-[132px] gap-x-2 text-shader_600 area_shader_800">
+                  <div className="flex p-2 font-normal rounded-lg bg-shader_500 min-w-[132px] gap-x-2 text-shader_600 ">
                     {item.icon}
                     {item.title}
                   </div>

@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { DownIcon, EtherIcon } from "@/components/Icons";
+import { DownIcon, EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useNFTBalance from "@/hooks/useBalanceNFT";
@@ -18,6 +18,9 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import useFee from "@/hooks/useFee";
+import MediaNFT from "@/components/Common/MediaNFT";
+import Copy from "@/components/Common/Copy";
+import Tippy from "@tippyjs/react";
 interface ModalSellNFTProps {
   isOpenSellNFT: boolean;
   tokenAddress: string;
@@ -216,185 +219,175 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   return (
     <Wrapper isOpen={isOpenSellNFT} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="title_modal">Confirm Sell</p>
-          <div className="content_modal">
-            {inputNFT ? <p>{inputNFT}</p> : <p>{idNFT.length}</p>}
-            <p>{data?.metadata?.symbol}</p>
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
+          <div className="px-4 pt-4">
+            <div className="flex justify-between pb-4 border-b text-primary_200 border-shader_500">
+              <p className="title_modal">Confirm Sell</p>
+              <div onClick={handleClose}>
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+              </div>
+            </div>
           </div>
-          <div>
-            <DownIcon
-              width={24}
-              height={24}
-              className="mx-auto cursor-pointer hover:fill-primary_400"
-            />
-          </div>
-          <div className="content_modal">
-            <p>ETH</p>
-          </div>
-          {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-              <p className="text-xs">Price Updated</p>
-              <Button
-                primary
-                className="px-6 py-2 bg-primary_400"
-                onClick={() => {
-                  setUpdatePrice(!updatePrice);
-                  setPreFetch(false);
-                }}
+          <div className="p-4 text-sm text-shader_200">
+            <div className="flex items-center pb-4 border-b gap-x-3 border-shader_500">
+              <div className="w-[65px] h-[65px] overflow-hidden rounded-lg">
+                <MediaNFT data={data} isControls />
+              </div>
+              <div>
+                <p className="text-base title">{data?.metadata?.name}</p>
+                <div className="flex items-center gap-x-1">
+                  <a
+                    href={`${demask.urltxHash}address/${nftAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {`${nftAddress.slice(0, 8)}...${nftAddress.slice(-8)}`}
+                  </a>
+                  <Copy content={nftAddress} />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col py-4 gap-y-2">
+              <div className="flex justify-between ">
+                <p>Price</p>
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  <FormatNumber
+                    number={(
+                      Number(
+                        divideByDecimal(
+                          amountTokenSell.toString(),
+                          data.tokenDecimals
+                        )
+                      ) / (inputNFT ? Number(inputNFT) : idNFT.length)
+                    ).toString()}
+                  />
+
+                  <p>
+                    <EtherIcon width={14} height={14} />
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-between ">
+                <p>Minximum amount</p>
+                <div className="flex gap-x-1">
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    <FormatNumber
+                      number={Number(
+                        divideByDecimal(
+                          amountTokenSell.toString(),
+                          data.tokenDecimals
+                        )
+                      ).toString()}
+                    />
+                    <EtherIcon width={14} height={14} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between ">
+                <div className="flex items-center gap-x-1">
+                  <span>Slippage tolerance</span>
+                  <Tippy
+                    interactive
+                    content={
+                      <div className="flex">
+                        Output is estimated. You will receive at least{" "}
+                        {inputNFT} NFT or the transaction will revert
+                      </div>
+                    }
+                  >
+                    <div>
+                      <NoteIcon width={14} height={14} />
+                    </div>
+                  </Tippy>
+                </div>
+                <div className="flex items-center font-bold text-primary_300 gap-x-1">
+                  {slippage}%
+                </div>
+              </div>
+              <div
+                className="flex justify-between cursor-pointer group "
+                onClick={() => setSeeDetail(!seeDetail)}
               >
-                Accept
+                <div className="flex items-center gap-x-1">
+                  <p>Total fee</p>
+                  <div
+                    className={`p-1  rounded-lg transition-all duration-100 ease-linear ${
+                      seeDetail ? "rotate-90" : ""
+                    }`}
+                  >
+                    <FaChevronRight />
+                  </div>
+                </div>
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  0
+                  <p>
+                    <EtherIcon width={14} height={14} />
+                  </p>
+                </div>
+              </div>
+              <div
+                className={`overflow-hidden will-change-[height] ${
+                  seeDetail ? "h-[56px] opacity-100" : "h-0 opacity-0"
+                } transition-all duration-100 ease-linear`}
+              >
+                <div className="flex justify-between mb-4 ">
+                  <p>Trading fee</p>
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    0
+                    <EtherIcon width={14} height={14} />
+                  </div>
+                </div>
+                <div className="flex justify-between ">
+                  <p>Royalties Fee</p>
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    0
+                    <EtherIcon width={14} height={14} />
+                  </div>
+                </div>
+              </div>
+              {!isSufficientNFT && reserveNFT && (
+                <p className="text-xs text-red" key="NFTbalance">
+                  Insufficient NFT balance
+                </p>
+              )}
+              <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10">
+                <p className="text-primary_200">Total Pay</p>
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  <p>100</p>
+                  <EtherIcon width={14} height={14} />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <Button
+                disabled={isLoadingInforDML || preFectch}
+                primary={!isLoadingInforDML && !preFectch}
+                className="px-8 py-3"
+                // active={isLoadingInforDML || preFectch}
+                isLoadingBtn={isLoadingInforDML || preFectch}
+                onClick={handleSellNFT}
+              >
+                Confirm
               </Button>
             </div>
-          )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
-            <p>Slippage tolerance</p>
-            <p>{slippage}%</p>
-          </div>
-          <div className="flex flex-wrap mt-2 mb-6 text-sm text-shader_600 gap-x-1">
-            <span>Output is estimated. You will receive at least</span>
-            <span className="flex gap-x-1">{data.metadata?.symbol}</span>
-            <span> or the transaction will revert</span>
-          </div>
-          <div className="flex flex-col p-4 rounded-lg bg-shader_500 gap-y-3 bg-shader_700 border-shader_700 text-shader_700 dark:text-shader_500">
-            <div className="flex justify-between text-sm ">
-              <p>Price</p>
-              <div className="flex items-center">
-                <FormatNumber
-                  number={(
-                    Number(
-                      divideByDecimal(
-                        amountTokenSell.toString(),
-                        data.tokenDecimals
-                      )
-                    ) / (inputNFT ? Number(inputNFT) : idNFT.length)
-                  ).toString()}
-                />
-                <p>
-                  <EtherIcon
-                    width={14}
-                    height={14}
-                    className="fill-shader_600"
-                  />
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-between text-sm ">
-              <p>Minimum received</p>
-              <div className="flex items-center">
-                <FormatNumber
-                  number={divideByDecimal(
-                    amountSellDec.toString(),
-                    data.tokenDecimals
-                  )}
-                />
-                <p>
-                  <EtherIcon
-                    width={14}
-                    height={14}
-                    className="fill-shader_600"
-                  />
-                </p>
-              </div>
-            </div>
-            <div
-              className="flex justify-between pt-2 text-sm border-t cursor-pointer group border-shader_500 text-shader_700 dark:text-shader_500"
-              onClick={() => setSeeDetail(!seeDetail)}
-            >
-              <div className="flex items-center gap-x-1">
-                <p>Total fee</p>
-                <div
-                  className={`p-1 text-sm rounded-lg transition-all duration-100 ease-linear ${
-                    seeDetail ? "rotate-90" : ""
-                  }`}
+            {preFectch && (
+              <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
+                <p className="text-xs">Price Updated</p>
+                <Button
+                  disabled={isLoadingInforDML}
+                  primary
+                  className="px-6 py-2 bg-primary_400"
+                  onClick={() => {
+                    setUpdatePrice(!updatePrice);
+                    setPreFetch(false);
+                  }}
                 >
-                  <FaChevronRight />
-                </div>
+                  Accept
+                </Button>
               </div>
-              <div className="flex items-center">
-                {/* <FormatNumber
-                  number={divideByDecimal(
-                    (+feeTradingSell + +royaltiesFeeSell).toString(),
-                    data.tokenDecimals
-                  ).toString()}
-                /> */}
-                <p>
-                  <EtherIcon
-                    width={14}
-                    height={14}
-                    className="fill-shader_600"
-                  />
-                </p>
-              </div>
-            </div>
-            <div
-              className={`overflow-hidden ${
-                seeDetail ? "h-[56px] opacity-100" : "h-0 opacity-0"
-              } transition-all duration-100 ease-linear`}
-            >
-              <div className="flex justify-between mb-4 text-sm text-shader_700">
-                <p>Trading fee</p>
-                <div className="flex items-center">
-                  {/* <FormatNumber
-                    number={divideByDecimal(
-                      feeTradingSell.toString(),
-                      data.tokenDecimals
-                    )}
-                  /> */}
-                  <p>
-                    <EtherIcon
-                      width={14}
-                      height={14}
-                      className="fill-shader_600"
-                    />
-                  </p>
-                </div>
-              </div>
-              <div className="flex justify-between text-sm text-shader_700">
-                <p>Royalties Fee</p>
-                <div className="flex items-center">
-                  {/* <FormatNumber number={(royaltiesFeeSell / 1e18).toString()} /> */}
-                  12
-                  <p>
-                    <EtherIcon
-                      width={14}
-                      height={14}
-                      className="fill-shader_600"
-                    />
-                  </p>
-                </div>
-              </div>
-            </div>
-            {!isSufficientNFT && reserveNFT && (
-              <p className="text-xs text-red" key="NFTbalance">
-                Insufficient NFT balance
-              </p>
             )}
-            {Math.floor(amountSellDec) === 0 && inputNFT && (
-              <p className="text-xs text-red">Can't sell</p>
-            )}
-          </div>
-          <div className="flex flex-col items-center mt-6">
-            <Button
-              disabled={isLoading || preFectch}
-              primary={!isLoading && !preFectch}
-              className="w-[144px] py-2"
-              active={isLoading || preFectch}
-              onClick={handleSellNFT}
-            >
-              SELL NFT
-              {isLoading && (
-                <BiLoaderAlt className="ml-1 text-white animate-spin" />
-              )}
-            </Button>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation

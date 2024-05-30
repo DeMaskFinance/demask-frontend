@@ -62,7 +62,7 @@ const Classify: React.FC<ClassifyProps> = ({
               {ERCType.map((item) => (
                 <li
                   className={`item_menu w-[182px] my-1 gap-x-1 ${
-                    item.type === typeERC && "bg-shader_600 area_shader_800"
+                    item.type === typeERC && "bg-shader_600 "
                   }`}
                   onClick={() => setTypeERC(item.type)}
                 >
@@ -97,7 +97,7 @@ const Classify: React.FC<ClassifyProps> = ({
               onChange={(e) => {
                 setSearchCollection(e.target.value);
               }}
-              className="relative w-full transition-all bg-transparent outline-none placeholder:text-xs"
+              className="relative w-full text-white transition-all bg-transparent outline-none placeholder:text-xs"
             />
           </div>
         </div>
@@ -108,15 +108,14 @@ const Classify: React.FC<ClassifyProps> = ({
           placement="bottom"
           render={(attrs) => (
             <div
-              className="w-full p-2 bg-white rounded-lg shadow-home bg-shader_700 border-shader_700"
+              className="w-full p-2 bg-white rounded-lg shadow-home border-shader_700"
               tabIndex={-1}
               {...attrs}
             >
               {subMenuCateData.map((cateItem) => (
                 <li
                   className={`item_menu w-[184px] my-1 ${
-                    cateItem.name === category &&
-                    "bg-shader_600 area_shader_800"
+                    cateItem.name === category && "bg-shader_600 "
                   }`}
                   onClick={() => setCategory(cateItem.type)}
                 >
@@ -126,7 +125,7 @@ const Classify: React.FC<ClassifyProps> = ({
             </div>
           )}
         >
-          <div className="p-2 rounded-lg bg-shader_600 group bg-shader_700 border-shader_700">
+          <div className="p-2 rounded-lg bg-shader_600 group border-shader_700">
             <FilterIcon
               width={24}
               height={24}

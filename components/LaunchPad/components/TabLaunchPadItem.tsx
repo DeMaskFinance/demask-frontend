@@ -28,7 +28,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
       >
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex flex-col h-full">
-            <div className="h-[123px] ">
+            <div className="h-[123px] overflow-hidden rounded-lg">
               <MediaNFT data={item} isControls={false} hover />
             </div>
 

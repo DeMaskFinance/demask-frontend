@@ -223,7 +223,7 @@ export default function DetailLaunchPad() {
                     />
                   </div>
                 </div>
-                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper area_shader_900">
+                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper ">
                   <div className="w-full lg:w-[50%] relative">
                     <MediaNFT data={data} isControls />
                     <div className="absolute top-0 right-0 ">
@@ -323,9 +323,9 @@ export default function DetailLaunchPad() {
                     </div>
                     <div className="w-full lg:w-[80%]">
                       <p className="mb-2">Type</p>
-                      <div className="flex justify-between p-2 rounded-lg datas-center bg-shader_500 area_shader_800">
+                      <div className="flex justify-between p-2 rounded-lg datas-center bg-shader_500 ">
                         <div className="flex item-center gap-x-2">
-                          <div className="w-8 h-8">
+                          <div className="w-8 h-8 overflow-hidden rounded-lg">
                             <MediaNFT data={data} isControls hideAudio={true} />
                           </div>
                           <div className="relative font-semibold text-shader_700 max-w-[250px] flex items-center">
@@ -573,7 +573,7 @@ export default function DetailLaunchPad() {
           setIsOpenError={setIsOpenErrorRefund}
         />
       </div>
-      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 area_shader_800">
+      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 ">
         <div className="flex justify-center">
           <TabQuery TABS={TABS} initialItem="rule" indexChoice={indexChoice} />
         </div>

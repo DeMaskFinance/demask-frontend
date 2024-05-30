@@ -119,7 +119,7 @@ export default function CreatedCollection() {
 
   return (
     <div className="pb-6 min-h-[80vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
-      <div
+      {/* <div
         className={`relative group h-[120px] lg:h-[240px] ${
           dataDetail?.collaborators.includes(account) && "cursor-pointer"
         }`}
@@ -159,9 +159,9 @@ export default function CreatedCollection() {
             )}
           </div>
         )}
-      </div>
-      <div className="px-4 lg:px-10 2xl:px-[164px] md:px-6">
-        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-shader_600 dark:bg-shader_800 gap-x-10 3xl:gap-x-80">
+      </div> */}
+      <div className="">
+        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
           <div className="items-center text-xs lg:flex gap-x-2 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
@@ -169,7 +169,7 @@ export default function CreatedCollection() {
               }`}
             >
               <div
-                className={` w-[120px] h-[120px]${
+                className={` w-16 h-16 ${
                   dataDetail?.collaborators.includes(account) &&
                   "group-hover:brightness-[0.8]"
                 }`}
@@ -178,15 +178,15 @@ export default function CreatedCollection() {
                   <Image
                     src={dataDetail?.avatar}
                     alt="banner"
-                    width={600}
-                    height={600}
+                    width={64}
+                    height={64}
                     className="object-cover w-full h-full rounded-lg "
                   />
                 ) : (
                   <Image
                     src="/Placeholder.png"
-                    width={120}
-                    height={120}
+                    width={64}
+                    height={64}
                     className="object-cover w-full h-full rounded-lg"
                     alt="1"
                   />
@@ -250,9 +250,9 @@ export default function CreatedCollection() {
                 className="hidden"
               />
             </div>
-            <div className="mt-4 lg:mt-0">
+            <div className="flex flex-col mt-4 font-semibold lg:mt-0 gap-y-2">
               <div className="flex items-center gap-x-2">
-                <p className="text-2xl font-semibold whitespace-nowrap">
+                <p className="text-xl title whitespace-nowrap">
                   {dataDetail?.name}
                 </p>
                 {dataDetail?.collaborators.includes(account) && (
@@ -281,8 +281,8 @@ export default function CreatedCollection() {
                   </div>
                 )}
               </div>
-              <p className="mt-2 text-xs">{dataDetail?.description}</p>
-              <div className="flex items-center mt-4">
+              <p className="text-xs">{dataDetail?.description}</p>
+              <div className="flex items-center">
                 <div className="flex gap-x-2">
                   {dataDetail?.socials?.website && (
                     <Link
@@ -304,7 +304,7 @@ export default function CreatedCollection() {
                   )}
                 </div>
                 <div className="flex gap-x-6">
-                  <p className="px-2 py-1 uppercase rounded-full bg-shader_500 whitespace-nowrap dark:bg-shader_700">
+                  <p className="px-2 py-1 uppercase rounded-full bg-primary_500 text-primary_300 border-primary_500 whitespace-nowrap bg-opacity-20">
                     {dataDetail?.type}
                   </p>
                   <LogoIconCard chainId={chainId} />
@@ -312,7 +312,7 @@ export default function CreatedCollection() {
               </div>
             </div>
           </div>
-          <div className="flex self-center mt-4 overflow-auto rounded-lg lg:overflow-visible lg:p-4 lg:gap-x-14 gap-x-10 lg:mt-0">
+          <div className="flex self-center mt-4 overflow-auto rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
             <div className="text-shader_600">
               <p className="mb-1 text-sm whitespace-nowrap">Total Volume</p>
               <div className="flex items-center text-xl font-semibold ">

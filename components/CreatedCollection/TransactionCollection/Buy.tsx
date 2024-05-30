@@ -164,11 +164,7 @@ const Buy = () => {
                   <FormatNumber
                     number={(amountTokenBuy / 1e18).toString()}
                   />{" "}
-                  <EtherIcon
-                    width={18}
-                    height={18}
-                    className="fill-shader_600"
-                  />
+                  <EtherIcon width={18} height={18} />
                 </li>
                 <li className="flex items-center">
                   Receive: {idNFT.length} NFTs
@@ -178,11 +174,7 @@ const Buy = () => {
                   <FormatNumber
                     number={(amountTokenBuy / 1e18).toString()}
                   />{" "}
-                  <EtherIcon
-                    width={18}
-                    height={18}
-                    className="fill-shader_600"
-                  />
+                  <EtherIcon width={18} height={18} />
                 </li>
               </ul>
             )}

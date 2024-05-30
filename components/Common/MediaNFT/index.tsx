@@ -23,14 +23,14 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
       {data?.metadata ? (
         <div className="relative h-[inherit] w-full">
           {data.metadata?.image && (
-            <div className="w-full h-full overflow-hidden rounded-lg">
+            <div className="w-full h-full overflow-hidden ">
               <Image
                 src={formatLinkIPFS(data.metadata.image)}
                 alt="test"
                 width={680}
                 height={576}
                 sizes="(max-width: 770px) 100vw"
-                className={`w-full rounded-lg h-full transition-transform duration-150 overflow-hidden lg:max-h-[calc(100vh-326px)] object-cover aspect-square ${
+                className={`w-full  h-full transition-transform duration-150 overflow-hidden lg:max-h-[calc(100vh-326px)] object-cover aspect-square ${
                   zoom ? "group-hover:scale-[1.05]" : ""
                 } ${!loaded ? "opacity-0" : "opacity-100"}`}
                 blurDataURL="/Placeholder.png"

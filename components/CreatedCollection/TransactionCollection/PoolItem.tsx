@@ -102,7 +102,7 @@ const PoolItem = ({ liquidity }: any) => {
   };
 
   return (
-    <div className="p-4 mb-4 border rounded-lg border-shader_500 area_shader_800">
+    <div className="p-4 mb-4 border rounded-lg border-shader_500 ">
       <div className="flex flex-wrap justify-between gap-y-2">
         <p className="text-xl font-semibold text-shader_900 title">
           {liquidity.name}

@@ -244,6 +244,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     { key: "1h" },
     { key: "1d" },
   ];
+  console.log(dataSwap, data);
 
   return (
     <div className="w-full h-full">
@@ -258,7 +259,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full h-full">
+        <div className="w-full h-full border-r border-shader_500">
           <div>
             <div className="hidden text-sm font-semibold lg:flex w-fit text-primary_300 ">
               <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
@@ -365,7 +366,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               height: `${height}px`,
             }}
           />
-          <div className="flex items-center justify-between h-10 pl-3 text-sm font-semibold text-white bg-shader_500">
+          <div className="flex items-center justify-between h-10 pl-3 text-sm font-semibold text-white bg-shader_800">
             <div className="flex items-center gap-x-2">
               <span className="relative flex w-2 h-2">
                 <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>

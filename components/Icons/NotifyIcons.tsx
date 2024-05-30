@@ -23,7 +23,6 @@ export const NoteIcon: React.FunctionComponent<IconProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
       width={width}
       height={height}
       viewBox="0 0 14 15"

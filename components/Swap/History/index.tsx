@@ -8,6 +8,7 @@ import AccountContext from "@/context/AccountContext";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import { TabGroups } from "@/components/NavChoice";
 import TabTable from "@/components/NavChoice/TabTable";
+import { Pagination } from "@/components/Common/Pagination";
 interface HistorySwapProps {
   data: DataBase;
   typeERC: string;
@@ -27,7 +28,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     isSuccess,
     isPreviousData,
   } = useQuery({
-    queryKey: ["historySwap", chainId, activeChoice],
+    queryKey: ["historySwap", chainId, activeChoice, data, page],
     queryFn: async () => {
       const res = await categoryAPI(
         `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${activeChoice}&type=${typeERC}`
@@ -38,19 +39,13 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     keepPreviousData: true,
   });
 
-  const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
-  const nextPage = () =>
-    setPage((next) => Math.min(next + 1, dataHistory?.totalPages));
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
   const options = ["All", "Buy", "Sell", "Add", "Remove"];
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
   return (
     <div className="w-full font-semibold mb-14 lg:mb-0">
-      <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_700">
+      <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_800">
         <TabTable
           choices={options}
           activeChoice={activeChoice}
@@ -96,45 +91,17 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center gap-10 pt-4 pb-2 text-shader_600">
-        <button
-          onClick={prevPage}
-          disabled={isPreviousData || page === 1 || isFetching}
-          className={`${
-            isPreviousData || page === 1 || isFetching
-              ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-primary_500 transition-all"
-          } w-6 flex items-center text-center justify-center rounded-full transition-all`}
-        >
-          <MdNavigateBefore />
-        </button>
-        <p>
-          Page
-          <span className="px-2 font-medium text-primary_500">{page}</span> of
-          <span
-            className="px-2 font-medium cursor-pointer text-primary_500"
-            onClick={() =>
-              page !== dataHistory?.totalPages &&
-              setPage(dataHistory?.totalPages)
-            }
-          >
-            {dataHistory?.totalPages}
-          </span>
-        </p>
-        <button
-          onClick={nextPage}
-          disabled={
-            isPreviousData || page === dataHistory?.totalPages || isFetching
-          }
-          className={`${
-            isPreviousData || page === dataHistory?.totalPages || isFetching
-              ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-primary_500 transition-all"
-          } w-6 flex items-center text-center justify-center rounded-full transition-all`}
-        >
-          <MdOutlineNavigateNext />
-        </button>
-      </div>
+      {isSuccess && (
+        <Pagination
+          data={dataHistory}
+          isPreviousData={isPreviousData}
+          page={page}
+          setPage={setPage}
+          refetch={refetch}
+          totalPages={15}
+          isFetching={isFetching}
+        />
+      )}
     </div>
   );
 };

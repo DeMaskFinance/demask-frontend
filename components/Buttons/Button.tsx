@@ -55,7 +55,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       font-semibold
       ${
         primary
-          ? "bg-primary_500 text-white  hover:bg-primary_400 border boder-white hover:border-primary_400 active:bg-primary_400 rounded-lg"
+          ? "bg-primary_500 text-white  hover:bg-primary_600  rounded-lg"
           : ""
       }
       ${third ? "bg-primary_400 text-white  text-sm" : ""}
@@ -79,11 +79,18 @@ const Button: FunctionComponent<ButtonProps> = ({
         green_2 &&
         "bg-green text-white bg-opacity-[15%] py-2 px-3 hover:bg-opacity-[25%] border border-green w-max"
       }
+      ${isLoadingBtn && "opacity-[0.35]"}
       ${className}
       `}
     >
-      {children}
-      {isLoadingBtn && <BiLoaderAlt className="ml-2 text-white animate-spin" />}
+      {isLoadingBtn ? (
+        <div className="flex items-center justify-center px-8 py-3 rounded-lg bg-primary_500">
+          <BiLoaderAlt className="mr-2 text-base text-white animate-spin" />
+          <p>Fetching Quotes</p>
+        </div>
+      ) : (
+        <>{children}</>
+      )}
     </button>
   );
 };

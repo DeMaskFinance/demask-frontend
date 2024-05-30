@@ -36,7 +36,7 @@ const SearchInventory = () => {
           onClick={() => {
             setShowSearch(true);
           }}
-          className="relative w-full transition-all bg-transparent outline-none placeholder:text-xs"
+          className="relative w-full text-white transition-all bg-transparent outline-none placeholder:text-xs"
         />
       </div>
       {/* {showSearch && (

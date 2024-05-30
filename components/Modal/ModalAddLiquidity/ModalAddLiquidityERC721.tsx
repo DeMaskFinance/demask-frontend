@@ -1,14 +1,11 @@
 import { Button } from "@/components/Buttons";
-import MediaNFT from "@/components/Common/MediaNFT";
+import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformation from "@/hooks/useInformationToken";
-import {
-  collectionListBuy,
-  collectionListSell,
-  fetchDataSellNFTs,
-} from "@/libs/service/collectionService";
+import { fetchDataSellNFTs } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -16,18 +13,15 @@ import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
+import { useInView } from "react-intersection-observer";
 import "react-toastify/dist/ReactToastify.css";
-import ModalDocument from "../ModalLength/ModalDocument";
+import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
-import { useInView } from "react-intersection-observer";
-import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
-import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
 interface ModalAddLiquidityERC721Props {
   isOpenAddLiquidity: boolean;
   setIsOpenLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
@@ -305,7 +299,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
+          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

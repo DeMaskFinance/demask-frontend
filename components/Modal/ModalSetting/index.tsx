@@ -1,14 +1,13 @@
-import { NoteIcon, TokenIconNotDefine } from "@/components/Icons";
 import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "../Wrapper";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
 import { NumericFormat } from "react-number-format";
 import { TabGroups } from "@/components/NavChoice";
+import { NoteIcon } from "@/components/Icons";
 interface ModalSettingProps {
   isOpenSetting: boolean;
   setIsOpenSetting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,7 +51,6 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
     setSlippageTo(parseFloat(item));
     updateSlippage(parseFloat(item));
   };
-  console.log(slippage);
 
   return (
     <Wrapper isOpen={isOpenSetting} onClick={handleClose}>
@@ -153,6 +151,7 @@ const ModalSetting: React.FunctionComponent<ModalSettingProps> = ({
                 }
               }}
             />
+            <NoteIcon width={14} height={14} />
           </div>
         </div>
       </div>

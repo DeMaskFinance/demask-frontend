@@ -19,8 +19,6 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
   isSuccess,
   demask,
 }) => {
-  console.log(data);
-
   return (
     <>
       {isLoading || isFetching ? (
@@ -31,7 +29,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
             data.data.map((item: any, idx: number) => (
               <tr
                 key={idx}
-                className="flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
+                className="flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500"
               >
                 <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
                   <div className="flex items-center justify-end ">
@@ -42,7 +40,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                           : item.action === "Add"
                           ? "bg-primary_300 text-primary_300"
                           : "bg-red text-red"
-                      } py-2 rounded-lg`}
+                      } py-1 rounded-lg`}
                     >
                       {item.action}
                     </span>

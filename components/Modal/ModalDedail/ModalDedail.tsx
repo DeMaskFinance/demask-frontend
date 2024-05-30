@@ -52,7 +52,6 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
-  console.log(data);
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
@@ -98,7 +97,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                   </div>
                   <div className="p-4">
                     <div className="flex gap-x-4">
-                      <div className="w-[40%] max-h-[350px] aspect-square">
+                      <div className="w-[40%] max-h-[350px] aspect-square rounded-xl h-fit overflow-hidden">
                         <MediaNFT data={data} isControls />
                       </div>
                       <div className="flex-grow">
@@ -149,7 +148,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                                   )}
                                 </div>
                               ) : (
-                                <p className="">No data</p>
+                                <p className="text-shader_200">No data</p>
                               )}
                             </DisclosurePanel>
                           </Disclosure>

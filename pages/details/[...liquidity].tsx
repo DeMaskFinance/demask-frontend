@@ -185,7 +185,7 @@ export default function DetailLiquidity() {
                         className="hover:fill-primary_500"
                       />
                     </Link>
-                    <div className="w-[30px] h-[30px] ml-4">
+                    <div className="w-[30px] h-[30px] ml-4 overflow-hidden rounded-xl">
                       <MediaNFT data={data} isControls={false} />
                     </div>
                     <Link
@@ -314,7 +314,9 @@ export default function DetailLiquidity() {
             <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
               {account && data?.metadata && (
                 <div className="justify-end max-w-[350px] mb-6 mx-auto">
-                  <MediaNFT data={data} isControls={true} />
+                  <div className="overflow-hidden rounded-xl">
+                    <MediaNFT data={data} isControls={true} />
+                  </div>
                   <div className="w-full">
                     <p
                       className="block mx-auto mt-2 text-xs text-primary_400 hover:cursor-pointer hover:text-primary_400 w-fit"

@@ -22,7 +22,7 @@ const ReferralUser = () => {
   return (
     <div>
       {account && (
-        <div className="p-6 border rounded-lg border-shader_500 area_shader_800">
+        <div className="p-6 border rounded-lg border-shader_500 ">
           {/* <div className="flex justify-between w-full px-4 py-2 mb-6 font-semibold text-white bg-opacity-50 rounded-lg bg-green ">
       <div>
         <p>Referral status</p>

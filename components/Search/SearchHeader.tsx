@@ -184,7 +184,7 @@ const Search: FunctionComponent<SearchProps> = ({
         >
           <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
             <p className="my-2 ml-2 text-sm font-semibold text-primary_400">
-              <span className="">Top NFT</span>
+              <span className="">Searched</span>
               {isMounted && <span className="">({searchHistory.length})</span>}
             </p>
             {domLoaded && (

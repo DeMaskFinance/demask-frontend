@@ -269,7 +269,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         />
       ),
       content: "Pool",
-      link: `/add/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`,
+      link: `/add/${nftAddress}/${tokenAddress}/${idNFT}`,
     },
     {
       icon: (
@@ -298,7 +298,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   };
 
   return (
-    <div className="flex w-full md:w-[34%] border-l h-fit gap-y-1 lg:gap-y-12 border-shader_600">
+    <div className="flex w-full md:w-[34%] h-fit gap-y-1 lg:gap-y-12 ">
       <div className="w-full p-4">
         <div className="flex justify-between gap-4 mb-2">
           <p className="text-xl font-bold text-white">Demask Swaps</p>
@@ -335,7 +335,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <div className="p-4 border rounded-lg border-shader_500 bg-shader_700">
           <div>
             <div className="flex pb-5 border-b gap-x-5 border-shader_500">
-              <div className="w-[157px] h-[157px]">
+              <div className="w-[157px] h-[157px] rounded-xl overflow-hidden">
                 <MediaNFT data={data} isControls={true} />
               </div>
               <div className="flex-grow font-semibold text-white ">
@@ -398,11 +398,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                       <p>Your balance (ETH)</p>
                       <div className="flex items-center font-bold text-white gap-x-1">
                         {formatNumber(balanceToken)}
-                        <EtherIcon
-                          width={16}
-                          height={16}
-                          className="fill-shader_600"
-                        />
+                        <EtherIcon width={16} height={16} />
                       </div>
                     </div>
                   ) : (
@@ -510,11 +506,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   )}
                 </div>
                 <div className="absolute px-2 py-1 right-1 top-2">
-                  <EtherIcon
-                    width={16}
-                    height={16}
-                    className="fill-shader_600"
-                  />
+                  <EtherIcon width={16} height={16} />
                 </div>
               </div>
             ) : (

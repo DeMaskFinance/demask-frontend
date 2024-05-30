@@ -68,7 +68,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                           setIsOpenDetail(true);
                           document.body.style.overflowY = "hidden";
                         }}
-                        className="w-full h-full"
+                        className="w-full h-full overflow-hidden rounded-lg"
                       >
                         <MediaNFT data={item} isControls={false} hover zoom />
                       </div>

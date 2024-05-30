@@ -1,7 +1,5 @@
 import { Button } from "@/components/Buttons";
-import MediaNFT from "@/components/Common/MediaNFT";
 import { LightBulbIcon } from "@/components/Icons";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import {
   ModalError,
   ModalTransation,
@@ -13,8 +11,6 @@ import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
 import {
-  collectionListBuy,
-  collectionListSell,
   fetchDataBuyNFTs,
   fetchDataSellNFTs,
 } from "@/libs/service/collectionService";
@@ -203,7 +199,7 @@ const Change = () => {
   };
   return (
     <div>
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 area_shader_800">
+      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 ">
         <LightBulbIcon
           width={20}
           height={20}
@@ -234,7 +230,7 @@ const Change = () => {
                   handleChoiceNFT={handleChoiceNFTInput}
                   idNFT={idNFTInput}
                 />
-                <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 area_shader_800">
+                <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 ">
                   <p>
                     You have selected
                     <span className="text-primary_400">

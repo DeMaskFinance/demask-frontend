@@ -145,7 +145,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 </>
               )
             ) : (
-              <div>
+              <div className="overflow-y-scroll">
                 <TopNFT handleSelectNFT={handleSelectNFT} />
               </div>
             )}

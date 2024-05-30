@@ -152,7 +152,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               className="flex items-center rounded-lg cursor-pointer hover:bg-shader_500 group gap-x-2"
               onClick={handleChangeRouteNFT}
             >
-              <div className="w-8 h-8">
+              <div className="w-8 h-8 overflow-hidden rounded-lg">
                 <MediaNFT data={dataNFT[0]} isControls={false} />
               </div>
               <div>

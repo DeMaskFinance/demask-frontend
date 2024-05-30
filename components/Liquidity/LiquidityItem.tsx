@@ -46,7 +46,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
 
   return (
     <div className="relative w-full overflow-hidden group">
-      <div className="transition-all duration-150 ease-linear group-hover:brightness-50 h-[240px] w-full">
+      <div className="transition-all duration-150 ease-linear group-hover:brightness-50 h-[240px] w-full rounded-lg overflow-hidden">
         {liquidity?.metadata ? (
           <MediaNFT data={liquidity} isControls={false} />
         ) : (
@@ -55,7 +55,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             alt="banner"
             width={600}
             height={600}
-            className="object-cover w-full h-full rounded-lg"
+            className="object-cover w-full h-full "
           />
         )}
       </div>
