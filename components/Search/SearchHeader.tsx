@@ -36,7 +36,6 @@ const Search: FunctionComponent<SearchProps> = ({
   const [searchHistory, setSearchHistory] = useState<any[]>(searchsHistory);
   const { chainId } = useContext(AccountContext);
   const [domLoaded, setDomLoaded] = useState(false);
-  const [active, setActive] = useState(false);
   const [click, setClick] = useState(false);
   let debouncedSearch = useDebounce(searchTerm, 1000);
   const handleSearch = (event: any) => {
@@ -89,8 +88,7 @@ const Search: FunctionComponent<SearchProps> = ({
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-        if (active) {
-          setActive(false);
+        if (click) {
           setClick(false);
         }
       }
@@ -99,7 +97,7 @@ const Search: FunctionComponent<SearchProps> = ({
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [active]);
+  }, [click]);
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata?.name);
@@ -130,7 +128,6 @@ const Search: FunctionComponent<SearchProps> = ({
   };
 
   const handleActive = () => {
-    setActive(true);
     searchRef.current?.focus();
     setClick(true);
   };
@@ -160,9 +157,7 @@ const Search: FunctionComponent<SearchProps> = ({
             onClick={() => {
               setClick(true);
             }}
-            className={`hide-clear rounded-lg w-full h-10 relative duration-200 ease-linear bg-shader_600 border-shader_500 lg:border-none border p-2 placeholder:text-shader_200 transition-all  ${
-              active ? "w-full  lg:pl-8" : " lg:w-0  bg-transparent"
-            } outline-none text-sm  text-white`}
+            className={`hide-clear rounded-lg h-10 pl-8 relative duration-200 ease-linear bg-shader_600 border-shader_500 lg:border-none border p-2 placeholder:text-shader_200 transition-all  w-full outline-none text-sm  text-white`}
             onFocus={handleActive}
           />
           {debouncedSearch && click && (
@@ -177,9 +172,7 @@ const Search: FunctionComponent<SearchProps> = ({
             <SearchIcon
               width={20}
               height={20}
-              className={`${
-                active ? "" : ""
-              } cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 hidden lg:block -translate-y-1/2 text-white`}
+              className={`cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 hidden lg:block -translate-y-1/2 text-white`}
             />
           </div>
         </div>
