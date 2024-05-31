@@ -244,7 +244,6 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     { key: "1h" },
     { key: "1d" },
   ];
-  console.log(dataSwap, data);
 
   return (
     <div className="w-full h-full">

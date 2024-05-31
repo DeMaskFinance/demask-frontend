@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { EtherIcon } from "@/components/Icons";
+import { EtherIcon, NFTIcon } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import {
   ModalError,
@@ -15,7 +15,7 @@ import useInformationToken from "@/hooks/useInformationToken";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -51,30 +51,33 @@ const Buy = () => {
     isOpenTransaction
   );
 
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery(
-    ["collectionNFTBUY", chainId, collectionAddress],
-    ({ pageParam = 1 }) =>
-      fetchDataBuyNFTs(collectionAddress, pageParam, chainId),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  // const {
+  //   data,
+  //   fetchNextPage,
+  //   isFetchingNextPage,
+  //   hasNextPage,
+  //   isSuccess,
+  //   isLoading,
+  //   isFetching,
+  // } = useInfiniteQuery(
+  //   ["collectionNFTBUY", chainId, collectionAddress],
+  //   ({ pageParam = 1 }) =>
+  //     fetchDataBuyNFTs(collectionAddress, pageParam, chainId),
+  //   {
+  //     getNextPageParam: (page) =>
+  //       page?.currentPage === page?.totalPages
+  //         ? undefined
+  //         : page?.currentPage + 1,
+  //   }
+  // );
+  const { isLoading, data, isRefetching, isSuccess, refetch, isFetching } =
+    useQuery({
+      queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+      queryFn: async () => {
+        const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+        return res;
+      },
+    });
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -87,6 +90,8 @@ const Buy = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
+  console.log(data);
+
   const dmlToken = data?.pages[0]?.dmlAddress;
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
@@ -151,30 +156,44 @@ const Buy = () => {
           <NFTGrid
             data={data}
             isFetching={isFetching}
-            hasNextPage={hasNextPage}
             ref={ref}
             handleChoiceNFT={handleChoiceNFT}
             idNFT={idNFT}
           />
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
-              <ul className="flex flex-wrap px-4 py-2 text-sm bg-shader_600 text-shader_600 gap-x-4 bg-shader_700 border-shader_700 dark:text-shader_500">
-                <li className="flex items-center">
+              <ul className="text-sm text-shader_200">
+                <li className="flex items-center justify-between mb-1">
                   Send:
-                  <FormatNumber
-                    number={(amountTokenBuy / 1e18).toString()}
-                  />{" "}
-                  <EtherIcon width={18} height={18} />
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    <FormatNumber number={(amountTokenBuy / 1e18).toString()} />{" "}
+                    <EtherIcon width={16} height={16} />
+                  </div>
                 </li>
-                <li className="flex items-center">
-                  Receive: {idNFT.length} NFTs
+                <li className="flex items-center justify-between mb-1">
+                  Receive: NFTs
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    {idNFT.length}
+                    <NFTIcon width={16} height={16} />
+                  </div>
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center justify-between mb-4">
                   Price:
-                  <FormatNumber
-                    number={(amountTokenBuy / 1e18).toString()}
-                  />{" "}
-                  <EtherIcon width={18} height={18} />
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    <FormatNumber number={(amountTokenBuy / 1e18).toString()} />{" "}
+                    <EtherIcon width={16} height={16} />
+                  </div>
+                </li>
+                <li>
+                  <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+                    <div className="">Total Pay</div>
+                    <div className="flex items-center px-2 py-1 text-white gap-x-1">
+                      <FormatNumber
+                        number={(amountTokenBuy / 1e18).toString()}
+                      />{" "}
+                      <EtherIcon width={16} height={16} />
+                    </div>
+                  </div>
                 </li>
               </ul>
             )}

@@ -18,7 +18,11 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -56,54 +60,25 @@ const Change = () => {
   //data Input
   const {
     data: inputData,
-    fetchNextPage: fetchNextInputPage,
-    isFetchingNextPage: isFetchingNextInputPage,
-    hasNextPage: hasNextInputPage,
     isSuccess: isInputDataSuccess,
     isLoading: isInputDataLoading,
     isFetching: isInputDataFetching,
-  } = useInfiniteQuery(
-    ["collectionNFTSell", chainId, account, collectionAddress],
-    ({ pageParam = 1 }) =>
-      fetchDataSellNFTs(collectionAddress, pageParam, chainId, account),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
+  } = useQuery({
+    queryKey: ["collectionNFTSell", chainId, collectionAddress],
+    queryFn: async () => {
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      return res;
+    },
+  });
 
-  useEffect(() => {
-    if (inView) {
-      fetchNextInputPage();
-    }
-  }, [inView]);
   //Data output
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery(
-    ["collectionNFTBUY", chainId, collectionAddress],
-    ({ pageParam = 1 }) =>
-      fetchDataBuyNFTs(collectionAddress, pageParam, chainId),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
-  useEffect(() => {
-    if (inViewOutput) {
-      fetchNextPage();
-    }
-  }, [inViewOutput]);
+  const { data, isSuccess, isLoading, isFetching } = useQuery({
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+    queryFn: async () => {
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      return res;
+    },
+  });
   const dmlToken = data?.pages[0]?.dmlAddress;
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
@@ -224,8 +199,7 @@ const Change = () => {
               <div className="flex flex-col ">
                 <NFTGrid
                   data={inputData}
-                  isFetching={isFetchingNextInputPage}
-                  hasNextPage={hasNextInputPage}
+                  isFetching={isInputDataFetching}
                   ref={ref}
                   handleChoiceNFT={handleChoiceNFTInput}
                   idNFT={idNFTInput}
@@ -265,7 +239,6 @@ const Change = () => {
             <NFTGrid
               data={data}
               isFetching={isFetching}
-              hasNextPage={hasNextPage}
               ref={refOutput}
               handleChoiceNFT={handleChoiceNFTOutput}
               idNFT={idNFTOutput}

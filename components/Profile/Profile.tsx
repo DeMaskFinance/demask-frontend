@@ -127,7 +127,7 @@ const Profile = () => {
       </section>
       <div className="flex items-center justify-start px-4 mt-6 md:justify-center">
         {/* PC */}
-        <div className="hidden md:block">
+        <div className="hidden w-full md:block">
           <TabQuery TABS={TABS} initialItem="items" indexChoice={indexChoice} />
         </div>
         {/* mobile-tablet */}
@@ -140,7 +140,7 @@ const Profile = () => {
             onClickOutside={() => setVisible(false)}
             render={(attrs) => (
               <div
-                className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 border-shader_700"
+                className="w-[280px] px-2 pt-1 pb-1 border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 "
                 tabIndex={-1}
                 {...attrs}
               >

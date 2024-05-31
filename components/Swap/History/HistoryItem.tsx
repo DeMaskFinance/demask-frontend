@@ -1,5 +1,5 @@
 import FormatNumber from "@/components/Common/FormatNumber";
-import { EtherIcon } from "@/components/Icons";
+import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import Link from "next/link";
 import React from "react";
 import { SkeletonTable } from "@/components/Skeleton";
@@ -22,7 +22,9 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
   return (
     <>
       {isLoading || isFetching ? (
-        <SkeletonTable length={9} />
+        <div className="flex items-center justify-center w-full h-full">
+          <LoadingIcon width={30} height={30} className="animate-spin" />
+        </div>
       ) : (
         <>
           {isSuccess && data && data.totalRecords > 0 ? (

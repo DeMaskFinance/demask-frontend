@@ -31,13 +31,11 @@ const collectionDetail = async (
 };
 const collectionListBuy = async (
   contractAddress: string | string[],
-  chainId: string | string[],
-  page: number,
-  limit: number
+  chainId: string | string[]
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?type=erc721&contractAddress=${contractAddress}&chainId=${chainId}&page=${page}&limit=${limit}`
+      `NFT-list-from-collection?type=erc721&contractAddress=${contractAddress}&chainId=${chainId}`
     );
     return res.data;
   } catch (error) {
@@ -46,22 +44,19 @@ const collectionListBuy = async (
 };
 const fetchDataBuyNFTs = async (
   collectionAddress: string,
-  pageParam = 1,
   chain: string | string[]
 ) => {
-  const data = await collectionListBuy(collectionAddress, chain, pageParam, 10);
+  const data = await collectionListBuy(collectionAddress, chain);
   return data.data;
 };
 const collectionListSell = async (
   userAddress: string,
   contractAddress: string | string[],
-  chainId: string | string[],
-  page: number,
-  limit: number
+  chainId: string | string[]
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?type=erc721&contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}&page=${page}&limit=${limit}`
+      `NFT-list-from-collection?type=erc721&contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}`
     );
     return res.data;
   } catch (error) {
@@ -70,17 +65,10 @@ const collectionListSell = async (
 };
 const fetchDataSellNFTs = async (
   collectionAddress: string,
-  pageParam = 1,
   chain: string | string[],
   account: string
 ) => {
-  const data = await collectionListSell(
-    account,
-    collectionAddress,
-    chain,
-    pageParam,
-    10
-  );
+  const data = await collectionListSell(account, collectionAddress, chain);
   return data.data;
 };
 const collectionListUserService = async (

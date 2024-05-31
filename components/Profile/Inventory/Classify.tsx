@@ -72,7 +72,7 @@ const Classify: React.FC<ClassifyProps> = ({
             </div>
           )}
         >
-          <div className="flex items-center p-2 rounded-lg bg-shader_600 group gap-x-8 bg-shader_700 border-shader_700">
+          <div className="flex items-center p-2 font-semibold text-white rounded-lg bg-shader_600 group gap-x-8 border-shader_700">
             <p className="hidden lg:block">
               Token type:{" "}
               {`${
@@ -83,7 +83,7 @@ const Classify: React.FC<ClassifyProps> = ({
                   : "ERC - 1155"
               }`}
             </p>
-            <FaAngleDown className="transition-all duration-150 text-shader_600 group-hover:rotate-180" />
+            <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
           </div>
         </Tippy>
         <div className="relative flex-grow">

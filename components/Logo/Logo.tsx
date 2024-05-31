@@ -1,4 +1,4 @@
-import { BlastIcon, GoerliIcon, ZkSyncIcon } from "../Icons";
+import { BlastIcon, GoerliIcon, SepoliaIcon, ZkSyncIcon } from "../Icons";
 
 interface LogoProps {
   className?: string;
@@ -848,13 +848,13 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
       <path
         d="M172.842 98.7177C173.631 103.002 170.769 106.515 166.468 106.515C164.281 106.433 162.186 105.621 160.516 104.207C158.846 102.793 157.698 100.861 157.257 98.7177C156.469 94.4335 159.322 90.9204 163.632 90.9204"
         stroke="#9B9B9B"
-        stroke-width="1.04"
+        strokeWidth="1.04"
         stroke-miterlimit="10"
       />
       <path
         d="M163.632 90.9204C165.818 91.002 167.914 91.8146 169.584 93.2282C171.254 94.6418 172.401 96.5747 172.843 98.7177"
         stroke="#E8E8E8"
-        stroke-width="1.04"
+        strokeWidth="1.04"
         stroke-miterlimit="10"
       />
       <path
@@ -900,13 +900,13 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
       <path
         d="M271.463 98.7175L274.941 112.427C275.601 115.025 275.659 117.74 275.111 120.365C274.563 122.989 273.422 125.453 271.777 127.57C270.131 129.686 268.024 131.399 265.616 132.578C263.208 133.757 260.563 134.37 257.882 134.371H229.11"
         stroke="url(#paint3_linear_3123_7001)"
-        stroke-width="1.04"
+        strokeWidth="1.04"
         stroke-miterlimit="10"
       />
       <path
         d="M231.714 148.646H250.444C253.42 148.651 256.307 149.659 258.639 151.508C260.971 153.356 262.612 155.937 263.296 158.833L264.53 164.043"
         stroke="url(#paint4_linear_3123_7001)"
-        stroke-width="1.04"
+        strokeWidth="1.04"
         stroke-miterlimit="10"
       />
       <path
@@ -928,8 +928,8 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
           y2="181.138"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#AF99FF" />
-          <stop offset="1" stop-color="#6040FF" />
+          <stop stopColor="#AF99FF" />
+          <stop offset="1" stopColor="#6040FF" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_3123_7001"
@@ -939,8 +939,8 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
           y2="-19.6629"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E8E8E8" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="#E8E8E8" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_3123_7001"
@@ -950,8 +950,8 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
           y2="-38.1963"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E8E8E8" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="#E8E8E8" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_3123_7001"
@@ -961,8 +961,8 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
           y2="110.217"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF5C90" />
-          <stop offset="1" stop-color="#FFB469" />
+          <stop stopColor="#FF5C90" />
+          <stop offset="1" stopColor="#FFB469" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_3123_7001"
@@ -972,8 +972,8 @@ export const LogoMaintenance: React.FunctionComponent<LogoProps> = ({
           y2="142.939"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF5C90" />
-          <stop offset="1" stop-color="#FFB469" />
+          <stop stopColor="#FF5C90" />
+          <stop offset="1" stopColor="#FFB469" />
         </linearGradient>
       </defs>
     </svg>
@@ -1014,12 +1014,10 @@ export const LogoIconCard: React.FunctionComponent<LogoProps> = ({
 }) => {
   return (
     <div className="my-1">
-      {chainId === "280" ? (
+      {chainId === "11155111" ? (
         <div className="flex items-center gap-x-1">
-          <ZkSyncIcon width={18} height={12} className="fill-primary_400" />
-          <p className="text-[11px] font-semibold text-primary_400">
-            zKsync Era
-          </p>
+          <SepoliaIcon width={20} height={16} />
+          <p className="italic font-semibold text-primary_300">SEPOLIA</p>
         </div>
       ) : chainId === "5" ? (
         <div className="flex items-center gap-x-1">

@@ -575,7 +575,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       <ModalSearchNFTSwap
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
-        setActiveChoiceNFT={setActiveChoiceNFT}
       />
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

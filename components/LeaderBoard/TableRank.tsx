@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { AvatarCustom } from "../Avatars";
 import FormatNumber from "../Common/FormatNumber";
-import { EtherIcon, RankIcon } from "../Icons";
+import { EtherIcon, LoadingIcon, RankIcon } from "../Icons";
 import { SkeletonTable } from "../Skeleton/SkeletonTable";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
@@ -115,7 +115,7 @@ const TableRank = () => {
 
   return (
     <div className=" mt-10 overflow-x-scroll overflow-y-hidden border rounded-lg bg-shader_800 text-shader_200 border-shader_500 shadow-home min-h-[500px] flex flex-col justify-between">
-      <table className="w-full text-left border-collapse">
+      <table className="flex-grow w-full text-left border-collapse">
         <thead className="bg-shader_600 text-shader_200">
           <tr className="flex px-2 pb-2 text-base">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
@@ -137,9 +137,11 @@ const TableRank = () => {
           </tr>
         </thead>
 
-        <tbody className="flex flex-col">
+        <tbody className="flex flex-col h-full">
           {isLoading || isFetching ? (
-            <SkeletonTable length={9} />
+            <div className="flex items-center justify-center w-full h-full">
+              <LoadingIcon width={30} height={30} className="animate-spin" />
+            </div>
           ) : (
             isSuccess &&
             data && (

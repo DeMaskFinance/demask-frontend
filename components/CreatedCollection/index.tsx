@@ -303,7 +303,7 @@ export default function CreatedCollection() {
                     </Link>
                   )}
                 </div>
-                <div className="flex gap-x-6">
+                <div className="flex gap-x-2">
                   <p className="px-2 py-1 uppercase rounded-full bg-primary_500 text-primary_300 border-primary_500 whitespace-nowrap bg-opacity-20">
                     {dataDetail?.type}
                   </p>
@@ -312,15 +312,15 @@ export default function CreatedCollection() {
               </div>
             </div>
           </div>
-          <div className="flex self-center mt-4 overflow-auto rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
-            <div className="text-shader_600">
+          <div className="flex self-center mt-4 overflow-auto text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
+            <div className="">
               <p className="mb-1 text-sm whitespace-nowrap">Total Volume</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber number={dataDetail?.volume} />
                 <EtherIcon width={16} height={16} className="fill-shader_600" />
               </div>
             </div>
-            <div className="text-shader_600">
+            <div className="">
               <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
               <div className="flex items-center text-xl font-semibold ">
                 {dataDetail?.totalSale ? (
@@ -331,14 +331,14 @@ export default function CreatedCollection() {
                 <EtherIcon width={16} height={16} className="fill-shader_600" />
               </div>
             </div>
-            <div className="text-shader_600 gird">
+            <div className=" gird">
               <p className="mb-1 text-sm whitespace-nowrap">Listed/Supply</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber number={dataDetail?.countNFTsInPool} />/
                 <FormatNumber number={dataDetail?.totalSupply} />
               </div>
             </div>
-            <div className="text-shader_600">
+            <div className="">
               <p className="mb-1 text-sm whitespace-nowrap">Owner</p>
               <div className="flex items-center text-xl font-semibold ">
                 <FormatNumber number={dataDetail?.countOwner} />

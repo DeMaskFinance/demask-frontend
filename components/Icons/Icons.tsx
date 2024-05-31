@@ -15,9 +15,9 @@ export const SearchIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M17.5684 17.5L13.9434 13.875M15.9017 9.16667C15.9017 12.8486 12.9169 15.8333 9.23503 15.8333C5.55313 15.8333 2.56836 12.8486 2.56836 9.16667C2.56836 5.48477 5.55313 2.5 9.23503 2.5C12.9169 2.5 15.9017 5.48477 15.9017 9.16667Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -200,9 +200,9 @@ export const PoolIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M8.46445 8.46448L4.92893 4.92896M4.92893 19.0711L8.46448 15.5355M15.5355 15.5355L19.0711 19.071M19.0711 4.92891L15.5355 8.46445M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -259,16 +259,16 @@ export const SettingIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M12.0005 15C13.6573 15 15.0005 13.6569 15.0005 12C15.0005 10.3431 13.6573 9 12.0005 9C10.3436 9 9.00049 10.3431 9.00049 12C9.00049 13.6569 10.3436 15 12.0005 15Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M9.28957 19.3711L9.87402 20.6856C10.0478 21.0768 10.3313 21.4093 10.6902 21.6426C11.0492 21.8759 11.4681 22.0001 11.8962 22C12.3244 22.0001 12.7433 21.8759 13.1022 21.6426C13.4612 21.4093 13.7447 21.0768 13.9185 20.6856L14.5029 19.3711C14.711 18.9047 15.0609 18.5159 15.5029 18.26C15.9477 18.0034 16.4622 17.8941 16.9729 17.9478L18.4029 18.1C18.8286 18.145 19.2582 18.0656 19.6396 17.8713C20.021 17.6771 20.3379 17.3763 20.5518 17.0056C20.766 16.635 20.868 16.2103 20.8455 15.7829C20.823 15.3555 20.677 14.9438 20.4251 14.5978L19.5785 13.4344C19.277 13.0171 19.1159 12.5148 19.1185 12C19.1184 11.4866 19.281 10.9864 19.5829 10.5711L20.4296 9.40778C20.6814 9.06175 20.8275 8.65007 20.85 8.22267C20.8725 7.79528 20.7704 7.37054 20.5562 7C20.3423 6.62923 20.0255 6.32849 19.644 6.13423C19.2626 5.93997 18.833 5.86053 18.4074 5.90556L16.9774 6.05778C16.4667 6.11141 15.9521 6.00212 15.5074 5.74556C15.0645 5.48825 14.7144 5.09736 14.5074 4.62889L13.9185 3.31444C13.7447 2.92317 13.4612 2.59072 13.1022 2.3574C12.7433 2.12408 12.3244 1.99993 11.8962 2C11.4681 1.99993 11.0492 2.12408 10.6902 2.3574C10.3313 2.59072 10.0478 2.92317 9.87402 3.31444L9.28957 4.62889C9.0825 5.09736 8.73245 5.48825 8.28957 5.74556C7.84479 6.00212 7.33024 6.11141 6.81957 6.05778L5.38513 5.90556C4.95946 5.86053 4.52987 5.93997 4.14844 6.13423C3.76702 6.32849 3.45014 6.62923 3.23624 7C3.02206 7.37054 2.92002 7.79528 2.94251 8.22267C2.96499 8.65007 3.11103 9.06175 3.36291 9.40778L4.20957 10.5711C4.51151 10.9864 4.67411 11.4866 4.67402 12C4.67411 12.5134 4.51151 13.0137 4.20957 13.4289L3.36291 14.5922C3.11103 14.9382 2.96499 15.3499 2.94251 15.7773C2.92002 16.2047 3.02206 16.6295 3.23624 17C3.45036 17.3706 3.76727 17.6712 4.14864 17.8654C4.53001 18.0596 4.95949 18.1392 5.38513 18.0944L6.81513 17.9422C7.3258 17.8886 7.84034 17.9979 8.28513 18.2544C8.72966 18.511 9.08134 18.902 9.28957 19.3711Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -290,16 +290,16 @@ export const EyeIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M2.42012 12.7132C2.28394 12.4975 2.21584 12.3897 2.17772 12.2234C2.14909 12.0985 2.14909 11.9015 2.17772 11.7766C2.21584 11.6103 2.28394 11.5025 2.42012 11.2868C3.54553 9.50484 6.8954 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.785 11.6103 21.8231 11.7766C21.8517 11.9015 21.8517 12.0985 21.8231 12.2234C21.785 12.3897 21.7169 12.4975 21.5807 12.7132C20.4553 14.4952 17.1054 19 12.0004 19C6.8954 19 3.54553 14.4952 2.42012 12.7132Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12.0004 15C13.6573 15 15.0004 13.6569 15.0004 12C15.0004 10.3431 13.6573 9 12.0004 9C10.3435 9 9.0004 10.3431 9.0004 12C9.0004 13.6569 10.3435 15 12.0004 15Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -321,9 +321,9 @@ export const RefetchIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M1.5 7.5C1.5 7.5 1.59099 6.86307 4.22703 4.22703C6.86307 1.59099 11.1369 1.59099 13.773 4.22703C14.7069 5.16099 15.31 6.30054 15.5821 7.5M1.5 7.5V3M1.5 7.5H6M16.5 10.5C16.5 10.5 16.409 11.1369 13.773 13.773C11.1369 16.409 6.86307 16.409 4.22703 13.773C3.29307 12.839 2.69002 11.6995 2.41787 10.5M16.5 10.5V15M16.5 10.5H12"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -367,9 +367,9 @@ export const CopyIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M5 2H9.73333C11.2268 2 11.9735 2 12.544 2.29065C13.0457 2.54631 13.4537 2.95426 13.7094 3.45603C14 4.02646 14 4.77319 14 6.26667V11M4.13333 14H9.53333C10.2801 14 10.6534 14 10.9387 13.8547C11.1895 13.7268 11.3935 13.5229 11.5213 13.272C11.6667 12.9868 11.6667 12.6134 11.6667 11.8667V6.46667C11.6667 5.71993 11.6667 5.34656 11.5213 5.06135C11.3935 4.81046 11.1895 4.60649 10.9387 4.47866C10.6534 4.33333 10.2801 4.33333 9.53333 4.33333H4.13333C3.3866 4.33333 3.01323 4.33333 2.72801 4.47866C2.47713 4.60649 2.27316 4.81046 2.14532 5.06135C2 5.34656 2 5.71993 2 6.46667V11.8667C2 12.6134 2 12.9868 2.14532 13.272C2.27316 13.5229 2.47713 13.7268 2.72801 13.8547C3.01323 14 3.3866 14 4.13333 14Z"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -391,9 +391,35 @@ export const LeftIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M15 18L9 12L15 6"
         stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const LoadingIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        opacity="0.25"
+        d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12ZM3.36 12C3.36 16.7717 7.22826 20.64 12 20.64C16.7717 20.64 20.64 16.7717 20.64 12C20.64 7.22826 16.7717 3.36 12 3.36C7.22826 3.36 3.36 7.22826 3.36 12Z"
+        fill="white"
+      />
+      <path
+        d="M24 12C24 14.0532 23.4732 16.0721 22.47 17.8635C21.4667 19.6549 20.0206 21.1589 18.27 22.2317C16.5193 23.3045 14.5227 23.9101 12.4711 23.9907C10.4195 24.0714 8.38152 23.6242 6.55211 22.6921C4.7227 21.7599 3.16306 20.374 2.02236 18.6668C0.88167 16.9597 0.198083 14.9884 0.0369918 12.9415C-0.1241 10.8946 0.242692 8.84068 1.10228 6.97608C1.96187 5.11149 3.28551 3.49863 4.94658 2.29179L6.92154 5.01009C5.72557 5.87901 4.77255 7.04027 4.15364 8.38278C3.53474 9.72529 3.27065 11.2041 3.38663 12.6779C3.50262 14.1516 3.9948 15.571 4.8161 16.8001C5.6374 18.0293 6.76035 19.0272 8.07752 19.6983C9.3947 20.3694 10.862 20.6914 12.3392 20.6333C13.8164 20.5753 15.2539 20.1392 16.5144 19.3668C17.7748 18.5944 18.816 17.5115 19.5384 16.2217C20.2607 14.9319 20.64 13.4783 20.64 12H24Z"
+        fill="#AD97FE"
       />
     </svg>
   );
@@ -415,9 +441,9 @@ export const RightIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M9 18L15 12L9 6"
         stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -558,9 +584,9 @@ export const WalletIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M20 9.5V7.2C20 6.0799 20 5.51984 19.782 5.09202C19.5903 4.7157 19.2843 4.40974 18.908 4.21799C18.4802 4 17.9201 4 16.8 4H5.2C4.0799 4 3.51984 4 3.09202 4.21799C2.7157 4.40973 2.40973 4.71569 2.21799 5.09202C2 5.51984 2 6.0799 2 7.2V16.8C2 17.9201 2 18.4802 2.21799 18.908C2.40973 19.2843 2.71569 19.5903 3.09202 19.782C3.51984 20 4.0799 20 5.2 20L16.8 20C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V14.5M15 12C15 11.5353 15 11.303 15.0384 11.1098C15.1962 10.3164 15.8164 9.69624 16.6098 9.53843C16.803 9.5 17.0353 9.5 17.5 9.5H19.5C19.9647 9.5 20.197 9.5 20.3902 9.53843C21.1836 9.69624 21.8038 10.3164 21.9616 11.1098C22 11.303 22 11.5353 22 12C22 12.4647 22 12.697 21.9616 12.8902C21.8038 13.6836 21.1836 14.3038 20.3902 14.4616C20.197 14.5 19.9647 14.5 19.5 14.5H17.5C17.0353 14.5 16.803 14.5 16.6098 14.4616C15.8164 14.3038 15.1962 13.6836 15.0384 12.8902C15 12.697 15 12.4647 15 12Z"
         stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -633,9 +659,9 @@ export const ImgIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M10.9167 2.69991H7C5.59987 2.69991 4.8998 2.69991 4.36502 2.97239C3.89462 3.21208 3.51217 3.59453 3.27248 4.06493C3 4.59971 3 5.29978 3 6.69991V13.6999C3 15.1 3 15.8001 3.27248 16.3349C3.51217 16.8053 3.89462 17.1877 4.36502 17.4274C4.8998 17.6999 5.59987 17.6999 7 17.6999H14.6667C15.4416 17.6999 15.8291 17.6999 16.147 17.6147C17.0098 17.3836 17.6836 16.7097 17.9148 15.847C18 15.529 18 15.1416 18 14.3666M16.3333 6.86658V1.86658M13.8333 4.36658H18.8333M9.25 7.28324C9.25 8.20372 8.50381 8.94991 7.58333 8.94991C6.66286 8.94991 5.91667 8.20372 5.91667 7.28324C5.91667 6.36277 6.66286 5.61658 7.58333 5.61658C8.50381 5.61658 9.25 6.36277 9.25 7.28324ZM12.9917 10.1317L5.94262 16.5399C5.54614 16.9004 5.34789 17.0806 5.33036 17.2367C5.31516 17.3721 5.36704 17.5063 5.46932 17.5962C5.58732 17.6999 5.85523 17.6999 6.39107 17.6999H14.2133C15.4126 17.6999 16.0123 17.6999 16.4833 17.4984C17.0745 17.2455 17.5456 16.7744 17.7985 16.1832C18 15.7122 18 15.1125 18 13.9132C18 13.5097 18 13.3079 17.9559 13.12C17.9005 12.8839 17.7941 12.6627 17.6444 12.4719C17.5252 12.3201 17.3677 12.194 17.0526 11.942L14.7215 10.0771C14.4062 9.82483 14.2485 9.69869 14.0748 9.65417C13.9218 9.61493 13.7607 9.62001 13.6104 9.66882C13.44 9.72419 13.2905 9.86003 12.9917 10.1317Z"
         stroke="#04B186"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -655,7 +681,7 @@ export const BgGradient: React.FunctionComponent<IconProps> = ({
       <path
         d="M1020 3.0598e-05C1020 45.9627 1006.81 91.4753 981.179 133.939C955.549 176.403 917.982 214.987 870.625 247.487C823.267 279.988 767.045 305.769 705.169 323.358C643.292 340.947 576.974 350 510 350C443.026 350 376.707 340.947 314.831 323.358C252.955 305.769 196.733 279.988 149.376 247.487C102.018 214.987 64.4513 176.403 38.8214 133.939C13.1915 91.4752 -5.85506e-06 45.9627 0 0L1020 3.0598e-05Z"
         fill="url(#paint0_radial_196_9)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <defs>
         <radialGradient
@@ -666,8 +692,8 @@ export const BgGradient: React.FunctionComponent<IconProps> = ({
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(510 -6.2906e-06) rotate(89.9689) scale(349.947 505.189)"
         >
-          <stop stop-color="#BFACFE" />
-          <stop offset="1" stop-color="#4E3AB6" stop-opacity="0" />
+          <stop stopColor="#BFACFE" />
+          <stop offset="1" stopColor="#4E3AB6" stopOpacity="0" />
         </radialGradient>
       </defs>
     </svg>
@@ -717,9 +743,9 @@ export const DiamondIcon: React.FunctionComponent<IconProps> = ({
           width="39.2012"
           height="39.2002"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -767,17 +793,17 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M83.1631 55.7534C83.1631 56.8815 82.2799 57.7678 81.1558 57.7678H61.4034C60.2792 57.7678 59.396 56.8815 59.396 55.7534V19.4129C59.396 18.6877 59.7573 18.043 60.3997 17.6804L80.1521 6.19812C81.4769 5.43263 83.1631 6.39956 83.1631 7.93054V55.7534Z"
         fill="url(#paint0_linear_191_83)"
-        fill-opacity="0.25"
+        fillOpacity="0.25"
       />
       <path
         d="M32.1772 80.249C32.1772 81.3771 33.0605 82.2635 34.1846 82.2635H53.8969C55.021 82.2635 55.9042 81.3771 55.9042 80.249V19.4129C55.9042 18.6877 55.5429 18.043 54.9006 17.6804L35.1883 6.19812C33.8634 5.43263 32.1772 6.39956 32.1772 7.93054V80.249Z"
         fill="url(#paint1_linear_191_83)"
-        fill-opacity="0.25"
+        fillOpacity="0.25"
       />
       <path
         d="M28.7647 80.1694C28.7647 81.2975 27.8815 82.1839 26.7573 82.1839H7.00492C5.8808 82.1839 4.99756 81.2975 4.99756 80.1694V51.6046C4.99756 50.8794 5.35888 50.2348 6.00124 49.8722L25.834 38.3093C27.1588 37.5438 28.845 38.5108 28.845 40.0417C28.8048 53.4176 28.8048 66.7935 28.7647 80.1694Z"
         fill="url(#paint2_linear_191_83)"
-        fill-opacity="0.25"
+        fillOpacity="0.25"
       />
       <path
         d="M81.0748 58.8967H61.3224C59.5559 58.8967 58.1106 57.4463 58.1106 55.6736V19.3331C58.1106 18.205 58.7128 17.1172 59.7165 16.5531L79.4689 5.0708C80.4726 4.46647 81.677 4.46647 82.6807 5.0708C83.6843 5.67514 84.2865 6.68236 84.2865 7.85073V55.6736C84.2865 57.4463 82.8412 58.8967 81.0748 58.8967ZM81.0748 5.83629C80.7134 5.83629 80.3923 5.91687 80.0711 6.11831L60.3187 17.6006C59.7165 17.9632 59.315 18.6079 59.315 19.3331V55.6736C59.315 56.8017 60.1982 57.6881 61.3224 57.6881H81.0748C82.1989 57.6881 83.0821 56.8017 83.0821 55.6736V7.85073C83.0821 7.12554 82.7208 6.48091 82.0785 6.11831C81.7573 5.91687 81.4361 5.83629 81.0748 5.83629Z"
@@ -800,8 +826,8 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
           y2="57.7512"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#9075FE" />
-          <stop offset="1" stop-color="#9075FE" stop-opacity="0" />
+          <stop stopColor="#9075FE" />
+          <stop offset="1" stopColor="#9075FE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_191_83"
@@ -811,8 +837,8 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
           y2="82.2706"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#9075FE" />
-          <stop offset="1" stop-color="#9075FE" stop-opacity="0" />
+          <stop stopColor="#9075FE" />
+          <stop offset="1" stopColor="#9075FE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_191_83"
@@ -822,8 +848,8 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
           y2="82.1737"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#9075FE" />
-          <stop offset="1" stop-color="#9075FE" stop-opacity="0" />
+          <stop stopColor="#9075FE" />
+          <stop offset="1" stopColor="#9075FE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_191_83"
@@ -833,9 +859,9 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
           y2="57.6798"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EDDAFF" />
-          <stop offset="0.2" stop-color="#BA8DE6" />
-          <stop offset="0.9114" stop-color="#9075FE" stop-opacity="0" />
+          <stop stopColor="#EDDAFF" />
+          <stop offset="0.2" stopColor="#BA8DE6" />
+          <stop offset="0.9114" stopColor="#9075FE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_191_83"
@@ -845,9 +871,9 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
           y2="82.1978"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.0001" stop-color="#EDDAFF" stop-opacity="0.901251" />
-          <stop offset="0.2" stop-color="#BA8DE6" />
-          <stop offset="0.9114" stop-color="#9075FE" stop-opacity="0" />
+          <stop offset="0.0001" stopColor="#EDDAFF" stopOpacity="0.901251" />
+          <stop offset="0.2" stopColor="#BA8DE6" />
+          <stop offset="0.9114" stopColor="#9075FE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_191_83"
@@ -857,9 +883,9 @@ export const BgDefaultIcon: React.FunctionComponent<IconProps> = ({
           y2="82.1001"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EDDAFF" stop-opacity="0.901251" />
-          <stop offset="0.2" stop-color="#BA8DE6" />
-          <stop offset="0.9114" stop-color="#9075FE" stop-opacity="0" />
+          <stop stopColor="#EDDAFF" stopOpacity="0.901251" />
+          <stop offset="0.2" stopColor="#BA8DE6" />
+          <stop offset="0.9114" stopColor="#9075FE" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>

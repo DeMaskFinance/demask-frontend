@@ -14,13 +14,11 @@ import SearchNotFound from "@/components/Search/SearchNotFound";
 interface ModalAddressNFTProps {
   isOpenSearchNFT: boolean;
   setIsOpenSearchNFT: React.Dispatch<React.SetStateAction<boolean>>;
-  setActiveChoiceNFT: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   isOpenSearchNFT,
   setIsOpenSearchNFT,
-  setActiveChoiceNFT,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   let debouncedSearchNFT = useDebounce(searchTerm);
@@ -67,7 +65,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
       `/swap/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
     );
     document.body.style.overflowY = "auto";
-    setActiveChoiceNFT("");
     setIsOpenSearchNFT(false);
   };
 

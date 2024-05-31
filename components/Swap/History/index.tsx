@@ -80,7 +80,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
             </tr>
           </thead>
 
-          <tbody className="flex flex-col">
+          <tbody className="flex flex-col h-[496px]">
             <HistoryItem
               data={dataHistory}
               isFetching={isFetching}

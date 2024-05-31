@@ -141,8 +141,8 @@ export const TeleIcon: React.FunctionComponent<IconProps> = ({
           y2="20.4852"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#33BEF0" />
-          <stop offset="1" stop-color="#0A85D9" />
+          <stop stopColor="#33BEF0" />
+          <stop offset="1" stopColor="#0A85D9" />
         </linearGradient>
       </defs>
     </svg>
@@ -188,7 +188,7 @@ export const EmailIcon: React.FunctionComponent<IconProps> = ({
       viewBox="0 0 32 32"
       fill="none"
     >
-      <g clip-path="url(#clip0_84_31702)">
+      <g clipPath="url(#clip0_84_31702)">
         <path
           d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z"
           fill="#9075FE"
@@ -241,8 +241,8 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           y2="50.2797"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_6754_87349"
@@ -252,8 +252,8 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           y2="20.4441"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA8DE6" />
-          <stop offset="1" stop-color="#7B54E8" />
+          <stop stopColor="#BA8DE6" />
+          <stop offset="1" stopColor="#7B54E8" />
         </linearGradient>
       </defs>
     </svg>
