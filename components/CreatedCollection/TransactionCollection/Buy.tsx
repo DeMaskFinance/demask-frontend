@@ -75,7 +75,7 @@ const Buy = () => {
       queryKey: ["collectionNFTBUY", chainId, collectionAddress],
       queryFn: async () => {
         const res = await fetchDataBuyNFTs(collectionAddress, chainId);
-        return res;
+        return res.data;
       },
     });
   useEffect(() => {
@@ -92,7 +92,7 @@ const Buy = () => {
   }, [account, collectionAddress, wallet, isOpenTransaction]);
   console.log(data);
 
-  const dmlToken = data?.pages[0]?.dmlAddress;
+  const dmlToken = data?.dmlAddress;
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
     dmlToken,
@@ -141,9 +141,10 @@ const Buy = () => {
     setIsOpen(true);
   };
   const dataFake = {
-    dmlAddress: data?.pages[0]?.dmlAddress,
+    dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
+  console.log(data);
 
   return (
     <div>
@@ -151,7 +152,7 @@ const Buy = () => {
         <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
           <SkeletonItemTransaction />
         </div>
-      ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
+      ) : isSuccess && data?.data?.length > 0 ? (
         <div className="flex flex-col ">
           <NFTGrid
             data={data}

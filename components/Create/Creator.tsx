@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import WithAuth from "../Common/WithAuth";
 import { CreateIcon, DeployIcon, MagicIcon } from "../Icons";
 import Link from "next/link";
-import { BackgroundDefault } from "../Backgrounds";
 import AccountContext from "@/context/AccountContext";
 import { ActiveLink } from "../Link";
 
@@ -11,13 +10,12 @@ const Creator = () => {
   return (
     <WithAuth>
       <div className="container px-4 lg:px-0">
-        <div className="lg:translate-y-[10%] w-full ">
-          <h2 className="flex items-center">
-            <MagicIcon width={24} height={24} />
-            <p className="text-xl font-semibold text_gradient">Choose Type</p>
-          </h2>
-          <p className="mt-3 font-normal text-shader_500">
+        <div className="w-full text-center">
+          <h1 className="text-2xl font-bold text-primary_100">CREATE CENTER</h1>
+          <p className="font-normal text-shader_200">
             Choose “NFTs” for one of a kind or “Collection” if you want to sell
+          </p>
+          <p className="font-normal text-shader_200">
             one collectible multiple times
           </p>
           <div className="w-full mt-6 lg:flex gap-x-6">

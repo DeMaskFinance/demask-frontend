@@ -52,6 +52,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
+  console.log(data);
 
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
@@ -73,7 +74,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                             {data?.metadata?.name}
                           </p>
                           <div className="px-2 py-1 text-sm font-normal rounded-lg bg-primary_500 bg-opacity-[0.15]">
-                            762
+                            {data?.nftID}
                           </div>
                           <div
                             className="border rounded-full border-shader_400 p-[7px]"
@@ -183,10 +184,14 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                                 </li>
                                 <li className="flex justify-between py-2 border-b border-shader_500">
                                   <p>ID</p>
-                                  <div className="flex items-center font-semibold text-primary_400 gap-x-1">
-                                    761
-                                    <Copy content="761" />
-                                  </div>
+                                  <a
+                                    href={data?.uri}
+                                    target="_blank"
+                                    className="flex items-center font-semibold text-primary_400 gap-x-1"
+                                  >
+                                    {data?.nftID}
+                                    <Copy content={data?.nftID} />
+                                  </a>
                                 </li>
                                 <li className="flex justify-between py-2 border-b border-shader_500">
                                   <p>Contract</p>

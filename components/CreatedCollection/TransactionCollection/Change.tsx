@@ -79,7 +79,7 @@ const Change = () => {
       return res;
     },
   });
-  const dmlToken = data?.pages[0]?.dmlAddress;
+  const dmlToken = data?.dmlAddress;
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
     dmlToken,
