@@ -16,7 +16,7 @@ import useFee from "@/hooks/useFee";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -39,33 +39,13 @@ const Sell = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const collectionAddress = useRouter().query.collection as string;
-  const { ref, inView } = useInView();
-
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery(
-    ["collectionNFTSell", chainId, account, collectionAddress],
-    ({ pageParam = 1 }) =>
-      fetchDataSellNFTs(collectionAddress, chainId, account),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  const { data, isSuccess, isLoading, isFetching } = useQuery({
+    queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
+    queryFn: async () => {
+      const res = await fetchDataSellNFTs(collectionAddress, chainId, account);
+      return res;
+    },
+  });
 
   const dmlToken = useDMLToken(
     account,
@@ -150,18 +130,17 @@ const Sell = () => {
             <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
               <SkeletonItemTransaction />
             </div>
-          ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
+          ) : isSuccess && data?.data?.length > 0 ? (
             <div className="flex flex-col ">
               <NFTGrid
                 data={data}
                 isFetching={isFetching}
-                ref={ref}
                 handleChoiceNFT={handleChoiceNFT}
                 idNFT={idNFT}
               />
               <div className="absolute bottom-0 w-full">
                 {idNFT.length > 0 && (
-                  <ul className="flex flex-wrap px-4 py-2 text-sm bg-shader_600 text-shader_600 gap-x-4 bg-shader_700 border-shader_700 dark:text-white">
+                  <ul className="flex flex-wrap px-4 py-2 text-sm bg-shader_600 text-shader_600 gap-x-4 border-shader_700 dark:text-white">
                     <li className="flex items-center">
                       Send:
                       <FormatNumber

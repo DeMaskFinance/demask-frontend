@@ -40,7 +40,6 @@ const Buy = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const collectionAddress = useRouter().query.collection as string;
-  const { ref, inView } = useInView();
   const { bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -75,7 +74,7 @@ const Buy = () => {
       queryKey: ["collectionNFTBUY", chainId, collectionAddress],
       queryFn: async () => {
         const res = await fetchDataBuyNFTs(collectionAddress, chainId);
-        return res.data;
+        return res;
       },
     });
   useEffect(() => {
@@ -144,7 +143,7 @@ const Buy = () => {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
-  console.log(data);
+  console.log(data, idNFT, amountTokenBuy);
 
   return (
     <div>
@@ -157,7 +156,6 @@ const Buy = () => {
           <NFTGrid
             data={data}
             isFetching={isFetching}
-            ref={ref}
             handleChoiceNFT={handleChoiceNFT}
             idNFT={idNFT}
           />

@@ -7,13 +7,7 @@ import showToast, { ToastType } from "@/components/Toast/ToastCustom";
 import { Slider } from "@/components/ui/slider";
 import AccountContext from "@/context/AccountContext";
 import { refreshNFTService } from "@/libs/service/nftService";
-import React, {
-  Fragment,
-  MouseEvent,
-  forwardRef,
-  useContext,
-  useState,
-} from "react";
+import React, { Fragment, MouseEvent, useContext, useState } from "react";
 interface NFTGridProps {
   data: any;
   isFetching: boolean;
@@ -21,106 +15,92 @@ interface NFTGridProps {
   idNFT: number[];
 }
 
-const NFTGrid = forwardRef<HTMLDivElement, NFTGridProps>(
-  ({ data, isFetching, handleChoiceNFT, idNFT }, ref) => {
-    const { demask, chainId } = useContext(AccountContext);
-    const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
-    const handleSearchNFT = () => {
-      setIsOpenSearchNFT(true);
-      document.body.style.overflowY = "hidden";
-    };
-    const handleReset = async (e: MouseEvent<HTMLDivElement>, item: any) => {
-      e.stopPropagation();
+const NFTGrid: React.FC<NFTGridProps> = ({
+  data,
+  isFetching,
+  handleChoiceNFT,
+  idNFT,
+}) => {
+  const { demask, chainId } = useContext(AccountContext);
+  const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
+  const handleSearchNFT = () => {
+    setIsOpenSearchNFT(true);
+    document.body.style.overflowY = "hidden";
+  };
+  const handleReset = async (e: MouseEvent<HTMLDivElement>, item: any) => {
+    e.stopPropagation();
 
-      try {
-        showToast("Please wait a moment!", ToastType.Success);
+    try {
+      showToast("Please wait a moment!", ToastType.Success);
 
-        await refreshNFTService(
-          chainId,
-          item.nftAddress,
-          item.nftID,
-          item.type
-        );
-      } catch (error) {
-        console.error("Error occurred while refreshing NFT:", error);
-        showToast(
-          "An error occurred. Please try again later.",
-          ToastType.Error
-        );
-      }
-    };
-    console.log(data, idNFT, data.pages.totalRecords);
+      await refreshNFTService(chainId, item.nftAddress, item.nftID, item.type);
+    } catch (error) {
+      console.error("Error occurred while refreshing NFT:", error);
+      showToast("An error occurred. Please try again later.", ToastType.Error);
+    }
+  };
+  console.log(data, idNFT);
 
-    const [val, setVal] = useState([0]);
-    return (
-      <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
-        <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[400px] ">
-          {data?.pages.map((page: any, pageIndex: number) => (
-            <Fragment key={pageIndex}>
-              {page?.data?.map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
-                  onClick={() => handleChoiceNFT(item)}
-                >
-                  <div
-                    className={`relative items-center text-sm   rounded-lg cursor-pointer lg:text-base ${
-                      idNFT.includes(Number(item.nftID))
-                        ? "border-primary_400 border-[2px]"
-                        : ""
-                    }`}
-                  >
-                    <div className="relative h-[78px] lg:h-[100px] group">
-                      <MediaNFT data={item} isControls={false} hover zoom />
-                    </div>
-                    <div className="flex justify-between w-full p-2 text-xs font-semibold text-white">
-                      <p>#{item.nftID}</p>
-                      <EyeIcon
-                        width={16}
-                        height={16}
-                        className="text-primary_300"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </Fragment>
-          ))}
-          {isFetching && <SkeletonItemTransaction />}
-          <div ref={ref} style={{ height: "1px" }}></div>
-        </div>
-        <div className="flex items-center h-10 my-4 border rounded-lg border-shader_400">
-          <div className="flex-grow px-4">
-            <Slider
-              defaultValue={val}
-              max={data.pages.totalRecords}
-              step={1}
-              className=""
-              onValueChange={(i) => {
-                setVal(i);
-                console.log(i);
-              }}
-            />
+  const [val, setVal] = useState([0]);
+  return (
+    <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
+      <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[400px] ">
+        {data?.data?.map((item: any, index: number) => (
+          <div
+            key={index}
+            className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
+            onClick={() => handleChoiceNFT(item)}
+          >
+            <div
+              className={`relative items-center text-sm   rounded-lg cursor-pointer lg:text-base ${
+                idNFT.includes(Number(item.nftID))
+                  ? "border-primary_400 border-[2px]"
+                  : ""
+              }`}
+            >
+              <div className="relative h-[78px] lg:h-[100px] group">
+                <MediaNFT data={item} isControls={false} hover zoom />
+              </div>
+              <div className="flex justify-between w-full p-2 text-xs font-semibold text-white">
+                <p>#{item.nftID}</p>
+                <EyeIcon width={16} height={16} className="text-primary_300" />
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-center w-16 h-full font-semibold text-white rounded-e-lg bg-shader_600">
-            {val}
-          </div>
-        </div>
-        <Button
-          className="flex mx-auto whitespace-nowrap gap-x-2"
-          green_2
-          onClick={handleSearchNFT}
-        >
-          <ImgIcon width={20} height={20} />
-          Select NFT
-        </Button>
-        <ModalSearchNFTSwap
-          setIsOpenSearchNFT={setIsOpenSearchNFT}
-          isOpenSearchNFT={isOpenSearchNFT}
-        />
+        ))}
+        {/* {isFetching && <SkeletonItemTransaction />} */}
       </div>
-    );
-  }
-);
+      <div className="flex items-center h-10 my-4 border rounded-lg border-shader_400">
+        <div className="flex-grow px-4">
+          <Slider
+            defaultValue={val}
+            max={100}
+            step={1}
+            className=""
+            onValueChange={(i) => {
+              setVal(i);
+              console.log(i);
+            }}
+          />
+        </div>
+        <div className="flex items-center justify-center w-16 h-full font-semibold text-white rounded-e-lg bg-shader_600">
+          {val}
+        </div>
+      </div>
+      <Button
+        className="flex mx-auto whitespace-nowrap gap-x-2"
+        green_2
+        onClick={handleSearchNFT}
+      >
+        <ImgIcon width={20} height={20} />
+        Select NFT
+      </Button>
+      <ModalSearchNFTSwap
+        setIsOpenSearchNFT={setIsOpenSearchNFT}
+        isOpenSearchNFT={isOpenSearchNFT}
+      />
+    </div>
+  );
+};
 
 export default NFTGrid;

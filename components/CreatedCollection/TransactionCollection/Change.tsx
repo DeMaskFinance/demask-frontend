@@ -46,8 +46,6 @@ const Change = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const { ref, inView } = useInView();
-  const { ref: refOutput, inView: inViewOutput } = useInView();
   const { balanceToken, bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -64,9 +62,9 @@ const Change = () => {
     isLoading: isInputDataLoading,
     isFetching: isInputDataFetching,
   } = useQuery({
-    queryKey: ["collectionNFTSell", chainId, collectionAddress],
+    queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      const res = await fetchDataSellNFTs(collectionAddress, chainId, account);
       return res;
     },
   });
@@ -195,12 +193,11 @@ const Change = () => {
               <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
                 <SkeletonItemTransaction />
               </div>
-            ) : isInputDataSuccess && inputData?.pages[0]?.data?.length > 0 ? (
+            ) : isInputDataSuccess && inputData?.data?.length > 0 ? (
               <div className="flex flex-col ">
                 <NFTGrid
                   data={inputData}
                   isFetching={isInputDataFetching}
-                  ref={ref}
                   handleChoiceNFT={handleChoiceNFTInput}
                   idNFT={idNFTInput}
                 />
@@ -213,7 +210,7 @@ const Change = () => {
                     </span>
                     input NFTs and 
                     <span className="text-primary_400">
-                      {idNFTOutput.length} out of {data?.pages[0]?.totalRecords}
+                      {idNFTOutput.length} out of {data?.totalRecords}
                     </span>
                       output NFTs
                   </p>
@@ -234,12 +231,11 @@ const Change = () => {
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
             <SkeletonItemTransaction />
           </div>
-        ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
+        ) : isSuccess && data?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <NFTGrid
               data={data}
               isFetching={isFetching}
-              ref={refOutput}
               handleChoiceNFT={handleChoiceNFTOutput}
               idNFT={idNFTOutput}
             />
