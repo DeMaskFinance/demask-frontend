@@ -490,42 +490,6 @@ export const PoolListIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
-export const CardFillIcon: React.FunctionComponent<IconProps> = ({
-  className,
-  width,
-  height,
-  fill1,
-  fill2,
-}) => {
-  console.log(fill1, fill2);
-
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      viewBox="0 0 250 196"
-    >
-      <path
-        d="M300 196C300 170.261 295.448 144.774 286.603 120.994C277.758 97.2142 264.794 75.6073 248.451 57.4071C232.108 39.2068 212.706 24.7695 191.352 14.9196C169.999 5.06969 147.113 -1.12509e-06 124 0C100.887 1.12509e-06 78.001 5.06969 56.6477 14.9196C35.2944 24.7695 15.8923 39.2068 -0.450802 57.4071C-16.7939 75.6074 -29.758 97.2142 -38.6028 120.994C-47.4476 144.774 -52 170.261 -52 196L300 196Z"
-        fill="url(#paint0_radial_439_8545)"
-      />
-      <defs>
-        <radialGradient
-          id="paint0_radial_439_8545"
-          cx="0"
-          cy="0"
-          r="1"
-          gradientUnits="userSpaceOnUse"
-          gradientTransform="translate(124 196) rotate(-90) scale(196 176)"
-        >
-          <stop stop-color={`${fill1}`} stop-opacity="0.15" />
-          <stop offset="1" stop-color={`${fill2}`} stop-opacity="0" />
-        </radialGradient>
-      </defs>
-    </svg>
-  );
-};
 export const RankIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
@@ -535,8 +499,8 @@ export const RankIcon: React.FunctionComponent<IconProps> = ({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      width={width}
-      height={height}
+      width={250}
+      height={160}
       viewBox="0 0 24 24"
       fill="#636977"
     >
@@ -607,9 +571,9 @@ export const RankGoldIcon: React.FunctionComponent<IconProps> = ({
           width="88.106"
           height="88.668"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

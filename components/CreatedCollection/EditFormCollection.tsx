@@ -1,26 +1,18 @@
+import AccountContext from "@/context/AccountContext";
 import { Category } from "@/libs/constants";
-import Icons from "@/public/icons/icon";
+import * as collectionService from "@/libs/service/collectionService";
 import images from "@/public/images";
+import { useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useContext, useRef, useState } from "react";
+import { CgClose } from "react-icons/cg";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import { Button } from "../Buttons";
-import * as collectionService from "@/libs/service/collectionService";
-import {
-  FacebookIcon,
-  StartIcon,
-  TeleIcon,
-  TwitterIcon,
-  WebsiteIcon,
-} from "../Icons";
-import { useRouter } from "next/router";
-import AccountContext from "@/context/AccountContext";
-import { toast } from "react-toastify";
-import { CgClose } from "react-icons/cg";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { FacebookIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",

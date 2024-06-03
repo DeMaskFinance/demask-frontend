@@ -216,7 +216,7 @@
 <path d="M59.5039 220.59C61.0522 221.452 64.3308 223.605 66.0267 227.135C65.2955 222.023 61.0316 220.849 59.5039 220.59Z" fill="#712330"/>
 </g>
 <defs>
-<filter id="filter0_d_5720_27587" x="155.855" y="130.299" width="87.543" height="87.1814" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_5720_27587" x="155.855" y="130.299" width="87.543" height="87.1814" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="4"/>
@@ -227,27 +227,27 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_5720_27587" result="shape"/>
 </filter>
 <linearGradient id="paint0_linear_5720_27587" x1="332.174" y1="252.917" x2="330.147" y2="292.248" gradientUnits="userSpaceOnUse">
-<stop offset="0.44" stop-color="#E30000" stop-opacity="0.53"/>
-<stop offset="1" stop-color="#E30000" stop-opacity="0"/>
+<stop offset="0.44" stopColor="#E30000" stopOpacity="0.53"/>
+<stop offset="1" stopColor="#E30000" stopOpacity="0"/>
 </linearGradient>
 <linearGradient id="paint1_linear_5720_27587" x1="134.187" y1="28.5107" x2="136.254" y2="50.1738" gradientUnits="userSpaceOnUse">
-<stop offset="0.44" stop-color="#FA0047" stop-opacity="0.53"/>
-<stop offset="1" stop-color="#FA0047" stop-opacity="0"/>
+<stop offset="0.44" stopColor="#FA0047" stopOpacity="0.53"/>
+<stop offset="1" stopColor="#FA0047" stopOpacity="0"/>
 </linearGradient>
 <linearGradient id="paint2_linear_5720_27587" x1="350.192" y1="122.078" x2="350.839" y2="96.8959" gradientUnits="userSpaceOnUse">
-<stop stop-color="#730300"/>
-<stop offset="0.21" stop-color="#730300" stop-opacity="0.79"/>
-<stop offset="0.89" stop-color="#730300" stop-opacity="0"/>
+<stop stopColor="#730300"/>
+<stop offset="0.21" stopColor="#730300" stopOpacity="0.79"/>
+<stop offset="0.89" stopColor="#730300" stopOpacity="0"/>
 </linearGradient>
 <linearGradient id="paint3_linear_5720_27587" x1="350.051" y1="128.132" x2="349.924" y2="100.485" gradientUnits="userSpaceOnUse">
-<stop stop-color="#FFFCD8"/>
-<stop offset="0.21" stop-color="#FFFCD8" stop-opacity="0.79"/>
-<stop offset="0.89" stop-color="#FFFCD8" stop-opacity="0"/>
+<stop stopColor="#FFFCD8"/>
+<stop offset="0.21" stopColor="#FFFCD8" stopOpacity="0.79"/>
+<stop offset="0.89" stopColor="#FFFCD8" stopOpacity="0"/>
 </linearGradient>
 <linearGradient id="paint4_linear_5720_27587" x1="51.5217" y1="223.846" x2="50.5297" y2="241.224" gradientUnits="userSpaceOnUse">
-<stop stop-color="#FF2441"/>
-<stop offset="0.21" stop-color="#FF2441" stop-opacity="0.79"/>
-<stop offset="0.89" stop-color="#FF2441" stop-opacity="0"/>
+<stop stopColor="#FF2441"/>
+<stop offset="0.21" stopColor="#FF2441" stopOpacity="0.79"/>
+<stop offset="0.89" stopColor="#FF2441" stopOpacity="0"/>
 </linearGradient>
 <clipPath id="clip0_5720_27587">
 <rect width="50.5283" height="54.1109" fill="white" transform="translate(305.278 257.429)"/>

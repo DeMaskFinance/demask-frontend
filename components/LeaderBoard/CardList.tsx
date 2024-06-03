@@ -1,17 +1,13 @@
+import { formatToUnit } from "@/libs/utils/formatComon";
 import Image from "next/image";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
+import { AvatarDiceBear } from "../Avatars/AvatarCustom";
 import {
-  CardFillIcon,
   DiamondIcon,
-  EtherIcon,
   RankGoldIcon,
   SecondRankIcon,
   ThirdRankIcon,
 } from "../Icons";
-import FormatNumber from "../Common/FormatNumber";
-import { AvatarCustom } from "../Avatars";
-import { formatToUnit } from "@/libs/utils/formatComon";
-import { AvatarDiceBear } from "../Avatars/AvatarCustom";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-shader_700 mb-10 h-fit border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
@@ -111,29 +107,35 @@ const CardList = ({ data }: any) => {
           {formatToUnit(data?.point)}
         </div>
       </div>
+
       <div className="absolute bottom-0 ">
-        <CardFillIcon
-          width={352}
-          height={196}
-          fill1={`${
-            data?.rank === 1
-              ? "#FFA959"
-              : data?.rank === 2
-              ? "#22D3EE"
-              : data?.rank === 3
-              ? "#9075FE"
-              : ""
-          }`}
-          fill2={`${
-            data?.rank === 1
-              ? "#ED781E"
-              : data?.rank === 2
-              ? "#22D3EE"
-              : data?.rank === 3
-              ? "#7B54E8"
-              : ""
-          }`}
-        />
+        {data?.rank === 1 ? (
+          <Image
+            src="/fillYellow.svg"
+            alt="fill"
+            width={350}
+            height={160}
+            className="h-40 w-[350px]"
+          />
+        ) : data?.rank === 2 ? (
+          <Image
+            src="/fillBlue.svg"
+            alt="fill"
+            width={350}
+            height={160}
+            className="h-40 w-[350px]"
+          />
+        ) : data?.rank === 3 ? (
+          <Image
+            src="/fillPurple.svg"
+            alt="fill"
+            width={350}
+            height={160}
+            className="h-40 w-[350px]"
+          />
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );

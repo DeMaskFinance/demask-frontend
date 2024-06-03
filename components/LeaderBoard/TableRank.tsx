@@ -2,43 +2,39 @@ import AccountContext from "@/context/AccountContext";
 import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
+import React, { useContext, useState } from "react";
 import { AvatarCustom } from "../Avatars";
 import FormatNumber from "../Common/FormatNumber";
-import { EtherIcon, LoadingIcon, RankIcon } from "../Icons";
-import { SkeletonTable } from "../Skeleton/SkeletonTable";
+import {
+  EtherIcon,
+  LoadingIcon,
+  RankGoldIcon,
+  SecondRankIcon,
+  ThirdRankIcon,
+  UnRankIcon,
+} from "../Icons";
+import { Pagination } from "../Common/Pagination";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask } = useContext(AccountContext);
   return (
     <tr
-      className={`flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 ${
-        currentRank
-          ? "bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]"
-          : "text-white"
+      className={`flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500 ${
+        currentRank ? "bg-primary_500 bg-opacity-25" : "text-white"
       }`}
     >
       <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
-        <div className="flex items-center justify-end gap-x-1">
+        <div className="flex items-center justify-end gap-x-3">
           {item?.rank}
-          <RankIcon
-            width={18}
-            height={18}
-            className={`${
-              currentRank
-                ? "fill-white"
-                : `${
-                    item?.rank === 1
-                      ? "fill-yellow"
-                      : item?.rank === 2
-                      ? "fill-blue"
-                      : item?.rank === 3
-                      ? "fill-red"
-                      : ""
-                  } `
-            }`}
-          />
+          {item?.rank === 1 ? (
+            <RankGoldIcon width={20} height={20} />
+          ) : item?.rank === 2 ? (
+            <SecondRankIcon width={16} height={16} />
+          ) : item?.rank === 3 ? (
+            <ThirdRankIcon width={16} height={16} />
+          ) : (
+            <UnRankIcon width={16} height={16} />
+          )}
         </div>
       </td>
       <td className="py-4 flex items-center justify-start gap-x-2 lg:w-full md:w-full w-[100px]">
@@ -51,9 +47,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
         <p>{item?.name}</p>
       </td>
       <td
-        className={`py-4 flex ${
-          currentRank ? "text-white" : "text-primary_400"
-        } items-center justify-center lg:w-full md:w-full w-[140px]`}
+        className={`py-4 flex text-primary_400 items-center justify-center lg:w-full md:w-full w-[140px]`}
       >
         <Link
           target="_blank"
@@ -94,30 +88,12 @@ const TableRank = () => {
         return res;
       },
     });
-  const prevPage = () => {
-    const prevPageNumber = Math.max(page - 1, 1);
-    setPage(prevPageNumber);
-  };
-
-  const nextPage = () => {
-    const nextPageNumber = Math.min(page + 1, data?.totalPages);
-    setPage(nextPageNumber);
-  };
-
-  useEffect(() => {
-    if (data === null) {
-      setPage(1);
-    }
-  }, [data]);
-  useEffect(() => {
-    refetch();
-  }, [page, refetch, account]);
 
   return (
     <div className=" mt-10 overflow-x-scroll overflow-y-hidden border rounded-lg bg-shader_800 text-shader_200 border-shader_500 shadow-home min-h-[500px] flex flex-col justify-between">
-      <table className="flex-grow w-full text-left border-collapse">
-        <thead className="bg-shader_600 text-shader_200">
-          <tr className="flex px-2 pb-2 text-base">
+      <table className="flex-grow w-full text-sm text-left border-collapse">
+        <thead className="uppercase bg-shader_600 text-shader_200">
+          <tr className="flex px-4 py-2">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
               Name
@@ -159,42 +135,17 @@ const TableRank = () => {
           )}
         </tbody>
       </table>
-      <div className="flex justify-center gap-4 pt-6 text-sm">
-        <button
-          onClick={prevPage}
-          disabled={isPreviousData || page === 1 || isFetching}
-          className={`${
-            isPreviousData || page === 1 || isFetching
-              ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-primary_500 transition-all"
-          } w-5 flex items-center text-center justify-center rounded-full transition-all`}
-        >
-          <MdNavigateBefore />
-        </button>
-        <p>
-          Page
-          <span className="px-2 font-medium text-primary_500">{page}</span> of
-          <span
-            className="px-2 font-medium cursor-pointer text-primary_500"
-            onClick={() =>
-              page !== data?.totalPages && setPage(data?.totalPages)
-            }
-          >
-            {data?.totalPages}
-          </span>
-        </p>
-        <button
-          onClick={nextPage}
-          disabled={isPreviousData || page === data?.totalPages || isFetching}
-          className={`${
-            isPreviousData || page === data?.totalPages || isFetching
-              ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-primary_500 transition-all"
-          } w-5 flex items-center text-center justify-center rounded-full transition-all`}
-        >
-          <MdOutlineNavigateNext />
-        </button>
-      </div>
+      {isSuccess && (
+        <Pagination
+          data={data}
+          isPreviousData={isPreviousData}
+          page={page}
+          setPage={setPage}
+          refetch={refetch}
+          totalPages={15}
+          isFetching={isFetching}
+        />
+      )}
     </div>
   );
 };
