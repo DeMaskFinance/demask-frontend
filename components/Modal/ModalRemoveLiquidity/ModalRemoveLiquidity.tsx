@@ -16,8 +16,11 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";
-import { collectionListBuy } from "@/libs/service/collectionService";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  collectionListBuy,
+  fetchDataBuyNFTs,
+} from "@/libs/service/collectionService";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import MediaNFT from "@/components/Common/MediaNFT";
 import ModalDocument from "../ModalLength/ModalDocument";
@@ -63,10 +66,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] =
     useState<boolean>(false);
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
-  const { ref, inView } = useInView();
-  const collectionAddress =
-    useRouter().query.collection ||
-    ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
+  const collectionAddress = useRouter().query.collection as string;
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -183,37 +183,21 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setIsOpenConfirmRemoveLiquidity(true);
     }
   };
-  const fetchDataNFTs = async (
-    collectionAddress: string | string[],
-    chain: string | string[]
-  ) => {
-    const data = await collectionListBuy(collectionAddress, chain);
-    return data.data;
-  };
 
   const {
-    data: data721,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-    isSuccess,
     isLoading,
+    data: data721,
+    isRefetching,
+    isSuccess,
+    refetch,
     isFetching,
-  } = useInfiniteQuery(
-    ["collectionNFTBUY", chainId, collectionAddress],
-    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, chainId),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  } = useQuery({
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+    queryFn: async () => {
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      return res;
+    },
+  });
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
@@ -244,7 +228,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <NFTGrid
               data={data721}
               isFetching={isFetching}
-              ref={ref}
               handleChoiceNFT={handleChoiceNFT}
               idNFT={idNFT}
             />

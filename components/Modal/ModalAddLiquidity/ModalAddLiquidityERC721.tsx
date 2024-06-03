@@ -11,7 +11,7 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -97,30 +97,13 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction
   );
 
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    hasNextPage,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery(
-    ["collectionNFTSell", chainId, collectionAddress, account],
-    ({ pageParam = 1 }) =>
-      fetchDataSellNFTs(collectionAddress, chainId, account),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  const { data, isSuccess, isLoading, isFetching } = useQuery({
+    queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
+    queryFn: async () => {
+      const res = await fetchDataSellNFTs(collectionAddress, chainId, account);
+      return res;
+    },
+  });
   const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputToken(e.target.value);
     if (Number(e.target.value) > Number(balanceToken)) {
@@ -202,7 +185,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             <NFTGrid
               data={data}
               isFetching={isFetching}
-              ref={ref}
               handleChoiceNFT={handleChoiceNFT}
               idNFT={idNFT}
             />
