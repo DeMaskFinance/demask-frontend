@@ -185,15 +185,9 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   };
   const fetchDataNFTs = async (
     collectionAddress: string | string[],
-    pageParam = 1,
     chain: string | string[]
   ) => {
-    const data = await collectionListBuy(
-      collectionAddress,
-      chain,
-      pageParam,
-      10
-    );
+    const data = await collectionListBuy(collectionAddress, chain);
     return data.data;
   };
 
@@ -207,7 +201,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     isFetching,
   } = useInfiniteQuery(
     ["collectionNFTBUY", chainId, collectionAddress],
-    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, pageParam, chainId),
+    ({ pageParam = 1 }) => fetchDataNFTs(collectionAddress, chainId),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -250,7 +244,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <NFTGrid
               data={data721}
               isFetching={isFetching}
-              hasNextPage={hasNextPage}
               ref={ref}
               handleChoiceNFT={handleChoiceNFT}
               idNFT={idNFT}
@@ -370,7 +363,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
+          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
         </button>
       </div>
       <ModalConfirmRemoveLiquidity

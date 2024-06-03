@@ -108,7 +108,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   } = useInfiniteQuery(
     ["collectionNFTSell", chainId, collectionAddress, account],
     ({ pageParam = 1 }) =>
-      fetchDataSellNFTs(collectionAddress, pageParam, chainId, account),
+      fetchDataSellNFTs(collectionAddress, chainId, account),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -202,7 +202,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             <NFTGrid
               data={data}
               isFetching={isFetching}
-              hasNextPage={hasNextPage}
               ref={ref}
               handleChoiceNFT={handleChoiceNFT}
               idNFT={idNFT}

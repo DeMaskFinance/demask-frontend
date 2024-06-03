@@ -52,7 +52,7 @@ const Sell = () => {
   } = useInfiniteQuery(
     ["collectionNFTSell", chainId, account, collectionAddress],
     ({ pageParam = 1 }) =>
-      fetchDataSellNFTs(collectionAddress, pageParam, chainId, account),
+      fetchDataSellNFTs(collectionAddress, chainId, account),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -155,7 +155,6 @@ const Sell = () => {
               <NFTGrid
                 data={data}
                 isFetching={isFetching}
-                hasNextPage={hasNextPage}
                 ref={ref}
                 handleChoiceNFT={handleChoiceNFT}
                 idNFT={idNFT}
