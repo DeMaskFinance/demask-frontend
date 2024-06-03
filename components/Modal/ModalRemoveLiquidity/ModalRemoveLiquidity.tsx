@@ -230,6 +230,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               isFetching={isFetching}
               handleChoiceNFT={handleChoiceNFT}
               idNFT={idNFT}
+              isSearch
             />
           )}
           <div>

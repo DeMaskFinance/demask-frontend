@@ -266,7 +266,7 @@ export default function AddLiquidity() {
     },
   ];
   return (
-    <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[80vh] pb-24 lg:pb-8">
+    <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[94vh] pb-24 lg:pb-8">
       <NextSeo {...updateMeta} />
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">

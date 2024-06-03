@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { DragEvent, useEffect, useRef, useState } from "react";
 import { Button } from "../Buttons";
-import { PictureMint } from "../Icons";
+import { CreateIcon, PictureMint, UploadIcon } from "../Icons";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
 interface UploadFileProps {
   setFileIPFS: any;
@@ -79,7 +79,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
   return (
     <div className="flex flex-col items-center w-full" ref={uploadRef}>
       <div
-        className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-shader_600 rounded-2xl`}
+        className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-shader_500 rounded-xl`}
         ref={itemRef}
         onDragOver={handleDragOver}
         onDragLeave={handleLeave}
@@ -150,12 +150,12 @@ const UploadFile: React.FC<UploadFileProps> = ({
             onClick={handleClickFile}
             className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center w-full items-center"
           >
-            <PictureMint
-              width={160}
-              height={160}
-              className="mx-auto transition-all duration-200 group-hover:fill-shader_600"
-            />
-            <p className="font-semibold text-shader_700 title">Upload</p>
+            <div className="p-2 bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg">
+              <CreateIcon width={24} height={24} />
+            </div>
+            <p className="font-semibold text-white title">
+              Drag or drop to upload image
+            </p>
             <input
               ref={inputRef}
               type="file"
@@ -167,14 +167,14 @@ const UploadFile: React.FC<UploadFileProps> = ({
                   : "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
               }`}
             />
-            <div className="text-sm w-[254px] text-shader_500 mb-6 transition-all duration-200 group-hover:text-shader_600 mt-2">
-              {type === "collection" ? (
-                <p>JPG,PNG,GIF,SVG supported.</p>
-              ) : (
-                <p>Video, audio, gif, pdf, and images supported.</p>
-              )}
-              <span className="text-shader_600">Max size: 50MB.</span>
+            <div className="text-sm w-[254px] text-shader_200 mb-6 transition-all duration-200 mt-2">
+              File types: JPG,PNG,SVG or GIF
+              <p className="">Max size: 50MB.</p>
             </div>
+            <Button active>
+              <UploadIcon />
+              <p className="ml-2">Upload Image</p>
+            </Button>
           </div>
         )}
       </div>

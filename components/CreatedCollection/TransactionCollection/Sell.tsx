@@ -137,6 +137,7 @@ const Sell = () => {
                 isFetching={isFetching}
                 handleChoiceNFT={handleChoiceNFT}
                 idNFT={idNFT}
+                isSearch
               />
               <div className="absolute bottom-0 w-full">
                 {idNFT.length > 0 && (
@@ -162,7 +163,7 @@ const Sell = () => {
                 )}
                 {!isApprovedNFT ? (
                   <Button
-                    className="w-full py-2"
+                    className="w-full py-4"
                     primary
                     onClick={() =>
                       handleApproveNFT(

@@ -118,7 +118,7 @@ export default function CreatedCollection() {
   };
 
   return (
-    <div className="pb-6 min-h-[80vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
+    <div className="pb-6 min-h-[94vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
       {/* <div
         className={`relative group h-[120px] lg:h-[240px] ${
           dataDetail?.collaborators.includes(account) && "cursor-pointer"

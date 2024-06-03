@@ -1,6 +1,13 @@
 import Image from "next/image";
 import React, { Fragment } from "react";
-import { EtherIcon, RankIcon } from "../Icons";
+import {
+  CardFillIcon,
+  DiamondIcon,
+  EtherIcon,
+  RankGoldIcon,
+  SecondRankIcon,
+  ThirdRankIcon,
+} from "../Icons";
 import FormatNumber from "../Common/FormatNumber";
 import { AvatarCustom } from "../Avatars";
 import { formatToUnit } from "@/libs/utils/formatComon";
@@ -13,9 +20,9 @@ export const CardListLoading = () => {
         <div className="w-20 h-4 rounded bg-slate-700 "></div>
       </div>
 
-      <div className="bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative">
+      <div className="bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 relative">
         <div className="absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit">
-          <RankIcon width={24} height={24} className="fill-[#1D85E8]" />
+          <RankGoldIcon width={24} height={24} className="fill-[#1D85E8]" />
         </div>
         <div className="pb-2 font-semibold border-b border-shader_700 w-[60%] text-center">
           <div className="h-4 rounded-full bg-slate-700 "></div>
@@ -31,61 +38,102 @@ export const CardListLoading = () => {
 const CardList = ({ data }: any) => {
   return (
     <div
-      className={`flex flex-col bg-white dark:bg-shader_800 items-center justify-center p-2 border dark:text-white rounded-lg text-shader_700 w-full h-fit ${
-        data?.rank === 1
-          ? "border-yellow shadow-[0px_0px_24px_6px_rgba(255,194,88,0.25)]"
-          : data?.rank === 2
-          ? "border-blue shadow-[0px_0px_24px_6px_rgba(29,133,232,0.25)]"
-          : data?.rank === 3
-          ? "border-red shadow-[0px_0px_24px_6px_rgba(253,128,130,0.25)]"
-          : ""
-      }`}
+      className={`flex relative overflow-hidden flex-col bg-shader_700 border-shader_500 items-center justify-center border p-6 rounded-10 text-white w-full h-fit`}
     >
-      {data?.avatar ? (
-        <Image
-          width={600}
-          height={600}
-          alt="leaderboardImg"
-          src={data?.avatar}
-          className="rounded-full object-cover w-[60px] h-[60px] lg:w-[120px] lg:h-[120px]"
-        />
-      ) : (
-        <Fragment>
-          <div className="hidden lg:block">
-            <AvatarDiceBear size={120} seed={data?.userAddress} />
-          </div>
-          <div className="block lg:hidden">
-            <AvatarDiceBear size={60} seed={data?.userAddress} />
-          </div>
-        </Fragment>
-      )}
-      <h2 className="mt-2 mb-6 text-lg font-semibold lg:text-2xl">
-        {data?.name}
-      </h2>
-      <div className="bg-[#F8F8F8] dark:bg-shader_700 rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative">
-        <div className="absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit">
-          <RankIcon
-            width={24}
-            height={24}
-            className={`${
-              data?.rank === 1
-                ? "fill-yellow"
-                : data?.rank === 2
-                ? "fill-blue"
-                : data?.rank === 3
-                ? "fill-red"
-                : ""
-            }`}
+      <div>
+        {data?.rank === 1 ? (
+          <RankGoldIcon width={90} height={90} />
+        ) : data?.rank === 2 ? (
+          <SecondRankIcon width={46} height={52} className="mb-4" />
+        ) : data?.rank === 3 ? (
+          <ThirdRankIcon width={46} height={52} className="mb-4" />
+        ) : (
+          <div></div>
+        )}
+      </div>
+      <div className="mb-4 ">
+        {data?.avatar ? (
+          <Image
+            width={600}
+            height={600}
+            alt="leaderboardImg"
+            src={data?.avatar}
+            className={`object-cover ${
+              data?.rank === 1 ? "w-24 h-24" : "w-20 h-20"
+            } rounded-full`}
           />
-        </div>
-        <div className="pb-2 font-semibold border-b border-shader_700 w-[60%] text-center">
+        ) : (
+          <Fragment>
+            <div className="hidden lg:block">
+              <AvatarDiceBear size={60} seed={data?.userAddress} />
+            </div>
+            <div className="block lg:hidden">
+              <AvatarDiceBear size={60} seed={data?.userAddress} />
+            </div>
+          </Fragment>
+        )}
+      </div>
+      <h2 className="text-xl font-semibold">{data?.name}</h2>
+      <div
+        className={`relative flex flex-col items-center w-full  pb-2 rounded-lg ${
+          data?.rank === 1 ? "mt-1" : "mt-8"
+        }`}
+      >
+        <p
+          className={`mb-3 text-lg font-bold ${
+            data?.rank === 1
+              ? "text-yellow"
+              : data?.rank === 2
+              ? "text-blue"
+              : data?.rank === 3
+              ? "text-primary_500"
+              : ""
+          }`}
+        >
+          Top {data?.rank}
+        </p>
+        <div
+          className={`flex items-center font-bold text-center border-shader_700 gap-x-1 bg-opacity-[0.15] rounded-lg 
+          px-4
+          py-2
+        ${
+          data?.rank === 1
+            ? "bg-yellow"
+            : data?.rank === 2
+            ? "bg-blue"
+            : data?.rank === 3
+            ? "bg-primary_500"
+            : ""
+        }
+        `}
+        >
+          <DiamondIcon width={20} height={20} />
           {formatToUnit(data?.point)}
         </div>
-        <div className="flex my-2 text-sm font-semibold">
-          <FormatNumber number={data?.volume} />
-          <EtherIcon width={20} height={20} className="" />
-        </div>
-        <p className="text-xs font-medium whitespace-nowrap">Season Volume</p>
+      </div>
+      <div className="absolute bottom-0 ">
+        <CardFillIcon
+          width={352}
+          height={196}
+          fill1={`${
+            data?.rank === 1
+              ? "#FFA959"
+              : data?.rank === 2
+              ? "#22D3EE"
+              : data?.rank === 3
+              ? "#9075FE"
+              : ""
+          }`}
+          fill2={`${
+            data?.rank === 1
+              ? "#ED781E"
+              : data?.rank === 2
+              ? "#22D3EE"
+              : data?.rank === 3
+              ? "#7B54E8"
+              : ""
+          }`}
+        />
       </div>
     </div>
   );

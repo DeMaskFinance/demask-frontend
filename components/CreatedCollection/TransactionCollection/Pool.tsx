@@ -28,7 +28,7 @@ const Pool = () => {
 
   return (
     <div className="h-full text-shader_500 ">
-      <div className="flex items-center px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 gap-x-2 ">
+      <div className="flex px-4 py-[10px] my-4 text-sm bg-shader_500 text-shader_200 gap-x-2  ">
         <LightBulbIcon
           width={20}
           height={20}

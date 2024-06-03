@@ -51,7 +51,7 @@ const Swap: React.FC = () => {
       {isLoading || isFetching ? (
         <SkeletonSwap />
       ) : isSuccess ? (
-        <div className="min-h-[80vh]">
+        <div className="min-h-[94vh]">
           <div className="flex flex-col-reverse border-y md:flex-row border-shader_600">
             <div className="flex flex-col items-center flex-grow">
               {data && (

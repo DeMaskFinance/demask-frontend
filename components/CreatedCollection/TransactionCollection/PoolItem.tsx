@@ -102,9 +102,9 @@ const PoolItem = ({ liquidity }: any) => {
   };
 
   return (
-    <div className="p-4 mb-4 border rounded-lg border-shader_500 ">
+    <div className="p-4 mb-4 text-white border rounded-lg border-shader_500">
       <div className="flex flex-wrap justify-between gap-y-2">
-        <p className="text-xl font-semibold text-shader_900 title">
+        <p className="text-xl font-semibold text-white title">
           {liquidity.name}
         </p>
         <div className="flex gap-x-4">
@@ -121,26 +121,18 @@ const PoolItem = ({ liquidity }: any) => {
           <div className="flex items-center mr-2">
             <span>LP:</span>
             <FormatNumber number={liquidity?.reserveToken} />
-            <NFTIcon
-              width={24}
-              height={24}
-              className="fill-shader_600 ml-[2px]"
-            />
+            <NFTIcon width={16} height={16} className=" ml-[2px]" />
           </div>
           <FormatNumber number={liquidity?.reserveNFT} />
           <span>
-            <EtherIcon
-              width={20}
-              height={20}
-              className="fill-shader_600 ml-[-1px]"
-            />
+            <EtherIcon width={16} height={16} />
           </span>
           <div>
             ({((Number(balanceDML) / Number(totalSupply)) * 100).toFixed(2)}%)
           </div>
         </div>
         <div className="flex items-center justify-between my-2">
-          <div className="flex">
+          <div className="flex items-center gap-x-1">
             <div className="flex items-center">
               Reward:
               {reward ? (
@@ -151,13 +143,7 @@ const PoolItem = ({ liquidity }: any) => {
                 <p className="w-10 h-4 rounded-full animate-pulse bg-slate-700 "></p>
               )}
             </div>
-            <span>
-              <EtherIcon
-                width={20}
-                height={20}
-                className="fill-shader_600 ml-[-1px]"
-              />
-            </span>
+            <EtherIcon width={16} height={16} />
           </div>
           <Button
             className="px-6 py-2 text-sm font-medium "

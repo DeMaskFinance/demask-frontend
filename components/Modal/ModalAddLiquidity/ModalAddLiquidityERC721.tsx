@@ -187,6 +187,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
               isFetching={isFetching}
               handleChoiceNFT={handleChoiceNFT}
               idNFT={idNFT}
+              isSearch
             />
           )}
           <div>

@@ -17,7 +17,7 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
       {isLoading ? (
         <SkeletonSwap />
       ) : isSuccess ? (
-        <div className="min-h-[80vh]">
+        <div className="min-h-[94vh]">
           <div>
             {data && (
               <div className="flex border-y border-shader_500">

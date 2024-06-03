@@ -7,7 +7,7 @@ const updateMeta = {
 };
 export default function ReferralPage() {
   return (
-    <div className="min-h-[80vh] py-8 max-w-[1400px] mx-auto md:px-10 lg:px-24 px-4">
+    <div className="min-h-[94vh] py-8 max-w-[1400px] mx-auto md:px-10 lg:px-24 px-4">
       <NextSeo {...updateMeta} />
       <Referral />
     </div>

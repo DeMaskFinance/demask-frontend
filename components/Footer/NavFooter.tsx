@@ -1,3 +1,4 @@
+import AccountContext from "@/context/AccountContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -9,7 +10,6 @@ import {
   TradeIcon,
 } from "../Icons/Mobile/IconMobile";
 import { RankIcon } from "../Icons";
-import AccountContext from "@/context/AccountContext";
 
 export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);

@@ -1,4 +1,18 @@
 import Button from "@/components/Buttons/Button";
+import WithAuth from "@/components/Common/WithAuth";
+import MintNFT from "@/components/Create/MintNFT";
+import UploadFile from "@/components/Create/UploadFile";
+import { LeftIcon, NoteIcon, PlusIcon } from "@/components/Icons";
+import AccountContext from "@/context/AccountContext";
+import { Category } from "@/libs/constants";
+import { collectionListUser } from "@/libs/service/collectionService";
+import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import { useQuery } from "@tanstack/react-query";
+import Tippy from "@tippyjs/react";
+import { NextSeo } from "next-seo";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   ChangeEvent,
   Fragment,
@@ -7,30 +21,10 @@ import {
   useRef,
   useState,
 } from "react";
-import WithAuth from "@/components/Common/WithAuth";
-import MintNFT from "@/components/Create/MintNFT";
-import UploadFile from "@/components/Create/UploadFile";
-import {
-  BlastIcon,
-  CreateIcon,
-  InforIcon,
-  LeftIcon,
-  MonadIcon,
-} from "@/components/Icons";
-import { Category } from "@/libs/constants";
-import Tippy from "@tippyjs/react";
-import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
 import { CgClose } from "react-icons/cg";
-import { SEO } from "../../next-seo.config";
 import { FaAngleDown } from "react-icons/fa";
-import Link from "next/link";
-import AccountContext from "@/context/AccountContext";
-import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
 import { NumericFormat } from "react-number-format";
-import { useQuery } from "@tanstack/react-query";
-import { collectionListUser } from "@/libs/service/collectionService";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import { SEO } from "../../next-seo.config";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 dark:text-shader_500",
@@ -163,28 +157,33 @@ export default function Creator() {
     textarea.style.height =
       Math.max(scrollHeight, clientHeight, minHeight) + "px";
   };
+  console.log(collectionList, data);
 
   return (
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
-        <div className="flex flex-col gap-6 px-4 py-8 pb-24 mx-auto lg:flex-row md:flex-row container-main lg:pb-8 lg:px-0">
+        <div className="flex flex-col gap-6 px-4 py-8 pb-24 mx-auto text-shader_100 lg:flex-row md:flex-row container-main lg:pb-8 lg:px-0">
           {/* UpLoad File */}
           <div className="w-full lg:w-2/4 md:w-2/4 shrink-0">
             <div className="sticky top-16">
-              <div className="flex items-center gap-x-2">
-                <div onClick={() => router.back()}>
-                  <LeftIcon width={20} height={20} />
-                </div>
-                <h2 className="flex items-center text-2xl font-semibold text_gradient gap-x-1">
-                  <CreateIcon width={22} height={22} />
-                  Create New NFTs
-                </h2>
+              <div
+                className="flex items-center cursor-pointer gap-x-2"
+                onClick={() => router.back()}
+              >
+                <LeftIcon width={20} height={20} />
+
+                <p className="font-semibold text-white">Back</p>
               </div>
-              <h3 className="my-2 font-normal text-shader_600">
+              <h2 className="mt-4 text-xl font-bold text-primary_300">
+                Create an NFT
+              </h2>
+              <h3 className="my-2 text-sm font-normal text-shader_200">
                 Mint additional NFTs to grow your collection.
               </h3>
-              <p className="mt-2 mb-6 text-xs text-red">* Required fields</p>
+              <p className="mt-2 mb-4 text-xs text-primary_400">
+                * Required fields
+              </p>
               <UploadFile
                 setFileIPFS={setFileIPFS}
                 fileType={fileType}
@@ -201,7 +200,7 @@ export default function Creator() {
               <div>
                 <label htmlFor="collection" className={styles.title}>
                   <span className="">Collection</span>
-                  <span className="text-red">*</span>
+                  <span className="text-primary_400">*</span>
                 </label>
                 <div
                   ref={divRef}
@@ -210,7 +209,7 @@ export default function Creator() {
                 >
                   <div className="flex items-center gap-x-2">
                     {collection.img}
-                    <p className="font-semibold text-shader_600">
+                    <p className="font-semibold text-white">
                       {collection.name}
                     </p>
                   </div>
@@ -220,7 +219,7 @@ export default function Creator() {
                     }`}
                   />
                   <ul
-                    className={`p-3 rounded-lg absolute w-full left-0 top-12 z-10 border bg-shader_600 transition-all duration-500 max-h-60 overflow-y-scroll bg-shader_700 border-shader_700 ${
+                    className={` rounded-lg absolute w-full left-0 top-14 z-10 border bg-shader_700 transition-all duration-500 max-h-60 overflow-y-scroll border-shader_500 ${
                       isOpenCollection
                         ? "block opacity-100"
                         : "hidden opacity-0"
@@ -229,25 +228,25 @@ export default function Creator() {
                     <li>
                       <Link
                         href={`/create/deploy-contract?chain=${chainId}`}
-                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
+                        className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
                       >
-                        <p className="font-semibold">+ Create Collection</p>
+                        <div className="flex font-semibold gap-x-[10px] items-center">
+                          <div className=" bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg text-center text-2xl text-primary_400 flex items-center justify-center">
+                            <PlusIcon />
+                          </div>
+                          Create Collection
+                        </div>
                       </Link>
                     </li>
                     {collectionList.map((item, index) => (
                       <li
                         key={index}
-                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
+                        className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
                         onClick={() => setCollection(item)}
                       >
                         {item.img}
                         <div>
-                          <p className="font-semibold text-shader_600">
-                            {item.name}
-                          </p>
-                          <p className="text-sm text-shader_600">
-                            {item.collectionAddress}
-                          </p>
+                          <p className="font-semibold ">{item.name}</p>
                         </div>
                       </li>
                     ))}
@@ -256,7 +255,7 @@ export default function Creator() {
                         {data.map((item: any, index: number) => (
                           <li
                             key={index}
-                            className="flex items-center p-2 rounded-lg cursor-pointer gap-x-2 hover:bg-shader_500 "
+                            className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
                             onClick={() =>
                               setCollection({
                                 img: (
@@ -277,11 +276,8 @@ export default function Creator() {
                               className="object-cover w-8 h-8 rounded-lg"
                             />
                             <div>
-                              <p className="font-semibold text-shader_600">
+                              <p className="font-semibold text-white">
                                 {item.name}
-                              </p>
-                              <p className="text-sm text-shader_600">
-                                {item.collectionAddress}
                               </p>
                             </div>
                           </li>
@@ -294,7 +290,7 @@ export default function Creator() {
               <div>
                 <label htmlFor="name" className={styles.title}>
                   <span className="">Name</span>
-                  <span className="text-red">*</span>
+                  <span className="text-primary_400">*</span>
                 </label>
                 <input
                   placeholder="Name"
@@ -304,13 +300,16 @@ export default function Creator() {
                   autoComplete="off"
                   className={
                     emptyInputs.includes("name")
-                      ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                      ? "w-full py-4 pl-2 mb-4 rounded-lg border-2 border-red"
                       : "input_item"
                   }
                   onChange={(e) => setName(e.target.value)}
                 />
                 {emptyInputs.includes("name") && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="name">
+                  <p
+                    className="mb-2 ml-3 -mt-1 text-xs text-primary_400"
+                    key="name"
+                  >
                     Required
                   </p>
                 )}
@@ -318,7 +317,7 @@ export default function Creator() {
               <div>
                 <label htmlFor="symbol" className={styles.title}>
                   <span>Symbol</span>
-                  <span className="text-red">*</span>
+                  <span className="text-primary_400">*</span>
                 </label>
 
                 <input
@@ -329,13 +328,16 @@ export default function Creator() {
                   autoComplete="off"
                   className={
                     emptyInputs.includes("symbol")
-                      ? "w-full py-2 pl-2 mb-4 rounded-lg border-2 border-red"
+                      ? "w-full py-4 pl-2 mb-4 rounded-lg border-2 border-red"
                       : "input_item"
                   }
                   onChange={(e) => setSymbol(e.target.value)}
                 />
                 {emptyInputs.includes("symbol") && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="symbol">
+                  <p
+                    className="mb-2 ml-3 -mt-1 text-xs text-primary_400"
+                    key="symbol"
+                  >
                     Required
                   </p>
                 )}
@@ -343,7 +345,7 @@ export default function Creator() {
               <div>
                 <label htmlFor="totalSupply" className={styles.title}>
                   <span>Total Supply</span>
-                  <span className="text-red">*</span>
+                  <span className="text-primary_400">*</span>
                 </label>
                 <NumericFormat
                   placeholder="10,000"
@@ -363,7 +365,10 @@ export default function Creator() {
                   }}
                 />
                 {emptyInputs.includes("totalSupply") && (
-                  <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="initial">
+                  <p
+                    className="mb-2 ml-3 -mt-1 text-xs text-primary_400"
+                    key="initial"
+                  >
                     Required
                   </p>
                 )}
@@ -419,7 +424,7 @@ export default function Creator() {
                     }
                   >
                     <div>
-                      <InforIcon width={16} height={16} />
+                      <NoteIcon width={14} height={14} />
                     </div>
                   </Tippy>
                 </label>
@@ -443,25 +448,27 @@ export default function Creator() {
                       className={"input_item"}
                       onChange={(e) => handleChangeAttributeValue(e, item.id)}
                     />
-                    <div className="my-auto">
-                      <CgClose
-                        className="text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
-                        onClick={() => handleRemoveAttribute(item.id)}
-                      />
+                    <div
+                      className="flex items-center justify-center w-10 h-10 cursor-pointer input_item"
+                      onClick={() => handleRemoveAttribute(item.id)}
+                    >
+                      <CgClose className="text-2xl transition-colors duration-100 ease-linear hover:text-primary_400" />
                     </div>
                   </div>
                 ))}
               </div>
               {!isValidBtn && (
-                <p className="mb-2 text-red">You need add property</p>
+                <p className="mb-2 text-primary_400">You need add property</p>
               )}
               <Button
                 type="button"
-                className="h-[37px] w-[150px] text-sm my-4 text-primary_500 font-semibold border-primary_500 border-2 transition-all duration-300 ease-linear hover:bg-primary_500 hover:text-white"
+                third
                 onClick={handleAddAttribute}
+                className="flex mt-2 mb-5 gap-x-2"
                 disabled={!isValidBtn}
               >
-                + Add Property
+                <PlusIcon />
+                Add Property
               </Button>
               <MintNFT
                 name={name}

@@ -188,7 +188,7 @@ export default function EditProfileForm() {
               </label>
               <div
                 className={
-                  "w-full py-2 pl-2 flex bg-shader_600 rounded-lg transition-all duration-200 dark:bg-shader_700"
+                  "w-full py-4 pl-2 flex bg-shader_600 rounded-lg transition-all duration-200 dark:bg-shader_700"
                 }
               >
                 <p className="mr-1">@</p>

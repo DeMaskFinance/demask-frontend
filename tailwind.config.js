@@ -14,6 +14,7 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         nft: "var(--nftItem.metadata.image)",
+        'linear-g2': 'linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)',
       },
       height: {
         header: "64px",
@@ -94,6 +95,12 @@ module.exports = {
         20: "1 1 20%",
         15: "1 1 15%",
       },
+      rotate: {
+        '25': '25deg',
+      },
+      borderRadius: {
+        10:"10px"
+      }
     },
   },
   plugins: [

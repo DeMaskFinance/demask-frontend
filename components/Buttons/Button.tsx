@@ -55,14 +55,13 @@ const Button: FunctionComponent<ButtonProps> = ({
       font-semibold
       ${
         primary
-          ? "bg-primary_500 text-white  hover:bg-primary_600  rounded-lg"
+          ? "bg-primary_500 text-white  hover:bg-primary_600 rounded-lg"
           : ""
       }
-      ${third ? "bg-primary_400 text-white  text-sm" : ""}
+      ${third && "bg-primary_500 bg-opacity-[0.15] text-white px-3 py-2"}
       ${
-        active
-          ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600 font-semibold"
-          : ""
+        active &&
+        "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600"
       }
       ${secondary ? "bg-white text-shader_500" : ""}
       ${outline ? " border border-shader_500 dark:border-shader_700 " : ""}
@@ -74,7 +73,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         red &&
         "bg-red border-red hover:bg-opacity-80 text-white  border rounded-lg"
       }
-      ${gradient && "bg_gradient text-white font-semibold"}
+      ${gradient && "bg_gradient text-white "}
       ${
         green_2 &&
         "bg-green text-white bg-opacity-[15%] py-2 px-3 hover:bg-opacity-[25%] border border-green w-max"

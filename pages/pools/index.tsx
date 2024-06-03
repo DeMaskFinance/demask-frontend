@@ -70,7 +70,7 @@ export default function Liquidity() {
   console.log(account, isLoading);
 
   return (
-    <div className="py-8 max-w-screen-xl  mx-auto min-h-[80vh] pb-40 lg:pb-0 px-4 md:px-0">
+    <div className="py-8 max-w-screen-xl  mx-auto min-h-[94vh] pb-40 lg:pb-0 px-4 md:px-0">
       <NextSeo {...updateMeta} />
       <div className="w-full">
         <div className="flex flex-wrap justify-between w-full gap-y-2">

@@ -10,7 +10,7 @@ function WithAuth({ children }: any) {
 
   return (
     <div>
-      <div className="mx-auto min-h-[80vh]">
+      <div className="mx-auto min-h-[94vh]">
         {isLoggedIn ? (
           <div>{children}</div>
         ) : (

@@ -13,6 +13,7 @@ interface NFTGridProps {
   isFetching: boolean;
   handleChoiceNFT: (item: any) => void;
   idNFT: number[];
+  isSearch: boolean;
 }
 
 const NFTGrid: React.FC<NFTGridProps> = ({
@@ -20,8 +21,9 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   isFetching,
   handleChoiceNFT,
   idNFT,
+  isSearch,
 }) => {
-  const { demask, chainId } = useContext(AccountContext);
+  const { chainId } = useContext(AccountContext);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
@@ -87,14 +89,16 @@ const NFTGrid: React.FC<NFTGridProps> = ({
           {val}
         </div>
       </div>
-      <Button
-        className="flex mx-auto whitespace-nowrap gap-x-2"
-        green_2
-        onClick={handleSearchNFT}
-      >
-        <ImgIcon width={20} height={20} />
-        Select NFT
-      </Button>
+      {isSearch && (
+        <Button
+          className="flex mx-auto whitespace-nowrap gap-x-2"
+          green_2
+          onClick={handleSearchNFT}
+        >
+          <ImgIcon width={20} height={20} />
+          Select NFT
+        </Button>
+      )}
       <ModalSearchNFTSwap
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}

@@ -276,7 +276,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
                 <p className="mr-1 text-shader_200">Reserve NFT</p>
                 <div className="flex items-center gap-x-1">
-                  <FormatNumber number={data[data.length - 1]?.volume} />
+                  {dataSwap?.reserveNFT}
                   <EtherIcon width={16} height={16} />
                 </div>
               </div>

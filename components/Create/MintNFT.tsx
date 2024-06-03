@@ -174,11 +174,11 @@ export default function MintNFT({
         <div>
           <Button
             type="button"
-            className="w-[150px] py-2"
+            className="w-full py-3"
             primary
             onClick={handleSubmit}
           >
-            CREATE
+            Create NFT
           </Button>
         </div>
         <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

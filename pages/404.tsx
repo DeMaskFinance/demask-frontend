@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 export default function NotFound() {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
+    <div className="flex flex-col items-center justify-center min-h-[94vh]">
       <h2 className="text-2xl font-semibold text-shader_700">Oops!</h2>
       <div className="">
         <Logo404Page width={492} height={376} className="w-full h-full" />

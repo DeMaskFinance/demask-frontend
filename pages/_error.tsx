@@ -13,7 +13,7 @@ function Error({ statusCode, statusMessage }: ErrorProps) {
     //       ? `An error ${statusCode} occurred on server`
     //       : 'An error occurred on client'}
     //   </p>
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
+    <div className="flex flex-col items-center justify-center min-h-[94vh]">
       <h2 className="text-2xl font-semibold text-shader_700">
         {statusMessage}
       </h2>

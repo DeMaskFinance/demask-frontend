@@ -49,34 +49,13 @@ const Buy = () => {
     nativeAddress,
     isOpenTransaction
   );
-
-  // const {
-  //   data,
-  //   fetchNextPage,
-  //   isFetchingNextPage,
-  //   hasNextPage,
-  //   isSuccess,
-  //   isLoading,
-  //   isFetching,
-  // } = useInfiniteQuery(
-  //   ["collectionNFTBUY", chainId, collectionAddress],
-  //   ({ pageParam = 1 }) =>
-  //     fetchDataBuyNFTs(collectionAddress, pageParam, chainId),
-  //   {
-  //     getNextPageParam: (page) =>
-  //       page?.currentPage === page?.totalPages
-  //         ? undefined
-  //         : page?.currentPage + 1,
-  //   }
-  // );
-  const { isLoading, data, isRefetching, isSuccess, refetch, isFetching } =
-    useQuery({
-      queryKey: ["collectionNFTBUY", chainId, collectionAddress],
-      queryFn: async () => {
-        const res = await fetchDataBuyNFTs(collectionAddress, chainId);
-        return res;
-      },
-    });
+  const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+    queryFn: async () => {
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      return res;
+    },
+  });
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -89,7 +68,6 @@ const Buy = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  console.log(data);
 
   const dmlToken = data?.dmlAddress;
   const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
@@ -158,6 +136,7 @@ const Buy = () => {
             isFetching={isFetching}
             handleChoiceNFT={handleChoiceNFT}
             idNFT={idNFT}
+            isSearch
           />
           <div className="absolute bottom-0 w-full">
             {idNFT.length > 0 && (
@@ -198,12 +177,12 @@ const Buy = () => {
             )}
 
             {!account ? (
-              <Button className="w-full py-2" primary onClick={handleOpen}>
+              <Button className="w-full py-4" primary onClick={handleOpen}>
                 Connect Wallet
               </Button>
             ) : !isApprovedNFT ? (
               <Button
-                className="w-full py-2"
+                className="w-full py-4"
                 primary
                 onClick={() =>
                   handleApproveNFT(

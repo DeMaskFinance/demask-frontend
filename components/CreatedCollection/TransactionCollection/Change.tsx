@@ -172,20 +172,10 @@ const Change = () => {
   };
   return (
     <div>
-      <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 ">
-        <LightBulbIcon
-          width={20}
-          height={20}
-          className="flex-shrink-0 fill-yellow"
-        />
-        <p>
-          You can change any NFTs that you have in your wallet for some other
-          NFTs in the pool and pay a small fee.
-        </p>
+      <div className="mt-4">
+        <h5 className="font-semibold text-primary_300">Change from</h5>
+        <p className="text-sm text-shader_200">Pick your items to swap from</p>
       </div>
-      <h5 className="font-semibold text-shader_700">
-        Select some input NFTs from your wallet
-      </h5>
       <div className="my-2">
         {account ? (
           <Fragment>
@@ -200,8 +190,9 @@ const Change = () => {
                   isFetching={isInputDataFetching}
                   handleChoiceNFT={handleChoiceNFTInput}
                   idNFT={idNFTInput}
+                  isSearch={false}
                 />
-                <div className="flex px-6 py-4 my-4 text-sm rounded-lg bg-shader_600 text-shader_500 gap-x-2 ">
+                <div className="flex px-4 py-[10px] my-4 text-sm bg-shader_500 text-shader_200 gap-x-2 ">
                   <p>
                     You have selected
                     <span className="text-primary_400">
@@ -225,8 +216,11 @@ const Change = () => {
         )}
       </div>
 
-      <h5 className="font-semibold text-shader_700">Select some output NFTs</h5>
-      <div className="my-2">
+      <div className="mt-4">
+        <h5 className="font-semibold text-primary_300">Change to</h5>
+        <p className="text-sm text-shader_200">Pick your items to receive</p>
+      </div>
+      <div className="my-2 pb-14">
         {isLoading ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
             <SkeletonItemTransaction />
@@ -238,6 +232,7 @@ const Change = () => {
               isFetching={isFetching}
               handleChoiceNFT={handleChoiceNFTOutput}
               idNFT={idNFTOutput}
+              isSearch={false}
             />
           </div>
         ) : (
@@ -245,12 +240,12 @@ const Change = () => {
         )}
         <div className="absolute bottom-0 w-full">
           {!account ? (
-            <Button className="w-full py-2" primary onClick={handleOpen}>
+            <Button className="w-full py-4" primary onClick={handleOpen}>
               Connect Wallet
             </Button>
           ) : !isApprovedNFT ? (
             <Button
-              className="w-full py-2"
+              className="w-full py-4"
               primary
               onClick={() =>
                 handleApproveNFT(

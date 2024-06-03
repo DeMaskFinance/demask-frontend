@@ -4,7 +4,7 @@ import { SkeletonTable } from "./SkeletonTable";
 export default function SkeletonSwap() {
   return (
     <div className="">
-      <div className="min-h-[80vh]">
+      <div className="min-h-[94vh]">
         <div className="flex flex-col-reverse gap-10 md:flex-row">
           <div className="lg:w-[62%] md:w-2/4 w-full flex flex-col items-center">
             <div className="w-full h-full p-4 border rounded-lg lg:mt-0 border-shader_500 dark:border-shader_900 min-h-[300px]">

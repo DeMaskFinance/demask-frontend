@@ -76,7 +76,6 @@ const Pagination = ({
       setPage(1);
     }
   }, [data]);
-  console.log(data);
 
   return (
     <div className="flex justify-end w-full px-4 mx-auto text-sm bg-shader_800">

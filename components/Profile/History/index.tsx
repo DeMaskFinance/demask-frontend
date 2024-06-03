@@ -55,7 +55,7 @@ export default function History() {
                   </tr>
                 </thead>
 
-                <tbody className="flex flex-col min-h-[496px]">
+                <tbody className="flex flex-col min-h-[620px]">
                   {data?.userTransactionList.map((item: any, index: number) => (
                     <HistoryItem item={item} />
                   ))}
