@@ -446,7 +446,7 @@ export const RightIcon: React.FunctionComponent<IconProps> = ({
     >
       <path
         d="M9 18L15 12L9 6"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

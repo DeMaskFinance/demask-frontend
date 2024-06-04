@@ -1,7 +1,7 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { EtherIcon, LeftIcon } from "@/components/Icons";
+import { EtherIcon, EyeIcon, LeftIcon } from "@/components/Icons";
 import LiquiditiesHistory from "@/components/Liquidity/LiquidityHistory";
 import { ModalAddLiquidity } from "@/components/Modal/ModalAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -317,13 +317,9 @@ export default function DetailLiquidity() {
                   <div className="overflow-hidden rounded-xl">
                     <MediaNFT data={data} isControls={true} />
                   </div>
-                  <div className="w-full">
-                    <p
-                      className="block mx-auto mt-2 text-xs text-primary_400 hover:cursor-pointer hover:text-primary_400 w-fit"
-                      onClick={handleShowDetail}
-                    >
-                      Show detail
-                    </p>
+                  <div className="flex" onClick={handleShowDetail}>
+                    <EyeIcon width={20} height={20} />
+                    View detail
                   </div>
                 </div>
               )}

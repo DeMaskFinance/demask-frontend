@@ -9,8 +9,8 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from "../../next-seo.config";
-import { TabGroups } from "@/components/NavChoice";
-import { PoolGradientIcon } from "@/components/Icons/Mobile/IconMobile";
+import { BackgroundDefault } from "@/components/Backgrounds";
+import TabTable from "@/components/NavChoice/TabTable";
 const updateMeta = {
   ...SEO,
   title: "Liquidity",
@@ -19,7 +19,7 @@ export default function Liquidity() {
   const { account, wallet, chainId, demask, tokenDefault } =
     useContext(AccountContext);
   const router = useRouter();
-  const [activeChoice, setActiveChoice] = useState<string>("Item pool");
+  const [activeChoice, setActiveChoice] = useState<string>("NFTs pool");
   const [type, setType] = useState<string>("erc1155");
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
@@ -64,52 +64,50 @@ export default function Liquidity() {
   );
 
   const handleChoiceChange = (choice: string) => {
+    console.log(choice);
+
     setActiveChoice(choice);
-    choice === "Item pool" ? setType("erc1155") : setType("erc721");
+    choice === "NFTs pool" ? setType("erc1155") : setType("erc721");
   };
-  console.log(account, isLoading);
+  console.log(account, isLoading, data, type);
 
   return (
-    <div className="py-8 max-w-screen-xl  mx-auto min-h-[94vh] pb-40 lg:pb-0 px-4 md:px-0">
+    <BackgroundDefault>
       <NextSeo {...updateMeta} />
-      <div className="w-full">
-        <div className="flex flex-wrap justify-between w-full gap-y-2">
-          <div className="flex items-center gap-x-2">
-            <PoolGradientIcon width={20} height={20} />
-            <h2 className="text-2xl font-semibold text_gradient">
-              Your Liquidity
-            </h2>
+      <div className="py-8 max-w-[908px]  mx-auto min-h-[94vh] pb-40 lg:pb-0 px-4 md:px-0">
+        <div className="w-full">
+          <div className="flex flex-wrap justify-between w-full gap-y-2">
+            <div className="flex items-center gap-x-2">
+              <h2 className="text-2xl font-semibold text_gradient">
+                Your Liquidity
+              </h2>
+            </div>
+            <Button
+              type="button"
+              primary
+              className="h-[34px] w-[158px] text-sm"
+              onClick={handleAddLiquidity}
+            >
+              + Add Liquidity
+            </Button>
           </div>
-          <Button
-            type="button"
-            primary
-            className="h-[34px] w-[158px] text-sm"
-            onClick={handleAddLiquidity}
-          >
-            + Add Liquidity
-          </Button>
-        </div>
-        <p className="mt-2 mb-6 textshader_900 title">
-          List of your liquidity positions
-        </p>
-        {account && (
-          <div className="flex justify-center mb-6">
-            <TabGroups
-              choices={["Item pool", "Collection pool"]}
-              activeChoice={activeChoice}
-              onChoiceChange={handleChoiceChange}
-            />
-          </div>
-        )}
-        {account && data?.pages[0]?.combinedRecords.length !== 0 && (
-          <div>
-            <div className="rounded-lg bg-shader_600 dark:bg-shader_900">
+          <p className="mt-2 mb-6 textshader_900 title">
+            List of your liquidity positions
+          </p>
+
+          {account && data?.pages[0]?.combinedRecords.length !== 0 && (
+            <div className="rounded-lg bg-shader_800 min-h-[70vh]">
+              <TabTable
+                choices={["NFTs pool", "Collection pool"]}
+                activeChoice={activeChoice}
+                onChoiceChange={handleChoiceChange}
+              />
               <div className="">
                 {isSuccess &&
                   data.pages.map((page: any, index: number) => (
                     <div
                       key={index}
-                      className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-4 md:grid-cols-2"
+                      className="grid grid-cols-1 gap-3 p-3 lg:grid-cols-3 md:grid-cols-2"
                     >
                       {page?.combinedRecords.map(
                         (liquidity: any, index: number) => (
@@ -138,21 +136,21 @@ export default function Liquidity() {
                 </div>
               )}
             </div>
-          </div>
-        )}
-        {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
-          !isLoading && (
-            <div className="pool_empty">
-              <PoolListIcon width={72} height={72} />
-              Your active liquidity positions will appear here.
+          )}
+          {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
+            !isLoading && (
+              <div className="pool_empty">
+                <PoolListIcon width={72} height={72} />
+                Your active liquidity positions will appear here.
+              </div>
+            )}
+          {isLoading && account && (
+            <div>
+              <BiLoaderAlt className="mb-6 text-3xl animate-spin text-primary_400" />
             </div>
           )}
-        {isLoading && account && (
-          <div>
-            <BiLoaderAlt className="mb-6 text-3xl animate-spin text-primary_400" />
-          </div>
-        )}
+        </div>
       </div>
-    </div>
+    </BackgroundDefault>
   );
 }

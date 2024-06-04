@@ -105,8 +105,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     updatePrice
   );
 
-  console.log(amountTokenSell, amountSellDec, slippage, totalFee);
-
   const balanceNFT = useNFTBalance(
     account,
     nftAddress,
@@ -128,7 +126,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     };
     checkReservesNFT();
   }, [inputNFT, account, amountSellDec]);
-  console.log(data);
 
   useEffect(() => {
     if (data && amountTokenSell) {
@@ -140,11 +137,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     }
   }, [data, slippage, amountTokenSell, totalFee]);
   const queryClient = useQueryClient();
-  console.log({
-    amountSellDec,
-    amountTokenSell,
-    totalFee,
-  });
 
   useEffect(() => {
     const load = setInterval(() => {

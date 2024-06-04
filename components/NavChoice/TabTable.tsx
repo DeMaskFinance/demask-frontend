@@ -6,7 +6,7 @@ interface TabGroupProps {
   onChoiceChange: (choice: string) => void;
 }
 
-const TabGroups: React.FunctionComponent<TabGroupProps> = ({
+const TabTable: React.FunctionComponent<TabGroupProps> = ({
   choices,
   activeChoice,
   onChoiceChange,
@@ -62,4 +62,4 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   );
 };
 
-export default TabGroups;
+export default TabTable;

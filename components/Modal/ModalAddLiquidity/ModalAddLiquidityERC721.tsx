@@ -112,7 +112,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIsSufficientToken(false);
     }
   };
-  console.log(inputToken, dmlToken);
 
   useEffect(() => {
     let amountErcDesired;

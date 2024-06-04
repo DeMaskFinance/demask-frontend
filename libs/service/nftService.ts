@@ -14,12 +14,6 @@ const refreshNFTService = async (
   nftID: string,
   type: string
 ) => {
-  console.log({
-    type,
-    chainId,
-    nftAddress,
-    nftID,
-  });
   try {
     const res = await request.get(
       `refresh-metadata?chainId=${chainId}&nftAddress=${nftAddress}&nftID=${nftID}&type=${type}`

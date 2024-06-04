@@ -64,7 +64,6 @@ export default function MintNFT({
     const ethereum = (window as any).ethereum;
     let transactionHash = "";
     if (typeof ethereum === "undefined") {
-      console.log("Please install Wallet to mint NFTs.");
       return;
     }
     try {

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Button } from "../Buttons";
 import FormatNumber from "../Common/FormatNumber";
 import MediaNFT from "../Common/MediaNFT";
-import { EtherIcon, NFTIcon } from "../Icons";
+import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
 import Image from "next/image";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
@@ -45,8 +45,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   }, [liquidity, account, wallet]);
 
   return (
-    <div className="relative w-full overflow-hidden group">
-      <div className="transition-all duration-150 ease-linear group-hover:brightness-50 h-[240px] w-full rounded-lg overflow-hidden">
+    <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
+      {/* <div className="transition-all duration-150 ease-linear group-hover:brightness-50 h-[240px] w-full rounded-lg overflow-hidden">
         {liquidity?.metadata ? (
           <MediaNFT data={liquidity} isControls={false} />
         ) : (
@@ -115,6 +115,84 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             </Button>
           </Link>
         </div>
+      </div> */}
+      <div className="flex p-4 border-b bg-shader_600 gap-x-3 border-shader_500">
+        <div className="relative w-10 h-10 ">
+          <div className="overflow-hidden rounded-lg">
+            {liquidity?.metadata ? (
+              <MediaNFT data={liquidity} isControls={false} />
+            ) : (
+              <Image
+                src={liquidity?.avatar!}
+                alt="banner"
+                width={600}
+                height={600}
+                className="object-cover w-full h-full "
+              />
+            )}
+          </div>
+          <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+            <EtherIcon width={16} height={16} />
+          </div>
+        </div>
+        <div>
+          <div className="font-bold text-white truncate">
+            {liquidity?.metadata ? (
+              <p>{liquidity?.metadata?.name}</p>
+            ) : (
+              <p>{liquidity?.name}</p>
+            )}
+          </div>
+
+          <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
+        </div>
+      </div>
+      <div className="p-4 font-semibold bg-shader_700">
+        <div className="flex justify-between mb-3 text-shader_200">
+          <p className="text-sm">Reserve NFT</p>
+          <div className="flex items-center font-bold text-white gap-x-1">
+            <FormatNumber number={liquidity.reserveNFT} />
+            <NFTIcon width={16} height={16} />
+          </div>
+        </div>
+        <div className="flex justify-between mb-3 text-shader_200">
+          <p className="text-sm">Liquidity</p>
+          <div className="flex items-center font-bold text-white gap-x-1">
+            <FormatNumber number={(+balanceDML / 1e18).toString()} />
+            <EtherIcon width={16} height={16} />(
+            {((Number(balanceDML) / Number(totalSupply)) * 100).toFixed(2)}%)
+          </div>
+        </div>
+        <div className="flex justify-between mb-3 text-shader_200">
+          <p className="text-sm">Reward</p>
+          <div className="flex items-center font-bold text-white gap-x-1">
+            {reward ? (
+              <div className="ml-2">
+                <FormatNumber number={reward} />
+              </div>
+            ) : (
+              <p className="w-10 h-4 rounded-full animate-pulse bg-slate-700 "></p>
+            )}
+            <EtherIcon width={16} height={16} />
+          </div>
+        </div>
+        <Button gradient className="flex w-full p-3 mt-5 gap-x-1">
+          Claim
+          <FormatNumber number={reward} />
+          ETH
+        </Button>
+        <Link
+          href={
+            type === "erc1155"
+              ? `/details/${liquidity.dmlAddress}?chain=${chainId}`
+              : `/collection/${liquidity.nftAddress}?typeERC=erc721&tab=pool&chain=${chainId}`
+          }
+        >
+          <div className="flex justify-center mx-auto mt-3 text-sm gap-x-1 text-primary_300">
+            Pool detail
+            <RightIcon width={20} height={20} className="text-primary_300" />
+          </div>
+        </Link>
       </div>
     </div>
   );

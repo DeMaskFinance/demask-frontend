@@ -64,7 +64,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600"
       }
       ${secondary ? "bg-white text-shader_500" : ""}
-      ${outline ? " border border-shader_500 dark:border-shader_700 " : ""}
+      ${outline ? " border border-shader_500  " : ""}
       ${
         green &&
         "bg-green border-green hover:bg-opacity-80 text-white  border rounded-lg"

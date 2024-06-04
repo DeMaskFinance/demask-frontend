@@ -83,7 +83,6 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       setIsProcess(false);
       setIsOpenRoyalty(false);
       showToast("Set Royalty successed!", ToastType.Success);
-      console.log(res);
     } catch (error) {
       console.error(error);
       setIsProcess(false);
@@ -171,7 +170,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
           className="absolute top-0 right-0 p-2 text-lg"
           onClick={handleClose}
         >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
+          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
         </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

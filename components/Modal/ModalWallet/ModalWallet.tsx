@@ -20,7 +20,7 @@ interface ModalWalletProps {
 }
 const styles = {
   walletItem:
-    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-shader_500 dark:hover:bg-shader_900 rounded-lg cursor-pointer",
+    "flex items-center p-2 gap-x-4 text-white  hover:bg-shader_500  rounded-lg cursor-pointer",
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({
@@ -133,10 +133,17 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
 
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
-      <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white dark:bg-shader_900 dark:text-white text-black text-center rounded-lg relative pb-4">
-        <h2 className="p-6 mb-3 text-xl font-medium">Connect your wallet</h2>
-        <p>If you don't have a wallet, you can create one now.</p>
-        <div className="mt-4 font-medium">
+      <div className="w-[350px] h-fit max-w-[calc(100%-32px)] bg-shader_800  text-shader_200  rounded-lg relative p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-white ">Connect your wallet</h2>
+          <button className="" onClick={handleClose}>
+            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+          </button>
+        </div>
+        <p className="mt-1 text-sm">
+          If you don't have a wallet, you can create one now.
+        </p>
+        <div className="mt-4 font-semibold">
           <div
             className={styles.walletItem}
             onClick={() => connectWallet("Metamask")}
@@ -174,12 +181,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
             <p>Binance wallet</p>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-6 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
       </div>
     </Wrapper>
   );

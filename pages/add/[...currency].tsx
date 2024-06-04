@@ -3,6 +3,7 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import {
   CreateIcon,
   EtherIcon,
+  EyeIcon,
   LeftIcon,
   NFTIcon,
   RefetchIcon,
@@ -183,7 +184,6 @@ export default function AddLiquidity() {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  console.log(tokenDefault, tokenDefault);
 
   useEffect(() => {
     if (tokenAddress) {
@@ -289,7 +289,6 @@ export default function AddLiquidity() {
     // setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
-  console.log(inputNFT);
 
   return (
     <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 pt-6">
@@ -524,16 +523,19 @@ export default function AddLiquidity() {
               )}
           </div>
           <div className="order-1 w-full lg:order-2">
-            <div className="flex flex-col items-center w-full h-full ">
-              <div className="overflow-hidden rounded-xl">
-                <MediaNFT data={data} isControls={true} />
+            <div className="relative flex flex-col items-center w-full h-full">
+              <div className="relative w-full h-full ">
+                <div className="overflow-hidden rounded-xl">
+                  <MediaNFT data={data} isControls={true} />
+                </div>
+                <div
+                  className="absolute flex px-3 py-2 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 bg-shader_500"
+                  onClick={handleShowDetail}
+                >
+                  <EyeIcon width={20} height={20} />
+                  View detail
+                </div>
               </div>
-              <p
-                className="mt-2 text-xs text-primary_400 hover:cursor-pointer hover:text-primary_400"
-                onClick={handleShowDetail}
-              >
-                Show detail
-              </p>
             </div>
           </div>
         </div>

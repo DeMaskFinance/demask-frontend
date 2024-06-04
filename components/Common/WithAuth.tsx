@@ -3,6 +3,7 @@ import { selectProfile } from "@/store/profileSlice";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css";
+import { BackgroundDefault } from "../Backgrounds";
 
 function WithAuth({ children }: any) {
   const { isLoggedIn } = useSelector(selectProfile);
@@ -10,15 +11,17 @@ function WithAuth({ children }: any) {
 
   return (
     <div>
-      <div className="mx-auto min-h-[94vh]">
+      <div className="mx-auto min-h-[94vh] relative">
         {isLoggedIn ? (
           <div>{children}</div>
         ) : (
-          <ModalWallet
-            isOpen={!isLoggedIn}
-            setIsOpen={setIsOpen}
-            isAuthen={true}
-          />
+          <BackgroundDefault>
+            <ModalWallet
+              isOpen={!isLoggedIn}
+              setIsOpen={setIsOpen}
+              isAuthen={true}
+            />
+          </BackgroundDefault>
         )}
       </div>
     </div>

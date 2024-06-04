@@ -18,8 +18,6 @@ export default function Layout({ children }: PropsWithChildren) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!router.query?.chain) {
-      console.log("hehee");
-
       router.push({
         pathname: router.pathname,
         query: { ...router.query, chain: chainId },
@@ -29,8 +27,6 @@ export default function Layout({ children }: PropsWithChildren) {
       const targetNetwork = network.find(
         (item) => item.chain === router.query.chain
       );
-      console.log(targetNetwork);
-
       if (!targetNetwork) {
         updateChainId(network[0].chain);
         // router.push({

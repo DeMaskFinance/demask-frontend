@@ -18,7 +18,6 @@ const Rewards = () => {
         return res;
       },
     });
-  console.log(data, page);
 
   return (
     <div className="flex flex-col">

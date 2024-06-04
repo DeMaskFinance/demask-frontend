@@ -156,7 +156,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     setFieldValue("category", updatedCategories);
   };
   const queryClient = useQueryClient();
-  console.log(data);
 
   const onSubmit = async (values: any) => {
     // Handle form submission

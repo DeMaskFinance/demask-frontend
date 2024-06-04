@@ -129,8 +129,6 @@ const sellERC20ERC721 = async (
   account: string,
   txDeadline: number
 ) => {
-  console.log(amountSellDec, idNFT);
-
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   const estimatedGas = await contract.estimateGas.sellERC20ERC721(
     tokenAddress,

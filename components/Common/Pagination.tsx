@@ -133,7 +133,6 @@ const Pagination = ({
                 const pageNumber = Number(target.value);
                 if (!isNaN(pageNumber)) {
                   goToPage(pageNumber);
-                  console.log(pageNumber);
                 }
               }
             }}

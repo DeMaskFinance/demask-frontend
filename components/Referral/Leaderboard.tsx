@@ -15,7 +15,6 @@ const Leaderboard = () => {
       const res = await referralLeaderboardUser(account, page);
       return res;
     });
-  console.log(data);
 
   return (
     <div className="flex flex-col">
