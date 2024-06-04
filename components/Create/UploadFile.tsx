@@ -3,6 +3,7 @@ import React, { DragEvent, useEffect, useRef, useState } from "react";
 import { Button } from "../Buttons";
 import { CreateIcon, PictureMint, UploadIcon } from "../Icons";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
+import { CgClose } from "react-icons/cg";
 interface UploadFileProps {
   setFileIPFS: any;
   fileType: string | null;
@@ -77,7 +78,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
     }
   }, [selectedFile]);
   return (
-    <div className="flex flex-col items-center w-full" ref={uploadRef}>
+    <div className="relative flex flex-col items-center w-full" ref={uploadRef}>
       <div
         className={`flex flex-col items-center w-full text-center border border-dashed group h-fit justify-center border-1 border-shader_500 rounded-xl`}
         ref={itemRef}
@@ -179,13 +180,15 @@ const UploadFile: React.FC<UploadFileProps> = ({
         )}
       </div>
       {selectedFile && (
-        <Button
-          onClick={handleClickFile}
-          className="mt-6 w-[160px] h-[34px]"
-          primary
+        <button
+          className="absolute right-2 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
+          onClick={() => {
+            setSelectedFile("");
+            itemRef.current?.classList.add("border");
+          }}
         >
-          Edit file
-        </Button>
+          <CgClose />
+        </button>
       )}
     </div>
   );
