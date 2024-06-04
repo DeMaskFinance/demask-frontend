@@ -19,7 +19,7 @@ import {
 } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import UploadFile from "./UploadFile";
+import { UploadFileCollection } from "./UploadFile";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -31,7 +31,7 @@ const styles = {
   btnActive: "rounded-full bg-base2",
 };
 const validationSchema = yup.object().shape({
-  contractName: yup.string().required("Name is a required").max(50),
+  contractName: yup.string().required("Contract name is a required").max(50),
   symbol: yup.string().required("Symbol is a required").max(10),
 });
 const DeployCollection = () => {
@@ -130,26 +130,25 @@ const DeployCollection = () => {
                 * Required fields
               </p>
             </div>
-            {/* <UploadFile
-                setFileIPFS={setFileIPFS}
-                setFileType={setFileType}
-                fileType={fileType}
-                uploadFile={uploadFileIPFSCollection}
-                selectedFile={selectedFile}
-                setSelectedFile={setSelectedFile}
-                type="collection"
-              /> */}
           </div>
+          <div className="p-3 mb-5 rounded-lg bg-primary_500 bg-opacity-10">
+            <h3 className="font-bold text-white">
+              🚨 You’ll need to deploy a contract
+            </h3>
+            <h4 className="mt-1 text-sm text-white">
+              You’ll need to deploy an ERC-1155 contract onto the Blockchain
+              before you can create a Collection
+            </h4>
+          </div>
+          <UploadFileCollection
+            setFileIPFS={setFileIPFS}
+            setFileType={setFileType}
+            fileType={fileType}
+            uploadFile={uploadFileIPFSCollection}
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+          />
           <div className="">
-            <div className="p-3 rounded-lg bg-primary_500 bg-opacity-10">
-              <h3 className="font-bold text-white">
-                🚨 You’ll need to deploy a contract
-              </h3>
-              <h4 className="text-sm text-white">
-                You’ll need to deploy an ERC-1155 contract onto the Blockchain
-                before you can create a Collection
-              </h4>
-            </div>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -162,6 +161,7 @@ const DeployCollection = () => {
                 isSubmitting,
                 dirty,
                 setFieldValue,
+                isValid,
               }) => (
                 <Form className="">
                   <div className="flex flex-col">
@@ -176,6 +176,7 @@ const DeployCollection = () => {
                       value={values.contractName}
                       placeholder="Input contract name"
                       className="input_item"
+                      autocomplete="off"
                       onChange={(e: any) => {
                         handleChange(e);
                         const firstLetter = e.target.value.charAt(0);
@@ -204,6 +205,7 @@ const DeployCollection = () => {
                         id="symbol"
                         name="symbol"
                         value={values.symbol}
+                        autocomplete="off"
                         placeholder="Symbol"
                         className="input_item"
                       />
@@ -249,17 +251,19 @@ const DeployCollection = () => {
                               {item.name}
                             </li>
                           ))}
-                          <li></li>
                         </ul>
                       </div>
                     </div>
                   </div>
-
                   <Button
                     type="submit"
-                    primary={!isSubmitting && fileIPFS}
-                    active={isSubmitting || !fileIPFS}
-                    disabled={isSubmitting || !fileIPFS}
+                    primary={!isSubmitting && selectedFile && fileIPFS && dirty}
+                    active={
+                      isSubmitting || !fileIPFS || !selectedFile || !dirty
+                    }
+                    disabled={
+                      isSubmitting || !fileIPFS || !selectedFile || !dirty
+                    }
                     className="w-full py-[10px] mt-5"
                     isLoadingBtn={isSubmitting}
                   >

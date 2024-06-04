@@ -92,7 +92,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
   return (
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative min-h-[45vh] overflow-scroll">
           <p className="py-2 mb-4 title">Select a NFT</p>
           <div>
             <div className="relative mb-4">
@@ -110,12 +110,12 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
             </div>
             <ul className={`${debouncedNFT ? "hidden" : "block"}`}>
               <li
-                className="flex items-center cursor-pointer gap-x-2 hover:text-primary_400 group active:text-primary_400"
+                className="flex items-center font-semibold text-white cursor-pointer gap-x-2 group "
                 onClick={() => setNftAddress(demask.CREATOR)}
               >
                 <span>
                   <Image
-                    src="/logo.png"
+                    src="/logoDefault.png"
                     alt="logo"
                     width={24}
                     height={24}
@@ -125,7 +125,7 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
                 <span>DEMASK CREATOR</span>
               </li>
             </ul>
-            <div className={`${debouncedNFT ? "hidden" : "block"}`}>
+            <div className={`${debouncedNFT ? "hidden" : "block"} `}>
               <div>
                 <TopNFT handleSelectNFT={handleSelectNFT} />
               </div>

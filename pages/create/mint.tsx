@@ -1,7 +1,6 @@
 import Button from "@/components/Buttons/Button";
 import WithAuth from "@/components/Common/WithAuth";
 import MintNFT from "@/components/Create/MintNFT";
-import UploadFile from "@/components/Create/UploadFile";
 import { LeftIcon, NoteIcon, PlusIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { Category } from "@/libs/constants";
@@ -25,6 +24,7 @@ import { CgClose } from "react-icons/cg";
 import { FaAngleDown } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
 import { SEO } from "../../next-seo.config";
+import { UploadFileNFT } from "@/components/Create/UploadFile";
 
 const styles = {
   title: "block my-4 text-base font-semibold text-black24 dark:text-shader_500",
@@ -184,14 +184,13 @@ export default function Creator() {
               <p className="mt-2 mb-4 text-xs text-primary_400">
                 * Required fields
               </p>
-              <UploadFile
+              <UploadFileNFT
                 setFileIPFS={setFileIPFS}
                 fileType={fileType}
                 setFileType={setFileType}
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
                 uploadFile={uploadFileIPFSMint}
-                type="nfts"
               />
             </div>
           </div>
@@ -429,7 +428,7 @@ export default function Creator() {
                   </Tippy>
                 </label>
                 {attributeItems.map((item) => (
-                  <div className="flex items-center gap-x-2" key={item.id}>
+                  <div className="flex items-center gap-2 mb-2 " key={item.id}>
                     <input
                       placeholder="Trait Type"
                       autoComplete="off"

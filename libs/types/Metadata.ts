@@ -23,3 +23,11 @@ interface CollectionInterface {
   featureImage?: string;
   royalty?: string;
 }
+interface UploadFileProps {
+  setFileIPFS: React.Dispatch<React.SetStateAction<string | null>>;
+  fileType: string | null;
+  selectedFile: string | null;
+  setFileType: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<string | null>>;
+  uploadFile: (file: File) => Promise<string>;
+}

@@ -1,10 +1,13 @@
 import Button from "@/components/Buttons/Button";
 import MediaNFT from "@/components/Common/MediaNFT";
 import {
+  CreateIcon,
+  EtherIcon,
   LeftIcon,
   NFTIcon,
   RefetchIcon,
   SettingIcon,
+  SwapIcon,
   TokenIconNotDefine,
 } from "@/components/Icons";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -41,8 +44,9 @@ import Link from "next/link";
 import { FaAngleDown } from "react-icons/fa";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { NumericFormat } from "react-number-format";
+import { TabGroups } from "@/components/NavChoice";
 const styles = {
-  title: "block mb-4 text-base font-medium text-black24 dark:text-white",
+  title: "block mb-1 mt-5 text-base font-semibold text-shader_100",
 };
 const updateMeta = {
   ...SEO,
@@ -245,51 +249,86 @@ export default function AddLiquidity() {
     {
       icon: (
         <RefetchIcon
-          width={24}
-          height={24}
-          className="cursor-pointer hover:fill-shader_600"
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
         />
       ),
       content: "Refresh",
-      onClick: () => refetch(),
+      // onClick: () => {
+      //   refresh();
+      // },
+    },
+    {
+      icon: (
+        <SwapIcon
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
+        />
+      ),
+      content: "Swap",
+      link: `/swap/${nftAddress}/${tokenAddress}/${idNFT}?chainId=${chainId}`,
     },
     {
       icon: (
         <SettingIcon
-          width={24}
-          height={24}
-          className="cursor-pointer hover:rotate-90 hover:fill-shader_600"
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
         />
       ),
       content: "Setting",
       onClick: () => setIsOpenSetting(true),
     },
   ];
+  const handleChoicePercent = (item: string) => {
+    setInputNFT(
+      Math.floor((parseFloat(item) / 100) * +data.reserveNFT).toString()
+    );
+    // setShowRequiredMessage(false);
+    setActiveChoiceNFT(item);
+  };
+  console.log(inputNFT);
+
   return (
-    <div className="px-4 py-8 lg:px-secondary md:px-14 min-h-[94vh] pb-24 lg:pb-8">
+    <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 pt-6">
       <NextSeo {...updateMeta} />
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center">
-          <Link href={`/pools?chain=${chainId}`}>
-            <LeftIcon
-              width={20}
-              height={20}
-              className="cursor-pointer hover:fill-primary_400"
-            />
-          </Link>
-          <h2 className="text-2xl text-black24 ml-[18px] title">
-            Add Liquidity
-          </h2>
+      <div className="flex items-center justify-between ">
+        <div className="">
+          <div className="sticky top-16">
+            <div
+              className="flex items-center cursor-pointer gap-x-2"
+              onClick={() => router.back()}
+            >
+              <LeftIcon width={20} height={20} />
+
+              <p className="font-semibold text-white">Back</p>
+            </div>
+            <h2 className="mt-4 text-xl font-bold text-primary_300">
+              Add Liquidity
+            </h2>
+          </div>
         </div>
         <div className="flex items-center gap-x-2">
           {actions.map((action, index) => (
             <Tippy
               key={index}
-              content={<div>{action.content}</div>}
+              content={<div className="text-xs">{action.content}</div>}
               theme="dark"
               placement="bottom"
             >
-              <div onClick={action.onClick}>{action.icon}</div>
+              <div className="border rounded-full border-shader_400 p-[7px]">
+                {action.link ? (
+                  <Link href={action.link} className="group">
+                    {action.icon}
+                  </Link>
+                ) : (
+                  <div onClick={action.onClick} className="">
+                    {action.icon}
+                  </div>
+                )}
+              </div>
             </Tippy>
           ))}
         </div>
@@ -304,20 +343,15 @@ export default function AddLiquidity() {
                 <span className="">Choose NFT</span>
                 <span className="text-red">*</span>
               </p>
-              <div
-                className="w-full p-2 mb-4 border rounded-lg border-primary_400 "
-                onClick={handleSearchNFT}
-              >
+              <div className="input_item" onClick={handleSearchNFT}>
                 <div className="flex items-center justify-between cursor-pointer text-shader_500 group">
-                  <div className="flex gap-x-2 text-primary_400">
-                    <NFTIcon
-                      width={24}
-                      height={24}
-                      className="fill-primary_400"
-                    />
+                  <div className="flex items-center gap-x-2 title">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue bg-opacity-20 ">
+                      <CreateIcon width={16} height={16} />
+                    </div>
                     <p>{data?.metadata?.name}</p>
                   </div>
-                  <FaAngleDown className=" text-shader_600" />
+                  <FaAngleDown className="text-white " />
                 </div>
               </div>
             </div>
@@ -326,20 +360,13 @@ export default function AddLiquidity() {
                 <span className="">Choose Token</span>
                 <span className="text-red">*</span>
               </p>
-              <div
-                className="w-full p-2 mb-4 border rounded-lg border-primary_400"
-                onClick={handleSearchToken}
-              >
+              <div className="input_item" onClick={handleSearchToken}>
                 <div className="flex items-center justify-between cursor-pointer text-shader_500">
-                  <div className="flex gap-x-2 text-primary_400">
+                  <div className="flex items-center gap-x-2 title">
                     {tokenSymbolIcon ? (
                       <div>
                         {/* @ts-ignore */}
-                        <tokenSymbolIcon.logo
-                          width={24}
-                          height={24}
-                          className="fill-primary_400"
-                        />
+                        <tokenSymbolIcon.logo width={20} height={20} />
                       </div>
                     ) : (
                       <div>
@@ -352,69 +379,49 @@ export default function AddLiquidity() {
                     )}
                     {data?.tokenSymbol}
                   </div>
-                  <FaAngleDown className="transition-all duration-150 text-shader_600 group-hover:rotate-180" />
+                  <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
                 </div>
               </div>
             </div>
-            <div>
+            <div className="mt-5 border-t border-shader_600">
               <p className={styles.title}>
                 <span className="">Deposit</span>
                 <span className="text-red">*</span>
               </p>
               <div>
-                <div className="flex justify-between mb-1 text-shader_700 dark:text-white">
-                  <p>NFT</p>
-                  <p>Balance: {account ? formatNumber(balanceNFT) : 0}</p>
+                <div className="flex justify-between mb-1 font-semibold text-primary_300">
+                  <p>NFT balance</p>
+                  <p className="flex items-center font-bold text-white gap-x-1">
+                    {account ? formatNumber(balanceNFT) : 0}
+                    <NFTIcon width={12} height={12} />
+                  </p>
                 </div>
-                <div
-                  className={`relative p-2 border rounded-lg border-shader_500 dark:bg-shader_700 dark:border-shader_700 ${
-                    !inputNFT && isInputNFT && "border-red"
-                  }`}
-                >
-                  <NumericFormat
-                    className="font-semibold border-none outline-none text-shader_500 placeholder:font-semibold"
-                    placeholder="Input amount NFT"
-                    thousandSeparator=","
-                    decimalScale={0}
-                    value={inputNFT}
-                    onChange={handleGetNFT}
-                  />
-                  <div className="flex justify-end mt-8">
-                    <div className="relative flex items-center h-8 rounded-lg bg-shader_500 w-fit ">
-                      <div
-                        className="absolute h-8 transition-all duration-200 ease-linear rounded-l-lg bg-primary_400"
-                        style={{ width: `${widthBtn}px` }}
-                      ></div>
-                      {activeNFTPercent.map((item, index) => (
-                        <button
-                          type="button"
-                          ref={(el) => (buttonRefs.current[index] = el)}
-                          key={index}
-                          onClick={() => {
-                            setInputNFT(
-                              Math.floor(
-                                item.percent * Number(balanceNFT)
-                              ).toString()
-                            );
-                            setActiveChoiceNFT(item.text);
-                            setActiveChoiceNFT(item.text);
-                            const totalWidth = buttonRefs.current
-                              .slice(0, index + 1)
-                              .reduce(
-                                (acc, ref) =>
-                                  ref ? acc + ref.offsetWidth : acc,
-                                0
-                              );
-                            setWidthBtn(totalWidth);
-                          }}
-                          className={`text-[12px] w-10 h-4 z-10 flex cursor-pointer justify-center last:border-none border-r border-shader_500 font-semibold text-shader_500 ${
-                            item.text === activeChoiceNFT && " text-white"
-                          }`}
-                        >
-                          {item.text}
-                        </button>
-                      ))}
-                    </div>
+                <div className="relative flex gap-x-2">
+                  <div className="relative w-[60%]">
+                    <NumericFormat
+                      name="amountNFT"
+                      id="amountNFT"
+                      autoComplete="off"
+                      placeholder="NFT quantity"
+                      pattern="^[1-9][0-9]*$"
+                      min="1"
+                      decimalScale={0}
+                      thousandSeparator=","
+                      className="w-full h-full px-3 py-2 font-semibold text-white rounded-lg outline-none bg-shader_600 placeholder:text-shader_300 placeholder:font-medium border_500"
+                      value={inputNFT}
+                      onChange={(e) => {
+                        let newValue = e.target.value.replace(/,/g, "");
+                        setInputNFT(newValue);
+                        setActiveChoiceNFT("");
+                      }}
+                    />
+                  </div>
+                  <div className="w-[40%]">
+                    <TabGroups
+                      choices={["25%", "50%", "75%", "100%"]}
+                      activeChoice={activeChoiceNFT}
+                      onChoiceChange={handleChoicePercent}
+                    />
                   </div>
                 </div>
 
@@ -433,9 +440,12 @@ export default function AddLiquidity() {
                 )}
               </div>
               <div className="mb-4">
-                <div className="flex justify-between mt-4 mb-1 text-shader_700 dark:text-white">
+                <div className="flex justify-between mt-4 mb-1 font-semibold text-primary_300">
                   <p>Token</p>
-                  <p>Balance: {account ? formatNumber(balanceToken) : 0}</p>
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    {account ? formatNumber(balanceToken) : 0}
+                    <EtherIcon width={12} height={12} />
+                  </div>
                 </div>
                 {data.dmlAddress === null ? (
                   <input
@@ -475,7 +485,7 @@ export default function AddLiquidity() {
             </div>
             {!isApprovedNFT && account && (
               <Button
-                className="w-[126px] py-2"
+                className="w-full py-3"
                 primary
                 onClick={() =>
                   handleApproveNFT(
@@ -493,7 +503,7 @@ export default function AddLiquidity() {
             )}
             {isApprovedNFT && account && (
               <Button
-                className="w-[126px] py-2"
+                className="w-full py-3"
                 primary
                 onClick={handleAddLiquidity}
               >

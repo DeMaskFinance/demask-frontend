@@ -1,6 +1,7 @@
 import { version } from "@/libs/constants";
 import Link from "next/link";
 import {
+  BgGradient,
   DiscordIcon,
   GithubIcon,
   GmailIcon,
@@ -25,8 +26,11 @@ export default function Footer() {
     { href: "https://demask.finance/", text: "Privacy Policy" },
   ];
   return (
-    <footer className="hidden overflow-hidden border-t lg:block border-shader_600 ">
-      <div className="flex items-center justify-between pt-8 pb-10 bg-shader_900 px-4 2xl:px-[150px] md:px-14">
+    <footer className="relative hidden overflow-hidden border-t lg:block border-shader_600 bg-shader_900">
+      <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
+        <BgGradient className="w-[905px] h-[218px]" />
+      </div>
+      <div className="flex items-center justify-between pt-8 pb-10  px-4 2xl:px-[150px] md:px-14 z-10 relative">
         <div>
           <Link href="https://demask.finance/" target="_blank">
             <LogoDeMask width={200} height={56} className="fill-white" />

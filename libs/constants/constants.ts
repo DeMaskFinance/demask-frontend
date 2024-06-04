@@ -5,7 +5,7 @@ import {
   MonadIcon,
   SepoliaIcon,
   USDCIcon,
-  USDTIcon
+  USDTIcon,
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -23,27 +23,7 @@ const tokenGoerli = [
     symbolNative: "ETH",
   },
 ];
-const tokenBsc = [
-  {
-    name: "Smart Chain",
-    symbol: "BNB",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
-    logo: BscIcon,
-    symbolNative: "WBNB",
-  },
-  {
-    name: "Tether",
-    symbol: "USDT",
-    address: process.env.NEXT_PUBLIC_USDT_BSC,
-    logo: USDTIcon,
-  },
-  {
-    name: "USD Coin",
-    symbol: "USDC",
-    address: process.env.NEXT_PUBLIC_USDC_BSC,
-    logo: USDCIcon,
-  },
-];
+
 const tokenBlast = [
   {
     name: "Blast Testnet",
@@ -58,7 +38,7 @@ const tokenSepolia = [
     name: "Sepolia Testnet",
     symbol: "ETH",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
-    logo: SepoliaIcon,
+    logo: EtherIcon,
     symbolNative: "ETH",
   },
 ];
@@ -231,7 +211,12 @@ export {
   Category,
   Goerli_DEMASK,
   mediaType,
-  network, SEPOLIA_DEMASK, tokenBlast,
-  tokenGoerli, tokenSepolia, validCollectionInput,
-  validNFTsInput, version
+  network,
+  SEPOLIA_DEMASK,
+  tokenBlast,
+  tokenGoerli,
+  tokenSepolia,
+  validCollectionInput,
+  validNFTsInput,
+  version,
 };

@@ -1,82 +1,38 @@
-import Image from "next/image";
-import React, { DragEvent, useEffect, useRef, useState } from "react";
-import { Button } from "../Buttons";
-import { CreateIcon, PictureMint, UploadIcon } from "../Icons";
+import useFileHandler from "@/hooks/useFileHandler";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
+import Image from "next/image";
+import React from "react";
 import { CgClose } from "react-icons/cg";
-interface UploadFileProps {
-  setFileIPFS: any;
-  fileType: string | null;
-  selectedFile: string;
-  setFileType: any;
-  setSelectedFile: any;
-  uploadFile: any;
-  type: string;
-}
-const UploadFile: React.FC<UploadFileProps> = ({
+import { Button } from "../Buttons";
+import { CreateIcon, DeployIcon, UploadIcon } from "../Icons";
+
+const UploadFileNFT: React.FC<UploadFileProps> = ({
   setFileIPFS,
   setFileType,
   selectedFile,
   setSelectedFile,
   fileType,
   uploadFile,
-  type,
 }) => {
-  const uploadRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const itemRef = useRef<HTMLDivElement>(null);
-  let file: any;
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    itemRef.current?.classList.add("item-active-drap");
-  };
-  const handleLeave = (e: DragEvent<HTMLDivElement>) => {
-    itemRef.current?.classList.remove("item-active-drap");
-  };
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    file = e.dataTransfer.files[0];
-    itemRef.current?.classList.remove("item-active-drap");
-    itemRef.current?.classList.remove("border");
-    displayFile();
-  };
-  async function displayFile() {
-    if (file) {
-      let fileType = file.type;
-      let validExtensions = validCollectionInput;
-      type === "collection" ? validCollectionInput : validNFTsInput;
-      if (validExtensions.includes(fileType)) {
-        if (file.size < 52428800) {
-          const fileURL = URL.createObjectURL(file);
-          setFileType(fileType);
-          setSelectedFile(fileURL);
-          setFileIPFS(await uploadFile(file));
-        } else {
-          alert("Please choose a file smaller than 1GB");
-        }
-      } else {
-        alert("File format error");
-      }
-    } else {
-      console.log("No file");
-    }
-  }
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      file = e.target.files[0];
-      itemRef.current?.classList.remove("item-active-drap");
-      itemRef.current?.classList.remove("border");
-      displayFile();
-    }
-  };
-  const handleClickFile = () => {
-    inputRef.current?.click();
-  };
-  useEffect(() => {
-    if (selectedFile === null) {
-      itemRef.current?.classList.add("border");
-    }
-  }, [selectedFile]);
+  const validInput = validNFTsInput;
+  const {
+    uploadRef,
+    inputRef,
+    itemRef,
+    handleDragOver,
+    handleLeave,
+    handleDrop,
+    handleChangeFile,
+    handleClickFile,
+  } = useFileHandler({
+    validInput,
+    fileType,
+    selectedFile,
+    setSelectedFile,
+    setFileType,
+    uploadFile,
+    setFileIPFS,
+  });
   return (
     <div className="relative flex flex-col items-center w-full" ref={uploadRef}>
       <div
@@ -139,11 +95,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
               type="file"
               hidden
               onChange={handleChangeFile}
-              accept={`${
-                type === "collection"
-                  ? "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
-                  : "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
-              }`}
+              accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
             />
           </div>
         ) : (
@@ -162,11 +114,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
               type="file"
               hidden
               onChange={handleChangeFile}
-              accept={`${
-                type === "collection"
-                  ? "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
-                  : "image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
-              }`}
+              accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif, video/mp4, video/quicktime, audio/mpeg, audio/mp3, audio/x-m4a, audio/vnd.wav, audio/vnd.wave, audio/wav, audio/wave, audio/x-wav, audio/aiff"
             />
             <div className="text-sm w-[254px] text-shader_200 mb-6 transition-all duration-200 mt-2">
               File types: JPG,PNG,SVG or GIF
@@ -193,5 +141,100 @@ const UploadFile: React.FC<UploadFileProps> = ({
     </div>
   );
 };
+const UploadFileCollection: React.FC<UploadFileProps> = ({
+  setFileIPFS,
+  setFileType,
+  selectedFile,
+  setSelectedFile,
+  fileType,
+  uploadFile,
+}) => {
+  const validInput = validCollectionInput;
+  const {
+    uploadRef,
+    inputRef,
+    itemRef,
+    handleDragOver,
+    handleLeave,
+    handleDrop,
+    handleChangeFile,
+    handleClickFile,
+  } = useFileHandler({
+    validInput,
+    fileType,
+    selectedFile,
+    setSelectedFile,
+    setFileType,
+    uploadFile,
+    setFileIPFS,
+  });
+  return (
+    <div className="relative flex flex-col items-center w-full" ref={uploadRef}>
+      <div
+        className={`flex  w-full gap-x-6 text-center  p-1 group h-fit border-1 border-shader_500 rounded-xl cursor-pointer`}
+        ref={itemRef}
+        onDragOver={handleDragOver}
+        onDragLeave={handleLeave}
+        onDrop={handleDrop}
+        onClick={handleClickFile}
+      >
+        {selectedFile ? (
+          <div className="relative w-40 h-40">
+            <Image
+              src={selectedFile}
+              alt="pictureframe"
+              width={504}
+              height={160}
+              sizes="100vw"
+              quality={100}
+              className="object-cover w-full h-full rounded-2xl aspect-square"
+            />
+            {selectedFile && (
+              <button
+                className="absolute right-2 z-100 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedFile("");
+                  itemRef.current?.classList.add("border");
+                }}
+              >
+                <CgClose />
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="flex w-40 h-40 cursor-pointer group gap-x-6">
+            <div className="p-2 bg-shader_400 bg-opacity-[0.15] w-40 h-40 rounded-lg items-center border border-shader_500 relative">
+              <DeployIcon
+                width={24}
+                height={24}
+                className="group-hover:-translate-y-[150%] inset-0 m-auto absolute transition-all duration-200 ease-linear group-hover:opacity-0"
+              />
+              <UploadIcon
+                width={24}
+                height={24}
+                className="transition-all duration-200 opacity-0 group-hover:opacity-100 ease-linear inset-0 mx-auto top-1/2 translate-y-[150%] group-hover:-translate-y-[65%] absolute"
+              />
+            </div>
+          </div>
+        )}
+        <div className="self-center text-left">
+          <h5 className="title">Drag or drop to upload image</h5>
+          <div className="text-sm text-shader_200">
+            <p>You may change this after deploying your contract.</p>
+            <p>Recommended size: 300 x 300px. File types: JPG,PNG,SVG or GIF</p>
+          </div>
+        </div>
+      </div>
 
-export default UploadFile;
+      <input
+        ref={inputRef}
+        type="file"
+        hidden
+        onChange={handleChangeFile}
+        accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
+      />
+    </div>
+  );
+};
+export { UploadFileNFT, UploadFileCollection };
