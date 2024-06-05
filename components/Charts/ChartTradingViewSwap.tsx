@@ -258,7 +258,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           <ChartLoading />
         </div>
       ) : data && newData?.length > 0 ? (
-        <div className="w-full h-full">
+        <div className="">
           <div>
             <div className="hidden text-sm font-semibold lg:flex w-fit text-primary_300 ">
               <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
@@ -277,7 +277,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                 <p className="mr-1 text-shader_200">Reserve NFT</p>
                 <div className="flex items-center gap-x-1">
                   {dataSwap?.reserveNFT}
-                  <EtherIcon width={16} height={16} />
+                  <NFTIcon width={16} height={16} />
                 </div>
               </div>
               <div className="flex items-center p-4 border-r border-shader_500">

@@ -21,15 +21,17 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
           <div>
             {data && (
               <div className="flex border-y border-shader_500">
-                <div className="hidden flex-grow md:block max-h-[755px] border-r border-shader_600">
-                  <ChartTradingViewSwap
-                    dataSwap={data}
-                    typeERC="erc721"
-                    height={626}
-                  />
-                  <HistorySwap data={data} typeERC="erc721" />
+                <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px]">
+                  {data && (
+                    <ChartTradingViewSwap
+                      dataSwap={data}
+                      typeERC="erc1155"
+                      height={518}
+                    />
+                  )}
+                  <HistorySwap data={data} typeERC="erc1155" />
                 </div>
-                <div className="w-full md:w-[480px]">
+                <div className="w-full md:w-[480px] flex-shrink-0">
                   <TransactionCollection />
                 </div>
               </div>

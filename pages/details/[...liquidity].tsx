@@ -31,6 +31,8 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SEO } from "../../next-seo.config";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import TabTable from "@/components/NavChoice/TabTable";
+import { BackgroundDefault } from "@/components/Backgrounds";
 const style = {
   btnWallet:
     "flex items-center justify-center p-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-primary_400 active:bg-primary_400 text-primary_400 hover:text-white gap-x-2 border-primary_400",
@@ -50,6 +52,7 @@ export default function DetailLiquidity() {
   const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
+  const [activeChoice, setActiveChoice] = useState<string>("All");
   const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(false);
   const [isOpenErrorAdd, setIsOpenErrorAdd] = useState<boolean>(false);
   const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
@@ -60,10 +63,7 @@ export default function DetailLiquidity() {
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
     useState<boolean>(false);
-  const [tab, setTab] = useQueryParam(
-    "historyPool",
-    withDefault(StringParam, "All")
-  );
+
   const [page, setPage] = useState(1);
   const { ROUTER: routerAddress } = demask;
   useEffect(() => {
@@ -110,12 +110,7 @@ export default function DetailLiquidity() {
     dmlTokenLiquidity,
     wallet
   );
-  const options = [
-    { key: "All", title: "All" },
-    { key: "Add", title: "Add" },
-    { key: "Remove", title: "Remove" },
-  ];
-  const indexChoice = options.findIndex((item) => item.key === tab);
+  const options = ["All", "Add", "Remove"];
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -144,12 +139,6 @@ export default function DetailLiquidity() {
     }
   };
 
-  const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
-  const nextPage = () =>
-    setPage((next) => Math.min(next + 1, data?.totalPages));
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
     document.body.style.overflowY = "hidden";
@@ -162,87 +151,43 @@ export default function DetailLiquidity() {
     setIsOpenDetail(true);
     document.body.style.overflowY = "hidden";
   };
-
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
+  };
   return (
-    <div className="py-8 min-h-[94vh] max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg mx-auto">
-      <NextSeo {...updateMeta} />
-      {isLoading || isFetching ? (
-        <SkeletonPoolDetail />
-      ) : isSuccess ? (
-        <div className="flex flex-col lg:flex-row gap-x-10">
-          <div className="grow">
-            <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
-              {data && account && (
-                <>
-                  <div className="flex flex-wrap items-center mb-2 lg:mb-0">
-                    <Link
-                      href={`/pools?chain=${chainId}`}
-                      className="p-1 rounded-lg group"
-                    >
-                      <LeftIcon
-                        width={20}
-                        height={20}
-                        className="hover:fill-primary_500"
-                      />
-                    </Link>
-                    <div className="w-[30px] h-[30px] ml-4 overflow-hidden rounded-xl">
-                      <MediaNFT data={data} isControls={false} />
-                    </div>
-                    <Link
-                      href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`}
-                      className="flex items-center ml-2 text-lg font-medium lg:text-2xl text-shader_700 title"
-                    >
-                      <div className="relative truncate max-w-[160px]">
-                        <ModalDocument data={data?.metadata?.name} />
-                      </div>
-                      (<span>{data?.metadata?.symbol}</span>
-                      <span className="block overflow-hidden leading-[18px]">
-                        /
-                      </span>
-                      <span>{data.tokenSymbol}</span>)
-                    </Link>
-                  </div>
-                  <div className="flex justify-end gap-x-4">
-                    <button
-                      className={style.btnWallet}
-                      onClick={handleAddLiquidity}
-                    >
-                      ADD
-                    </button>
-                    <button
-                      className={style.btnWallet}
-                      onClick={handleRemoveLiquidity}
-                    >
-                      REMOVE
-                    </button>
-                    <Link
-                      href={`/swap/${data.nftAddress}/${data.tokenAddress}/${data.nftID}?chain=${chainId}`}
-                      className={style.btnWallet}
-                    >
-                      SWAP
-                    </Link>
-                  </div>
-                </>
-              )}
+    <BackgroundDefault>
+      <div className="py-8 min-h-[94vh] max-w-screen-sm md:max-w-screen-xl mx-auto">
+        <NextSeo {...updateMeta} />
+        {isLoading || isFetching ? (
+          <SkeletonPoolDetail />
+        ) : isSuccess ? (
+          <div>
+            <div
+              className="flex items-center cursor-pointer gap-x-2 mb-6"
+              onClick={() => router.back()}
+            >
+              <LeftIcon width={20} height={20} />
+
+              <p className="font-semibold text-white">Back</p>
             </div>
-            <div className="h-full ">
-              <div className="">
-                {account && isSuccess && data.liquidityHistory.length > 0 ? (
-                  <div>
-                    <div className="p-2 mt-6 overflow-y-scroll border border-gray-200 rounded-lg min-h-[315px]">
-                      <TabQuery
-                        TABS={options}
-                        initialItem="All"
-                        indexChoice={indexChoice}
-                      />
-                      <div className="mt-6 ">
+            <div className="flex flex-col lg:flex-row gap-x-4">
+              <div className="grow">
+                <div className="">
+                  {account && isSuccess && data.liquidityHistory.length > 0 ? (
+                    <div>
+                      <div className="w-full overflow-x-scroll rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
+                        <TabTable
+                          choices={options}
+                          activeChoice="All"
+                          onChoiceChange={handleChoiceChange}
+                        />
                         <div className="">
-                          <div className="grid gap-x-4 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] text-shader_700 font-semibold title">
-                            <p className="pl-3">Action</p>
-                            <p className="mx-auto">Liquidity</p>
-                            <p className="mx-auto">NFT</p>
-                            <p className="mx-auto">Token</p>
-                            <p className="flex justify-end">Time</p>
+                          <div className="grid gap-x-4 font-semibold text-sm uppercase lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] bg-shader_600 text-shader_200">
+                            <p className="pl-4 py-3">Action</p>
+                            <p className="mx-auto py-3">Liquidity</p>
+                            <p className="mx-auto py-3">NFT</p>
+                            <p className="mx-auto py-3">Token</p>
+                            <p className="flex justify-end py-3 pr-4">Time</p>
                           </div>
                           <LiquiditiesHistory
                             data={data}
@@ -252,199 +197,153 @@ export default function DetailLiquidity() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex justify-center gap-5 py-8 text-sm text-shader_600 ">
-                      <button
-                        onClick={prevPage}
-                        disabled={isPreviousData || page === 1 || isFetching}
-                        className={`${
-                          isPreviousData || page === 1 || isFetching
-                            ? "text-white bg-slate-300"
-                            : "hover:text-white hover:bg-primary_500 transition-all"
-                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
-                      >
-                        <MdNavigateBefore />
-                      </button>
-                      <p>
-                        Page
-                        <span className="px-2 font-medium text-primary_500">
-                          {page}
-                        </span>{" "}
-                        of
-                        <span
-                          className="px-2 font-medium cursor-pointer text-primary_500"
-                          onClick={() =>
-                            page !== data?.totalPages &&
-                            setPage(data?.totalPages)
-                          }
-                        >
-                          {data?.totalPages}
-                        </span>
+                  ) : (
+                    <div className="flex items-center mt-8 gap-x-2">
+                      <BsClock className="w-5 h-5" />
+                      <p className="text-sm font-medium text-shader_700">
+                        No events in this time range
                       </p>
-                      <button
-                        onClick={nextPage}
-                        disabled={
-                          isPreviousData ||
-                          page === data?.totalPages ||
-                          isFetching
-                        }
-                        className={`${
-                          isPreviousData ||
-                          page === data?.totalPages ||
-                          isFetching
-                            ? "text-white bg-slate-300"
-                            : "hover:text-white hover:bg-primary_500 transition-all"
-                        } w-6 h-6 flex items-center text-center justify-center rounded-full transition-all`}
-                      >
-                        <MdOutlineNavigateNext />
-                      </button>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center mt-8 gap-x-2">
-                    <BsClock className="w-5 h-5" />
-                    <p className="text-sm font-medium text-shader_700">
-                      No events in this time range
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="w-full lg:w-[400px] mb-20 lg:mb-0 dark:bg-shader_700 rounded-lg">
-            <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
-              {account && data?.metadata && (
-                <div className="justify-end max-w-[350px] mb-6 mx-auto">
-                  <div className="overflow-hidden rounded-xl">
-                    <MediaNFT data={data} isControls={true} />
-                  </div>
-                  <div className="flex" onClick={handleShowDetail}>
-                    <EyeIcon width={20} height={20} />
-                    View detail
-                  </div>
+                  )}
                 </div>
-              )}
-              <div className="flex flex-wrap justify-between">
-                <div>
-                  <p className="mb-2 text-shader_700">Liquidity</p>
-                  <div className="flex font-light text-shader_500">
-                    <FormatNumber number={balanceOfDML} />
+              </div>
+              <div className="w-full lg:w-[400px] mb-20 lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg">
+                <div className="w-full p-6 font-medium rounded-lg shadow-swiper gap-y-4">
+                  {account && data?.metadata && (
+                    <div className="justify-end max-w-[350px] mb-6 mx-auto">
+                      <div className="overflow-hidden rounded-xl">
+                        <MediaNFT data={data} isControls={true} />
+                      </div>
+                      <div className="flex" onClick={handleShowDetail}>
+                        <EyeIcon width={20} height={20} />
+                        View detail
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-wrap justify-between">
                     <div>
-                      (
-                      {(
-                        (Number(balanceDML) / Number(totalSupply)) *
-                        100
-                      ).toFixed(2)}
-                      )%
+                      <p className="mb-2 text-shader_700">Liquidity</p>
+                      <div className="flex font-light text-shader_500">
+                        <FormatNumber number={balanceOfDML} />
+                        <div>
+                          (
+                          {(
+                            (Number(balanceDML) / Number(totalSupply)) *
+                            100
+                          ).toFixed(2)}
+                          )%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-shader_700">Reward</p>
+                      <div className="flex items-center font-light text-shader_500">
+                        <FormatNumber number={reward} />
+                        <span className="mb-1 ml-1">
+                          <EtherIcon
+                            width={18}
+                            height={18}
+                            className="fill-shader_500"
+                          />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <p className="mb-2 text-shader_700">Reward</p>
-                  <div className="flex items-center font-light text-shader_500">
-                    <FormatNumber number={reward} />
-                    <span className="mb-1 ml-1">
-                      <EtherIcon
-                        width={18}
-                        height={18}
-                        className="fill-shader_500"
-                      />
-                    </span>
+                  <div className="flex justify-center mt-4">
+                    <Button
+                      className="px-6 py-2 text-sm font-medium"
+                      green
+                      onClick={handleGetReward}
+                    >
+                      {account ? "COLLECT" : "Connect Wallet"}
+                    </Button>
                   </div>
                 </div>
-              </div>
-              <div className="flex justify-center mt-4">
-                <Button
-                  className="px-6 py-2 text-sm font-medium"
-                  green
-                  onClick={handleGetReward}
-                >
-                  {account ? "COLLECT" : "Connect Wallet"}
-                </Button>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <SkeletonPoolDetail />
-      )}
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data && (
-        <ModalDetail
-          type="erc1155"
-          idNFT={data.nftID}
-          nftAddress={data.nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
-        />
-      )}
-      {data && account && (
-        <>
-          <ModalAddLiquidity
-            data={data}
-            isOpenAddLiquidity={isOpenAddLiquidity}
-            setIsOpenLiquidity={setIsOpenAddLiquidity}
-            setHash={setHash}
-            setIsOpenSuccess={setIsOpenSuccessAdd}
-            setIsOpenError={setIsOpenErrorAdd}
-          />
-          <ModalSuccess
-            isOpenSuccess={isOpenSuccessAdd}
-            transactionHash={hash}
-            type="Add Liquidity Success"
-            setIsOpenSuccess={setIsOpenSuccessAdd}
-          />
-          <ModalError
-            isOpenError={isOpenErrorAdd}
-            transactionHash={hash}
-            type="Add Liquidity Failed"
-            setIsOpenError={setIsOpenErrorAdd}
-          />
-        </>
-      )}
-      {data && account && (
-        <>
-          <ModalRemoveLiquidity
-            data={data}
-            routerAddress={routerAddress}
+        ) : (
+          <SkeletonPoolDetail />
+        )}
+        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
+        {data && (
+          <ModalDetail
             type="erc1155"
-            isOpenRemoveLiquidity={isOpenRemoveLiquidity}
-            isERC721={false}
-            setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
-            setHash={setHash}
-            setIsOpenSuccess={setIsOpenSuccessRemove}
-            setIsOpenError={setIsOpenErrorRemove}
+            idNFT={data.nftID}
+            nftAddress={data.nftAddress}
+            setIsOpenDetail={setIsOpenDetail}
+            isOpenDetail={isOpenDetail}
           />
-          <ModalSuccess
-            isOpenSuccess={isOpenSuccessRemove}
-            transactionHash={hash}
-            type="Remove Liquidity Success"
-            setIsOpenSuccess={setIsOpenSuccessRemove}
-          />
-          <ModalError
-            isOpenError={isOpenErrorRemove}
-            transactionHash={hash}
-            type="Remove Liquidity Failed"
-            setIsOpenError={setIsOpenErrorRemove}
-          />
-        </>
-      )}
-      <ModalSuccess
-        isOpenSuccess={isOpenSuccessCollect}
-        transactionHash={hash}
-        type="Collect Reward Success"
-        setIsOpenSuccess={setIsOpenSuccessCollect}
-      />
-      <ModalError
-        isOpenError={isOpenErrorCollect}
-        transactionHash={hash}
-        type="Collect Reward Failed"
-        setIsOpenError={setIsOpenErrorCollect}
-      />
-      <ModalTransation
-        isOpenTransation={isOpenTransation}
-        setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
-      />
-    </div>
+        )}
+        {data && account && (
+          <>
+            <ModalAddLiquidity
+              data={data}
+              isOpenAddLiquidity={isOpenAddLiquidity}
+              setIsOpenLiquidity={setIsOpenAddLiquidity}
+              setHash={setHash}
+              setIsOpenSuccess={setIsOpenSuccessAdd}
+              setIsOpenError={setIsOpenErrorAdd}
+            />
+            <ModalSuccess
+              isOpenSuccess={isOpenSuccessAdd}
+              transactionHash={hash}
+              type="Add Liquidity Success"
+              setIsOpenSuccess={setIsOpenSuccessAdd}
+            />
+            <ModalError
+              isOpenError={isOpenErrorAdd}
+              transactionHash={hash}
+              type="Add Liquidity Failed"
+              setIsOpenError={setIsOpenErrorAdd}
+            />
+          </>
+        )}
+        {data && account && (
+          <>
+            <ModalRemoveLiquidity
+              data={data}
+              routerAddress={routerAddress}
+              type="erc1155"
+              isOpenRemoveLiquidity={isOpenRemoveLiquidity}
+              isERC721={false}
+              setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
+              setHash={setHash}
+              setIsOpenSuccess={setIsOpenSuccessRemove}
+              setIsOpenError={setIsOpenErrorRemove}
+            />
+            <ModalSuccess
+              isOpenSuccess={isOpenSuccessRemove}
+              transactionHash={hash}
+              type="Remove Liquidity Success"
+              setIsOpenSuccess={setIsOpenSuccessRemove}
+            />
+            <ModalError
+              isOpenError={isOpenErrorRemove}
+              transactionHash={hash}
+              type="Remove Liquidity Failed"
+              setIsOpenError={setIsOpenErrorRemove}
+            />
+          </>
+        )}
+        <ModalSuccess
+          isOpenSuccess={isOpenSuccessCollect}
+          transactionHash={hash}
+          type="Collect Reward Success"
+          setIsOpenSuccess={setIsOpenSuccessCollect}
+        />
+        <ModalError
+          isOpenError={isOpenErrorCollect}
+          transactionHash={hash}
+          type="Collect Reward Failed"
+          setIsOpenError={setIsOpenErrorCollect}
+        />
+        <ModalTransation
+          isOpenTransation={isOpenTransation}
+          setIsOpenTransaction={setIsOpenTransaction}
+          isTransaction={true}
+        />
+      </div>
+    </BackgroundDefault>
   );
 }

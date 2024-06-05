@@ -44,7 +44,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     setActiveChoice(choice);
   };
   return (
-    <div className="w-full font-semibold mb-14 lg:mb-0">
+    <div className="w-full font-semibold lg:mb-0">
       <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_800">
         <TabTable
           choices={options}

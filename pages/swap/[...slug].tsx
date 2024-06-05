@@ -53,7 +53,7 @@ const Swap: React.FC = () => {
       ) : isSuccess ? (
         <div className="min-h-[94vh]">
           <div className="flex flex-col-reverse border-y md:flex-row border-shader_600">
-            <div className="flex flex-col items-center flex-grow flex-shrink border-r border-shader_600">
+            <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px]">
               {data && (
                 <ChartTradingViewSwap
                   dataSwap={data}

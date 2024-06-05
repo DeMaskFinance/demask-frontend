@@ -1,4 +1,5 @@
 import FormatNumber from "../Common/FormatNumber";
+import { EtherIcon, NFTIcon } from "../Icons";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
 
 interface LiquiditiesHistoryProps {
@@ -31,28 +32,33 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
         <>
           {data.liquidityHistory.map((item: any, index: number) => (
             <div
-              className="grid gap-4  py-2 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px]  text-shader_700 "
+              className="grid gap-4 text-sm text-white py-4 font-semibold hover:bg-shader_700 border-y border-shader_500 lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px]  "
               key={index}
             >
               <div
-                className={`border text-xs ml-3 text-center bg-opacity-10 w-16 ${
-                  item.action === "Add"
-                    ? "border-green text-green bg-green"
-                    : "border-red text-red bg-red"
-                } p-1 rounded-lg`}
+                className={`bg-opacity-[0.15] w-[73px] text-center ml-3 ${
+                  item.action === "Buy"
+                    ? "bg-green text-green"
+                    : item.action === "Add"
+                    ? "bg-primary_300 text-primary_300"
+                    : "bg-red text-red"
+                } py-1 rounded-lg`}
               >
                 {item.action}
               </div>
-              <div className="mx-auto">
+              <div className="mx-auto flex items-center gap-x-1">
                 <ModalNumber data={item.liquidity} />
+                <EtherIcon width={16} height={16} />
               </div>
-              <div className="mx-auto">
+              <div className="mx-auto flex items-center gap-x-1">
                 <FormatNumber number={item.amountNFT} />
+                <NFTIcon width={16} height={16} />
               </div>
-              <div className="mx-auto">
+              <div className="mx-auto flex items-center gap-x-1">
                 <ModalNumber data={item.amountToken} />
+                <EtherIcon width={16} height={16} />
               </div>
-              <p className="flex justify-end">{item.blockTime}</p>
+              <p className="flex justify-end pr-3">{item.blockTime}</p>
             </div>
           ))}
         </>

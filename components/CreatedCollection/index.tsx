@@ -132,7 +132,7 @@ export default function CreatedCollection() {
   return (
     <div className="pb-6 min-h-[94vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
       <div className="">
-        <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
+        {/* <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
           <div className="items-center text-xs lg:flex gap-x-1 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
@@ -273,17 +273,22 @@ export default function CreatedCollection() {
                       <EyeIcon width={16} height={16} />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
+                  <DialogContent className="sm:max-w-[425px] bg-shader_800 border border-shader_500 p-4">
                     <DialogHeader>
-                      <DialogTitle>Edit profile</DialogTitle>
+                      <DialogTitle className="text-base font-bold text-white">
+                        Description
+                      </DialogTitle>
                       <DialogDescription>
-                        Make changes to your profile here. Click save when
-                        you're done.
+                        <p className="font-semibold text-primary_400">
+                          Joined May 2024
+                        </p>
+                        <p className="mt-1">
+                          {dataDetail?.description
+                            ? dataDetail.description
+                            : "No data"}
+                        </p>
                       </DialogDescription>
                     </DialogHeader>
-                    <DialogFooter>
-                      <Button type="submit">Save changes</Button>
-                    </DialogFooter>
                   </DialogContent>
                 </Dialog>
                 <p className="w-[1px] h-4 bg-shader_400"></p>
@@ -351,7 +356,7 @@ export default function CreatedCollection() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         {typeERC === "erc721" ? (
           <DetailERC721
             isLoading={isLoadingDetail}
