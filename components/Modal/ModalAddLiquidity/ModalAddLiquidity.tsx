@@ -235,7 +235,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   primary
                   onClick={handleAddLiquidity}
                 >
-                  ADD LIQUIDITY
+                  Add Liquidity
                 </Button>
               ) : (
                 <Button

@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
-import { Button } from "../Buttons";
-import { TickSuccessIcon } from "../Icons";
-import Copy from "../Common/Copy";
-import { useQuery } from "@tanstack/react-query";
-import { referralInfor } from "@/libs/service/referralService";
 import AccountContext from "@/context/AccountContext";
+import { referralInfor } from "@/libs/service/referralService";
+import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 import { MdDone } from "react-icons/md";
+import Copy from "../Common/Copy";
 
 const ReferralUser = () => {
   const { account } = useContext(AccountContext);

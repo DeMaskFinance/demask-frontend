@@ -1,16 +1,15 @@
+import { BackgroundDefault } from "@/components/Backgrounds";
 import Button from "@/components/Buttons/Button";
-import { PoolListIcon } from "@/components/Icons";
-import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
+import { LoadingIcon, SearchIcon } from "@/components/Icons";
+import TabTable from "@/components/NavChoice/TabTable";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
 import { SEO } from "../../next-seo.config";
-import { BackgroundDefault } from "@/components/Backgrounds";
-import TabTable from "@/components/NavChoice/TabTable";
+import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 const updateMeta = {
   ...SEO,
   title: "Liquidity",
@@ -94,61 +93,72 @@ export default function Liquidity() {
           <p className="mt-2 mb-6 textshader_900 title">
             List of your liquidity positions
           </p>
-
-          {account && data?.pages[0]?.combinedRecords.length !== 0 && (
-            <div className="rounded-lg bg-shader_800 min-h-[70vh]">
-              <TabTable
-                choices={["NFTs pool", "Collection pool"]}
-                activeChoice={activeChoice}
-                onChoiceChange={handleChoiceChange}
-              />
-              <div className="">
-                {isSuccess &&
-                  data.pages.map((page: any, index: number) => (
-                    <div
-                      key={index}
-                      className="grid grid-cols-1 gap-3 p-3 lg:grid-cols-3 md:grid-cols-2"
-                    >
-                      {page?.combinedRecords.map(
-                        (liquidity: any, index: number) => (
-                          <div key={index} className="w-full mx-auto">
-                            <LiquidytiesItem
-                              liquidity={liquidity}
-                              type={type}
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
-                  ))}
-                {hasNextPage && (
-                  <p
-                    onClick={() => fetchNextPage()}
-                    className="mt-4 text-sm cursor-pointer text-primary_400"
-                  >
-                    See more
-                  </p>
+          <div className="rounded-lg bg-shader_800 min-h-[70vh] flex flex-col">
+            <TabTable
+              choices={["NFTs pool", "Collection pool"]}
+              activeChoice={activeChoice}
+              onChoiceChange={handleChoiceChange}
+            />
+            {account && data?.pages[0]?.combinedRecords.length !== 0 && (
+              <>
+                <div className="border-t border-shader_500">
+                  {isSuccess &&
+                    data.pages.map((page: any, index: number) => (
+                      <div
+                        key={index}
+                        className="grid grid-cols-1 gap-3 p-3 overflow-y-scroll lg:grid-cols-3 md:grid-cols-2"
+                      >
+                        {page?.combinedRecords.map(
+                          (liquidity: any, index: number) => (
+                            <div key={index} className="w-full mx-auto">
+                              <LiquidytiesItem
+                                liquidity={liquidity}
+                                type={type}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    ))}
+                </div>
+                {isFetchingNextPage && (
+                  <div className="flex items-center justify-center w-full h-full grow">
+                    <LoadingIcon
+                      width={30}
+                      height={30}
+                      className=" animate-spin"
+                    />
+                  </div>
                 )}
-              </div>
-              {isFetchingNextPage && (
-                <div>
-                  <BiLoaderAlt className="mb-6 text-3xl animate-spin text-primary_400" />
+              </>
+            )}
+            {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
+              !isLoading && (
+                <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200">
+                  <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
+                    <SearchIcon
+                      width={20}
+                      height={20}
+                      className="text-primary_400"
+                    />
+                  </div>
+                  <p>Your active liquidity positions will appear here. </p>
+                  <a
+                    href="https://docs.demask.finance/products/dex/how-to-add-remove-lp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-primary_400"
+                  >
+                    How to add Liquidity?
+                  </a>
                 </div>
               )}
-            </div>
-          )}
-          {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
-            !isLoading && (
-              <div className="pool_empty">
-                <PoolListIcon width={72} height={72} />
-                Your active liquidity positions will appear here.
+            {isLoading && account && (
+              <div className="flex items-center justify-center w-full h-full grow">
+                <LoadingIcon width={30} height={30} className=" animate-spin" />
               </div>
             )}
-          {isLoading && account && (
-            <div>
-              <BiLoaderAlt className="mb-6 text-3xl animate-spin text-primary_400" />
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </BackgroundDefault>

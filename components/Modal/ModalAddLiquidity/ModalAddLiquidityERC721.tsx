@@ -253,7 +253,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                   }
                   onClick={handleAddLiquidity}
                 >
-                  ADD LIQUIDITY
+                  Add Liquidity
                 </Button>
               ) : (
                 <Button

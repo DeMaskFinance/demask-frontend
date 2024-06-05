@@ -174,7 +174,7 @@ export default function Header() {
           </button>
         </div>
       )} */}
-      <header className="flex items-center justify-between gap-2 px-4 ease-in-out shadow-md lg:shadow-none h-header">
+      <header className="flex items-center justify-between gap-2 px-4 text-sm ease-in-out shadow-md lg:shadow-none h-header">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link href="https://demask.finance/" target="_blank">

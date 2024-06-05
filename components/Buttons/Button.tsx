@@ -58,12 +58,16 @@ const Button: FunctionComponent<ButtonProps> = ({
           ? "bg-primary_500 text-white  hover:bg-primary_600 rounded-lg"
           : ""
       }
-      ${third && "bg-primary_500 bg-opacity-[0.15] text-white px-3 py-2"}
+      ${
+        third &&
+        "bg-primary_500 bg-opacity-[0.15] text-white px-3 py-2 hover:bg-opacity-[0.25]"
+      }
       ${
         active &&
+        !isLoadingBtn &&
         "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600"
       }
-      ${secondary ? "bg-white text-shader_500" : ""}
+      ${secondary && "bg-blue bg-opacity-[0.15] text-white rounded-md"}
       ${outline ? " border border-shader_500  " : ""}
       ${
         green &&
@@ -73,7 +77,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         red &&
         "bg-red border-red hover:bg-opacity-80 text-white  border rounded-lg"
       }
-      ${gradient && "bg_gradient text-white "}
+      ${gradient && "bg_gradient text-white hover:opacity-[0.85]"}
       ${
         green_2 &&
         "bg-green text-white bg-opacity-[15%] py-2 px-3 hover:bg-opacity-[25%] border border-green w-max"
@@ -83,9 +87,9 @@ const Button: FunctionComponent<ButtonProps> = ({
       `}
     >
       {isLoadingBtn ? (
-        <div className="flex items-center justify-center px-8 py-3 rounded-lg bg-primary_500">
+        <div className="flex items-center justify-center w-full rounded-lg h-11 bg-primary_500">
           <BiLoaderAlt className="mr-2 text-base text-white animate-spin" />
-          <p>Fetching Quotes</p>
+          <p className="text-white">Fetching Quotes</p>
         </div>
       ) : (
         <>{children}</>

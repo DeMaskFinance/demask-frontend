@@ -2,12 +2,16 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import {
   EditIcon,
   EtherIcon,
+  EyeIcon,
+  StarIcon,
+  TickSuccessIcon,
   TwitterIcon,
   WebsiteIcon,
 } from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
 import { ItemList } from "@/components/Profile/Inventory/Items";
 import AccountContext from "@/context/AccountContext";
+import * as collectionService from "@/libs/service/collectionService";
 import {
   collectionDetail,
   collectionListERC1155,
@@ -16,14 +20,21 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import DetailERC721 from "../ERC721/DetailERC721";
-import * as collectionService from "@/libs/service/collectionService";
+import { useContext, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { Button } from "../Buttons";
+import DetailERC721 from "../ERC721/DetailERC721";
 import ModalRoyalty from "../Modal/ModalRoyalty";
-import { FiEdit } from "react-icons/fi";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 export default function CreatedCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
   const [isOpenRoyalty, setIsOpenRoyalty] = useState<boolean>(false);
@@ -116,53 +127,13 @@ export default function CreatedCollection() {
       setAvatarLoading(false);
     }
   };
+  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
-      {/* <div
-        className={`relative group h-[120px] lg:h-[240px] ${
-          dataDetail?.collaborators.includes(account) && "cursor-pointer"
-        }`}
-      >
-        {dataDetail?.banner ? (
-          <Image
-            src={dataDetail?.banner}
-            alt="banner"
-            width={1200}
-            height={400}
-            className={`w-full h-full object-cover ${
-              dataDetail?.collaborators.includes(account) &&
-              "group-hover:brightness-[0.8]"
-            }`}
-          />
-        ) : (
-          <div className="w-full h-full bg-shader_500 "></div>
-        )}
-        {dataDetail?.collaborators.includes(account) && (
-          <div>
-            {bannerLoading ? (
-              <div className="absolute top-0 bottom-0 flex items-center justify-center w-full h-full bg-slate-600/[.7]">
-                <BiLoaderAlt className="text-5xl text-white animate-spin" />
-              </div>
-            ) : (
-              <div
-                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex"
-                onClick={() => {
-                  if (inputBanner.current) {
-                    (inputBanner.current as HTMLInputElement).click();
-                  }
-                }}
-              >
-                <EditIcon width={30} height={30} />
-                <p className="text-xs">1200 x 400 Recommended</p>
-              </div>
-            )}
-          </div>
-        )}
-      </div> */}
       <div className="">
-        <section className="justify-between p-4 mb-6 rounded-lg lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
-          <div className="items-center text-xs lg:flex gap-x-2 ">
+        <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
+          <div className="items-center text-xs lg:flex gap-x-1 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
                 dataDetail?.collaborators.includes(account) && "cursor-pointer"
@@ -219,6 +190,7 @@ export default function CreatedCollection() {
                 type="file"
                 ref={inputAvatar}
                 accept="image/png,image/jpeg,image/gif"
+                hidden
                 onChange={async (e) => {
                   if (e.target.files) {
                     const file = e.target.files[0];
@@ -229,7 +201,6 @@ export default function CreatedCollection() {
                     }
                   }
                 }}
-                className="hidden"
               />
             </div>
             <div>
@@ -237,6 +208,7 @@ export default function CreatedCollection() {
                 type="file"
                 ref={inputBanner}
                 accept="image/png,image/jpeg,image/gif"
+                hidden
                 onChange={async (e) => {
                   if (e.target.files) {
                     const file = e.target.files[0];
@@ -247,42 +219,74 @@ export default function CreatedCollection() {
                     }
                   }
                 }}
-                className="hidden"
               />
             </div>
-            <div className="flex flex-col mt-4 font-semibold lg:mt-0 gap-y-2">
-              <div className="flex items-center gap-x-2">
-                <p className="text-xl title whitespace-nowrap">
+            <div className="flex flex-col mt-4 font-bold lg:mt-0 ">
+              <div className="flex items-center ">
+                <div className="flex items-center mb-2 text-lg font-bold title whitespace-nowrap gap-x-1">
+                  <LogoIconCard chainId={chainId} />
                   {dataDetail?.name}
-                </p>
-                {dataDetail?.collaborators.includes(account) && (
-                  <div className="flex items-center gap-x-2">
-                    <Link
-                      href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
+                  <TickSuccessIcon width={20} height={19} />
+                  <Button
+                    secondary
+                    className="flex items-center px-3 py-1 gap-x-1"
+                  >
+                    <StarIcon width={16} height={16} />
+                    Royalties {dataDetail?.royalty}%
+                  </Button>
+                  {dataDetail?.collaborators.includes(account) && (
+                    <Button
+                      secondary
+                      className="px-[6px] h-[28px]"
+                      onClick={() => {
+                        document.body.style.overflowY = "hidden";
+                        setIsOpenRoyalty(true);
+                      }}
                     >
-                      <EditIcon
-                        width={24}
-                        height={24}
-                        className="fill-shader_500"
-                      />
-                    </Link>
-                    <div className="flex items-center p-2 font-semibold rounded-full gap-x-2 bg-primary_400 bg-opacity-40 text-primary_400 flex-nowrap">
-                      <p className="whitespace-nowrap">
-                        Royalties {dataDetail.royalty}%
-                      </p>
-                      <FiEdit
-                        className="cursor-pointer"
-                        onClick={() => {
-                          document.body.style.overflowY = "hidden";
-                          setIsOpenRoyalty(true);
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
+                      <EditIcon width={16} height={16} className="text-blue" />
+                    </Button>
+                  )}
+                </div>
               </div>
-              <p className="text-xs">{dataDetail?.description}</p>
-              <div className="flex items-center">
+              <div className="flex items-center gap-x-2">
+                {dataDetail?.collaborators.includes(account) && (
+                  <Link
+                    href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
+                  >
+                    <Button
+                      primary
+                      className="flex h-8 px-3 text-sm font-bold gap-x-2"
+                    >
+                      Edit
+                      <EditIcon width={16} height={16} />
+                    </Button>
+                  </Link>
+                )}
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="flex h-8 px-3 text-sm font-bold gap-x-2"
+                      third
+                    >
+                      Description
+                      <EyeIcon width={16} height={16} />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Edit profile</DialogTitle>
+                      <DialogDescription>
+                        Make changes to your profile here. Click save when
+                        you're done.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button type="submit">Save changes</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <p className="w-[1px] h-4 bg-shader_400"></p>
                 <div className="flex gap-x-2">
                   {dataDetail?.socials?.website && (
                     <Link
@@ -290,7 +294,7 @@ export default function CreatedCollection() {
                       target="_blank"
                       className="mr-3"
                     >
-                      <WebsiteIcon width={20} height={20} />
+                      <WebsiteIcon width={18} height={18} />
                     </Link>
                   )}
                   {dataDetail?.socials?.twitter && (
@@ -299,30 +303,28 @@ export default function CreatedCollection() {
                       target="_blank"
                       className="mr-3"
                     >
-                      <TwitterIcon width={20} height={20} />
+                      <TwitterIcon width={18} height={18} />
                     </Link>
                   )}
-                </div>
-                <div className="flex gap-x-2">
-                  <p className="px-2 py-1 uppercase rounded-full bg-primary_500 text-primary_300 border-primary_500 whitespace-nowrap bg-opacity-20">
-                    {dataDetail?.type}
-                  </p>
-                  <LogoIconCard chainId={chainId} />
                 </div>
               </div>
             </div>
           </div>
           <div className="flex self-center mt-4 overflow-auto text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
             <div className="">
-              <p className="mb-1 text-sm whitespace-nowrap">Total Volume</p>
-              <div className="flex items-center text-xl font-semibold ">
+              <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+                Total Volume
+              </p>
+              <div className="flex items-center text-lg font-bold ">
                 <FormatNumber number={dataDetail?.volume} />
                 <EtherIcon width={16} height={16} className="fill-shader_600" />
               </div>
             </div>
             <div className="">
-              <p className="mb-1 text-sm whitespace-nowrap">Total Sale</p>
-              <div className="flex items-center text-xl font-semibold ">
+              <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+                Total Sale
+              </p>
+              <div className="flex items-center text-lg font-bold ">
                 {dataDetail?.totalSale ? (
                   <FormatNumber number={dataDetail?.totalSale} />
                 ) : (
@@ -332,15 +334,19 @@ export default function CreatedCollection() {
               </div>
             </div>
             <div className=" gird">
-              <p className="mb-1 text-sm whitespace-nowrap">Listed/Supply</p>
-              <div className="flex items-center text-xl font-semibold ">
+              <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+                Listed/Supply
+              </p>
+              <div className="flex items-center text-lg font-bold ">
                 <FormatNumber number={dataDetail?.countNFTsInPool} />/
                 <FormatNumber number={dataDetail?.totalSupply} />
               </div>
             </div>
             <div className="">
-              <p className="mb-1 text-sm whitespace-nowrap">Owner</p>
-              <div className="flex items-center text-xl font-semibold ">
+              <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+                Owner
+              </p>
+              <div className="flex items-center text-lg font-bold ">
                 <FormatNumber number={dataDetail?.countOwner} />
               </div>
             </div>

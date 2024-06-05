@@ -70,21 +70,6 @@ const Search: FunctionComponent<SearchProps> = ({
     },
   });
 
-  const {
-    isLoading: topNftLoading,
-    data: topNftData,
-    isFetching: topNftFetching,
-    refetch: topNftRefetch,
-    isPreviousData: isTopNftPreviousData,
-  } = useQuery({
-    queryKey: ["topNftSearch", chainId],
-    queryFn: async () => {
-      const res = await NFTTopService(chainId);
-      return res;
-    },
-    keepPreviousData: true,
-  });
-
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -101,9 +86,13 @@ const Search: FunctionComponent<SearchProps> = ({
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata?.name);
-    router.replace(
-      `/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`
-    );
+    item.type === "erc1155"
+      ? router.replace(
+          `/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`
+        )
+      : router.replace(
+          `/collection/${item.nftAddress}?typeERC=erc721&chain=${chainId}`
+        );
     document.body.style.overflowY = "auto";
     // @ts-ignore
     setShowSearch(false);

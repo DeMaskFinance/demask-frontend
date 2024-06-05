@@ -53,7 +53,7 @@ const Swap: React.FC = () => {
       ) : isSuccess ? (
         <div className="min-h-[94vh]">
           <div className="flex flex-col-reverse border-y md:flex-row border-shader_600">
-            <div className="flex flex-col items-center flex-grow">
+            <div className="flex flex-col items-center flex-grow flex-shrink border-r border-shader_600">
               {data && (
                 <ChartTradingViewSwap
                   dataSwap={data}
@@ -61,6 +61,7 @@ const Swap: React.FC = () => {
                   height={518}
                 />
               )}
+              <HistorySwap data={data} typeERC="erc1155" />
             </div>
             <SwapTransaction
               data={data}
@@ -70,7 +71,6 @@ const Swap: React.FC = () => {
               refetch={refetch}
             />
           </div>
-          <HistorySwap data={data} typeERC="erc1155" />
         </div>
       ) : (
         <SkeletonSwap />

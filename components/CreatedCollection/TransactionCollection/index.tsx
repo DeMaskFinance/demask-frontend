@@ -74,7 +74,7 @@ const TransactionCollection = () => {
   const indexChoice = TABS.findIndex((item) => item.key === tab);
 
   return (
-    <div className="relative flex flex-col h-full p-4">
+    <div className="relative flex flex-col  h-full p-4 w-full md:w-[480px] flex-auto">
       <div className="flex justify-between gap-4 mb-2">
         <p className="text-xl font-bold text-white">Demask Swaps</p>
         <div className="flex items-center gap-x-2">

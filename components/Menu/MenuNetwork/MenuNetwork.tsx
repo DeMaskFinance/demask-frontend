@@ -98,7 +98,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       )}
     >
       <button
-        className={`flex items-center 2xl:w-[184px] h-10 py-2 pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
+        className={`flex items-center px-3 h-10 py-2  justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
       >
         <LogoComponent width={20} height={20} className="" />
         <p className="hidden 2xl:block whitespace-nowrap">

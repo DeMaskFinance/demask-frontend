@@ -78,32 +78,34 @@ const DeployCollection = () => {
 
   const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
     // Handle form submission
-    setIsProcess(true);
-    const res = await ercContract.fillCreate(
-      values.contractName,
-      values.symbol,
-      fileIPFS.nonce,
-      demask.CREATE_COLLECTION,
-      account,
-      wallet
-    );
-    setHash(res.hash);
-    const check = await res.wait();
-    setIsProcess(false);
-    if (check.status === 1) {
-      setIsOpenSuccess(true);
-    } else {
-      setIsOpenSuccess(false);
-    }
-    resetForm();
-    setSelectedFile(null);
     try {
+      setIsProcess(true);
+      const res = await ercContract.fillCreate(
+        values.contractName,
+        values.symbol,
+        fileIPFS.nonce,
+        demask.CREATE_COLLECTION,
+        account,
+        wallet
+      );
+      setHash(res.hash);
+      const check = await res.wait();
+      setIsProcess(false);
+      if (check.status === 1) {
+        setIsOpenSuccess(true);
+      } else {
+        setIsOpenSuccess(false);
+      }
+      resetForm();
+      setSelectedFile(null);
     } catch (error) {
       console.error(error);
       setIsProcess(false);
       resetForm();
     }
   };
+  console.log(selectedFile, fileIPFS);
+
   return (
     <>
       <NextSeo {...updateMeta} />
@@ -194,7 +196,7 @@ const DeployCollection = () => {
                       className="mt-1 text-xs text-red"
                     />
                   </div>
-                  <div className="flex gap-x-4">
+                  <div className="flex mb-5 gap-x-4">
                     <div className="flex flex-col basis-1/2">
                       <label htmlFor="symbol" className={styles.title}>
                         Symbol
@@ -257,14 +259,16 @@ const DeployCollection = () => {
                   </div>
                   <Button
                     type="submit"
-                    primary={!isSubmitting && selectedFile && fileIPFS && dirty}
+                    primary={
+                      !isSubmitting && fileIPFS && isValid && selectedFile
+                    }
                     active={
-                      isSubmitting || !fileIPFS || !selectedFile || !dirty
+                      isSubmitting || !fileIPFS || !isValid || !selectedFile
                     }
                     disabled={
-                      isSubmitting || !fileIPFS || !selectedFile || !dirty
+                      isSubmitting || !fileIPFS || !isValid || !selectedFile
                     }
-                    className="w-full py-[10px] mt-5"
+                    className="w-full py-3"
                     isLoadingBtn={isSubmitting}
                   >
                     Create

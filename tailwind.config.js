@@ -17,7 +17,7 @@ module.exports = {
         'linear-g2': 'linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)',
       },
       height: {
-        header: "64px",
+        header: "56px",
         chart: "776px",
       },
       lineHeight: {
@@ -80,7 +80,7 @@ module.exports = {
       },
       keyframes: {
         scrollUpHeader: {
-          "0%": { transform: "translateY(-64px)" },
+          "0%": { transform: "translateY(-56px)" },
           "100%": { transform: "translateY(0)" },
         }
       },

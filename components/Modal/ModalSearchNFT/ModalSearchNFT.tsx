@@ -82,9 +82,13 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     setIsOpenSearchNFT(false);
   };
   const handleSelectNFT = (item: any) => {
-    router.replace(
-      `/add/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
-    );
+    item.type === "erc1155"
+      ? router.replace(
+          `/add/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
+        )
+      : router.replace(
+          `/collection/${item.nftAddress}?chain=${chainId}&typeERC=erc721&tab=pool`
+        );
     document.body.style.overflowY = "auto";
     setIsOpenSearchNFT(false);
   };

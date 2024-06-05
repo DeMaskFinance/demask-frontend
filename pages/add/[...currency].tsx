@@ -506,7 +506,7 @@ export default function AddLiquidity() {
                 primary
                 onClick={handleAddLiquidity}
               >
-                ADD LIQUIDITY
+                Add Liquidity
               </Button>
             )}
             {!account && (
@@ -524,7 +524,7 @@ export default function AddLiquidity() {
           </div>
           <div className="order-1 w-full lg:order-2">
             <div className="relative flex flex-col items-center w-full h-full">
-              <div className="relative w-full h-full ">
+              <div className="relative w-full h-fit ">
                 <div className="overflow-hidden rounded-xl">
                   <MediaNFT data={data} isControls={true} />
                 </div>
