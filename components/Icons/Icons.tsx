@@ -224,9 +224,9 @@ export const SwapIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M15 12.75H3M3 12.75L6 9.75M3 12.75L6 15.75M3 5.25H15M15 5.25L12 2.25M15 5.25L12 8.25"
         stroke="#D6C7FE"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke-Linejoin="round"
       />
     </svg>
   );
@@ -296,16 +296,40 @@ export const EyeIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M1.61342 8.47562C1.52262 8.33186 1.47723 8.25998 1.45182 8.14911C1.43273 8.06583 1.43273 7.9345 1.45182 7.85122C1.47723 7.74035 1.52262 7.66847 1.61341 7.52471C2.36369 6.33672 4.59693 3.3335 8.00027 3.3335C11.4036 3.3335 13.6369 6.33672 14.3871 7.52471C14.4779 7.66847 14.5233 7.74035 14.5487 7.85122C14.5678 7.9345 14.5678 8.06583 14.5487 8.14911C14.5233 8.25998 14.4779 8.33186 14.3871 8.47562C13.6369 9.6636 11.4036 12.6668 8.00027 12.6668C4.59693 12.6668 2.36369 9.6636 1.61342 8.47562Z"
         stroke="white"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke-Linejoin="round"
       />
       <path
         d="M8.00027 10.0002C9.10484 10.0002 10.0003 9.10473 10.0003 8.00016C10.0003 6.89559 9.10484 6.00016 8.00027 6.00016C6.8957 6.00016 6.00027 6.89559 6.00027 8.00016C6.00027 9.10473 6.8957 10.0002 8.00027 10.0002Z"
         stroke="white"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke-Linejoin="round"
+      />
+    </svg>
+  );
+};
+export const RemoveIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 18 18"
+      fill="none"
+    >
+      <path
+        d="M12 4.5V3.9C12 3.05992 12 2.63988 11.8365 2.31901C11.6927 2.03677 11.4632 1.8073 11.181 1.66349C10.8601 1.5 10.4401 1.5 9.6 1.5H8.4C7.55992 1.5 7.13988 1.5 6.81901 1.66349C6.53677 1.8073 6.3073 2.03677 6.16349 2.31901C6 2.63988 6 3.05992 6 3.9V4.5M7.5 8.625V12.375M10.5 8.625V12.375M2.25 4.5H15.75M14.25 4.5V12.9C14.25 14.1601 14.25 14.7902 14.0048 15.2715C13.789 15.6948 13.4448 16.039 13.0215 16.2548C12.5402 16.5 11.9101 16.5 10.65 16.5H7.35C6.08988 16.5 5.45982 16.5 4.97852 16.2548C4.55516 16.039 4.21095 15.6948 3.99524 15.2715C3.75 14.7902 3.75 14.1601 3.75 12.9V4.5"
+        stroke="#D6C7FE"
+        strokeWidth="1.5"
+        stroke-linecap="round"
+        stroke-Linejoin="round"
       />
     </svg>
   );
@@ -373,9 +397,9 @@ export const EditIcon: React.FunctionComponent<IconProps> = ({
         <path
           d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
           stroke="currentColor"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke-linecap="round"
-          stroke-linejoin="round"
+          stroke-Linejoin="round"
         />
       </g>
       <defs>
@@ -889,9 +913,9 @@ export const UploadIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M18 12.5V13.5C18 14.9001 18 15.6002 17.7275 16.135C17.4878 16.6054 17.1054 16.9878 16.635 17.2275C16.1002 17.5 15.4001 17.5 14 17.5H7C5.59987 17.5 4.8998 17.5 4.36502 17.2275C3.89462 16.9878 3.51217 16.6054 3.27248 16.135C3 15.6002 3 14.9001 3 13.5V12.5M14.6667 6.66667L10.5 2.5M10.5 2.5L6.33333 6.66667M10.5 2.5V12.5"
         stroke="white"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke-Linejoin="round"
       />
     </svg>
   );
@@ -906,15 +930,16 @@ export const PlusIcon: React.FunctionComponent<IconProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       width="12"
       height="12"
+      className={className}
       viewBox="0 0 12 12"
       fill="none"
     >
       <path
         d="M5.99992 1.33301V10.6663M1.33325 5.99967H10.6666"
         stroke="#AD97FE"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke-Linejoin="round"
       />
     </svg>
   );

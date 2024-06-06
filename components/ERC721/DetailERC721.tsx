@@ -18,25 +18,21 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
         <SkeletonSwap />
       ) : isSuccess ? (
         <div className="min-h-[94vh]">
-          <div>
-            {data && (
-              <div className="flex border-y border-shader_500">
-                <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px]">
-                  {data && (
-                    <ChartTradingViewSwap
-                      dataSwap={data}
-                      typeERC="erc1155"
-                      height={518}
-                    />
-                  )}
-                  <HistorySwap data={data} typeERC="erc1155" />
-                </div>
-                <div className="w-full md:w-[480px] flex-shrink-0">
-                  <TransactionCollection />
-                </div>
+          {data && (
+            <div className="flex min-h-[94vh] flex-col-reverse border-y md:flex-row border-shader_600">
+              <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px] z-0">
+                {data && (
+                  <ChartTradingViewSwap
+                    dataSwap={data}
+                    typeERC="erc721"
+                    height={518}
+                  />
+                )}
+                <HistorySwap data={data} typeERC="erc1155" />
               </div>
-            )}
-          </div>
+              <TransactionCollection />
+            </div>
+          )}
         </div>
       ) : (
         <SkeletonSwap />

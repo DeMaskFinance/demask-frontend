@@ -91,7 +91,7 @@ export default function Layout({ children }: PropsWithChildren) {
     initProvider();
   }, [wallet]);
   return (
-    <div className="box-border w-full overflow-hidden">
+    <div className="box-border w-full overflow-visible">
       <Header />
       <main
         className={`lg:mb-0 mb-[100px] ${isEvent ? "mt-[104px]" : "mt-16"}`}

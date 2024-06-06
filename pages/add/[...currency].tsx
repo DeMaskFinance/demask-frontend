@@ -83,10 +83,6 @@ export default function AddLiquidity() {
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
-  const [widthBtn, setWidthBtn] = useState(0);
-  const buttonRefs = useRef<Array<HTMLButtonElement | null>>(
-    Array(activeNFTPercent.length).fill(null)
-  );
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -497,7 +493,7 @@ export default function AddLiquidity() {
                   )
                 }
               >
-                APPROVE NFT
+                Approve NFT
               </Button>
             )}
             {isApprovedNFT && account && (

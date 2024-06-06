@@ -51,26 +51,24 @@ const Swap: React.FC = () => {
       {isLoading || isFetching ? (
         <SkeletonSwap />
       ) : isSuccess ? (
-        <div className="min-h-[94vh]">
-          <div className="flex flex-col-reverse border-y md:flex-row border-shader_600">
-            <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px]">
-              {data && (
-                <ChartTradingViewSwap
-                  dataSwap={data}
-                  typeERC="erc1155"
-                  height={518}
-                />
-              )}
-              <HistorySwap data={data} typeERC="erc1155" />
-            </div>
-            <SwapTransaction
-              data={data}
-              tokenAddress={tokenAddress}
-              idNFT={idNFT}
-              nftAddress={nftAddress}
-              refetch={refetch}
-            />
+        <div className="flex min-h-[94vh] flex-col-reverse border-y md:flex-row border-shader_600 ">
+          <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px] z-0">
+            {data && (
+              <ChartTradingViewSwap
+                dataSwap={data}
+                typeERC="erc1155"
+                height={518}
+              />
+            )}
+            <HistorySwap data={data} typeERC="erc1155" />
           </div>
+          <SwapTransaction
+            data={data}
+            tokenAddress={tokenAddress}
+            idNFT={idNFT}
+            nftAddress={nftAddress}
+            refetch={refetch}
+          />
         </div>
       ) : (
         <SkeletonSwap />

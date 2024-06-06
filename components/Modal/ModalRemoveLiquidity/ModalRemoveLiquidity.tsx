@@ -26,6 +26,7 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import ModalDocument from "../ModalLength/ModalDocument";
 import { useInView } from "react-intersection-observer";
 import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
+import { EtherIcon, NFTIcon } from "@/components/Icons";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: DataBase;
@@ -52,7 +53,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   setIsOpenError,
 }) => {
   const [inputLiquidity, setInputLiquidity] = useState<any>("");
-  const [activeChoice, setActiveChoice] = useState<string>("0%");
+  const [activeChoice, setActiveChoice] = useState<string>("");
   const [isSufficientLiquidity, setIsSufficientLiquidity] =
     useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -214,16 +215,24 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
-          <p className="title_modal">
-            Remove Liquidity
-            {/* {data && (
-              <div className="flex items-center leading-[16px] ml-1">
-                <span> {data?.metadata?.symbol}</span>
-                <span className="overflow-hidden">/</span>
-                <span>ETH</span>
+          <p className="title_modal">Remove Liquidity</p>
+          <div className="flex mt-4 gap-x-3">
+            <div className="relative w-10 h-10 ">
+              <div className="overflow-hidden rounded-lg">
+                <MediaNFT data={data} isControls={false} />
               </div>
-            )} */}
-          </p>
+              <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+                <EtherIcon width={16} height={16} />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-white truncate">
+                {data?.metadata?.name}
+              </div>
+
+              <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
+            </div>
+          </div>
           {type === "erc721" && isSuccess && (
             <NFTGrid
               data={data721}
@@ -235,20 +244,28 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           )}
           <div>
             <div className="relative">
-              <div className="flex justify-between mb-4 text-shader_600">
-                <p className="font-semibold">Liquidity</p>
-                <div className="flex">
-                  Balance: <FormatNumber number={balanceOfDML} />
+              <div className="flex justify-between my-4 ">
+                <p className="font-semibold text-primary_400">Liquidity</p>
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  <FormatNumber number={balanceOfDML} />
+                  <EtherIcon width={16} height={16} />
                 </div>
               </div>
-              <input
-                className="input_item"
-                inputMode="decimal"
-                type="number"
-                placeholder="Input amount Liquidity"
-                value={inputLiquidity}
-                onChange={handleGetLiquidity}
-              />
+              <div className="flex mt-4 gap-x-2">
+                <input
+                  className="input_item"
+                  inputMode="decimal"
+                  type="number"
+                  placeholder="Enter amount"
+                  value={inputLiquidity}
+                  onChange={handleGetLiquidity}
+                />
+                <TabGroups
+                  choices={["25%", "50%", "75%", "100%"]}
+                  activeChoice={activeChoice}
+                  onChoiceChange={handleChoiceChange}
+                />
+              </div>
               {isSufficientLiquidity && (
                 <p className="mb-2 ml-1 -mt-1 text-xs text-red" key="liquidity">
                   Insufficient Liquidity balance
@@ -262,32 +279,24 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   Required
                 </p>
               )}
-              <div className="mt-3">
-                <TabGroups
-                  choices={["25%", "50%", "75%", "100%"]}
-                  activeChoice={activeChoice}
-                  onChoiceChange={handleChoiceChange}
-                />
-              </div>
             </div>
             <div>
-              <div className="flex justify-between my-4 text-shader_600">
-                <p className="font-semibold">You will recieve</p>
-              </div>
-              <div className="mb-4 input_item">
-                <div className="flex justify-between">
+              <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
+                NFT Receive
+                <div className="flex items-center justify-between gap-x-1">
                   {data.reserveTokenDecimals ? (
                     <p>{amountNFTMin}</p>
                   ) : (
                     <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
                   )}
-                  <p className="text-shader_500">NFT</p>
+                  <NFTIcon width={16} height={16} />
                 </div>
               </div>
-              <div className="mb-4 input_item">
-                <div className="flex justify-between">
+              <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
+                Token
+                <div className="flex items-center justify-between gap-x-1">
                   <FormatNumber number={amountTokenDec} />
-                  <p className="text-shader_500">{data.tokenSymbol}</p>
+                  <EtherIcon width={16} height={16} />
                 </div>
               </div>
               {Number(amountTokenMin) < 1 && inputLiquidity && (
@@ -311,7 +320,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                       )
                     }
                   >
-                    APPROVE NFT
+                    Approve NFT
                   </Button>
                 )}
                 {isApprovedNFT && (

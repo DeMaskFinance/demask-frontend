@@ -270,7 +270,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     )
                   }
                 >
-                  APPROVE NFT
+                  Approve NFT
                 </Button>
               )}
             </div>

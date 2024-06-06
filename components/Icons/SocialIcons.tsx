@@ -45,9 +45,9 @@ export const WebsiteIcon: React.FunctionComponent<IconProps> = ({
         <path
           d="M9 0.75C11.0636 3.00914 12.2363 5.94093 12.3 9C12.2363 12.0591 11.0636 14.9909 9 17.25M9 0.75C6.93644 3.00914 5.76373 5.94093 5.7 9C5.76373 12.0591 6.93644 14.9909 9 17.25M9 0.75C4.44365 0.75 0.75 4.44365 0.75 9C0.75 13.5563 4.44365 17.25 9 17.25M9 0.75C13.5563 0.75 17.25 4.44365 17.25 9C17.25 13.5563 13.5563 17.25 9 17.25M1.16252 6.525H16.8375M1.1625 11.475H16.8375"
           stroke="white"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke-linecap="round"
-          stroke-linejoin="round"
+          stroke-Linejoin="round"
         />
       </g>
       <defs>

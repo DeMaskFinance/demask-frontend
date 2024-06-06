@@ -195,7 +195,7 @@ const Buy = () => {
                   )
                 }
               >
-                APPROVE NFT
+                Approve NFT
               </Button>
             ) : (
               <Button

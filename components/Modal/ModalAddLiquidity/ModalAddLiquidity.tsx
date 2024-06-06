@@ -15,6 +15,9 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
+import MediaNFT from "@/components/Common/MediaNFT";
+import { EtherIcon, NFTIcon } from "@/components/Icons";
+import { TabGroups } from "@/components/NavChoice";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -42,6 +45,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
@@ -67,7 +71,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     isOpenTransaction
   );
 
-  const { balanceToken, bigNumberBalance, allowanceToken } = useInformation(
+  const { bigNumberBalance } = useInformation(
     account,
     data.tokenAddress,
     wallet,
@@ -76,7 +80,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     nativeAddress,
     isOpenTransaction
   );
-
+  const handleChoicePercent = (item: string) => {
+    setInputNFT(Math.floor((parseFloat(item) / 100) * +balanceNFT).toString());
+    setActiveChoiceNFT(item);
+  };
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNFT(e.target.value);
     if (Number(e.target.value) > Number(balanceNFT)) {
@@ -84,40 +91,36 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     } else {
       setIsSufficientNFT(false);
     }
+    setActiveChoiceNFT("");
   };
-  const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputToken(e.target.value);
-    if (Number(e.target.value) > Number(balanceToken)) {
-      setIsSufficientToken(true);
-    } else {
-      setIsSufficientToken(false);
-    }
-  };
-
   useEffect(() => {
-    let amountErcDesired;
-    if (data?.dmlAddress !== null && data && inputNFT) {
-      amountErcDesired =
-        ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
-        (1 + slippage / 100);
-    } else {
-      amountErcDesired = handleBignumber(
-        Number(inputToken),
-        Number(data?.dmlDecimals)
-      );
-    }
-    setAmountErcDesired(amountErcDesired);
-    if (amountErcDesired) {
-      const amountErcDesiredToDec = divideByDecimal(
-        amountErcDesired?.toString(),
-        data?.dmlDecimals
-      );
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
-        setIsSufficientToken(true);
+    if (inputNFT) {
+      let amountErcDesired;
+      if (data?.dmlAddress !== null && data && inputNFT) {
+        amountErcDesired =
+          ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
+          (1 + slippage / 100);
       } else {
-        setIsSufficientToken(false);
+        amountErcDesired = handleBignumber(
+          Number(inputToken),
+          Number(data?.dmlDecimals)
+        );
       }
+      setAmountErcDesired(amountErcDesired);
+      if (amountErcDesired) {
+        const amountErcDesiredToDec = divideByDecimal(
+          amountErcDesired?.toString(),
+          data?.dmlDecimals
+        );
+        setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+        if (Number(amountErcDesired) > Number(bigNumberBalance)) {
+          setIsSufficientToken(true);
+        } else {
+          setIsSufficientToken(false);
+        }
+      }
+    } else {
+      setAmountErcDesiredToDec(0);
     }
   }, [inputNFT, inputToken, data]);
   useEffect(() => {
@@ -144,34 +147,59 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
-          <p className="title_modal">
-            Add
-            {data && (
-              <div className="flex items-center leading-[16px] ml-1">
-                <span> {data?.metadata?.symbol}</span>
-                <span className="overflow-hidden">/</span>
-                <span>{data?.tokenSymbol}</span>
+          <div className="flex justify-between title_modal">
+            <p>Add Liquidity</p>
+            <button className="text-lg " onClick={handleClose}>
+              <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+            </button>
+          </div>
+          <div className="flex mt-4 gap-x-3">
+            <div className="relative w-10 h-10 ">
+              <div className="overflow-hidden rounded-lg">
+                <MediaNFT data={data} isControls={false} />
               </div>
-            )}
-          </p>
+              <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+                <EtherIcon width={16} height={16} />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-white truncate">
+                {data?.metadata?.name}
+              </div>
+
+              <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
+            </div>
+          </div>
           <div>
-            <div className="relative">
+            <div className="relative mt-4">
               <div>
                 <div>
-                  <div className="flex justify-between mb-4 text-shader_600">
-                    <p className="font-semibold">NFT</p>
-                    <p>Balance: {formatNumber(balanceNFT)}</p>
+                  <div className="flex justify-between mb-1 font-semibold text-primary_300">
+                    <p>NFT balance</p>
+                    <p className="flex items-center font-bold text-white gap-x-1">
+                      {account ? formatNumber(balanceNFT) : 0}
+                      <NFTIcon width={12} height={12} />
+                    </p>
                   </div>
-                  <input
-                    className="input_item"
-                    type="number"
-                    placeholder="Input amount NFT"
-                    value={inputNFT}
-                    onChange={handleGetNFT}
-                  />
+                  <div className="flex gap-x-2">
+                    <input
+                      className="input_item w-[60%]"
+                      type="number"
+                      placeholder="Input amount NFT"
+                      value={inputNFT}
+                      onChange={handleGetNFT}
+                    />
+                    <div className="w-[40%]">
+                      <TabGroups
+                        choices={["25%", "50%", "75%", "100%"]}
+                        activeChoice={activeChoiceNFT}
+                        onChoiceChange={handleChoicePercent}
+                      />
+                    </div>
+                  </div>
                   {isSufficientNFT && (
                     <p
-                      className="mb-2 ml-3 -mt-1 text-xs text-red"
+                      className="mt-1 mb-2 ml-3 text-xs text-red"
                       key="totalSale"
                     >
                       Insufficient NFT balance
@@ -179,42 +207,32 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   )}
                   {!inputNFT && isInputNFT && (
                     <p
-                      className="mb-2 ml-3 -mt-1 text-xs text-red"
+                      className="mt-1 mb-2 ml-3 text-xs text-red"
                       key="inputNFT"
                     >
                       Required
                     </p>
                   )}
                 </div>
-                <div>
-                  <div className="flex justify-between mb-4 text-shader_600">
-                    <p className="font-semibold">Token</p>
-                    <p>Balance: {formatNumber(balanceToken)}</p>
-                  </div>
-                  {data.dmlAddress === null ? (
-                    <input
-                      className="input_item"
-                      type="number"
-                      placeholder="Input amount Token"
-                      value={inputToken}
-                      onChange={handleGetToken}
-                    />
-                  ) : (
-                    <div>
-                      {data ? (
-                        <div className="input_item">
+                <div className="mt-4">
+                  <div className="flex rounded-lg">
+                    {data ? (
+                      <div className="flex items-center justify-between font-semibold input_item bg-primary_400 bg-opacity-10">
+                        <p>Liquidity</p>
+                        <div className="flex items-center font-bold gap-x-1">
                           {amountErcDesiredToDec}
+                          <EtherIcon width={16} height={16} />
                         </div>
-                      ) : (
-                        <div className="input_item">
-                          <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
-                        </div>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    ) : (
+                      <div className="input_item">
+                        <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
+                      </div>
+                    )}
+                  </div>
                   {isSufficientToken && (
                     <p
-                      className="mb-2 ml-3 -mt-1 text-xs text-red"
+                      className="mt-1 mb-2 ml-3 text-xs text-red"
                       key="inputNFT"
                     >
                       Insufficient Token balance
@@ -228,7 +246,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                 </div>
               </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-4">
               {isApprovedNFT ? (
                 <Button
                   className="w-[126px] py-2 mx-auto"
@@ -252,18 +270,12 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     )
                   }
                 >
-                  APPROVE NFT
+                  Approve NFT
                 </Button>
               )}
             </div>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalConfirmAddLiquidity

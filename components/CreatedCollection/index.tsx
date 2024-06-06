@@ -131,8 +131,7 @@ export default function CreatedCollection() {
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
-      <div className="">
-        {/* <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
+      {/* <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
           <div className="items-center text-xs lg:flex gap-x-1 ">
             <div
               className={`relative rounded-full w-fit h-fit group ${
@@ -357,23 +356,22 @@ export default function CreatedCollection() {
             </div>
           </div>
         </section> */}
-        {typeERC === "erc721" ? (
-          <DetailERC721
-            isLoading={isLoadingDetail}
-            isSuccess={isSuccessDetail}
-            data={dataDetail}
-          />
-        ) : (
-          <ItemList
-            isLoading={isLoading}
-            isSuccess={isSuccess}
-            isFetching={isFetching}
-            data={data}
-            fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-          />
-        )}
-      </div>
+      {typeERC === "erc721" ? (
+        <DetailERC721
+          isLoading={isLoadingDetail}
+          isSuccess={isSuccessDetail}
+          data={dataDetail}
+        />
+      ) : (
+        <ItemList
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          isFetching={isFetching}
+          data={data}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
+      )}
       {dataDetail?.dmlAddress && (
         <ModalRoyalty
           isOpenRoyalty={isOpenRoyalty}
