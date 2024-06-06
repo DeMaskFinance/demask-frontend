@@ -1,6 +1,7 @@
 import { Button } from "@/components/Buttons";
 import MediaNFT from "@/components/Common/MediaNFT";
 import { EyeIcon, ImgIcon } from "@/components/Icons";
+import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import showToast, { ToastType } from "@/components/Toast/ToastCustom";
@@ -25,6 +26,10 @@ const NFTGrid: React.FC<NFTGridProps> = ({
 }) => {
   const { chainId } = useContext(AccountContext);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
+  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
+    null
+  );
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";
@@ -65,7 +70,20 @@ const NFTGrid: React.FC<NFTGridProps> = ({
               </div>
               <div className="flex justify-between w-full p-2 text-xs font-semibold text-white">
                 <p>#{item.nftID}</p>
-                <EyeIcon width={16} height={16} className="text-primary_300" />
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedItem(item);
+                    setIsOpenDetail(true);
+                    document.body.style.overflowY = "hidden";
+                  }}
+                >
+                  <EyeIcon
+                    width={16}
+                    height={16}
+                    className="text-primary_300"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -103,6 +121,15 @@ const NFTGrid: React.FC<NFTGridProps> = ({
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
       />
+      {selectedItem && (
+        <ModalDetail
+          type="erc721"
+          idNFT={selectedItem.nftID}
+          nftAddress={selectedItem.nftAddress}
+          setIsOpenDetail={setIsOpenDetail}
+          isOpenDetail={isOpenDetail}
+        />
+      )}
     </div>
   );
 };

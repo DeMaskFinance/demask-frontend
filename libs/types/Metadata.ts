@@ -31,3 +31,10 @@ interface UploadFileProps {
   setSelectedFile: React.Dispatch<React.SetStateAction<string | null>>;
   uploadFile: (file: File) => Promise<string>;
 }
+interface ModalDetailProps {
+  type: string;
+  nftAddress: string;
+  nftID: string;
+  setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpenDetail: boolean;
+}

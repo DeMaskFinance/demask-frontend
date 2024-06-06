@@ -77,12 +77,17 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
   return (
     <Wrapper isOpen={isOpenSearchToken} onClick={handleClose}>
       <div className="container_modal">
-        <div className=" h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative">
-          <p className="py-2 mb-4 text-xl font-medium">Select a Token</p>
-          <div>
+        <div className=" h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg relative">
+          <div className="p-4 border-b border-shader_600">
+            <div className="flex items-center justify-between mb-3 font-semibold text-white title ">
+              Select a Token
+              <button className="" onClick={handleClose}>
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+              </button>
+            </div>
             <div className="relative">
               <input
-                className="mb-4 input_item"
+                className=" input_item"
                 placeholder="Search Token Address"
                 value={tokenAddress}
                 onChange={handleAddressToken}
@@ -93,6 +98,8 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
                 </div>
               )}
             </div>
+          </div>
+          <div>
             {isSuccess && data.status === false && tokenAddress && (
               <p
                 className="mb-2 ml-3 -mt-1 text-xs text-red"
@@ -118,34 +125,26 @@ const ModalSearchToken: React.FunctionComponent<ModalSearchTokenProps> = ({
               {tokenDefault?.map((item: any, index: number) => (
                 <div
                   key={index}
-                  className="flex items-center w-full mb-3 cursor-pointer gap-x-2 hover:text-primary_400 group active:text-primary_400"
+                  className="flex items-center w-full px-2 py-2 text-sm font-bold text-white cursor-pointer gap-x-2 hover:bg-shader_500"
                   onClick={() =>
                     handleChangeRouteDefault(item.address, item.symbol)
                   }
                 >
                   <div>
                     <item.logo
-                      className="transition-all duration-200 ease-linear logo group-hover:fill-primary_400"
+                      className="transition-all duration-200 ease-linear logo "
                       width={24}
                       height={24}
                     />
                   </div>
                   <div>
-                    <p className="font-medium">{item.symbol}</p>
-                    <p className="text-sm text-shader_500 group-hover:text-primary_400">
-                      {item.name}
-                    </p>
+                    <p className="">{item.symbol}</p>
+                    <p className="font-normal text-shader_200">{item.name}</p>
                   </div>
                 </div>
               ))}
             </>
           )}
-          <button
-            className="absolute top-0 right-0 p-2 text-lg"
-            onClick={handleClose}
-          >
-            <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-          </button>
         </div>
       </div>
     </Wrapper>

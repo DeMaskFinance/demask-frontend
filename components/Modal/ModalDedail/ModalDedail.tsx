@@ -57,15 +57,15 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
         <div className="cursor-default container_modal">
-          <div className="w-[42vw] h-[560px] rounded-lg relative overflow-y-scroll">
+          <div className="w-[42vw] rounded-lg relative min-h-[500px] flex justify-center items-center">
             {isLoading || isFetching ? (
               <div className="flex items-center justify-center h-full">
                 <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
               </div>
             ) : (
               isSuccess && (
-                <div>
-                  <div className="px-4 pt-4">
+                <div className="">
+                  <div className="px-4 pt-4 ">
                     <div className="flex justify-between pb-4 border-b text-primary_200 border-shader_500">
                       <div>
                         <div className="flex items-center gap-x-[6px]">
@@ -95,7 +95,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="p-4">
+                  <div className="p-4 overflow-y-scroll min-h-[500px]">
                     <div className="flex gap-x-4">
                       <div className="w-[40%] max-h-[350px] aspect-square rounded-xl h-fit overflow-hidden">
                         <MediaNFT data={data} isControls />
@@ -224,6 +224,9 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 </div>
               )
             )}
+            {/* <div className="flex items-center justify-center flex-auto h-full">
+              <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
+            </div> */}
           </div>
         </div>
       </div>

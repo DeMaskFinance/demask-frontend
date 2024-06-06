@@ -213,7 +213,7 @@ const UploadFileCollection: React.FC<UploadFileProps> = ({
               <UploadIcon
                 width={24}
                 height={24}
-                className="transition-all duration-200 opacity-0 group-hover:opacity-100 ease-linear inset-0 mx-auto top-1/2 translate-y-[150%] group-hover:-translate-y-[65%] absolute"
+                className="transition-all duration-200 opacity-0 group-hover:opacity-100 ease-linear inset-0 mx-auto top-1/2 translate-y-[150%] group-hover:-translate-y-[65%] absolute text-primary_400"
               />
             </div>
           </div>

@@ -13,9 +13,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const { chainId } = useContext(AccountContext);
   const router = useRouter();
   const data = [
-    { id: 1, name: "Create", url: "/create" },
-    { id: 2, name: "Launchpad", url: "/launchpad" },
-    { id: 3, name: "Swap", url: `/swap` },
+    { id: 1, name: "Swap", url: `/swap` },
+    { id: 2, name: "Create", url: "/create" },
+    { id: 3, name: "Launchpad", url: "/launchpad" },
     { id: 4, name: "Pools", url: "/pools" },
     { id: 5, name: "Rewards", url: "/leaderboard", subRewardMenu: true },
   ];

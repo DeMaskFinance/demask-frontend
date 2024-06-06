@@ -912,10 +912,65 @@ export const UploadIcon: React.FunctionComponent<IconProps> = ({
     >
       <path
         d="M18 12.5V13.5C18 14.9001 18 15.6002 17.7275 16.135C17.4878 16.6054 17.1054 16.9878 16.635 17.2275C16.1002 17.5 15.4001 17.5 14 17.5H7C5.59987 17.5 4.8998 17.5 4.36502 17.2275C3.89462 16.9878 3.51217 16.6054 3.27248 16.135C3 15.6002 3 14.9001 3 13.5V12.5M14.6667 6.66667L10.5 2.5M10.5 2.5L6.33333 6.66667M10.5 2.5V12.5"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="1.5"
         stroke-linecap="round"
         stroke-Linejoin="round"
+      />
+    </svg>
+  );
+};
+export const UserIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M10 12.5C7.35831 12.5 5.00904 13.7755 3.51337 15.755C3.19146 16.181 3.0305 16.394 3.03577 16.6819C3.03984 16.9043 3.17951 17.1849 3.35451 17.3222C3.58103 17.5 3.89493 17.5 4.52273 17.5H15.4773C16.1051 17.5 16.4191 17.5 16.6456 17.3222C16.8206 17.1849 16.9602 16.9043 16.9643 16.6819C16.9696 16.394 16.8086 16.181 16.4867 15.755C14.991 13.7755 12.6418 12.5 10 12.5Z"
+        stroke="white"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10 10C12.0711 10 13.75 8.32107 13.75 6.25C13.75 4.17893 12.0711 2.5 10 2.5C7.92897 2.5 6.25004 4.17893 6.25004 6.25C6.25004 8.32107 7.92897 10 10 10Z"
+        stroke="white"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+export const LogoutIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M4.08148 14.1667C4.08148 14.9416 4.08148 15.3291 4.16667 15.647C4.39783 16.5098 5.0717 17.1836 5.93443 17.4148C6.25235 17.5 7.55836 17.5 8.33333 17.5H13.5C14.9001 17.5 15.6002 17.5 16.135 17.2275C16.6054 16.9878 16.9878 16.6054 17.2275 16.135C17.5 15.6002 17.5 14.9001 17.5 13.5V6.5C17.5 5.09987 17.5 4.3998 17.2275 3.86502C16.9878 3.39462 16.6054 3.01217 16.135 2.77248C15.6002 2.5 14.9001 2.5 13.5 2.5H8.33333C7.55836 2.5 6.33754 2.5 6.01962 2.58519C5.15689 2.81635 4.48302 3.49022 4.25185 4.35295C4.16667 4.67087 4.16667 5.05836 4.16667 5.83333M10 6.66667L13.3333 10M13.3333 10L10 13.3333M13.3333 10H2.5"
+        stroke="white"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );

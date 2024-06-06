@@ -97,7 +97,12 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative min-h-[45vh] overflow-scroll">
-          <p className="py-2 mb-4 title">Select a NFT</p>
+          <div className="flex items-center justify-between">
+            <p className="py-2 mb-4 title">Select a NFT</p>
+            <button onClick={handleClose}>
+              <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
+            </button>
+          </div>
           <div>
             <div className="relative mb-4">
               <input
@@ -169,12 +174,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
               </div>
             </div>
           )}
-          <button
-            className="absolute top-0 right-0 p-2 text-lg"
-            onClick={handleClose}
-          >
-            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
-          </button>
         </div>
       </div>
     </Wrapper>

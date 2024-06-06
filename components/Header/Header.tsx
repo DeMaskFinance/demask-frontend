@@ -13,7 +13,15 @@ import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
 import Maintenance from "../Common/Maintenance";
-import { EtherIcon, SearchIcon, WalletIcon } from "../Icons";
+import {
+  CopyIcon,
+  EditIcon,
+  EtherIcon,
+  LogoutIcon,
+  SearchIcon,
+  UserIcon,
+  WalletIcon,
+} from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
@@ -21,8 +29,8 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import { AvatarCustom } from "../Avatars";
+import Copy from "../Common/Copy";
 const style = {
-  itemNav: `flex 3xl:gap-x-8 text-shader_600 text-lg gap-x-4 font-medium`,
   btnWallet:
     "flex items-center h-10  pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold transition duration-150 ease-out rounded-lg group bg_gradient active:bg-primary_400 text-white gap-x-2 ",
 };
@@ -250,25 +258,31 @@ export default function Header() {
                   interactive
                   render={(attrs) => (
                     <div className="" tabIndex={-1} {...attrs}>
-                      <ul className="pb-2 w-[200px] menu">
+                      <ul className="pb-2 w-[173px] menu font-semibold">
+                        <li className="text-sm p-2 rounded-lg items-center gap-x-2 bg-primary_500 bg-opacity-[0.15] flex text-primary_300">
+                          {`${account.slice(0, 8)}...${account.slice(-6)}`}
+                          <Copy content={account} />
+                        </li>
                         <Link
                           href={`/profile?chain=${chainId}`}
-                          className="item_menu"
+                          className="text-sm item_menu gap-x-2"
                         >
-                          Profile
+                          <UserIcon width={18} height={18} />
+                          My Profile
                         </Link>
                         <Link
                           href={`/profile/edit?chain=${chainId}`}
-                          className="item_menu"
+                          className="text-sm item_menu gap-x-2"
                         >
+                          <EditIcon width={18} height={18} />
                           Edit profile
                         </Link>
                         <li
-                          className={`item_menu justify-between mb-2`}
+                          className={`text-sm item_menu gap-x-2 mb-2`}
                           onClick={disconnectWallet}
                         >
+                          <LogoutIcon width={18} height={18} />
                           <div>Disconnect</div>
-                          <MdLogout />
                         </li>
                       </ul>
                     </div>
