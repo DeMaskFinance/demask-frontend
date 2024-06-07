@@ -108,9 +108,9 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
               setFieldValue,
               isValid,
             }) => (
-              <Form className="mx-auto max-w-[600px]">
+              <Form className="mx-auto max-w-[634px]">
                 <div className="flex flex-col">
-                  <label htmlFor="name" className={styles.title}>
+                  <label htmlFor="name" className="title_label">
                     Creator earning
                   </label>
                   <p className="mb-4 text-shader_600">

@@ -1,6 +1,4 @@
-import React, { useContext, useState } from "react";
-import { Formik, Form, Field, useFormik, ErrorMessage } from "formik";
-import * as yup from "yup";
+import { Button } from "@/components/Buttons";
 import {
   DiscordIcon,
   FacebookIcon,
@@ -9,20 +7,17 @@ import {
   TwitterIcon,
   WebsiteIcon,
 } from "@/components/Icons";
-import { Button } from "@/components/Buttons";
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { selectProfile, userData } from "@/store/profileSlice";
 import * as userService from "@/libs/service/userService";
+import { selectProfile, userData } from "@/store/profileSlice";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import AccountContext from "@/context/AccountContext";
-const styles = {
-  title: "block my-4 text-base font-semibold text-black24",
-  btnActive: "rounded-full bg-base2",
-};
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as yup from "yup";
+
 const validationSchema = yup.object().shape({
   name: yup.string().nullable().notRequired().max(50),
-  about: yup.string().max(200).nullable(),
+  about: yup.string().max(30).nullable(),
   twitter: yup
     .string()
     .max(200)
@@ -60,52 +55,51 @@ const validationSchema = yup.object().shape({
 
 export default function EditProfileForm() {
   const { profile } = useSelector(selectProfile);
-  const { account, chainId } = useContext(AccountContext);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const socialList = [
     {
-      icon: <WebsiteIcon width={24} height={24} />,
+      icon: <WebsiteIcon width={20} height={20} />,
       title: "Website",
       name: "website",
       placeHolder: "https://",
       value: profile?.socials?.website,
     },
     {
-      icon: <TwitterIcon width={24} height={24} />,
+      icon: <TwitterIcon width={20} height={20} />,
       title: "Twitter",
       name: "twitter",
       placeHolder: "https://twitter.com/",
       value: profile?.socials?.twitter,
     },
     {
-      icon: <FacebookIcon width={24} height={24} />,
-      title: "Facebook",
-      name: "facbook",
-      placeHolder: "https://facebook.com/",
-      value: profile?.socials?.facebook,
-    },
-    {
-      icon: <TeleIcon width={24} height={24} className="fill-shader_600" />,
+      icon: <TeleIcon width={20} height={20} className="fill-shader_600" />,
       title: "Telegram",
       name: "telegram",
       placeHolder: "https://t.me/",
       value: profile?.socials?.telegram,
     },
     {
-      icon: <DiscordIcon width={24} height={24} />,
+      icon: <DiscordIcon width={20} height={20} />,
       title: "Discord",
       name: "discord",
       placeHolder: "https://discord.com/",
       value: profile?.socials?.discord,
     },
     {
-      icon: <GithubIcon width={24} height={24} />,
+      icon: <GithubIcon width={20} height={20} />,
       title: "Github",
       name: "github",
       placeHolder: "https://github.com/",
       value: profile?.socials?.github,
+    },
+    {
+      icon: <FacebookIcon width={20} height={20} />,
+      title: "Facebook",
+      name: "facbook",
+      placeHolder: "https://facebook.com/",
+      value: profile?.socials?.facebook,
     },
   ];
   const initialValues = {
@@ -153,17 +147,15 @@ export default function EditProfileForm() {
       >
         {({
           values,
-          errors,
-          touched,
           handleChange,
           handleBlur,
           handleSubmit,
           isSubmitting,
           dirty,
         }) => (
-          <Form className="mx-auto max-w-[600px]">
-            <div className="flex flex-col">
-              <label htmlFor="name" className={styles.title}>
+          <Form className="">
+            <div className="flex flex-col ">
+              <label htmlFor="name" className="title_label">
                 Name
               </label>
               <Field
@@ -173,7 +165,7 @@ export default function EditProfileForm() {
                 value={values.name}
                 onChange={handleChange}
                 placeholder="Enter your name"
-                className="input_item"
+                className="input_item placeholder:text-shader_300 text-shader_100 font-semibold"
               />
               <ErrorMessage
                 name="name"
@@ -183,12 +175,12 @@ export default function EditProfileForm() {
             </div>
 
             <div className="flex flex-col overflow-hidden ">
-              <label htmlFor="userName" className={styles.title}>
+              <label htmlFor="userName" className="title_label">
                 Username
               </label>
               <div
                 className={
-                  "w-full py-4 pl-2 flex bg-shader_600 rounded-lg transition-all duration-200 dark:bg-shader_700"
+                  "w-full py-2 pl-2 flex bg-shader_600 rounded-lg transition-all duration-200 text-shader_300"
                 }
               >
                 <p className="mr-1">@</p>
@@ -196,8 +188,14 @@ export default function EditProfileForm() {
               </div>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="about" className={styles.title}>
+              <label
+                htmlFor="about"
+                className={`title_label flex justify-between`}
+              >
                 About
+                <p className="font-normal text-shader_300 text-sm">
+                  {values.about?.length}/1000
+                </p>
               </label>
               <Field
                 as="textarea"
@@ -206,29 +204,26 @@ export default function EditProfileForm() {
                 name="about"
                 value={values.about}
                 placeholder="Tell about yourself"
-                className="input_item"
+                className="input_item text-shader_100 font-semibold"
               />
               <ErrorMessage
                 name="about"
                 component="div"
-                className="text-red-500"
+                className="text-red text-sm"
               />
             </div>
-            <label className={styles.title}>Social link</label>
+            <label className="title_label">Social link</label>
             {socialList.map((item, index) => (
               <div key={index}>
-                <div className="flex mb-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-shader_500 min-w-[132px] gap-x-2 text-shader_600 dark:bg-shader_700 dark:text-white h-fit">
-                    {item.icon}
-                    {item.title}
-                  </div>
+                <div className="flex mb-4 gap-x-4 input_item items-center">
+                  <div className="">{item.icon}</div>
                   <Field
                     type="text"
                     value={(values as any)[item.name]}
                     id={item.name}
                     name={item.name}
                     placeholder={item.placeHolder}
-                    className="input_item"
+                    className=" text-shader_100 font-semibold w-full  placeholder:text-shader_300 bg-shader_600 outline-none "
                   />
                 </div>
                 <ErrorMessage
@@ -239,15 +234,7 @@ export default function EditProfileForm() {
               </div>
             ))}
 
-            <div className="flex justify-center mx-auto my-6 gap-x-6">
-              <Button active>
-                <Link
-                  href={`/profile?chain=${chainId}`}
-                  className="px-2 text-sm font-medium text-white rounded-lg"
-                >
-                  Cancel
-                </Link>
-              </Button>
+            <div className=" my-4">
               <Button
                 type="submit"
                 primary={dirty}
@@ -256,7 +243,7 @@ export default function EditProfileForm() {
                 className="px-6 py-2"
                 isLoadingBtn={loading}
               >
-                Save
+                Save changes
               </Button>
             </div>
           </Form>

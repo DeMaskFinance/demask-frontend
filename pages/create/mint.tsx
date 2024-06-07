@@ -288,7 +288,7 @@ export default function Creator() {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="name" className={styles.title}>
+                  <label htmlFor="name" className="title_label">
                     <span className="">Name</span>
                     <span className="text-primary_400">*</span>
                   </label>
@@ -315,7 +315,7 @@ export default function Creator() {
                   )}
                 </div>
                 <div>
-                  <label htmlFor="symbol" className={styles.title}>
+                  <label htmlFor="symbol" className="title_label">
                     <span>Symbol</span>
                     <span className="text-primary_400">*</span>
                   </label>
@@ -343,7 +343,7 @@ export default function Creator() {
                   )}
                 </div>
                 <div>
-                  <label htmlFor="totalSupply" className={styles.title}>
+                  <label htmlFor="totalSupply" className="title_label">
                     <span>Total Supply</span>
                     <span className="text-primary_400">*</span>
                   </label>
@@ -374,7 +374,7 @@ export default function Creator() {
                   )}
                 </div>
                 <div>
-                  <p className={styles.title}>Category</p>
+                  <p className="title_label">Category</p>
                   <div className="flex">
                     {Category.map((item, index) => (
                       <Button
@@ -391,7 +391,7 @@ export default function Creator() {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="description" className={styles.title}>
+                  <label htmlFor="description" className="title_label">
                     <span>Description</span>
                   </label>
 
@@ -410,7 +410,7 @@ export default function Creator() {
                 <div>
                   <label
                     htmlFor="traits"
-                    className={`${styles.title} flex gap-x-1 items-center`}
+                    className={`title_label flex gap-x-1 items-center`}
                   >
                     <span>Traits</span>
                     <Tippy

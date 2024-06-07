@@ -1,25 +1,27 @@
 import AccountContext from "@/context/AccountContext";
-import { Category } from "@/libs/constants";
+import { Category, validCollectionInput } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
-import images from "@/public/images";
 import { useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useRef, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { toast } from "react-toastify";
 import * as yup from "yup";
+import { toast } from "sonner";
 import { Button } from "../Buttons";
-import { FacebookIcon, TeleIcon, TwitterIcon, WebsiteIcon } from "../Icons";
-
-const styles = {
-  title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
-  inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-shader_500 placeholder:text-sm hover:border-primary_400 focus:border-primary_400 dark:bg-shader_700 dark:border-shader_700",
-  btnActive: "rounded-full bg-base2",
-};
+import {
+  FacebookIcon,
+  LeftIcon,
+  PlusIcon,
+  TeleIcon,
+  TwitterIcon,
+  UploadIcon,
+  WebsiteIcon,
+} from "../Icons";
+import useFileHandler from "@/hooks/useFileHandler";
+import { UploadFileCollection } from "../Create/UploadFile";
+import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import Image from "next/image";
 
 interface EditCollectionProps {
   data: any;
@@ -34,11 +36,33 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const imgCollection = useRef(null);
   const { account, chainId } = useContext(AccountContext);
   const router = useRouter();
+  const [fileIPFS, setFileIPFS] = useState<any>(null);
+  const [fileType, setFileType] = useState<string | null>("");
+  const [selectedFile, setSelectedFile] = useState<any>(null);
   const collectionAddress = useRouter().query.edit as string;
-  const typeERC = useRouter().query.type;
+  const validInput = validCollectionInput;
+  const uploadFile = uploadFileIPFSCollection;
+  const {
+    uploadRef,
+    inputRef,
+    itemRef,
+    handleDragOver,
+    handleLeave,
+    handleDrop,
+    handleChangeFile,
+    handleClickFile,
+  } = useFileHandler({
+    validInput,
+    fileType,
+    selectedFile,
+    setSelectedFile,
+    setFileType,
+    uploadFile,
+    setFileIPFS,
+  });
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required").max(50),
-    description: yup.string().required("Description is a required").max(200),
+    description: yup.string().required("Description is a required").max(1000),
     url: yup.string().url().nullable(),
     collaborator: yup
       .string()
@@ -99,28 +123,28 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   });
   const socialList = [
     {
-      icon: <WebsiteIcon width={24} height={24} />,
+      icon: <WebsiteIcon width={20} height={20} />,
       title: "Website",
       name: "website",
       placeHolder: "https://",
       value: 123,
     },
     {
-      icon: <TwitterIcon width={24} height={24} />,
+      icon: <TwitterIcon width={20} height={20} />,
       title: "Twitter",
       name: "twitter",
       placeHolder: "https://twitter.com/",
       value: 612,
     },
     {
-      icon: <FacebookIcon width={24} height={24} />,
+      icon: <FacebookIcon width={20} height={20} />,
       title: "Facebook",
       name: "facbook",
       placeHolder: "https://facebook.com/",
       value: 53342,
     },
     {
-      icon: <TeleIcon width={24} height={24} className="fill-shader_600" />,
+      icon: <TeleIcon width={20} height={20} className="fill-shader_600" />,
       title: "Telegram",
       name: "telegram",
       placeHolder: "https://t.me/",
@@ -159,6 +183,8 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
   const onSubmit = async (values: any) => {
     // Handle form submission
+    console.log("!23312", values);
+
     try {
       await collectionService.updateCollection(
         {
@@ -187,26 +213,24 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
           collectionAddress,
         });
       }
-      toast.success("Update successed!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if (selectedFile) {
+        await collectionService.uploadFileCollection({
+          avatar: fileIPFS,
+          chainId,
+          collectionAddress,
+        });
+      }
+      toast.success("Updated Successed");
       queryClient.refetchQueries(["detailCollection"]);
-      router.push(
-        `/collection/${collectionAddress}?typeERC=${typeERC}&chain=${chainId}`
-      );
+      setSelectedImage("");
     } catch (error) {
+      toast.error("Updated Error");
       console.error(error);
     }
   };
   const initialValues = {
     name: data?.name,
+    avatar: data?.avatar,
     description: data?.description,
     url: data?.url,
     collaborators: data?.collaborators,
@@ -218,11 +242,20 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     telegram: data?.socials?.telegram,
     website: data?.socials?.website,
   };
+  console.log(data, fileIPFS);
 
   return (
-    <div className="">
-      <h1 className="mt-4 text-2xl font-semibold text-center">
-        Edit Collection Details
+    <div className="mx-auto max-w-[634px] mb-16">
+      <div
+        className="flex items-center cursor-pointer gap-x-2 my-6 "
+        onClick={() => router.back()}
+      >
+        <LeftIcon width={20} height={20} />
+
+        <p className="font-semibold text-white">Back</p>
+      </div>
+      <h1 className="text-xl font-bold text-primary_300 mb-4">
+        Edit Collection
       </h1>
 
       <Formik
@@ -231,20 +264,81 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         onSubmit={onSubmit}
         enableReinitialize
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          dirty,
-          setFieldValue,
-        }) => (
-          <Form className="mx-auto max-w-[600px]">
+        {({ values, handleChange, isSubmitting, dirty, setFieldValue }) => (
+          <Form className="font-semibold">
             <div className="flex flex-col">
-              <label htmlFor="name" className={styles.title}>
+              <div
+                className="relative flex flex-col items-center w-full"
+                ref={uploadRef}
+              >
+                <div
+                  className={`flex  w-full gap-x-6 text-center  p-1 group h-fit border-1 border-shader_500 rounded-xl cursor-pointer`}
+                  ref={itemRef}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleLeave}
+                  onDrop={handleDrop}
+                  onClick={handleClickFile}
+                >
+                  {selectedFile ? (
+                    <div className="relative w-40 h-40">
+                      <Image
+                        src={selectedFile}
+                        alt="pictureframe"
+                        width={504}
+                        height={160}
+                        sizes="100vw"
+                        quality={100}
+                        className="object-cover w-full h-full rounded-2xl aspect-square"
+                      />
+                      {selectedFile && (
+                        <button
+                          className="absolute right-2 z-100 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedFile("");
+                            itemRef.current?.classList.add("border");
+                          }}
+                        >
+                          <CgClose />
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="relative w-40 h-40">
+                      <Image
+                        src={values.avatar}
+                        alt="pictureframe"
+                        width={504}
+                        height={160}
+                        sizes="100vw"
+                        quality={100}
+                        className="object-cover w-full h-full rounded-2xl aspect-square"
+                      />
+                    </div>
+                  )}
+                  <div className="self-center text-left">
+                    <h5 className="title">Drag or drop to upload image</h5>
+                    <div className="text-sm text-shader_200">
+                      <p>You may change this after deploying your contract.</p>
+                      <p>
+                        Recommended size: 300 x 300px. File types: JPG,PNG,SVG
+                        or GIF
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <input
+                  ref={inputRef}
+                  type="file"
+                  hidden
+                  onChange={handleChangeFile}
+                  accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
+                />
+              </div>
+              <label htmlFor="name" className="title_label mt-5">
                 Name
-                <p className="text-red">*</p>
+                <p className="text-primary_400">*</p>
               </label>
               <Field
                 type="text"
@@ -262,9 +356,17 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="description" className={styles.title}>
-                Description
-                <p className="text-red">*</p>
+              <label
+                htmlFor="description"
+                className={`title_label flex justify-between`}
+              >
+                <div className="flex">
+                  Description
+                  <p className="text-primary_400">*</p>
+                </div>
+                <p className="font-normal text-shader_300 text-sm">
+                  {values.description?.length | 0}/1000
+                </p>
               </label>
               <Field
                 as="textarea"
@@ -282,10 +384,10 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="name" className={styles.title}>
+              <label htmlFor="name" className="title_label">
                 URL
               </label>
-              <p className="mb-4 text-shader_600">
+              <p className="mb-4 text-shader_200 text-sm font-normal">
                 Customize your URL on Demask. Must only contain lowercase
                 letters, numbers, and hyphens.
               </p>
@@ -305,33 +407,41 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
               />
             </div>
             <div>
-              <p className={styles.title}>Category</p>
+              <p className="title_label">Category</p>
               <div className="flex">
                 {Category.map((item, index) => (
-                  <Field
-                    type="button"
-                    name="category"
-                    id="category"
-                    className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-shader_600 border rounded-lg ${
-                      values.category.includes(item.value) &&
-                      "bg-shader_500 text-white"
-                    }`}
-                    key={item.id}
-                    value={item.value}
-                    onClick={() =>
-                      selectCategory(item.value, values.category, setFieldValue)
-                    }
-                  ></Field>
+                  <div key={index}>
+                    <Field
+                      type="button"
+                      name="category"
+                      id="category"
+                      className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-white border-shader_500  border rounded-lg cursor-pointer ${
+                        values.category.includes(item.value)
+                          ? "bg-primary_500 "
+                          : "bg-shader_700"
+                      }`}
+                      key={item.id}
+                      value={item.value}
+                      onClick={() =>
+                        selectCategory(
+                          item.value,
+                          values.category,
+                          setFieldValue
+                        )
+                      }
+                    ></Field>
+                  </div>
                 ))}
               </div>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="name" className={styles.title}>
+              <label htmlFor="name" className="title_label">
                 Featured image
               </label>
-              <p className="mb-4 text-shader_600">
+              <p className="mb-4 text-shader_200 text-sm font-normal">
                 This image will be used for featuring your collection on the
-                homepage, category pages, or other display areas of Demask
+                homepage, category pages, or other display areas of Demask.
+                Recommended size: 500 x500px - Type: Png, Jpeg, Gif ( 50 MB)
               </p>
               <input
                 type="file"
@@ -359,43 +469,57 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                       (imgCollection.current as HTMLInputElement).click();
                     }
                   }}
-                  className="flex flex-col items-center justify-center py-6 border rounded-lg cursor-pointer border-shader_500"
+                  className="flex flex-col items-center justify-center py-2 border rounded-lg cursor-pointer border-shader_500"
                 >
                   {selectedImage ? (
-                    <img
-                      src={URL.createObjectURL(selectedImage)}
-                      alt="selected image"
-                      width={360}
-                      height={360}
-                      className="object-cover w-[160px] rounded-lg mx-auto h-[160px] mb-4"
-                    />
+                    <div className="relative">
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="selected image"
+                        width={360}
+                        height={360}
+                        className="object-cover w-40 rounded-lg mx-auto h-40 mb-4"
+                      />
+                      <div
+                        className="text-white absolute top-1 right-1 bg-shader_400 rounded-full p-1 text-xs font-bold cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage("");
+                          setFieldValue("featureImage", "");
+                        }}
+                      >
+                        <CgClose />
+                      </div>
+                    </div>
                   ) : (
-                    <Image
-                      src={images.pictureFrame}
-                      alt="pictureframe"
-                      width={360}
-                      height={360}
-                      className="object-cover w-[120px] rounded-[2rem] mx-auto"
-                    />
+                    <div className=" h-40 flex items-center justify-center flex-col">
+                      <div className="h-10 w-10 bg-primary_500 bg-opacity-25 rounded-lg flex justify-center items-center">
+                        <UploadIcon
+                          width={24}
+                          height={24}
+                          className=" text-primary_400"
+                        />
+                      </div>
+                      <div className="text-sm text-shader_200 mt-2">
+                        <span>Click here or drag and drop to upload image</span>
+                      </div>
+                    </div>
                   )}
-                  <div className="text-sm text-shader_500 ">
-                    <span>Recommended size: 500 x 500</span>
-                  </div>
                 </div>
               </div>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="name" className={styles.title}>
+              <label htmlFor="name" className="title_label">
                 Collaborators
               </label>
-              <p className="mb-4 text-shader_600">
+              <p className="mb-4 text-shader_200 text-sm font-normal">
                 Collaborators can only edit how this collection or drop appears
                 on Demask
               </p>
               {values?.collaborators &&
                 values.collaborators.map((item: string, index: number) => (
                   <div
-                    className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-shader_600 text-shader_600"
+                    className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-shader_600 text-shader_200"
                     key={index}
                   >
                     <p>{`${item.slice(0, 6)}...${item.slice(-8)}`}</p>
@@ -433,29 +557,28 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   />
                 </div>
               ) : (
-                <p
-                  className="text-sm font-semibold cursor-pointer text-primary_500"
+                <Button
+                  className="w-36 flex gap-x-2"
+                  third
                   onClick={() => setCheckCollaborator(true)}
                 >
-                  + Add collaborator
-                </p>
+                  <PlusIcon width={20} height={20} />
+                  Add collaborator
+                </Button>
               )}
             </div>
-            <label className={styles.title}>Social link</label>
+            <label className="title_label">Social Links</label>
             {socialList.map((item, index) => (
               <div key={index}>
-                <div className="flex mt-4 gap-x-4">
-                  <div className="flex p-2 font-normal rounded-lg bg-shader_500 min-w-[132px] gap-x-2 text-shader_600 ">
-                    {item.icon}
-                    {item.title}
-                  </div>
+                <div className="flex mb-4 gap-x-4 input_item items-center">
+                  <div className="">{item.icon}</div>
                   <Field
                     type="text"
                     value={(values as any)[item.name]}
                     id={item.name}
                     name={item.name}
                     placeholder={item.placeHolder}
-                    className="input_item"
+                    className=" text-shader_100 font-semibold w-full  placeholder:text-shader_300 bg-shader_600 outline-none "
                   />
                 </div>
                 <ErrorMessage
@@ -465,26 +588,16 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 />
               </div>
             ))}
-            <div className="flex justify-center mx-auto my-6 gap-x-6">
-              <Button active>
-                <Link
-                  href={`/profile?chain=${chainId}`}
-                  className="px-2 text-sm font-medium text-white rounded-lg"
-                >
-                  Cancel
-                </Link>
-              </Button>
-              <Button
-                type="submit"
-                primary={dirty && !isSubmitting}
-                active={!dirty || isSubmitting}
-                disabled={!dirty || isSubmitting}
-                className="px-6 py-2"
-                isLoadingBtn={isSubmitting}
-              >
-                Save
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              primary={dirty && !isSubmitting && selectedFile}
+              active={!dirty || isSubmitting || !selectedFile}
+              disabled={!dirty || isSubmitting || !selectedFile}
+              className="px-6 py-2 cursor-pointer"
+              isLoadingBtn={isSubmitting}
+            >
+              Save changes
+            </Button>
           </Form>
         )}
       </Formik>

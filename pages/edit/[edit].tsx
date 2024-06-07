@@ -8,6 +8,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import AccountContext from "@/context/AccountContext";
+import { BackgroundDefault } from "@/components/Backgrounds";
 const updateMeta = {
   ...SEO,
   title: "Edit Collection",
@@ -26,14 +27,14 @@ const EditCollection = () => {
   });
 
   return (
-    <div className="py-6 min-h-[94vh] max-w-[1440px] mx-auto lg:mb-0 lg:px-primary md:px-14 px-4">
+    <BackgroundDefault>
       <NextSeo {...updateMeta} />
       {data ? (
         <EditFormCollection data={data} refetch={refetch} />
       ) : (
         <BiLoaderAlt className="text-2xl animate-spin text-primary_400" />
       )}
-    </div>
+    </BackgroundDefault>
   );
 };
 

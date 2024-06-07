@@ -10,6 +10,7 @@ import { logout, selectProfile, userData } from "@/store/profileSlice";
 import * as userService from "@/libs/service/userService";
 import { getProvider } from "@/libs/connection/getProvider";
 import { network } from "@/libs/constants";
+import { Toaster } from "@/components/ui/sonner";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
@@ -100,6 +101,7 @@ export default function Layout({ children }: PropsWithChildren) {
       </main>
       <Footer />
       <NavFooter />
+      <Toaster richColors />
     </div>
   );
 }

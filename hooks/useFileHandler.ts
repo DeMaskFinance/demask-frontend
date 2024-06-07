@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect, DragEvent } from "react";
+import { toast } from "sonner";
 
 interface UseFileHandlerProps extends UploadFileProps {
   validInput: string[];
@@ -46,10 +47,10 @@ const useFileHandler = ({
           setSelectedFile(fileURL);
           setFileIPFS(await uploadFile(file));
         } else {
-          alert("Please choose a file smaller than 1GB");
+          toast.warning("Please choose a file smaller than 1GB");
         }
       } else {
-        alert("File format error");
+        toast.error("File format error");
       }
     } else {
       console.log("No file");

@@ -334,7 +334,7 @@ export default function AddLiquidity() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
           <div className="order-2">
             <div>
-              <p className={styles.title}>
+              <p className="title_label">
                 <span className="">Choose NFT</span>
                 <span className="text-red">*</span>
               </p>
@@ -351,7 +351,7 @@ export default function AddLiquidity() {
               </div>
             </div>
             <div>
-              <p className={styles.title}>
+              <p className="title_label">
                 <span className="">Choose Token</span>
                 <span className="text-red">*</span>
               </p>
@@ -379,7 +379,7 @@ export default function AddLiquidity() {
               </div>
             </div>
             <div className="mt-5 border-t border-shader_600">
-              <p className={styles.title}>
+              <p className="title_label">
                 <span className="">Deposit</span>
                 <span className="text-red">*</span>
               </p>

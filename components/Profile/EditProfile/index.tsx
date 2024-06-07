@@ -1,19 +1,18 @@
 import { AvatarCustom } from "@/components/Avatars";
-import { EditIcon } from "@/components/Icons";
+import { BackgroundDefault } from "@/components/Backgrounds";
+import { EditIcon, LeftIcon, UploadIcon } from "@/components/Icons";
 import { uploadFile } from "@/libs/service/userService";
 import { selectProfile, userData } from "@/store/profileSlice";
-import Image from "next/image";
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import EditProfileForm from "./EditProfileForm";
-import { BackgroundDefault } from "@/components/Backgrounds";
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
-  const inputBanner = useRef(null);
+  const router = useRouter();
   const [avatarLoading, setAvatarLoading] = useState(false);
-  const [bannerLoading, setBannerLoading] = useState(false);
   const { user, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
   const handleUploadAvatar = async (file: any) => {
@@ -30,18 +29,24 @@ export default function EditProfile() {
 
   return (
     <BackgroundDefault>
-      <div className="px-4 pb-20 lg:px-0 lg:pb-0">
-        <h1 className="mt-8 text-xl font-semibold text-center title">
-          Edit My Profile
-        </h1>
-        <div className="flex justify-center my-6">
-          <div className="relative rounded-full cursor-pointer w-fit h-fit group">
-            <div className="group-hover:brightness-50">
+      <div className="px-4 pb-20 lg:px-0 lg:pb-0 mx-auto max-w-[600px]">
+        <div
+          className="flex items-center cursor-pointer gap-x-2 my-6"
+          onClick={() => router.back()}
+        >
+          <LeftIcon width={20} height={20} />
+
+          <p className="font-semibold text-white">Back</p>
+        </div>
+        <h1 className="text-xl font-bold text-primary_300">Edit Profile</h1>
+        <div className=" my-10">
+          <div className="relative rounded-full cursor-pointer w-fit h-fit group ">
+            <div className="group-hover:brightness-50 transition-all duration-200 ease-in">
               <AvatarCustom
                 avatarUrl={profile?.avatar}
                 size={120}
                 userAddress={profile.userAddress!}
-                className="w-[120px] h-[120px] rounded-full"
+                className="w-36 h-36 rounded-full"
               />
             </div>
             {avatarLoading ? (
@@ -50,15 +55,15 @@ export default function EditProfile() {
               </div>
             ) : (
               <div
-                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex"
+                className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-full group-hover:flex "
                 onClick={() => {
                   if (inputAvatar.current) {
                     (inputAvatar.current as HTMLInputElement).click();
                   }
                 }}
               >
-                <EditIcon width={32} height={32} />
-                <p className="text-xs">600 x 600px</p>
+                <UploadIcon width={24} height={24} />
+                <p className="text-sm mt-2">300 x 300px</p>
               </div>
             )}
           </div>

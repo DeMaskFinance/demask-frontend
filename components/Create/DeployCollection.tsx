@@ -167,7 +167,7 @@ const DeployCollection = () => {
               }) => (
                 <Form className="">
                   <div className="flex flex-col">
-                    <label htmlFor="contractName" className={styles.title}>
+                    <label htmlFor="contractName" className="title_label">
                       Contract Name
                       <p className="text-primary_400">*</p>
                     </label>
@@ -198,7 +198,7 @@ const DeployCollection = () => {
                   </div>
                   <div className="flex mb-5 gap-x-4">
                     <div className="flex flex-col basis-1/2">
-                      <label htmlFor="symbol" className={styles.title}>
+                      <label htmlFor="symbol" className="title_label">
                         Symbol
                         <p className="text-primary_400">*</p>
                       </label>
@@ -218,7 +218,7 @@ const DeployCollection = () => {
                       />
                     </div>
                     <div className="flex flex-col basis-1/2">
-                      <label htmlFor="name" className={styles.title}>
+                      <label htmlFor="name" className="title_label">
                         Chain
                         <p className="text-primary_400">*</p>
                       </label>
