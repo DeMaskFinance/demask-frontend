@@ -48,36 +48,30 @@ const Referral = () => {
   const indexChoice = TABS.findIndex((item) => item.key === tab);
   return (
     <div>
-      <h1 className="mb-6 text-3xl font-semibold text_gradient">
-        Refer and Earn together!
+      <h1 className="mb-3 text-2xl font-bold text-white">
+        REFER AND EARN TOGETHER!
       </h1>
       <div className="mx-auto">
-        <div className="flex flex-col justify-between mb-6 md:flex-row gap-y-6">
+        <div className="flex flex-col justify-between mb-6 md:flex-row gap-y-6 text-shader_100">
           <div className="">
-            <Image
-              src="/images/referral.png"
-              width={470}
-              height={200}
-              alt="img_referral"
-              className="object-cover my-6 h-[100px] w-full"
-            />
             <p>
-              Receive DM Points.<span className="text-primary_400">+10%</span>{" "}
-              forever!
+              Accepting a referral boosts your DM Points by 
+              <span className="text-primary_400">5%</span>.
             </p>
             <p>
               Recieve<span className="text-primary_400"> 5% ($Monad)</span>
                trading fee rebate.
             </p>
             <p>
-              Accepting a referral boosts your DM Points by 
-              <span className="text-primary_400">5%</span>.
+              Receive DM Points.<span className="text-primary_400">+10%</span>{" "}
+              forever!
             </p>
+
             <a
               href="https://docs.demask.finance/programs/refer-friends-to-earn"
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-primary_400 font-semibold cursor-pointer`}
+              className={`text-primary_400 font-semibold cursor-pointer mt-3`}
             >
               How is referral working?
             </a>

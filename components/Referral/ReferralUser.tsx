@@ -19,7 +19,7 @@ const ReferralUser = () => {
   return (
     <div>
       {account && (
-        <div className="p-6 border rounded-lg border-shader_500 ">
+        <div className="p-4 bg-shader_800 border border-shader_500 rounded-lg text-shader_200 text-sm">
           {/* <div className="flex justify-between w-full px-4 py-2 mb-6 font-semibold text-white bg-opacity-50 rounded-lg bg-green ">
       <div>
         <p>Referral status</p>
@@ -27,8 +27,8 @@ const ReferralUser = () => {
       <p>Active</p>
     </div> */}
           <p>Referral link</p>
-          <div className="flex mt-2 mb-4 gap-x-2">
-            <div className="flex items-center w-full px-4 py-2 font-semibold rounded-lg whitespace-nowrap flex-nowrap gap-x-2 bg-shader_700 border-shader_700 text-shader_600 bg-shader_500 dark:bg-shader_700">
+          <div className="flex mt-1 mb-4 gap-x-2">
+            <div className="flex items-center w-full px-3 py-2 font-semibold rounded-lg whitespace-nowrap bg-shader_600 flex-nowrap gap-x-2 border-shader_500  ">
               <span className="">
                 https://test.demask.finance/invite?code={data?.referralCode}
               </span>
@@ -39,8 +39,8 @@ const ReferralUser = () => {
             </div>
           </div>
           <p>Accept a Referral</p>
-          <div className="flex mt-2 gap-x-2">
-            <div className="flex w-full px-4 py-2 font-semibold rounded-lg bg-shader_700 border-shader_700 text-shader_600 bg-shader_500 dark:bg-shader_700 gap-x-2">
+          <div className="flex mt-1 gap-x-2">
+            <div className="flex w-full px-4 py-2 font-semibold rounded-lg  border-shader_700  gap-x-2">
               {data?.referredByAddress ? (
                 <div className="flex items-center gap-x-2">
                   <MdDone className="text-green" /> You're in! Referred by{" "}

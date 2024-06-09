@@ -85,7 +85,7 @@
     @apply font-semibold text-white;
   }
   .title_label {
-    @apply block mt-1 mb-4 text-base font-semibold text-shader_100 flex;
+    @apply mt-1 mb-4 text-base font-semibold text-shader_100 flex;
   }
   .text_gradient {
     @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
@@ -112,7 +112,7 @@
     @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer font-semibold hover:bg-shader_300;
   }
   .content_modal {
-    @apply flex justify-between text-lg font-semibold text-shader_800 dark:text-white;
+    @apply flex justify-between text-lg font-semibold text-shader_800;
   }
   .title_modal {
     @apply text-base font-bold text-white;
