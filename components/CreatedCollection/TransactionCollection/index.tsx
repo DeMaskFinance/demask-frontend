@@ -1,15 +1,15 @@
 import { RefetchIcon, SettingIcon } from "@/components/Icons";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import TabQuery from "@/components/NavChoice/TabQuery";
-import Tippy from "@tippyjs/react/headless";
 import { useQueryClient } from "@tanstack/react-query";
+import Tippy from "@tippyjs/react/headless";
 import { useState } from "react";
+import { BsCaretDownFill } from "react-icons/bs";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Buy from "./Buy";
 import Change from "./Change";
 import Pool from "./Pool";
 import Sell from "./Sell";
-import { BsCaretDownFill } from "react-icons/bs";
 const style = {
   btnWallet:
     "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-primary_500 active:bg-primary_400 text-white hover:text-primary_500 gap-x-2 border-primary_400",
@@ -95,7 +95,12 @@ const TransactionCollection = () => {
         </div>
       </div>
       <div className="flex-col justify-between hidden w-full gap-4 overflow-hidden rounded-lg md:flex lg:flex-row">
-        <TabQuery TABS={TABS} initialItem={tab} indexChoice={indexChoice} />
+        <TabQuery
+          TABS={TABS}
+          initialItem={tab}
+          indexChoice={indexChoice}
+          isDefault={true}
+        />
       </div>
       {/* mobile-tablet */}
       <div className="md:hidden">

@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import HistoryItem from "./HistoryItem";
+import { Pagination } from "@/components/Common/Pagination";
+import TabTable from "@/components/NavChoice/TabTable";
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import AccountContext from "@/context/AccountContext";
-import TabQuery from "@/components/NavChoice/TabQuery";
-import { TabGroups } from "@/components/NavChoice";
-import TabTable from "@/components/NavChoice/TabTable";
-import { Pagination } from "@/components/Common/Pagination";
+import React, { useContext, useState } from "react";
+import HistoryItem from "./HistoryItem";
 interface HistorySwapProps {
   data: DataBase;
   typeERC: string;

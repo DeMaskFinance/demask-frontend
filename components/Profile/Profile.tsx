@@ -128,7 +128,12 @@ const Profile = () => {
       <div className="flex items-center justify-start px-4 mt-6 md:justify-center">
         {/* PC */}
         <div className="hidden w-full md:block">
-          <TabQuery TABS={TABS} initialItem="items" indexChoice={indexChoice} />
+          <TabQuery
+            TABS={TABS}
+            initialItem="items"
+            indexChoice={indexChoice}
+            isDefault
+          />
         </div>
         {/* mobile-tablet */}
         <div className="md:hidden">

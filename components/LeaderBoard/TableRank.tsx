@@ -16,7 +16,7 @@ import {
 import { Pagination } from "../Common/Pagination";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
-  const { demask } = useContext(AccountContext);
+  const { demask, account } = useContext(AccountContext);
   return (
     <tr
       className={`flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500 ${
@@ -44,7 +44,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           userAddress={item.userAddress!}
           className="w-6 h-6 rounded-lg"
         />
-        <p>{item?.name}</p>
+        {item.userAddress === account ? "You" : <p>{item?.name}</p>}
       </td>
       <td
         className={`py-4 flex text-primary_400 items-center justify-center lg:w-full md:w-full w-[140px]`}
@@ -90,8 +90,8 @@ const TableRank = () => {
     });
 
   return (
-    <div className=" mt-10 overflow-x-scroll overflow-y-hidden border rounded-lg bg-shader_800 text-shader_200 border-shader_500 shadow-home min-h-[500px] flex flex-col justify-between">
-      <table className="flex-grow w-full text-sm text-left border-collapse">
+    <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-lg bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
+      <table className="flex-grow w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
         <thead className="uppercase bg-shader_600 text-shader_200">
           <tr className="flex px-4 py-2">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
@@ -113,9 +113,9 @@ const TableRank = () => {
           </tr>
         </thead>
 
-        <tbody className="flex flex-col h-full">
+        <tbody className="flex flex-col h-full flex-auto">
           {isLoading || isFetching ? (
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex items-center justify-center w-full h-full flex-auto">
               <LoadingIcon width={30} height={30} className="animate-spin" />
             </div>
           ) : (

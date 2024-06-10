@@ -26,6 +26,8 @@ const config = {
         nft: "var(--nftItem.metadata.image)",
         "linear-g2":
           "linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)",
+        "referral-gradient":
+          "linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, #BCB4FF 80%, rgba(255, 255, 255, 0.00) 100%)",
       },
       height: {
         header: "56px",
@@ -154,6 +156,15 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         scrollUpHeader: "scrollUpHeader 0.3s ease-in-out",
         "spin-360": "spin 0.5s linear",
+      },
+      inset: {
+        center: "25% 50% auto auto",
+      },
+      transformOrigin: {
+        "center-right": "center right",
+      },
+      transitionDuration: {
+        "6000": "6000ms",
       },
     },
   },

@@ -5,9 +5,12 @@ import { useContext, useState } from "react";
 import { TablePagination } from "../Common/Pagination";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
 import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
+import Link from "next/link";
+import SearchNotFound from "../Search/SearchNotFound";
+import { DiamondIcon, LoadingIcon } from "../Icons";
 
 const MyReferral = () => {
-  const { chainId, account } = useContext(AccountContext);
+  const { chainId, account, demask } = useContext(AccountContext);
   const [page, setPage] = useState(1);
   const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
     useQuery(
@@ -22,79 +25,64 @@ const MyReferral = () => {
     );
 
   return (
-    <div className="flex flex-col">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className=" min-w-full py-2 sm:px-6 lg:px-8 min-h-[500px] flex flex-col justify-between">
-          <div className="overflow-hidden ">
-            <table className="min-w-full text-left text-surface dark:text-white">
-              <thead className="">
-                <tr>
-                  <th scope="col" className="px-6 py-4 ">
-                    Place
-                  </th>
-                  <th scope="col" className="px-10 py-4">
-                    Address
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    DM points
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Time
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {account && (
-                  <>
-                    {isLoading ? (
-                      <TableRowSkeleton length={9} col={4} />
-                    ) : isSuccess && data && data.data.length > 0 ? (
-                      data.data.map((item: any, index: number) => (
-                        <tr
-                          key={index}
-                          className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {item?.rank}
-                          </td>
-                          <td className="px-10 py-4 whitespace-nowrap">
-                            {item?.userAddress}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <ModalNumber data={item?.totalPoints} />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {item?.blockTime}
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="px-6 py-4 text-center whitespace-nowrap"
-                        >
-                          No data
-                        </td>
-                      </tr>
-                    )}
-                  </>
-                )}
-              </tbody>
-            </table>
+    <table className="flex-grow w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
+      <thead className="uppercase bg-shader_600 text-shader_200">
+        <tr className="flex px-4 py-3">
+          <th className="flex justify-start md:w-[70%] w-[100px]">Address</th>
+          <th className="flex justify-end lg:w-full md:w-full w-[100px]">
+            DM points
+          </th>
+          <th className="flex justify-end lg:w-full md:w-full w-[140px] ">
+            Time
+          </th>
+        </tr>
+      </thead>
+
+      <tbody className="flex flex-col h-full">
+        {/* {isLoading || isFetching ? (
+          <div className="flex items-center justify-center w-full h-full">
+            <LoadingIcon width={30} height={30} className="animate-spin" />
           </div>
-          <TablePagination
-            data={data?.data}
-            page={page}
-            setPage={setPage}
-            totalPages={data?.totalPages || 1}
-            isFetching={isFetching}
-            refetch={refetch}
-            isPreviousData={isPreviousData}
-          />
-        </div>
-      </div>
-    </div>
+        ) : isSuccess && data && data.data.length > 0 ? (
+          data.data.map((item: any, index: number) => (
+            <tr
+              key={index}
+              className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 bg-shader_800"
+            >
+              <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px] text-primary_400">
+                <Link
+                  target="_blank"
+                  href={`${demask.urltxHash}address/${item?.userAddress}`}
+                >
+                  {`${item?.userAddress.slice(
+                    0,
+                    8
+                  )}...${item?.userAddress.slice(-6)}`}
+                </Link>
+              </td>
+              <td className="py-4 flex items-center justify-end gap-x-2 lg:w-full md:w-full w-[100px]">
+                <ModalNumber data={item?.totalPoints} />
+                <DiamondIcon width={20} height={20} />
+              </td>
+              <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center ">
+                {item?.blockTime}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={3} className=" w-full ">
+              <SearchNotFound />
+            </td>
+          </tr>
+        )} */}
+        <tr>
+          <td colSpan={3} className=" w-full flex">
+            <SearchNotFound />
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 

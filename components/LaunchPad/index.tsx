@@ -68,6 +68,7 @@ export default function Launchpad() {
               TABS={listTab}
               initialItem="Active"
               indexChoice={indexChoice}
+              isDefault
             />
           </div>
         </div>

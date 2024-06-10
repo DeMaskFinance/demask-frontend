@@ -6,6 +6,8 @@ import { SkeletonTable } from "../Skeleton";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
 import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
 import { TablePagination } from "../Common/Pagination";
+import { getColorType } from "@/libs/utils/getColorType";
+import { DiamondIcon, LoadingIcon } from "../Icons";
 
 const Rewards = () => {
   const { chainId, account, demask } = useContext(AccountContext);
@@ -21,63 +23,52 @@ const Rewards = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="min-w-full py-2 sm:px-6 lg:px-8 min-h-[500px] flex flex-col justify-between">
-          <div className="overflow-hidden">
-            <table className="min-w-full text-left text-surface dark:text-white">
-              <thead className="">
+      <div className="overflow-x-auto ">
+        <div className=" min-w-full  flex flex-col justify-between">
+          <div className="">
+            <table className="w-full text-left text-surface text-white text-sm font-semibold border-collapse min-h-[500px]">
+              <thead className="uppercase bg-shader_600 text-shader_200 ">
                 <tr>
-                  <th scope="col" className="px-6 py-4 w-14">
-                    Place
-                  </th>
-                  <th scope="col" className="px-10 py-4">
-                    Type
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Tx hash
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    DM Points
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Time
-                  </th>
+                  <th className="px-4 py-3">Type</th>
+                  <th className="px-6 py-3 ">Tx hash</th>
+                  <th className="px-6 py-3 text-end">DM Points</th>
+                  <th className="px-6 py-3 flex justify-end">Time</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="">
                 {account && (
                   <>
                     {isLoading ? (
-                      <TableRowSkeleton length={10} col={4} />
+                      <tr>
+                        <td colSpan={3} className="px-4 py-3">
+                          <div className="flex items-center justify-center w-full h-full">
+                            <LoadingIcon
+                              width={30}
+                              height={30}
+                              className="animate-spin"
+                            />
+                          </div>
+                        </td>
+                      </tr>
                     ) : (
                       isSuccess &&
                       data &&
                       data.data.map((item: any, index: number) => (
-                        <tr
-                          key={index}
-                          className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {item.index}
-                          </td>
-                          <td className="px-10 py-4 whitespace-nowrap">
+                        <tr key={index} className="item_table h-12">
+                          <td className="px-4 py-2 whitespace-nowrap flex gap-x-2">
                             {item.pointSource.map(
                               (type: any, index: number) => (
-                                <span
-                                  key={index}
-                                  className={`border text-xs bg-opacity-10 w-16 text-center ${
-                                    type.action === "Buy" ||
-                                    type.action === "Add"
-                                      ? "border-green text-green bg-green"
-                                      : "border-red text-red bg-red"
-                                  } p-1 rounded-lg`}
+                                <div
+                                  className={`bg-opacity-[0.15] px-3 flex text-center ${getColorType(
+                                    type.action
+                                  )} py-1 rounded-lg`}
                                 >
                                   {type.action}
-                                </span>
+                                </div>
                               )
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-primary_400">
+                          <td className="px-6 py-2 whitespace-nowrap text-primary_400">
                             <a
                               href={`${demask.urltxHash}tx/${item.transactionHash}`}
                               target="_blank"
@@ -87,10 +78,11 @@ const Rewards = () => {
                               {item.transactionHash?.slice(-8)}
                             </a>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-6 py-2 whitespace-nowrap flex items-center justify-end text-end">
                             <ModalNumber data={item.point} />
+                            <DiamondIcon width={20} height={20} />
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-6 py-2 whitespace-nowrap text-end">
                             {item.blockTime}
                           </td>
                         </tr>

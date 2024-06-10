@@ -64,7 +64,7 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
       ) : (
         <>
           {topNftFetching ? (
-            <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg"></div>
+            <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg px-3"></div>
           ) : (
             <span className="text-base text-primary_400"></span>
           )}

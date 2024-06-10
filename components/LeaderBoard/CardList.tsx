@@ -10,13 +10,13 @@ import {
 } from "../Icons";
 export const CardListLoading = () => {
   return (
-    <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-shader_700 mb-10 h-fit border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
+    <div className="flex animate-pulse flex-col items-center justify-center px-2 h-[372px] border rounded-lg text-shader_700 mb-10  border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
       <div className="w-[80px] h-[80px] rounded-full bg-slate-700 " />
       <div className="mt-2 mb-6 text-2xl font-semibold">
-        <div className="w-20 h-4 rounded bg-slate-700 "></div>
+        <div className="w-20 h-4 rounded-full bg-slate-700 "></div>
       </div>
 
-      <div className="bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 relative">
+      <div className="bg-shader_600 rounded-lg w-full flex flex-col items-center pt-6 relative">
         <div className="absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit">
           <RankGoldIcon width={24} height={24} className="fill-[#1D85E8]" />
         </div>
@@ -26,7 +26,6 @@ export const CardListLoading = () => {
         <div className="flex my-2 text-sm font-semibold">
           <div className="w-20 h-4 rounded-full bg-slate-700 "></div>
         </div>
-        <p className="text-xs font-medium whitespace-nowrap">Season Volume</p>
       </div>
     </div>
   );

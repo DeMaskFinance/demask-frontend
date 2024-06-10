@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-interface TabGroupProps {
-  choices: string[];
-  activeChoice: string;
-  onChoiceChange: (choice: string) => void;
-}
-
 const TabTable: React.FunctionComponent<TabGroupProps> = ({
   choices,
   activeChoice,

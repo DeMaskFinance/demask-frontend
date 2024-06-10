@@ -88,7 +88,7 @@
     @apply mt-1 mb-4 text-base font-semibold text-shader_100 flex;
   }
   .text_gradient {
-    @apply bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white to-[#BFACFE] bg-clip-text text-transparent;
   }
   .container_modal {
     @apply relative z-50 flex flex-col justify-center cursor-default h-fit bg-shader_800 rounded-lg border border-shader_600;
@@ -119,6 +119,9 @@
   }
   .menu {
     @apply flex flex-col px-2  gap-y-2 bg-shader_500 rounded-lg text-white text-sm p-2;
+  }
+  .item_table {
+    @apply text-white hover:cursor-pointer hover:bg-shader_700 border-y border-shader_500 bg-shader_800 transition-all duration-150 ease-in;
   }
 }
 body {

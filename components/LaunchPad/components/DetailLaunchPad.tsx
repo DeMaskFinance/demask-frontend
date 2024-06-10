@@ -575,7 +575,12 @@ export default function DetailLaunchPad() {
       </div>
       <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 ">
         <div className="flex justify-center">
-          <TabQuery TABS={TABS} initialItem="rule" indexChoice={indexChoice} />
+          <TabQuery
+            TABS={TABS}
+            initialItem="rule"
+            indexChoice={indexChoice}
+            isDefault
+          />
         </div>
         {isLoading ? (
           <div>

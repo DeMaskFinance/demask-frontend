@@ -18,25 +18,25 @@ const Leaderboard = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="min-w-full py-2 sm:px-6 lg:px-8 min-h-[500px] flex flex-col justify-between">
-          <div className="overflow-hidden">
-            <table className="min-w-full text-left text-surface dark:text-white">
-              <thead className="">
+      <div className="overflow-x-auto ">
+        <div className=" min-w-full min-h-[500px] flex flex-col justify-between">
+          <div className="overflow-hidden ">
+            <table className="min-w-full text-left text-surface text-white text-sm font-semibold">
+              <thead className="uppercase bg-shader_600 text-shader_200 ">
                 <tr>
-                  <th scope="col" className="px-6 py-4 w-14">
+                  <th scope="col" className="px-6 py-3 w-14">
                     Place
                   </th>
-                  <th scope="col" className="px-10 py-4">
+                  <th scope="col" className="px-10 py-3">
                     Name
                   </th>
-                  <th scope="col" className="px-6 py-4">
+                  <th scope="col" className="px-6 py-3 ">
                     Address
                   </th>
-                  <th scope="col" className="px-6 py-4">
+                  <th scope="col" className="px-6 py-3 ">
                     Referree
                   </th>
-                  <th scope="col" className="px-6 py-4">
+                  <th scope="col" className="px-6 py-3 text-end">
                     Refferal Code
                   </th>
                 </tr>
@@ -47,42 +47,39 @@ const Leaderboard = () => {
                 ) : isSuccess && data && data.data.length > 0 ? (
                   <>
                     {account && (
-                      <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600 bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                      <tr className="item_table bg-primary_500 bg-opacity-25 hover:bg-shader_500">
+                        <td className="px-6 py-2 whitespace-nowrap">
                           {data.userRank?.rank}
                         </td>
-                        <td className="flex px-10 py-4 whitespace-nowrap gap-x-2">
+                        <td className="flex px-10 py-3 whitespace-nowrap gap-x-2">
                           <AvatarCustom
                             avatarUrl={data.userRank?.avatar}
                             size={24}
                             userAddress={data.userRank.userAddress!}
                             className="w-6 h-6 rounded-lg"
                           />
-                          <p>{data.userRank?.name}</p>
+                          <p>You</p>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-2 whitespace-nowrap">
                           <p>{`${data.userRank?.userAddress.slice(
                             0,
                             6
                           )}...${data.userRank?.userAddress.slice(-8)}`}</p>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-2 whitespace-nowrap">
                           {data.userRank?.count}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-2 whitespace-nowrap text-end">
                           {data.userRank?.referralCode}
                         </td>
                       </tr>
                     )}
                     {data.data.map((item: any, index: number) => (
-                      <tr
-                        key={index}
-                        className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap">
+                      <tr key={index} className="item_table">
+                        <td className="px-6 py-3 whitespace-nowrap">
                           {item?.rank}
                         </td>
-                        <td className="flex px-10 py-4 whitespace-nowrap gap-x-2">
+                        <td className="flex px-10 py-3 whitespace-nowrap gap-x-2">
                           <AvatarCustom
                             avatarUrl={item?.avatar}
                             size={24}
@@ -91,16 +88,16 @@ const Leaderboard = () => {
                           />
                           <p>{item?.name}</p>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-3 whitespace-nowrap">
                           <p>{`${item?.userAddress.slice(
                             0,
                             6
                           )}...${item?.userAddress.slice(-8)}`}</p>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-3 whitespace-nowrap">
                           {item?.count}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-3 whitespace-nowrap text-end">
                           {item?.referralCode}
                         </td>
                       </tr>

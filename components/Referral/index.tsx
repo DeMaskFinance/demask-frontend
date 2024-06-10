@@ -11,6 +11,8 @@ import { BsCaretDownFill } from "react-icons/bs";
 import StaticTable from "./StaticTable";
 import ReferralUser from "./ReferralUser";
 import AccountContext from "@/context/AccountContext";
+import { SendIcon } from "../Icons";
+import TabTable from "../NavChoice/TabTable";
 const style = {
   btnWallet:
     "flex items-center h-10 hover:border-shader_600 dark:hover:bg-shader_600 pl-2 lg:px-4 pr-2 justify-center dark:bg-shader_700 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
@@ -48,30 +50,47 @@ const Referral = () => {
   const indexChoice = TABS.findIndex((item) => item.key === tab);
   return (
     <div>
-      <h1 className="mb-3 text-2xl font-bold text-white">
-        REFER AND EARN TOGETHER!
-      </h1>
       <div className="mx-auto">
         <div className="flex flex-col justify-between mb-6 md:flex-row gap-y-6 text-shader_100">
-          <div className="">
-            <p>
-              Accepting a referral boosts your DM Points by 
-              <span className="text-primary_400">5%</span>.
-            </p>
-            <p>
-              Recieve<span className="text-primary_400"> 5% ($Monad)</span>
-               trading fee rebate.
-            </p>
-            <p>
-              Receive DM Points.<span className="text-primary_400">+10%</span>{" "}
-              forever!
-            </p>
-
+          <div className="flex flex-col gap-y-3">
+            <Image
+              width={72}
+              height={72}
+              src="/images/referralDemask.png"
+              alt="referral"
+              className=""
+            />
+            <h1 className=" text-2xl font-bold text-white">
+              REFER AND EARN TOGETHER!
+            </h1>
+            <div className="relative w-fit rounded-full overflow-hidden p-[1px]">
+              <div className="flex items-center gap-x-2 px-3 border-primary_500 border-opacity-30 border z-10 rounded-full  text-sm  font-semibold bg-shader_800 relative">
+                Share your referral link with friends
+                <span>
+                  <SendIcon width={30} height={30} />
+                </span>
+              </div>
+              <div className="absolute h-1/2 bg-referral-gradient w-full animate-spin inset-center origin-center-right duration-6000 -z-10"></div>
+            </div>
+            <div className="">
+              <p>
+                Accepting a referral boosts your DM Points by 
+                <span className="text-primary_400">5%</span>.
+              </p>
+              <p>
+                Recieve<span className="text-primary_400"> 5% ($Monad)</span>
+                 trading fee rebate.
+              </p>
+              <p>
+                Receive DM Points.<span className="text-primary_400">+10%</span>{" "}
+                forever!
+              </p>
+            </div>
             <a
               href="https://docs.demask.finance/programs/refer-friends-to-earn"
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-primary_400 font-semibold cursor-pointer mt-3`}
+              className={`text-primary_400 font-semibold cursor-pointer`}
             >
               How is referral working?
             </a>
@@ -79,14 +98,15 @@ const Referral = () => {
           <ReferralUser />
         </div>
         {account && <StaticTable />}
-        <div className="p-6 mt-6 border rounded-lg border-shader_500 bg-shader_700 border-shader_700">
-          <div className="flex items-center mb-4">
+        <div className=" mt-6 ">
+          <div className="flex items-center">
             {/* PC */}
             <div className="hidden md:block">
               <TabQuery
                 TABS={TABS}
                 initialItem="items"
                 indexChoice={indexChoice}
+                isDefault={false}
               />
             </div>
             {/* mobile-tablet */}
@@ -99,7 +119,7 @@ const Referral = () => {
                 onClickOutside={() => setVisible(false)}
                 render={(attrs) => (
                   <div
-                    className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 border-shader_700"
+                    className="w-[280px] px-2 pt-1 pb-1 border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 "
                     tabIndex={-1}
                     {...attrs}
                   >

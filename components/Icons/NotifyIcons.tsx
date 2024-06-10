@@ -395,3 +395,76 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+export const SendIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 30 30"
+      fill="none"
+    >
+      <g filter="url(#filter0_d_746_20186)">
+        <path
+          d="M22.9048 15.7441C23.0969 15.4349 22.9913 14.9908 22.6506 14.8304C22.6506 14.8304 7.91394 7.85928 7.91077 7.85883C7.68151 7.75486 7.39925 7.79116 7.2076 7.9628C7.0241 8.12816 6.9498 8.41586 7.03543 8.64754L9.28494 14.7685L13.4034 14.7685C14.2189 14.7685 14.2393 16.0363 13.4034 16.0359H9.28494L7.03407 22.16C6.96022 22.3917 7.01912 22.6435 7.18358 22.8214C7.36209 23.015 7.67834 23.0446 7.91303 22.9451L22.6502 15.9736C22.7559 15.9233 22.8444 15.8436 22.9048 15.7441Z"
+          fill="url(#paint0_linear_746_20186)"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_746_20186"
+          x="0"
+          y="0.800781"
+          width="30"
+          height="29.1992"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3.5" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.564706 0 0 0 0 0.458824 0 0 0 0 0.996078 0 0 0 1 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_746_20186"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_746_20186"
+            result="shape"
+          />
+        </filter>
+        <linearGradient
+          id="paint0_linear_746_20186"
+          x1="7"
+          y1="15.4008"
+          x2="23"
+          y2="15.4008"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#F694FF" />
+          <stop offset="0.333333" stop-color="#4FFFF4" />
+          <stop offset="0.666667" stop-color="#FFE7AA" />
+          <stop offset="1" stop-color="#FF79EA" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+};
