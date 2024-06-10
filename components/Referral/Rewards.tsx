@@ -8,6 +8,8 @@ import { TableRowSkeleton } from "../Skeleton/SkeletonTable";
 import { TablePagination } from "../Common/Pagination";
 import { getColorType } from "@/libs/utils/getColorType";
 import { DiamondIcon, LoadingIcon } from "../Icons";
+import SearchNotFound from "../Search/SearchNotFound";
+import Link from "next/link";
 
 const Rewards = () => {
   const { chainId, account, demask } = useContext(AccountContext);
@@ -22,89 +24,70 @@ const Rewards = () => {
     });
 
   return (
-    <div className="flex flex-col">
-      <div className="overflow-x-auto ">
-        <div className=" min-w-full  flex flex-col justify-between">
-          <div className="">
-            <table className="w-full text-left text-surface text-white text-sm font-semibold border-collapse min-h-[500px]">
-              <thead className="uppercase bg-shader_600 text-shader_200 ">
-                <tr>
-                  <th className="px-4 py-3">Type</th>
-                  <th className="px-6 py-3 ">Tx hash</th>
-                  <th className="px-6 py-3 text-end">DM Points</th>
-                  <th className="px-6 py-3 flex justify-end">Time</th>
-                </tr>
-              </thead>
-              <tbody className="">
-                {account && (
-                  <>
-                    {isLoading ? (
-                      <tr>
-                        <td colSpan={3} className="px-4 py-3">
-                          <div className="flex items-center justify-center w-full h-full">
-                            <LoadingIcon
-                              width={30}
-                              height={30}
-                              className="animate-spin"
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    ) : (
-                      isSuccess &&
-                      data &&
-                      data.data.map((item: any, index: number) => (
-                        <tr key={index} className="item_table h-12">
-                          <td className="px-4 py-2 whitespace-nowrap flex gap-x-2">
-                            {item.pointSource.map(
-                              (type: any, index: number) => (
-                                <div
-                                  className={`bg-opacity-[0.15] px-3 flex text-center ${getColorType(
-                                    type.action
-                                  )} py-1 rounded-lg`}
-                                >
-                                  {type.action}
-                                </div>
-                              )
-                            )}
-                          </td>
-                          <td className="px-6 py-2 whitespace-nowrap text-primary_400">
-                            <a
-                              href={`${demask.urltxHash}tx/${item.transactionHash}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {item.transactionHash?.slice(0, 4)}...
-                              {item.transactionHash?.slice(-8)}
-                            </a>
-                          </td>
-                          <td className="px-6 py-2 whitespace-nowrap flex items-center justify-end text-end">
-                            <ModalNumber data={item.point} />
-                            <DiamondIcon width={20} height={20} />
-                          </td>
-                          <td className="px-6 py-2 whitespace-nowrap text-end">
-                            {item.blockTime}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <TablePagination
-            data={data?.data}
-            page={page}
-            setPage={setPage}
-            totalPages={data?.totalPages | 1}
-            isFetching={isFetching}
-            refetch={refetch}
-            isPreviousData={isPreviousData}
-          />
-        </div>
-      </div>
-    </div>
+    <table className="w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
+      <thead className="uppercase bg-shader_600 text-shader_200">
+        <tr className="flex px-4 py-3">
+          <th className="flex justify-start md:w-full w-[100px]">Type</th>
+          <th className="flex justify-start md:w-full w-[100px]">Tx hash</th>
+          <th className="flex justify-end lg:w-full md:w-full w-[100px]">
+            DM points
+          </th>
+          <th className="flex justify-end lg:w-full md:w-full w-[140px] ">
+            Time
+          </th>
+        </tr>
+      </thead>
+
+      {account ? (
+        <tbody className="flex flex-col h-full flex-auto ">
+          {isLoading ? (
+            <div className="flex items-center justify-center w-full h-full flex-auto ">
+              <LoadingIcon width={30} height={30} className="animate-spin" />
+            </div>
+          ) : isSuccess && data && data.data.length > 0 ? (
+            data.data.map((item: any, index: number) => (
+              <tr
+                key={index}
+                className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 bg-shader_800"
+              >
+                <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px] text-primary_400 gap-x-1">
+                  {item.pointSource.map((type: any, index: number) => (
+                    <div
+                      className={`bg-opacity-[0.15] px-3 flex text-center ${getColorType(
+                        type.action
+                      )} py-1 rounded-lg`}
+                    >
+                      {type.action}
+                    </div>
+                  ))}
+                </td>
+                <td className="flex justify-start md:w-full w-[100px] items-center text-primary_400">
+                  <a
+                    href={`${demask.urltxHash}tx/${item.transactionHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.transactionHash?.slice(0, 4)}...
+                    {item.transactionHash?.slice(-8)}
+                  </a>
+                </td>
+                <td className="py-2 flex items-center justify-end gap-x-1 lg:w-full md:w-full w-[100px]">
+                  <ModalNumber data={item.point} />
+                  <DiamondIcon width={20} height={20} />
+                </td>
+                <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center ">
+                  {item?.blockTime}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <SearchNotFound />
+          )}
+        </tbody>
+      ) : (
+        <SearchNotFound />
+      )}
+    </table>
   );
 };
 

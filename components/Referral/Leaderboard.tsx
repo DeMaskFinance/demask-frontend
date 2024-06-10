@@ -6,6 +6,8 @@ import { TableRowSkeleton } from "../Skeleton";
 import { AvatarCustom } from "../Avatars";
 import { TablePagination } from "../Common/Pagination";
 import { ItemTableRank } from "../LeaderBoard/TableRank";
+import { LoadingIcon } from "../Icons";
+import SearchNotFound from "../Search/SearchNotFound";
 
 const Leaderboard = () => {
   const { chainId, demask, account } = useContext(AccountContext);
@@ -17,110 +19,67 @@ const Leaderboard = () => {
     });
 
   return (
-    <div className="flex flex-col">
-      <div className="overflow-x-auto ">
-        <div className=" min-w-full min-h-[500px] flex flex-col justify-between">
-          <div className="overflow-hidden ">
-            <table className="min-w-full text-left text-surface text-white text-sm font-semibold">
-              <thead className="uppercase bg-shader_600 text-shader_200 ">
-                <tr>
-                  <th scope="col" className="px-6 py-3 w-14">
-                    Place
-                  </th>
-                  <th scope="col" className="px-10 py-3">
-                    Name
-                  </th>
-                  <th scope="col" className="px-6 py-3 ">
-                    Address
-                  </th>
-                  <th scope="col" className="px-6 py-3 ">
-                    Referree
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-end">
-                    Refferal Code
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
-                  <TableRowSkeleton length={9} col={4} />
-                ) : isSuccess && data && data.data.length > 0 ? (
-                  <>
-                    {account && (
-                      <tr className="item_table bg-primary_500 bg-opacity-25 hover:bg-shader_500">
-                        <td className="px-6 py-2 whitespace-nowrap">
-                          {data.userRank?.rank}
-                        </td>
-                        <td className="flex px-10 py-3 whitespace-nowrap gap-x-2">
-                          <AvatarCustom
-                            avatarUrl={data.userRank?.avatar}
-                            size={24}
-                            userAddress={data.userRank.userAddress!}
-                            className="w-6 h-6 rounded-lg"
-                          />
-                          <p>You</p>
-                        </td>
-                        <td className="px-6 py-2 whitespace-nowrap">
-                          <p>{`${data.userRank?.userAddress.slice(
-                            0,
-                            6
-                          )}...${data.userRank?.userAddress.slice(-8)}`}</p>
-                        </td>
-                        <td className="px-6 py-2 whitespace-nowrap">
-                          {data.userRank?.count}
-                        </td>
-                        <td className="px-6 py-2 whitespace-nowrap text-end">
-                          {data.userRank?.referralCode}
-                        </td>
-                      </tr>
-                    )}
-                    {data.data.map((item: any, index: number) => (
-                      <tr key={index} className="item_table">
-                        <td className="px-6 py-3 whitespace-nowrap">
-                          {item?.rank}
-                        </td>
-                        <td className="flex px-10 py-3 whitespace-nowrap gap-x-2">
-                          <AvatarCustom
-                            avatarUrl={item?.avatar}
-                            size={24}
-                            userAddress={item.userAddress!}
-                            className="w-6 h-6 rounded-lg"
-                          />
-                          <p>{item?.name}</p>
-                        </td>
-                        <td className="px-6 py-3 whitespace-nowrap">
-                          <p>{`${item?.userAddress.slice(
-                            0,
-                            6
-                          )}...${item?.userAddress.slice(-8)}`}</p>
-                        </td>
-                        <td className="px-6 py-3 whitespace-nowrap">
-                          {item?.count}
-                        </td>
-                        <td className="px-6 py-3 whitespace-nowrap text-end">
-                          {item?.referralCode}
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                ) : (
-                  <p></p>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <TablePagination
-            data={data?.data}
-            page={page}
-            setPage={setPage}
-            totalPages={data?.totalPages || 1}
-            isFetching={isFetching}
-            refetch={refetch}
-            isPreviousData={isPreviousData}
-          />
-        </div>
-      </div>
-    </div>
+    <table className="w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
+      <thead className="uppercase bg-shader_600 text-shader_200">
+        <tr className="flex px-4 py-3">
+          <th className="flex justify-start md:w-full w-[100px]">Place</th>
+          <th className="flex justify-start md:w-full w-[100px]">Name</th>
+          <th className="flex justify-start md:w-full w-[100px]">Address</th>
+          <th className="flex justify-center lg:w-full md:w-full w-[100px]">
+            Referree
+          </th>
+          <th className="flex justify-end lg:w-full md:w-full w-[140px] ">
+            Refferal Code
+          </th>
+        </tr>
+      </thead>
+
+      {account ? (
+        <tbody className="flex flex-col h-full flex-auto ">
+          {isLoading ? (
+            <div className="flex items-center justify-center w-full h-full flex-auto ">
+              <LoadingIcon width={30} height={30} className="animate-spin" />
+            </div>
+          ) : isSuccess && data && data.data.length > 0 ? (
+            data.data.map((item: any, index: number) => (
+              <tr
+                key={index}
+                className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 bg-shader_800"
+              >
+                <td className="py-3 flex items-center justify-start md:w-full w-[100px]1">
+                  {data.userRank?.rank}
+                </td>
+                <td className="flex justify-start md:w-full w-[100px] items-center gap-x-2">
+                  <AvatarCustom
+                    avatarUrl={item?.avatar}
+                    size={24}
+                    userAddress={item.userAddress!}
+                    className="w-6 h-6 rounded-lg"
+                  />
+                  <p>{item?.name}</p>
+                </td>
+                <td className="py-2 flex items-center justify-start  lg:w-full md:w-full w-[100px]">
+                  <p>{`${item?.userAddress.slice(
+                    0,
+                    6
+                  )}...${item?.userAddress.slice(-8)}`}</p>
+                </td>
+                <td className="flex justify-center lg:w-full md:w-full w-[140px] items-center ">
+                  {item?.count}
+                </td>
+                <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center ">
+                  {item?.referralCode}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <SearchNotFound />
+          )}
+        </tbody>
+      ) : (
+        <SearchNotFound />
+      )}
+    </table>
   );
 };
 

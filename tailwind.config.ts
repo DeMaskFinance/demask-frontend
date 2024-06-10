@@ -29,6 +29,9 @@ const config = {
         "referral-gradient":
           "linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, #BCB4FF 80%, rgba(255, 255, 255, 0.00) 100%)",
       },
+      opacity: {
+        15: "0.15",
+      },
       height: {
         header: "56px",
         chart: "776px",

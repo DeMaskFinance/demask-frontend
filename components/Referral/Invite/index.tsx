@@ -1,7 +1,9 @@
 import { Button } from "@/components/Buttons";
+import { LoadingIcon } from "@/components/Icons";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import { referralApply } from "@/libs/service/referralService";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { Fragment, useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -25,22 +27,54 @@ const Invite = () => {
 
   return (
     <div className="w-[600px] mx-auto">
-      <h1 className="mb-6 text-3xl font-semibold text_gradient">
-        Refer and Earn together!
-      </h1>
-      <p className="my-6">
-        Join now to start earning points! Accepting a referral boosts your
-        points by 5% forever.
-      </p>
-      <p className="text-primary_400">Complete to Join:</p>
-      <div className="p-6 mt-6 mb-4 border rounded-lg border-shader_500 bg-shader_700 border-shader_700">
+      <div className="">
+        <Image
+          width={72}
+          height={72}
+          src="/images/referralDemask.png"
+          alt="referral"
+          className=""
+        />
+        <h1 className=" text-2xl font-bold text-white mt-6">
+          REFER AND EARN TOGETHER!
+        </h1>
+        <p className="my-2 text-shader_300">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <p className="text-primary_400">Complete to join:</p>
+      </div>
+      {check && account && (
+        <div className="my-2">
+          {check.isSuccess ? (
+            <div className="p-3 rounded-lg bg-green bg-opacity-15">
+              <p className="font-semibold text-green">Success</p>
+              <p className="mt-4 text-sm text-shader_100">{check.message}</p>
+            </div>
+          ) : (
+            <div className="p-3 rounded-lg bg-red bg-opacity-15">
+              <p className="font-semibold text-red">Failed</p>
+              <p className="mt-4 text-sm text-shader_100">
+                Addition failed. Please check your information and try again.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+      <div className="p-6 mt-2 mb-4 border rounded-lg border-shader_500 bg-shader_700 text-white">
         <div className="flex h-20 gap-x-6">
           <div className="relative h-full">
-            <div className="flex items-center justify-center w-8 h-8 text-white rounded-full bg-primary_400">
-              {account ? <MdDone /> : <BiLoaderAlt className="animate-spin" />}
-              <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-primary_400 absolute bg-opacity-20"></div>
+            <div className="w-8 h-8 flex justify-center items-center bg-primary_500 bg-opacity-10 rounded-full">
+              <div className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-primary_400">
+                {account ? (
+                  <MdDone />
+                ) : (
+                  <BiLoaderAlt className="animate-spin" />
+                )}
+                <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-primary_400 absolute bg-opacity-20"></div>
+              </div>
             </div>
-            <div className="absolute w-[1px] h-[100%] bg-primary_400 top-[11%] -z-40 left-[50%]"></div>
+            <div className="absolute border-r-[1px] border-dashed border-primary_400 h-[100%] top-[40%]  left-[50%]"></div>
           </div>
           {account ? (
             "Connected"
@@ -51,43 +85,28 @@ const Invite = () => {
           )}
         </div>
         <div className="flex items-center gap-x-6">
-          <div className="flex items-center justify-center w-8 h-8 text-white rounded-full bg-primary_400">
-            {!account ? (
-              <p className="leading-snug">x</p>
-            ) : isLoading ? (
-              <BiLoaderAlt className="animate-spin" />
-            ) : check.isSuccess ? (
-              <MdDone />
-            ) : (
-              <p className="leading-snug">x</p>
-            )}
-            <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-primary_400 absolute bg-opacity-20"></div>
+          <div className="w-8 h-8 flex justify-center items-center bg-primary_500 bg-opacity-10 rounded-full">
+            <div className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-primary_400">
+              {!account ? (
+                <p className="leading-snug">x</p>
+              ) : isLoading ? (
+                <LoadingIcon width={24} height={24} className="animate-spin" />
+              ) : check.isSuccess ? (
+                <MdDone />
+              ) : (
+                <p className="leading-snug">x</p>
+              )}
+              <div className="flex items-center justify-center w-12 h-12 z-[-1] text-white rounded-full bg-primary_400 absolute bg-opacity-20"></div>
+            </div>
           </div>
           <div>
-            Referral Check
-            <div className="p-2 px-4 text-center border rounded-lg borer-shader_500">
+            Referral Check:
+            <div className="p-2 px-4 text-center border rounded-lg border-shader_400 bg-shader_500">
               {referral}
             </div>
           </div>
         </div>
       </div>
-      {check && account && (
-        <Fragment>
-          {check.isSuccess ? (
-            <div className="p-4 rounded-lg bg-green dark:bg-opacity-20">
-              <p className="font-semibold text-[#21735f]">Success</p>
-              <p className="mt-4 text-sm text-white">{check.message}</p>
-            </div>
-          ) : (
-            <div className="p-4 rounded-lg bg-red">
-              <p className="font-semibold text-rose-800">Failed</p>
-              <p className="mt-4 text-sm text-white">
-                Addition failed. Please check your information and try again.
-              </p>
-            </div>
-          )}
-        </Fragment>
-      )}
 
       <Button
         primary={account}
