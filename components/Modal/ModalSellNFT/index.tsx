@@ -55,14 +55,13 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   setHash,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const { RPC: rpc } = demask;
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
-  const [preFectch, setPreFetch] = useState<boolean>(false);
+  const [totalPay, setTotalPay] = useState<number>(0);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
 
   const handleClose = (
@@ -129,11 +128,11 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
 
   useEffect(() => {
     if (data && amountTokenSell) {
-      setIsLoading(true);
       setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
-      setIsLoading(false);
+      setTotalPay(amountTokenSell - totalFee);
     } else {
       setAmountSellDec(0);
+      setTotalPay(0);
     }
   }, [data, slippage, amountTokenSell, totalFee]);
   const queryClient = useQueryClient();
@@ -141,15 +140,13 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   useEffect(() => {
     const load = setInterval(() => {
       if (isOpenSellNFT) {
-        setPreFetch(true);
-      } else {
-        setPreFetch(false);
+        setUpdatePrice(!updatePrice);
       }
     }, 20000);
     return () => {
       clearInterval(load);
     };
-  }, [isOpenSellNFT, preFectch]);
+  }, [isOpenSellNFT]);
   const handleSellNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
@@ -345,39 +342,27 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
               <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10">
                 <p className="text-primary_200">Total Pay</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  <p>100</p>
+                  <FormatNumber
+                    number={Number(
+                      divideByDecimal(totalPay.toString(), data.tokenDecimals)
+                    ).toString()}
+                  />
                   <EtherIcon width={14} height={14} />
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center">
               <Button
-                disabled={isLoadingInforDML || preFectch}
-                primary={!isLoadingInforDML && !preFectch}
+                disabled={isLoadingInforDML}
+                primary={!isLoadingInforDML}
                 className="px-8 py-3"
                 // active={isLoadingInforDML || preFectch}
-                isLoadingBtn={isLoadingInforDML || preFectch}
+                isLoadingBtn={isLoadingInforDML}
                 onClick={handleSellNFT}
               >
                 Confirm
               </Button>
             </div>
-            {preFectch && (
-              <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-                <p className="text-xs">Price Updated</p>
-                <Button
-                  disabled={isLoadingInforDML}
-                  primary
-                  className="px-6 py-2 bg-primary_400"
-                  onClick={() => {
-                    setUpdatePrice(!updatePrice);
-                    setPreFetch(false);
-                  }}
-                >
-                  Accept
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </div>

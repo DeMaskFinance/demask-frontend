@@ -63,15 +63,16 @@ const Referral = () => {
             <h1 className=" text-2xl font-bold text-white">
               REFER AND EARN TOGETHER!
             </h1>
-            <div className="relative w-fit rounded-full overflow-hidden p-[1px]">
-              <div className="flex items-center gap-x-2 px-3 border-primary_500 border-opacity-30 border z-10 rounded-full  text-sm  font-semibold bg-shader_800 relative">
-                Share your referral link with friends
-                <span>
+
+            <div className="referral_send referral_active">
+              <div className="overlay">
+                <div className="flex items-center gap-x-2 pl-4 pr-1 z-10 rounded-full  text-sm  font-semibold bg-shader_800 relative w-full">
+                  Share your referral link with friends
                   <SendIcon width={30} height={30} />
-                </span>
+                </div>
               </div>
-              <div className="absolute h-1/2 bg-referral-gradient w-full animate-spin inset-center origin-center-right duration-6000 -z-10"></div>
             </div>
+
             <div className="">
               <p>
                 Accepting a referral boosts your DM Points by 

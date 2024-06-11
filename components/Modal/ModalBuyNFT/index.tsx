@@ -58,12 +58,11 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const { RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-  const { allowanceToken, bigNumberBalance } = useInformationToken(
+  const { bigNumberBalance } = useInformationToken(
     account,
     tokenAddress,
     wallet,
@@ -107,15 +106,13 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   useEffect(() => {
     const load = setInterval(() => {
       if (isOpenBuyNFT) {
-        setPreFetch(true);
-      } else {
-        setPreFetch(false);
+        setUpdatePrice(!updatePrice);
       }
     }, 20000);
     return () => {
       clearInterval(load);
     };
-  }, [isOpenBuyNFT, preFectch]);
+  }, [isOpenBuyNFT]);
 
   useEffect(() => {
     if (Number(inputNFT) < Number(reserveNFT)) {
@@ -339,39 +336,30 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10">
                 <p className="text-primary_200">Total Pay</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  <p>100</p>
+                  <FormatNumber
+                    number={Number(
+                      divideByDecimal(
+                        amountTokenBuy.toString(),
+                        data.tokenDecimals
+                      )
+                    ).toString()}
+                  />
                   <EtherIcon width={14} height={14} />
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center">
               <Button
-                disabled={isLoadingInforDML || preFectch}
-                primary={!isLoadingInforDML && !preFectch}
+                disabled={isLoadingInforDML}
+                primary={!isLoadingInforDML}
                 className="px-8 py-3"
                 // active={isLoadingInforDML || preFectch}
-                isLoadingBtn={isLoadingInforDML || preFectch}
+                isLoadingBtn={isLoadingInforDML}
                 onClick={handleBuyNFT}
               >
                 Confirm
               </Button>
             </div>
-            {preFectch && (
-              <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-                <p className="text-xs">Price Updated</p>
-                <Button
-                  disabled={isLoadingInforDML}
-                  primary
-                  className="px-6 py-2 bg-primary_400"
-                  onClick={() => {
-                    setUpdatePrice(!updatePrice);
-                    setPreFetch(false);
-                  }}
-                >
-                  Accept
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </div>

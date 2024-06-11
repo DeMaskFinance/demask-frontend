@@ -518,12 +518,16 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         </form>
         {inputNFTValue && (
           <div className="h-4">
-            {activeChoice === "Buy" && Math.floor(amountInMax) === 0 && (
-              <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
-            )}
-            {activeChoice === "Sell" && Math.floor(amountSellDec) === 0 && (
-              <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
-            )}
+            {activeChoice === "Buy" &&
+              Math.floor(amountInMax) === 0 &&
+              !isLoadingBuy && (
+                <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't buy</p>
+              )}
+            {activeChoice === "Sell" &&
+              Math.floor(amountSellDec) === 0 &&
+              !isLoadingSell && (
+                <p className="mt-0 mb-2 ml-3 text-xs text-red">Can't sell</p>
+              )}
           </div>
         )}
         <div className="flex justify-center w-full">

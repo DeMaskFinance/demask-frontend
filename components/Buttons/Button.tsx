@@ -87,7 +87,9 @@ const Button: FunctionComponent<ButtonProps> = ({
       `}
     >
       {isLoadingBtn ? (
-        <div className="flex items-center justify-center w-full rounded-lg h-11 bg-primary_500">
+        <div
+          className={`flex items-center justify-center w-full rounded-lg bg-primary_500 ${className}`}
+        >
           <BiLoaderAlt className="mr-2 text-base text-white animate-spin" />
           <p className="text-white">Fetching Quotes</p>
         </div>
