@@ -42,24 +42,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const collectionAddress = useRouter().query.edit as string;
   const validInput = validCollectionInput;
   const uploadFile = uploadFileIPFSCollection;
-  const {
-    uploadRef,
-    inputRef,
-    itemRef,
-    handleDragOver,
-    handleLeave,
-    handleDrop,
-    handleChangeFile,
-    handleClickFile,
-  } = useFileHandler({
-    validInput,
-    fileType,
-    selectedFile,
-    setSelectedFile,
-    setFileType,
-    uploadFile,
-    setFileIPFS,
-  });
+
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required").max(50),
     description: yup.string().required("Description is a required").max(1000),
@@ -185,48 +168,48 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     // Handle form submission
     console.log("!23312", values);
 
-    try {
-      await collectionService.updateCollection(
-        {
-          name: values.name,
-          description: values.description,
-          url: values.url,
-          // category: values.category,
-          collaborators: values.collaborator
-            ? [...values.collaborators, values.collaborator]
-            : values.collaborators,
-          socials: {
-            facebook: values.facebook,
-            twitter: values.twitter,
-            telegram: values.telegram,
-            website: values.website,
-          },
-          category: values.category,
-        },
-        collectionAddress,
-        chainId
-      );
-      if (selectedImage) {
-        await collectionService.uploadFileCollection({
-          featureImage: values.featureImage,
-          chainId,
-          collectionAddress,
-        });
-      }
-      if (selectedFile) {
-        await collectionService.uploadFileCollection({
-          avatar: fileIPFS,
-          chainId,
-          collectionAddress,
-        });
-      }
-      toast.success("Updated Successed");
-      queryClient.refetchQueries(["detailCollection"]);
-      setSelectedImage("");
-    } catch (error) {
-      toast.error("Updated Error");
-      console.error(error);
-    }
+    // try {
+    //   await collectionService.updateCollection(
+    //     {
+    //       name: values.name,
+    //       description: values.description,
+    //       url: values.url,
+    //       // category: values.category,
+    //       collaborators: values.collaborator
+    //         ? [...values.collaborators, values.collaborator]
+    //         : values.collaborators,
+    //       socials: {
+    //         facebook: values.facebook,
+    //         twitter: values.twitter,
+    //         telegram: values.telegram,
+    //         website: values.website,
+    //       },
+    //       category: values.category,
+    //     },
+    //     collectionAddress,
+    //     chainId
+    //   );
+    //   if (selectedImage) {
+    //     await collectionService.uploadFileCollection({
+    //       featureImage: values.featureImage,
+    //       chainId,
+    //       collectionAddress,
+    //     });
+    //   }
+    //   if (selectedFile) {
+    //     await collectionService.uploadFileCollection({
+    //       avatar: fileIPFS,
+    //       chainId,
+    //       collectionAddress,
+    //     });
+    //   }
+    //   toast.success("Updated Successed");
+    //   queryClient.refetchQueries(["detailCollection"]);
+    //   setSelectedImage("");
+    // } catch (error) {
+    //   toast.error("Updated Error");
+    //   console.error(error);
+    // }
   };
   const initialValues = {
     name: data?.name,
@@ -264,342 +247,369 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         onSubmit={onSubmit}
         enableReinitialize
       >
-        {({ values, handleChange, isSubmitting, dirty, setFieldValue }) => (
-          <Form className="font-semibold">
-            <div className="flex flex-col">
-              <div
-                className="relative flex flex-col items-center w-full"
-                ref={uploadRef}
-              >
+        {({ values, handleChange, isSubmitting, dirty, setFieldValue }) => {
+          const {
+            uploadRef,
+            inputRef,
+            itemRef,
+            handleDragOver,
+            handleLeave,
+            handleDrop,
+            handleChangeFile,
+            handleClickFile,
+          } = useFileHandler({
+            validInput,
+            fileType,
+            selectedFile,
+            setSelectedFile,
+            setFileType,
+            uploadFile,
+            setFileIPFS,
+            setFieldValue,
+          });
+          return (
+            <Form className="font-semibold">
+              <div className="flex flex-col">
                 <div
-                  className={`flex  w-full gap-x-6 text-center  p-1 group h-fit border-1 border-shader_500 rounded-xl cursor-pointer`}
-                  ref={itemRef}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleLeave}
-                  onDrop={handleDrop}
-                  onClick={handleClickFile}
+                  className="relative flex flex-col items-center w-full"
+                  ref={uploadRef}
                 >
-                  {selectedFile ? (
-                    <div className="relative w-40 h-40">
-                      <Image
-                        src={selectedFile}
-                        alt="pictureframe"
-                        width={504}
-                        height={160}
-                        sizes="100vw"
-                        quality={100}
-                        className="object-cover w-full h-full rounded-2xl aspect-square"
-                      />
-                      {selectedFile && (
-                        <button
-                          className="absolute right-2 z-100 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedFile("");
-                            itemRef.current?.classList.add("border");
-                          }}
-                        >
-                          <CgClose />
-                        </button>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="relative w-40 h-40">
-                      <Image
-                        src={values.avatar}
-                        alt="pictureframe"
-                        width={504}
-                        height={160}
-                        sizes="100vw"
-                        quality={100}
-                        className="object-cover w-full h-full rounded-2xl aspect-square"
-                      />
-                    </div>
-                  )}
-                  <div className="self-center text-left">
-                    <h5 className="title">Drag or drop to upload image</h5>
-                    <div className="text-sm text-shader_200">
-                      <p>You may change this after deploying your contract.</p>
-                      <p>
-                        Recommended size: 300 x 300px. File types: JPG,PNG,SVG
-                        or GIF
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <input
-                  ref={inputRef}
-                  type="file"
-                  hidden
-                  onChange={handleChangeFile}
-                  accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
-                />
-              </div>
-              <label htmlFor="name" className="title_label mt-5">
-                Name
-                <p className="text-primary_400">*</p>
-              </label>
-              <Field
-                type="text"
-                id="name"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                placeholder="Unnamed"
-                className="input_item"
-              />
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-xs text-red"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="description"
-                className={`title_label flex justify-between`}
-              >
-                <div className="flex">
-                  Description
-                  <p className="text-primary_400">*</p>
-                </div>
-                <p className="font-normal text-shader_300 text-sm">
-                  {values.description?.length | 0}/1000
-                </p>
-              </label>
-              <Field
-                as="textarea"
-                type="text"
-                id="description"
-                name="description"
-                value={values.description}
-                placeholder="Add a description"
-                className="input_item"
-              />
-              <ErrorMessage
-                name="description"
-                component="div"
-                className="text-xs text-red"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="name" className="title_label">
-                URL
-              </label>
-              <p className="mb-4 text-shader_200 text-sm font-normal">
-                Customize your URL on Demask. Must only contain lowercase
-                letters, numbers, and hyphens.
-              </p>
-              <Field
-                type="text"
-                id="url"
-                name="url"
-                value={values.url}
-                placeholder="https://Demask.finance/collection/abcdef"
-                onChange={handleChange}
-                className="input_item"
-              />
-              <ErrorMessage
-                name="url"
-                component="div"
-                className="text-xs text-red"
-              />
-            </div>
-            <div>
-              <p className="title_label">Category</p>
-              <div className="flex">
-                {Category.map((item, index) => (
-                  <div key={index}>
-                    <Field
-                      type="button"
-                      name="category"
-                      id="category"
-                      className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-white border-shader_500  border rounded-lg cursor-pointer ${
-                        values.category.includes(item.value)
-                          ? "bg-primary_500 "
-                          : "bg-shader_700"
-                      }`}
-                      key={item.id}
-                      value={item.value}
-                      onClick={() =>
-                        selectCategory(
-                          item.value,
-                          values.category,
-                          setFieldValue
-                        )
-                      }
-                    ></Field>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="name" className="title_label">
-                Featured image
-              </label>
-              <p className="mb-4 text-shader_200 text-sm font-normal">
-                This image will be used for featuring your collection on the
-                homepage, category pages, or other display areas of Demask.
-                Recommended size: 500 x500px - Type: Png, Jpeg, Gif ( 50 MB)
-              </p>
-              <input
-                type="file"
-                id="featureImage"
-                name="featureImage"
-                // value={values.featureImage}
-                onChange={(event) => {
-                  if (
-                    event.target.files &&
-                    event.target.files[0].size < 10485760
-                  ) {
-                    const file = event.target.files[0];
-                    setSelectedImage(file);
-                    setFieldValue("featureImage", file);
-                  }
-                }}
-                ref={imgCollection}
-                className="hidden"
-                accept="image/png,image/jpeg,image/gif"
-              />
-              <div>
-                <div
-                  onClick={() => {
-                    if (imgCollection.current) {
-                      (imgCollection.current as HTMLInputElement).click();
-                    }
-                  }}
-                  className="flex flex-col items-center justify-center py-2 border rounded-lg cursor-pointer border-shader_500"
-                >
-                  {selectedImage ? (
-                    <div className="relative">
-                      <img
-                        src={URL.createObjectURL(selectedImage)}
-                        alt="selected image"
-                        width={360}
-                        height={360}
-                        className="object-cover w-40 rounded-lg mx-auto h-40 mb-4"
-                      />
-                      <div
-                        className="text-white absolute top-1 right-1 bg-shader_400 rounded-full p-1 text-xs font-bold cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedImage("");
-                          setFieldValue("featureImage", "");
-                        }}
-                      >
-                        <CgClose />
+                  <div
+                    className={`flex  w-full gap-x-6 text-center  p-1 group h-fit border-1 border-shader_500 rounded-xl cursor-pointer`}
+                    ref={itemRef}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleLeave}
+                    onDrop={handleDrop}
+                    onClick={handleClickFile}
+                  >
+                    {selectedFile ? (
+                      <div className="relative w-40 h-40">
+                        <Image
+                          src={selectedFile}
+                          alt="pictureframe"
+                          width={504}
+                          height={160}
+                          sizes="100vw"
+                          quality={100}
+                          className="object-cover w-full h-full rounded-2xl aspect-square"
+                        />
+                        {selectedFile && (
+                          <button
+                            className="absolute right-2 z-100 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedFile("");
+                              itemRef.current?.classList.add("border");
+                            }}
+                          >
+                            <CgClose />
+                          </button>
+                        )}
                       </div>
-                    </div>
-                  ) : (
-                    <div className=" h-40 flex items-center justify-center flex-col">
-                      <div className="h-10 w-10 bg-primary_500 bg-opacity-25 rounded-lg flex justify-center items-center">
-                        <UploadIcon
-                          width={24}
-                          height={24}
-                          className=" text-primary_400"
+                    ) : (
+                      <div className="relative w-40 h-40">
+                        <Image
+                          src={values.avatar}
+                          alt="pictureframe"
+                          width={504}
+                          height={160}
+                          sizes="100vw"
+                          quality={100}
+                          className="object-cover w-full h-full rounded-2xl aspect-square"
                         />
                       </div>
-                      <div className="text-sm text-shader_200 mt-2">
-                        <span>Click here or drag and drop to upload image</span>
+                    )}
+                    <div className="self-center text-left">
+                      <h5 className="title">Drag or drop to upload image</h5>
+                      <div className="text-sm text-shader_200">
+                        <p>
+                          You may change this after deploying your contract.
+                        </p>
+                        <p>
+                          Recommended size: 300 x 300px. File types: JPG,PNG,SVG
+                          or GIF
+                        </p>
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="name" className="title_label">
-                Collaborators
-              </label>
-              <p className="mb-4 text-shader_200 text-sm font-normal">
-                Collaborators can only edit how this collection or drop appears
-                on Demask
-              </p>
-              {values?.collaborators &&
-                values.collaborators.map((item: string, index: number) => (
-                  <div
-                    className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-shader_600 text-shader_200"
-                    key={index}
-                  >
-                    <p>{`${item.slice(0, 6)}...${item.slice(-8)}`}</p>
-                    {index === 0 && <p className="text-sm">Owner</p>}
-                    {index !== 0 && account === values?.collaborators[0] && (
-                      <CgClose
-                        className="text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
-                        onClick={() => removeCollab(item)}
-                      />
-                    )}
                   </div>
-                ))}
 
-              {checkCollaborator ? (
-                <div>
-                  <div className="flex items-center">
-                    <Field
-                      type="text"
-                      id="collaborator"
-                      name="collaborator"
-                      value={values.collaborator}
-                      placeholder="0x...123"
-                      onChange={handleChange}
-                      className="input_item"
-                    />
-                    <CgClose
-                      className="mb-4 text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
-                      onClick={() => setCheckCollaborator(false)}
-                    />
-                  </div>
-                  <ErrorMessage
-                    name="collaborator"
-                    component="div"
-                    className="text-xs text-red"
+                  <input
+                    ref={inputRef}
+                    type="file"
+                    id="avatar"
+                    name="avatar"
+                    hidden
+                    onChange={handleChangeFile}
+                    accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
                   />
                 </div>
-              ) : (
-                <Button
-                  className="w-36 flex gap-x-2"
-                  third
-                  onClick={() => setCheckCollaborator(true)}
-                >
-                  <PlusIcon width={20} height={20} />
-                  Add collaborator
-                </Button>
-              )}
-            </div>
-            <label className="title_label">Social Links</label>
-            {socialList.map((item, index) => (
-              <div key={index}>
-                <div className="flex mb-4 gap-x-4 input_item items-center">
-                  <div className="">{item.icon}</div>
-                  <Field
-                    type="text"
-                    value={(values as any)[item.name]}
-                    id={item.name}
-                    name={item.name}
-                    placeholder={item.placeHolder}
-                    className=" text-shader_100 font-semibold w-full  placeholder:text-shader_300 bg-shader_600 outline-none "
-                  />
-                </div>
+                <label htmlFor="name" className="title_label mt-5">
+                  Name
+                  <p className="text-primary_400">*</p>
+                </label>
+                <Field
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  placeholder="Unnamed"
+                  className="input_item"
+                />
                 <ErrorMessage
-                  name={item.name}
+                  name="name"
                   component="div"
                   className="text-xs text-red"
                 />
               </div>
-            ))}
-            <Button
-              type="submit"
-              primary={dirty && !isSubmitting && selectedFile}
-              active={!dirty || isSubmitting || !selectedFile}
-              disabled={!dirty || isSubmitting || !selectedFile}
-              className="px-6 py-2 cursor-pointer"
-              isLoadingBtn={isSubmitting}
-            >
-              Save changes
-            </Button>
-          </Form>
-        )}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="description"
+                  className={`title_label flex justify-between`}
+                >
+                  <div className="flex">
+                    Description
+                    <p className="text-primary_400">*</p>
+                  </div>
+                  <p className="font-normal text-shader_300 text-sm">
+                    {values.description?.length | 0}/1000
+                  </p>
+                </label>
+                <Field
+                  as="textarea"
+                  type="text"
+                  id="description"
+                  name="description"
+                  value={values.description}
+                  placeholder="Add a description"
+                  className="input_item"
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-xs text-red"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="name" className="title_label">
+                  URL
+                </label>
+                <p className="mb-4 text-shader_200 text-sm font-normal">
+                  Customize your URL on Demask. Must only contain lowercase
+                  letters, numbers, and hyphens.
+                </p>
+                <Field
+                  type="text"
+                  id="url"
+                  name="url"
+                  value={values.url}
+                  placeholder="https://Demask.finance/collection/abcdef"
+                  onChange={handleChange}
+                  className="input_item"
+                />
+                <ErrorMessage
+                  name="url"
+                  component="div"
+                  className="text-xs text-red"
+                />
+              </div>
+              <div>
+                <p className="title_label">Category</p>
+                <div className="flex">
+                  {Category.map((item, index) => (
+                    <div key={index}>
+                      <Field
+                        type="button"
+                        name="category"
+                        id="category"
+                        className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] text-white border-shader_500  border rounded-lg cursor-pointer ${
+                          values.category.includes(item.value)
+                            ? "bg-primary_500 "
+                            : "bg-shader_700"
+                        }`}
+                        key={item.id}
+                        value={item.value}
+                        onClick={() =>
+                          selectCategory(
+                            item.value,
+                            values.category,
+                            setFieldValue
+                          )
+                        }
+                      ></Field>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="name" className="title_label">
+                  Featured image
+                </label>
+                <p className="mb-4 text-shader_200 text-sm font-normal">
+                  This image will be used for featuring your collection on the
+                  homepage, category pages, or other display areas of Demask.
+                  Recommended size: 500 x500px - Type: Png, Jpeg, Gif ( 50 MB)
+                </p>
+                <input
+                  type="file"
+                  id="featureImage"
+                  name="featureImage"
+                  // value={values.featureImage}
+                  onChange={(event) => {
+                    if (
+                      event.target.files &&
+                      event.target.files[0].size < 10485760
+                    ) {
+                      const file = event.target.files[0];
+                      setSelectedImage(file);
+                      setFieldValue("featureImage", file);
+                    }
+                  }}
+                  ref={imgCollection}
+                  className="hidden"
+                  accept="image/png,image/jpeg,image/gif"
+                />
+                <div>
+                  <div
+                    onClick={() => {
+                      if (imgCollection.current) {
+                        (imgCollection.current as HTMLInputElement).click();
+                      }
+                    }}
+                    className="flex flex-col items-center justify-center py-2 border rounded-lg cursor-pointer border-shader_500"
+                  >
+                    {selectedImage ? (
+                      <div className="relative">
+                        <img
+                          src={URL.createObjectURL(selectedImage)}
+                          alt="selected image"
+                          width={360}
+                          height={360}
+                          className="object-cover w-40 rounded-lg mx-auto h-40 mb-4"
+                        />
+                        <div
+                          className="text-white absolute top-1 right-1 bg-shader_400 rounded-full p-1 text-xs font-bold cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImage("");
+                            setFieldValue("featureImage", "");
+                          }}
+                        >
+                          <CgClose />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className=" h-40 flex items-center justify-center flex-col">
+                        <div className="h-10 w-10 bg-primary_500 bg-opacity-25 rounded-lg flex justify-center items-center">
+                          <UploadIcon
+                            width={24}
+                            height={24}
+                            className=" text-primary_400"
+                          />
+                        </div>
+                        <div className="text-sm text-shader_200 mt-2">
+                          <span>
+                            Click here or drag and drop to upload image
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="name" className="title_label">
+                  Collaborators
+                </label>
+                <p className="mb-4 text-shader_200 text-sm font-normal">
+                  Collaborators can only edit how this collection or drop
+                  appears on Demask
+                </p>
+                {values?.collaborators &&
+                  values.collaborators.map((item: string, index: number) => (
+                    <div
+                      className="flex items-center justify-between p-2 mb-2 text-sm font-semibold rounded-lg bg-shader_600 text-shader_200"
+                      key={index}
+                    >
+                      <p>{`${item.slice(0, 6)}...${item.slice(-8)}`}</p>
+                      {index === 0 && <p className="text-sm">Owner</p>}
+                      {index !== 0 && account === values?.collaborators[0] && (
+                        <CgClose
+                          className="text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
+                          onClick={() => removeCollab(item)}
+                        />
+                      )}
+                    </div>
+                  ))}
+
+                {checkCollaborator ? (
+                  <div>
+                    <div className="flex items-center">
+                      <Field
+                        type="text"
+                        id="collaborator"
+                        name="collaborator"
+                        value={values.collaborator}
+                        placeholder="0x...123"
+                        onChange={handleChange}
+                        className="input_item"
+                      />
+                      <CgClose
+                        className="mb-4 text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
+                        onClick={() => setCheckCollaborator(false)}
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="collaborator"
+                      component="div"
+                      className="text-xs text-red"
+                    />
+                  </div>
+                ) : (
+                  <Button
+                    className="w-fit flex gap-x-2"
+                    third
+                    onClick={() => setCheckCollaborator(true)}
+                  >
+                    <PlusIcon width={20} height={20} />
+                    Add collaborator
+                  </Button>
+                )}
+              </div>
+              <label className="title_label">Social Links</label>
+              {socialList.map((item, index) => (
+                <div key={index}>
+                  <div className="flex mb-4 gap-x-4 input_item items-center">
+                    <div className="">{item.icon}</div>
+                    <Field
+                      type="text"
+                      value={(values as any)[item.name]}
+                      id={item.name}
+                      name={item.name}
+                      placeholder={item.placeHolder}
+                      className=" text-shader_100 font-semibold w-full  placeholder:text-shader_300 bg-shader_600 outline-none "
+                    />
+                  </div>
+                  <ErrorMessage
+                    name={item.name}
+                    component="div"
+                    className="text-xs text-red"
+                  />
+                </div>
+              ))}
+              <Button
+                type="submit"
+                primary={dirty && !isSubmitting}
+                active={!dirty || isSubmitting}
+                disabled={!dirty || isSubmitting}
+                className="px-6 py-2 cursor-pointer"
+                isLoadingBtn={isSubmitting}
+              >
+                Save changes
+              </Button>
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );

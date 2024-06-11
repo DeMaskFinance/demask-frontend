@@ -3,6 +3,7 @@ import { toast } from "sonner";
 
 interface UseFileHandlerProps extends UploadFileProps {
   validInput: string[];
+  setFieldValue?: any;
 }
 
 const useFileHandler = ({
@@ -13,6 +14,7 @@ const useFileHandler = ({
   setSelectedFile,
   setFileType,
   setFileIPFS,
+  setFieldValue,
 }: UseFileHandlerProps) => {
   const uploadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +48,8 @@ const useFileHandler = ({
           setFileType(fileType);
           setSelectedFile(fileURL);
           setFileIPFS(await uploadFile(file));
+          setFieldValue("avatar", await uploadFile(file));
+          console.log("heheheee");
         } else {
           toast.warning("Please choose a file smaller than 1GB");
         }
@@ -71,7 +75,6 @@ const useFileHandler = ({
 
   const handleClickFile = useCallback(() => {
     inputRef.current?.click();
-    console.log("123");
   }, []);
 
   useEffect(() => {

@@ -25,7 +25,7 @@ const BackgroundParticles = (props: any) => {
   };
 
   return (
-    <div>
+    <div className="-z-10">
       {init && (
         <Particles
           id="tsparticles"
