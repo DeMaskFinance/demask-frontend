@@ -10,7 +10,7 @@ import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { AvatarCustom } from "../Avatars";
 import Copy from "../Common/Copy";
-import { EditIcon } from "../Icons";
+import { EditIcon, EyeIcon, SeeMoreIcon } from "../Icons";
 import TabQuery from "../NavChoice/TabQuery";
 import History from "./History";
 import Created from "./Inventory/Created";
@@ -18,6 +18,16 @@ import Items from "./Inventory/Items";
 import Pools from "./Pools";
 import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
 import Referral from "./Referral";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "../Buttons";
 const style = {
   btnWallet:
     "flex items-center h-10 hover:border-shader_600 dark:hover:bg-shader_600 pl-2 lg:px-4 pr-2 justify-center dark:bg-shader_700 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
@@ -81,58 +91,77 @@ const Profile = () => {
     : new Date();
   const monthName = fullTime.toLocaleString("default", { month: "long" });
   return (
-    <div className="my-6">
+    <div className="">
       <section>
-        <div className="h-[120px] lg:h-[240px]">
-          {profile?.banner ? (
-            <Image
-              src={profile?.banner}
-              alt="banner"
-              width={1200}
-              height={400}
-              className="w-full group-hover:brightness-[0.8] h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-shader_500 group-hover:brightness-[0.8]"></div>
-          )}
-        </div>
-        <div className="flex items-center justify-center mt-6 gap-x-2">
+        <div className="flex gap-x-3 text-sm p-4 bg-shader_700">
           <AvatarCustom
             avatarUrl={profile?.avatar}
             size={120}
             userAddress={profile.userAddress!}
-            className="w-[120px] h-[120px] rounded-full"
+            className="w-16 h-16 rounded-full"
           />
           <div>
             <div className="flex items-center gap-x-2">
-              <p className="text-2xl font-semibold">{profile?.name}</p>
-              <Link href={`/profile/edit?chain=${chainId}`}>
-                <EditIcon width={24} height={24} className="fill-shader_500" />
-              </Link>
+              <p className="text-lg title">{profile?.name}</p>
             </div>
-            <div className="flex items-center gap-x-2">
-              <span className="text-primary_500">{`${account.slice(
+            <div className="flex items-center gap-x-1">
+              <span className="text-shader_200 text-sm font-normal">{`${account.slice(
                 0,
-                6
-              )}...${account.slice(-4)}`}</span>
+                8
+              )}...${account.slice(-8)}`}</span>
               <Copy content={account} />
             </div>
-            <div className="flex items-center gap-x-2">
-              <span className="text-shader_500">
-                Joined {monthName} {fullTime.getFullYear()}
-              </span>
+            <div className="flex items-center gap-x-2 mt-[10px]">
+              <Button primary className="px-2 h-8">
+                <Link
+                  href={`/profile/edit?chain=${chainId}`}
+                  className="flex gap-x-2 font-normal text-sm items-center"
+                >
+                  <span className="mt-[3px]">Edit</span>
+                  <EditIcon width={16} height={16} />
+                </Link>
+              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    className="flex h-8 px-3 text-sm font-normal gap-x-2"
+                    third
+                  >
+                    <p className="font-normal">Description</p>
+                    <EyeIcon width={16} height={16} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px] bg-shader_800 border border-shader_500 p-4">
+                  <DialogHeader>
+                    <DialogTitle className="text-base font-bold text-white">
+                      Description
+                    </DialogTitle>
+                    <DialogDescription>
+                      <div className="flex gap-x-2 mt-4 mb-2"></div>
+                      <p className="font-semibold text-primary_400">Joined</p>
+                      <p className="mt-1">
+                        {/* {dataDetail?.description
+                        ? dataDetail.description
+                        : "No data"} */}
+                      </p>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+              <p className="w-[1px] h-4 bg-shader_400"></p>
+              <SeeMoreIcon />
             </div>
           </div>
         </div>
       </section>
-      <div className="flex items-center justify-start px-4 mt-6 md:justify-center">
+      <div className="flex items-center justify-start md:justify-center">
         {/* PC */}
         <div className="hidden w-full md:block">
           <TabQuery
             TABS={TABS}
             initialItem="items"
             indexChoice={indexChoice}
-            isDefault
+            isDefault={false}
           />
         </div>
         {/* mobile-tablet */}

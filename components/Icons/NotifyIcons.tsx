@@ -155,6 +155,26 @@ export const URLTransactionIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+export const SeeMoreIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="4"
+      viewBox="0 0 12 4"
+      fill="none"
+    >
+      <path
+        d="M1.5 3.125C2.1 3.125 2.625 2.6 2.625 2C2.625 1.4 2.1 0.875 1.5 0.875C0.9 0.875 0.375 1.4 0.375 2C0.375 2.6 0.9 3.125 1.5 3.125ZM6 3.125C6.6 3.125 7.125 2.6 7.125 2C7.125 1.4 6.6 0.875 6 0.875C5.4 0.875 4.875 1.4 4.875 2C4.875 2.6 5.4 3.125 6 3.125ZM10.5 3.125C11.1 3.125 11.625 2.6 11.625 2C11.625 1.4 11.1 0.875 10.5 0.875C9.9 0.875 9.375 1.4 9.375 2C9.375 2.6 9.9 3.125 10.5 3.125Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
 export const WarningSwapIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
