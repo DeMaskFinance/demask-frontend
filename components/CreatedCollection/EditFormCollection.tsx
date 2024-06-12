@@ -168,48 +168,48 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     // Handle form submission
     console.log("!23312", values);
 
-    // try {
-    //   await collectionService.updateCollection(
-    //     {
-    //       name: values.name,
-    //       description: values.description,
-    //       url: values.url,
-    //       // category: values.category,
-    //       collaborators: values.collaborator
-    //         ? [...values.collaborators, values.collaborator]
-    //         : values.collaborators,
-    //       socials: {
-    //         facebook: values.facebook,
-    //         twitter: values.twitter,
-    //         telegram: values.telegram,
-    //         website: values.website,
-    //       },
-    //       category: values.category,
-    //     },
-    //     collectionAddress,
-    //     chainId
-    //   );
-    //   if (selectedImage) {
-    //     await collectionService.uploadFileCollection({
-    //       featureImage: values.featureImage,
-    //       chainId,
-    //       collectionAddress,
-    //     });
-    //   }
-    //   if (selectedFile) {
-    //     await collectionService.uploadFileCollection({
-    //       avatar: fileIPFS,
-    //       chainId,
-    //       collectionAddress,
-    //     });
-    //   }
-    //   toast.success("Updated Successed");
-    //   queryClient.refetchQueries(["detailCollection"]);
-    //   setSelectedImage("");
-    // } catch (error) {
-    //   toast.error("Updated Error");
-    //   console.error(error);
-    // }
+    try {
+      await collectionService.updateCollection(
+        {
+          name: values.name,
+          description: values.description,
+          url: values.url,
+          // category: values.category,
+          collaborators: values.collaborator
+            ? [...values.collaborators, values.collaborator]
+            : values.collaborators,
+          socials: {
+            facebook: values.facebook,
+            twitter: values.twitter,
+            telegram: values.telegram,
+            website: values.website,
+          },
+          category: values.category,
+        },
+        collectionAddress,
+        chainId
+      );
+      if (selectedImage) {
+        await collectionService.uploadFileCollection({
+          featureImage: values.featureImage,
+          chainId,
+          collectionAddress,
+        });
+      }
+      if (selectedFile) {
+        await collectionService.uploadFileCollection({
+          avatar: values.avatar,
+          chainId,
+          collectionAddress,
+        });
+      }
+      toast.success("Updated Successed");
+      queryClient.refetchQueries(["detailCollection"]);
+      setSelectedImage("");
+    } catch (error) {
+      toast.error("Updated Error");
+      console.error(error);
+    }
   };
   const initialValues = {
     name: data?.name,
@@ -225,7 +225,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     telegram: data?.socials?.telegram,
     website: data?.socials?.website,
   };
-  console.log(data, fileIPFS);
+  console.log(data, initialValues);
 
   return (
     <div className="mx-auto max-w-[634px] mb-16">
@@ -248,29 +248,29 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         enableReinitialize
       >
         {({ values, handleChange, isSubmitting, dirty, setFieldValue }) => {
-          const {
-            uploadRef,
-            inputRef,
-            itemRef,
-            handleDragOver,
-            handleLeave,
-            handleDrop,
-            handleChangeFile,
-            handleClickFile,
-          } = useFileHandler({
-            validInput,
-            fileType,
-            selectedFile,
-            setSelectedFile,
-            setFileType,
-            uploadFile,
-            setFileIPFS,
-            setFieldValue,
-          });
+          // const {
+          //   uploadRef,
+          //   inputRef,
+          //   itemRef,
+          //   handleDragOver,
+          //   handleLeave,
+          //   handleDrop,
+          //   handleChangeFile,
+          //   handleClickFile,
+          // } = useFileHandler({
+          //   validInput,
+          //   fileType,
+          //   selectedFile,
+          //   setSelectedFile,
+          //   setFileType,
+          //   uploadFile,
+          //   setFileIPFS,
+          //   setFieldValue,
+          // });
           return (
             <Form className="font-semibold">
               <div className="flex flex-col">
-                <div
+                {/* <div
                   className="relative flex flex-col items-center w-full"
                   ref={uploadRef}
                 >
@@ -309,7 +309,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     ) : (
                       <div className="relative w-40 h-40">
                         <Image
-                          src={values.avatar}
+                          src={values?.avatar}
                           alt="pictureframe"
                           width={504}
                           height={160}
@@ -342,7 +342,17 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                     onChange={handleChangeFile}
                     accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"
                   />
-                </div>
+                </div> */}
+                <UploadFileCollection
+                  setFileIPFS={setFileIPFS}
+                  setFileType={setFileType}
+                  fileType={fileType}
+                  uploadFile={uploadFileIPFSCollection}
+                  selectedFile={selectedFile}
+                  setSelectedFile={setSelectedFile}
+                  setFieldValue={setFieldValue}
+                  values={values}
+                />
                 <label htmlFor="name" className="title_label mt-5">
                   Name
                   <p className="text-primary_400">*</p>
@@ -362,6 +372,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   className="text-xs text-red"
                 />
               </div>
+
               <div className="flex flex-col">
                 <label
                   htmlFor="description"

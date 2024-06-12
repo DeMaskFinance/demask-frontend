@@ -68,6 +68,7 @@ const DeployCollection = () => {
     },
   ];
   const initialValues = {
+    avatar: "",
     contractName: "",
     symbol: "",
     chain: {
@@ -142,14 +143,7 @@ const DeployCollection = () => {
               before you can create a Collection
             </h4>
           </div>
-          <UploadFileCollection
-            setFileIPFS={setFileIPFS}
-            setFileType={setFileType}
-            fileType={fileType}
-            uploadFile={uploadFileIPFSCollection}
-            selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
-          />
+
           <div className="">
             <Formik
               initialValues={initialValues}
@@ -166,6 +160,16 @@ const DeployCollection = () => {
                 isValid,
               }) => (
                 <Form className="">
+                  <UploadFileCollection
+                    setFileIPFS={setFileIPFS}
+                    setFileType={setFileType}
+                    fileType={fileType}
+                    uploadFile={uploadFileIPFSCollection}
+                    selectedFile={selectedFile}
+                    setSelectedFile={setSelectedFile}
+                    setFieldValue={setFieldValue}
+                    values={values}
+                  />
                   <div className="flex flex-col">
                     <label htmlFor="contractName" className="title_label">
                       Contract Name

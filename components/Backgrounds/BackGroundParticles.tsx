@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim"; // Use the slim version for reduced bundle size
+type BackgroundParticlesProps = {
+  value: number;
+  id: string;
+};
 
-const BackgroundParticles = (props: any) => {
+const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
+  value,
+  id,
+}) => {
   const [init, setInit] = useState(false);
 
   // this should be run only once per application lifetime
@@ -20,20 +27,18 @@ const BackgroundParticles = (props: any) => {
     });
   }, []);
 
-  const particlesLoaded = (container: any): any => {
-    console.log(container);
-  };
+  const particlesLoaded = (container: any): any => {};
 
   return (
-    <div className="-z-10">
+    <div className="-z-10 absolute top-0 left-0 right-0 bottom-0">
       {init && (
         <Particles
-          id="tsparticles"
+          id={id}
           particlesLoaded={particlesLoaded}
           options={{
             particles: {
               number: {
-                value: 200,
+                value: value,
                 density: {
                   enable: true,
                 },

@@ -48,7 +48,7 @@ const useFileHandler = ({
           setFileType(fileType);
           setSelectedFile(fileURL);
           setFileIPFS(await uploadFile(file));
-          setFieldValue("avatar", await uploadFile(file));
+          setFieldValue("avatar", file);
           console.log("heheheee");
         } else {
           toast.warning("Please choose a file smaller than 1GB");

@@ -35,7 +35,7 @@ const Created = () => {
       category,
       search,
       pageParam,
-      1019
+      10
     );
     return data;
   };

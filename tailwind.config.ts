@@ -28,6 +28,8 @@ const config = {
           "linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)",
         "referral-gradient":
           "linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, #BCB4FF 80%, rgba(255, 255, 255, 0.00) 100%)",
+        "event-gradient":
+          "linear-gradient(90deg, #7B80F6 0%, #CD5FE2 33.33%, #846AF0 66.67%, #31AFF0 100%)",
       },
       opacity: {
         15: "0.15",

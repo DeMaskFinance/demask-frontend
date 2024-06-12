@@ -141,13 +141,19 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
     </div>
   );
 };
-const UploadFileCollection: React.FC<UploadFileProps> = ({
+interface UploadCollectionProps extends UploadFileProps {
+  setFieldValue: any;
+  values: any;
+}
+const UploadFileCollection: React.FC<UploadCollectionProps> = ({
   setFileIPFS,
   setFileType,
   selectedFile,
   setSelectedFile,
   fileType,
   uploadFile,
+  setFieldValue,
+  values,
 }) => {
   const validInput = validCollectionInput;
   const {
@@ -167,11 +173,12 @@ const UploadFileCollection: React.FC<UploadFileProps> = ({
     setFileType,
     uploadFile,
     setFileIPFS,
+    setFieldValue,
   });
   return (
     <div className="relative flex flex-col items-center w-full" ref={uploadRef}>
       <div
-        className={`flex  w-full gap-x-6 text-center  p-1 group h-fit border-1 border-shader_500 rounded-xl cursor-pointer`}
+        className={`flex w-full gap-x-6 text-center p-1 group h-fit border-1 border-shader_500 rounded-xl cursor-pointer`}
         ref={itemRef}
         onDragOver={handleDragOver}
         onDragLeave={handleLeave}
@@ -202,6 +209,18 @@ const UploadFileCollection: React.FC<UploadFileProps> = ({
               </button>
             )}
           </div>
+        ) : values.avatar ? (
+          <div className="relative w-40 h-40">
+            <Image
+              src={values.avatar}
+              alt="pictureframe"
+              width={504}
+              height={160}
+              sizes="100vw"
+              quality={100}
+              className="object-cover w-full h-full rounded-2xl aspect-square"
+            />
+          </div>
         ) : (
           <div className="flex w-40 h-40 cursor-pointer group gap-x-6">
             <div className="p-2 bg-shader_400 bg-opacity-[0.15] w-40 h-40 rounded-lg items-center border border-shader_500 relative">
@@ -222,14 +241,18 @@ const UploadFileCollection: React.FC<UploadFileProps> = ({
           <h5 className="title">Drag or drop to upload image</h5>
           <div className="text-sm text-shader_200">
             <p>You may change this after deploying your contract.</p>
-            <p>Recommended size: 300 x 300px. File types: JPG,PNG,SVG or GIF</p>
+            <p>
+              Recommended size: 300 x 300px. File types: JPG, PNG, SVG, or GIF
+            </p>
           </div>
         </div>
       </div>
-
+      ;
       <input
         ref={inputRef}
         type="file"
+        id="avatar"
+        name="avatar"
         hidden
         onChange={handleChangeFile}
         accept="image/jpg, image/jpeg, image/png, image/svg+xml, image/gif"

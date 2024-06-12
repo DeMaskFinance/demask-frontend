@@ -32,6 +32,7 @@ import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import { AvatarCustom } from "../Avatars";
 import Copy from "../Common/Copy";
+import BackgroundParticles from "../Backgrounds/BackGroundParticles";
 const style = {
   btnWallet:
     "flex items-center h-10  pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold transition duration-150 ease-out rounded-lg group bg_gradient active:bg-primary_400 text-white gap-x-2 ",
@@ -147,6 +148,7 @@ export default function Header() {
       };
     }
   }, []);
+  console.log(isEvent);
 
   const [showSearch, setShowSearch] = useState(false);
   return (
@@ -154,15 +156,15 @@ export default function Header() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ease-in-out"
     >
-      {/* {isEvent && (
+      {isEvent && (
         <div>
           <a
             href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
             rel="noopener noreferrer"
             target="_blank"
-            className="block cursor-pointer text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-sm font-light"
+            className="block cursor-pointer text-white text-[8px] bg-event-gradient text-sm font-light bg-blend-screen relative overflow-hidden -z-50"
           >
-            <Marquee autoFill pauseOnHover gradient gradientColor="#7F57E8">
+            <Marquee autoFill pauseOnHover gradient gradientColor="#7C7FF8">
               <div className="flex items-center justify-center h-10 mr-20 gap-x-3">
                 <span>
                   <LightIcon width={24} height={24} />
@@ -171,6 +173,7 @@ export default function Header() {
                   Blast Big Bang - The airdrop Demask Finance x BleBle Campaign
                   on Galxe
                 </span>
+                <BackgroundParticles value={4800} id="particle-container" />
               </div>
             </Marquee>
           </a>
@@ -183,7 +186,7 @@ export default function Header() {
             <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-      )} */}
+      )}
 
       <header className="flex items-center justify-between gap-2 px-4 text-sm ease-in-out shadow-md lg:shadow-none h-header">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">

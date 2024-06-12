@@ -14,6 +14,7 @@ import {
   UnRankIcon,
 } from "../Icons";
 import { Pagination } from "../Common/Pagination";
+import SearchNotFound from "../Search/SearchNotFound";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask, account } = useContext(AccountContext);
@@ -90,10 +91,10 @@ const TableRank = () => {
     });
 
   return (
-    <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-lg bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
-      <table className="flex-grow w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
+    <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-md bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
+      <table className="flex-grow w-full text-sm text-left border-collapse min-h-[500px] flex flex-col font-semibold">
         <thead className="uppercase bg-shader_600 text-shader_200">
-          <tr className="flex px-4 py-2">
+          <tr className="flex px-4 py-3">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
               Name
@@ -115,23 +116,24 @@ const TableRank = () => {
 
         <tbody className="flex flex-col h-full flex-auto">
           {isLoading || isFetching ? (
-            <div className="flex items-center justify-center w-full h-full flex-auto">
+            <div className="w-full h-full flex-auto justify-center items-center flex">
               <LoadingIcon width={30} height={30} className="animate-spin" />
             </div>
+          ) : isSuccess && data ? (
+            <>
+              {account && (
+                <ItemTableRank item={data?.userRank} currentRank={true} />
+              )}
+              {data.data.map((item: any, index: number) => (
+                <React.Fragment key={index}>
+                  <ItemTableRank item={item} currentRank={false} />
+                </React.Fragment>
+              ))}
+            </>
           ) : (
-            isSuccess &&
-            data && (
-              <>
-                {account && (
-                  <ItemTableRank item={data?.userRank} currentRank={true} />
-                )}
-                {data.data.map((item: any, index: number) => (
-                  <React.Fragment key={index}>
-                    <ItemTableRank item={item} currentRank={false} />
-                  </React.Fragment>
-                ))}
-              </>
-            )
+            <div className="w-full h-full flex-auto justify-center items-center flex">
+              <SearchNotFound />
+            </div>
           )}
         </tbody>
       </table>
