@@ -161,9 +161,9 @@ export default function Header() {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <div className="block cursor-pointer text-white text-[8px] bg-event-gradient text-sm font-light bg-blend-screen relative overflow-hidden -z-50">
+          <div className="block cursor-pointer text-white bg-event-gradient  bg-blend-screen relative overflow-hidden -z-50">
             <Marquee autoFill pauseOnHover gradient gradientColor="#7C7FF8">
-              <div className="flex items-center justify-center h-10 mr-20 gap-x-3">
+              <div className="flex items-center justify-center h-11 mr-20 gap-x-3 font-semibold">
                 <span>
                   <LightIcon width={24} height={24} />
                 </span>
@@ -176,7 +176,8 @@ export default function Header() {
             <BackgroundParticles value={8800} id="particle-container" />
           </div>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setIsEvent(false);
             }}
             className={`absolute top-2 right-4 flex items-center p-1 z-[60]`}
