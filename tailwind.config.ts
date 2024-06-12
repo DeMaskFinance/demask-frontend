@@ -173,6 +173,7 @@ const config = {
       },
     },
   },
+  // important: true,
   plugins: [
     require("tailwindcss-animate"),
     plugin(function ({ matchUtilities, theme }: any) {

@@ -34,6 +34,7 @@ const TabQuery: React.FC<TabQueryProps> = ({
       .reduce((acc, ref) => (ref ? acc + (ref.offsetWidth || 0) : acc), 0);
     setTranslateX(totalWidth);
   }, [tab, TABS]);
+  console.log(tab);
 
   return (
     <>

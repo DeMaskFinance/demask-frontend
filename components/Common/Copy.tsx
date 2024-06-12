@@ -1,6 +1,5 @@
 import Tippy from "@tippyjs/react";
 import React, { useEffect, useState } from "react";
-import { IoCopyOutline } from "react-icons/io5";
 import { CopyIcon } from "../Icons";
 
 export default function Copy({ content }: { content: string }) {

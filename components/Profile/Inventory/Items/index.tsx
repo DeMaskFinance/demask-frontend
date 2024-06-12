@@ -14,6 +14,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import useDebounce from "@/hooks/useDebounce";
+import { formatTypeChain } from "@/libs/utils/formatComon";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -139,9 +140,13 @@ export const ItemList: React.FC<ItemListProps> = ({
                         </h6>
                       </div>
                       <div className="flex items-center justify-between">
-                        <LogoIconCard chainId={chainId} />
+                        <LogoIconCard
+                          chainId={chainId}
+                          width={20}
+                          height={20}
+                        />
                         <p className="px-2 h-[23px] rounded-full bg-shader_500 text-[10px] uppercase leading-[23px]">
-                          {item.type}
+                          {formatTypeChain(item.type)}
                         </p>
                       </div>
                       <div className="flex justify-between text-sm text-shader_500">

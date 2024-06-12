@@ -44,4 +44,16 @@ const formatDate = (timestamp: number): string => {
 
   return formattedDate;
 };
-export { formatToUnit, formatPercent, formatLinkIPFS, formatDate };
+const formatTypeChain = (type: String) => {
+  if (type === "erc1155") {
+    return "ERC-1155";
+  }
+  return "ERC-721";
+};
+export {
+  formatToUnit,
+  formatPercent,
+  formatLinkIPFS,
+  formatDate,
+  formatTypeChain,
+};

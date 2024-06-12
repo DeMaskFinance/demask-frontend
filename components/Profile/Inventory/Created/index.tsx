@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
+import { formatTypeChain } from "@/libs/utils/formatComon";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
@@ -51,7 +52,7 @@ const Created = () => {
     ["UserCollection", chainId, account, typeERC, category, debouncedSearch],
     ({ pageParam = 1 }) =>
       fetchDataNFTs(
-        "0x4699a9a5607c9281103ad504fa922276eb6385a2",
+        account,
         chainId,
         typeERC,
         category,
@@ -129,9 +130,13 @@ const Created = () => {
                               </div>
                             </div>
                             <div className="flex items-center justify-between">
-                              <LogoIconCard chainId={chainId} />
+                              <LogoIconCard
+                                chainId={chainId}
+                                width={20}
+                                height={20}
+                              />
                               <p className="px-2 h-[23px] rounded-full bg-shader_500 text-[10px] uppercase leading-[23px]">
-                                {item.type}
+                                {formatTypeChain(item.type)}
                               </p>
                             </div>
                             <div className="flex justify-between text-sm">

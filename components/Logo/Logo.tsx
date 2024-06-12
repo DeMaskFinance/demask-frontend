@@ -1016,7 +1016,7 @@ export const LogoIconCard: React.FunctionComponent<LogoProps> = ({
     <div className="my-1">
       {chainId === "11155111" ? (
         <div className="flex items-center gap-x-1">
-          <SepoliaIcon width={20} height={16} />
+          <SepoliaIcon width={width} height={height} />
           {/* <p className="italic font-semibold text-primary_300">SEPOLIA</p> */}
         </div>
       ) : chainId === "5" ? (

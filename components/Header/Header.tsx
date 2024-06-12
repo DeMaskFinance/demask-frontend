@@ -148,7 +148,6 @@ export default function Header() {
       };
     }
   }, []);
-  console.log(isEvent);
 
   const [showSearch, setShowSearch] = useState(false);
   return (
