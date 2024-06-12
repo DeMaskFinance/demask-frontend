@@ -27,7 +27,9 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
     });
   }, []);
 
-  const particlesLoaded = (container: any): any => {};
+  const particlesLoaded = (container: any): any => {
+    console.log(container);
+  };
 
   return (
     <div className="-z-10 absolute top-0 left-0 right-0 bottom-0">
