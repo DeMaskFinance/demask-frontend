@@ -101,7 +101,7 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
                 straight: false,
                 outModes: "bounce",
                 attract: {
-                  enable: true,
+                  enable: false,
                 },
               },
             },
