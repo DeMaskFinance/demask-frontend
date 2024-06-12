@@ -156,12 +156,13 @@ export default function Header() {
       className="fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ease-in-out"
     >
       {isEvent && (
-        <a
-          href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <div className="block cursor-pointer text-white bg-event-gradient  bg-blend-screen relative overflow-hidden -z-50 h-11">
+        <div>
+          <a
+            href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="block cursor-pointer text-white bg-event-gradient  bg-blend-screen relative overflow-hidden -z-50 h-11"
+          >
             <Marquee autoFill pauseOnHover gradient gradientColor="#7C7FF8">
               <div className="flex items-center justify-center h-11 mr-20 gap-x-3 font-semibold">
                 <span>
@@ -172,9 +173,9 @@ export default function Header() {
                   on Galxe
                 </span>
               </div>
-              <BackgroundParticles value={800} id="particle-container10" />
             </Marquee>
-          </div>
+            <BackgroundParticles value={1800} id="particles-js" />
+          </a>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -184,7 +185,7 @@ export default function Header() {
           >
             <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
           </button>
-        </a>
+        </div>
       )}
 
       <header className="flex items-center justify-between gap-2 px-4 text-sm ease-in-out shadow-md lg:shadow-none h-header">

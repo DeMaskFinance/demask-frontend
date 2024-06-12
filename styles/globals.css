@@ -134,6 +134,9 @@ body {
 .item-active-drap {
   border: 1px solid #9075fe;
 }
+#particle-container1 {
+  height: 100%;
+}
 .Toastify__toast-container--top-center:has(div.toastSuccess) {
   width: fit-content;
 }

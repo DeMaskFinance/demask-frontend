@@ -44,8 +44,8 @@ const LeaderBoard = () => {
           </div>
           <Cards />
           <TableRank />
-          <BackgroundParticles value={800} id="particle-container1" />
         </div>
+        <BackgroundParticles value={800} id="particle-container1" />
       </BackgroundDefault>
     </div>
   );

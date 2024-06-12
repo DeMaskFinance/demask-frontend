@@ -32,7 +32,7 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
   };
 
   return (
-    <div className="-z-10 absolute top-0 left-0 right-0 bottom-0">
+    <div className="-z-10 absolute top-0 left-0 right-0 bottom-0 h-full">
       {init && (
         <Particles
           id={id}
@@ -104,6 +104,9 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
                   enable: true,
                 },
               },
+            },
+            fullScreen: {
+              enable: false,
             },
             interactivity: {
               detect_on: "canvas",
