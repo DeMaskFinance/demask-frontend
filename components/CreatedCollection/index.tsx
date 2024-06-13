@@ -295,7 +295,7 @@ export default function CreatedCollection() {
                       <p className="font-semibold text-primary_400">
                         Joined {dataDetail?.createdAt}
                       </p>
-                      <p className="mt-1">
+                      <p className="mt-1 text-shader_200">
                         {dataDetail?.description
                           ? dataDetail.description
                           : "No data"}

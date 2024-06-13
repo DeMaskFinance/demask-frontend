@@ -1,6 +1,11 @@
 import Copy from "@/components/Common/Copy";
 import MediaNFT from "@/components/Common/MediaNFT";
-import { RefetchIcon } from "@/components/Icons";
+import {
+  CopyIcon,
+  RefetchIcon,
+  ShareIcon,
+  TwitterIcon,
+} from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { refreshNFTService } from "@/libs/service/nftService";
 import {
@@ -13,6 +18,7 @@ import React, { memo, useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import { HiChevronDown } from "react-icons/hi2";
+import Tippy from "@tippyjs/react/headless";
 import Wrapper from "../Wrapper";
 interface ModalDetailProps {
   type: string;
@@ -52,12 +58,11 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
-
   return (
     <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
       <div className="flex items-center">
         <div className="cursor-default container_modal">
-          <div className="w-[42vw] rounded-lg relative min-h-[500px] flex justify-center items-center">
+          <div className="min-w-[20vw] rounded-lg relative min-h-[500px] flex justify-center items-center">
             {isLoading || isFetching ? (
               <div className="flex items-center justify-center h-full">
                 <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
@@ -85,6 +90,35 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                               className="cursor-pointer text-primary_200"
                             />
                           </div>
+                          <Tippy
+                            interactive
+                            placement="bottom"
+                            render={(attrs) => (
+                              <div className="" tabIndex={-1} {...attrs}>
+                                <ul className="pb-2 w-[160px] menu font-semibold">
+                                  <li className="item_menu">
+                                    <Copy content="123" title="Copy Link" />
+                                  </li>
+                                  <li className="item_menu gap-x-2">
+                                    <TwitterIcon width={20} height={20} />
+                                    Share on Twitter
+                                  </li>
+                                  <li></li>
+                                </ul>
+                              </div>
+                            )}
+                          >
+                            <div
+                              className="border rounded-full border-shader_400 p-[7px]"
+                              onClick={() => refetch()}
+                            >
+                              <ShareIcon
+                                width={16}
+                                height={16}
+                                className="cursor-pointer text-primary_200"
+                              />
+                            </div>
+                          </Tippy>
                         </div>
                         <p className="text-primary_300">
                           {data?.metadata?.symbol}
@@ -224,9 +258,6 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                 </div>
               )
             )}
-            {/* <div className="flex items-center justify-center flex-auto h-full">
-              <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
-            </div> */}
           </div>
         </div>
       </div>

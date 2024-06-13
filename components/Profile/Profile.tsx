@@ -10,7 +10,14 @@ import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { AvatarCustom } from "../Avatars";
 import Copy from "../Common/Copy";
-import { EditIcon, EyeIcon, SeeMoreIcon } from "../Icons";
+import {
+  EditIcon,
+  EyeIcon,
+  SeeMoreIcon,
+  TeleIcon,
+  TwitterIcon,
+  WebsiteIcon,
+} from "../Icons";
 import TabQuery from "../NavChoice/TabQuery";
 import History from "./History";
 import Created from "./Inventory/Created";
@@ -28,6 +35,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../Buttons";
+import { briefDocument } from "@/libs/utils/formatComon";
 const style = {
   btnWallet:
     "flex items-center h-10 hover:border-shader_600 dark:hover:bg-shader_600 pl-2 lg:px-4 pr-2 justify-center dark:bg-shader_700 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
@@ -59,19 +67,9 @@ const Profile = () => {
       key: "launchpad",
     },
     {
-      title: "History",
+      title: "Activity",
       panel: () => <History />,
       key: "history",
-    },
-    {
-      title: "Referral",
-      panel: () => <Referral />,
-      key: "referral",
-    },
-    {
-      title: "KYC",
-      panel: () => <div className="text-shader_600">Upcoming</div>,
-      key: "kyc",
     },
   ];
   const selectedTab = TABS.find((item) => item.key === tab);
@@ -90,6 +88,9 @@ const Profile = () => {
     ? new Date(profile.createdAt)
     : new Date();
   const monthName = fullTime.toLocaleString("default", { month: "long" });
+  const yearName = fullTime.toLocaleString("default", { year: "numeric" });
+  console.log(profile);
+
   return (
     <div className="">
       <section>
@@ -105,29 +106,25 @@ const Profile = () => {
               <p className="text-lg title">{profile?.name}</p>
             </div>
             <div className="flex items-center gap-x-1">
-              <span className="text-shader_200 text-sm font-normal">{`${account.slice(
-                0,
-                8
-              )}...${account.slice(-8)}`}</span>
+              <span className="text-shader_200 text-sm font-normal">
+                {briefDocument(account, 8, 8)}
+              </span>
               <Copy content={account} />
             </div>
             <div className="flex items-center gap-x-2 mt-[10px]">
               <Button primary className="px-2 h-8">
                 <Link
                   href={`/profile/edit?chain=${chainId}`}
-                  className="flex gap-x-2 font-normal text-sm items-center"
+                  className="flex gap-x-2 text-sm items-center"
                 >
-                  <span className="mt-[3px]">Edit</span>
+                  <span>Edit</span>
                   <EditIcon width={16} height={16} />
                 </Link>
               </Button>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button
-                    className="flex h-8 px-3 text-sm font-normal gap-x-2"
-                    third
-                  >
-                    <p className="font-normal">Description</p>
+                  <Button className="flex h-8 px-3 text-sm  gap-x-2" third>
+                    <p>Description</p>
                     <EyeIcon width={16} height={16} />
                   </Button>
                 </DialogTrigger>
@@ -137,18 +134,33 @@ const Profile = () => {
                       Description
                     </DialogTitle>
                     <DialogDescription>
-                      <div className="flex gap-x-2 mt-4 mb-2"></div>
-                      <p className="font-semibold text-primary_400">Joined</p>
-                      <p className="mt-1">
-                        {/* {dataDetail?.description
-                        ? dataDetail.description
-                        : "No data"} */}
+                      <div className="flex gap-x-2 mb-2"></div>
+                      <p className="font-semibold text-primary_400">
+                        Joined {monthName} {yearName}
+                      </p>
+                      <p className="mt-1 text-shader_200">
+                        {profile?.about ? profile?.about : "No data"}
                       </p>
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
               <p className="w-[1px] h-4 bg-shader_400"></p>
+              {profile.socials?.website && (
+                <a href={profile.socials?.website} target="_blank">
+                  <WebsiteIcon width={18} height={18} />
+                </a>
+              )}
+              {profile.socials?.twitter && (
+                <a href={profile.socials?.twitter} target="_blank">
+                  <TwitterIcon width={18} height={18} />
+                </a>
+              )}
+              {profile.socials?.telegram && (
+                <a href={profile.socials?.telegram} target="_blank">
+                  <TeleIcon width={18} height={18} />
+                </a>
+              )}
               <SeeMoreIcon />
             </div>
           </div>
@@ -156,7 +168,7 @@ const Profile = () => {
       </section>
       <div className="flex items-center justify-start md:justify-center">
         {/* PC */}
-        <div className="hidden w-full md:block">
+        <div className="hidden w-full md:block border-y border-shader_600">
           <TabQuery
             TABS={TABS}
             initialItem="items"
@@ -206,7 +218,7 @@ const Profile = () => {
           </Tippy>
         </div>
       </div>
-      <div className="px-4 py-8 pb-20 mt-4 lg:pb-0 3xl:px-secondary md:px-10 lg:px-24">
+      <div className="p-4 pb-20">
         {selectedTab ? selectedTab.panel() : null}
       </div>
     </div>

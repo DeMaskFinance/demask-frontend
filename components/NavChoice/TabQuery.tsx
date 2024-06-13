@@ -68,7 +68,7 @@ const TabQuery: React.FC<TabQueryProps> = ({
         </div>
       ) : (
         <div
-          className={`flex relative items-center py-1 text-sm text-center text-white`}
+          className={`flex relative items-center py-1 text-sm text-center text-white bg-shader_800`}
         >
           <div
             className={`absolute transition-transform duration-100 ease-linear border-b-[3px] border-primary_500 h-full bottom-0`}
@@ -84,7 +84,7 @@ const TabQuery: React.FC<TabQueryProps> = ({
               key={index}
               ref={(el) => (buttonRefs.current[index] = el)}
               type="button"
-              className={`cursor-pointer py-2 px-3 z-10 text-sm font-bold ${
+              className={`cursor-pointer py-2 px-8 z-10 text-sm font-bold ${
                 item.key === tab ? "text-white" : "text-shader_100"
               }`}
               onClick={() => handleButtonClick(item, index)}

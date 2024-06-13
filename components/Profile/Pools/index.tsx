@@ -1,190 +1,76 @@
-import AccountContext from "@/context/AccountContext";
-import { liquidityUser } from "@/libs/service/liquidityService";
-import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useEffect, useState } from "react";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import PoolItem from "./PoolItem";
+import { LiquiditiesItem } from "@/components/Liquidity";
+import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import { SkeletonTable } from "@/components/Skeleton";
-import { poolsUserService } from "@/libs/service/profileService";
-import { Button } from "@/components/Buttons";
-
+import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
+import AccountContext from "@/context/AccountContext";
+import { liquidityListAPI } from "@/libs/service/liquidityService";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 export default function Pools() {
-  const [page, setPage] = useState(1);
-  const [pageNumberInput, setPageNumberInput] = useState("");
   const { account, chainId } = useContext(AccountContext);
-  const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } =
-    useQuery({
-      queryKey: ["transaction", chainId],
-      queryFn: async () => {
-        const res = await poolsUserService(
-          account.toLowerCase(),
-          chainId,
-          page
-        );
-        return res;
-      },
-    });
-  const goToPage = (pageNum: number) => {
-    const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
-    setPage(newPageNumber);
-    setPageNumberInput(String(newPageNumber));
+  const type = "erc1155";
+  const fetchDataListLiquidity = async (
+    accountUser: string,
+    pageParam = 1,
+    chainId: string | string[],
+    type: string
+  ) => {
+    const data = await liquidityListAPI(
+      accountUser.toLowerCase(),
+      pageParam,
+      type,
+      chainId
+    );
+    return data;
   };
-  const generatePagination = (currentPage: number, totalPages: any) => {
-    const buttons = [];
-    const maxButtonsToShow = 3;
-
-    if (totalPages <= maxButtonsToShow + 2) {
-      for (let i = 1; i <= totalPages; i++) {
-        buttons.push(i);
-      }
-    } else {
-      const showFirstDots = currentPage > maxButtonsToShow;
-      const showLastDots = currentPage < totalPages - maxButtonsToShow + 1;
-
-      buttons.push(1);
-      buttons.push(2);
-
-      if (showFirstDots) {
-        buttons.push("...");
-      }
-
-      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-        if (i > 2 && i < totalPages - 1) {
-          buttons.push(i);
-        }
-      }
-
-      if (showLastDots) {
-        buttons.push("...");
-      }
-
-      buttons.push(totalPages - 1);
-      buttons.push(totalPages);
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isSuccess,
+    isLoading,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ["LiquidityList", account, chainId, type],
+    ({ pageParam = 1 }) =>
+      fetchDataListLiquidity(account, pageParam, chainId, type),
+    {
+      getNextPageParam: (page: any) =>
+        page?.currentPage < page?.totalPages
+          ? page?.currentPage + 1
+          : undefined,
     }
-
-    return buttons;
-  };
-
-  const prevPage = () => {
-    const prevPageNumber = Math.max(page - 1, 1);
-    setPage(prevPageNumber);
-  };
-
-  const nextPage = () => {
-    const nextPageNumber = Math.min(page + 1, data?.totalPages);
-    setPage(nextPageNumber);
-  };
-
-  useEffect(() => {
-    if (data === null) {
-      setPage(1);
-    }
-  }, [data]);
-  useEffect(() => {
-    refetch();
-  }, [page]);
+  );
 
   return (
     <div>
       {isLoading || isFetching ? (
-        <SkeletonTable length={4} />
-      ) : isSuccess && data.combinedRecords.length > 0 ? (
-        <div className="transactionList">
-          <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home">
-            <div className="px-6 pt-6 pb-0 overflow-x-scroll">
-              <table className="w-full text-left">
-                <thead className="">
-                  <tr className="flex px-2 pb-2 text-sm lg:text-base md:text-base">
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      Liquidity
-                    </th>
-                    {/* <th className="flex justify-start lg:w-full md:w-full w-[50px]"></th> */}
-                    <th className="flex justify-start md:basis-3/6 w-[200px]">
-                      Contract
-                    </th>
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      Notiond Size
-                    </th>
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      LP collection
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="flex flex-col">
-                  {data?.combinedRecords.map((item: any, index: number) => (
-                    <PoolItem item={item} />
-                  ))}
-                </tbody>
-              </table>
+        <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-8 md:grid-cols-3 text-shader_600">
+          <SkeletonSubCategory length={6} />
+        </div>
+      ) : isSuccess && data?.pages[0]?.combinedRecords.length !== 0 ? (
+        <div>
+          <div className="flex text-primary_300 text-sm items-center gap-x-2 mb-4">
+            <div className="relative flex w-2 h-2">
+              <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-primary_500"></span>
             </div>
+            <p>{data?.pages[0].totalRecords} Items</p>
           </div>
-          <div className="flex justify-center w-full mx-auto text-sm">
-            <div className="flex gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
-              <div className="flex gap-1 lg:gap-10 md:gap-8">
-                <button
-                  onClick={prevPage}
-                  disabled={isPreviousData || page === 1}
-                  className={`${
-                    isPreviousData || page === 1
-                      ? "text-shader_500 hover:border-red"
-                      : "text-shader_600"
-                  }`}
-                >
-                  <MdNavigateBefore className="text-xl border border-transparent" />
-                </button>
-                {generatePagination(page, data?.totalPages).map(
-                  (pageNum, index) => (
-                    <React.Fragment key={index}>
-                      {pageNum === "..." ? (
-                        <span>...</span>
-                      ) : (
-                        <button
-                          className={`text-sm min-w-[32px] rounded-lg text-shader_600 p-1 ${
-                            pageNum === page ? "bg-primary_500 text-white" : ""
-                          }`}
-                          onClick={() => goToPage(pageNum)}
-                        >
-                          {pageNum}
-                        </button>
-                      )}
-                    </React.Fragment>
-                  )
-                )}
-                <button
-                  onClick={nextPage}
-                  disabled={isPreviousData || page === data?.totalPages}
-                  className={`${
-                    isPreviousData || page === data?.totalPages
-                      ? "text-shader_500 hover:border"
-                      : ""
-                  }`}
-                >
-                  <MdOutlineNavigateNext className="text-xl text-shader_600" />
-                </button>
+          {isSuccess &&
+            data.pages.map((page: any, index: number) => (
+              <div
+                key={index}
+                className="grid grid-cols-1 gap-3 overflow-y-scroll lg:grid-cols-6 md:grid-cols-2"
+              >
+                {page?.combinedRecords.map((liquidity: any, index: number) => (
+                  <div key={index} className="w-full mx-auto">
+                    <LiquidytiesItem liquidity={liquidity} type={type} />
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center justify-center gap-4 ml-4 text-shader_600">
-                <span>Go to page </span>
-                <div className="flex gap-x-2">
-                  <input
-                    type="number"
-                    min="1"
-                    max={data?.totalPages || 1}
-                    value={pageNumberInput}
-                    onChange={(e) => setPageNumberInput(e.target.value)}
-                    className="w-12 px-2 py-1 text-sm text-center border rounded outline-none max-w-fit"
-                  />{" "}
-                  <Button
-                    onClick={() => goToPage(parseInt(pageNumberInput))}
-                    primary
-                    className="px-2 py-1"
-                  >
-                    Go
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+            ))}
         </div>
       ) : (
         <div>

@@ -44,11 +44,14 @@ const formatDate = (timestamp: number): string => {
 
   return formattedDate;
 };
-const formatTypeChain = (type: String) => {
+const formatTypeChain = (type: String): String => {
   if (type === "erc1155") {
     return "ERC-1155";
   }
   return "ERC-721";
+};
+const briefDocument = (doc: String, start: number, end: number) => {
+  return `${doc.slice(0, start)}...${doc.slice(-end)}`;
 };
 export {
   formatToUnit,
@@ -56,4 +59,5 @@ export {
   formatLinkIPFS,
   formatDate,
   formatTypeChain,
+  briefDocument,
 };

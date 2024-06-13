@@ -2,7 +2,13 @@ import Tippy from "@tippyjs/react";
 import React, { useEffect, useState } from "react";
 import { CopyIcon } from "../Icons";
 
-export default function Copy({ content }: { content: string }) {
+export default function Copy({
+  content,
+  title,
+}: {
+  content: string;
+  title?: String;
+}) {
   const [isCopy, setIsCopy] = useState<boolean>(false);
   const copyToClipboard = () => {
     navigator.clipboard.writeText(content);
@@ -20,8 +26,9 @@ export default function Copy({ content }: { content: string }) {
   return (
     <div className="leading-[100%]">
       <Tippy theme="dark" visible={isCopy} content={<span>Copied</span>}>
-        <button onClick={copyToClipboard}>
-          <CopyIcon width={16} height={16} className="text-primary_400" />
+        <button onClick={copyToClipboard} className="flex gap-x-2">
+          <CopyIcon width={16} height={16} className="text-primary_400 " />
+          {title}
         </button>
       </Tippy>
     </div>
