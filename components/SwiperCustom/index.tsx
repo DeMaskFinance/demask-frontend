@@ -85,7 +85,7 @@ const SwiperCustom: React.FC<SwiperCustomProps> = ({
             },
             1024: {
               slidesPerView: 6,
-              spaceBetween: 30,
+              spaceBetween: 12,
             },
           }}
         >

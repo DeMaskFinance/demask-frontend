@@ -5,126 +5,78 @@ import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { AvatarUser } from "../Avatars";
 import FormatNumber from "../Common/FormatNumber";
-import { EtherIcon } from "../Icons";
+import { EtherIcon, NFTIcon, VerifyIcon } from "../Icons";
 import AccountContext from "@/context/AccountContext";
 import MediaNFT from "../Common/MediaNFT";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
+import { formatTypeChain } from "@/libs/utils/formatComon";
 
 interface NFTCategoryProps {
   item: any;
 }
 
 const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
-  const { chainId } = useContext(AccountContext);
-  const getDate = (timeStamp: number) => {
-    const date = timeStamp * 1000;
-    const currentDateMillis = Date.now();
-    const timeDifferenceMillis = date - currentDateMillis;
-    const daysLeft = Math.ceil(timeDifferenceMillis / (1000 * 60 * 60 * 24));
-    return -daysLeft;
-  };
-
   return (
-    <a
-      rel="noreferrer noopener"
-      target="_blank"
-      // href={`${process.env.NEXT_PUBLIC_LINK_APP}/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`}
-    >
-      <div className="relative dark:text-dark5">
-        <div className="h-52 group">
-          <MediaNFT data={item} isControls zoom />
+    <div className="relative overflow-hidden border border-shader_500 rounded-lg hover:border-shader_400">
+      <div className="relative items-center text-sm transition-all  rounded-md cursor-pointer group lg:text-base hover:shadow-home">
+        <div className="relative w-full h-[186px] overflow-hidden">
+          <div className="w-full h-full overflow-hidden rounded-t-lg">
+            <MediaNFT data={item} isControls={false} hover zoom />
+          </div>
         </div>
-        <div>
-          <h6
-            title={item.metadata?.name}
-            className="flex items-start gap-2 py-2 font-medium uppercase"
-          >
-            <span className="flex-wrap text-xl line-clamp-1">
-              {item.metadata?.name}
-            </span>
-            <svg
-              className="flex-shrink-0"
-              width="25"
-              height="24"
-              viewBox="0 0 25 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+        <div className="w-full p-3 bg-shader_700 rounded-b-lg relative group-hover:bg-shader_600">
+          <div className=" w-full text-white font-bold">
+            <h6
+              title={item.metadata?.name}
+              className="flex items-start w-full gap-2 uppercase "
             >
-              <path
-                opacity="0.4"
-                d="M17.3199 1.91H7.67995C5.55995 1.91 3.81995 3.65 3.81995 5.77V19.86C3.81995 21.66 5.10995 22.42 6.68995 21.55L11.5699 18.84C12.0899 18.55 12.9299 18.55 13.4399 18.84L18.3199 21.55C19.8999 22.43 21.1899 21.67 21.1899 19.86V5.77C21.1799 3.65 19.4499 1.91 17.3199 1.91Z"
-                fill="#9075FE"
-              />
-              <path
-                d="M11.59 13.251C11.4 13.251 11.21 13.181 11.06 13.031L9.55999 11.531C9.42051 11.3899 9.34229 11.1994 9.34229 11.001C9.34229 10.8026 9.42051 10.6121 9.55999 10.471C9.84999 10.181 10.33 10.181 10.62 10.471L11.59 11.441L15.06 7.97099C15.35 7.68099 15.83 7.68099 16.12 7.97099C16.41 8.26099 16.41 8.74099 16.12 9.03099L12.12 13.031C11.97 13.181 11.78 13.251 11.59 13.251Z"
-                fill="#9075FE"
-              />
-            </svg>
-          </h6>
-          <div className="flex gap-x-2">
-            <span className="shrink-0">
-              <AvatarUser width={24} height={24} />
-            </span>
-            <span className="block pb-1">
-              {item.creator?.slice(0, 4)}...
-              {item.creator?.slice(-4)}
-            </span>
+              <span className="flex-wrap max-w-full line-clamp-1">
+                {item.metadata?.name ? (
+                  <div className="flex gap-x-1 items-center">
+                    <ModalDocument data={item.metadata?.name} />
+                    <VerifyIcon width={16} height={16} />
+                  </div>
+                ) : (
+                  <p>--</p>
+                )}
+              </span>
+            </h6>
+            <p className="text-primary_300 text-xs">Created 19 days ago</p>
           </div>
-          <div className="flex justify-between pb-1">
-            <div className="flex flex-col items-start">
-              <p>Price</p>
-              {item.tokenSymbol && item.nftAddress ? (
-                <div className="flex flex-col">
-                  {item?.reserveToken?.toString() === "0" ||
-                  item?.reserveNFT?.toString() === "0" ||
-                  item?.reserveNFT?.toString() === "1" ? (
-                    <div className="text-red">Can't buy</div>
-                  ) : (
-                    <div className="flex items-center font-semibold gap-x-1">
-                      <div>
-                        <FormatNumber number={item.lastPrice} />
-                      </div>
-                      <div>
-                        <EtherIcon
-                          width={15}
-                          height={15}
-                          className="fill-dark2"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="flex animate-pulse gap-x-4">
-                  <div className="w-24 h-6 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-col items-end">
-              <p>Reverse NFT</p>
-              {item.reserveNFT ? (
-                <p className="font-semibold">{formatNumber(item.reserveNFT)}</p>
-              ) : (
-                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200 dark:bg-slate-700"></span>
-              )}
+          <div className="relative flex items-center justify-between w-full py-2 px-3 mb-2 my-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+            <div className="text-shader_100 text-sm">Floor Price</div>
+            <div className="flex items-center text-white gap-x-1">
+              <FormatNumber number={item.lastPrice} />
+              <EtherIcon width={16} height={16} />
             </div>
           </div>
-
-          <div className="flex items-end justify-between">
-            <div className="flex flex-col items-start">
-              <p>Reverse Token</p>
-              <div className="font-semibold">
-                <FormatNumber number={item?.reserveToken} />
+          <div className="flex justify-between text-sm text-shader_200 mt-2">
+            <p>Reserve NFT</p>
+            <p>Reserve Token</p>
+          </div>
+          <div className="flex justify-between font-bold text-white">
+            <div className="flex gap-x-1 items-center">
+              <FormatNumber number={item.reserveNFT} />
+              <EtherIcon width={16} height={16} />
+            </div>
+            <div>
+              <div className="flex gap-x-1 items-center">
+                <FormatNumber number={item.reserveToken} />
+                <NFTIcon width={16} height={16} />
               </div>
             </div>
-
-            <p className="block text-xs font-semibold">
-              {getDate(item.blockTimestamp)} d ago
+          </div>
+        </div>
+        <div className="flex items-center justify-between absolute top-1 px-2 w-full opacity-60 group-hover:opacity-100 transition-all duration-150">
+          <div className="flex gap-x-1 items-center">
+            <EtherIcon width={20} height={20} />
+            <p className="text-[10px] bg-black bg-opacity-40 rounded-xl px-2 h-5 leading-5 backdrop-opacity-50 font-semibold text-white">
+              {formatTypeChain(item.type)}
             </p>
           </div>
         </div>
       </div>
-    </a>
+    </div>
   );
 };
 

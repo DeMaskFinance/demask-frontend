@@ -16,7 +16,6 @@ import SwiperCustom from "../SwiperCustom";
 
 const Category = ({ label }: { label: string }) => {
   const { chainId, tokenDefault } = useContext(AccountContext);
-  const swiperRef = useRef<any>(null);
   const { data, isLoading } = useQuery({
     queryKey: [label, chainId],
     queryFn: async () => {
@@ -27,22 +26,23 @@ const Category = ({ label }: { label: string }) => {
     },
   });
 
-  const goNext = () => {
-    if (swiperRef && swiperRef.current) {
-      swiperRef.current.swiper.slideNext();
-    }
-  };
-
-  const goPrev = () => {
-    if (swiperRef && swiperRef.current) {
-      swiperRef.current.swiper.slidePrev();
-    }
-  };
   return (
-    <section className="">
+    <section className="mb-10">
       {data && data.items.length > 0 && (
         <div className="flex flex-col">
-          <h2 className="px-4 py-1 mx-auto mb-8 text-2xl font-medium uppercase rounded-md bg-dark4 w-max text-dark1">
+          <h2
+            className={`uppercase ${
+              label === "Art"
+                ? "text-primary_300"
+                : label === "Gaming"
+                ? "text-green"
+                : label === "Film"
+                ? "text-yellow"
+                : label === "Music"
+                ? "text-blue"
+                : "text-red"
+            } text-lg font-bold mb-3`}
+          >
             {label}
           </h2>
           <SwiperCustom slidesPerView={6}>
@@ -55,7 +55,7 @@ const Category = ({ label }: { label: string }) => {
                   >
                     <li
                       title={item.metadata?.name}
-                      className="items-center p-3 transition-all border rounded-md cursor-pointer hover:shadow-home area_input "
+                      className="items-center transition-all "
                     >
                       <NFTCategory item={item} />
                     </li>
@@ -63,11 +63,6 @@ const Category = ({ label }: { label: string }) => {
                 ))}
             </ul>
           </SwiperCustom>
-          {data && (
-            <button className="lg:mt-[28px] self-end text-secondary2 text-sm font-semibold border dark:border-darkBG0 dark:hover:border-secondary2  hover:border-secondary2 border-white rounded-lg px-4 py-2 transition-all ease-in duration-150">
-              <Link href={`category/${label}`}>See all</Link>
-            </button>
-          )}
         </div>
       )}
       {isLoading && <p>123</p>}
