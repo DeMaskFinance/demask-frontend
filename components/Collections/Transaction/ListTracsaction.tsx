@@ -40,7 +40,7 @@ function ListTracsaction() {
           isDefault
         />
         <div className=" overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse min-h-[550px] flex flex-col">
             <thead className="uppercase bg-shader_600 text-shader_200 font-semibold">
               <tr className="flex px-4 py-3">
                 <th className="flex justify-start lg:w-full md:w-full w-[200px]">
@@ -126,7 +126,7 @@ function ListTracsaction() {
               </tr>
             </thead>
 
-            <tbody className="flex flex-col">
+            <tbody className="flex flex-col flex-auto">
               <TransactionItem
                 data={data}
                 isLoading={isLoading}

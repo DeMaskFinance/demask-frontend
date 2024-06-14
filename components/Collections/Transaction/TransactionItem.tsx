@@ -1,5 +1,5 @@
 import MediaNFT from "@/components/Common/MediaNFT";
-import { EtherIcon } from "@/components/Icons";
+import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
 import Image from "next/image";
@@ -24,28 +24,9 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
   return (
     <>
       {isLoading || isFetching ? (
-        Array.from({ length: 10 }, (item, index) => (
-          <tr
-            key={index}
-            className="flex text-sm lg:text-base md:text-base text-dark2"
-          >
-            <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-          </tr>
-        ))
+        <div className="w-full h-full flex-auto justify-center items-center flex">
+          <LoadingIcon width={30} height={30} className="animate-spin" />
+        </div>
       ) : (
         <>
           {data?.data.map((item: any, idx: number) => (

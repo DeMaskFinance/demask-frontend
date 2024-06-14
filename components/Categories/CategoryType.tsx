@@ -13,6 +13,7 @@ import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import NFTCategory from "./NFTCategory";
 import AccountContext from "@/context/AccountContext";
 import SwiperCustom from "../SwiperCustom";
+import { SkeletonSubCategory } from "../Skeleton/SkeletonCategory";
 
 const Category = ({ label }: { label: string }) => {
   const { chainId, tokenDefault } = useContext(AccountContext);
@@ -65,7 +66,11 @@ const Category = ({ label }: { label: string }) => {
           </SwiperCustom>
         </div>
       )}
-      {isLoading && <p>123</p>}
+      {isLoading && (
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-6 md:grid-cols-2 text-dark2">
+          <SkeletonSubCategory length={6} />
+        </div>
+      )}
     </section>
   );
 };

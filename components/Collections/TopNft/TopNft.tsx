@@ -63,8 +63,8 @@ function TopNft() {
           isDefault
         />
         <div>
-          <div className="overflow-x-scroll min-h-[550px] flex flex-col justify-between">
-            <table className="w-full text-left border-collapse overflow-x-auto">
+          <div className="overflow-x-scroll  flex flex-col justify-between">
+            <table className="w-full text-left border-collapse overflow-x-auto min-h-[550px] flex flex-col">
               <thead className="uppercase bg-shader_600 text-shader_200 font-semibold">
                 <tr className="flex px-4 py-3">
                   <th className="flex justify-start lg:w-full md:w-full w-[200px]">
@@ -210,7 +210,7 @@ function TopNft() {
                 </tr>
               </thead>
 
-              <tbody className="flex flex-col">
+              <tbody className="flex flex-col flex-auto">
                 {activeChoice === "Trending" ? (
                   <CollectionItem
                     isLoading={isLoading}

@@ -1,6 +1,6 @@
 import { AvatarCustom } from "@/components/Avatars";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { EtherIcon } from "@/components/Icons";
+import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
 import { formatPercent } from "@/libs/utils/formatComon";
@@ -30,34 +30,9 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   return (
     <>
       {isLoading || isFetching ? (
-        Array.from({ length: 10 }, (item, index) => (
-          <tr
-            key={index}
-            className="flex text-sm lg:text-base md:text-base text-dark2 "
-          >
-            <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-              {skeleton}
-            </td>
-          </tr>
-        ))
+        <div className="w-full h-full flex-auto justify-center items-center flex">
+          <LoadingIcon width={30} height={30} className="animate-spin" />
+        </div>
       ) : (
         <>
           {data &&
