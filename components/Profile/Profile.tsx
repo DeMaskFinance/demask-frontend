@@ -218,9 +218,7 @@ const Profile = () => {
           </Tippy>
         </div>
       </div>
-      <div className="p-4 pb-20">
-        {selectedTab ? selectedTab.panel() : null}
-      </div>
+      <div className="px-4">{selectedTab ? selectedTab.panel() : null}</div>
     </div>
   );
 };

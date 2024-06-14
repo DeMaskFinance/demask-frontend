@@ -37,6 +37,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { BsClock } from "react-icons/bs";
 import "react-toastify/dist/ReactToastify.css";
 import { Pagination } from "../Common/Pagination";
+import { TabGroups } from "../NavChoice";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -192,10 +193,11 @@ const DetailLiquidity = () => {
               {account && isSuccess && data.liquidityHistory.length > 0 ? (
                 <div>
                   <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
-                    <TabTable
+                    <TabGroups
                       choices={options}
                       activeChoice="All"
                       onChoiceChange={handleChoiceChange}
+                      isDefault
                     />
                     <div className="flex-grow">
                       <div className="grid gap-x-4 font-semibold text-sm uppercase lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] bg-shader_600 text-shader_200">

@@ -4,10 +4,17 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import React, { useRef, useState } from "react";
-import { LeftIcon } from "../Icons";
+import React, { useEffect, useRef, useState } from "react";
 
-const SwiperCustom = ({ children }: any) => {
+interface SwiperCustomProps {
+  children: React.ReactNode;
+  slidesPerView: number;
+}
+
+const SwiperCustom: React.FC<SwiperCustomProps> = ({
+  children,
+  slidesPerView,
+}) => {
   const swiperRef = useRef<any>(null);
   const [showPrevButton, setShowPrevButton] = useState<boolean>(false);
   const [showNextButton, setShowNextButton] = useState<boolean>(true);
@@ -37,23 +44,29 @@ const SwiperCustom = ({ children }: any) => {
       setShowNextButton(true);
     }
   };
+  useEffect(() => {
+    if (swiperRef.current.swiper.slides.length <= slidesPerView) {
+      setShowNextButton(false);
+    }
+  }, [swiperRef.current]);
+
   return (
     <div>
       <div className="relative swiper-custom">
         <button
           type="button"
-          className={`flex items-center justify-center text-3xl text-shader_700 swiper-button-prev-custom ${
+          className={`flex items-center justify-center text-3xl text-dark1 swiper-button-prev-custom ${
             !showPrevButton && "hidden"
           }`}
           onClick={goPrev}
         >
-          <LeftIcon />
+          <GoChevronLeft />
         </button>
         <Swiper
           navigation={true}
           modules={[Navigation]}
           className="hidden mySwiper lg:block md:block"
-          slidesPerView={5}
+          slidesPerView={slidesPerView}
           slidesPerGroup={1}
           ref={swiperRef}
           onSlideChange={handleSlideChange}
@@ -71,7 +84,7 @@ const SwiperCustom = ({ children }: any) => {
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 6,
               spaceBetween: 30,
             },
           }}
@@ -80,7 +93,9 @@ const SwiperCustom = ({ children }: any) => {
         </Swiper>
         <button
           type="button"
-          className="flex items-center justify-center text-3xl text-shader_700 swiper-button-next-custom"
+          className={`flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom ${
+            !showNextButton && "hidden"
+          }`}
           onClick={goNext}
         >
           <GoChevronRight />

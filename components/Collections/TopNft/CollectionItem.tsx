@@ -1,0 +1,152 @@
+import { AvatarCustom } from "@/components/Avatars";
+import FormatNumber from "@/components/Common/FormatNumber";
+import { EtherIcon } from "@/components/Icons";
+import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
+import AccountContext from "@/context/AccountContext";
+import { formatPercent } from "@/libs/utils/formatComon";
+import React, { useContext } from "react";
+interface CollectionItemProps {
+  data: any;
+  isFetching: boolean;
+  isLoading: boolean;
+  isPreviousData: boolean;
+  page: number;
+  setPage: any;
+  refetch: any;
+}
+const CollectionItem: React.FC<CollectionItemProps> = ({
+  data,
+  isFetching,
+  isLoading,
+  isPreviousData,
+  page,
+  setPage,
+  refetch,
+}) => {
+  const skeleton = (
+    <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />
+  );
+
+  return (
+    <>
+      {isLoading || isFetching ? (
+        Array.from({ length: 10 }, (item, index) => (
+          <tr
+            key={index}
+            className="flex text-sm lg:text-base md:text-base text-dark2 "
+          >
+            <td className="py-2 flex items-center justify-start lg:w-[440px] md:w-[340px] w-[50px]">
+              {skeleton}
+            </td>
+            <td className="py-2 flex items-center justify-start lg:w-full md:w-full w-[200px]">
+              {skeleton}
+            </td>
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+              {skeleton}
+            </td>
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+              {skeleton}
+            </td>
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+              {skeleton}
+            </td>
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+              {skeleton}
+            </td>
+            <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+              {skeleton}
+            </td>
+          </tr>
+        ))
+      ) : (
+        <>
+          {data &&
+            data?.data?.map((item: any, idx: number) => (
+              <tr
+                key={idx}
+                className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
+              >
+                <td className="py-2 lg:w-full md:w-full w-[200px]">
+                  <a
+                    rel="noreferrer noopener"
+                    target="_blank"
+                    // href={`${process.env.NEXT_PUBLIC_LINK_APP}/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`}
+                    className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
+                  >
+                    <div className="relative flex items-center gap-2 group">
+                      <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
+                        <AvatarCustom
+                          avatarUrl={item?.avatar}
+                          userAddress={item?.name}
+                          size={24}
+                          className="rounded-lg"
+                        />
+                      </div>
+
+                      <span className="line-clamp-1 truncate  max-w-[133px] block">
+                        {isFetching ? skeleton : item?.name}
+                      </span>
+                    </div>
+                  </a>
+                </td>
+                <td className="py-2 flex items-center gap-x-1 justify-end lg:w-full md:w-full w-[140px]">
+                  {isFetching ? (
+                    skeleton
+                  ) : (
+                    <ModalNumber data={item.floorPrice} />
+                  )}
+                  <p>
+                    <EtherIcon width={18} height={18} className="fill-dark2" />
+                  </p>
+                </td>
+                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                  <div
+                    className={`flex items-center ${
+                      item.changePrice24h > 0
+                        ? "text-green"
+                        : item.changePrice24h === 0
+                        ? "text-dark2 dark:text-dark4"
+                        : "text-red"
+                    } `}
+                  >
+                    {/* {item.changePrice24h > 0 ? <BsArrowUp /> : item.changePrice24h === 0 ? <p></p> : <BsArrowDown />} */}
+                    {isFetching ? (
+                      skeleton
+                    ) : (
+                      <p>{formatPercent(item.changePrice24h)}</p>
+                    )}
+                    %
+                  </div>
+                </td>
+                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] gap-x-1">
+                  {isFetching ? (
+                    skeleton
+                  ) : (
+                    <FormatNumber number={item.volume24h} />
+                  )}
+                  <p>
+                    <EtherIcon width={18} height={18} className="fill-dark2" />
+                  </p>
+                </td>
+                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] gap-x-1">
+                  {isFetching ? skeleton : <FormatNumber number={item.TVL} />}
+                  <p>
+                    <EtherIcon width={18} height={18} className="fill-dark2" />
+                  </p>
+                </td>
+                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+                  {isFetching ? (
+                    skeleton
+                  ) : (
+                    <p>{Number(item.totalSupply).toLocaleString()}</p>
+                  )}
+                </td>
+              </tr>
+            ))}
+        </>
+      )}
+    </>
+  );
+};
+
+export default CollectionItem;

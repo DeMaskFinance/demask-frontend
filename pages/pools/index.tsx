@@ -1,7 +1,6 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
 import Button from "@/components/Buttons/Button";
 import { LoadingIcon, SearchIcon } from "@/components/Icons";
-import TabTable from "@/components/NavChoice/TabTable";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -10,6 +9,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { SEO } from "../../next-seo.config";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
+import { TabGroups } from "@/components/NavChoice";
 const updateMeta = {
   ...SEO,
   title: "Liquidity",
@@ -94,10 +94,11 @@ export default function Liquidity() {
             List of your liquidity positions
           </p>
           <div className="rounded-lg bg-shader_800 min-h-[70vh] flex flex-col">
-            <TabTable
+            <TabGroups
               choices={["NFTs pool", "Collection pool"]}
               activeChoice={activeChoice}
               onChoiceChange={handleChoiceChange}
+              isDefault
             />
             {account && data?.pages[0]?.combinedRecords.length !== 0 && (
               <>

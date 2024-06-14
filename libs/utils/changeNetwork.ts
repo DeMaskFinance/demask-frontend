@@ -12,12 +12,15 @@ export const changeNetwork = async (
   try {
     const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
+    console.log(networkId, chainId);
+
     if (networkId !== chainId) {
       try {
         await provider.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: Web3.utils.toHex(chainId) }],
         });
+
         setIsWrongNetwork(false);
         updateChainId(chainId);
         setTab(chainId);

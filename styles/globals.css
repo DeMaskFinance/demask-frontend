@@ -111,6 +111,9 @@
   .item_menu {
     @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer font-semibold hover:bg-shader_400;
   }
+  .bg_main {
+    @apply w-full  border rounded-lg transition-all duration-200 font-semibold text-white   bg-shader_800 outline-none border-shader_500;
+  }
   .content_modal {
     @apply flex justify-between text-lg font-semibold text-shader_800;
   }

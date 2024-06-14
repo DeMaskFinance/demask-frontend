@@ -9,7 +9,10 @@ const nextConfig = {
       "api.demask.finance",
       "file.demask.finance",
       "metadata.degods.com",
-      "cf-ipfs.com"
+      "cf-ipfs.com",
+      "1b21fea1b71e52bc8b81e22b5a53a188.ipfscdn.io",
+      "",
+      "ipfs"
     ],
   },
   env: {

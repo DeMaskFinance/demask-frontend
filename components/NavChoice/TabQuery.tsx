@@ -84,7 +84,7 @@ const TabQuery: React.FC<TabQueryProps> = ({
               key={index}
               ref={(el) => (buttonRefs.current[index] = el)}
               type="button"
-              className={`cursor-pointer py-2 px-8 z-10 text-sm font-bold ${
+              className={`cursor-pointer py-2 px-8 z-10 text-sm font-bold hover:text-white ${
                 item.key === tab ? "text-white" : "text-shader_100"
               }`}
               onClick={() => handleButtonClick(item, index)}

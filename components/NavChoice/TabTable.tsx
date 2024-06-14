@@ -44,7 +44,7 @@ const TabTable: React.FunctionComponent<TabGroupProps> = ({
           key={choice}
           ref={(el) => (buttonRefs.current[index] = el)}
           type="button"
-          className={`py-3 px-9 rounded-lg z-10 font-bold ${
+          className={`py-3 px-9 rounded-lg z-10 font-bold hover:text-white ${
             activeChoice === choice ? "text-white" : "text-shader_300"
           }`}
           onClick={() => handleButtonClick(choice, index)}

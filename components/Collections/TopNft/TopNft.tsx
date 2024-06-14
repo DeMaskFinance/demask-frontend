@@ -1,0 +1,244 @@
+import { useEffect, useState, useContext } from "react";
+
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { useQuery } from "@tanstack/react-query";
+import { MdOutlineNavigateNext, MdNavigateBefore } from "react-icons/md";
+import CollectionItem from "./CollectionItem";
+import { TabGroups } from "@/components/NavChoice";
+import AccountContext from "@/context/AccountContext";
+import { SortIcon } from "@/components/Icons";
+function TopNft() {
+  const [activeChoice, setActiveChoice] = useState<string>("Trending");
+  const [page, setPage] = useState(1);
+  const [pageNewest, setPageNewest] = useState(1);
+  const { chainId } = useContext(AccountContext);
+  const [sortField, setSortField] = useState("volume24h");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
+    queryKey: ["topNft", chainId, sortField, sortOrder, page],
+    queryFn: async () => {
+      const res = await categoryAPI(
+        `top-collection-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
+      );
+      return res;
+    },
+
+    keepPreviousData: true,
+  });
+  const {
+    isLoading: isLoadingNewest,
+    data: dataNewest,
+    isFetching: isFetchingNewest,
+    refetch: refetchNewest,
+    isPreviousData: isPreviousDataNewest,
+  } = useQuery({
+    queryKey: ["newestNft", chainId, pageNewest],
+    queryFn: async () => {
+      const res = await categoryAPI(
+        `newest-dml-list?chainId=${chainId}&limit=10&page=${pageNewest}`
+      );
+      return res;
+    },
+
+    keepPreviousData: true,
+  });
+
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
+  };
+
+  const handleSort = (field: string) => {
+    setSortField(field);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    // refetch();
+  };
+
+  return (
+    <div className="my-6">
+      <div className="bg_main">
+        <TabGroups
+          choices={["Trending", "Newest"]}
+          activeChoice={activeChoice}
+          onChoiceChange={handleChoiceChange}
+          isDefault
+        />
+        <div>
+          <div className="overflow-x-scroll min-h-[550px] flex flex-col justify-between">
+            <table className="w-full text-left border-collapse overflow-x-auto">
+              <thead className="uppercase bg-shader_600 text-shader_200 font-semibold">
+                <tr className="flex px-4 py-3">
+                  <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                    Name
+                  </th>
+                  <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
+                    Price
+                    {activeChoice === "Trending" && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleSort("floorPrice")}
+                      >
+                        <SortIcon
+                          width={16}
+                          height={16}
+                          //   fill1={
+                          //     sortField === "floorPrice" && sortOrder === "asc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill2={
+                          //     sortField === "floorPrice" && sortOrder === "desc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill3={
+                          //     sortField === "floorPrice" ? "#000D34" : "#A3A9B9"
+                          //   }
+                        />
+                      </div>
+                    )}
+                  </th>
+                  <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
+                    1D Change
+                    {activeChoice === "Trending" && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleSort("changePrice24h")}
+                      >
+                        <SortIcon
+                          width={16}
+                          height={16}
+                          //   fill1={
+                          //     sortField === "changePrice24h" &&
+                          //     sortOrder === "asc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill2={
+                          //     sortField === "changePrice24h" &&
+                          //     sortOrder === "desc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill3={
+                          //     sortField === "changePrice24h"
+                          //       ? "#000D34"
+                          //       : "#A3A9B9"
+                          //   }
+                        />
+                      </div>
+                    )}
+                  </th>
+                  <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
+                    1D Volume
+                    {activeChoice === "Trending" && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleSort("volume24h")}
+                      >
+                        <SortIcon
+                          width={16}
+                          height={16}
+                          //   fill1={
+                          //     sortField === "volume24h" && sortOrder === "asc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill2={
+                          //     sortField === "volume24h" && sortOrder === "desc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill3={
+                          //     sortField === "volume24h" ? "#000D34" : "#A3A9B9"
+                          //   }
+                        />
+                      </div>
+                    )}
+                  </th>
+                  <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
+                    TVL
+                    {activeChoice === "Trending" && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleSort("TVL")}
+                      >
+                        <SortIcon
+                          width={16}
+                          height={16}
+                          //   fill1={
+                          //     sortField === "TVL" && sortOrder === "asc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill2={
+                          //     sortField === "TVL" && sortOrder === "desc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill3={sortField === "TVL" ? "#000D34" : "#A3A9B9"}
+                        />
+                      </div>
+                    )}
+                  </th>
+                  <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
+                    Total supply
+                    {activeChoice === "Trending" && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleSort("totalSupply")}
+                      >
+                        <SortIcon
+                          width={16}
+                          height={16}
+                          //   fill1={
+                          //     sortField === "totalSupply" && sortOrder === "asc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill2={
+                          //     sortField === "totalSupply" && sortOrder === "desc"
+                          //       ? "white"
+                          //       : "#A3A9B9"
+                          //   }
+                          //   fill3={
+                          //     sortField === "totalSupply" ? "#000D34" : "#A3A9B9"
+                          //   }
+                        />
+                      </div>
+                    )}
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="flex flex-col">
+                {activeChoice === "Trending" ? (
+                  <CollectionItem
+                    isLoading={isLoading}
+                    data={data}
+                    isPreviousData={isPreviousData}
+                    isFetching={isFetching}
+                    page={page}
+                    setPage={setPage}
+                    refetch={refetch}
+                  />
+                ) : (
+                  <CollectionItem
+                    isLoading={isLoadingNewest}
+                    data={dataNewest}
+                    isPreviousData={isPreviousDataNewest}
+                    isFetching={isFetchingNewest}
+                    page={pageNewest}
+                    setPage={setPageNewest}
+                    refetch={refetchNewest}
+                  />
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default TopNft;

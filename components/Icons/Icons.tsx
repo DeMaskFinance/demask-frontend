@@ -97,43 +97,6 @@ export const FilterIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
-export const AllIcon: React.FunctionComponent<IconProps> = ({
-  className,
-  width,
-  height,
-}) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      width="20"
-      height="20"
-      viewBox="0 0 22 22"
-      fill="#636977"
-    >
-      <mask
-        id="mask0_4140_7227"
-        maskUnits="userSpaceOnUse"
-        x="0"
-        y="0"
-        width="22"
-        height="22"
-      >
-        <path
-          d="M8.5 2.5V8.5H2.5C2.23478 8.5 1.98043 8.60536 1.79289 8.79289C1.60536 8.98043 1.5 9.23478 1.5 9.5V19.5C1.5 19.7652 1.60536 20.0196 1.79289 20.2071C1.98043 20.3946 2.23478 20.5 2.5 20.5H12.5C12.7652 20.5 13.0196 20.3946 13.2071 20.2071C13.3946 20.0196 13.5 19.7652 13.5 19.5V13.5H19.5C19.7652 13.5 20.0196 13.3946 20.2071 13.2071C20.3946 13.0196 20.5 12.7652 20.5 12.5V2.5C20.5 2.23478 20.3946 1.98043 20.2071 1.79289C20.0196 1.60536 19.7652 1.5 19.5 1.5H9.5C9.23478 1.5 8.98043 1.60536 8.79289 1.79289C8.60536 1.98043 8.5 2.23478 8.5 2.5Z"
-          stroke="white"
-          fill="#555555"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </mask>
-      <g mask="url(#mask0_4140_7227)">
-        <path d="M-1 -1H23V23H-1V-1Z" />
-      </g>
-    </svg>
-  );
-};
 export const PoolIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
@@ -455,6 +418,89 @@ export const RightIcon: React.FunctionComponent<IconProps> = ({
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const LineRightIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M3.33325 10L16.6666 10M16.6666 10L11.6666 5M16.6666 10L11.6666 15"
+        stroke="#AD97FE"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+export const SortIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 11 14"
+      fill="none"
+    >
+      <path d="M5.6001 0L10.6001 5H0.600098L5.6001 0Z" fill="#687184" />
+      <path d="M5.6001 14L10.6001 9H0.600098L5.6001 14Z" fill="#687184" />
+    </svg>
+  );
+};
+export const UpPriceIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="7"
+      height="8"
+      viewBox="0 0 7 8"
+      fill="none"
+    >
+      <path
+        d="M3.08991 1.71327C3.28896 1.42891 3.71009 1.42891 3.90914 1.71327L6.44881 5.34137C6.68079 5.67276 6.44371 6.1281 6.0392 6.1281H0.959854C0.555343 6.1281 0.318266 5.67276 0.550238 5.34137L3.08991 1.71327Z"
+        fill="#4ADE80"
+      />
+    </svg>
+  );
+};
+export const DownPriceIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="7"
+      height="8"
+      viewBox="0 0 7 8"
+      fill="none"
+    >
+      <path
+        d="M3.91009 6.28673C3.71104 6.57109 3.28991 6.57109 3.09086 6.28673L0.551186 2.65863C0.319214 2.32724 0.556291 1.8719 0.960802 1.8719L6.04015 1.8719C6.44466 1.8719 6.68173 2.32724 6.44976 2.65863L3.91009 6.28673Z"
+        fill="#EF4444"
       />
     </svg>
   );
@@ -794,31 +840,6 @@ export const WalletIcon: React.FunctionComponent<IconProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </svg>
-  );
-};
-export const PictureMint: React.FunctionComponent<IconProps> = ({
-  className,
-  width,
-  height,
-}) => {
-  return (
-    <svg
-      className={className}
-      width={width}
-      height={height}
-      viewBox="0 0 1000 1000"
-      fill="#A3A9B9"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        opacity="0.5"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M144.359 144.353C83.3398 205.372 83.3398 303.582 83.3398 500C83.3398 696.419 83.3398 794.628 144.359 855.647C205.379 916.667 303.588 916.667 500.007 916.667C696.425 916.667 794.634 916.667 855.654 855.647C916.673 794.628 916.673 696.419 916.673 500C916.673 303.582 916.673 205.372 855.654 144.353C794.634 83.3335 696.425 83.3335 500.007 83.3335C303.588 83.3335 205.379 83.3335 144.359 144.353Z"
-      />
-      <path d="M354.339 549.025C330.003 523.193 289.382 521.837 263.378 545.99L229.607 577.357C216.961 589.102 197.188 588.372 185.443 575.727C173.697 563.081 174.427 543.308 187.073 531.563L220.844 500.196C272.013 452.669 351.945 455.337 399.831 506.169L510.143 623.265C521.681 635.513 540.57 637.164 554.057 627.102C604.052 589.805 673.667 594.044 718.768 637.131L813.26 727.404C825.74 739.326 826.191 759.108 814.269 771.587C802.347 784.066 782.566 784.518 770.086 772.596L675.594 682.322C652.548 660.305 616.976 658.139 591.429 677.198C552.492 706.246 497.962 701.482 464.651 666.122L354.339 549.025Z" />
-      <path d="M750.007 333.333C750.007 379.357 712.697 416.667 666.673 416.667C620.65 416.667 583.34 379.357 583.34 333.333C583.34 287.31 620.65 250 666.673 250C712.697 250 750.007 287.31 750.007 333.333Z" />
     </svg>
   );
 };

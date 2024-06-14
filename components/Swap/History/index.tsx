@@ -1,10 +1,10 @@
 import { Pagination } from "@/components/Common/Pagination";
-import TabTable from "@/components/NavChoice/TabTable";
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import HistoryItem from "./HistoryItem";
+import { TabGroups } from "@/components/NavChoice";
 interface HistorySwapProps {
   data: DataBase;
   typeERC: string;
@@ -42,10 +42,11 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
   return (
     <div className="w-full font-semibold lg:mb-0">
       <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_800">
-        <TabTable
+        <TabGroups
           choices={options}
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}
+          isDefault
         />
         <table className="w-full text-left border-collapse">
           <thead className=" bg-shader_600 text-shader_200">

@@ -13,11 +13,13 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const { chainId } = useContext(AccountContext);
   const router = useRouter();
   const data = [
-    { id: 1, name: "Swap", url: `/swap` },
-    { id: 2, name: "Create", url: "/create" },
-    { id: 3, name: "Launchpad", url: "/launchpad" },
-    { id: 4, name: "Pools", url: "/pools" },
-    { id: 5, name: "Rewards", url: "/leaderboard", subRewardMenu: true },
+    { name: "Swap", url: `/swap` },
+    { name: "Create", url: "/create" },
+    { name: "Collections", url: "/collections" },
+    { name: "Category", url: "/category" },
+    { name: "Launchpad", url: "/launchpad" },
+    { name: "Pools", url: "/pools" },
+    { name: "Rewards", url: "/leaderboard", subRewardMenu: true },
   ];
   const subMenuRewardData = [
     { id: 1, name: "Leaderboard", url: "/leaderboard" },
@@ -33,8 +35,8 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   return (
     <div className="flex gap-x-8">
       <ul className="flex items-center font-semibold text-shader_100 3xl:gap-x-8 gap-x-8">
-        {data.map((item) => (
-          <React.Fragment key={item.id}>
+        {data.map((item, index) => (
+          <React.Fragment key={index}>
             {item.subRewardMenu ? (
               <li>
                 <Tippy
@@ -72,7 +74,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                 </Tippy>
               </li>
             ) : (
-              <React.Fragment key={item.id}>
+              <React.Fragment key={index}>
                 <li className="hover:text-primary_500">
                   <ActiveLink href={`${item?.url}?chain=${chainId}`}>
                     <p className="">{item.name}</p>

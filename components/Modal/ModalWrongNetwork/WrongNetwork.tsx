@@ -43,6 +43,8 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
       const checkNetwork = async () => {
         const provider = await getProvider(wallet);
         const networkId = await provider.request({ method: "net_version" });
+        console.log(networkId, chain);
+
         if (networkId !== chain) {
           setIsWrongNetwork(true);
           document.body.style.overflowY = "hidden";
@@ -66,19 +68,15 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     document.body.style.overflowY = "auto";
   };
 
-  const PORT = process.env.NEXT_PUBLIC_APP_PORT;
   return (
     <Wrapper isOpen={isWrongNetwork}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
-          <h2 className="text-xl font-semibold text-shader_700">
+          <h2 className="text-xl font-semibold text-white">
             Check your network
           </h2>
-          <h3 className="my-4 font-medium text-shader_600">
-            Currently Demask only supported in{" "}
-            {PORT === "3000"
-              ? "zkSync Testnet and Goerli Testnet"
-              : "BNB Smart Chain Testnet and Polygon Testnet"}
+          <h3 className="my-4 font-medium text-shader_100">
+            Currently Demask only supported in Sepolia Testnet
           </h3>
           <h2 className="font-medium text-yellow">Warning</h2>
           <div className="flex my-4 gap-x-3">
