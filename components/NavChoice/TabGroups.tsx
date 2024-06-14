@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 interface TabGroupProps {
   choices: string[];
   activeChoice: string;
   onChoiceChange: (choice: string) => void;
   isOverview?: boolean;
+  isDefault?: boolean;
 }
 
 const TabGroups: React.FunctionComponent<TabGroupProps> = ({
@@ -12,6 +13,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   activeChoice,
   onChoiceChange,
   isOverview,
+  isDefault,
 }) => {
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>(
     Array(choices.length).fill(null)
@@ -35,38 +37,69 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   // console.log(isInclude);
 
   return (
-    <div
-      className={`flex relative items-center p-1 text-sm text-center text-white rounded-lg bg-shader_600 border_500 w-full ${
-        isOverview ? "lg:hidden" : ""
-      }`}
-    >
-      <div
-        className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-9 ${
-          activeChoice === "Buy"
-            ? "bg-green"
-            : activeChoice === "Sell"
-            ? "bg-red"
-            : "bg-primary_400"
-        }`}
-        style={{
-          transform: `translateX(${translateX}px)`,
-          width: `${activeChoice ? widthBtn : 0}px`,
-        }}
-      ></div>
-      {choices.map((choice, index) => (
-        <button
-          key={choice}
-          ref={(el) => (buttonRefs.current[index] = el)}
-          type="button"
-          className={`py-2 w-1/2 rounded-lg z-10 font-bold ${
-            activeChoice === choice ? "text-white" : "text-shader_300"
-          }`}
-          onClick={() => handleButtonClick(choice, index)}
+    <Fragment>
+      {isDefault ? (
+        <div
+          className={`flex relative items-center py-1 text-sm text-center text-white bg-shader_800`}
         >
-          {choice}
-        </button>
-      ))}
-    </div>
+          <div
+            className={`absolute transition-transform duration-100 ease-linear border-b-[3px] border-primary_500 h-full bottom-0`}
+            style={{
+              transform: `translateX(${translateX}px)`,
+              width: `${activeChoice ? widthBtn : 0}px`,
+              background:
+                "linear-gradient(180deg, rgba(144, 117, 254, 0) 0%, rgba(144, 117, 254, 0.15) 100%)",
+            }}
+          ></div>
+          {choices.map((item, index) => (
+            <button
+              key={index}
+              ref={(el) => (buttonRefs.current[index] = el)}
+              type="button"
+              className={`cursor-pointer py-2 px-8 z-10 text-sm font-bold ${
+                item === activeChoice ? "text-white" : "text-shader_100"
+              }`}
+              onClick={() => handleButtonClick(item, index)}
+            >
+              <h2 className="font-semibold whitespace-nowrap">{item}</h2>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div
+          className={`flex relative items-center p-1 text-sm text-center text-white rounded-lg bg-shader_600 border_500 w-full ${
+            isOverview ? "lg:hidden" : ""
+          }`}
+        >
+          <div
+            className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-9 ${
+              activeChoice === "Buy"
+                ? "bg-green"
+                : activeChoice === "Sell"
+                ? "bg-red"
+                : "bg-primary_400"
+            }`}
+            style={{
+              transform: `translateX(${translateX}px)`,
+              width: `${activeChoice ? widthBtn : 0}px`,
+            }}
+          ></div>
+          {choices.map((choice, index) => (
+            <button
+              key={choice}
+              ref={(el) => (buttonRefs.current[index] = el)}
+              type="button"
+              className={`py-2 w-1/2 rounded-lg z-10 font-bold ${
+                activeChoice === choice ? "text-white" : "text-shader_300"
+              }`}
+              onClick={() => handleButtonClick(choice, index)}
+            >
+              {choice}
+            </button>
+          ))}
+        </div>
+      )}
+    </Fragment>
   );
 };
 

@@ -6,9 +6,16 @@ import {
   EyeIcon,
   NFTIcon,
   PlusIcon,
+  SearchIcon,
   SwapIcon,
 } from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
@@ -21,6 +28,11 @@ import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import useDebounce from "@/hooks/useDebounce";
 import { formatTypeChain } from "@/libs/utils/formatComon";
+import { CgClose } from "react-icons/cg";
+import TabQuery from "@/components/NavChoice/TabQuery";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { TabGroups } from "@/components/NavChoice";
+import FilterItems from "./FilterItems";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -56,12 +68,11 @@ export const ItemList: React.FC<ItemListProps> = ({
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   return (
     <div className="font-semibold">
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-8 md:grid-cols-3 text-shader_600">
+        <div className="grid grid-cols-autoFill gap-4 mt-4 text-shader_600">
           <SkeletonSubCategory length={5} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
@@ -73,7 +84,7 @@ export const ItemList: React.FC<ItemListProps> = ({
             </div>
             <p>{data?.pages[0].totalRecords} Items</p>
           </div>
-          <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-8 md:grid-cols-3 text-white">
+          <div className="grid grid-cols-autoFill gap-4 mt-4  text-white">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (
@@ -214,8 +225,11 @@ const Items = () => {
   const { account, chainId, demask } = useContext(AccountContext);
   const [typeERC, setTypeERC] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
   let debouncedSearch = useDebounce(searchCollection);
+  const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, ""));
+
   const fetchDataNFTs = async (
     pageParam = 1,
     chain: string | string[],
@@ -262,22 +276,23 @@ const Items = () => {
     }
   );
   return (
-    <div>
-      <Classify
-        typeERC={typeERC}
-        category={category}
-        setSearchCollection={setSearchCollection}
-        setTypeERC={setTypeERC}
-        setCategory={setCategory}
-      />
-      <ItemList
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        data={data}
-        isFetching={isFetching}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-      />
+    <div className="flex">
+      {isFilter && <FilterItems setIsFilter={setIsFilter} />}
+      <div className="flex-auto">
+        <Classify
+          setSearchCollection={setSearchCollection}
+          setIsFilter={setIsFilter}
+          isFilter={isFilter}
+        />
+        <ItemList
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          data={data}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
+      </div>
     </div>
   );
 };

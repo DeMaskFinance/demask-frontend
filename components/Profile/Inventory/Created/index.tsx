@@ -18,6 +18,7 @@ const Created = () => {
   const [typeERC, setTypeERC] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [searchCollection, setSearchCollection] = useState<string>("");
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   let debouncedSearch = useDebounce(searchCollection);
 
   const { ref, inView } = useInView();
@@ -76,10 +77,8 @@ const Created = () => {
   return (
     <Fragment>
       <Classify
-        typeERC={typeERC}
-        category={category}
-        setTypeERC={setTypeERC}
-        setCategory={setCategory}
+        setIsFilter={setIsFilter}
+        isFilter={isFilter}
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">

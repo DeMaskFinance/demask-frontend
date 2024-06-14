@@ -1,38 +1,28 @@
+import { Button } from "@/components/Buttons";
 import { DownIcon, FilterIcon, SearchIcon } from "@/components/Icons";
 import Tippy from "@tippyjs/react/headless";
 import React from "react";
 import { FaAngleDown } from "react-icons/fa";
 import "tippy.js/dist/tippy.css";
-const styles = {
-  itemSub:
-    "flex items-center bg-shader_700 border-shader_700 justify-between text-sm  w-[182px] px-2 py-2 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-primary_400 border-white hover:text-primary_400 active:text-primary_400",
-};
+
 interface ClassifyProps {
-  typeERC: string;
-  category: string;
-  setTypeERC: any;
-  setCategory: any;
-  setSearchCollection: any;
+  setSearchCollection: React.Dispatch<React.SetStateAction<string>>;
+  setIsFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  isFilter: boolean;
 }
 const Classify: React.FC<ClassifyProps> = ({
-  typeERC,
-  category,
-  setCategory,
-  setTypeERC,
   setSearchCollection,
+  setIsFilter,
+  isFilter,
 }) => {
-  const ERCType = [
+  const optionPrice = [
     {
-      type: "",
-      typeNumber: "All",
+      type: "dec",
+      typeNumber: "Low to High",
     },
     {
-      type: "erc1155",
-      typeNumber: "ERC - 1155",
-    },
-    {
-      type: "erc721",
-      typeNumber: "ERC - 721",
+      type: "low",
+      typeNumber: "High to Low",
     },
   ];
   const subMenuCateData = [
@@ -48,6 +38,17 @@ const Classify: React.FC<ClassifyProps> = ({
   return (
     <div>
       <div className="flex text-sm font-normal gap-x-4 text-shader_500">
+        <Button
+          primary
+          className={`w-10 bg-opacity-15 ${isFilter && "bg-opacity-100"}`}
+          onClick={() => setIsFilter(!isFilter)}
+        >
+          <FilterIcon
+            width={24}
+            height={24}
+            className="cursor-pointer group-hover:fill-primary_400"
+          />
+        </Button>
         <Tippy
           className=""
           interactive
@@ -55,16 +56,18 @@ const Classify: React.FC<ClassifyProps> = ({
           placement="bottom"
           render={(attrs) => (
             <div
-              className="w-full p-2 bg-white rounded-lg shadow-home bg-shader_700 border-shader_700"
+              className="w-full p-2  rounded-lg shadow-home bg-shader_700 border-shader_700"
               tabIndex={-1}
               {...attrs}
             >
-              {ERCType.map((item) => (
+              {optionPrice.map((item, index) => (
                 <li
-                  className={`item_menu w-[182px] my-1 gap-x-1 ${
-                    item.type === typeERC && "bg-shader_600 "
-                  }`}
-                  onClick={() => setTypeERC(item.type)}
+                  key={index}
+                  // className={`item_menu w-[160px] my-1 gap-x-1 text-shader_200 ${
+                  //   item.type === typeERC && "bg-shader_600 "
+                  // }`}
+                  className={`item_menu w-[160px] my-1 gap-x-1 text-shader_200 `}
+                  // onClick={() => setTypeERC(item.type)}
                 >
                   {item.typeNumber}
                 </li>
@@ -72,23 +75,16 @@ const Classify: React.FC<ClassifyProps> = ({
             </div>
           )}
         >
-          <div className="flex items-center p-2 font-semibold text-white rounded-lg bg-shader_600 group gap-x-8 border-shader_700">
-            <p className="hidden lg:block">
-              Token type:{" "}
-              {`${
-                typeERC === ""
-                  ? "All"
-                  : typeERC === "erc721"
-                  ? "ERC - 721"
-                  : "ERC - 1155"
-              }`}
-            </p>
-            <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
+          <div>
+            <div className="flex items-center p-2 h-10 input_item group gap-x-4 text-shader_200 font-semibold">
+              <p className="hidden lg:block">Price: Low to High</p>
+              <FaAngleDown className=" transition-all duration-150 group-hover:rotate-180" />
+            </div>
           </div>
         </Tippy>
         <div className="relative flex-grow">
-          <div className="flex h-full rounded-lg bg-shader_600 border-shader_700">
-            <div className="flex items-center justify-center w-8 h-full">
+          <div className="flex h-full rounded-lg bg-shader_600 border-shader_700 px-3">
+            <div className="flex items-center justify-center  h-full mr-2">
               <SearchIcon width={20} height={20} className="text-white" />
             </div>
             <input
@@ -97,42 +93,10 @@ const Classify: React.FC<ClassifyProps> = ({
               onChange={(e) => {
                 setSearchCollection(e.target.value);
               }}
-              className="relative w-full text-white transition-all bg-transparent outline-none placeholder:text-xs"
+              className="relative w-full text-white transition-all bg-transparent outline-none placeholder:text-shader_300"
             />
           </div>
         </div>
-        <Tippy
-          className=""
-          interactive
-          hideOnClick
-          placement="bottom"
-          render={(attrs) => (
-            <div
-              className="w-full p-2 bg-white rounded-lg shadow-home border-shader_700"
-              tabIndex={-1}
-              {...attrs}
-            >
-              {subMenuCateData.map((cateItem) => (
-                <li
-                  className={`item_menu w-[184px] my-1 ${
-                    cateItem.name === category && "bg-shader_600 "
-                  }`}
-                  onClick={() => setCategory(cateItem.type)}
-                >
-                  {cateItem.name}
-                </li>
-              ))}
-            </div>
-          )}
-        >
-          <div className="p-2 rounded-lg bg-shader_600 group border-shader_700">
-            <FilterIcon
-              width={24}
-              height={24}
-              className="cursor-pointer group-hover:fill-primary_400"
-            />
-          </div>
-        </Tippy>
       </div>
     </div>
   );

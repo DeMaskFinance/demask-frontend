@@ -41,6 +41,9 @@ const config = {
       lineHeight: {
         normal: "18px",
       },
+      gridTemplateColumns: {
+        autoFill: "repeat(auto-fill, minmax(220px, 1fr))",
+      },
       padding: {
         primary: "56px",
         secondary: "272px",
