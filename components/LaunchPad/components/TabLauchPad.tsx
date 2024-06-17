@@ -47,45 +47,43 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
   }, [inView]);
 
   return (
-    <>
-      <div className="mb-8 containe">
-        {isLoading ? (
-          <div className="mt-8">
-            <SkeletonCategory />
+    <div className="mb-8 containe">
+      {isLoading ? (
+        <div className="mt-8">
+          <SkeletonCategory />
+        </div>
+      ) : (
+        <>
+          <div className="mt-4">
+            {isSuccess && data?.pages[0]?.data.length > 0 ? (
+              data.pages.map((page, pageIndex) => (
+                <Fragment key={pageIndex}>
+                  <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
+                    {page?.data?.map(
+                      (item: LaunchpadData, itemIndex: number) => (
+                        <li
+                          title={item?.metadata?.name}
+                          key={itemIndex}
+                          className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:bg-shader_800 dark:border-none"
+                        >
+                          <ActiveLaunchItem item={item} query={query} />
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </Fragment>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <Image alt="emptyLaunchpad" src={images.emptyLaunchpad} />
+                <p>{desc}</p>
+              </div>
+            )}
           </div>
-        ) : (
-          <>
-            <div className="mt-4">
-              {isSuccess && data?.pages[0]?.data.length > 0 ? (
-                data.pages.map((page, pageIndex) => (
-                  <Fragment key={pageIndex}>
-                    <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
-                      {page?.data?.map(
-                        (item: LaunchpadData, itemIndex: number) => (
-                          <li
-                            title={item?.metadata?.name}
-                            key={itemIndex}
-                            className="items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:shadow-home dark:bg-shader_800 dark:border-none"
-                          >
-                            <ActiveLaunchItem item={item} query={query} />
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </Fragment>
-                ))
-              ) : (
-                <div className="flex flex-col items-center justify-center">
-                  <Image alt="emptyLaunchpad" src={images.emptyLaunchpad} />
-                  <p>{desc}</p>
-                </div>
-              )}
-            </div>
-            <div ref={ref} style={{ height: "1px" }}></div>
-          </>
-        )}
-      </div>
-    </>
+          <div ref={ref} style={{ height: "1px" }}></div>
+        </>
+      )}
+    </div>
   );
 };
 

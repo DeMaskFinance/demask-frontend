@@ -1,18 +1,19 @@
+import { RightIcon, SortIcon } from "@/components/Icons";
+import { TabGroups } from "@/components/NavChoice";
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState, useContext } from "react";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import AccountContext from "@/context/AccountContext";
-import { SortIcon } from "@/components/Icons";
+import { useContext, useState } from "react";
 import TransactionItem from "./TransactionItem";
-import { TabGroups } from "@/components/NavChoice";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 function ListTracsaction() {
   const [page, setPage] = useState(1);
   const { chainId } = useContext(AccountContext);
-  const [pageNumberInput, setPageNumberInput] = useState("");
   const [sortField, setSortField] = useState("blockTime");
   const [sortOrder, setSortOrder] = useState("desc");
+  const router = useRouter();
   const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
     queryKey: ["transaction", chainId, sortField, sortOrder],
     queryFn: async () => {
@@ -33,12 +34,23 @@ function ListTracsaction() {
   return (
     <div className="mb-20 transactionList">
       <div className="bg_main">
-        <TabGroups
-          choices={["Transactions"]}
-          activeChoice="Transactions"
-          onChoiceChange={() => {}}
-          isDefault
-        />
+        <div className="flex justify-between items-center">
+          <TabGroups
+            choices={["Transactions"]}
+            activeChoice="Transactions"
+            onChoiceChange={() => {}}
+            isDefault
+          />
+          {router.pathname === "/collections" && (
+            <Link
+              href="/collections/trending"
+              className="mr-4 flex items-center gap-x-1 text-sm text-primary_300"
+            >
+              <p>View all</p>
+              <RightIcon width={16} height={16} />
+            </Link>
+          )}
+        </div>
         <div className=" overflow-x-auto">
           <table className="w-full text-left border-collapse min-h-[550px] flex flex-col">
             <thead className="uppercase bg-shader_600 text-shader_200 font-semibold">

@@ -25,15 +25,6 @@ const Classify: React.FC<ClassifyProps> = ({
       typeNumber: "High to Low",
     },
   ];
-  const subMenuCateData = [
-    { name: "All", type: "" },
-    { name: "Art", type: "Art" },
-    { name: "Film", type: "Film" },
-    { name: "Music", type: "Music" },
-    { name: "Gaming", type: "Gaming" },
-    { name: "Memberships", type: "Memberships" },
-    { name: "Others", type: "Others" },
-  ];
 
   return (
     <div>

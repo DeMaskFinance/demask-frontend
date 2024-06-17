@@ -29,6 +29,28 @@ const collectionDetail = async (
     console.error(error);
   }
 };
+const collectionTypeDetail = async (
+  label: string,
+  chainId: string | string[],
+  page: number,
+  limit: number
+) => {
+  try {
+    console.log({
+      label,
+      chainId,
+      page,
+      limit,
+    });
+
+    const res = await request.get(
+      `items/${label}?chainId=${chainId}&page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 const collectionListBuy = async (
   contractAddress: string | string[],
   chainId: string | string[]
@@ -167,4 +189,5 @@ export {
   fetchDataSellNFTs,
   fetchDataBuyNFTs,
   getSignature,
+  collectionTypeDetail,
 };

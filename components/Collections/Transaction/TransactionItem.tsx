@@ -2,6 +2,7 @@ import MediaNFT from "@/components/Common/MediaNFT";
 import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
+import { getColorType } from "@/libs/utils/getColorType";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -54,13 +55,11 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
               </td>
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">
                 <span
-                  className={` border text-xs ml-3 text-center bg-opacity-10 w-16 ${
-                    item.action === "Buy" || item.action === "Add"
-                      ? "border-green text-green bg-green"
-                      : "border-red text-red bg-red"
-                  } p-1 rounded-lg`}
+                  className={`bg-opacity-[0.15] w-[73px] text-center ml-3 ${getColorType(
+                    item.action
+                  )} py-1 rounded-lg`}
                 >
-                  {isFetching ? skeleton : item.action}
+                  {item.action}
                 </span>
               </td>
               <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">

@@ -4,7 +4,7 @@ import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
-import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
+import { Bar, BarChart, Cell, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
 import { EtherIcon } from "../Icons";
@@ -23,7 +23,8 @@ interface GroupedData {
 }
 const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
-  const [activeChoice, setActiveChoice] = useState<string>("D");
+  const [activeChoice, setActiveChoice] = useState<string>("1D");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { chainId } = useContext(AccountContext);
   const { data, isLoading: LoadingVolume } = useQuery({
     queryKey: ["ChartVolume", chainId],
@@ -102,6 +103,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                 onMouseLeave={() => {
                   setActiveData(lastData.value);
                   setActiveDate(lastData.date);
+                  setHoveredIndex(null);
                 }}
                 onMouseMove={(event) => {
                   if (event && event.activeLabel && event.activePayload) {
@@ -110,6 +112,12 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                     if (activeDate !== event.activeLabel) {
                       setActiveDate(event.activeLabel);
                     }
+                    const index = chartVolume.findIndex(
+                      (item: any) => item.date === event.activeLabel
+                    );
+                    setHoveredIndex(index);
+                  } else {
+                    setHoveredIndex(null);
                   }
                 }}
               >
@@ -117,7 +125,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                   dataKey="date"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#B2B2B2" }}
+                  tick={{ fill: "#CFD9E9" }}
                   tickFormatter={(str) => {
                     const date = parseISO(str);
                     if (date.getDate() % 3 === 0) {
@@ -126,7 +134,14 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                     return "";
                   }}
                 />
-                <Bar dataKey="value" fill="#A398FF" radius={[2, 2, 2, 2]} />
+                <Bar dataKey="value" fill="#9075FE" radius={[2, 2, 2, 2]}>
+                  {chartVolume.map((index: number) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={index === hoveredIndex ? "#BFACFE" : "#A398FF"}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -1,12 +1,13 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext, useState } from "react";
 
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useQuery } from "@tanstack/react-query";
-import { MdOutlineNavigateNext, MdNavigateBefore } from "react-icons/md";
-import CollectionItem from "./CollectionItem";
+import { RightIcon, SortIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
-import { SortIcon } from "@/components/Icons";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import CollectionItem from "./CollectionItem";
+import { useRouter } from "next/router";
 function TopNft() {
   const [activeChoice, setActiveChoice] = useState<string>("Trending");
   const [page, setPage] = useState(1);
@@ -14,6 +15,8 @@ function TopNft() {
   const { chainId } = useContext(AccountContext);
   const [sortField, setSortField] = useState("volume24h");
   const [sortOrder, setSortOrder] = useState("desc");
+  const router = useRouter();
+
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["topNft", chainId, sortField, sortOrder, page],
     queryFn: async () => {
@@ -56,12 +59,23 @@ function TopNft() {
   return (
     <div className="my-6">
       <div className="bg_main">
-        <TabGroups
-          choices={["Trending", "Newest"]}
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-          isDefault
-        />
+        <div className="flex justify-between items-center">
+          <TabGroups
+            choices={["Trending", "Newest"]}
+            activeChoice={activeChoice}
+            onChoiceChange={handleChoiceChange}
+            isDefault
+          />
+          {router.pathname === "/collections" && (
+            <Link
+              href="/collections/trending"
+              className="mr-4 flex items-center gap-x-1 text-sm text-primary_300"
+            >
+              <p>View all</p>
+              <RightIcon width={16} height={16} />
+            </Link>
+          )}
+        </div>
         <div>
           <div className="overflow-x-scroll  flex flex-col justify-between">
             <table className="w-full text-left border-collapse overflow-x-auto min-h-[550px] flex flex-col">

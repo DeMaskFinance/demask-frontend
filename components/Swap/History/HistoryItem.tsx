@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { SkeletonTable } from "@/components/Skeleton";
 import SearchNotFound from "@/components/Search/SearchNotFound";
+import { getColorType } from "@/libs/utils/getColorType";
 interface HistorySwapProps {
   data: any;
   isLoading: boolean;
@@ -36,13 +37,9 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                 <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
                   <div className="flex items-center justify-end ">
                     <span
-                      className={`bg-opacity-[0.15] w-[73px] text-center ${
-                        item.action === "Buy"
-                          ? "bg-green text-green"
-                          : item.action === "Add"
-                          ? "bg-primary_300 text-primary_300"
-                          : "bg-red text-red"
-                      } py-1 rounded-lg`}
+                      className={`bg-opacity-[0.15] w-[73px] text-center ml-3 ${getColorType(
+                        item.action
+                      )} py-1 rounded-lg`}
                     >
                       {item.action}
                     </span>

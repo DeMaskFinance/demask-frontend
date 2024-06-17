@@ -9,6 +9,13 @@ import { Slider } from "@/components/ui/slider";
 import AccountContext from "@/context/AccountContext";
 import { refreshNFTService } from "@/libs/service/nftService";
 import React, { Fragment, MouseEvent, useContext, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 interface NFTGridProps {
   data: any;
   isFetching: boolean;
@@ -26,7 +33,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
 }) => {
   const { chainId } = useContext(AccountContext);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
@@ -70,20 +76,35 @@ const NFTGrid: React.FC<NFTGridProps> = ({
               </div>
               <div className="flex justify-between w-full p-2 text-xs font-semibold text-white">
                 <p>#{item.nftID}</p>
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedItem(item);
-                    setIsOpenDetail(true);
-                    document.body.style.overflowY = "hidden";
-                  }}
-                >
-                  <EyeIcon
-                    width={16}
-                    height={16}
-                    className="text-primary_300"
-                  />
-                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedItem(item);
+                      }}
+                    >
+                      <EyeIcon
+                        width={16}
+                        height={16}
+                        className="text-primary_300"
+                      />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                    <DialogHeader>
+                      <DialogDescription>
+                        {selectedItem && (
+                          <ModalDetail
+                            type="erc721"
+                            idNFT={selectedItem.nftID}
+                            nftAddress={selectedItem.nftAddress}
+                          />
+                        )}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -121,15 +142,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
         setIsOpenSearchNFT={setIsOpenSearchNFT}
         isOpenSearchNFT={isOpenSearchNFT}
       />
-      {selectedItem && (
-        <ModalDetail
-          type="erc721"
-          idNFT={selectedItem.nftID}
-          nftAddress={selectedItem.nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
-        />
-      )}
     </div>
   );
 };

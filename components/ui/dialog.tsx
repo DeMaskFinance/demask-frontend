@@ -43,7 +43,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       <DialogPrimitive.Close className="absolute transition-opacity rounded-sm right-4 top-4 opacity-70 hover:opacity-100 disabled:pointer-events-none">
-        <Cross2Icon className="w-4 h-4 text-white" />
+        <Cross2Icon className="w-5 h-5 text-white" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>

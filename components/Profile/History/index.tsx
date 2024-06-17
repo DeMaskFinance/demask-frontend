@@ -31,7 +31,7 @@ export default function History() {
           <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home min-h-[550px]">
             <div className="px-6 pt-6 pb-0 overflow-x-scroll">
               <table className="w-full text-left">
-                <thead className="">
+                <thead className="text-white">
                   <tr className="flex px-2 pb-2 text-sm lg:text-base md:text-base">
                     <th className="flex justify-start md:basis-1/6 w-[140px]">
                       Action

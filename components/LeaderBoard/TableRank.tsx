@@ -103,13 +103,13 @@ const TableRank = () => {
               Address
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              Reward
+              Ref point
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              Season Volume
+              Trading point
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px] pr-2">
-              Total Volume
+              Season volume
             </th>
           </tr>
         </thead>

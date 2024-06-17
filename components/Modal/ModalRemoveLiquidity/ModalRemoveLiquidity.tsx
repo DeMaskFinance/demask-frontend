@@ -1,13 +1,20 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
+import MediaNFT from "@/components/Common/MediaNFT";
+import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
+import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
+import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,18 +22,6 @@ import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import {
-  collectionListBuy,
-  fetchDataBuyNFTs,
-} from "@/libs/service/collectionService";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
-import MediaNFT from "@/components/Common/MediaNFT";
-import ModalDocument from "../ModalLength/ModalDocument";
-import { useInView } from "react-intersection-observer";
-import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
-import { EtherIcon, NFTIcon } from "@/components/Icons";
 interface ModalRemoveLiquidityProps {
   isOpenRemoveLiquidity: boolean;
   data: DataBase;

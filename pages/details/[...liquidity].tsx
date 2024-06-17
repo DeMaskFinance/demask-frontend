@@ -1,6 +1,5 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
 import { NextSeo } from "next-seo";
-import "react-toastify/dist/ReactToastify.css";
 import { SEO } from "../../next-seo.config";
 import { DetailLiquidity } from "@/components/Liquidity";
 const updateMeta = {

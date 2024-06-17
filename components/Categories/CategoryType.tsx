@@ -1,22 +1,17 @@
-import React, { useRef, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
-import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-import { SkeletonNFTTop } from "../Skeleton";
-// import SkeletonCategory from "../Skeleton/SkeletonCategory";
-import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import NFTCategory from "./NFTCategory";
+import { SwiperSlide } from "swiper/react";
 import AccountContext from "@/context/AccountContext";
-import SwiperCustom from "../SwiperCustom";
 import { SkeletonSubCategory } from "../Skeleton/SkeletonCategory";
+import SwiperCustom from "../SwiperCustom";
+import NFTCategory from "./NFTCategory";
 
 const Category = ({ label }: { label: string }) => {
-  const { chainId, tokenDefault } = useContext(AccountContext);
+  const { chainId } = useContext(AccountContext);
   const { data, isLoading } = useQuery({
     queryKey: [label, chainId],
     queryFn: async () => {

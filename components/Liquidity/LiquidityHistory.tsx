@@ -1,3 +1,4 @@
+import { getColorType } from "@/libs/utils/getColorType";
 import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";
 import ModalNumber from "../Modal/ModalLength/ModalNumber";
@@ -36,13 +37,9 @@ const LiquiditiesHistory: React.FunctionComponent<LiquiditiesHistoryProps> = ({
               key={index}
             >
               <div
-                className={`bg-opacity-[0.15] w-[73px] text-center ml-3 ${
-                  item.action === "Buy"
-                    ? "bg-green text-green"
-                    : item.action === "Add"
-                    ? "bg-primary_300 text-primary_300"
-                    : "bg-red text-red"
-                } py-1 rounded-lg`}
+                className={`bg-opacity-[0.15] w-[73px] text-center ml-3 ${getColorType(
+                  item.action
+                )} py-1 rounded-lg`}
               >
                 {item.action}
               </div>

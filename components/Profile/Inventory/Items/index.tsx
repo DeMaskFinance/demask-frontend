@@ -228,7 +228,6 @@ const Items = () => {
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
   let debouncedSearch = useDebounce(searchCollection);
-  const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, ""));
 
   const fetchDataNFTs = async (
     pageParam = 1,

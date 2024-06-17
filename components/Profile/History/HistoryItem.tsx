@@ -7,7 +7,7 @@ import { useContext } from "react";
 const HistoryItem = ({ item }: any) => {
   const { demask, chainId } = useContext(AccountContext);
   return (
-    <tr className="flex text-sm lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
+    <tr className="flex text-sm lg:text-base md:text-base text-white hover:bg-slate-100 lg:px-2">
       <td className="flex justify-start items-center md:basis-1/6 w-[140px]">
         {item.action}
       </td>

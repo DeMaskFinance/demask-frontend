@@ -18,6 +18,15 @@ import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   ModalError,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
@@ -369,14 +378,33 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </div>
             </div>
             <div className="flex justify-center mx-auto mt-5 gap-x-2">
-              <Button
-                active
-                className="border-2 gap-x-2"
-                onClick={handleShowDetail}
-              >
-                <EyeIcon width={20} height={20} className="text-shader_200" />
-                View detail
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    active
+                    className="border-2 gap-x-2"
+                    onClick={handleShowDetail}
+                  >
+                    <EyeIcon
+                      width={20}
+                      height={20}
+                      className="text-shader_200"
+                    />
+                    View detail
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                  <DialogHeader>
+                    <DialogDescription>
+                      <ModalDetail
+                        type="erc1155"
+                        idNFT={idNFT}
+                        nftAddress={nftAddress}
+                      />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
               <Button
                 className="flex whitespace-nowrap gap-x-2"
                 green_2
@@ -582,15 +610,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       />
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data?.metadata && (
-        <ModalDetail
-          type="erc1155"
-          idNFT={idNFT}
-          nftAddress={nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
-        />
-      )}
       <ModalSearchToken
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}

@@ -1,4 +1,5 @@
 import Button from "@/components/Buttons/Button";
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/MediaNFT";
 import {
   CreateIcon,
@@ -11,6 +12,7 @@ import {
   SwapIcon,
   TokenIconNotDefine,
 } from "@/components/Icons";
+import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
@@ -19,33 +21,37 @@ import {
   ModalError,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
+import { TabGroups } from "@/components/NavChoice";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useBalanceToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { swapAPI } from "@/libs/service";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
-import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
-import { SEO } from "../../next-seo.config";
 import Tippy from "@tippyjs/react";
-import FormatNumber from "@/components/Common/FormatNumber";
-import formatNumber from "@/libs/utils/formatNumer";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import { activeNFTPercent } from "@/libs/constants";
-import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
+import { NextSeo } from "next-seo";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 import { FaAngleDown } from "react-icons/fa";
-import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { NumericFormat } from "react-number-format";
-import { TabGroups } from "@/components/NavChoice";
+import { SEO } from "../../next-seo.config";
 const styles = {
   title: "block mb-1 mt-5 text-base font-semibold text-shader_100",
 };
@@ -524,13 +530,28 @@ export default function AddLiquidity() {
                 <div className="overflow-hidden rounded-xl">
                   <MediaNFT data={data} isControls={true} />
                 </div>
-                <div
-                  className="absolute flex px-3 py-2 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 bg-shader_500"
-                  onClick={handleShowDetail}
-                >
-                  <EyeIcon width={20} height={20} />
-                  View detail
-                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="absolute flex px-3 py-2 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 bg-shader_500"
+                      third
+                    >
+                      View Detail
+                      <EyeIcon width={16} height={16} />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                    <DialogHeader>
+                      <DialogDescription>
+                        <ModalDetail
+                          type="erc1155"
+                          idNFT={idNFT}
+                          nftAddress={nftAddress}
+                        />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -548,15 +569,6 @@ export default function AddLiquidity() {
         setIsOpenSetting={setIsOpenSetting}
       />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data?.metadata && (
-        <ModalDetail
-          type="erc1155"
-          idNFT={idNFT}
-          nftAddress={nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
-        />
-      )}
       <ModalSearchToken
         setIsOpenSearchToken={setIsOpenSearchToken}
         isOpenSearchToken={isOpenSearchToken}

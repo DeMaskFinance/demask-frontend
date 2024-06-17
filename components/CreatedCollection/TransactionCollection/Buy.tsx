@@ -15,10 +15,9 @@ import useInformationToken from "@/hooks/useInformationToken";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
 import NFTGrid from "./NFTsGrids";
 const Buy = () => {
   const { account, chainId, demask, wallet, slippage } =

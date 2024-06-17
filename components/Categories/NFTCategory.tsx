@@ -1,15 +1,8 @@
-import { mediaType } from "@/libs/constants";
-import formatNumber from "@/libs/utils/formatNumer";
-import images from "@/public/images";
-import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
-import { AvatarUser } from "../Avatars";
-import FormatNumber from "../Common/FormatNumber";
-import { EtherIcon, NFTIcon, VerifyIcon } from "../Icons";
-import AccountContext from "@/context/AccountContext";
-import MediaNFT from "../Common/MediaNFT";
-import ModalDocument from "../Modal/ModalLength/ModalDocument";
 import { formatTypeChain } from "@/libs/utils/formatComon";
+import FormatNumber from "../Common/FormatNumber";
+import MediaNFT from "../Common/MediaNFT";
+import { EtherIcon, NFTIcon, VerifyIcon } from "../Icons";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
 
 interface NFTCategoryProps {
   item: any;

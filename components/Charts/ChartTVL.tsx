@@ -113,7 +113,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
                   dataKey="date"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#B2B2B2" }}
+                  tick={{ fill: "#CFD9E9" }}
                   tickFormatter={(str) => {
                     const date = parseISO(str);
                     if (date.getDate() % 3 === 0) {

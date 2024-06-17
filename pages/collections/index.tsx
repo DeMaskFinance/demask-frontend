@@ -39,7 +39,7 @@ export default function Collections() {
           </div>
         </div>
         {/* Charts PC */}
-        <div className="hidden lg:grid grid-cols-1 gap-10 lg:grid-cols-2 md:grid-cols-2 h-[372px]">
+        <div className="hidden lg:grid grid-cols-1 gap-4 lg:grid-cols-2 md:grid-cols-2 h-[372px]">
           <ChartTVL />
           <ChartVolumn />
         </div>

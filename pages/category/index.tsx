@@ -8,49 +8,76 @@ import {
   GamingIcon,
   MembershipIcon,
   MusicIcon,
+  OthersIcon,
 } from "@/components/Icons";
+import { useState } from "react";
+import { CategoryDetail } from "@/components/Categories";
 const updateMeta = {
   ...SEO,
   title: "Category",
 };
+interface Type {
+  key: string;
+  title: string;
+  panel: () => JSX.Element;
+  icon?: JSX.Element;
+}
 export default function Categories() {
-  const types = [
+  const types: Type[] = [
     {
       key: "all",
       title: "All Category",
-      panel: () => <div>123</div>,
+      panel: () => (
+        <div>
+          <CategoryType label={"Art"} />
+          <CategoryType label={"Gaming"} />
+          <CategoryType label={"Film"} />
+          <CategoryType label={"Music"} />
+          <CategoryType label={"Memberships"} />
+          <CategoryType label={"Others"} />
+        </div>
+      ),
     },
     {
       key: "art",
       title: "ART",
-      panel: () => <div>123</div>,
+      panel: () => <CategoryDetail label="Art" />,
       icon: <ArtIcon width={24} height={24} />,
     },
     {
       key: "gaming",
       title: "GAMING",
-      panel: () => <div>123</div>,
+      panel: () => <CategoryDetail label="Gaming" />,
       icon: <GamingIcon width={24} height={24} />,
     },
     {
       key: "film",
       title: "FILM",
-      panel: () => <div>123</div>,
+      panel: () => <CategoryDetail label="Film" />,
       icon: <FilmIcon width={24} height={24} />,
     },
     {
       key: "music",
       title: "MUSIC",
-      panel: () => <div>123</div>,
+      panel: () => <CategoryDetail label="Music" />,
       icon: <MusicIcon width={24} height={24} />,
     },
     {
       key: "membership",
       title: "MEMBERSHIP",
-      panel: () => <div>123</div>,
+      panel: () => <CategoryDetail label="Membership" />,
       icon: <MembershipIcon width={24} height={24} />,
     },
+    {
+      key: "others",
+      title: "OTHERS",
+      panel: () => <CategoryDetail label="Others" />,
+      icon: <OthersIcon width={24} height={24} />,
+    },
   ];
+  const [option, setOption] = useState<Type>(types[0]);
+  console.log(option);
+
   return (
     <BackgroundDefault>
       <NextSeo {...updateMeta} />
@@ -63,19 +90,19 @@ export default function Categories() {
           {types.map((type, index: number) => (
             <div
               key={index}
-              className="bg-shader_700 flex gap-x-1 border border-shader_400 rounded-lg py-2 px-3 text-white font-semibold text-lg items-center hover:bg-shader_400 transition-all duration-300 cursor-pointer"
+              onClick={() => {
+                setOption(type);
+              }}
+              className={`${
+                option.key === type.key ? "bg-shader_400" : "bg-shader_700"
+              } flex gap-x-1 border border-shader_400 rounded-lg py-2 px-3 text-white font-semibold text-lg items-center hover:bg-shader_400 transition-all duration-300 cursor-pointer `}
             >
               {type.icon}
               {type.title}
             </div>
           ))}
         </div>
-        <CategoryType label={"Art"} />
-        <CategoryType label={"Gaming"} />
-        <CategoryType label={"Film"} />
-        <CategoryType label={"Music"} />
-        <CategoryType label={"Memberships"} />
-        <CategoryType label={"Others"} />
+        {option.panel()}
       </div>
     </BackgroundDefault>
   );
