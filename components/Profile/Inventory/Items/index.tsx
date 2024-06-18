@@ -277,7 +277,7 @@ const Items = () => {
   return (
     <div className="flex">
       {isFilter && <FilterItems setIsFilter={setIsFilter} />}
-      <div className="flex-auto p-4">
+      <div className="flex-auto">
         <Classify
           setSearchCollection={setSearchCollection}
           setIsFilter={setIsFilter}

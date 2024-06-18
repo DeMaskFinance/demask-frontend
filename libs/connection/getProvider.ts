@@ -1,5 +1,3 @@
-// import { getWalletConnectProvider } from "@/components/Modal/ModalWallet/WalletConnectProvider";
-
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 export const getProvider = async (wallet: string) => {
@@ -31,8 +29,8 @@ export const getProvider = async (wallet: string) => {
   if (wallet === "WalletConnect") {
     provider = await EthereumProvider.init({
       projectId: "1af0159e7a959f2fff3f96c541aef2cb", // REQUIRED your projectId
-      chains: [280], // REQUIRED chain ids
-      optionalChains: [280, 5],
+      chains: [11155111], // REQUIRED chain ids
+      optionalChains: [11155111],
       showQrModal: true, // REQUIRED set to "true" to use @walletconnect/modal
       methods: ["eth_sendTransaction"],
       optionalMethods: [
@@ -56,9 +54,7 @@ export const getProvider = async (wallet: string) => {
       ],
       // optionalEvents, // OPTIONAL ethereum events
       rpcMap: {
-        "280": "https://testnet.era.zksync.dev",
-        "5": "https://ethereum-goerli.publicnode.com",
-        "168587773": "https://rpc.ankr.com/blast_testnet_sepolia",
+        11155111: "https://ethereum-sepolia-rpc.publicnode.com",
       },
     });
   }

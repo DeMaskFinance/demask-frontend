@@ -1,23 +1,15 @@
+import { Button } from "@/components/Buttons";
+import showToast, { ToastType } from "@/components/Toast/ToastCustom";
+import AccountContext from "@/context/AccountContext";
+import * as collectionService from "@/libs/service/collectionService";
+import ercContract from "@/libs/utils/erc/erc.contract";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
-import Wrapper from "../Wrapper";
-import { ModalWallet } from "../ModalWallet";
 import { CgClose } from "react-icons/cg";
 import * as yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { toast } from "react-toastify";
-import * as collectionService from "@/libs/service/collectionService";
-import { useRouter } from "next/router";
-import AccountContext from "@/context/AccountContext";
-import { Button } from "@/components/Buttons";
 import { ModalTransation } from "../ModalTransation";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import showToast, { ToastType } from "@/components/Toast/ToastCustom";
-const styles = {
-  title: "block my-4 text-base font-semibold text-black24 flex gap-x-1",
-  inputItem:
-    "block w-full py-2 pl-2 border rounded-lg outline-none border-shader_500 placeholder:text-sm hover:border-primary_400 focus:border-primary_400 dark:bg-shader_700 dark:border-shader_700",
-  btnActive: "rounded-full bg-base2",
-};
+import { ModalWallet } from "../ModalWallet";
+import Wrapper from "../Wrapper";
 interface ModalRoyaltyProps {
   isOpenRoyalty: boolean;
   setIsOpenRoyalty: React.Dispatch<React.SetStateAction<boolean>>;

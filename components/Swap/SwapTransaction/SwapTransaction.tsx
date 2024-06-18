@@ -67,12 +67,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   nftAddress,
   refetch,
 }) => {
-  const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const [isOpenSellNFT, setIsOpenSellNFT] = useState<boolean>(false);
-  const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
-  const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
@@ -244,10 +241,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       document.body.style.overflowY = "hidden";
     }
   };
-  const handleSearchNFT = () => {
-    setIsOpenSearchNFT(true);
-    document.body.style.overflowY = "hidden";
-  };
 
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -285,7 +278,22 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         />
       ),
       content: "Setting",
-      onClick: () => setIsOpenSetting(true),
+      dialog: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="cursor-pointer text-primary_200">
+              <SettingIcon width={18} height={18} />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+            <DialogHeader>
+              <DialogDescription>
+                <ModalSetting />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      ),
     },
   ];
   const handleChoicePercent = (item: string) => {
@@ -301,6 +309,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
+  console.log(isApprovedNFT, account);
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 sticky top-14">
@@ -320,6 +329,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     <Link href={action.link} className="group">
                       {action.icon}
                     </Link>
+                  ) : action.dialog ? (
+                    action.dialog
                   ) : (
                     <div onClick={action.onClick} className="">
                       {action.icon}
@@ -397,14 +408,22 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
-              <Button
-                className="flex whitespace-nowrap gap-x-2"
-                green_2
-                onClick={handleSearchNFT}
-              >
-                <ImgIcon width={20} height={20} />
-                Select NFT
-              </Button>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="flex whitespace-nowrap gap-x-2" green_2>
+                    <ImgIcon width={20} height={20} />
+                    Select NFT
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                  <DialogHeader>
+                    <DialogDescription>
+                      <ModalSearchNFTSwap />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
@@ -554,7 +573,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           {isApprovedNFT && activeChoice === "Buy" && account && (
             <Button
               type="button"
-              className="py-2 w-[144px]"
+              className="py-2 w-full"
               green
               onClick={handleBuy}
             >
@@ -564,16 +583,16 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           {isApprovedNFT && activeChoice === "Sell" && account && (
             <Button
               type="button"
-              className="py-2 w-[144px]"
+              className="py-2 w-full"
               red
               onClick={handleSell}
             >
               Sell Now
             </Button>
           )}
-          {!isApprovedNFT && account && activeChoice === "Sell" && (
+          {!isApprovedNFT && account && (
             <Button
-              className="w-[126px] py-2"
+              className="w-full py-2"
               primary
               onClick={() =>
                 handleApproveNFT(
@@ -590,22 +609,14 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </Button>
           )}
           {!account && (
-            <Button className="w-[144px] py-2" gradient onClick={handleOpen}>
+            <Button className="w-full py-2" gradient onClick={handleOpen}>
               Connect Wallet
             </Button>
           )}
         </div>
       </div>
-      <ModalSearchNFTSwap
-        setIsOpenSearchNFT={setIsOpenSearchNFT}
-        isOpenSearchNFT={isOpenSearchNFT}
-      />
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalSearchToken
-        setIsOpenSearchToken={setIsOpenSearchToken}
-        isOpenSearchToken={isOpenSearchToken}
-      />
       {data && <ModalWarningRemove isOpenWarning={data?.isDeleted} />}
       {data && account && (
         <ModalBuyNFT
@@ -643,10 +654,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           setIsOpenError={setIsOpenErrorSell}
         />
       )}
-      <ModalSetting
-        isOpenSetting={isOpenSetting}
-        setIsOpenSetting={setIsOpenSetting}
-      />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

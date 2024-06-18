@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 interface UseFileHandlerProps extends UploadFileProps {
   validInput: string[];
-  setFieldValue?: any;
+  setFieldValue: any;
 }
 
 const useFileHandler = ({

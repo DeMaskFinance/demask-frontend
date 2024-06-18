@@ -50,7 +50,6 @@ export default function Creator() {
   const { chainId, account, demask } = useContext(AccountContext);
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [isOpenCollection, setIsOpenCollection] = useState<boolean>(false);
   const collectionList = [
@@ -135,16 +134,6 @@ export default function Creator() {
   const handleRemoveAttribute = (id: number) => {
     const updatedItems = attributeItems.filter((item) => item.id !== id);
     setAttributeItems(updatedItems);
-  };
-  const selectCategory = (value: string) => {
-    const isSelected = selectedCategory.includes(value);
-    if (isSelected) {
-      const updateCategories = selectedCategory.filter((item) => item != value);
-      setSelectedCategory(updateCategories);
-    } else {
-      const updatedCategories = [...selectedCategory, value];
-      setSelectedCategory(updatedCategories);
-    }
   };
 
   const handleTextareaResize = (event: any) => {
@@ -374,23 +363,6 @@ export default function Creator() {
                   )}
                 </div>
                 <div>
-                  <p className="title_label">Category</p>
-                  <div className="flex">
-                    {Category.map((item, index) => (
-                      <Button
-                        type="button"
-                        active={selectedCategory.includes(item.value)}
-                        outline
-                        className="px-3 py-1 mr-4 text-sm h-[34px] text-shader_600"
-                        key={item.id}
-                        onClick={() => selectCategory(item.value)}
-                      >
-                        {item.value}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                <div>
                   <label htmlFor="description" className="title_label">
                     <span>Description</span>
                   </label>
@@ -479,7 +451,6 @@ export default function Creator() {
                   attributeItems={attributeItems}
                   description={description}
                   fileIPFS={fileIPFS}
-                  selectedCategory={selectedCategory}
                   setEmptyInputs={setEmptyInputs}
                   emptyInputs={emptyInputs}
                   setName={setName}
@@ -487,7 +458,6 @@ export default function Creator() {
                   setFileIPFS={setFileIPFS}
                   setDescription={setDescription}
                   setAttributeItems={setAttributeItems}
-                  setSelectedCategory={setSelectedCategory}
                   setSelectedFile={setSelectedFile}
                   setTotalSupply={setTotalSupply}
                   fileType={fileType}

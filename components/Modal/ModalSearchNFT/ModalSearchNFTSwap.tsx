@@ -11,15 +11,8 @@ import Wrapper from "../Wrapper";
 import TopNFT from "./TopNFT";
 import { SearchIcon } from "@/components/Icons";
 import SearchNotFound from "@/components/Search/SearchNotFound";
-interface ModalAddressNFTProps {
-  isOpenSearchNFT: boolean;
-  setIsOpenSearchNFT: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
-  isOpenSearchNFT,
-  setIsOpenSearchNFT,
-}) => {
+const ModalAddressNFT = () => {
   const [searchTerm, setSearchTerm] = useState("");
   let debouncedSearchNFT = useDebounce(searchTerm);
   const router = useRouter();
@@ -52,14 +45,6 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
     },
   });
 
-  const handleClose = (
-    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpenSearchNFT(false);
-  };
-
   const handleSelectNFT = (item: any) => {
     item.type === "erc1155"
       ? router.replace(
@@ -69,93 +54,85 @@ const ModalAddressNFT: React.FunctionComponent<ModalAddressNFTProps> = ({
           `/collection/${item.nftAddress}?typeERC=erc721&chain=${chainId}`
         );
     document.body.style.overflowY = "auto";
-    setIsOpenSearchNFT(false);
   };
 
   return (
-    <Wrapper isOpen={isOpenSearchNFT} onClick={handleClose}>
-      <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative min-h-[45vh] flex flex-col">
-          <div className="p-4 border-b border-shader_600">
-            <div className="flex items-center justify-between mb-3">
-              <p className=" title">Select a NFT</p>
-              <button className="text-lg " onClick={handleClose}>
-                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
-              </button>
+    <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative min-h-[45vh] flex flex-col">
+      <div className="p-4 border-b border-shader_600">
+        <div className="flex items-center justify-between mb-3">
+          <p className=" title">Select a NFT</p>
+        </div>
+        <div className="relative">
+          <SearchIcon
+            width={20}
+            height={20}
+            className="absolute text-white -translate-y-1/2 top-1/2 left-2"
+          />
+          <input
+            className="pl-8 input_item"
+            placeholder="Search NFTs"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchLoading && (
+            <div className="absolute top-[50%] right-2 -translate-y-[50%]">
+              <BiLoaderAlt className="animate-spin text-primary_400" />
             </div>
-            <div className="relative">
-              <SearchIcon
-                width={20}
-                height={20}
-                className="absolute text-white -translate-y-1/2 top-1/2 left-2"
-              />
-              <input
-                className="pl-8 input_item"
-                placeholder="Search NFTs"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchLoading && (
-                <div className="absolute top-[50%] right-2 -translate-y-[50%]">
-                  <BiLoaderAlt className="animate-spin text-primary_400" />
-                </div>
-              )}
-            </div>
-          </div>
-          <>
-            {searchTerm ? (
-              isSuccess && searchData.length > 0 ? (
-                <div className="overflow-y-auto max-h-[300px]">
-                  {searchData.map((item: any, index: number) => (
-                    <div key={index}>
-                      <div
-                        className="flex items-center p-3 cursor-pointer hover:bg-shader_500 group gap-x-2 border-y border-shader_600"
-                        onClick={() => handleSelectNFT(item)}
-                      >
-                        <div className="item_search">
-                          <div className="flex items-center gap-x-[10px]">
-                            <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
-                              <MediaNFT data={item} isControls={false} />
-                            </div>
-                            <div className="flex flex-col justify-center">
-                              <span className="block text-sm font-semibold text-white">
-                                <span className="line-clamp-1">
-                                  {item?.metadata?.name}
-                                </span>
-                              </span>
-                              <span className="flex text-xs item-center">
-                                <span className="block font-normal text-shader_200">
-                                  {item.dmlAddress?.slice(0, 4)}...
-                                  {item.dmlAddress?.slice(-8)}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
+          )}
+        </div>
+      </div>
+      <>
+        {searchTerm ? (
+          isSuccess && searchData.length > 0 ? (
+            <div className="overflow-y-auto max-h-[300px]">
+              {searchData.map((item: any, index: number) => (
+                <div key={index}>
+                  <div
+                    className="flex items-center p-3 cursor-pointer hover:bg-shader_500 group gap-x-2 border-y border-shader_600"
+                    onClick={() => handleSelectNFT(item)}
+                  >
+                    <div className="item_search">
+                      <div className="flex items-center gap-x-[10px]">
+                        <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
+                          <MediaNFT data={item} isControls={false} />
+                        </div>
+                        <div className="flex flex-col justify-center">
+                          <span className="block text-sm font-semibold text-white">
+                            <span className="line-clamp-1">
+                              {item?.metadata?.name}
+                            </span>
+                          </span>
+                          <span className="flex text-xs item-center">
+                            <span className="block font-normal text-shader_200">
+                              {item.dmlAddress?.slice(0, 4)}...
+                              {item.dmlAddress?.slice(-8)}
+                            </span>
+                          </span>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              {searchFetching ? (
+                <div className="px-3">
+                  <div className="bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
                 </div>
               ) : (
-                <>
-                  {searchFetching ? (
-                    <div className="px-3">
-                      <div className="bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
-                    </div>
-                  ) : (
-                    <SearchNotFound />
-                  )}
-                </>
-              )
-            ) : (
-              <div className="overflow-y-scroll">
-                <TopNFT handleSelectNFT={handleSelectNFT} />
-              </div>
-            )}
-          </>
-        </div>
-      </div>
-    </Wrapper>
+                <SearchNotFound />
+              )}
+            </>
+          )
+        ) : (
+          <div className="overflow-y-scroll">
+            <TopNFT handleSelectNFT={handleSelectNFT} />
+          </div>
+        )}
+      </>
+    </div>
   );
 };
 

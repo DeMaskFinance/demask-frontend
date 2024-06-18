@@ -12,6 +12,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import { formatTypeChain } from "@/libs/utils/formatComon";
+import NFTCategory from "@/components/Categories/NFTCategory";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
@@ -73,6 +74,7 @@ const Created = () => {
       fetchNextPage();
     }
   }, [inView]);
+  console.log(data);
 
   return (
     <Fragment>
@@ -82,7 +84,7 @@ const Created = () => {
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
-        <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
+        <div className="grid grid-cols-autoFill gap-4  text-white">
           {isLoading ? (
             <SkeletonSubCategory length={4} />
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
@@ -94,64 +96,7 @@ const Created = () => {
                       <Link
                         href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                       >
-                        <div className="items-center p-3 border rounded-md cursor-pointer group hover:shadow-home dark:border-shader_700 dark:bg-shader_700 ">
-                          <div className="h-[127px] overflow-hidden rounded-lg">
-                            {item.avatar ? (
-                              <img
-                                src={item.avatar}
-                                width={620}
-                                height={620}
-                                className="object-cover w-full h-full transition-all duration-150 rounded-lg group-hover:scale-[1.05]"
-                                alt="1"
-                              />
-                            ) : (
-                              <Image
-                                src="/Placeholder.png"
-                                width={620}
-                                height={620}
-                                className="object-cover w-full h-full rounded-lg"
-                                alt="1"
-                              />
-                            )}
-                          </div>
-                          <div className="w-full">
-                            <div className="flex w-full mt-2">
-                              <div className="w-full">
-                                <h6 className="flex items-start gap-2 font-medium uppercase">
-                                  <span className="flex-wrap max-w-full text-xl line-clamp-1">
-                                    {item.name ? (
-                                      <ModalDocument data={item.name} />
-                                    ) : (
-                                      <p>Unnamed</p>
-                                    )}
-                                  </span>
-                                </h6>
-                              </div>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <LogoIconCard
-                                chainId={chainId}
-                                width={20}
-                                height={20}
-                              />
-                              <p className="px-2 h-[23px] rounded-full bg-shader_500 text-[10px] uppercase leading-[23px]">
-                                {formatTypeChain(item.type)}
-                              </p>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <p>Total Volume</p>
-                              <p>Total Items</p>
-                            </div>
-                            <div className="flex justify-between font-semibold text-shader_600">
-                              <div>
-                                <FormatNumber number={item?.volume} />
-                              </div>
-                              <div>
-                                <FormatNumber number={item?.totalItems} />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <NFTCategory item={item} />
                       </Link>
                       <div ref={ref} style={{ height: "1px" }}></div>
                     </div>

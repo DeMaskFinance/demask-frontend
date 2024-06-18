@@ -1,7 +1,7 @@
 import useFileHandler from "@/hooks/useFileHandler";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { Button } from "../Buttons";
 import { CreateIcon, DeployIcon, UploadIcon } from "../Icons";
@@ -15,6 +15,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
   uploadFile,
 }) => {
   const validInput = validNFTsInput;
+  const [fieldValue, setFieldValue] = useState();
   const {
     uploadRef,
     inputRef,
@@ -32,6 +33,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
     setFileType,
     uploadFile,
     setFileIPFS,
+    setFieldValue,
   });
   return (
     <div className="relative flex flex-col items-center w-full" ref={uploadRef}>

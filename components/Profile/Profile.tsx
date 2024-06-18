@@ -61,11 +61,11 @@ const Profile = () => {
       panel: () => <Pools />,
       key: "pools",
     },
-    {
-      title: "Launchpad",
-      panel: () => <UserLaunchpad />,
-      key: "launchpad",
-    },
+    // {
+    //   title: "Launchpad",
+    //   panel: () => <UserLaunchpad />,
+    //   key: "launchpad",
+    // },
     {
       title: "Activity",
       panel: () => <History />,
@@ -218,7 +218,7 @@ const Profile = () => {
           </Tippy>
         </div>
       </div>
-      <div className="px-4">{selectedTab ? selectedTab.panel() : null}</div>
+      <div className="p-4">{selectedTab ? selectedTab.panel() : null}</div>
     </div>
   );
 };

@@ -7,7 +7,6 @@ interface MetadataProps {
   name: string;
   symbol: string;
   description: string;
-  selectedCategory: string[];
 }
 const getMetadataUrl = async ({
   attributeItems,
@@ -16,7 +15,6 @@ const getMetadataUrl = async ({
   name,
   symbol,
   description,
-  selectedCategory,
 }: MetadataProps) => {
   const simplifiedAttributes = attributeItems.map(
     ({ trait_type, value }: any) => ({ trait_type, value })
@@ -31,7 +29,6 @@ const getMetadataUrl = async ({
     image: "",
     animation_url: "",
     attributes: attributesMetadata,
-    category: selectedCategory,
   };
   if (fileType.startsWith("video/")) {
     initialMetadata.animation_url = await fileIPFS; // use fileIPFS for animation_url
@@ -47,6 +44,8 @@ const getMetadataUrl = async ({
     initialMetadata.image = await fileIPFS;
   }
   const urlMetadata = await uploadMetadataIPFS(initialMetadata);
+  console.log(urlMetadata);
+
   return urlMetadata;
 };
 export default getMetadataUrl;

@@ -6,6 +6,15 @@ import Tippy from "@tippyjs/react/headless";
 import { useState } from "react";
 import { BsCaretDownFill } from "react-icons/bs";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Buy from "./Buy";
 import Change from "./Change";
 import Pool from "./Pool";
@@ -15,7 +24,6 @@ const style = {
     "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-primary_500 active:bg-primary_400 text-white hover:text-primary_500 gap-x-2 border-primary_400",
 };
 const TransactionCollection = () => {
-  const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "buy"));
   const [visible, setVisible] = useState(true);
   const TABS = [
@@ -68,7 +76,22 @@ const TransactionCollection = () => {
         />
       ),
       content: "Setting",
-      onClick: () => setIsOpenSetting(true),
+      dialog: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="cursor-pointer text-primary_200">
+              <SettingIcon width={18} height={18} />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+            <DialogHeader>
+              <DialogDescription>
+                <ModalSetting />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      ),
     },
   ];
   const indexChoice = TABS.findIndex((item) => item.key === tab);
@@ -86,9 +109,13 @@ const TransactionCollection = () => {
               placement="bottom"
             >
               <div className="border rounded-full border-shader_400 p-[7px]">
-                <div onClick={action.onClick} className="">
-                  {action.icon}
-                </div>
+                {action.dialog ? (
+                  action.dialog
+                ) : (
+                  <div onClick={action.onClick} className="">
+                    {action.icon}
+                  </div>
+                )}
               </div>
             </Tippy>
           ))}
@@ -146,10 +173,6 @@ const TransactionCollection = () => {
       <div className="relative h-full min-h-[500px]">
         {selectedTab ? selectedTab.panel() : null}
       </div>
-      <ModalSetting
-        isOpenSetting={isOpenSetting}
-        setIsOpenSetting={setIsOpenSetting}
-      />
     </div>
   );
 };

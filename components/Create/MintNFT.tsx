@@ -24,10 +24,8 @@ export default function MintNFT({
   attributeItems,
   description,
   fileIPFS,
-  selectedCategory,
   setEmptyInputs,
   setName,
-  setSelectedCategory,
   setFileIPFS,
   setAttributeItems,
   setDescription,
@@ -104,7 +102,6 @@ export default function MintNFT({
       setDescription("");
       setSymbol("");
       setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
-      setSelectedCategory([]);
       setSelectedFile(null);
       setFileIPFS(null);
     } catch (error) {
@@ -153,7 +150,6 @@ export default function MintNFT({
           name,
           symbol,
           description,
-          selectedCategory,
         });
         mintNFT({
           amount: Number(totalSupply),

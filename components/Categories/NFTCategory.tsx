@@ -19,16 +19,15 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
         </div>
         <div className="w-full p-3 bg-shader_700 rounded-b-lg relative group-hover:bg-shader_600">
           <div className=" w-full text-white font-bold">
-            <h6
-              title={item.metadata?.name}
-              className="flex items-start w-full gap-2 uppercase "
-            >
+            <h6 className="flex items-start w-full gap-2 uppercase ">
               <span className="flex-wrap max-w-full line-clamp-1">
                 {item.metadata?.name ? (
                   <div className="flex gap-x-1 items-center">
                     <ModalDocument data={item.metadata?.name} />
                     <VerifyIcon width={16} height={16} />
                   </div>
+                ) : item.name ? (
+                  <p>{item.name}</p>
                 ) : (
                   <p>--</p>
                 )}
@@ -36,12 +35,17 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
             </h6>
             <p className="text-primary_300 text-xs">Created 19 days ago</p>
           </div>
-          <div className="relative flex items-center justify-between w-full py-2 px-3 mb-2 my-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-            <div className="text-shader_100 text-sm">Floor Price</div>
-            <div className="flex items-center text-white gap-x-1">
+          <div className="relative flex items-center justify-between w-full h-10 px-3 mb-2 my-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+            <div className="text-shader_100 text-sm group-hover:hidden">
+              Floor Price
+            </div>
+            <div className="flex items-center text-white gap-x-1 group-hover:hidden">
               <FormatNumber number={item.lastPrice} />
               <EtherIcon width={16} height={16} />
             </div>
+            {/* <p className="text-sm group-hover:opacity-100 opacity-0 text-center w-full transition-all duration-200 ease-in">
+              View detail
+            </p> */}
           </div>
           <div className="flex justify-between text-sm text-shader_200 mt-2">
             <p>Reserve NFT</p>

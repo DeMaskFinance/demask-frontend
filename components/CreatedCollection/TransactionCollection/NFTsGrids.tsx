@@ -128,20 +128,27 @@ const NFTGrid: React.FC<NFTGridProps> = ({
           {val}
         </div>
       </div>
-      {isSearch && (
-        <Button
-          className="flex mx-auto whitespace-nowrap gap-x-2"
-          green_2
-          onClick={handleSearchNFT}
-        >
-          <ImgIcon width={20} height={20} />
-          Select NFT
-        </Button>
-      )}
-      <ModalSearchNFTSwap
-        setIsOpenSearchNFT={setIsOpenSearchNFT}
-        isOpenSearchNFT={isOpenSearchNFT}
-      />
+      <Dialog>
+        <DialogTrigger asChild>
+          {isSearch && (
+            <Button
+              className="flex mx-auto whitespace-nowrap gap-x-2"
+              green_2
+              onClick={handleSearchNFT}
+            >
+              <ImgIcon width={20} height={20} />
+              Select NFT
+            </Button>
+          )}
+        </DialogTrigger>
+        <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+          <DialogHeader>
+            <DialogDescription>
+              <ModalSearchNFTSwap />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

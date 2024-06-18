@@ -470,7 +470,7 @@ export default function DetailLaunchPad() {
                                   onClick={() => {
                                     setIsOpenModal(!isOpenModal);
                                   }}
-                                  className={`px-6 py-2 rounded-md text-sm text-white  ${
+                                  className={`w-full py-2 rounded-md text-sm text-white  ${
                                     errors !== "" || !amount || +amount < 1
                                       ? "bg-slate-400"
                                       : "bg-primary_500 text-white font-medium hover:bg-white hover:text-primary_400 border boder-white hover:border-primary_400 rounded-lg transition-all duration-150 ease-linear"
@@ -505,7 +505,7 @@ export default function DetailLaunchPad() {
                           </>
                         ) : (
                           <Button
-                            className="w-[144px] py-2 mt-2"
+                            className="w-full py-2 mt-2"
                             primary
                             onClick={handleOpen}
                           >

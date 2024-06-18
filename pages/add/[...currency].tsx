@@ -52,9 +52,6 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { FaAngleDown } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
 import { SEO } from "../../next-seo.config";
-const styles = {
-  title: "block mb-1 mt-5 text-base font-semibold text-shader_100",
-};
 const updateMeta = {
   ...SEO,
   title: "Add Liquidity",
@@ -66,13 +63,10 @@ export default function AddLiquidity() {
   const [inputNFT, setInputNFT] = useState<string>("");
   const [inputToken, setInputToken] = useState<string>("");
   const [idNFT, setIdNFT] = useState("");
-  const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
-  const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -234,14 +228,6 @@ export default function AddLiquidity() {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
-  const handleSearchNFT = () => {
-    setIsOpenSearchNFT(true);
-    document.body.style.overflowY = "hidden";
-  };
-  const handleSearchToken = () => {
-    setIsOpenSearchToken(true);
-    document.body.style.overflowY = "hidden";
-  };
   const actions = [
     {
       icon: (
@@ -276,7 +262,22 @@ export default function AddLiquidity() {
         />
       ),
       content: "Setting",
-      onClick: () => setIsOpenSetting(true),
+      dialog: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="cursor-pointer text-primary_200">
+              <SettingIcon width={18} height={18} />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+            <DialogHeader>
+              <DialogDescription>
+                <ModalSetting />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      ),
     },
   ];
   const handleChoicePercent = (item: string) => {
@@ -320,9 +321,7 @@ export default function AddLiquidity() {
                     {action.icon}
                   </Link>
                 ) : (
-                  <div onClick={action.onClick} className="">
-                    {action.icon}
-                  </div>
+                  action.dialog
                 )}
               </div>
             </Tippy>
@@ -339,45 +338,69 @@ export default function AddLiquidity() {
                 <span className="">Choose NFT</span>
                 <span className="text-red">*</span>
               </p>
-              <div className="input_item" onClick={handleSearchNFT}>
-                <div className="flex items-center justify-between cursor-pointer text-shader_500 group">
-                  <div className="flex items-center gap-x-2 title">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue bg-opacity-20 ">
-                      <CreateIcon width={16} height={16} />
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="input_item">
+                    <div className="flex items-center justify-between cursor-pointer text-shader_500 group">
+                      <div className="flex items-center gap-x-2 title">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue bg-opacity-20 ">
+                          <CreateIcon width={16} height={16} />
+                        </div>
+                        <p>{data?.metadata?.name}</p>
+                      </div>
+                      <FaAngleDown className="text-white " />
                     </div>
-                    <p>{data?.metadata?.name}</p>
                   </div>
-                  <FaAngleDown className="text-white " />
-                </div>
-              </div>
+                </DialogTrigger>
+                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                  <DialogHeader>
+                    <DialogDescription>
+                      <ModalSearchNFT />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
             <div>
               <p className="title_label">
                 <span className="">Choose Token</span>
                 <span className="text-red">*</span>
               </p>
-              <div className="input_item" onClick={handleSearchToken}>
-                <div className="flex items-center justify-between cursor-pointer text-shader_500">
-                  <div className="flex items-center gap-x-2 title">
-                    {tokenSymbolIcon ? (
-                      <div>
-                        {/* @ts-ignore */}
-                        <tokenSymbolIcon.logo width={20} height={20} />
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="input_item">
+                    <div className="flex items-center justify-between cursor-pointer text-shader_500">
+                      <div className="flex items-center gap-x-2 title">
+                        {tokenSymbolIcon ? (
+                          <div>
+                            {/* @ts-ignore */}
+                            <tokenSymbolIcon.logo width={20} height={20} />
+                          </div>
+                        ) : (
+                          <div>
+                            <TokenIconNotDefine
+                              width={24}
+                              height={24}
+                              className="fill-primary_400"
+                            />
+                          </div>
+                        )}
+                        {data?.tokenSymbol}
                       </div>
-                    ) : (
-                      <div>
-                        <TokenIconNotDefine
-                          width={24}
-                          height={24}
-                          className="fill-primary_400"
-                        />
-                      </div>
-                    )}
-                    {data?.tokenSymbol}
+                      <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
+                    </div>
                   </div>
-                  <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
-                </div>
-              </div>
+                </DialogTrigger>
+                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                  <DialogHeader>
+                    <DialogDescription>
+                      <ModalSearchToken />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
             <div className="mt-5 border-t border-shader_600">
               <p className="title_label">
@@ -507,7 +530,7 @@ export default function AddLiquidity() {
               </Button>
             )}
             {!account && (
-              <Button className="w-[144px] py-2" primary onClick={handleOpen}>
+              <Button className="w-full py-2" primary onClick={handleOpen}>
                 Connect Wallet
               </Button>
             )}
@@ -538,11 +561,13 @@ export default function AddLiquidity() {
                   <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
                     <DialogHeader>
                       <DialogDescription>
-                        <ModalDetail
-                          type="erc1155"
-                          idNFT={idNFT}
-                          nftAddress={nftAddress}
-                        />
+                        {data && (
+                          <ModalDetail
+                            type="erc1155"
+                            idNFT={data.nftID}
+                            nftAddress={data.nftAddress}
+                          />
+                        )}
                       </DialogDescription>
                     </DialogHeader>
                   </DialogContent>
@@ -555,19 +580,8 @@ export default function AddLiquidity() {
         <SkeletonAddLiquidity />
       )}
       {/* {(isLoading || isFetching) && !isSuccess && <SkeletonAddLiquidity />} */}
-      <ModalSearchNFT
-        setIsOpenSearchNFT={setIsOpenSearchNFT}
-        isOpenSearchNFT={isOpenSearchNFT}
-      />
-      <ModalSetting
-        isOpenSetting={isOpenSetting}
-        setIsOpenSetting={setIsOpenSetting}
-      />
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      <ModalSearchToken
-        setIsOpenSearchToken={setIsOpenSearchToken}
-        isOpenSearchToken={isOpenSearchToken}
-      />
+
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

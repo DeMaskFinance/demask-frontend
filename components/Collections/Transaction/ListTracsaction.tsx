@@ -52,8 +52,8 @@ function ListTracsaction() {
           )}
         </div>
         <div className=" overflow-x-auto">
-          <table className="w-full text-left border-collapse min-h-[550px] flex flex-col">
-            <thead className="uppercase bg-shader_600 text-shader_200 font-semibold">
+          <table className="w-full text-left border-collapse min-h-[550px]">
+            <thead className=" bg-shader_600 text-shader_200">
               <tr className="flex px-4 py-3">
                 <th className="flex justify-start lg:w-full md:w-full w-[200px]">
                   Name

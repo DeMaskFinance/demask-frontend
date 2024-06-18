@@ -3,9 +3,7 @@ import {
   BgDefaultIcon,
   BgGradient,
   EtherIcon,
-  EyeIcon,
   ImgIcon,
-  NFTIcon,
   PoolIcon,
   RefetchIcon,
   SettingIcon,
@@ -14,15 +12,19 @@ import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useInformationToken from "@/hooks/useInformationToken";
-import { activeNFTPercent } from "@/libs/constants";
-import formatNumber from "@/libs/utils/formatNumer";
 import Tippy from "@tippyjs/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 export default function SwapDefault() {
   const router = useRouter();
@@ -33,8 +35,6 @@ export default function SwapDefault() {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
-  const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
-  const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [inputNFT, setInputNFT] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("25%");
@@ -51,10 +51,6 @@ export default function SwapDefault() {
   };
   const handleChoicePercent = (choice: string) => {
     setActiveChoiceNFT(choice);
-  };
-  const handleSearchNFT = () => {
-    setIsOpenSearchNFT(true);
-    document.body.style.overflowY = "hidden";
   };
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
@@ -94,7 +90,22 @@ export default function SwapDefault() {
         />
       ),
       content: "Setting",
-      onClick: () => setIsOpenSetting(true),
+      dialog: (
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="cursor-pointer text-primary_200">
+              <SettingIcon width={18} height={18} />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+            <DialogHeader>
+              <DialogDescription>
+                <ModalSetting />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      ),
     },
   ];
   return (
@@ -119,6 +130,8 @@ export default function SwapDefault() {
                       <Link href={action.link} className="group">
                         {action.icon}
                       </Link>
+                    ) : action.dialog ? (
+                      action.dialog
                     ) : (
                       <div onClick={action.onClick} className="">
                         {action.icon}
@@ -143,14 +156,24 @@ export default function SwapDefault() {
             <div className="mx-auto rounded-lg p-[10px] bg-primary_500 bg-opacity-10">
               <BgDefaultIcon width={87} height={87} />
             </div>
-            <Button
-              className="flex mx-auto mt-4 whitespace-nowrap gap-x-2"
-              green_2
-              onClick={handleSearchNFT}
-            >
-              <ImgIcon width={20} height={20} />
-              Select NFT
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  className="flex mx-auto mt-4 whitespace-nowrap gap-x-2"
+                  green_2
+                >
+                  <ImgIcon width={20} height={20} />
+                  Select NFT
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                <DialogHeader>
+                  <DialogDescription>
+                    <ModalSearchNFTSwap />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
           <form className="mt-5 text-sm text-shader_200">
             <div>
@@ -195,7 +218,7 @@ export default function SwapDefault() {
                   </label>
                 </div>
               </div>
-              <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+              <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                 <div className="">Total Pay</div>
                 <div className="flex items-center px-2 py-1 text-white gap-x-1">
                   0
@@ -206,19 +229,19 @@ export default function SwapDefault() {
           </form>
           <div className="flex justify-center w-full">
             {activeChoice === "Buy" && account && (
-              <Button type="button" green className="py-2 w-[144px]">
+              <Button type="button" green className="py-2 w-full">
                 Buy Now
               </Button>
             )}
             {activeChoice === "Sell" && account && (
-              <Button type="button" red className="py-2 w-[144px]">
+              <Button type="button" red className="py-2 w-full">
                 Sell Now
               </Button>
             )}
 
             {!account && (
               <Button
-                className="w-[144px] py-2 font-semibold"
+                className="w-full py-2 font-semibold"
                 gradient
                 onClick={handleOpen}
               >
@@ -226,14 +249,6 @@ export default function SwapDefault() {
               </Button>
             )}
           </div>
-          <ModalSetting
-            isOpenSetting={isOpenSetting}
-            setIsOpenSetting={setIsOpenSetting}
-          />
-          <ModalSearchNFTSwap
-            setIsOpenSearchNFT={setIsOpenSearchNFT}
-            isOpenSearchNFT={isOpenSearchNFT}
-          />
           <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
       </div>

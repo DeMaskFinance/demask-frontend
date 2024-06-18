@@ -18,6 +18,7 @@ function StatisticChart() {
 
     keepPreviousData: true,
   });
+  console.log(data);
 
   return (
     <div className="grid grid-cols-4 gap-4 my-4  text-white font-semibold">
@@ -27,7 +28,7 @@ function StatisticChart() {
           <p>
             {data && data?.currentDateVolume !== undefined
               ? formatNumber(data?.currentDateVolume)
-              : "0 M"}
+              : "0M"}
           </p>
           <EtherIcon width={16} height={16} />
           <span

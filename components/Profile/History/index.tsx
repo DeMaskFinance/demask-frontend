@@ -27,51 +27,39 @@ export default function History() {
       {isLoading || isFetching ? (
         <SkeletonTable length={10} />
       ) : isSuccess && data.userTransactionList.length > 0 ? (
-        <div className="transactionList">
-          <div className="px-2 pt-2 overflow-hidden rounded-lg shadow-home min-h-[550px]">
-            <div className="px-6 pt-6 pb-0 overflow-x-scroll">
-              <table className="w-full text-left">
-                <thead className="text-white">
-                  <tr className="flex px-2 pb-2 text-sm lg:text-base md:text-base">
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      Action
-                    </th>
-                    {/* <th className="flex justify-start lg:w-full md:w-full w-[50px]"></th> */}
-                    <th className="flex justify-start md:basis-1/6 w-[200px]">
-                      Project
-                    </th>
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      Network
-                    </th>
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      Item
-                    </th>
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      Price
-                    </th>
-                    <th className="flex justify-start md:basis-1/6 w-[140px]">
-                      TxID
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="flex flex-col min-h-[620px]">
-                  {data?.userTransactionList.map((item: any, index: number) => (
-                    <HistoryItem item={item} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <TablePagination
-            data={data?.userTransactionList}
-            page={page}
-            setPage={setPage}
-            totalPages={data?.totalPages || 1}
-            isFetching={isFetching}
-            refetch={refetch}
-            isPreviousData={isPreviousData}
-          />
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-h-[550px]">
+            <thead className="bg-shader_600 text-shader_200 uppercase">
+              <tr className="flex px-4 py-3">
+                <th className="flex justify-start md:basis-1/7 w-[140px]">
+                  Action
+                </th>
+                <th className="flex justify-start md:basis-1/7 w-[200px]">
+                  Project
+                </th>
+                <th className="flex justify-start md:basis-1/7 w-[140px]">
+                  Network
+                </th>
+                <th className="flex justify-start md:basis-1/7 w-[140px]">
+                  Item
+                </th>
+                <th className="flex justify-start md:basis-1/7 w-[140px]">
+                  Price
+                </th>
+                <th className="flex justify-start md:basis-1/7 w-[140px]">
+                  TxID
+                </th>
+                <th className="flex justify-end md:basis-1/7 w-[140px]">
+                  DATE
+                </th>
+              </tr>
+            </thead>
+            <tbody className="flex flex-col min-h-[620px]">
+              {data?.userTransactionList.map((item: any, index: number) => (
+                <HistoryItem key={index} item={item} />
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div>
