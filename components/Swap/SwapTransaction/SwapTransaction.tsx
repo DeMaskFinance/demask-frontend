@@ -73,7 +73,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [isOpenSellNFT, setIsOpenSellNFT] = useState<boolean>(false);
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
@@ -249,10 +248,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";
   };
-  const handleShowDetail = () => {
-    setIsOpenDetail(true);
-    document.body.style.overflowY = "hidden";
-  };
+
   const handleOpen = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
@@ -380,11 +376,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             <div className="flex justify-center mx-auto mt-5 gap-x-2">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button
-                    active
-                    className="border-2 gap-x-2"
-                    onClick={handleShowDetail}
-                  >
+                  <Button active className="border-2 gap-x-2">
                     <EyeIcon
                       width={20}
                       height={20}

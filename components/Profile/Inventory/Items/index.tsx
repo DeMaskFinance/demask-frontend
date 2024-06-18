@@ -6,32 +6,27 @@ import {
   EyeIcon,
   NFTIcon,
   PlusIcon,
-  SearchIcon,
   SwapIcon,
 } from "@/components/Icons";
-import { LogoIconCard } from "@/components/Logo/Logo";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import useDebounce from "@/hooks/useDebounce";
 import { nftsUserService } from "@/libs/service/profileService";
+import { formatTypeChain } from "@/libs/utils/formatComon";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
-import useDebounce from "@/hooks/useDebounce";
-import { formatTypeChain } from "@/libs/utils/formatComon";
-import { CgClose } from "react-icons/cg";
-import TabQuery from "@/components/NavChoice/TabQuery";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { TabGroups } from "@/components/NavChoice";
 import FilterItems from "./FilterItems";
 interface ModalDetailProps {
   type: string;
@@ -58,7 +53,6 @@ export const ItemList: React.FC<ItemListProps> = ({
 }) => {
   const { chainId, demask } = useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
@@ -186,16 +180,31 @@ export const ItemList: React.FC<ItemListProps> = ({
                             {formatTypeChain(item.type)}
                           </p>
                         </div>
-                        <div
-                          className="w-6 h-6 bg-primary_500 flex items-center justify-center rounded-full"
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setIsOpenDetail(true);
-                            document.body.style.overflowY = "hidden";
-                          }}
-                        >
-                          <EyeIcon width={16} height={16} />
-                        </div>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <div
+                              className="w-6 h-6 bg-primary_500 flex items-center justify-center rounded-full"
+                              onClick={() => {
+                                setSelectedItem(item);
+                              }}
+                            >
+                              <EyeIcon width={16} height={16} />
+                            </div>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                            <DialogHeader>
+                              <DialogDescription>
+                                {selectedItem && (
+                                  <ModalDetail
+                                    type={selectedItem?.type}
+                                    idNFT={selectedItem?.nftID}
+                                    nftAddress={selectedItem?.nftAddress}
+                                  />
+                                )}
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                   </div>
@@ -208,15 +217,6 @@ export const ItemList: React.FC<ItemListProps> = ({
         </Fragment>
       ) : (
         <p className="mt-4">No data available.</p>
-      )}
-      {selectedItem && (
-        <ModalDetail
-          type={selectedItem?.type}
-          idNFT={selectedItem?.nftID}
-          nftAddress={selectedItem?.nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
-        />
       )}
     </div>
   );

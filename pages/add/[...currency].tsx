@@ -71,7 +71,6 @@ export default function AddLiquidity() {
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [isOpenSearchToken, setIsOpenSearchToken] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
@@ -235,10 +234,6 @@ export default function AddLiquidity() {
     };
     checkApproveNFT();
   }, [account, nftAddress, wallet, isOpenTransaction]);
-  const handleShowDetail = () => {
-    setIsOpenDetail(true);
-    document.body.style.overflowY = "hidden";
-  };
   const handleSearchNFT = () => {
     setIsOpenSearchNFT(true);
     document.body.style.overflowY = "hidden";

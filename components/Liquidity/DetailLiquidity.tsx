@@ -18,6 +18,15 @@ import {
   ModalError,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import TabTable from "@/components/NavChoice/TabTable";
@@ -48,7 +57,6 @@ const DetailLiquidity = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>("All");
   const [isOpenSuccessAdd, setIsOpenSuccessAdd] = useState<boolean>(false);
@@ -143,10 +151,6 @@ const DetailLiquidity = () => {
   };
   const handleRemoveLiquidity = () => {
     setIsOpenRemoveLiquidity(true);
-    document.body.style.overflowY = "hidden";
-  };
-  const handleShowDetail = () => {
-    setIsOpenDetail(true);
     document.body.style.overflowY = "hidden";
   };
   const handleChoiceChange = (choice: string) => {
@@ -297,9 +301,27 @@ const DetailLiquidity = () => {
                   </div>
                 </div>
                 <div className="flex gap-x-2">
-                  <Button active className="p-3" onClick={handleShowDetail}>
-                    <EyeIcon width={20} height={20} />
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button active className="p-3">
+                        <EyeIcon width={20} height={20} />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                      <DialogHeader>
+                        <DialogDescription>
+                          {data && (
+                            <ModalDetail
+                              type="erc1155"
+                              idNFT={data.nftID}
+                              nftAddress={data.nftAddress}
+                            />
+                          )}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+
                   <Button
                     gradient
                     className="flex w-full p-3 gap-x-1"
@@ -324,15 +346,7 @@ const DetailLiquidity = () => {
         <SkeletonPoolDetail />
       )}
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      {data && (
-        <ModalDetail
-          type="erc1155"
-          idNFT={data.nftID}
-          nftAddress={data.nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
-        />
-      )}
+
       {data && account && (
         <>
           <ModalAddLiquidity
