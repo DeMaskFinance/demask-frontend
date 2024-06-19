@@ -57,8 +57,9 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;
-  const { ref, inView } = useInView();
-  const collectionAddress = useRouter().query.collection as string;
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const dmlToken = useDMLToken(
     account,
     collectionAddress,

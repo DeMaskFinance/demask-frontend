@@ -14,38 +14,8 @@ import { Toaster } from "@/components/ui/sonner";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
-  const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (router.isReady) {
-      if (!router.query?.chain) {
-        router.push({
-          pathname: router.pathname,
-          query: { ...router.query, chain: chainId },
-        });
-        // updateChainId(chainId);
-      } else {
-        const targetNetwork = network.find(
-          (item) => item.chain === router.query.chain
-        );
-        console.log(targetNetwork, router.query.chain);
-
-        if (!targetNetwork) {
-          updateChainId(network[0].chain);
-          console.log(network[0].chain);
-
-          router.push({
-            pathname: router.pathname,
-            query: { ...router.query, chain: network[0].chain },
-          });
-        } else {
-          updateChainId(router.query.chain);
-        }
-      }
-    }
-  }, [chainId, router.asPath, router.isReady, network, router.query.chain]);
-
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {

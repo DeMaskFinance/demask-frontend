@@ -67,33 +67,33 @@ export const ItemList: React.FC<ItemListProps> = ({
   return (
     <div className="font-semibold">
       {isLoading ? (
-        <div className="grid grid-cols-autoFill gap-4 mt-4 text-shader_600">
+        <div className="grid gap-4 mt-4 grid-cols-autoFill text-shader_600">
           <SkeletonSubCategory length={5} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <Fragment>
-          <div className="my-4 flex text-primary_300 text-sm items-center gap-x-2">
+          <div className="flex items-center my-4 text-sm text-primary_300 gap-x-2">
             <div className="relative flex w-2 h-2">
               <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>
               <span className="relative inline-flex w-2 h-2 rounded-full bg-primary_500"></span>
             </div>
             <p>{data?.pages[0].totalRecords} Items</p>
           </div>
-          <div className="grid grid-cols-autoFill gap-4 mt-4  text-white">
+          <div className="grid gap-4 mt-4 text-white grid-cols-autoFill">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (
                   <div
                     key={index}
-                    className="relative overflow-hidden border border-shader_500 rounded-lg hover:border-shader_400"
+                    className="relative overflow-hidden border rounded-lg border-shader_500 hover:border-shader_400"
                   >
-                    <div className="relative items-center text-sm transition-all  rounded-md cursor-pointer group lg:text-base hover:shadow-home">
-                      <div className="relative aspect-square overflow-hidden">
+                    <div className="relative items-center text-sm transition-all rounded-md cursor-pointer group lg:text-base hover:shadow-home">
+                      <div className="relative overflow-hidden aspect-square">
                         <div className="w-full h-full overflow-hidden rounded-t-lg">
                           <MediaNFT data={item} isControls={false} hover zoom />
                         </div>
                       </div>
-                      <div className="w-full p-3 bg-shader_700 rounded-b-lg relative group-hover:bg-shader_600">
+                      <div className="relative w-full p-3 rounded-b-lg bg-shader_700 group-hover:bg-shader_600">
                         <Link
                           href={`/collection/${item.nftAddress}?typeERC=${item.type}`}
                           className="flex-wrap max-w-full text-xs font-semibold hover:underline text-primary_300 line-clamp-1 hover:underline-offset-1"
@@ -104,7 +104,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                             <p>--</p>
                           )}
                         </Link>
-                        <div className="flex w-full text-white font-bold">
+                        <div className="flex w-full font-bold text-white">
                           <h6
                             title={item.metadata?.name}
                             className="flex items-start w-full gap-2 uppercase "
@@ -118,18 +118,18 @@ export const ItemList: React.FC<ItemListProps> = ({
                             </span>
                           </h6>
                         </div>
-                        <div className="flex justify-between text-sm text-shader_200 mt-2">
+                        <div className="flex justify-between mt-2 text-sm text-shader_200">
                           <p>Floor price</p>
                           <p>Balance</p>
                         </div>
                         <div className="flex justify-between font-bold text-white">
-                          <div className="flex gap-x-1 items-center">
+                          <div className="flex items-center gap-x-1">
                             <FormatNumber number={item.floorPrice} />
                             <EtherIcon width={16} height={16} />
                           </div>
                           <div>
                             {item.nftBalance ? (
-                              <div className="flex gap-x-1 items-center">
+                              <div className="flex items-center gap-x-1">
                                 <FormatNumber number={item.nftBalance} />
                                 <NFTIcon width={16} height={16} />
                               </div>
@@ -138,16 +138,16 @@ export const ItemList: React.FC<ItemListProps> = ({
                             )}
                           </div>
                         </div>
-                        <div className="absolute flex z-10 justify-between w-full opacity-0 group-hover:opacity-100 px-2 bottom-3 left-0 transition-all duration-150 gap-x-2">
+                        <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
                           <Link
                             href={
                               item.type === "erc1155"
-                                ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}?chain=${chainId}`
-                                : `/collection/${item.nftAddress}?typeERC=erc721&tab=pool&chain=${chainId}`
+                                ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                                : `/swap/type/${item.nftAddress}&tab=pool`
                             }
                             className="basis-1/2"
                           >
-                            <Button className="flex items-center w-full py-3 gap-x-2 border border-shader_400 bg-shader_500 hover:bg-shader_400">
+                            <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
                               <PlusIcon width={20} height={20} />
                               <p>Add</p>
                             </Button>
@@ -155,8 +155,8 @@ export const ItemList: React.FC<ItemListProps> = ({
                           <Link
                             href={
                               item.type === "erc1155"
-                                ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}?chain=${chainId}`
-                                : `/collection/${item.nftAddress}?typeERC=erc721&chain=${chainId}`
+                                ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                                : `/swap/type/${item.nftAddress}`
                             }
                             className="basis-1/2"
                           >
@@ -174,8 +174,8 @@ export const ItemList: React.FC<ItemListProps> = ({
                           </Link>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between absolute top-1 px-2 w-full opacity-60 group-hover:opacity-100 transition-all duration-150">
-                        <div className="flex gap-x-1 items-center">
+                      <div className="absolute flex items-center justify-between w-full px-2 transition-all duration-150 top-1 opacity-60 group-hover:opacity-100">
+                        <div className="flex items-center gap-x-1">
                           <EtherIcon width={20} height={20} />
                           <p className="text-[10px] bg-black bg-opacity-40 rounded-xl px-2 h-5 leading-5 backdrop-opacity-50 font-semibold">
                             {formatTypeChain(item.type)}
@@ -184,7 +184,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                         <Dialog>
                           <DialogTrigger asChild>
                             <div
-                              className="w-6 h-6 bg-primary_500 flex items-center justify-center rounded-full"
+                              className="flex items-center justify-center w-6 h-6 rounded-full bg-primary_500"
                               onClick={() => {
                                 setSelectedItem(item);
                               }}
@@ -192,7 +192,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                               <EyeIcon width={16} height={16} />
                             </div>
                           </DialogTrigger>
-                          <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                          <DialogContent className="max-w-3xl p-4 border bg-shader_800 border-shader_500">
                             <DialogHeader>
                               <DialogDescription>
                                 {selectedItem && (

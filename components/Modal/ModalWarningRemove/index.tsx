@@ -35,7 +35,7 @@ const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({
               not tradable directly on the DeMask interface.
             </p>
           </div>
-          <Link href={`/swap?chain=${chainId}`}>
+          <Link href={`/swap`}>
             <Button primary className="px-6 py-2 mx-auto">
               Return to Swap
             </Button>

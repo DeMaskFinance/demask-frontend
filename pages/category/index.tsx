@@ -76,17 +76,16 @@ export default function Categories() {
     },
   ];
   const [option, setOption] = useState<Type>(types[0]);
-  console.log(option);
 
   return (
     <BackgroundDefault>
       <NextSeo {...updateMeta} />
 
       <div className=" py-10 mx-auto  min-h-[83vh] px-10">
-        <h1 className="title text-2xl font-bold mb-10">
+        <h1 className="mb-10 text-2xl font-bold title">
           BROWSE ALL NFT COLLECTIONS
         </h1>
-        <div className="flex gap-x-3 mb-6">
+        <div className="flex mb-6 gap-x-3">
           {types.map((type, index: number) => (
             <div
               key={index}

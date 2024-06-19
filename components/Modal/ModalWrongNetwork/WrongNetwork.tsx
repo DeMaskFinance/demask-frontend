@@ -22,13 +22,8 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     updateAccount,
     updateChainId,
   } = useContext(AccountContext);
-  const [tab, setTab] = useQueryParam(
-    "chain",
-    withDefault(StringParam, chainId)
-  );
   const { isLoggedIn } = useSelector(selectProfile);
   const router = useRouter();
-  const { chain } = router.query;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,15 +32,14 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
       wallet &&
       router.isReady &&
       isLoggedIn &&
-      chain &&
+      chainId &&
       wallet !== "WalletConnect"
     ) {
       const checkNetwork = async () => {
         const provider = await getProvider(wallet);
         const networkId = await provider.request({ method: "net_version" });
-        console.log(networkId, chain);
 
-        if (networkId !== chain) {
+        if (networkId !== chainId) {
           setIsWrongNetwork(true);
           document.body.style.overflowY = "hidden";
         } else {
@@ -57,7 +51,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     } else {
       setIsWrongNetwork(false);
     }
-  }, [chain, account, wallet, router.isReady]);
+  }, [chainId, account, wallet, router.isReady]);
 
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
@@ -94,8 +88,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                   wallet,
                   demask,
                   setIsWrongNetwork,
-                  updateChainId,
-                  setTab
+                  updateChainId
                 )
               }
             >
@@ -112,7 +105,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             className="absolute top-0 right-0 p-2 text-lg"
             onClick={disconnectWallet}
           >
-            <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
+            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
           </button>
         </div>
       </div>

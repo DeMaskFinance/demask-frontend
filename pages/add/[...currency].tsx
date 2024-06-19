@@ -269,7 +269,7 @@ export default function AddLiquidity() {
               <SettingIcon width={18} height={18} />
             </div>
           </DialogTrigger>
-          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+          <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
             <DialogHeader>
               <DialogDescription>
                 <ModalSetting />
@@ -320,8 +320,10 @@ export default function AddLiquidity() {
                   <Link href={action.link} className="group">
                     {action.icon}
                   </Link>
-                ) : (
+                ) : action.dialog ? (
                   action.dialog
+                ) : (
+                  <div>{action.icon}</div>
                 )}
               </div>
             </Tippy>
@@ -353,7 +355,7 @@ export default function AddLiquidity() {
                     </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                   <DialogHeader>
                     <DialogDescription>
                       <ModalSearchNFT />
@@ -393,7 +395,7 @@ export default function AddLiquidity() {
                     </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                   <DialogHeader>
                     <DialogDescription>
                       <ModalSearchToken />
@@ -558,7 +560,7 @@ export default function AddLiquidity() {
                       <EyeIcon width={16} height={16} />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                  <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                     <DialogHeader>
                       <DialogDescription>
                         {data && (

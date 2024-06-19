@@ -27,7 +27,7 @@ const Creator = () => {
             </div>
             <div className="w-full mt-20 lg:flex gap-x-3">
               <div className="block w-full mb-6 lg:w-1/2">
-                <ActiveLink href={`/create/deploy-contract?chain=${chainId}`}>
+                <ActiveLink href={`/create/deploy-contract`}>
                   <div className="p-4 border cursor-pointer rounded-[10px] bg-shader_700 group border-shader_500 hover:-translate-y-2 transition-all duration-150 ease-linear">
                     <div className="p-2 bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg">
                       <DeployIcon width={24} height={24} />
@@ -46,7 +46,7 @@ const Creator = () => {
                 </ActiveLink>
               </div>
               <div className="block w-full mb-6 lg:w-1/2">
-                <ActiveLink href={`/create/mint?chain=${chainId}`}>
+                <ActiveLink href={`/create/mint`}>
                   <div className="p-4 border cursor-pointer rounded-[10px] bg-shader_700 group border-shader_500 hover:-translate-y-2 transition-all duration-150 ease-linear ">
                     <div className="p-2 bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg">
                       <CreateIcon width={24} height={24} />

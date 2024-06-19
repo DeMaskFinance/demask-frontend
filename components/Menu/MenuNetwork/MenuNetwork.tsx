@@ -27,10 +27,6 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
   const { updateChainId, chainId, wallet, demask, account } =
     useContext(AccountContext);
-  const [tab, setTab] = useQueryParam(
-    "chain",
-    withDefault(StringParam, chainId)
-  );
   const router = useRouter();
   const { isLoggedIn } = useSelector(selectProfile);
   const handleChangeNetwork = async (chain: string) => {
@@ -40,16 +36,14 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
         wallet,
         demask,
         setIsWrongNetwork,
-        updateChainId,
-        setTab
+        updateChainId
       );
       if (check) {
-        router.replace(`/swap?chain=${chain}`);
+        router.replace(`/swap`);
       }
     } else {
       updateChainId(chain);
-      setTab(chain);
-      router.replace(`/swap?chain=${chain}`);
+      router.replace(`/swap`);
     }
   };
   useEffect(() => {

@@ -271,14 +271,14 @@ export default function Header() {
                           <Copy content={account} />
                         </li>
                         <Link
-                          href={`/profile?chain=${chainId}`}
+                          href={`/profile`}
                           className="text-sm item_menu gap-x-2"
                         >
                           <UserIcon width={18} height={18} />
                           My Profile
                         </Link>
                         <Link
-                          href={`/profile/edit?chain=${chainId}`}
+                          href={`/profile/edit`}
                           className="text-sm item_menu gap-x-2"
                         >
                           <EditIcon width={18} height={18} />

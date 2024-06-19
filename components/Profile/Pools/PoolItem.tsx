@@ -17,7 +17,7 @@ const PoolItem = ({ item }: any) => {
     ((Number(balanceDML) / Number(totalSupply)) * item.reserveToken * 2) / 1700;
   return (
     <div>
-      <Link href={`/details/${item.dmlAddress}?chain=${chainId}`}>
+      <Link href={`/details/${item.dmlAddress}`}>
         <tr className="flex text-sm lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
           <td className="relative flex items-center justify-start py-2  md:basis-1/6 w-[140px]">
             <FormatNumber number={balanceOfDML} />

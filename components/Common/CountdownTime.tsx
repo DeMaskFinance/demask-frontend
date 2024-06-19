@@ -55,9 +55,7 @@ const CountdownTime: React.FunctionComponent<CountdownTimeProps> = ({
                 </span>
               </div>
               <div className="text-[10px] border border-primary_500  text-primary_500 transition-all duration-150 hover:text-white hover:bg-primary_500 rounded-lg h-6 px-2 datas-end leading-6">
-                <Link href={`/launchpad?choice=${query}?chain=${chainId}`}>
-                  {query}
-                </Link>
+                <Link href={`/launchpad?choice=${query}`}>{query}</Link>
               </div>
             </div>
           )}

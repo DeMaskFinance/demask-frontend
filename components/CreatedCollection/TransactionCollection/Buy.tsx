@@ -38,7 +38,9 @@ const Buy = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = useRouter().query.collection as string;
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const { bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -137,7 +139,7 @@ const Buy = () => {
             idNFT={idNFT}
             isSearch
           />
-          <div className="absolute bottom-0 w-full">
+          <div className="w-full mt-4">
             {idNFT.length > 0 && (
               <ul className="text-sm text-shader_200">
                 <li className="flex items-center justify-between mb-1">

@@ -45,16 +45,14 @@ import Classify from "../Profile/Inventory/Classify";
 import Copy from "../Common/Copy";
 export default function DetailCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
-  const [isOpenRoyalty, setIsOpenRoyalty] = useState<boolean>(false);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const inputAvatar = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
-  const [typeERC, setTypeERC] = useQueryParam(
-    "typeERC",
-    withDefault(StringParam, "")
-  );
-  const collectionAddress = useRouter().query.collection || "";
+  const [typeERC] = useQueryParam("typeERC", withDefault(StringParam, ""));
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const fetchDataNFTs = async (
     typeERC: string,
     collectionAddress: string | string[],
@@ -108,7 +106,7 @@ export default function DetailCollection() {
   const handleUploadAvatar = async (file: any) => {
     try {
       setAvatarLoading(true);
-      const res = await collectionService.uploadFileCollection({
+      await collectionService.uploadFileCollection({
         avatar: file,
         chainId,
         collectionAddress,
@@ -125,7 +123,7 @@ export default function DetailCollection() {
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
       <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
-        <div className=" text-xs lg:flex gap-x-1 ">
+        <div className="text-xs lg:flex gap-x-1">
           <div
             className={`relative rounded-full w-fit h-fit group ${
               dataDetail?.collaborators.includes(account) && "cursor-pointer"
@@ -212,14 +210,7 @@ export default function DetailCollection() {
                   dataDetail?.dmlAddress && (
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button
-                          secondary
-                          className="px-[6px] h-[28px]"
-                          onClick={() => {
-                            document.body.style.overflowY = "hidden";
-                            setIsOpenRoyalty(true);
-                          }}
-                        >
+                        <Button secondary className="px-[6px] h-[28px]">
                           <EditIcon
                             width={16}
                             height={16}
@@ -227,7 +218,7 @@ export default function DetailCollection() {
                           />
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                      <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                         <DialogHeader>
                           <DialogDescription>
                             <ModalRoyalty dmlAddress={dataDetail.dmlAddress} />
@@ -241,8 +232,8 @@ export default function DetailCollection() {
             <div className="flex items-center gap-x-1 my-[10px] font-semibold">
               {dataDetail?.creatorAddress ? (
                 <Fragment>
-                  <span className="text-sm  text-shader_100">Created by</span>
-                  <span className="text-primary_300 text-sm">
+                  <span className="text-sm text-shader_100">Created by</span>
+                  <span className="text-sm text-primary_300">
                     {briefDocument(dataDetail.creatorAddress, 8, 6)}
                   </span>
                   <Copy content={dataDetail.creatorAddress} />
@@ -253,9 +244,7 @@ export default function DetailCollection() {
             </div>
             <div className="flex items-center gap-x-2">
               {dataDetail?.collaborators.includes(account) && (
-                <Link
-                  href={`/edit/${collectionAddress}?chain=${chainId}&type=${typeERC}`}
-                >
+                <Link href={`/edit/${collectionAddress}&type=${typeERC}`}>
                   <Button
                     primary
                     className="flex h-8 px-3 text-sm font-bold gap-x-2"
@@ -282,7 +271,7 @@ export default function DetailCollection() {
                       Description
                     </DialogTitle>
                     <DialogDescription>
-                      <div className="flex gap-x-2 mt-4 mb-2">
+                      <div className="flex mt-4 mb-2 gap-x-2">
                         <LogoIconCard
                           chainId={chainId}
                           width={24}
@@ -332,7 +321,7 @@ export default function DetailCollection() {
             </div>
           </div>
         </div>
-        <div className="flex self-center mt-4 overflow-auto text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0 font-semibold">
+        <div className="flex self-center mt-4 overflow-auto font-semibold text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
           <div className="">
             <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
               Total Volume

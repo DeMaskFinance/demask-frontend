@@ -6,8 +6,7 @@ export const changeNetwork = async (
   wallet: string,
   demask: any,
   setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
-  updateChainId: any,
-  setTab?: any
+  updateChainId: any
 ) => {
   try {
     const provider = await getProvider(wallet);
@@ -23,7 +22,6 @@ export const changeNetwork = async (
 
         setIsWrongNetwork(false);
         updateChainId(chainId);
-        setTab(chainId);
         document.body.style.overflowY = "auto";
       } catch (errors: any) {
         // This error code indicates that the chain has not been added to MetaMask

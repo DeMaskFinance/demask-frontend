@@ -114,7 +114,7 @@ const Profile = () => {
             <div className="flex items-center gap-x-2 mt-[10px]">
               <Button primary className="px-2 h-8">
                 <Link
-                  href={`/profile/edit?chain=${chainId}`}
+                  href={`/profile/edit`}
                   className="flex gap-x-2 text-sm items-center"
                 >
                   <span>Edit</span>

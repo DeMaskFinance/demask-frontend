@@ -45,7 +45,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   <a
                     rel="noreferrer noopener"
                     target="_blank"
-                    // href={`${process.env.NEXT_PUBLIC_LINK_APP}/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}?chain=${chainId}`}
+                    // href={`${process.env.NEXT_PUBLIC_LINK_APP}/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
                     className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
                   >
                     <div className="relative flex items-center gap-2 group">

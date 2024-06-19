@@ -13,11 +13,11 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
   isLoading,
 }) => {
   return (
-    <div>
+    <div className="min-h-[94vh] text-white">
       {isLoading ? (
-        <SkeletonSwap />
+        <p>Loading...</p>
       ) : isSuccess ? (
-        <div className="min-h-[94vh]">
+        <div>
           {data && (
             <div className="flex min-h-[94vh] flex-col-reverse border-y md:flex-row border-shader_600">
               <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px] z-0">
@@ -35,7 +35,7 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
           )}
         </div>
       ) : (
-        <SkeletonSwap />
+        <p>No data</p>
       )}
     </div>
   );

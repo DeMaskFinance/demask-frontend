@@ -52,7 +52,7 @@ export default function NavFooter() {
                 key={index}
               >
                 <Link
-                  href={`${item.url}?chain=${chainId}`}
+                  href={`${item.url}`}
                   className={`flex flex-col items-center gap-2 ${
                     router.pathname === "/overview" ? "text-primary_400" : ""
                   }`}

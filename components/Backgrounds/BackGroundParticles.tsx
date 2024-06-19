@@ -28,7 +28,7 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
   }, []);
 
   const particlesLoaded = (container: any): any => {
-    console.log(container);
+    // console.log(container);
   };
 
   return (

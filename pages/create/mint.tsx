@@ -216,7 +216,7 @@ export default function Creator() {
                     >
                       <li>
                         <Link
-                          href={`/create/deploy-contract?chain=${chainId}`}
+                          href={`/create/deploy-contract`}
                           className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
                         >
                           <div className="flex font-semibold gap-x-[10px] items-center">

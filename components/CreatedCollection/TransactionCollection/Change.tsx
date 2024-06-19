@@ -38,7 +38,9 @@ const Change = () => {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessSwap, setIsOpenSuccessSwap] = useState<boolean>(false);
   const [isOpenErrorSwap, setIsOpenErrorSwap] = useState<boolean>(false);
-  const collectionAddress = useRouter().query.collection as string;
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const {

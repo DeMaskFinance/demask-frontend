@@ -32,14 +32,9 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   isSearch,
 }) => {
   const { chainId } = useContext(AccountContext);
-  const [isOpenSearchNFT, setIsOpenSearchNFT] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
-  const handleSearchNFT = () => {
-    setIsOpenSearchNFT(true);
-    document.body.style.overflowY = "hidden";
-  };
   const handleReset = async (e: MouseEvent<HTMLDivElement>, item: any) => {
     e.stopPropagation();
 
@@ -52,7 +47,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
       showToast("An error occurred. Please try again later.", ToastType.Error);
     }
   };
-  console.log(data, idNFT);
 
   const [val, setVal] = useState([0]);
   return (
@@ -65,9 +59,9 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             onClick={() => handleChoiceNFT(item)}
           >
             <div
-              className={`relative items-center text-sm   rounded-lg cursor-pointer lg:text-base ${
+              className={`relative items-center text-sm  border-[2px] border-primary_500 border-opacity-10 rounded-lg cursor-pointer lg:text-base ${
                 idNFT.includes(Number(item.nftID))
-                  ? "border-primary_400 border-[2px]"
+                  ? "border-primary_400 border-opacity-100"
                   : ""
               }`}
             >
@@ -131,11 +125,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
       <Dialog>
         <DialogTrigger asChild>
           {isSearch && (
-            <Button
-              className="flex mx-auto whitespace-nowrap gap-x-2"
-              green_2
-              onClick={handleSearchNFT}
-            >
+            <Button className="flex mx-auto whitespace-nowrap gap-x-2" green_2>
               <ImgIcon width={20} height={20} />
               Select NFT
             </Button>

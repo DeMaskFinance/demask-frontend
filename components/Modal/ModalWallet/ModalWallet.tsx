@@ -38,10 +38,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
     updateWallet,
     updateChainId,
   } = useContext(AccountContext);
-  const [tab, setTab] = useQueryParam(
-    "chain",
-    withDefault(StringParam, chainId)
-  );
   const dispatch = useDispatch();
   const router = useRouter();
   const handleClose = (
@@ -85,8 +81,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
               walletName,
               demask,
               setIsOpen,
-              updateChainId,
-              setTab
+              updateChainId
             );
             if (!networkSwitched) {
               return;

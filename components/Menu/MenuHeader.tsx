@@ -62,7 +62,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   )}
                 >
                   <Link
-                    href={`/leaderboard?chain=${chainId}`}
+                    href={`/leaderboard`}
                     className={`flex items-center gap-x-1  ${
                       isMatchingUrl &&
                       "text-primary_400 hover:text-primary_400  active:text-primary_400"
@@ -76,7 +76,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
             ) : (
               <React.Fragment key={index}>
                 <li className="hover:text-primary_500">
-                  <ActiveLink href={`${item?.url}?chain=${chainId}`}>
+                  <ActiveLink href={`${item?.url}`}>
                     <p className="">{item.name}</p>
                   </ActiveLink>
                 </li>

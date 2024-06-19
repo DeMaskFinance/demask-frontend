@@ -8,7 +8,7 @@ const Referral = () => {
   const [isCopy, setIsCopy] = useState<boolean>(false);
   const copyToClipboard = () => {
     navigator.clipboard.writeText(
-      `https://test.demask.finance/referral?sponsor=${account}&chain=${chainId}`
+      `https://test.demask.finance/referral?sponsor=${account}`
     );
     setIsCopy(true);
   };

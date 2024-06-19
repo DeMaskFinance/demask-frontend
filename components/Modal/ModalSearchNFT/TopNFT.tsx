@@ -8,13 +8,7 @@ interface TopNFTProps {
 }
 const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
   const { chainId, demask } = useContext(AccountContext);
-  const {
-    isLoading: topNftLoading,
-    data: topNftData,
-    isFetching: topNftFetching,
-    refetch: topNftRefetch,
-    isPreviousData: isTopNftPreviousData,
-  } = useQuery({
+  const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["topNFT", chainId],
     queryFn: async () => {
       const res = await NFTTopService(chainId);
@@ -23,17 +17,16 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
 
     keepPreviousData: true,
   });
-  console.log(topNftData);
 
   return (
     <div className="">
-      {topNftData && topNftData.nftDataList.length > 0 ? (
+      {data && data.nftDataList.length > 0 ? (
         <div>
           <span className="ml-2 text-sm font-semibold text-primary_400">
             Top NFT
           </span>
           <div className="block mb-2 max-h-[300px] ">
-            {topNftData.nftDataList.map((item: any, index: number) => (
+            {data.nftDataList.map((item: any, index: number) => (
               <div
                 key={index}
                 onClick={() => handleSelectNFT(item)}
@@ -63,7 +56,7 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
         </div>
       ) : (
         <>
-          {topNftFetching ? (
+          {isFetching ? (
             <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg px-3"></div>
           ) : (
             <span className="text-base text-primary_400"></span>

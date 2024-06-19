@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { EtherIcon } from "@/components/Icons";
+import { EtherIcon, NFTIcon } from "@/components/Icons";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import {
   ModalError,
@@ -37,7 +37,9 @@ const Sell = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const collectionAddress = useRouter().query.collection as string;
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
     queryFn: async () => {
@@ -138,25 +140,44 @@ const Sell = () => {
                 idNFT={idNFT}
                 isSearch
               />
-              <div className="absolute bottom-0 w-full">
+              <div className="w-full mt-4">
                 {idNFT.length > 0 && (
-                  <ul className="flex flex-wrap px-4 py-2 text-sm bg-shader_600 text-shader_600 gap-x-4 border-shader_700 dark:text-white">
-                    <li className="flex items-center">
+                  <ul className="text-sm text-shader_200">
+                    <li className="flex items-center justify-between mb-1">
                       Send:
-                      <FormatNumber
-                        number={(amountSellDec / 1e18).toString()}
-                      />{" "}
-                      <EtherIcon width={18} height={18} />
+                      <div className="flex items-center font-bold text-white gap-x-1">
+                        <FormatNumber
+                          number={(amountSellDec / 1e18).toString()}
+                        />{" "}
+                        <EtherIcon width={16} height={16} />
+                      </div>
                     </li>
-                    <li className="flex items-center">
-                      Receive: {idNFT.length} NFTs
+                    <li className="flex items-center justify-between mb-1">
+                      Receive: NFTs
+                      <div className="flex items-center font-bold text-white gap-x-1">
+                        {idNFT.length}
+                        <NFTIcon width={16} height={16} />
+                      </div>
                     </li>
-                    <li className="flex items-center">
+                    <li className="flex items-center justify-between mb-4">
                       Price:
-                      <FormatNumber
-                        number={(amountTokenSell / 1e18).toString()}
-                      />{" "}
-                      <EtherIcon width={18} height={18} />
+                      <div className="flex items-center font-bold text-white gap-x-1">
+                        <FormatNumber
+                          number={(amountTokenSell / 1e18).toString()}
+                        />{" "}
+                        <EtherIcon width={16} height={16} />
+                      </div>
+                    </li>
+                    <li>
+                      <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+                        <div className="">Total Pay</div>
+                        <div className="flex items-center px-2 py-1 text-white gap-x-1">
+                          <FormatNumber
+                            number={(amountTokenSell / 1e18).toString()}
+                          />{" "}
+                          <EtherIcon width={16} height={16} />
+                        </div>
+                      </div>
                     </li>
                   </ul>
                 )}

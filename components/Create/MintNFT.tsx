@@ -44,11 +44,6 @@ export default function MintNFT({
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
   const { account, wallet, demask, chainId, updateChainId } =
     useContext(AccountContext);
-
-  const [tab, setTab] = useQueryParam(
-    "chain",
-    withDefault(StringParam, chainId)
-  );
   useEffect(() => {
     if (name || symbol || description || fileIPFS || totalSupply) {
       setCheckExit(true);
@@ -76,8 +71,7 @@ export default function MintNFT({
         wallet,
         demask,
         setIsOpen,
-        updateChainId,
-        setTab
+        updateChainId
       );
       if (!networkSwitched) {
         return;

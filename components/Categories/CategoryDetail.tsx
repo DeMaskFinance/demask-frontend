@@ -45,17 +45,17 @@ const CategoryDetail = ({ label }: { label: string }) => {
   return (
     <div>
       {isLoading ? (
-        <div className="grid grid-cols-autoFill gap-4  text-white">
+        <div className="grid gap-4 text-white grid-cols-autoFill">
           <SkeletonSubCategory length={6} />
         </div>
       ) : (
         <>
           <div className="">
-            {isSuccess && data?.pages[0]?.items.length > 0 ? (
+            {isSuccess && data?.pages[0]?.data.length > 0 ? (
               data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
-                  <ul className="grid grid-cols-autoFill gap-4  text-white">
-                    {page?.items?.map((item: any, itemIndex: number) => (
+                  <ul className="grid gap-4 text-white grid-cols-autoFill">
+                    {page?.data?.map((item: any, itemIndex: number) => (
                       <li
                         title={item?.metadata?.name}
                         key={itemIndex}

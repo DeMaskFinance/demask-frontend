@@ -22,10 +22,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
 
   return (
     <div className="h-full group">
-      <Link
-        href={`launchpad/${item.launchpad}?chain=${chainId}`}
-        className="block h-full"
-      >
+      <Link href={`launchpad/${item.launchpad}`} className="block h-full">
         <div className="flex flex-col justify-between h-full">
           <div className="relative flex flex-col h-full">
             <div className="h-[123px] overflow-hidden rounded-lg">

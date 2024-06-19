@@ -62,7 +62,9 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] =
     useState<boolean>(false);
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
-  const collectionAddress = useRouter().query.collection as string;
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {

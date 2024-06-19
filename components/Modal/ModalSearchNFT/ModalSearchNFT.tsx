@@ -67,11 +67,9 @@ const ModalAddressNFT = () => {
   const handleSelectNFT = (item: any) => {
     item.type === "erc1155"
       ? router.replace(
-          `/add/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}?chain=${chainId}`
+          `/add/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}`
         )
-      : router.replace(
-          `/collection/${item.nftAddress}?chain=${chainId}&typeERC=erc721&tab=pool`
-        );
+      : router.replace(`/swap/type/${item.nftAddress}&tab=pool`);
     document.body.style.overflowY = "auto";
   };
 

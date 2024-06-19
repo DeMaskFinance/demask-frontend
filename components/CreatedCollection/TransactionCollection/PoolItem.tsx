@@ -34,9 +34,9 @@ const PoolItem = ({ liquidity }: any) => {
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
-  const collectionAddress =
-    useRouter().query.collection ||
-    ("0x58d8D129a641A60976d5a4d81Fa3C8F1F3f44DEd" as string);
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
 
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);

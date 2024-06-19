@@ -21,6 +21,7 @@ const Category = ({ label }: { label: string }) => {
       return res;
     },
   });
+  console.log(data);
 
   return (
     <section className="mb-10">

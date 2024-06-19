@@ -16,7 +16,9 @@ const Pool = () => {
     document.body.style.overflowY = "hidden";
     setIsOpen(true);
   };
-  const collectionAddress = useRouter().query.collection as string;
+  const router = useRouter();
+  const queryErc = (router.query.erc as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
 
   const { isLoading, data, isSuccess } = useQuery({
     queryKey: ["poolERC721", collectionAddress, chainId],
@@ -25,6 +27,7 @@ const Pool = () => {
       return res.data;
     },
   });
+  console.log(data);
 
   return (
     <div className="h-full text-shader_500 ">
