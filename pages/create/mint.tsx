@@ -203,7 +203,7 @@ export default function Creator() {
                       </p>
                     </div>
                     <FaAngleDown
-                      className={`text-shader_600 transition-all duration-150 ${
+                      className={`text-white transition-all duration-150 ${
                         isOpenCollection ? "rotate-180" : "rotate-0"
                       }`}
                     />

@@ -11,6 +11,7 @@ interface AvatarCustomProps {
   userAddress: string;
   size: number;
   className: string;
+  zoom?: boolean;
 }
 const AvatarDiceBear: FunctionComponent<AvatarProps> = ({ size, seed }) => {
   const avatar = createAvatar(identicon, {
@@ -33,6 +34,7 @@ const AvatarCustom: FunctionComponent<AvatarCustomProps> = ({
   userAddress,
   size,
   className,
+  zoom,
 }) => {
   return (
     <>
@@ -42,7 +44,9 @@ const AvatarCustom: FunctionComponent<AvatarCustomProps> = ({
           width={600}
           height={600}
           alt="user avatar"
-          className={`object-cover ${className}`}
+          className={`object-cover transition-transform duration-150 ${className} ${
+            zoom ? "group-hover:scale-[1.05]" : ""
+          }`}
         />
       ) : (
         <AvatarDiceBear size={size} seed={userAddress} />

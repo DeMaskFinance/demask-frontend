@@ -3,6 +3,7 @@ import {
   EditIcon,
   EtherIcon,
   EyeIcon,
+  SeeMoreIcon,
   StarIcon,
   TickSuccessIcon,
   TwitterIcon,
@@ -20,7 +21,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
+import { Fragment, useContext, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { Button } from "../Buttons";
@@ -35,14 +36,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { formatTypeChain } from "@/libs/utils/formatComon";
-export default function CreatedCollection() {
+import {
+  briefDocument,
+  formatLinkIPFS,
+  formatTypeChain,
+} from "@/libs/utils/formatComon";
+import Classify from "../Profile/Inventory/Classify";
+import Copy from "../Common/Copy";
+export default function DetailCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
   const [isOpenRoyalty, setIsOpenRoyalty] = useState<boolean>(false);
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   const inputAvatar = useRef(null);
-  const inputBanner = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
-  const [bannerLoading, setBannerLoading] = useState(false);
+  const [searchCollection, setSearchCollection] = useState<string>("");
   const [typeERC, setTypeERC] = useQueryParam(
     "typeERC",
     withDefault(StringParam, "")
@@ -98,21 +105,6 @@ export default function CreatedCollection() {
     },
   });
 
-  const handleUploadBanner = async (file: any) => {
-    try {
-      setBannerLoading(true);
-      const res = await collectionService.uploadFileCollection({
-        banner: file,
-        chainId,
-        collectionAddress,
-      });
-      refetch();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setBannerLoading(false);
-    }
-  };
   const handleUploadAvatar = async (file: any) => {
     try {
       setAvatarLoading(true);
@@ -131,9 +123,9 @@ export default function CreatedCollection() {
   console.log(dataDetail);
 
   return (
-    <div className="pb-6 min-h-[94vh] mx-auto flex flex-col gap-y-6 lg:mb-0 ">
-      {/* <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
-        <div className="items-center text-xs lg:flex gap-x-1 ">
+    <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
+      <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
+        <div className=" text-xs lg:flex gap-x-1 ">
           <div
             className={`relative rounded-full w-fit h-fit group ${
               dataDetail?.collaborators.includes(account) && "cursor-pointer"
@@ -147,18 +139,18 @@ export default function CreatedCollection() {
             >
               {dataDetail?.avatar ? (
                 <Image
-                  src={dataDetail?.avatar}
+                  src={formatLinkIPFS(dataDetail?.avatar)}
                   alt="banner"
                   width={64}
                   height={64}
-                  className="object-cover w-full h-full rounded-lg "
+                  className="object-cover w-full h-full rounded-xl "
                 />
               ) : (
                 <Image
                   src="/Placeholder.png"
                   width={64}
                   height={64}
-                  className="object-cover w-full h-full rounded-lg"
+                  className="object-cover w-full h-full rounded-xl"
                   alt="1"
                 />
               )}
@@ -166,20 +158,20 @@ export default function CreatedCollection() {
             {dataDetail?.collaborators.includes(account) && (
               <div>
                 {avatarLoading ? (
-                  <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-lg bg-slate-600/[.7]">
+                  <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-xl bg-slate-600/[.7]">
                     <BiLoaderAlt className="text-4xl text-white animate-spin" />
                   </div>
                 ) : (
                   <div
-                    className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-lg group-hover:flex"
+                    className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-xl group-hover:flex"
                     onClick={() => {
                       if (inputAvatar.current) {
                         (inputAvatar.current as HTMLInputElement).click();
                       }
                     }}
                   >
-                    <EditIcon width={24} height={24} />
-                    <p className="text-xs">600 x 600px</p>
+                    <EditIcon width={16} height={16} />
+                    <p className="text-xs">64px x 64px</p>
                   </div>
                 )}
               </div>
@@ -203,27 +195,9 @@ export default function CreatedCollection() {
               }}
             />
           </div>
-          <div>
-            <input
-              type="file"
-              ref={inputBanner}
-              accept="image/png,image/jpeg,image/gif"
-              hidden
-              onChange={async (e) => {
-                if (e.target.files) {
-                  const file = e.target.files[0];
-                  if (file && file.size < 10485760) {
-                    handleUploadBanner(file);
-                  } else {
-                    console.log("Oversize");
-                  }
-                }
-              }}
-            />
-          </div>
           <div className="flex flex-col mt-4 font-bold lg:mt-0 ">
             <div className="flex items-center ">
-              <div className="flex items-center mb-2 text-lg font-bold title whitespace-nowrap gap-x-1">
+              <div className="flex items-center text-lg font-bold title whitespace-nowrap gap-x-1">
                 <LogoIconCard chainId={chainId} />
                 {dataDetail?.name}
                 <TickSuccessIcon width={20} height={19} />
@@ -234,19 +208,48 @@ export default function CreatedCollection() {
                   <StarIcon width={16} height={16} />
                   Royalties {dataDetail?.royalty}%
                 </Button>
-                {dataDetail?.collaborators.includes(account) && (
-                  <Button
-                    secondary
-                    className="px-[6px] h-[28px]"
-                    onClick={() => {
-                      document.body.style.overflowY = "hidden";
-                      setIsOpenRoyalty(true);
-                    }}
-                  >
-                    <EditIcon width={16} height={16} className="text-blue" />
-                  </Button>
-                )}
+                {dataDetail?.collaborators.includes(account) &&
+                  dataDetail?.dmlAddress && (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          secondary
+                          className="px-[6px] h-[28px]"
+                          onClick={() => {
+                            document.body.style.overflowY = "hidden";
+                            setIsOpenRoyalty(true);
+                          }}
+                        >
+                          <EditIcon
+                            width={16}
+                            height={16}
+                            className="text-blue"
+                          />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                        <DialogHeader>
+                          <DialogDescription>
+                            <ModalRoyalty dmlAddress={dataDetail.dmlAddress} />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  )}
               </div>
+            </div>
+            <div className="flex items-center gap-x-1 my-[10px] font-semibold">
+              {dataDetail?.creatorAddress ? (
+                <Fragment>
+                  <span className="text-sm  text-shader_100">Created by</span>
+                  <span className="text-primary_300 text-sm">
+                    {briefDocument(dataDetail.creatorAddress, 8, 6)}
+                  </span>
+                  <Copy content={dataDetail.creatorAddress} />
+                </Fragment>
+              ) : (
+                <p>--</p>
+              )}
             </div>
             <div className="flex items-center gap-x-2">
               {dataDetail?.collaborators.includes(account) && (
@@ -273,7 +276,7 @@ export default function CreatedCollection() {
                     <EyeIcon width={16} height={16} />
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px] bg-shader_800 border border-shader_500 p-4">
+                <DialogContent className="w-[425px] bg-shader_800 border border-shader_500 p-4">
                   <DialogHeader>
                     <DialogTitle className="text-base font-bold text-white">
                       Description
@@ -324,31 +327,32 @@ export default function CreatedCollection() {
                     <TwitterIcon width={18} height={18} />
                   </Link>
                 )}
+                <SeeMoreIcon />
               </div>
             </div>
           </div>
         </div>
-        <div className="flex self-center mt-4 overflow-auto text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
+        <div className="flex self-center mt-4 overflow-auto text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0 font-semibold">
           <div className="">
             <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
               Total Volume
             </p>
-            <div className="flex items-center text-lg font-bold ">
+            <div className="flex items-center text-lg font-bold gap-x-1">
               <FormatNumber number={dataDetail?.volume} />
-              <EtherIcon width={16} height={16} className="fill-shader_600" />
+              <EtherIcon width={16} height={16} />
             </div>
           </div>
           <div className="">
             <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
               Total Sale
             </p>
-            <div className="flex items-center text-lg font-bold ">
+            <div className="flex items-center text-lg font-bold gap-x-1">
               {dataDetail?.totalSale ? (
                 <FormatNumber number={dataDetail?.totalSale} />
               ) : (
                 0
               )}
-              <EtherIcon width={16} height={16} className="fill-shader_600" />
+              <EtherIcon width={16} height={16} />
             </div>
           </div>
           <div className=" gird">
@@ -368,31 +372,38 @@ export default function CreatedCollection() {
               <FormatNumber number={dataDetail?.countOwner} />
             </div>
           </div>
+          <div className="">
+            <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+              Chain
+            </p>
+            <div className="flex items-center text-lg font-bold ">Ethereum</div>
+          </div>
         </div>
-      </section> */}
-      {typeERC === "erc721" ? (
-        <DetailERC721
-          isLoading={isLoadingDetail}
-          isSuccess={isSuccessDetail}
-          data={dataDetail}
+      </section>
+      <div className="px-4 pt-4">
+        <Classify
+          setIsFilter={setIsFilter}
+          isFilter={isFilter}
+          setSearchCollection={setSearchCollection}
         />
-      ) : (
-        <ItemList
-          isLoading={isLoading}
-          isSuccess={isSuccess}
-          isFetching={isFetching}
-          data={data}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-        />
-      )}
-      {dataDetail?.dmlAddress && (
-        <ModalRoyalty
-          isOpenRoyalty={isOpenRoyalty}
-          setIsOpenRoyalty={setIsOpenRoyalty}
-          dmlAddress={dataDetail.dmlAddress}
-        />
-      )}
+        {typeERC === "erc721" ? (
+          // <DetailERC721
+          //   isLoading={isLoadingDetail}
+          //   isSuccess={isSuccessDetail}
+          //   data={dataDetail}
+          // />
+          <div>123</div>
+        ) : (
+          <ItemList
+            isLoading={isLoading}
+            isSuccess={isSuccess}
+            isFetching={isFetching}
+            data={data}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+          />
+        )}
+      </div>
     </div>
   );
 }

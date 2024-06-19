@@ -24,7 +24,7 @@ const Category = ({ label }: { label: string }) => {
 
   return (
     <section className="mb-10">
-      {data && data.items.length > 0 && (
+      {data && data.data.length > 0 && (
         <div className="flex flex-col">
           <h2
             className={`uppercase ${
@@ -44,7 +44,7 @@ const Category = ({ label }: { label: string }) => {
           <SwiperCustom slidesPerView={6}>
             <ul className="grid grid-cols-1 gap-6 lg:grid-cols-6 md:grid-cols-2 text-dark2">
               {data &&
-                data?.items?.map((item: any, index: number) => (
+                data?.data?.map((item: any, index: number) => (
                   <SwiperSlide
                     className="text-sm lg:text-base text-dark2 dark:bg-darkBG0"
                     key={index}

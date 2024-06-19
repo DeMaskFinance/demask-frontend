@@ -13,6 +13,7 @@ import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import { formatTypeChain } from "@/libs/utils/formatComon";
 import NFTCategory from "@/components/Categories/NFTCategory";
+import SearchNotFound from "@/components/Search/SearchNotFound";
 
 const Created = () => {
   const { account, chainId, demask } = useContext(AccountContext);
@@ -74,7 +75,6 @@ const Created = () => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   return (
     <Fragment>
@@ -84,11 +84,13 @@ const Created = () => {
         setSearchCollection={setSearchCollection}
       />
       <div className="mt-4">
-        <div className="grid grid-cols-autoFill gap-4  text-white">
+        <div>
           {isLoading ? (
-            <SkeletonSubCategory length={4} />
+            <div className="grid grid-cols-autoFill gap-4  text-white">
+              <SkeletonSubCategory length={4} />
+            </div>
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
-            <Fragment>
+            <div className="grid grid-cols-autoFill gap-4  text-white">
               {data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.data?.map((item: any, itemIndex: number) => (
@@ -105,9 +107,11 @@ const Created = () => {
               ))}
               {isFetching && <SkeletonSubCategory length={4} />}
               <div ref={ref} style={{ height: "1px" }}></div>
-            </Fragment>
+            </div>
           ) : (
-            <p className="mt-4">No data available.</p>
+            <div className="w-full h-[300px]">
+              <SearchNotFound />
+            </div>
           )}
         </div>
       </div>

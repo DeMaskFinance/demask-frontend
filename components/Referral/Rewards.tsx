@@ -50,7 +50,7 @@ const Rewards = () => {
                 key={index}
                 className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 bg-shader_800"
               >
-                <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px] text-primary_400 gap-x-1">
+                <td className="py-2 flex items-center justify-start md:w-full w-[100px] text-primary_400 gap-x-1">
                   {item.pointSource.map((type: any, index: number) => (
                     <div
                       className={`bg-opacity-[0.15] px-3 flex text-center ${getColorType(

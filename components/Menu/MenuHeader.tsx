@@ -17,7 +17,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
     { name: "Create", url: "/create" },
     { name: "Collections", url: "/collections" },
     { name: "Category", url: "/category" },
-    { name: "Launchpad", url: "/launchpad" },
+    // { name: "Launchpad", url: "/launchpad" },
     { name: "Pools", url: "/pools" },
     { name: "Rewards", url: "/leaderboard", subRewardMenu: true },
   ];

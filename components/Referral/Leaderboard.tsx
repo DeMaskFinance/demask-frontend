@@ -6,7 +6,13 @@ import { TableRowSkeleton } from "../Skeleton";
 import { AvatarCustom } from "../Avatars";
 import { TablePagination } from "../Common/Pagination";
 import { ItemTableRank } from "../LeaderBoard/TableRank";
-import { LoadingIcon } from "../Icons";
+import {
+  LoadingIcon,
+  RankGoldIcon,
+  SecondRankIcon,
+  ThirdRankIcon,
+  UnRankIcon,
+} from "../Icons";
 import SearchNotFound from "../Search/SearchNotFound";
 
 const Leaderboard = () => {
@@ -17,6 +23,7 @@ const Leaderboard = () => {
       const res = await referralLeaderboardUser(account, page);
       return res;
     });
+  console.log(data);
 
   return (
     <table className="w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
@@ -35,7 +42,7 @@ const Leaderboard = () => {
       </thead>
 
       {account ? (
-        <tbody className="flex flex-col h-full flex-auto ">
+        <tbody className="flex flex-col h-full flex-auto font-semibold">
           {isLoading ? (
             <div className="flex items-center justify-center w-full h-full flex-auto ">
               <LoadingIcon width={30} height={30} className="animate-spin" />
@@ -46,8 +53,17 @@ const Leaderboard = () => {
                 key={index}
                 className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500 bg-shader_800"
               >
-                <td className="py-3 flex items-center justify-start md:w-full w-[100px]1">
-                  {data.userRank?.rank}
+                <td className="py-3 flex items-center justify-start md:w-full w-[100px] gap-x-3 ">
+                  {item?.rank}
+                  {item?.rank === 1 ? (
+                    <RankGoldIcon width={20} height={20} />
+                  ) : item?.rank === 2 ? (
+                    <SecondRankIcon width={16} height={16} />
+                  ) : item?.rank === 3 ? (
+                    <ThirdRankIcon width={16} height={16} />
+                  ) : (
+                    <UnRankIcon width={16} height={16} />
+                  )}
                 </td>
                 <td className="flex justify-start md:w-full w-[100px] items-center gap-x-2">
                   <AvatarCustom

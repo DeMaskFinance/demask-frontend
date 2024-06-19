@@ -28,6 +28,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import FilterItems from "./FilterItems";
+import SearchNotFound from "@/components/Search/SearchNotFound";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -216,7 +217,9 @@ export const ItemList: React.FC<ItemListProps> = ({
           </div>
         </Fragment>
       ) : (
-        <p className="mt-4">No data available.</p>
+        <div className="h-[300px]">
+          <SearchNotFound />
+        </div>
       )}
     </div>
   );

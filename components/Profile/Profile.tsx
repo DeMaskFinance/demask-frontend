@@ -105,8 +105,8 @@ const Profile = () => {
             <div className="flex items-center gap-x-2">
               <p className="text-lg title">{profile?.name}</p>
             </div>
-            <div className="flex items-center gap-x-1">
-              <span className="text-shader_200 text-sm font-normal">
+            <div className="flex items-center gap-x-1 font-semibold">
+              <span className="text-shader_200 text-sm ">
                 {briefDocument(account, 8, 8)}
               </span>
               <Copy content={account} />

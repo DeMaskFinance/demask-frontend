@@ -138,7 +138,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                       </DisclosureButton>
                       <DisclosurePanel className="mt-2 text-sm ">
                         {data.metadata?.attributes.length > 0 ? (
-                          <div className="grid grid-cols-3 gap-x-4 ">
+                          <div className="grid grid-cols-3 gap-4 ">
                             {data.metadata?.attributes.map(
                               (item: any, index: number) => (
                                 <ul
