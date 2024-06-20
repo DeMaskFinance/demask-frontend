@@ -1,13 +1,11 @@
-import MediaNFT from "@/components/Common/Media/MediaNFT";
+import { SearchIcon } from "@/components/Icons";
+import SearchNotFound from "@/components/Search/SearchNotFound";
+import SearchResultItem from "@/components/Search/SearchResultItem";
 import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
 import { checkIsERC1155Service } from "@/libs/service/checkIsERC1155";
-import {
-  searchCollectionService,
-  searchNFTService,
-} from "@/libs/service/searchService";
+import { searchCollectionService } from "@/libs/service/searchService";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { memo, useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -16,7 +14,8 @@ import TopCollection from "./TopCollection";
 const ModalSearchCollection = () => {
   const [nftAddress, setNftAddress] = useState<string>("");
   const [idNFT, setIdNFT] = useState("");
-  let debouncedCollection = useDebounce(nftAddress);
+  const [searchTerm, setSearchTerm] = useState("");
+  let debouncedCollection = useDebounce(searchTerm);
   const router = useRouter();
   const { chainId, demask } = useContext(AccountContext);
 
@@ -65,17 +64,8 @@ const ModalSearchCollection = () => {
     setIdNFT("");
     router.push(newURL);
   };
-  const handleSelectCollection = (item: any) => {
-    item.type === "erc1155"
-      ? router.replace(
-          `/add/${item.nftAddress}/${demask.NATIVE_ADDRESS}/${item.nftID}`
-        )
-      : router.replace(`/swap/type/${item.nftAddress}&tab=pool`);
-  };
-
-  return (
-    <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg px-4 pb-4 relative min-h-[45vh] overflow-scroll">
-      <div className="flex items-center justify-between">
+  {
+    /* <div className="flex items-center justify-between">
         <p className="py-2 mb-4 title">Select a Collection</p>
       </div>
       <div>
@@ -127,25 +117,58 @@ const ModalSearchCollection = () => {
             Your NFT address must be an ERC1155
           </p>
         )}
-      </div>
-      {isSuccessNFT && dataNFT[0]?.metadata && (
-        <div
-          className="flex items-center rounded-lg cursor-pointer hover:bg-shader_500 group gap-x-2"
-          onClick={handleChangeRouteNFT}
-        >
-          <div className="w-8 h-8 overflow-hidden rounded-lg">
-            <MediaNFT data={dataNFT[0]} isControls={false} />
-          </div>
-          <div>
-            <h2 className="font-medium group-hover:text-primary_400">
-              {dataNFT[0]?.metadata?.symbol}
-            </h2>
-            <p className="text-sm text-shader_500">
-              {dataNFT[0]?.metadata?.name}
-            </p>
-          </div>
+      </div> */
+  }
+  return (
+    <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative min-h-[45vh] flex flex-col">
+      <div className="p-4 border-b border-shader_600">
+        <div className="flex items-center justify-between mb-3">
+          <p className=" title">COLLECTIONS</p>
         </div>
-      )}
+        <div className="relative">
+          <SearchIcon
+            width={20}
+            height={20}
+            className="absolute text-white -translate-y-1/2 top-1/2 left-2"
+          />
+          <input
+            className="pl-8 input_item"
+            placeholder="Search Collection"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {isLoading && (
+            <div className="absolute top-[50%] right-2 -translate-y-[50%]">
+              <BiLoaderAlt className="animate-spin text-primary_400" />
+            </div>
+          )}
+        </div>
+      </div>
+      <>
+        {searchTerm ? (
+          isSuccess && data.collectionList.length > 0 ? (
+            <div className="overflow-y-auto max-h-[300px]">
+              {data.collectionList.map((item: any, index: number) => (
+                <SearchResultItem key={index} item={item} type="collection" />
+              ))}
+            </div>
+          ) : (
+            <>
+              {isFetching ? (
+                <div className="px-3">
+                  <div className="bg-slate-700 animate-pulse h-[24px] w-full rounded-lg"></div>
+                </div>
+              ) : (
+                <SearchNotFound />
+              )}
+            </>
+          )
+        ) : (
+          <div className="overflow-y-scroll">
+            <TopCollection />
+          </div>
+        )}
+      </>
     </div>
   );
 };

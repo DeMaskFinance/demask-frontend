@@ -1,22 +1,18 @@
-import { MediaCollection } from "@/components/Common/Media";
 import { SearchIcon } from "@/components/Icons";
 import SearchNotFound from "@/components/Search/SearchNotFound";
+import SearchResultItem from "@/components/Search/SearchResultItem";
 import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
 import { searchCollectionService } from "@/libs/service/searchService";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { memo, useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import TopCollection from "./TopCollection";
-import SearchResultItem from "@/components/Search/SearchResultItem";
 
 const ModalSearchCollectionSwap = () => {
   const [searchTerm, setSearchTerm] = useState("");
   let debouncedCollection = useDebounce(searchTerm);
-  const router = useRouter();
   const { chainId, demask } = useContext(AccountContext);
 
   const { isLoading, data, isFetching, isSuccess } = useQuery({
@@ -31,14 +27,6 @@ const ModalSearchCollectionSwap = () => {
       }
     },
   });
-
-  const handleSelectCollection = (item: any) => {
-    item.type === "erc1155"
-      ? router.replace(
-          `/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`
-        )
-      : router.replace(`/collection/${item.nftAddress}?typeERC=erc721`);
-  };
 
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative min-h-[45vh] flex flex-col">

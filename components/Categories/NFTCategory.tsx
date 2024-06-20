@@ -5,6 +5,7 @@ import { EtherIcon, NFTIcon, VerifyIcon } from "../Icons";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
 import { AvatarCustom } from "../Avatars";
 import Link from "next/link";
+import { MediaCollection } from "../Common/Media";
 
 interface NFTCategoryProps {
   item: any;
@@ -17,13 +18,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
         <div className="relative items-center text-sm transition-all rounded-md cursor-pointer group lg:text-base hover:shadow-home">
           <div className="relative w-full h-[186px] overflow-hidden">
             <div className="flex justify-center w-full h-full overflow-hidden rounded-t-lg">
-              <AvatarCustom
-                avatarUrl={formatLinkIPFS(item?.avatar)}
-                userAddress={item?.name}
-                size={186}
-                className="rounded-lg"
-                zoom
-              />
+              <MediaCollection avatar={formatLinkIPFS(item?.avatar)} zoom />
             </div>
           </div>
           <div className="relative w-full p-3 transition-all duration-200 rounded-b-lg bg-shader_700 group-hover:bg-shader_600">

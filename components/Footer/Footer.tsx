@@ -15,8 +15,8 @@ const styles = {
 export default function Footer() {
   const links = [
     { href: "https://demask.finance/", text: "About" },
-    { href: "https://demask.substack.com/", text: "Blog" },
-    { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Desk" },
+    { href: "https://demaskfi.substack.com/", text: "Blog" },
+    { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Deck" },
     { href: "https://demask.finance/", text: "Developer" },
     { href: "https://docs.demask.finance/", text: "Docs" },
     { href: "https://demask.finance/media-kit", text: "Branding & Media Kit" },

@@ -14,7 +14,10 @@ import {
 } from "@/components/Icons";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
-import { ModalSearchCollection } from "@/components/Modal/ModalSearchCollection";
+import {
+  ModalSearchCollection,
+  ModalSearchCollectionSwap,
+} from "@/components/Modal/ModalSearchCollection";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import {
@@ -356,10 +359,10 @@ export default function AddLiquidity() {
                     </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                <DialogContent className="w-full p-0 border bg-shader_800 border-shader_500">
                   <DialogHeader>
                     <DialogDescription>
-                      <ModalSearchCollection />
+                      <ModalSearchCollectionSwap />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>

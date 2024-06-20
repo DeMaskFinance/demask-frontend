@@ -160,7 +160,7 @@ const Search: FunctionComponent<SearchProps> = ({
             click ? "block" : "block lg:hidden"
           }  bg-shader_600 w-full rounded-lg mt-3 lg:mt-1 absolute top-12 right-0 left-0`}
         >
-          <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
+          {/* <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
             <p className="my-2 ml-2 text-sm font-semibold text-primary_400">
               <span className="">Searched</span>
               {isMounted && <span className="">({searchHistory.length})</span>}
@@ -212,7 +212,7 @@ const Search: FunctionComponent<SearchProps> = ({
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
           {debouncedSearch ? (
             <>
               {data ? (
