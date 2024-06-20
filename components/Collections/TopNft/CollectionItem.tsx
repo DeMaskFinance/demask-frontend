@@ -1,9 +1,10 @@
 import { AvatarCustom } from "@/components/Avatars";
 import FormatNumber from "@/components/Common/FormatNumber";
+import { MediaCollection } from "@/components/Common/Media";
 import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
-import { formatPercent } from "@/libs/utils/formatComon";
+import { formatLinkIPFS, formatPercent } from "@/libs/utils/formatComon";
 import React, { useContext } from "react";
 interface CollectionItemProps {
   data: any;
@@ -50,11 +51,8 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   >
                     <div className="relative flex items-center gap-2 group">
                       <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
-                        <AvatarCustom
-                          avatarUrl={item?.avatar}
-                          userAddress={item?.name}
-                          size={24}
-                          className="rounded-lg"
+                        <MediaCollection
+                          avatar={formatLinkIPFS(item?.avatar)}
                         />
                       </div>
 

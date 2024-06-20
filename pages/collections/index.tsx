@@ -35,11 +35,11 @@ export default function Collections() {
               />
             </div>
             {/* Charts Mobile/Tablet */}
-            {activeChoice === "TVL" ? <ChartTVL /> : <ChartVolumn />}
+            {/* {activeChoice === "TVL" ? <ChartTVL /> : <ChartVolumn />} */}
           </div>
         </div>
         {/* Charts PC */}
-        <div className="hidden lg:grid grid-cols-1 gap-4 lg:grid-cols-2 md:grid-cols-2 h-[372px]">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 md:grid-cols-2 h-[372px]">
           <ChartTVL />
           <ChartVolumn />
         </div>
