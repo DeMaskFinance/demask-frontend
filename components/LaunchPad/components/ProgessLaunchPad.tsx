@@ -35,7 +35,7 @@ const ProgressBar = ({ softcap, hardcap, amount, isRefetching }: any) => {
                 </span>
               </div>
             }
-            theme="light"
+            theme="dark"
             placement="bottom"
           >
             <div className="">

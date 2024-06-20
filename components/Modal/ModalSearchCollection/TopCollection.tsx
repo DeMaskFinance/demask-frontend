@@ -1,13 +1,11 @@
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import AccountContext from "@/context/AccountContext";
 import { NFTTopService } from "@/libs/service";
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
-interface TopNFTProps {
-  handleSelectNFT: (item: any) => void;
-}
-const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
-  const { chainId, demask } = useContext(AccountContext);
+
+const TopCollection = () => {
+  const { chainId } = useContext(AccountContext);
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["topNFT", chainId],
     queryFn: async () => {
@@ -22,14 +20,13 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
     <div className="">
       {data && data.nftDataList.length > 0 ? (
         <div>
-          <span className="ml-2 text-sm font-semibold text-primary_400">
-            Top NFT
-          </span>
+          <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
+            Top Collection
+          </p>
           <div className="block mb-2 max-h-[300px] ">
             {data.nftDataList.map((item: any, index: number) => (
               <div
                 key={index}
-                onClick={() => handleSelectNFT(item)}
                 className="flex-1 p-3 cursor-pointer border-y border-shader_600 hover:bg-shader_500"
               >
                 <div className="flex items-center gap-x-[10px]">
@@ -67,4 +64,4 @@ const TopNFT: React.FC<TopNFTProps> = ({ handleSelectNFT }) => {
   );
 };
 
-export default TopNFT;
+export default TopCollection;

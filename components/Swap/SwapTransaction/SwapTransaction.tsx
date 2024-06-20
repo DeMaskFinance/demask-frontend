@@ -1,7 +1,7 @@
 import { Button } from "@/components/Buttons";
 import Copy from "@/components/Common/Copy";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import {
   EtherIcon,
   EyeIcon,
@@ -13,7 +13,7 @@ import {
 } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
-import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
+import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
@@ -413,13 +413,13 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 <DialogTrigger asChild>
                   <Button className="flex whitespace-nowrap gap-x-2" green_2>
                     <ImgIcon width={20} height={20} />
-                    Select NFT
+                    Select
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
                   <DialogHeader>
                     <DialogDescription>
-                      <ModalSearchNFTSwap />
+                      <ModalSearchCollectionSwap />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
@@ -516,15 +516,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
 
           <div className="mt-2 text-slate-200">
             <div className="items-center justify-between block mb-4 lg:flex">
-              <p className="mr-1 text-xs font-normal">Royalties Fee: </p>
-              <div className="">
-                <label htmlFor="data.royaltyFee" className="">
-                  <div className="flex text-sm">
-                    0.00
-                    <p>(0.05%)</p>
-                  </div>
-                </label>
-              </div>
+              <p className="mr-1 text-xs font-normal">Slippage </p>
+              <div className="flex text-sm text-primary_300">{slippage}%</div>
             </div>
             {inputNFTValue ? (
               <div className="relative h-10">

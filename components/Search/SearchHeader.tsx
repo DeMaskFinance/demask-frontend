@@ -1,7 +1,6 @@
 import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
-import { NFTTopService } from "@/libs/service";
-import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { searchCollectionService } from "@/libs/service/searchService";
 import { getCookie, setCookie } from "@/libs/utils/cookieUtils";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -13,9 +12,13 @@ import {
   useState,
 } from "react";
 import { CgClose } from "react-icons/cg";
-import MediaNFT from "../Common/MediaNFT";
-import { SearchIcon } from "../Icons";
-import TopNFT from "../Modal/ModalSearchNFT/TopNFT";
+import MediaNFT from "../Common/Media/MediaNFT";
+import { LoadingIcon, SearchIcon } from "../Icons";
+import Link from "next/link";
+import { MediaCollection } from "../Common/Media";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import TopCollection from "../Modal/ModalSearchCollection/TopCollection";
+import SearchResultItem from "./SearchResultItem";
 
 interface SearchProps {
   isFocused: boolean;
@@ -44,26 +47,13 @@ const Search: FunctionComponent<SearchProps> = ({
   useEffect(() => {
     setDomLoaded(true); //fix Hydration failed because the initial UI does not match what was rendered on the server.
   }, []);
-  const {
-    isLoading: searchLoading,
-    data: searchData,
-    isFetching: searchFetching,
-    refetch: searchRefetch,
-    isPreviousData: isSearchPreviousData,
-  } = useQuery({
-    queryKey: ["categories", debouncedSearch, chainId],
+  const { isLoading, data, isFetching, isSuccess } = useQuery({
+    queryKey: ["searchCollection", debouncedSearch, chainId],
     queryFn: async () => {
-      if (debouncedSearch.includes("/")) {
-        const [param1, param2] = debouncedSearch.split(":");
-        const id = param1.includes("x") ? param2 : param1;
-        const nftAddress = param1.includes("x") ? param1 : param2;
-        const res = await categoryAPI(
-          `search?chainId=${chainId}&nftAddress=${nftAddress}&id=${id}`
-        );
-        return res;
-      } else {
-        const res = await categoryAPI(
-          `search?chainId=${chainId}&search=${debouncedSearch}`
+      if (searchTerm) {
+        const res = await searchCollectionService(
+          chainId,
+          debouncedSearch.toLowerCase()
         );
         return res;
       }
@@ -128,6 +118,7 @@ const Search: FunctionComponent<SearchProps> = ({
     const searchsHistory = savedHistory ? JSON.parse(savedHistory) : [];
     setSearchHistory(searchsHistory);
   }, []);
+  console.log(data);
 
   return (
     <>
@@ -223,61 +214,52 @@ const Search: FunctionComponent<SearchProps> = ({
             )}
           </div>
           {debouncedSearch ? (
-            <div className="">
-              <span className="ml-2 text-sm font-semibold text-primary_400">
-                Collections
-              </span>
-              {searchData && searchData.length > 0 ? (
-                <>
-                  <div className="flex text-xs item-center">
-                    <span className="block pb-2 mr-1 font-semibold">
-                      {searchData.length}
-                    </span>{" "}
-                    items
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {searchData.map((item: any, index: number) => (
-                      <div
-                        key={index}
-                        onClick={() => handleResultItemClick(item)}
-                        className="flex-1 p-3 cursor-pointer border-y border-shader_600 hover:bg-shader_500"
-                      >
-                        <div className="flex items-center gap-x-[10px]">
-                          <div className="flex-shrink-0 w-12 h-12 overflow-hidden rounded-lg">
-                            <MediaNFT data={item} isControls={false} />
-                          </div>
-                          <div className="flex flex-col justify-center">
-                            <span className="block text-sm font-semibold text-white">
-                              <span className="line-clamp-1">
-                                {item?.metadata?.name}
-                              </span>
-                            </span>
-                            <span className="flex text-xs item-center">
-                              <span className="block font-normal text-shader_200">
-                                {item.dmlAddress?.slice(0, 4)}...
-                                {item.dmlAddress?.slice(-8)}
-                              </span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <>
-                  {searchFetching ? (
-                    <div className="bg-slate-700  animate-pulse h-[24px] w-full rounded-lg"></div>
-                  ) : (
-                    <span className="text-base text-primary_400">
-                      No Result
-                    </span>
+            <>
+              {data ? (
+                <div>
+                  {data.collectionList.length > 0 && (
+                    <div>
+                      <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
+                        Collections
+                      </p>
+                      {data.collectionList.map((item: any, index: number) => (
+                        <SearchResultItem
+                          key={index}
+                          item={item}
+                          type="collection"
+                        />
+                      ))}
+                    </div>
                   )}
-                </>
+                  {data.userList.length > 0 && (
+                    <div>
+                      <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
+                        Accounts
+                      </p>
+                      {data.userList.map((item: any, index: number) => (
+                        <SearchResultItem
+                          key={index}
+                          item={item}
+                          type="account"
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : isFetching ? (
+                <div className="w-full h-[100px] flex-auto justify-center items-center flex">
+                  <LoadingIcon
+                    width={30}
+                    height={30}
+                    className="animate-spin"
+                  />
+                </div>
+              ) : (
+                <span className="text-base text-primary_400">No Result</span>
               )}
-            </div>
+            </>
           ) : (
-            <TopNFT handleSelectNFT={handleResultItemClick} />
+            <TopCollection />
           )}
         </ul>
       </div>

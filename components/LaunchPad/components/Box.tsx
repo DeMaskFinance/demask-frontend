@@ -1,5 +1,5 @@
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import React from "react";
 
 const Box: React.FC<{ data: LaunchpadData }> = ({ data }) => {

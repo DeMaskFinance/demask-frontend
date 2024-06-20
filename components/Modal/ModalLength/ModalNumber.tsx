@@ -14,7 +14,7 @@ const ModalNumber = ({ data }: { data: string }) => {
               </span>
             </div>
           }
-          theme="light"
+          theme="dark"
         >
           <div className="">{formatToUnit(data)}</div>
         </Tippy>

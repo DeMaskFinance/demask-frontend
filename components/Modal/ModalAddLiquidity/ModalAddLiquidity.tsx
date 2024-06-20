@@ -15,7 +15,7 @@ import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 interface ModalAddLiquidityProps {

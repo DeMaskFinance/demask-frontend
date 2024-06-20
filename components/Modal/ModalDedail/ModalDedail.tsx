@@ -1,5 +1,5 @@
 import Copy from "@/components/Common/Copy";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { RefetchIcon, ShareIcon, TwitterIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { refreshNFTService } from "@/libs/service/nftService";
@@ -42,6 +42,8 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
+  console.log(nftAddress);
+
   return (
     <div className="min-w-[20vw] rounded-lg relative min-h-[500px] flex justify-center items-center">
       {isLoading || isFetching ? (
@@ -146,7 +148,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                                   key={index}
                                 >
                                   <li className="text-primary_200">
-                                    {item.trait_type}
+                                    <ModalDocument data={item.trait_type} />
                                   </li>
                                   <li className="font-bold text-white">
                                     {item.value}

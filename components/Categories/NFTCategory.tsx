@@ -1,6 +1,6 @@
 import { formatLinkIPFS, formatTypeChain } from "@/libs/utils/formatComon";
 import FormatNumber from "../Common/FormatNumber";
-import MediaNFT from "../Common/MediaNFT";
+import MediaNFT from "../Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon, VerifyIcon } from "../Icons";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
 import { AvatarCustom } from "../Avatars";

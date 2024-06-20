@@ -1,6 +1,6 @@
 import Button from "@/components/Buttons/Button";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import {
   CreateIcon,
   EtherIcon,
@@ -14,7 +14,7 @@ import {
 } from "@/components/Icons";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
-import { ModalSearchNFT } from "@/components/Modal/ModalSearchNFT";
+import { ModalSearchCollection } from "@/components/Modal/ModalSearchCollection";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import {
@@ -287,6 +287,7 @@ export default function AddLiquidity() {
     // setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
+  console.log(data, nftAddress);
 
   return (
     <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 pt-6">
@@ -358,7 +359,7 @@ export default function AddLiquidity() {
                 <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                   <DialogHeader>
                     <DialogDescription>
-                      <ModalSearchNFT />
+                      <ModalSearchCollection />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
@@ -566,8 +567,8 @@ export default function AddLiquidity() {
                         {data && (
                           <ModalDetail
                             type="erc1155"
-                            idNFT={data.nftID}
-                            nftAddress={data.nftAddress}
+                            idNFT={idNFT}
+                            nftAddress={nftAddress}
                           />
                         )}
                       </DialogDescription>

@@ -2,7 +2,7 @@ import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import { Button } from "@/components/Buttons";
 import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, LaunchpadStatus } from "@/components/Icons";
 import { LogoIconTable } from "@/components/Logo/Logo";
 import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalClaimLaunchpad";

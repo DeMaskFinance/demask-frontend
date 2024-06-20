@@ -106,7 +106,7 @@
     @apply bg-shader_700 text-white;
   }
   .item_search {
-    @apply flex items-center justify-between w-full gap-2 p-1 rounded-lg cursor-pointer hover:bg-shader_500 text-shader_600 dark:hover:bg-shader_900 dark:text-white;
+    @apply flex items-center justify-between w-full gap-2 rounded-lg cursor-pointer hover:bg-shader_500 text-shader_600 dark:hover:bg-shader_900 dark:text-white;
   }
   .item_menu {
     @apply flex  items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer font-semibold hover:bg-shader_400;

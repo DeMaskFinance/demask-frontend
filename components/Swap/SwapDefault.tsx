@@ -8,7 +8,7 @@ import {
   RefetchIcon,
   SettingIcon,
 } from "@/components/Icons";
-import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
+import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
@@ -28,7 +28,8 @@ import { useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 export default function SwapDefault() {
   const router = useRouter();
-  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const { account, wallet, chainId, demask, slippage } =
+    useContext(AccountContext);
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -163,13 +164,13 @@ export default function SwapDefault() {
                   green_2
                 >
                   <ImgIcon width={20} height={20} />
-                  Select NFT
+                  Select
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+              <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
                 <DialogHeader>
                   <DialogDescription>
-                    <ModalSearchNFTSwap />
+                    <ModalSearchCollectionSwap />
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>
@@ -208,15 +209,8 @@ export default function SwapDefault() {
             </div>
             <div className="mt-4">
               <div className="items-center justify-between block mb-4 lg:flex">
-                <p className="mr-1 text-xs font-normal">Royalties Fee: </p>
-                <div className="">
-                  <label htmlFor="data.royaltyFee" className="">
-                    <div className="flex text-sm">
-                      0.00
-                      <p>(0.05%)</p>
-                    </div>
-                  </label>
-                </div>
+                <p className="mr-1 text-xs font-normal">Slippage </p>
+                <div className="flex text-sm text-primary_300">{slippage}%</div>
               </div>
               <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                 <div className="">Total Pay</div>

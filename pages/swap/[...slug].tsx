@@ -1,5 +1,5 @@
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { SkeletonSwap } from "@/components/Skeleton";
 import HistorySwap from "@/components/Swap/History";
 import SwapTransaction from "@/components/Swap/SwapTransaction/SwapTransaction";

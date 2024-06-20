@@ -1,5 +1,5 @@
 import { Button } from "@/components/Buttons";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { SuccessIcon, URLTransactionIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import Link from "next/link";

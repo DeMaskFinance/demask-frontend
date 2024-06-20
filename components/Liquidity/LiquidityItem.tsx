@@ -6,7 +6,7 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import Link from "next/link";
 import { Button } from "../Buttons";
 import FormatNumber from "../Common/FormatNumber";
-import MediaNFT from "../Common/MediaNFT";
+import MediaNFT from "../Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
 import Image from "next/image";
 import getRewardDML from "@/libs/utils/getReward";

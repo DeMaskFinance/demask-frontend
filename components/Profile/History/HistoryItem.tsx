@@ -1,5 +1,5 @@
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { LogoIconTable } from "@/components/Logo/Logo";
 import AccountContext from "@/context/AccountContext";
 import { getColorType } from "@/libs/utils/getColorType";

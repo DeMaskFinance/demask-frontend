@@ -11,12 +11,21 @@ import {
 } from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
 import { ItemList } from "@/components/Profile/Inventory/Items";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import * as collectionService from "@/libs/service/collectionService";
 import {
-  collectionDetail,
-  collectionListERC1155,
-} from "@/libs/service/collectionService";
+  briefDocument,
+  formatLinkIPFS,
+  formatTypeChain,
+} from "@/libs/utils/formatComon";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,24 +34,9 @@ import { Fragment, useContext, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { Button } from "../Buttons";
-import DetailERC721 from "../ERC721/DetailERC721";
-import ModalRoyalty from "../Modal/ModalRoyalty";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  briefDocument,
-  formatLinkIPFS,
-  formatTypeChain,
-} from "@/libs/utils/formatComon";
-import Classify from "../Profile/Inventory/Classify";
 import Copy from "../Common/Copy";
+import ModalRoyalty from "../Modal/ModalRoyalty";
+import Classify from "../Profile/Inventory/Classify";
 export default function DetailCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
   const [isFilter, setIsFilter] = useState<boolean>(false);
@@ -50,16 +44,15 @@ export default function DetailCollection() {
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
   const [typeERC] = useQueryParam("typeERC", withDefault(StringParam, ""));
-  const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = useRouter().query.collection as string;
+  //Data ERC1155
   const fetchDataNFTs = async (
     typeERC: string,
     collectionAddress: string | string[],
     chain: string | string[],
     pageParam = 1
   ) => {
-    const data = await collectionListERC1155(
+    const data = await collectionService.collectionListAllERC(
       typeERC,
       collectionAddress,
       chain,
@@ -78,7 +71,7 @@ export default function DetailCollection() {
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["NFTsUser", chainId, collectionAddress, typeERC],
+    ["NFTsAllERC", chainId, collectionAddress, typeERC],
     ({ pageParam = 1 }) =>
       fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
     {
@@ -88,6 +81,7 @@ export default function DetailCollection() {
           : page?.currentPage + 1,
     }
   );
+
   const {
     data: dataDetail,
     isLoading: isLoadingDetail,
@@ -97,7 +91,10 @@ export default function DetailCollection() {
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
       if (collectionAddress) {
-        const res = await collectionDetail(collectionAddress, chainId);
+        const res = await collectionService.collectionDetail(
+          collectionAddress,
+          chainId
+        );
         return res.data;
       }
     },
@@ -118,7 +115,6 @@ export default function DetailCollection() {
       setAvatarLoading(false);
     }
   };
-  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
@@ -375,23 +371,14 @@ export default function DetailCollection() {
           isFilter={isFilter}
           setSearchCollection={setSearchCollection}
         />
-        {typeERC === "erc721" ? (
-          // <DetailERC721
-          //   isLoading={isLoadingDetail}
-          //   isSuccess={isSuccessDetail}
-          //   data={dataDetail}
-          // />
-          <div>123</div>
-        ) : (
-          <ItemList
-            isLoading={isLoading}
-            isSuccess={isSuccess}
-            isFetching={isFetching}
-            data={data}
-            fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-          />
-        )}
+        <ItemList
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          isFetching={isFetching}
+          data={data}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
       </div>
     </div>
   );

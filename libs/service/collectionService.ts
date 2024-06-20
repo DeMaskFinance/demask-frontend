@@ -16,6 +16,22 @@ const collectionListERC1155 = async (
     console.error(error);
   }
 };
+const collectionListAllERC = async (
+  type: string,
+  contractAddress: string | string[],
+  chainId: string | string[],
+  page: number,
+  limit: number
+) => {
+  try {
+    const res = await request.get(
+      `all-nft-list-from-collection?chainId=${chainId}&type=${type}&contractAddress=${contractAddress}&page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 const collectionDetail = async (
   contractAddress: string | string[],
   chainId: string | string[]
@@ -200,4 +216,5 @@ export {
   getSignature,
   collectionTypeDetail,
   createCollection,
+  collectionListAllERC,
 };

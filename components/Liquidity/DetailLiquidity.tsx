@@ -1,7 +1,7 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import {
   EtherIcon,
   EyeIcon,
@@ -307,7 +307,7 @@ const DetailLiquidity = () => {
                         <EyeIcon width={20} height={20} />
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                    <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
                       <DialogHeader>
                         <DialogDescription>
                           {data && (

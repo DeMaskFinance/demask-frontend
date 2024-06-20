@@ -1,8 +1,8 @@
 import { Button } from "@/components/Buttons";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EyeIcon, ImgIcon } from "@/components/Icons";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
-import { ModalSearchNFTSwap } from "@/components/Modal/ModalSearchNFT";
+import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import showToast, { ToastType } from "@/components/Toast/ToastCustom";
 import { Slider } from "@/components/ui/slider";
@@ -85,7 +85,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
                       />
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+                  <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
                     <DialogHeader>
                       <DialogDescription>
                         {selectedItem && (
@@ -127,14 +127,14 @@ const NFTGrid: React.FC<NFTGridProps> = ({
           {isSearch && (
             <Button className="flex mx-auto whitespace-nowrap gap-x-2" green_2>
               <ImgIcon width={20} height={20} />
-              Select NFT
+              Select
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-4">
+        <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500">
           <DialogHeader>
             <DialogDescription>
-              <ModalSearchNFTSwap />
+              <ModalSearchCollectionSwap />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
