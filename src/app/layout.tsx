@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Titillium_Web } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const titillium = Titillium_Web({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "900", "600", "700"],
+  display: "swap",
+  adjustFontFallback: false,
+});
 
 export const metadata: Metadata = {
   title: "Demask",
@@ -18,12 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en">
+        <body className={titillium.className}>
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

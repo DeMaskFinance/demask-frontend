@@ -100,6 +100,18 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      height: {
+        header: "56px",
+      },
+      backgroundImage: {
+        "event-gradient":
+          "linear-gradient(90deg, #7B80F6 0%, #CD5FE2 33.33%, #846AF0 66.67%, #31AFF0 100%)",
+        "linear-g2":
+          "linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)",
+      },
+      fontSize: {
+        medium: "4rem",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

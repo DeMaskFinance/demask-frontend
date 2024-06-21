@@ -67,3 +67,546 @@ export const DemaskTitle: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+export const RightIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M7.5 15L12.5 10L7.5 5"
+        stroke="white"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+export const LightIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2.36523 21.6348L20.8823 6.21548C21.1091 6.0177 21.2928 5.77547 21.4222 5.50376C21.5515 5.23201 21.6236 4.93665 21.6341 4.63591C21.6445 4.33515 21.593 4.03547 21.4829 3.75544C21.3727 3.47541 21.2062 3.221 20.9936 3.00798C20.7805 2.79498 20.5259 2.62807 20.2456 2.51764C19.9653 2.40721 19.6653 2.35562 19.3642 2.36607C19.0631 2.37651 18.7673 2.44877 18.4953 2.57836C18.2233 2.70794 17.9809 2.89209 17.783 3.11934L2.36523 21.6348ZM11.298 5.21112L3.50132 11.0581L9.34879 3.2621C9.4684 3.1027 9.62085 2.97085 9.79577 2.87542C9.97073 2.78 10.1642 2.72323 10.363 2.70898C10.5617 2.69473 10.7612 2.72331 10.948 2.79279C11.1348 2.86228 11.3044 2.97105 11.4456 3.11175C11.5869 3.2527 11.6963 3.42238 11.7663 3.6093C11.8363 3.79623 11.8652 3.99602 11.8513 4.19513C11.8373 4.39424 11.7806 4.58799 11.6852 4.76331C11.5897 4.93862 11.4576 5.09129 11.298 5.21112ZM20.7377 14.6517L12.9411 20.4987L18.7885 12.7028C18.9082 12.5433 19.0606 12.4115 19.2355 12.316C19.4105 12.2206 19.6038 12.1638 19.8026 12.1496C20.0014 12.1353 20.2009 12.1639 20.3877 12.2334C20.5744 12.3029 20.7442 12.4117 20.8853 12.5524C21.0266 12.6933 21.136 12.863 21.206 13.05C21.276 13.2369 21.305 13.4366 21.291 13.6358C21.277 13.8349 21.2203 14.0286 21.1249 14.2039C21.0294 14.3792 20.8974 14.532 20.7377 14.6517Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+export const DiscordIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="10" fill="white" />
+      <path
+        d="M10.6836 12.6591C10.6836 13.6229 9.99312 14.4071 9.125 14.4071C8.27047 14.4071 7.56641 13.6229 7.56641 12.6591C7.56641 11.6958 8.25687 10.9111 9.125 10.9111C9.99969 10.9111 10.6972 11.7029 10.6836 12.6591ZM16.4459 12.6591C16.4459 13.6229 15.7625 14.4071 14.8873 14.4071C14.0328 14.4071 13.3287 13.6229 13.3287 12.6591C13.3287 11.6958 14.0192 10.9111 14.8873 10.9111C15.7625 10.9111 16.4595 11.7029 16.4459 12.6591Z"
+        fill="#5865F2"
+      />
+      <path
+        d="M12 0C5.37281 0 0 5.37281 0 12C0 18.6272 5.37281 24 12 24C18.6272 24 24 18.6272 24 12C24 5.37281 18.6272 0 12 0ZM20.5739 16.418C19.0908 17.5073 17.6536 18.1688 16.2366 18.607C16.2141 18.6141 16.1897 18.6056 16.1756 18.5864C15.8484 18.1308 15.5513 17.6503 15.2906 17.1459C15.2756 17.1164 15.2892 17.0808 15.3202 17.0691C15.7922 16.8905 16.2413 16.6772 16.6734 16.425C16.7077 16.4048 16.7095 16.3561 16.6781 16.3327C16.5867 16.2647 16.4958 16.193 16.4091 16.1213C16.4012 16.1148 16.3918 16.1108 16.3817 16.1095C16.3717 16.1083 16.3615 16.1099 16.3523 16.1142C13.5473 17.4103 10.4747 17.4103 7.63641 16.1142C7.61812 16.1062 7.59609 16.1091 7.58063 16.1222C7.49391 16.1934 7.40297 16.2647 7.31203 16.3327C7.28063 16.3561 7.28297 16.4048 7.31719 16.425C7.74938 16.6725 8.19844 16.8905 8.67 17.0695C8.70094 17.0812 8.71547 17.1164 8.7 17.1459C8.44547 17.6513 8.14781 18.1313 7.81453 18.5869C7.8 18.6056 7.77609 18.6141 7.75359 18.607C6.34313 18.1688 4.90641 17.5073 3.42281 16.418C3.41062 16.4081 3.40172 16.3931 3.40031 16.3772C3.09844 13.1414 3.71438 9.86531 5.9625 6.50625C5.96812 6.49734 5.97609 6.49031 5.98594 6.48656C7.10996 5.96985 8.29651 5.60176 9.51562 5.39156C9.53813 5.38828 9.56063 5.39859 9.57234 5.41828C9.72563 5.68969 9.90047 6.03703 10.0191 6.32109C11.3245 6.12188 12.6506 6.12188 13.9838 6.32109C14.1019 6.04313 14.2706 5.68969 14.423 5.41828C14.4347 5.39766 14.4572 5.38734 14.4797 5.39156C15.6988 5.6022 16.8855 5.97028 18.0098 6.48656C18.0197 6.49031 18.0277 6.49734 18.0323 6.50719C19.9908 9.38766 20.9583 12.637 20.5964 16.3781C20.595 16.3941 20.587 16.4081 20.5739 16.418Z"
+        fill="#5865F2"
+      />
+    </svg>
+  );
+};
+export const GithubIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M11.9985 0.25C5.373 0.25 0 5.644 0 12.298C0 17.62 3.438 22.135 8.208 23.7295C8.808 23.8405 9.027 23.4685 9.027 23.149C9.027 22.8625 9.0165 22.105 9.0105 21.1C5.673 21.8275 4.968 19.4845 4.968 19.4845C4.4235 18.0925 3.636 17.722 3.636 17.722C2.5455 16.975 3.717 16.99 3.717 16.99C4.9215 17.0755 5.5545 18.232 5.5545 18.232C6.6255 20.0725 8.364 19.5415 9.048 19.2325C9.156 18.454 9.4665 17.923 9.81 17.6215C7.146 17.317 4.344 16.2835 4.344 11.668C4.344 10.3525 4.812 9.277 5.58 8.434C5.4555 8.1295 5.0445 6.904 5.697 5.2465C5.697 5.2465 6.705 4.9225 8.997 6.481C9.954 6.214 10.98 6.0805 12.0015 6.076C13.02 6.082 14.0475 6.214 15.006 6.4825C17.2965 4.924 18.303 5.248 18.303 5.248C18.957 6.907 18.546 8.131 18.423 8.4355C19.1925 9.2785 19.656 10.354 19.656 11.6695C19.656 16.297 16.851 17.3155 14.178 17.614C14.6085 17.986 14.9925 18.721 14.9925 19.8445C14.9925 21.4555 14.9775 22.7545 14.9775 23.149C14.9775 23.4715 15.1935 23.8465 15.8025 23.728C20.565 22.132 24 17.6185 24 12.298C24 5.644 18.627 0.25 11.9985 0.25Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+export const TeleIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M24 12C24 18.627 18.627 24 12 24C5.373 24 0 18.627 0 12C0 5.373 5.373 0 12 0C18.627 0 24 5.373 24 12Z"
+        fill="url(#paint0_linear_132_39492)"
+      />
+      <path
+        d="M4.53161 11.8303C8.72561 9.98531 14.1526 7.73591 14.902 7.42451C16.867 6.60971 17.47 6.76571 17.1694 8.57051C16.9534 9.86771 16.3306 14.1619 15.8338 16.8349C15.5392 18.4201 14.878 18.6079 13.8388 17.9221C13.339 17.5921 10.816 15.9235 10.2682 15.5317C9.76841 15.1747 9.07901 14.7451 9.94361 13.8991C10.2514 13.5979 12.268 11.6719 13.8394 10.1731C14.0452 9.97631 13.7866 9.65291 13.549 9.81071C11.431 11.2153 8.49461 13.1647 8.12081 13.4185C7.55621 13.8019 7.01381 13.9777 6.04061 13.6981C5.30501 13.4869 4.58681 13.2349 4.30721 13.1389C3.23021 12.7693 3.48581 12.2905 4.53161 11.8303Z"
+        fill="white"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_132_39492"
+          x1="3.5148"
+          y1="3.5148"
+          x2="20.4852"
+          y2="20.4852"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#33BEF0" />
+          <stop offset="1" stopColor="#0A85D9" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+};
+export const TwitterIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M12 0C5.37281 0 0 5.37281 0 12C0 18.6272 5.37281 24 12 24C18.6272 24 24 18.6272 24 12C24 5.37281 18.6272 0 12 0Z"
+        fill="white"
+      />
+      <path
+        d="M13.312 10.9143L18.449 4.94287H17.2317L12.7712 10.1278L9.20864 4.94287H5.09961L10.4869 12.7833L5.09961 19.0453H6.317L11.0274 13.5699L14.7898 19.0453H18.8988L13.3117 10.9143H13.312ZM6.75563 5.85931H8.62546L17.2323 18.1705H15.3625L6.75563 5.85931Z"
+        fill="black"
+      />
+    </svg>
+  );
+};
+
+export const EmailIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 32 32"
+      fill="none"
+    >
+      <g clipPath="url(#clip0_84_31702)">
+        <path
+          d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z"
+          fill="#9075FE"
+        />
+        <path
+          d="M15.9963 16.79L7.5625 12.5825V20.9425C7.56365 21.3663 7.73253 21.7725 8.03222 22.0722C8.33191 22.3719 8.73805 22.5407 9.16187 22.5419H22.8381C23.262 22.5407 23.6681 22.3719 23.9678 22.0722C24.2675 21.7725 24.4363 21.3663 24.4375 20.9425V12.6706L15.9963 16.79Z"
+          fill="white"
+        />
+        <path
+          d="M16.0037 15.2099L24.4375 11.0936V11.0574C24.4363 10.6336 24.2675 10.2274 23.9678 9.92773C23.6681 9.62804 23.262 9.45916 22.8381 9.45801H9.16187C8.7478 9.45883 8.35009 9.61978 8.05198 9.90717C7.75387 10.1946 7.57847 10.5861 7.5625 10.9999L16.0037 15.2099Z"
+          fill="white"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_84_31702">
+          <rect width="32" height="32" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+export const GmailIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={`${className} dark:fill-white`}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z"
+        fill="#9075FE"
+      />
+      <path
+        d="M11.9972 12.5926L5.67188 9.43701V15.707C5.67274 16.0249 5.7994 16.3295 6.02417 16.5543C6.24893 16.779 6.55354 16.9057 6.87141 16.9065H17.1286C17.4465 16.9057 17.7511 16.779 17.9758 16.5543C18.2006 16.3295 18.3273 16.0249 18.3281 15.707V9.5031L11.9972 12.5926Z"
+        fill="white"
+      />
+      <path
+        d="M12.0028 11.4077L18.3281 8.32047V8.29328C18.3273 7.97541 18.2006 7.67081 17.9758 7.44604C17.7511 7.22127 17.4465 7.09462 17.1286 7.09375H6.87141C6.56085 7.09437 6.26256 7.21508 6.03898 7.43062C5.8154 7.64616 5.68386 7.93983 5.67188 8.25016L12.0028 11.4077Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+export const EtherIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="12" fill="#7583FE" />
+      <path
+        d="M11.9547 16.4775L6 13.215L11.9539 21L17.9135 13.215L11.9523 16.4775H11.9547ZM12.0453 3L6.08895 12.1672L12.0445 15.4327L18 12.1702L12.0453 3Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+export const GlobalIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 54 54"
+      fill="none"
+    >
+      <g filter="url(#filter0_d_1000_23005)">
+        <path
+          d="M27 8.66669C31.5856 13.687 34.1917 20.2021 34.3333 27C34.1917 33.798 31.5856 40.313 27 45.3334M27 8.66669C22.4143 13.687 19.8082 20.2021 19.6666 27C19.8082 33.798 22.4143 40.313 27 45.3334M27 8.66669C16.8747 8.66669 8.66663 16.8748 8.66663 27C8.66663 37.1252 16.8747 45.3334 27 45.3334M27 8.66669C37.1252 8.66669 45.3333 16.8748 45.3333 27C45.3333 37.1252 37.1252 45.3334 27 45.3334M9.58333 21.5H44.4167M9.58329 32.5H44.4166"
+          stroke="#EBE3FE"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          shape-rendering="crispEdges"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_1000_23005"
+          x="0.666626"
+          y="0.666687"
+          width="52.6666"
+          height="52.6667"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3.5" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.678431 0 0 0 0 0.592157 0 0 0 0 0.996078 0 0 0 1 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_1000_23005"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_1000_23005"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  );
+};
+export const DiamondIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 48 44"
+      fill="none"
+    >
+      <g filter="url(#filter0_d_942_20875)">
+        <path
+          d="M8.16589 17H39.8326M20.6659 7L17.3326 17L23.9992 36.1667L30.6659 17L27.3326 7M25.0235 35.7708L39.9546 17.8536C40.2076 17.5499 40.3342 17.3981 40.3825 17.2286C40.4251 17.0792 40.4251 16.9208 40.3825 16.7714C40.3342 16.6019 40.2076 16.4501 39.9546 16.1464L32.7324 7.47975C32.5854 7.30341 32.5119 7.21523 32.4218 7.15184C32.342 7.09568 32.253 7.05397 32.1587 7.02862C32.0524 7 31.9376 7 31.7081 7H16.2904C16.0608 7 15.9461 7 15.8397 7.02862C15.7455 7.05397 15.6564 7.09568 15.5766 7.15184C15.4865 7.21523 15.4131 7.30341 15.2661 7.47975L8.04388 16.1464C7.79083 16.4501 7.6643 16.6019 7.61596 16.7714C7.57333 16.9208 7.57333 17.0792 7.61596 17.2286C7.6643 17.3981 7.79083 17.5499 8.04388 17.8536L22.9749 35.7708C23.3267 36.193 23.5026 36.404 23.7131 36.481C23.8979 36.5485 24.1006 36.5485 24.2853 36.481C24.4959 36.404 24.6718 36.193 25.0235 35.7708Z"
+          stroke="#EBE3FE"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          shape-rendering="crispEdges"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_942_20875"
+          x="0.583984"
+          y="-0.000244141"
+          width="46.8304"
+          height="43.5319"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.678431 0 0 0 0 0.592157 0 0 0 0 0.996078 0 0 0 1 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_942_20875"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_942_20875"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  );
+};
+export const StartIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 40 40"
+      fill="none"
+    >
+      <g clip-path="url(#clip0_942_20572)">
+        <g filter="url(#filter0_d_942_20572)">
+          <path
+            d="M23.645 26.5066L25 31.25L26.355 26.5066C26.7052 25.2814 27.3618 24.1656 28.2628 23.2645C29.164 22.3635 30.2798 21.7068 31.505 21.3566L36.25 20L31.5067 18.645C30.2815 18.2948 29.1657 17.6381 28.2645 16.7371C27.3635 15.836 26.7068 14.7201 26.3567 13.495L25 8.74997L23.645 13.4933C23.2948 14.7185 22.6382 15.8343 21.7372 16.7355C20.836 17.6365 19.7202 18.2931 18.495 18.6433L13.75 20L18.4933 21.355C19.7185 21.7051 20.8343 22.3618 21.7355 23.2628C22.6365 24.1639 23.2932 25.2797 23.6433 26.505L23.645 26.5066Z"
+            fill="white"
+          />
+          <path
+            d="M23.645 26.5066L25 31.25L26.355 26.5066C26.7052 25.2814 27.3618 24.1656 28.2628 23.2645C29.164 22.3635 30.2798 21.7068 31.505 21.3566L36.25 20L31.5067 18.645C30.2815 18.2948 29.1657 17.6381 28.2645 16.7371C27.3635 15.836 26.7068 14.7201 26.3567 13.495L25 8.74997L23.645 13.4933C23.2948 14.7185 22.6382 15.8343 21.7372 16.7355C20.836 17.6365 19.7202 18.2931 18.495 18.6433L13.75 20L18.4933 21.355C19.7185 21.7051 20.8343 22.3618 21.7355 23.2628C22.6365 24.1639 23.2932 25.2797 23.6433 26.505L23.645 26.5066Z"
+            stroke="white"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+        <g filter="url(#filter1_d_942_20572)">
+          <path
+            d="M10 16.25L9.56833 14.525C9.32112 13.5358 8.80965 12.6323 8.08865 11.9113C7.36765 11.1903 6.46422 10.6788 5.475 10.4316L3.75 9.99997L5.475 9.5683C6.46422 9.32114 7.36765 8.80964 8.08865 8.08864C8.80965 7.36764 9.32112 6.46414 9.56833 5.47497L10 3.74997L10.4317 5.47497C10.6787 6.46397 11.19 7.3673 11.9106 8.0883C12.6313 8.8093 13.5344 9.3208 14.5233 9.5683L16.25 9.99997L14.5233 10.4316C13.5344 10.6791 12.6313 11.1906 11.9106 11.9116C11.19 12.6326 10.6787 13.536 10.4317 14.525L10 16.25Z"
+            fill="white"
+          />
+          <path
+            d="M10 16.25L9.56833 14.525C9.32112 13.5358 8.80965 12.6323 8.08865 11.9113C7.36765 11.1903 6.46422 10.6788 5.475 10.4316L3.75 9.99997L5.475 9.5683C6.46422 9.32114 7.36765 8.80964 8.08865 8.08864C8.80965 7.36764 9.32112 6.46414 9.56833 5.47497L10 3.74997L10.4317 5.47497C10.6787 6.46397 11.19 7.3673 11.9106 8.0883C12.6313 8.8093 13.5344 9.3208 14.5233 9.5683L16.25 9.99997L14.5233 10.4316C13.5344 10.6791 12.6313 11.1906 11.9106 11.9116C11.19 12.6326 10.6787 13.536 10.4317 14.525L10 16.25Z"
+            stroke="white"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+        <g filter="url(#filter2_d_942_20572)">
+          <path
+            d="M10.8334 33.3333L10.505 32.3475C10.413 32.0713 10.2579 31.8204 10.0521 31.6146C9.84627 31.4088 9.59534 31.2537 9.31921 31.1616L8.33337 30.8333L9.31921 30.505C9.59534 30.4129 9.84627 30.2578 10.0521 30.052C10.2579 29.8462 10.413 29.5953 10.505 29.3191L10.8334 28.3333L11.1617 29.3191C11.2538 29.5953 11.4088 29.8462 11.6147 30.052C11.8205 30.2578 12.0714 30.4129 12.3475 30.505L13.3334 30.8333L12.3475 31.1616C12.0714 31.2537 11.8205 31.4088 11.6147 31.6146C11.4088 31.8204 11.2538 32.0713 11.1617 32.3475L10.8334 33.3333Z"
+            fill="white"
+          />
+          <path
+            d="M10.8334 33.3333L10.505 32.3475C10.413 32.0713 10.2579 31.8204 10.0521 31.6146C9.84627 31.4088 9.59534 31.2537 9.31921 31.1616L8.33337 30.8333L9.31921 30.505C9.59534 30.4129 9.84627 30.2578 10.0521 30.052C10.2579 29.8462 10.413 29.5953 10.505 29.3191L10.8334 28.3333L11.1617 29.3191C11.2538 29.5953 11.4088 29.8462 11.6147 30.052C11.8205 30.2578 12.0714 30.4129 12.3475 30.505L13.3334 30.8333L12.3475 31.1616C12.0714 31.2537 11.8205 31.4088 11.6147 31.6146C11.4088 31.8204 11.2538 32.0713 11.1617 32.3475L10.8334 33.3333Z"
+            stroke="white"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_942_20572"
+          x="7.25"
+          y="2.24997"
+          width="35.5"
+          height="35.5"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.6 0 0 0 0 0.878431 0 0 0 0 1 0 0 0 1 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_942_20572"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_942_20572"
+            result="shape"
+          />
+        </filter>
+        <filter
+          id="filter1_d_942_20572"
+          x="-2.75"
+          y="-2.75003"
+          width="25.5"
+          height="25.5"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.6 0 0 0 0 0.878431 0 0 0 0 1 0 0 0 1 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_942_20572"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_942_20572"
+            result="shape"
+          />
+        </filter>
+        <filter
+          id="filter2_d_942_20572"
+          x="1.83337"
+          y="21.8333"
+          width="18"
+          height="18"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.6 0 0 0 0 0.878431 0 0 0 0 1 0 0 0 1 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_942_20572"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_942_20572"
+            result="shape"
+          />
+        </filter>
+        <clipPath id="clip0_942_20572">
+          <rect
+            width="40"
+            height="40"
+            fill="white"
+            transform="matrix(1 0 0 -1 0 40)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
