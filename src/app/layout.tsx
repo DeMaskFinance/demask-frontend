@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
+import SmoothScrolling from "@/components/SmoothScrolling";
+import { AOSInit } from "@/components/AOS";
 
 const titillium = Titillium_Web({
   subsets: ["latin"],
@@ -26,9 +28,11 @@ export default function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang="en">
+        <AOSInit />
         <body className={titillium.className}>
           <Header />
           {children}
+          {/* <SmoothScrolling></SmoothScrolling> */}
           <Footer />
         </body>
       </html>

@@ -5,9 +5,12 @@ import { Button } from "../ui/button";
 import BackgroundParticles from "../Backgrounds/BackgroundParticles";
 import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Header = () => {
   const [isEvent, setIsEvent] = useState(true);
+  const [linked, setLinked] = useState<string>("#about");
+
   const navList = [
     {
       title: "About",
@@ -62,16 +65,25 @@ const Header = () => {
             </button>
           </div>
         )}
-        <header className="text-shader_200 h-header flex border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
+        <header className="text-shader_200 w-screen h-header flex border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
           <div className="flex items-center gap-x-[6px] ">
             <DemaskIcon width={24} height={24} />
             <DemaskTitle width={76} height={14} />
           </div>
           <ul className="gap-x-8 md:flex hidden">
             {navList.map((item, index) => (
-              <li className="cursor-pointer" key={index}>
+              <a
+                href={`${item.id}`}
+                className={`${
+                  item.id === linked ? "text-shader_200" : "text-shader_100"
+                }`}
+                key={index}
+                onClick={() => {
+                  setLinked(item.id);
+                }}
+              >
                 {item.title}
-              </li>
+              </a>
             ))}
           </ul>
           <div>

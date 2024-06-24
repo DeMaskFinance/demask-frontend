@@ -84,9 +84,33 @@ export const RightIcon: React.FunctionComponent<IconProps> = ({
       <path
         d="M7.5 15L12.5 10L7.5 5"
         stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const LDownIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M2.66663 8L13.3333 8M13.3333 8L9.33329 4M13.3333 8L9.33329 12"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -321,8 +345,8 @@ export const GlobalIcon: React.FunctionComponent<IconProps> = ({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      width={width}
-      height={height}
+      width={40}
+      height={40}
       viewBox="0 0 54 54"
       fill="none"
     >
@@ -330,10 +354,10 @@ export const GlobalIcon: React.FunctionComponent<IconProps> = ({
         <path
           d="M27 8.66669C31.5856 13.687 34.1917 20.2021 34.3333 27C34.1917 33.798 31.5856 40.313 27 45.3334M27 8.66669C22.4143 13.687 19.8082 20.2021 19.6666 27C19.8082 33.798 22.4143 40.313 27 45.3334M27 8.66669C16.8747 8.66669 8.66663 16.8748 8.66663 27C8.66663 37.1252 16.8747 45.3334 27 45.3334M27 8.66669C37.1252 8.66669 45.3333 16.8748 45.3333 27C45.3333 37.1252 37.1252 45.3334 27 45.3334M9.58333 21.5H44.4167M9.58329 32.5H44.4166"
           stroke="#EBE3FE"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          shape-rendering="crispEdges"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          shapeRendering="crispEdges"
         />
       </g>
       <defs>
@@ -344,9 +368,9 @@ export const GlobalIcon: React.FunctionComponent<IconProps> = ({
           width="52.6666"
           height="52.6667"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -385,8 +409,8 @@ export const DiamondIcon: React.FunctionComponent<IconProps> = ({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      width={width}
-      height={height}
+      width={40}
+      height={40}
       viewBox="0 0 48 44"
       fill="none"
     >
@@ -394,10 +418,10 @@ export const DiamondIcon: React.FunctionComponent<IconProps> = ({
         <path
           d="M8.16589 17H39.8326M20.6659 7L17.3326 17L23.9992 36.1667L30.6659 17L27.3326 7M25.0235 35.7708L39.9546 17.8536C40.2076 17.5499 40.3342 17.3981 40.3825 17.2286C40.4251 17.0792 40.4251 16.9208 40.3825 16.7714C40.3342 16.6019 40.2076 16.4501 39.9546 16.1464L32.7324 7.47975C32.5854 7.30341 32.5119 7.21523 32.4218 7.15184C32.342 7.09568 32.253 7.05397 32.1587 7.02862C32.0524 7 31.9376 7 31.7081 7H16.2904C16.0608 7 15.9461 7 15.8397 7.02862C15.7455 7.05397 15.6564 7.09568 15.5766 7.15184C15.4865 7.21523 15.4131 7.30341 15.2661 7.47975L8.04388 16.1464C7.79083 16.4501 7.6643 16.6019 7.61596 16.7714C7.57333 16.9208 7.57333 17.0792 7.61596 17.2286C7.6643 17.3981 7.79083 17.5499 8.04388 17.8536L22.9749 35.7708C23.3267 36.193 23.5026 36.404 23.7131 36.481C23.8979 36.5485 24.1006 36.5485 24.2853 36.481C24.4959 36.404 24.6718 36.193 25.0235 35.7708Z"
           stroke="#EBE3FE"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          shape-rendering="crispEdges"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          shapeRendering="crispEdges"
         />
       </g>
       <defs>
@@ -408,9 +432,9 @@ export const DiamondIcon: React.FunctionComponent<IconProps> = ({
           width="46.8304"
           height="43.5319"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -449,8 +473,8 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      width={width}
-      height={height}
+      width={40}
+      height={40}
       viewBox="0 0 40 40"
       fill="none"
     >
@@ -463,8 +487,8 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           <path
             d="M23.645 26.5066L25 31.25L26.355 26.5066C26.7052 25.2814 27.3618 24.1656 28.2628 23.2645C29.164 22.3635 30.2798 21.7068 31.505 21.3566L36.25 20L31.5067 18.645C30.2815 18.2948 29.1657 17.6381 28.2645 16.7371C27.3635 15.836 26.7068 14.7201 26.3567 13.495L25 8.74997L23.645 13.4933C23.2948 14.7185 22.6382 15.8343 21.7372 16.7355C20.836 17.6365 19.7202 18.2931 18.495 18.6433L13.75 20L18.4933 21.355C19.7185 21.7051 20.8343 22.3618 21.7355 23.2628C22.6365 24.1639 23.2932 25.2797 23.6433 26.505L23.645 26.5066Z"
             stroke="white"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </g>
         <g filter="url(#filter1_d_942_20572)">
@@ -475,8 +499,8 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           <path
             d="M10 16.25L9.56833 14.525C9.32112 13.5358 8.80965 12.6323 8.08865 11.9113C7.36765 11.1903 6.46422 10.6788 5.475 10.4316L3.75 9.99997L5.475 9.5683C6.46422 9.32114 7.36765 8.80964 8.08865 8.08864C8.80965 7.36764 9.32112 6.46414 9.56833 5.47497L10 3.74997L10.4317 5.47497C10.6787 6.46397 11.19 7.3673 11.9106 8.0883C12.6313 8.8093 13.5344 9.3208 14.5233 9.5683L16.25 9.99997L14.5233 10.4316C13.5344 10.6791 12.6313 11.1906 11.9106 11.9116C11.19 12.6326 10.6787 13.536 10.4317 14.525L10 16.25Z"
             stroke="white"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </g>
         <g filter="url(#filter2_d_942_20572)">
@@ -487,8 +511,8 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           <path
             d="M10.8334 33.3333L10.505 32.3475C10.413 32.0713 10.2579 31.8204 10.0521 31.6146C9.84627 31.4088 9.59534 31.2537 9.31921 31.1616L8.33337 30.8333L9.31921 30.505C9.59534 30.4129 9.84627 30.2578 10.0521 30.052C10.2579 29.8462 10.413 29.5953 10.505 29.3191L10.8334 28.3333L11.1617 29.3191C11.2538 29.5953 11.4088 29.8462 11.6147 30.052C11.8205 30.2578 12.0714 30.4129 12.3475 30.505L13.3334 30.8333L12.3475 31.1616C12.0714 31.2537 11.8205 31.4088 11.6147 31.6146C11.4088 31.8204 11.2538 32.0713 11.1617 32.3475L10.8334 33.3333Z"
             stroke="white"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </g>
       </g>
@@ -500,9 +524,9 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           width="35.5"
           height="35.5"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -535,9 +559,9 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           width="25.5"
           height="25.5"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -570,9 +594,9 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
           width="18"
           height="18"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

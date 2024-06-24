@@ -5,9 +5,19 @@ import Marquee from "react-fast-marquee";
 const Funtions = () => {
   const functionList = [
     {
+      title: "All Assets",
+      des: "List ERC721 or ERC1155 listed in ERC20.",
+      img: "/Assets.svg",
+    },
+    {
       title: "Decentralized",
-      des: "On-chain, open-source, extensible smart contracts.",
-      img: "/Pool.png",
+      des: "An on-chain AMM Protocol for Trading between an NFT Collection and an ERC20 Token.",
+      img: "/Decentralized.svg",
+    },
+    {
+      title: "Save Fees",
+      des: "Trade NFTs with low gas costs and zezo platform fees",
+      img: "/SaveFees.svg",
     },
     {
       title: "Liquidity Pool",
@@ -15,24 +25,15 @@ const Funtions = () => {
       img: "/Pool.png",
     },
     {
-      title: "Save Fees",
-      des: "Trade NFTs with low gas costs and zezo platform fees",
-      img: "/SaveFees.png",
+      title: "Earn royalties",
+      des: "With ERC2981 - Earn fees on every sale",
+      img: "/Earn.svg",
     },
-    {
-      title: "All Assets",
-      des: "List ERC721 or ERC1155 listed in ERC20.",
-      img: "/Pool.png",
-    },
+
     {
       title: "Fee Sharing",
       des: "With liquidity provider, farmer & referral program. Share fees from pools.",
-      img: "/SaveFees.png",
-    },
-    {
-      title: "Earn royalties",
-      des: "With ERC2981 - Earn fees on every sale",
-      img: "/Earn.png",
+      img: "/Sharing.svg",
     },
   ];
   return (
@@ -47,10 +48,18 @@ const Funtions = () => {
         {functionList.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col mr-4 p-6 h-[240px] w-[400px] shadow-xl bg-shader_800 border border-shader_500 transition-all duration-300 ease-in-out group  rounded-xl "
+            className="flex flex-col mr-4 p-6 h-[246px] w-[400px] shadow-xl bg-shader_800 border border-shader_500 transition-all duration-300 ease-in-out group  rounded-xl "
           >
-            <Image src={item.img} alt="funtion_Img" width={104} height={104} />
-            <h2 className="mt-4 mb-1 text-xl text-primary_200 font-bold">
+            <div className="p-2">
+              <Image
+                src={item.img}
+                alt="funtion_Img"
+                width={300}
+                height={300}
+                className="object-cover w-[88px] h-[88px]"
+              />
+            </div>
+            <h2 className="mt-4 text-xl text-primary_200 font-bold">
               {item.title}
             </h2>
             <p className="font-normal">{item.des}</p>

@@ -37,6 +37,8 @@ const config = {
         primary_300: "#BFACFE",
         primary_200: "#D6C7FE",
         primary_100: "#EBE3FE",
+        linkGradient:
+          "linear-gradient(90deg, rgba(246, 148, 255, 0.35) 0%, rgba(79, 255, 244, 0.35) 33.33%, rgba(255, 231, 170, 0.35) 66.67%, rgba(255, 121, 234, 0.35) 100%)",
         white: "#FFF",
         logo: "#7413DC",
         base0: "#A398FF",
@@ -109,6 +111,12 @@ const config = {
         "linear-g2":
           "linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)",
         "feature-gradient": "linear-gradient(180deg, #21242D 0%, #262A35 100%)",
+        "ecosystem-gradient":
+          "radial-gradient(50% 100% at 50% 100%, rgba(144, 117, 254, 0.35) 0%, rgba(144, 117, 254, 0.05) 100%)",
+        "community-gradient":
+          "linear-gradient(90deg, #EEFEFF 0%, #99E0FF 25%, #60A5FA 50%, #7B7EF3 75%, #9B78FC 100%)",
+        "link-gradient":
+          "linear-gradient(90deg, rgba(246, 148, 255, 0.10) 0%, rgba(79, 255, 244, 0.10) 33.33%, rgba(255, 231, 170, 0.10) 66.67%, rgba(255, 121, 234, 0.10) 100%)",
       },
       fontSize: {
         medium: "4rem",
