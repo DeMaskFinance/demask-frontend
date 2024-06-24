@@ -16,13 +16,18 @@ const About = () => {
           </h1>
           <p>An on-chain AMM Protocol for Trading between an</p>
           <p>NFT Collection and an ERC20 Token</p>
-          <Button
-            variant="gradient"
-            className="flex rounded-3xl mt-8 gap-x-2 px-7"
-          >
-            <DemaskIcon width={20} height={20} />
-            <p>Launch app</p>
-          </Button>
+
+          <div className="btn_animation btn_active mt-8">
+            <div className="overlay">
+              <Button
+                variant="gradient"
+                className="flex rounded-3xl gap-x-2 px-7"
+              >
+                <DemaskIcon width={20} height={20} />
+                <p>Launch app</p>
+              </Button>
+            </div>
+          </div>
         </div>
         <div className="h-1/2">
           <Spline scene="https://prod.spline.design/UB73Atxy70Sc82dO/scene.splinecode" />

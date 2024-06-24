@@ -98,3 +98,46 @@ html *::-webkit-scrollbar-track {
   -webkit-text-fill-color: transparent;
   color: transparent; /* Ensure that the text color is transparent */
 }
+.btn_animation {
+  position: relative;
+  height: 44px;
+  width: 156px;
+  background-color: rgba(144, 117, 254, 0.35);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.btn_animation::before {
+  content: "";
+  position: absolute;
+  width: 154px;
+  height: 250px;
+  background-image: conic-gradient(
+    transparent,
+    transparent,
+    transparent,
+    transparent,
+    transparent,
+    #bcb4ff
+  );
+}
+.btn_active:before {
+  animation: rotate 4s linear infinite;
+}
+.overlay {
+  position: absolute;
+  height: 40px;
+  width: 153px;
+  border-radius: 50px;
+  background-color: #13151a;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

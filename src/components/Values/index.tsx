@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import TitleMain from "../TitleMain";
+import Funtions from "./Funtions";
 
 const Values = () => {
   return (
@@ -9,6 +10,7 @@ const Values = () => {
         <Image src="/diamond.png" width={300} height={400} alt="diamond" />
       </div>
       <TitleMain />
+      <Funtions />
     </div>
   );
 };
