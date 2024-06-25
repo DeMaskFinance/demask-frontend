@@ -45,10 +45,7 @@ const Header = () => {
                     <span>
                       <LightIcon width={24} height={24} />
                     </span>
-                    <span>
-                      Blast Big Bang - The airdrop Demask Finance x BleBle
-                      Campaign on Galxe
-                    </span>
+                    <span>The Campaigns on Galxe, NOW LIVE!</span>
                   </div>
                 </Marquee>
                 <BackgroundParticles value={1800} id="particles-js" />
