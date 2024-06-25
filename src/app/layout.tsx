@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 import SmoothScrolling from "@/components/SmoothScrolling";
 import { AOSInit } from "@/components/AOS";
-import Head from "next/head";
 
 const titillium = Titillium_Web({
   subsets: ["latin"],
@@ -33,6 +32,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    other: { rel: "apple-touch-icon-precomposed", url: "/favicon-32x32.png" },
+  },
 };
 
 export default function RootLayout({
@@ -43,16 +48,6 @@ export default function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang="en">
-        <Head>
-          <link rel="shortcut icon" href="/favicon.ico" />
-          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-          ></link>
-        </Head>
         <AOSInit />
         <body className={titillium.className}>
           <Header />
