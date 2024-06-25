@@ -75,11 +75,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
               <div className="flex items-center my-2 text-2xl font-bold text-white gap-x-1">
                 {formatNumber(Number(activeData).toFixed(2))}
                 <p>
-                  <EtherIcon
-                    width={18}
-                    height={18}
-                    className="fill-dark0 dark:fill-white"
-                  />
+                  <EtherIcon width={18} height={18} />
                 </p>
               </div>
             )}

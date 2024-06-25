@@ -63,16 +63,12 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
       {chartVolume && (
         <div>
           <div className="flex justify-between mb-2">
-            <div className="mb-2 text-dark1 dark:text-dark3">
+            <div className="mb-2 text-dark1">
               <p className="title text-shader_100">Volume</p>
               <div className="flex items-center my-2 text-2xl font-bold text-white gap-x-1">
                 {formatNumber(Number(activeData)?.toFixed(2))}
                 <p>
-                  <EtherIcon
-                    width={18}
-                    height={18}
-                    className="fill-dark0 dark:fill-white"
-                  />
+                  <EtherIcon width={18} height={18} />
                 </p>
               </div>
               <p className="text-sm text-primary_300">

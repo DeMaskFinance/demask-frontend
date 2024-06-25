@@ -38,7 +38,7 @@ import { Button } from "../Buttons";
 import { briefDocument } from "@/libs/utils/formatComon";
 const style = {
   btnWallet:
-    "flex items-center h-10 hover:border-shader_600 dark:hover:bg-shader_600 pl-2 lg:px-4 pr-2 justify-center dark:bg-shader_700 dark:text-white text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
+    "flex items-center h-10 hover:border-shader_600 pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
 };
 const Profile = () => {
   const { account, chainId } = useContext(AccountContext);

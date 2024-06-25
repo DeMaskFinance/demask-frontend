@@ -69,7 +69,7 @@ const Rule: React.FC<{ data: LaunchpadData }> = ({ data }) => {
   return (
     <div>
       {data && (
-        <div className="text-sm text-[#000] dark:text-white">
+        <div className="text-sm text-[#000] ">
           <ul>
             {ruleInfor.map((item, index) => (
               <li className="mb-[1px] flex" key={index}>

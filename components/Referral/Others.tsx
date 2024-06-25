@@ -24,7 +24,7 @@ const Others = () => {
                 </tr>
               </thead>
               <tbody>
-                {/* <tr className="transition duration-300 ease-in-out hover:bg-neutral-100 dark:hover:bg-neutral-600">
+                {/* <tr className="transition duration-300 ease-in-out hover:bg-neutral-100">
                   <td className="px-6 py-2 whitespace-nowrap">1</td>
                   <td className="px-10 py-4 whitespace-nowrap">Mark</td>
                   <td className="px-6 py-2 whitespace-nowrap">Otto</td>

@@ -25,10 +25,10 @@ const Box: React.FC<{ data: LaunchpadData }> = ({ data }) => {
           </tr>
         </thead>
         <tbody className=" text-base font-normal  max-md:text-[12px] bg-transparent border-gray-700 cursor-pointer">
-          <tr className="text-shader_600 text-base max-md:text-[12px] bg-transparent group rounded-lg border-gray-700 bg-white hover:bg-slate-100 cursor-pointer  dark:hover:bg-shader_700">
+          <tr className="text-shader_600 text-base max-md:text-[12px] bg-transparent group rounded-lg border-gray-700 bg-white hover:bg-slate-100 cursor-pointer  ">
             <td
               scope="row"
-              className="sticky left-0 z-10 flex items-center px-1 py-2 font-medium bg-white group-hover:bg-slate-100 md:min-w-max md:px-6 whitespace-nowrap dark:group-hover:bg-shader_700 dark:group-hover:text-white"
+              className="sticky left-0 z-10 flex items-center px-1 py-2 font-medium bg-white group-hover:bg-slate-100 md:min-w-max md:px-6 whitespace-nowrap "
               style={{ width: "100%" }}
             >
               <div className="flex items-center justify-start transition-all ">

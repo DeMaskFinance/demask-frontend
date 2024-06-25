@@ -47,7 +47,7 @@ const Category = ({ label }: { label: string }) => {
               {data &&
                 data?.data?.map((item: any, index: number) => (
                   <SwiperSlide
-                    className="text-sm lg:text-base text-dark2 dark:bg-darkBG0"
+                    className="text-sm lg:text-base text-dark2"
                     key={index}
                   >
                     <li

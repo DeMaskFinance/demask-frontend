@@ -78,7 +78,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                       item.changePrice24h > 0
                         ? "text-green"
                         : item.changePrice24h === 0
-                        ? "text-dark2 dark:text-dark4"
+                        ? "text-dark2"
                         : "text-red"
                     } `}
                   >

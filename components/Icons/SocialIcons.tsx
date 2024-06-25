@@ -6,7 +6,7 @@ export const GmailIcon: React.FunctionComponent<IconProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className} dark:fill-white`}
+      className={`${className}`}
       width={width}
       height={height}
       viewBox="0 0 24 24"
