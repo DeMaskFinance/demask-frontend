@@ -344,16 +344,15 @@ export const GlobalIcon: React.FunctionComponent<IconProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      width={40}
-      height={40}
+      width="54"
+      height="54"
       viewBox="0 0 54 54"
       fill="none"
     >
       <g filter="url(#filter0_d_1000_23005)">
         <path
           d="M27 8.66669C31.5856 13.687 34.1917 20.2021 34.3333 27C34.1917 33.798 31.5856 40.313 27 45.3334M27 8.66669C22.4143 13.687 19.8082 20.2021 19.6666 27C19.8082 33.798 22.4143 40.313 27 45.3334M27 8.66669C16.8747 8.66669 8.66663 16.8748 8.66663 27C8.66663 37.1252 16.8747 45.3334 27 45.3334M27 8.66669C37.1252 8.66669 45.3333 16.8748 45.3333 27C45.3333 37.1252 37.1252 45.3334 27 45.3334M9.58333 21.5H44.4167M9.58329 32.5H44.4166"
-          stroke="#EBE3FE"
+          stroke="#FFFDF9"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -382,7 +381,7 @@ export const GlobalIcon: React.FunctionComponent<IconProps> = ({
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0.678431 0 0 0 0 0.592157 0 0 0 0 0.996078 0 0 0 1 0"
+            values="0 0 0 0 1 0 0 0 0 0.905882 0 0 0 0 0.666667 0 0 0 1 0"
           />
           <feBlend
             mode="normal"
@@ -478,7 +477,7 @@ export const StartIcon: React.FunctionComponent<IconProps> = ({
       viewBox="0 0 40 40"
       fill="none"
     >
-      <g clip-path="url(#clip0_942_20572)">
+      <g clipPath="url(#clip0_942_20572)">
         <g filter="url(#filter0_d_942_20572)">
           <path
             d="M23.645 26.5066L25 31.25L26.355 26.5066C26.7052 25.2814 27.3618 24.1656 28.2628 23.2645C29.164 22.3635 30.2798 21.7068 31.505 21.3566L36.25 20L31.5067 18.645C30.2815 18.2948 29.1657 17.6381 28.2645 16.7371C27.3635 15.836 26.7068 14.7201 26.3567 13.495L25 8.74997L23.645 13.4933C23.2948 14.7185 22.6382 15.8343 21.7372 16.7355C20.836 17.6365 19.7202 18.2931 18.495 18.6433L13.75 20L18.4933 21.355C19.7185 21.7051 20.8343 22.3618 21.7355 23.2628C22.6365 24.1639 23.2932 25.2797 23.6433 26.505L23.645 26.5066Z"

@@ -13,10 +13,12 @@ const styles = {
   icon: "cursor-pointer",
 };
 export default function Footer() {
-  const links = [
+  const linksLeft = [
     { href: "https://demask.finance/", text: "About" },
     { href: "https://demaskfi.substack.com/", text: "Blog" },
     { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Deck" },
+  ];
+  const linksRight = [
     { href: "https://demask.finance/", text: "Developer" },
     { href: "https://docs.demask.finance/", text: "Docs" },
     { href: "https://demask.finance/media-kit", text: "Branding & Media Kit" },
@@ -75,17 +77,31 @@ export default function Footer() {
             </a>
           </div>
         </div>
-        <ul className="flex font-semibold text-white gap-x-8 mt-10 md:mt-0">
-          {links.map((link, index) => (
-            <li
-              key={index}
-              className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
-            >
-              <a href={link.href} rel="noreferrer noopener" target="_blank">
-                {link.text}
-              </a>
-            </li>
-          ))}
+        <ul className="grid grid-cols-2 text-center font-semibold text-white gap-x-8 mt-10 md:mt-0 text-base md:flex">
+          <div className="flex md:flex-row flex-col gap-x-8 gap-y-2">
+            {linksLeft.map((link, index) => (
+              <li
+                key={index}
+                className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+              >
+                <a href={link.href} rel="noreferrer noopener" target="_blank">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </div>
+          <div className="flex md:flex-row flex-col gap-x-8 gap-y-2">
+            {linksRight.map((link, index) => (
+              <li
+                key={index}
+                className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+              >
+                <a href={link.href} rel="noreferrer noopener" target="_blank">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </div>
         </ul>
       </div>
       <div className="flex md:flex-row flex-col items-center justify-between text-sm px-4 2xl:px-[150px] md:px-14 bg-shader_700 text-shader_200 py-4 font-semibold">

@@ -7,7 +7,7 @@ import { DiamondIcon } from "../Icons";
 const Values = () => {
   return (
     <div
-      className="w-full mx-auto flex flex-col items-center bg-shader_900 relative mb-14"
+      className="w-full mx-auto flex flex-col items-center bg-shader_900 relative mb-14 "
       id="values"
     >
       <div className="mb-8 md:mb-20">
@@ -18,6 +18,7 @@ const Values = () => {
         description="An on-chain AMM Protocol for Trading"
         id="tsparticles-1"
         icon={<DiamondIcon />}
+        className="shadow-values border-primary_500 border-opacity-35"
       />
       <Funtions />
     </div>

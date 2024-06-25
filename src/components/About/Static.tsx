@@ -80,9 +80,9 @@ const Static = () => {
       {amountList.map((item, index) => (
         <div
           key={index}
-          className="flex flex-col items-center justify-between  lg:gap-y-4 w-fit"
+          className="flex flex-col md:items-center justify-between  w-full"
         >
-          <div className="flex items-center gap-x-1 text-white font-bold text-3xl">
+          <div className="flex items-center gap-x-2 text-white font-bold text-3xl">
             {item.amount()}
             {item.icon}
           </div>

@@ -8,6 +8,7 @@ interface TitleMainProps {
   description: string;
   id: string;
   icon: React.ReactNode;
+  className: string;
 }
 
 const TitleMain: React.FC<TitleMainProps> = ({
@@ -15,14 +16,15 @@ const TitleMain: React.FC<TitleMainProps> = ({
   description,
   id,
   icon,
+  className,
 }) => {
   return (
     <div className="flex flex-col items-center justify-center text-center">
       <div
-        className="w-14 h-14 rounded-xl flex items-center justify-center relative border-[2px] border-primary_500 border-opacity-35  overflow-hidden "
-        style={{
-          boxShadow: "0px 0px 20px 0px rgba(144, 117, 254, 0.45)",
-        }}
+        className={`w-14 h-14 rounded-xl flex items-center justify-center relative border-[2px] ${className} overflow-hidden`}
+        // style={{
+        //   boxShadow: `0px 0px 20px 0px ${rgba}`,
+        // }}
       >
         {icon}
         <BackgroundParticles value={18000} id={id} />

@@ -44,22 +44,23 @@ const Features = () => {
     },
   ];
   return (
-    <div className="py-16 md:py-[143px] px-4" id="features">
+    <div className="pb-16 pt-0 md:py-[143px] px-4" id="features">
       <TitleMain
         title="OUR FEATURES"
         description="An on-chain AMM Protocol for Trading between an NFT Collection and an ERC20 Token"
         id="tsparticles-2"
         icon={<StartIcon />}
+        className="shadow-features border-[#99E0FF] border-opacity-35"
       />
       <div
-        className="grid grid-cols-1  md:grid-cols-2 gap-4 mt-14"
+        className="grid grid-cols-1  md:grid-cols-2 gap-4 mt-14 "
         data-aos="fade-up"
         data-aos-duration="1500"
       >
         {featureList.map((item, index) => (
           <div
             key={index}
-            className="text-center bg-feature-gradient rounded-xl border border-shader_400 overflow-hidden"
+            className="text-center bg-feature-gradient  rounded-xl border border-shader_400 overflow-hidden"
           >
             <div className="px-6 pt-6 flex flex-col items-center justify-center mb-8">
               <p className="text-xl font-bold text-white">{item.title}</p>

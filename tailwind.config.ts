@@ -97,13 +97,23 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "infinite-scroll": "infinite-scroll 50s linear infinite",
       },
       height: {
         header: "56px",
+      },
+      boxShadow: {
+        values: "0px 0px 20px 0px rgba(144, 117, 254, 0.45)",
+        features: "0px 0px 20px 0px rgba(153, 224, 255, 0.45)",
+        community: "0px 0px 20px 0px rgba(255, 231, 170, 0.45)",
       },
       backgroundImage: {
         "event-gradient":

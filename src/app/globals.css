@@ -74,7 +74,11 @@
     @apply text-shader_100 font-semibold;
   }
 }
-
+@layer utilities {
+  .paused {
+    animation-play-state: paused;
+  }
+}
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -155,7 +159,7 @@ html *::-webkit-scrollbar-track {
 .overlay {
   position: absolute;
   height: 40px;
-  width: 153px;
+  width: 152px;
   border-radius: 50px;
   background-color: #13151a;
 }
