@@ -1,5 +1,8 @@
 import { Button } from "@/components/Buttons";
+import Copy from "@/components/Common/Copy";
 import FormatNumber from "@/components/Common/FormatNumber";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
+import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
@@ -8,17 +11,18 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import handleBignumber from "@/libs/utils/handleBignumber";
+import { useQueryClient } from "@tanstack/react-query";
+import Tippy from "@tippyjs/react";
 import { useRouter } from "next/router";
-import { memo, useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
+import { Fragment, memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
-import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
-import Wrapper from "../Wrapper";
-import { useQueryClient } from "@tanstack/react-query";
+import { BiLoaderAlt } from "react-icons/bi";
+import { MediaCollection } from "@/components/Common/Media";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 interface ModalConfirmAddLiquidityERC721Props {
-  isOpenConfirmAddLiquidity: boolean;
+  data: any;
   tokenAddress: string;
   inputToken: string;
   nftAddress: string;
@@ -27,27 +31,23 @@ interface ModalConfirmAddLiquidityERC721Props {
   inputNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
   setIdNFT: React.Dispatch<React.SetStateAction<number[]>>;
-  setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setInputToken: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
-  setIsOpenLiquidity?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   ModalConfirmAddLiquidityERC721Props
 > = ({
-  isOpenConfirmAddLiquidity,
+  data,
   tokenAddress,
   inputToken,
   isOpenTransaction,
   inputNFT,
   setIsOpenTransaction,
   setIdNFT,
-  setIsOpenConfirmAddLiquidity,
   setInputToken,
-  setIsOpenLiquidity,
   setHash,
   setIsOpenSuccess,
   setIsOpenError,
@@ -58,11 +58,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     ROUTER_721: routerAddress,
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
-    FACTORY: factoryAddress,
   } = demask;
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
-  const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const router = useRouter();
@@ -85,22 +83,17 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     wallet,
     demask.FACTORY_721,
     "",
-    isOpenTransaction,
-    isOpenConfirmAddLiquidity
+    isOpenTransaction
   );
 
   useEffect(() => {
     const load = setInterval(() => {
-      if (isOpenConfirmAddLiquidity) {
-        setPreFetch(true);
-      } else {
-        setPreFetch(false);
-      }
+      setUpdatePrice(!updatePrice);
     }, 20000);
     return () => {
       clearInterval(load);
     };
-  }, [isOpenConfirmAddLiquidity, preFectch]);
+  }, []);
   const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
     dmlToken,
     wallet,
@@ -108,7 +101,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction,
     false,
     false,
-    isOpenConfirmAddLiquidity,
+    true,
     true,
     updatePrice
   );
@@ -129,16 +122,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         "18"
       );
       setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
-        setIsSufficientToken(true);
-      } else {
-        setIsSufficientToken(false);
-      }
     }
   }, [inputToken, reserveToken, reserveNFT, dmlToken]);
   const queryClient = useQueryClient();
   const addLiquidity = async () => {
-    if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
+    if (Math.floor(amountErcDesired) !== 0) {
       try {
         setIsOpenTransaction(true);
         const valueToSend =
@@ -162,10 +150,10 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         setInputToken("");
         setAmountErcDesiredToDec("");
         setIdNFT([]);
-        setIsOpenConfirmAddLiquidity(false);
-        if (setIsOpenLiquidity) {
-          setIsOpenLiquidity(false);
-        }
+        // setIsOpenConfirmAddLiquidity(false);
+        // if (setIsOpenLiquidity) {
+        //   setIsOpenLiquidity(false);
+        // }
         if (check.status === 1) {
           setIsOpenSuccess(true);
         } else {
@@ -180,66 +168,90 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       }
     }
   };
-  const handleClose = (
-    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpenConfirmAddLiquidity(false);
-  };
+  console.log(data);
 
   return (
-    <Wrapper isOpen={isOpenConfirmAddLiquidity} onClick={handleClose}>
-      <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="title_modal">Create Pool</p>
-          <div className="content_modal">
-            <p>{inputNFT.length}</p>
-            <div className="max-w-[60%]">
-              <ModalDocument data="DM" />
+    <Fragment>
+      <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
+        <div className="px-4 pt-4">
+          <div className="flex justify-between text-primary_200 border-shader_500">
+            <p className="title_modal">Create Pool</p>
+          </div>
+        </div>
+        <div className="text-sm text-shader_200">
+          <div className="flex items-center pb-4 border-b gap-x-3 border-shader_500">
+            <div className="w-[65px] h-[65px] rounded-lg overflow-hidden">
+              <MediaCollection avatar={formatLinkIPFS(data?.avatar)} />
+            </div>
+            <div>
+              <p className="text-base title">{data?.name}</p>
+              <div className="flex items-center gap-x-1">
+                <a
+                  href={`${demask.urltxHash}address/${collectionAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {`${collectionAddress.slice(
+                    0,
+                    8
+                  )}...${collectionAddress.slice(-8)}`}
+                </a>
+                <Copy content={collectionAddress} />
+              </div>
             </div>
           </div>
-          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
-            +
-          </div>
-          <div className="content_modal">
-            <FormatNumber number={amountErcDesiredToDec} />
-            <p>ETH</p>
-          </div>
-          {isSufficientToken && (
-            <p className="text-xs text-red" key="inputNFT">
-              Insufficient Token balance
-            </p>
-          )}
-          {Math.floor(amountErcDesired) === 0 && (
-            <p className="mt-2 text-xs text-red" key="inputNFT">
-              Can't add liquidity
-            </p>
-          )}
-          {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-              <p className="text-xs">Price Updated</p>
-              <Button
-                disabled={isLoadingInforDML}
-                primary
-                className="px-6 py-2 bg-primary_400"
-                onClick={() => {
-                  setUpdatePrice(!updatePrice);
-                  setPreFetch(false);
-                }}
-              >
-                Accept
-              </Button>
+          <div className="flex flex-col py-4 gap-y-2">
+            <div className="flex justify-between ">
+              <p>NFT quantity</p>
+              <div className="flex items-center font-bold text-white gap-x-1">
+                {inputNFT.length}
+                <p>
+                  <EtherIcon width={14} height={14} />
+                </p>
+              </div>
             </div>
-          )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
-            <p>Slippage tolerance</p>
-            <p>{slippage}%</p>
+            <div className="flex justify-between ">
+              <p>Liquidity</p>
+              <div className="flex gap-x-1">
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  <FormatNumber number={amountErcDesiredToDec} />
+                  <EtherIcon width={14} height={14} />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between ">
+              <div className="flex items-center gap-x-1">
+                <span>Slippage tolerance</span>
+                <Tippy
+                  interactive
+                  content={
+                    <div className="flex">
+                      Output is estimated. You will receive at least {inputNFT}{" "}
+                      NFT or the transaction will revert
+                    </div>
+                  }
+                >
+                  <div>
+                    <NoteIcon width={14} height={14} />
+                  </div>
+                </Tippy>
+              </div>
+              <div className="flex items-center font-bold text-primary_300 gap-x-1">
+                {slippage}%
+              </div>
+            </div>
+            <p className="text-primary_300 text-sm">
+              Output is estimated. You will receive at least {inputNFT.length}
+               NFT or the transaction will revert
+            </p>
+            <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
+              <p className="text-primary_200">Total Pay</p>
+              <div className="flex items-center font-bold text-white gap-x-1">
+                <FormatNumber number={amountErcDesiredToDec} />
+                <EtherIcon width={14} height={14} />
+              </div>
+            </div>
           </div>
-          <p className="mt-2 mb-6 text-sm text-shader_600">
-            Output is estimated. You will receive at least {inputNFT.length} NFT
-            or the transaction will revert
-          </p>
           <div className="flex flex-col items-center mt-6">
             <Button
               disabled={
@@ -260,26 +272,20 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               }
               onClick={addLiquidity}
             >
-              CREATE POOL
+              Create pool
               {isLoadingInforDML && (
                 <BiLoaderAlt className="ml-1 text-white animate-spin" />
               )}
             </Button>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
       </div>
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
-    </Wrapper>
+    </Fragment>
   );
 };
 

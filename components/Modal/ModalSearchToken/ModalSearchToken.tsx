@@ -1,3 +1,4 @@
+import { CheckIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { searchTokenService } from "@/libs/service/searchService";
 import { useQuery } from "@tanstack/react-query";
@@ -53,8 +54,8 @@ const ModalSearchToken = () => {
   };
 
   return (
-    <div className=" h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg relative">
-      <div className="p-4 border-b border-shader_600">
+    <div className=" h-fit rounded-lg relative">
+      <div className="border-b border-shader_600 p-4">
         <div className="flex items-center justify-between mb-3 font-semibold text-white title ">
           Select a Token
         </div>
@@ -95,22 +96,25 @@ const ModalSearchToken = () => {
           {tokenDefault?.map((item: any, index: number) => (
             <div
               key={index}
-              className="flex items-center w-full px-2 py-2 text-sm font-bold text-white cursor-pointer gap-x-2 hover:bg-shader_500"
+              className="flex items-center justify-between w-full px-3 py-2 text-sm font-bold text-white cursor-pointer  hover:bg-shader_500"
               onClick={() =>
                 handleChangeRouteDefault(item.address, item.symbol)
               }
             >
-              <div>
-                <item.logo
-                  className="transition-all duration-200 ease-linear logo "
-                  width={24}
-                  height={24}
-                />
+              <div className="flex items-center gap-x-2">
+                <div>
+                  <item.logo
+                    className="transition-all duration-200 ease-linear logo gap-x-2 "
+                    width={24}
+                    height={24}
+                  />
+                </div>
+                <div>
+                  <p className="">{item.symbol}</p>
+                  <p className="font-normal text-shader_200">{item.name}</p>
+                </div>
               </div>
-              <div>
-                <p className="">{item.symbol}</p>
-                <p className="font-normal text-shader_200">{item.name}</p>
-              </div>
+              <CheckIcon width={20} height={20} />
             </div>
           ))}
         </>

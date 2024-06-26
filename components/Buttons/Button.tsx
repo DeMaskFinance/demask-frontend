@@ -19,6 +19,7 @@ interface ButtonProps {
   isLoadingBtn?: boolean;
   green_2?: boolean;
   red?: boolean;
+  red_2?: boolean;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -39,6 +40,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   gradient,
   green_2,
   red,
+  red_2,
 }) => {
   return (
     <button
@@ -80,7 +82,11 @@ const Button: FunctionComponent<ButtonProps> = ({
       ${gradient && "bg_gradient text-white hover:opacity-[0.85]"}
       ${
         green_2 &&
-        "bg-green text-white bg-opacity-[15%] py-2 px-3 hover:bg-opacity-[25%] border border-green w-max"
+        "bg-green text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-green border-opacity-15"
+      }
+      ${
+        red_2 &&
+        "bg-red text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-red border-opacity-15"
       }
       ${isLoadingBtn && "opacity-[0.35]"}
       ${className}

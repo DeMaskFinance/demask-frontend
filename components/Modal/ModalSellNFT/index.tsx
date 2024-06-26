@@ -209,7 +209,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
           <div className="px-4 pt-4">
-            <div className="flex justify-between pb-4 border-b text-primary_200 border-shader_500">
+            <div className="flex justify-between text-primary_200 border-shader_500">
               <p className="title_modal">Confirm Sell</p>
               <div onClick={handleClose}>
                 <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
@@ -338,7 +338,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                   Insufficient NFT balance
                 </p>
               )}
-              <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10">
+              <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
                 <p className="text-primary_200">Total Pay</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber

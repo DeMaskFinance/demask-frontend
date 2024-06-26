@@ -272,7 +272,7 @@ export default function AddLiquidity() {
               <SettingIcon width={18} height={18} />
             </div>
           </DialogTrigger>
-          <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+          <DialogContent className="w-fit p-4 border bg-shader_800 border-shader_500">
             <DialogHeader>
               <DialogDescription>
                 <ModalSetting />
@@ -399,12 +399,8 @@ export default function AddLiquidity() {
                     </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                  <DialogHeader>
-                    <DialogDescription>
-                      <ModalSearchToken />
-                    </DialogDescription>
-                  </DialogHeader>
+                <DialogContent className="w-full p-0 border bg-shader_800 border-shader_500">
+                  <ModalSearchToken />
                 </DialogContent>
               </Dialog>
             </div>
@@ -499,10 +495,7 @@ export default function AddLiquidity() {
                   </div>
                 )}
                 {isSufficientToken && (
-                  <p
-                    className="mb-2 ml-3 -mt-2 text-xs text-red"
-                    key="inputNFT"
-                  >
+                  <p className="mb-2 ml-3 mt-1 text-xs text-red" key="inputNFT">
                     Insufficient Token balance
                   </p>
                 )}
@@ -557,14 +550,14 @@ export default function AddLiquidity() {
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button
-                      className="absolute flex px-3 py-2 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 bg-shader_500"
-                      third
+                      className="absolute flex px-3 h-10 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 "
+                      active
                     >
                       View Detail
                       <EyeIcon width={16} height={16} />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                  <DialogContent className="w-full p-0 border bg-shader_800 border-shader_500">
                     <DialogHeader>
                       <DialogDescription>
                         {data && (

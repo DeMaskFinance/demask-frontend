@@ -24,7 +24,6 @@ import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import { useRouter } from "next/router";
 import { useQueryClient } from "@tanstack/react-query";
 interface ModalConfirmRemoveLiquidityProps {
-  isOpenConfirmRemoveLiquidity: boolean;
   data: DataBase;
   inputLiquidity: string;
   isOpenTransaction: boolean;
@@ -32,11 +31,7 @@ interface ModalConfirmRemoveLiquidityProps {
   routerAddress: string;
   idNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsOpenConfirmRemoveLiquidity: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
   setInputLiquidity: React.Dispatch<React.SetStateAction<string>>;
-  setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
@@ -45,7 +40,6 @@ interface ModalConfirmRemoveLiquidityProps {
 const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   ModalConfirmRemoveLiquidityProps
 > = ({
-  isOpenConfirmRemoveLiquidity,
   data,
   inputLiquidity,
   isOpenTransaction,
@@ -53,9 +47,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   totalSupply,
   routerAddress,
   setIsOpenTransaction,
-  setIsOpenConfirmRemoveLiquidity,
   setInputLiquidity,
-  setIsOpenRemoveLiquidity,
   setHash,
   setIsOpenSuccess,
   setIsOpenError,
@@ -92,7 +84,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     false,
     false,
     false,
-    isOpenConfirmRemoveLiquidity,
+    true,
     updatePrice
   );
 
@@ -167,13 +159,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       console.error(error);
     }
   };
-  const handleClose = (
-    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpenConfirmRemoveLiquidity(false);
-  };
+
   const queryClient = useQueryClient();
   const removeLiquidity = async () => {
     if (
@@ -220,8 +206,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         setHash(result.hash);
         setIsOpenTransaction(false);
         setInputLiquidity("");
-        setIsOpenRemoveLiquidity(false);
-        setIsOpenConfirmRemoveLiquidity(false);
+        // setIsOpenRemoveLiquidity(false);
+        // setIsOpenConfirmRemoveLiquidity(false);
         if (check.status === 1) {
           setIsOpenSuccess(true);
         } else {
@@ -241,92 +227,80 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
 
   useEffect(() => {
     const load = setInterval(() => {
-      if (isOpenConfirmRemoveLiquidity) {
-        setPreFetch(true);
-      } else {
-        setPreFetch(false);
-      }
+      setUpdatePrice(!updatePrice);
     }, 20000);
     return () => {
       clearInterval(load);
     };
-  }, [isOpenConfirmRemoveLiquidity, preFectch]);
+  }, []);
   return (
-    <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
-      <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="title_modal">You will receive</p>
-          <div className="content_modal">
-            {reserveToken ? (
-              <p>{amountNFTMin}</p>
-            ) : (
-              <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
-            )}
-            <p>{data?.metadata?.symbol}</p>
-          </div>
-          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
-            +
-          </div>
-          <div className="content_modal">
-            <FormatNumber number={amountTokenDec} />
-            <p>ETH</p>
-          </div>
-          {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-              <p className="text-xs">Price Updated</p>
-              <Button
-                disabled={isLoadingInforDML}
-                primary
-                className="px-6 py-2 bg-primary_400"
-                onClick={() => {
-                  setUpdatePrice(!updatePrice);
-                  setPreFetch(false);
-                }}
-              >
-                Accept
-              </Button>
-            </div>
+    <Wrapper>
+      <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
+        <p className="title_modal">You will receive</p>
+        <div className="content_modal">
+          {reserveToken ? (
+            <p>{amountNFTMin}</p>
+          ) : (
+            <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
           )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
-            <p>Slippage tolerance</p>
-            <p>{slippage}%</p>
-          </div>
-          <p className="mt-2 mb-6 text-sm text-shader_600">
-            Output is estimated. You will receive at least {amountNFTMin} NFT or
-            the transaction will revert
-          </p>
-          <div className="flex flex-col items-center mt-6">
-            {!isApprovedLiquidity && account && (
-              <Button
-                className="w-[126px] py-2 mx-auto"
-                primary
-                onClick={handleApproveDML}
-              >
-                APPROVE
-              </Button>
-            )}
-            {isApprovedLiquidity && (
-              <Button
-                disabled={isLoadingInforDML || preFectch}
-                primary={!isLoadingInforDML && !preFectch}
-                className="w-[144px] py-2"
-                active={isLoadingInforDML || preFectch}
-                onClick={removeLiquidity}
-              >
-                REMOVE
-                {isLoadingInforDML && (
-                  <BiLoaderAlt className="ml-1 text-white animate-spin" />
-                )}
-              </Button>
-            )}
-          </div>
+          <p>{data?.metadata?.symbol}</p>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
+        <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
+          +
+        </div>
+        <div className="content_modal">
+          <FormatNumber number={amountTokenDec} />
+          <p>ETH</p>
+        </div>
+        {preFectch && (
+          <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
+            <p className="text-xs">Price Updated</p>
+            <Button
+              disabled={isLoadingInforDML}
+              primary
+              className="px-6 py-2 bg-primary_400"
+              onClick={() => {
+                setUpdatePrice(!updatePrice);
+                setPreFetch(false);
+              }}
+            >
+              Accept
+            </Button>
+          </div>
+        )}
+        <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
+          <p>Slippage tolerance</p>
+          <p>{slippage}%</p>
+        </div>
+        <p className="mt-2 mb-6 text-sm text-shader_600">
+          Output is estimated. You will receive at least {amountNFTMin} NFT or
+          the transaction will revert
+        </p>
+        <div className="flex flex-col items-center mt-6">
+          {!isApprovedLiquidity && account && (
+            <Button
+              className="w-[126px] py-2 mx-auto"
+              primary
+              onClick={handleApproveDML}
+            >
+              APPROVE
+            </Button>
+          )}
+          {isApprovedLiquidity && (
+            <Button
+              disabled={isLoadingInforDML || preFectch}
+              primary={!isLoadingInforDML && !preFectch}
+              className="w-[144px] py-2"
+              active={isLoadingInforDML || preFectch}
+              onClick={removeLiquidity}
+            >
+              REMOVE
+              {isLoadingInforDML && (
+                <BiLoaderAlt className="ml-1 text-white animate-spin" />
+              )}
+            </Button>
+          )}
+        </div>
       </div>
 
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />

@@ -14,7 +14,7 @@ import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,12 +23,10 @@ import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 interface ModalRemoveLiquidityProps {
-  isOpenRemoveLiquidity: boolean;
   data: DataBase;
   routerAddress: string;
   type: string;
   isERC721: boolean;
-  setIsOpenRemoveLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
@@ -37,12 +35,10 @@ interface ModalRemoveLiquidityProps {
 const ModalRemoveLiquidity: React.FunctionComponent<
   ModalRemoveLiquidityProps
 > = ({
-  isOpenRemoveLiquidity,
   data,
   routerAddress,
   type,
   isERC721,
-  setIsOpenRemoveLiquidity,
   setHash,
   setIsOpenSuccess,
   setIsOpenError,
@@ -65,13 +61,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const router = useRouter();
   const queryErc = (router.query.erc as string) || "";
   const collectionAddress = queryErc.split("&")[0] || "";
-  const handleClose = (
-    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpenRemoveLiquidity(false);
-  };
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     setIdNFT([]);
@@ -209,165 +198,151 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   };
 
   return (
-    <Wrapper isOpen={isOpenRemoveLiquidity} onClick={handleClose}>
-      <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
-          <p className="title_modal">Remove Liquidity</p>
-          <div className="flex mt-4 gap-x-3">
-            <div className="relative w-10 h-10 ">
-              <div className="overflow-hidden rounded-lg">
-                <MediaNFT data={data} isControls={false} />
-              </div>
-              <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+    <Fragment>
+      <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg relative">
+        <p className="title_modal">Remove Liquidity</p>
+        <div className="flex mt-4 gap-x-3">
+          <div className="relative w-10 h-10 ">
+            <div className="overflow-hidden rounded-lg">
+              <MediaNFT data={data} isControls={false} />
+            </div>
+            <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+              <EtherIcon width={16} height={16} />
+            </div>
+          </div>
+          <div>
+            <div className="font-bold text-white truncate">
+              {data?.metadata?.name}
+            </div>
+
+            <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
+          </div>
+        </div>
+        {type === "erc721" && isSuccess && (
+          <NFTGrid
+            data={data721}
+            isFetching={isFetching}
+            handleChoiceNFT={handleChoiceNFT}
+            idNFT={idNFT}
+            isSearch={false}
+          />
+        )}
+        <div>
+          <div className="relative">
+            <div className="flex justify-between my-4 ">
+              <p className="font-semibold text-primary_400">Liquidity</p>
+              <div className="flex items-center font-bold text-white gap-x-1">
+                <FormatNumber number={balanceOfDML} />
                 <EtherIcon width={16} height={16} />
               </div>
             </div>
-            <div>
-              <div className="font-bold text-white truncate">
-                {data?.metadata?.name}
-              </div>
-
-              <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
+            <div className="flex mt-4 gap-x-2">
+              <input
+                className="input_item"
+                inputMode="decimal"
+                type="number"
+                placeholder="Enter amount"
+                value={inputLiquidity}
+                onChange={handleGetLiquidity}
+              />
+              <TabGroups
+                choices={["25%", "50%", "75%", "100%"]}
+                activeChoice={activeChoice}
+                onChoiceChange={handleChoiceChange}
+              />
             </div>
+            {isSufficientLiquidity && (
+              <p className="mb-2 ml-1 -mt-1 text-xs text-red" key="liquidity">
+                Insufficient Liquidity balance
+              </p>
+            )}
+            {showRequiredMessage && (
+              <p className="mx-auto ml-3 -mt-3 text-xs text-red" key="emptyNFT">
+                Required
+              </p>
+            )}
           </div>
-          {type === "erc721" && isSuccess && (
-            <NFTGrid
-              data={data721}
-              isFetching={isFetching}
-              handleChoiceNFT={handleChoiceNFT}
-              idNFT={idNFT}
-              isSearch
-            />
-          )}
           <div>
-            <div className="relative">
-              <div className="flex justify-between my-4 ">
-                <p className="font-semibold text-primary_400">Liquidity</p>
-                <div className="flex items-center font-bold text-white gap-x-1">
-                  <FormatNumber number={balanceOfDML} />
-                  <EtherIcon width={16} height={16} />
-                </div>
+            <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
+              NFT Receive
+              <div className="flex items-center justify-between gap-x-1">
+                {data.reserveTokenDecimals ? (
+                  <p>{amountNFTMin}</p>
+                ) : (
+                  <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
+                )}
+                <NFTIcon width={16} height={16} />
               </div>
-              <div className="flex mt-4 gap-x-2">
-                <input
-                  className="input_item"
-                  inputMode="decimal"
-                  type="number"
-                  placeholder="Enter amount"
-                  value={inputLiquidity}
-                  onChange={handleGetLiquidity}
-                />
-                <TabGroups
-                  choices={["25%", "50%", "75%", "100%"]}
-                  activeChoice={activeChoice}
-                  onChoiceChange={handleChoiceChange}
-                />
-              </div>
-              {isSufficientLiquidity && (
-                <p className="mb-2 ml-1 -mt-1 text-xs text-red" key="liquidity">
-                  Insufficient Liquidity balance
-                </p>
-              )}
-              {showRequiredMessage && (
-                <p
-                  className="mx-auto ml-3 -mt-3 text-xs text-red"
-                  key="emptyNFT"
-                >
-                  Required
-                </p>
-              )}
             </div>
-            <div>
-              <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
-                NFT Receive
-                <div className="flex items-center justify-between gap-x-1">
-                  {data.reserveTokenDecimals ? (
-                    <p>{amountNFTMin}</p>
-                  ) : (
-                    <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
-                  )}
-                  <NFTIcon width={16} height={16} />
-                </div>
+            <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
+              Total Liquidity
+              <div className="flex items-center justify-between gap-x-1">
+                <FormatNumber number={amountTokenDec} />
+                <EtherIcon width={16} height={16} />
               </div>
-              <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
-                Token
-                <div className="flex items-center justify-between gap-x-1">
-                  <FormatNumber number={amountTokenDec} />
-                  <EtherIcon width={16} height={16} />
-                </div>
-              </div>
-              {Number(amountTokenMin) < 1 && inputLiquidity && (
-                <p className="my-2 ml-3 text-xs text-red" key="inputNFT">
-                  Can't remove liquidity
-                </p>
+            </div>
+            {Number(amountTokenMin) < 1 && inputLiquidity && (
+              <p className="my-2 ml-3 text-xs text-red" key="inputNFT">
+                Can't remove liquidity
+              </p>
+            )}
+            <div className="flex justify-center">
+              {!isApprovedNFT && (
+                <Button
+                  className="w-[126px] py-2 mx-auto"
+                  primary
+                  onClick={() =>
+                    handleApproveNFT(
+                      account,
+                      wallet,
+                      data.nftAddress,
+                      setIsOpen,
+                      setIsOpenTransaction,
+                      routerAddress
+                    )
+                  }
+                >
+                  Approve NFT
+                </Button>
               )}
-              <div className="flex justify-center">
-                {!isApprovedNFT && (
-                  <Button
-                    className="w-[126px] py-2 mx-auto"
-                    primary
-                    onClick={() =>
-                      handleApproveNFT(
-                        account,
-                        wallet,
-                        data.nftAddress,
-                        setIsOpen,
-                        setIsOpenTransaction,
-                        routerAddress
-                      )
-                    }
-                  >
-                    Approve NFT
-                  </Button>
-                )}
-                {isApprovedNFT && (
-                  <div>
-                    {isERC721 ? (
-                      <Button
-                        className="p-2 mx-auto"
-                        primary={+amountNFTMin === idNFT.length}
-                        active={+amountNFTMin !== idNFT.length}
-                        disabled={+amountNFTMin !== idNFT.length}
-                        onClick={handleRemoveLiquidity}
-                      >
-                        Remove Liquidity
-                      </Button>
-                    ) : (
-                      <Button
-                        className="p-2 mx-auto"
-                        primary={inputLiquidity}
-                        active={!inputLiquidity}
-                        disabled={!inputLiquidity}
-                        onClick={handleRemoveLiquidity}
-                      >
-                        Remove Liquidity
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </div>
+              {isApprovedNFT && (
+                <div>
+                  {isERC721 ? (
+                    <Button
+                      className="p-2 mx-auto"
+                      primary={+amountNFTMin === idNFT.length}
+                      active={+amountNFTMin !== idNFT.length}
+                      disabled={+amountNFTMin !== idNFT.length}
+                      onClick={handleRemoveLiquidity}
+                    >
+                      Remove Liquidity
+                    </Button>
+                  ) : (
+                    <Button
+                      className="p-2 mx-auto"
+                      primary={inputLiquidity}
+                      active={!inputLiquidity}
+                      disabled={!inputLiquidity}
+                      onClick={handleRemoveLiquidity}
+                    >
+                      Remove Liquidity
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
-        </button>
       </div>
       <ModalConfirmRemoveLiquidity
-        isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity}
         routerAddress={routerAddress}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
         data={data}
         idNFT={idNFT}
         inputLiquidity={inputLiquidity}
-        setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity}
         totalSupply={totalSupply}
         setInputLiquidity={setInputLiquidity}
-        setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
         setHash={setHash}
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
@@ -378,7 +353,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         setIsOpenTransaction={setIsOpenTransaction}
         isTransaction={true}
       />
-    </Wrapper>
+    </Fragment>
   );
 };
 

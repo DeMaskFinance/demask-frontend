@@ -82,21 +82,7 @@ const SEPOLIA_DEMASK = {
   NAME: "Sepolia Testnet",
   CURRENCY: "ETH",
 };
-const Goerli_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_Goerli,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_Goerli,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_Goerli,
-  FACTORY_721: process.env.NEXT_PUBLIC_FACTORY_721_Goerli,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_Goerli,
-  ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_Goerli,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_Goerli,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_Goerli,
-  urltxHash: "https://goerli.etherscan.io/",
-  chainName: "Goerli Testnet",
-  NAME: "Goerli Testnet",
-  CURRENCY: "ETH",
-};
+
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
@@ -209,7 +195,6 @@ export {
   amountNFT,
   BLAST_DEMASK,
   Category,
-  Goerli_DEMASK,
   mediaType,
   network,
   SEPOLIA_DEMASK,

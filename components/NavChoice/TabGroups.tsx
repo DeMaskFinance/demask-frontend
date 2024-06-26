@@ -20,6 +20,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
   );
   const [translateX, setTranslateX] = useState(0);
   const [widthBtn, setWidthBtn] = useState(0);
+  const [isInclude, setIsInclude] = useState<boolean>(false);
   const handleButtonClick = (choice: string, index: number) => {
     onChoiceChange(choice);
     setWidthBtn(buttonRefs.current[index]?.offsetWidth ?? 0);
@@ -29,12 +30,22 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
     setTranslateX(totalWidth);
   };
   useEffect(() => {
-    if (buttonRefs.current[0]) {
-      setWidthBtn(buttonRefs.current[0].offsetWidth);
+    if (buttonRefs.current.length > 0) {
+      const activeIndex = choices.indexOf(activeChoice);
+      const exists = choices.includes(activeChoice);
+      setIsInclude(exists);
+
+      const totalWidth = buttonRefs.current
+        .slice(0, activeIndex)
+        .reduce((acc, ref) => (ref ? acc + ref.offsetWidth : acc), 0);
+
+      if (buttonRefs.current[activeIndex]) {
+        setWidthBtn(buttonRefs.current[activeIndex]?.offsetWidth || 92);
+      }
+
+      setTranslateX(totalWidth);
     }
-  }, []);
-  // const isInclude = choices.includes(`${activeChoice}%`);
-  // console.log(isInclude);
+  }, [activeChoice, choices]);
 
   return (
     <Fragment>
@@ -77,11 +88,11 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
                 ? "bg-green"
                 : activeChoice === "Sell"
                 ? "bg-red"
-                : "bg-primary_400"
+                : "bg-primary_500"
             }`}
             style={{
               transform: `translateX(${translateX}px)`,
-              width: `${activeChoice ? widthBtn : 0}px`,
+              width: `${activeChoice && isInclude ? widthBtn : 0}px`,
             }}
           ></div>
           {choices.map((choice, index) => (

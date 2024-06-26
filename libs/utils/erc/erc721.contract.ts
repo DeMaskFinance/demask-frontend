@@ -161,9 +161,9 @@ const swapERC20ERC721 = async (
   valueToSend: string | 0
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-  const estimatedGas = await contract.estimateGas.swap(
-    collectionAddress,
+  const estimatedGas = await contract.estimateGas.change(
     tokenAddress,
+    collectionAddress,
     idFrom,
     idTo,
     account,
@@ -171,9 +171,9 @@ const swapERC20ERC721 = async (
     { value: valueToSend }
   );
 
-  const result = await contract.swap(
-    collectionAddress,
+  const result = await contract.change(
     tokenAddress,
+    collectionAddress,
     idFrom,
     idTo,
     account,

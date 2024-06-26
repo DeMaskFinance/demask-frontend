@@ -20,7 +20,7 @@ interface ModalWalletProps {
 }
 const styles = {
   walletItem:
-    "flex items-center p-2 gap-x-4 text-white  hover:bg-shader_500  rounded-lg cursor-pointer",
+    "flex items-center p-2 gap-x-4 text-white  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({
@@ -28,16 +28,8 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
   setIsOpen,
   isAuthen,
 }) => {
-  const {
-    account,
-    wallet,
-    chainId,
-    demask,
-    tokenDefault,
-    updateAccount,
-    updateWallet,
-    updateChainId,
-  } = useContext(AccountContext);
+  const { chainId, demask, updateAccount, updateWallet, updateChainId } =
+    useContext(AccountContext);
   const dispatch = useDispatch();
   const router = useRouter();
   const handleClose = (
@@ -128,7 +120,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
 
   return (
     <Wrapper isOpen={isOpen} onClick={handleClose}>
-      <div className="w-[350px] h-fit max-w-[calc(100%-32px)] bg-shader_800  text-shader_200  rounded-lg relative p-4">
+      <div className="w-[350px] h-fit max-w-[calc(100%-32px)] bg_main  text-shader_200  rounded-lg relative p-4">
         <div className="flex items-center justify-between">
           <h2 className="font-bold text-white ">Connect your wallet</h2>
           <button className="" onClick={handleClose}>
@@ -138,19 +130,19 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
         <p className="mt-1 text-sm">
           If you don't have a wallet, you can create one now.
         </p>
-        <div className="mt-4 font-semibold">
+        <div className="mt-4 font-semibold flex flex-col gap-y-2">
           <div
             className={styles.walletItem}
             onClick={() => connectWallet("Metamask")}
           >
-            <Image src={images.metamaskWallet} alt="Metamask" className="w-8" />
+            <Image src={images.metamaskWallet} alt="Metamask" className="w-9" />
             <p>MetaMask</p>
           </div>
           <div
             className={styles.walletItem}
             onClick={() => connectWallet("Coinbase")}
           >
-            <Image src={images.coinbaseWallet} alt="Coinbase" className="w-8" />
+            <Image src={images.coinbaseWallet} alt="Coinbase" className="w-9" />
             <p>Coinbase</p>
           </div>
           <div
@@ -160,7 +152,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
             <Image
               src={images.walletConnect}
               alt="Wallet connect"
-              className="w-8"
+              className="w-9"
             />
             <p>WalletConnect</p>
           </div>
@@ -171,7 +163,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
             <Image
               src={images.binanceWallet}
               alt="Binance wallet"
-              className="w-8"
+              className="w-9"
             />
             <p>Binance wallet</p>
           </div>

@@ -46,7 +46,7 @@ const TabQuery: React.FC<TabQueryProps> = ({
                 ? "bg-green"
                 : tab === "sell"
                 ? "bg-red"
-                : "bg-primary_400"
+                : "bg-primary_500"
             }`}
             style={{
               transform: `translateX(${translateX}px)`,

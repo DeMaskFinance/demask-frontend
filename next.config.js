@@ -12,9 +12,10 @@ const nextConfig = {
       "cf-ipfs.com",
       "1b21fea1b71e52bc8b81e22b5a53a188.ipfscdn.io",
       "",
-      "ipfs"
+      "ipfs",
+      "ipfs.io"
     ],
-  },
+  }, 
   env: {
     NEXT_PUBLIC_APP_PORT: process.env.NEXT_PUBLIC_APP_PORT,
   },

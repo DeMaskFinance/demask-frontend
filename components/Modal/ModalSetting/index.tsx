@@ -37,7 +37,7 @@ const ModalSetting = () => {
   };
 
   return (
-    <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
+    <div className="h-fit w-[360px] md:w-[403px] rounded-lg relative">
       <h2 className="flex items-center justify-between mb-3 text-xl font-semibold text-white title">
         Transaction Configurations
       </h2>
@@ -59,7 +59,7 @@ const ModalSetting = () => {
           </Tippy>
         </div>
         <div className="flex items-center justify-between w-full gap-x-2">
-          <div className="rounded-lg border_500 bg-shader_600">
+          <div className="rounded-lg border_500 bg-shader_600 text-white font-semibold">
             <input
               type="number"
               value={slippageTo}
@@ -129,7 +129,6 @@ const ModalSetting = () => {
             }
           }}
         />
-        <NoteIcon width={14} height={14} />
       </div>
     </div>
   );

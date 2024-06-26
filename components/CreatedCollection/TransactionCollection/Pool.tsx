@@ -1,13 +1,13 @@
 import { Button } from "@/components/Buttons";
-import { LightBulbIcon, PoolListIcon } from "@/components/Icons";
+import { PoolListIcon } from "@/components/Icons";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import { liquidityUserERC721 } from "@/libs/service/liquidityService";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import PoolItem from "./PoolItem";
-import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
+import PoolItem from "./PoolItem";
 
 const Pool = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,18 +31,13 @@ const Pool = () => {
 
   return (
     <div className="h-full text-shader_500 ">
-      <div className="flex px-4 py-[10px] my-4 text-sm bg-shader_500 text-shader_200 gap-x-2  ">
-        <LightBulbIcon
-          width={20}
-          height={20}
-          className="flex-shrink-0 fill-yellow"
-        />
-        <p>Pools accrue trading fees towards depositors.</p>
+      <div className="px-4 py-2 my-4 bg-primary_500 bg-opacity-10 text-white gap-x-2 border border-primary_500 border-opacity-25 rounded-lg">
+        💰 Pools accrue trading fees towards depositors
       </div>
       {!account ? (
         <Button
           className="absolute bottom-0 flex items-end w-full py-2"
-          primary
+          gradient
           onClick={handleOpen}
         >
           Connect Wallet

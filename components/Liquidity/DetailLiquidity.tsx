@@ -1,4 +1,3 @@
-import { BackgroundDefault } from "@/components/Backgrounds";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
@@ -18,19 +17,16 @@ import {
   ModalError,
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { ModalWallet } from "@/components/Modal/ModalWallet";
+import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
-import { ModalWallet } from "@/components/Modal/ModalWallet";
-import TabTable from "@/components/NavChoice/TabTable";
-import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import { liquidityHistory } from "@/libs/service/liquidityService";
@@ -39,7 +35,6 @@ import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
 import { useQuery } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
-import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -377,9 +372,7 @@ const DetailLiquidity = () => {
             data={data}
             routerAddress={routerAddress}
             type="erc1155"
-            isOpenRemoveLiquidity={isOpenRemoveLiquidity}
             isERC721={false}
-            setIsOpenRemoveLiquidity={setIsOpenRemoveLiquidity}
             setHash={setHash}
             setIsOpenSuccess={setIsOpenSuccessRemove}
             setIsOpenError={setIsOpenErrorRemove}

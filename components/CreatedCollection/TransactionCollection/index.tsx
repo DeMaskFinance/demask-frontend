@@ -83,7 +83,7 @@ const TransactionCollection = () => {
               <SettingIcon width={18} height={18} />
             </div>
           </DialogTrigger>
-          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+          <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
             <DialogHeader>
               <DialogDescription>
                 <ModalSetting />

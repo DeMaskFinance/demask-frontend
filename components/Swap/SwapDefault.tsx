@@ -98,7 +98,7 @@ export default function SwapDefault() {
               <SettingIcon width={18} height={18} />
             </div>
           </DialogTrigger>
-          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+          <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
             <DialogHeader>
               <DialogDescription>
                 <ModalSetting />
@@ -110,11 +110,11 @@ export default function SwapDefault() {
     },
   ];
   return (
-    <div className="relative px-4 pt-24 pb-32 mx-auto lg:mb-0 swap lg:px-primary md:px-14">
+    <div className="relative px-4 h-[100vh] flex flex-col mx-auto swap items-center justify-center">
       <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
         <BgGradient className="w-[1020px] h-[350px]" />
       </div>
-      <div className="max-w-[480px] h-fit flex gap-y-1 lg:gap-y-12 mx-auto">
+      <div className="w-[480px] h-fit flex gap-y-1 lg:gap-y-12 mx-auto">
         <div className="relative w-full p-6 font-semibold border rounded-lg bg-shader_800 border-shader_600">
           <div className="flex justify-between gap-4 mb-2">
             <p className="text-xl text-white">Demask Swaps</p>

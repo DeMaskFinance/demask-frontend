@@ -1,5 +1,4 @@
 import { Button } from "@/components/Buttons";
-import { LightBulbIcon } from "@/components/Icons";
 import {
   ModalError,
   ModalTransation,
@@ -18,14 +17,9 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
 import NFTGrid from "./NFTsGrids";
 
 const Change = () => {

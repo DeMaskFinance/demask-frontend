@@ -47,14 +47,15 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     }
   };
   useEffect(() => {
-    if (chainId) {
-      const foundNetwork = network.find((item) => item.chain === chainId);
+    const foundNetwork = network.find((item) => item.chain === chainId);
+    if (foundNetwork) {
       setFilterNetwork(foundNetwork);
     } else {
+      updateChainId(network[0].chain);
       setFilterNetwork(network[0]);
     }
   }, [chainId]);
-  console.log(filterNetwork);
+  console.log(filterNetwork, chainId);
 
   const LogoComponent: any = filterNetwork?.logo;
   return (
@@ -62,11 +63,8 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       className=""
       interactive
       render={(attrs) => (
-        <div className="w-[280px] menu font-semibold" tabIndex={-1} {...attrs}>
-          <p className="p-2 text-base border-b-[1px] border-shader_300">
-            Select a network
-          </p>
-          <ul className="flex flex-col mt-2 gap-y-3">
+        <div className="w-[234px] menu " tabIndex={-1} {...attrs}>
+          <ul className="flex flex-col gap-y-[6px]">
             {network.map((item, index) => (
               <li
                 key={index}
@@ -75,17 +73,17 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
                 } `}
                 onClick={() => !item.disable && handleChangeNetwork(item.chain)}
               >
-                <div className="flex items-center gap-x-2">
+                <div
+                  className={`flex items-center gap-x-2 font-semibold ${
+                    item.disable && "opacity-30"
+                  }`}
+                >
                   <item.logo width={24} height={24} />
-                  <p
-                    className={`${
-                      filterNetwork?.chain === item.chain && "text-primary_400"
-                    }`}
-                  >
-                    {item.name}
-                  </p>
+                  <p>{item.name}</p>
                 </div>
-                {item.disable && <p className="right-0 text-xs">Upcoming</p>}
+                {item.disable && (
+                  <p className="right-0 text-xs text-primary_300">Upcoming</p>
+                )}
               </li>
             ))}
           </ul>

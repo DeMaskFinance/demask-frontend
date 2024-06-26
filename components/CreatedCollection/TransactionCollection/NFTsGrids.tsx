@@ -51,7 +51,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   const [val, setVal] = useState([0]);
   return (
     <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
-      <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[400px] ">
+      <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[260px] ">
         {data?.data?.map((item: any, index: number) => (
           <div
             key={index}
@@ -59,16 +59,16 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             onClick={() => handleChoiceNFT(item)}
           >
             <div
-              className={`relative items-center text-sm  border-[2px] border-primary_500 border-opacity-10 rounded-lg cursor-pointer lg:text-base ${
+              className={`relative items-center text-sm  border-[1.5px] border-primary_500 border-opacity-10 rounded-lg cursor-pointer lg:text-base ${
                 idNFT.includes(Number(item.nftID))
                   ? "border-primary_400 border-opacity-100"
                   : ""
               }`}
             >
-              <div className="relative h-[78px] lg:h-[100px] group">
+              <div className="relative h-[98px] group rounded-t-lg overflow-hidden">
                 <MediaNFT data={item} isControls={false} hover zoom />
               </div>
-              <div className="flex justify-between w-full p-2 text-xs font-semibold text-white">
+              <div className="flex justify-between w-full px-2 py-1 text-xs font-semibold text-white">
                 <p>#{item.nftID}</p>
                 <Dialog>
                   <DialogTrigger asChild>

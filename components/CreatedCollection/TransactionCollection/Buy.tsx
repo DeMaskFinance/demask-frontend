@@ -159,7 +159,9 @@ const Buy = () => {
                 <li className="flex items-center justify-between mb-4">
                   Price:
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber number={(amountTokenBuy / 1e18).toString()} />{" "}
+                    <FormatNumber
+                      number={(amountTokenBuy / idNFT.length / 1e18).toString()}
+                    />{" "}
                     <EtherIcon width={16} height={16} />
                   </div>
                 </li>

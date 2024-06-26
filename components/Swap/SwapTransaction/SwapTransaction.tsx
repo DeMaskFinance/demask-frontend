@@ -14,18 +14,8 @@ import {
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
-import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import ModalSetting from "@/components/Modal/ModalSetting";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   ModalError,
   ModalTransation,
@@ -34,6 +24,13 @@ import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import ModalWarningRemove from "@/components/Modal/ModalWarningRemove";
 import { TabGroups } from "@/components/NavChoice";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
@@ -42,14 +39,13 @@ import useDebounce from "@/hooks/useDebounce";
 import useFee from "@/hooks/useFee";
 import useInformationToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
-import { activeNFTPercent } from "@/libs/constants";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
-import { Fragment, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
@@ -285,7 +281,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               <SettingIcon width={18} height={18} />
             </div>
           </DialogTrigger>
-          <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+          <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
             <DialogHeader>
               <DialogDescription>
                 <ModalSetting />
@@ -396,7 +392,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     View detail
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-4">
+                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-0">
                   <DialogHeader>
                     <DialogDescription>
                       <ModalDetail

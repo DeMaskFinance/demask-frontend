@@ -193,7 +193,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                               <EyeIcon width={16} height={16} />
                             </div>
                           </DialogTrigger>
-                          <DialogContent className="max-w-3xl p-4 border bg-shader_800 border-shader_500">
+                          <DialogContent className="max-w-3xl p-0 border bg-shader_800 border-shader_500">
                             <DialogHeader>
                               <DialogDescription>
                                 {selectedItem && (

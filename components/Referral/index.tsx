@@ -78,7 +78,7 @@ const Referral = () => {
                 <span className="text-primary_400">5%</span>.
               </p>
               <p>
-                Recieve<span className="text-primary_400"> 5% ($Monad)</span>
+                Recieve<span className="text-primary_400"> 5% </span>
                  trading fee rebate.
               </p>
               <p>

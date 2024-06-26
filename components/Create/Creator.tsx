@@ -48,7 +48,7 @@ const Creator = () => {
               <div className="block w-full mb-6 lg:w-1/2">
                 <ActiveLink href={`/create/mint`}>
                   <div className="p-4 border cursor-pointer rounded-[10px] bg-shader_700 group border-shader_500 hover:-translate-y-2 transition-all duration-150 ease-linear ">
-                    <div className="p-2 bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg">
+                    <div className="p-2 bg-cyan-400 bg-opacity-[0.15] w-10 h-10 rounded-lg">
                       <CreateIcon width={24} height={24} />
                     </div>
                     <p className="mt-3 font-bold text-white">Create NFT</p>

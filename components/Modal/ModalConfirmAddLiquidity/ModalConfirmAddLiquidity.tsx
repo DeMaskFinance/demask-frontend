@@ -1,26 +1,23 @@
-import abiErc20 from "@/abi/abiErc20.json";
-import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
+import Copy from "@/components/Common/Copy";
 import FormatNumber from "@/components/Common/FormatNumber";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
+import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
 import useInformationToken from "@/hooks/useInformationToken";
-import { getProvider } from "@/libs/connection/getProvider";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import handleBignumber from "@/libs/utils/handleBignumber";
-import { ethers } from "ethers";
+import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
-import ModalDocument from "../ModalLength/ModalDocument";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
-import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
-import ercContract from "@/libs/utils/erc/erc.contract";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
   tokenAddress: string;
@@ -61,7 +58,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenError,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isApprovedToken, setIsApprovedToken] = useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
@@ -73,9 +69,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const { allowanceToken, bigNumberBalance } = useInformationToken(
+  const { bigNumberBalance } = useInformationToken(
     account,
     tokenAddress,
     wallet,
@@ -96,41 +91,15 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   );
 
   useEffect(() => {
-    const handleCheckApproveToken = async () => {
-      if (tokenAddress === nativeAddress) {
-        setIsApprovedToken(true);
-      } else {
-        if (amountErcDesired && allowanceToken) {
-          if (Number(allowanceToken) < Number(amountErcDesired.toString())) {
-            setIsApprovedToken(false);
-          } else {
-            setIsApprovedToken(true);
-          }
-        }
-      }
-    };
-    handleCheckApproveToken();
-  }, [
-    account,
-    wallet,
-    tokenAddress,
-    inputToken,
-    isOpenTransaction,
-    amountErcDesired,
-    allowanceToken,
-  ]);
-  useEffect(() => {
     const load = setInterval(() => {
       if (isOpenConfirmAddLiquidity) {
-        setPreFetch(true);
-      } else {
-        setPreFetch(false);
+        setUpdatePrice(!updatePrice);
       }
     }, 20000);
     return () => {
       clearInterval(load);
     };
-  }, [isOpenConfirmAddLiquidity, preFectch]);
+  }, [isOpenConfirmAddLiquidity]);
   const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
     dmlToken,
     wallet,
@@ -173,32 +142,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       }
     }
   }, [inputNFT, inputToken, reserveToken, reserveNFT, dmlToken]);
-  const handleApproveToken = async () => {
-    if (account) {
-      const contract = await ercContract.erc(wallet, tokenAddress, abiErc20);
-      let result;
-      try {
-        if (dmlToken === "0x0000000000000000000000000000000000000000") {
-          result = await contract.approve(
-            routerAddress,
-            handleBignumber(Number(inputToken), Number(data?.tokenDecimals))
-          );
-        } else {
-          result = await contract.approve(
-            routerAddress,
-            exponentialToDecimal(amountErcDesired)
-          );
-        }
-        setIsOpenTransaction(true);
-        await result.wait();
-        setIsOpenTransaction(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      setIsOpen(true);
-    }
-  };
   const addLiquidity = async () => {
     if (!account) {
       setIsOpen(true);
@@ -252,99 +195,106 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenConfirmAddLiquidity(false);
   };
+  console.log(isSufficientToken, reserveToken);
 
   return (
     <Wrapper isOpen={isOpenConfirmAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-          <p className="title_modal">Create Pool</p>
-          <div className="content_modal">
-            <p>{inputNFT}</p>
-            <div className="max-w-[60%]">
-              <ModalDocument data={data?.metadata?.symbol} />
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
+          <div className="px-4 pt-4">
+            <div className="flex justify-between text-primary_200 border-shader_500">
+              <p className="title_modal">Create Pool</p>
+              <div onClick={handleClose}>
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+              </div>
             </div>
           </div>
-          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
-            +
-          </div>
-          <div className="content_modal">
-            <FormatNumber number={amountErcDesiredToDec} />
-            <p>{data?.tokenSymbol}</p>
-          </div>
-          {isSufficientToken && (
-            <p className="text-xs text-red" key="inputNFT">
-              Insufficient Token balance
-            </p>
-          )}
-          {Math.floor(amountErcDesired) === 0 && (
-            <p className="mt-2 text-xs text-red" key="inputNFT">
-              Can't add liquidity
-            </p>
-          )}
-          {/* {isSufficientNFT && (
-                                <p className="mb-2 ml-3 -mt-1 text-xs text-red" key="totalSale">
-                                    Insufficient NFT balance
-                                </p>
-                            )} */}
-          {preFectch && (
-            <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-              <p className="text-xs">Price Updated</p>
+          <div className="p-4 text-sm text-shader_200">
+            <div className="flex items-center pb-4 border-b gap-x-3 border-shader_500">
+              <div className="w-[65px] h-[65px] rounded-lg overflow-hidden">
+                <MediaNFT data={data} isControls />
+              </div>
+              <div>
+                <p className="text-base title">{data?.metadata?.name}</p>
+                <div className="flex items-center gap-x-1">
+                  <a
+                    href={`${demask.urltxHash}address/${nftAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {`${nftAddress.slice(0, 8)}...${nftAddress.slice(-8)}`}
+                  </a>
+                  <Copy content={nftAddress} />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col py-4 gap-y-2">
+              <div className="flex justify-between ">
+                <p>NFT quantity</p>
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  {inputNFT}
+                  <p>
+                    <EtherIcon width={14} height={14} />
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-between ">
+                <p>Liquidity</p>
+                <div className="flex gap-x-1">
+                  <div className="flex items-center font-bold text-white gap-x-1">
+                    <FormatNumber number={amountErcDesiredToDec} />
+                    <EtherIcon width={14} height={14} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between ">
+                <div className="flex items-center gap-x-1">
+                  <span>Slippage tolerance</span>
+                  <Tippy
+                    interactive
+                    content={
+                      <div className="flex">
+                        Output is estimated. You will receive at least{" "}
+                        {inputNFT} NFT or the transaction will revert
+                      </div>
+                    }
+                  >
+                    <div>
+                      <NoteIcon width={14} height={14} />
+                    </div>
+                  </Tippy>
+                </div>
+                <div className="flex items-center font-bold text-primary_300 gap-x-1">
+                  {slippage}%
+                </div>
+              </div>
+              {isSufficientToken && reserveToken && (
+                <p className="text-xs text-red" key="Tokenbalance">
+                  Insufficient Token balance
+                </p>
+              )}
+              <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
+                <p className="text-primary_200">Total Pay</p>
+                <div className="flex items-center font-bold text-white gap-x-1">
+                  <FormatNumber number={amountErcDesiredToDec} />
+                  <EtherIcon width={14} height={14} />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
               <Button
                 disabled={isLoadingInforDML}
-                primary
-                className="px-6 py-2 bg-primary_400"
-                onClick={() => {
-                  setUpdatePrice(!updatePrice);
-                  setPreFetch(false);
-                }}
-              >
-                Accept
-              </Button>
-            </div>
-          )}
-          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
-            <p>Slippage tolerance</p>
-            <p>{slippage}%</p>
-          </div>
-          <p className="mt-2 mb-6 text-sm text-shader_600">
-            Output is estimated. You will receive at least {inputNFT} NFT or the
-            transaction will revert
-          </p>
-          <div className="flex flex-col items-center mt-6">
-            {isApprovedToken && (
-              <button
-                type="button"
-                disabled={isLoadingInforDML || preFectch}
-                className={`py-2 flex justify-center items-center gap-x-1 w-[144px] hover:bg-white border hover:text-primary_400 hover:border-primary_400 ${
-                  isLoadingInforDML || preFectch
-                    ? "bg-shader_500"
-                    : "bg-primary_400"
-                } rounded-lg text-sm text-white mx-auto block`}
+                primary={!isLoadingInforDML}
+                className="px-8 py-3"
+                // active={isLoadingInforDML || preFectch}
+                isLoadingBtn={isLoadingInforDML}
                 onClick={addLiquidity}
               >
-                Create pool
-                {isLoadingInforDML && (
-                  <BiLoaderAlt className="text-white animate-spin" />
-                )}
-              </button>
-            )}
-            {!isApprovedToken && tokenAddress !== nativeAddress && (
-              <Button
-                className="w-[126px] py-2"
-                primary
-                onClick={handleApproveToken}
-              >
-                Approve Token
+                Create Pool
               </Button>
-            )}
+            </div>
           </div>
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
       </div>
       <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation

@@ -50,6 +50,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
+  console.log(isSufficientToken);
+
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -233,7 +235,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   {isSufficientToken && (
                     <p
                       className="mt-1 mb-2 ml-3 text-xs text-red"
-                      key="inputNFT"
+                      key="isSuToken"
                     >
                       Insufficient Token balance
                     </p>
