@@ -14,8 +14,6 @@ import { login } from "@/store/profileSlice";
 import { useRouter } from "next/router";
 
 interface ModalWalletProps {
-  isOpen?: boolean;
-  setIsOpen?: any;
   isAuthen?: true;
 }
 const styles = {
@@ -23,23 +21,11 @@ const styles = {
     "flex items-center p-2 gap-x-4 text-white  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
 };
 
-const ModalWallet: React.FC<ModalWalletProps> = ({
-  isOpen,
-  setIsOpen,
-  isAuthen,
-}) => {
+const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
   const { chainId, demask, updateAccount, updateWallet, updateChainId } =
     useContext(AccountContext);
   const dispatch = useDispatch();
-  const router = useRouter();
-  const handleClose = (
-    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpen(false);
-    isAuthen && router.replace("/swap");
-  };
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
   const connectWallet = async (walletName: string) => {
     try {
       let provider;
@@ -72,7 +58,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
               chainId,
               walletName,
               demask,
-              setIsOpen,
+              setIsWrongNetwork,
               updateChainId
             );
             if (!networkSwitched) {
@@ -110,8 +96,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
         );
         updateAccount(accounts[0]);
         updateWallet(walletName);
-        document.body.style.overflowY = "auto";
-        setIsOpen(false);
       }
     } catch (error) {
       console.error(error);
@@ -119,57 +103,52 @@ const ModalWallet: React.FC<ModalWalletProps> = ({
   };
 
   return (
-    <Wrapper isOpen={isOpen} onClick={handleClose}>
-      <div className="w-[350px] h-fit max-w-[calc(100%-32px)] bg_main  text-shader_200  rounded-lg relative p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-bold text-white ">Connect your wallet</h2>
-          <button className="" onClick={handleClose}>
-            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
-          </button>
+    <div className=" h-fit bg_main w-[350px]  text-shader_200  rounded-lg relative p-4">
+      <div className="flex items-center justify-between">
+        <h2 className="font-bold text-white ">Connect your wallet</h2>
+      </div>
+      <p className="mt-1 text-sm">
+        If you don't have a wallet, you can create one now.
+      </p>
+      <div className="mt-4 font-semibold flex flex-col gap-y-2">
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("Metamask")}
+        >
+          <Image src={images.metamaskWallet} alt="Metamask" className="w-9" />
+          <p>MetaMask</p>
         </div>
-        <p className="mt-1 text-sm">
-          If you don't have a wallet, you can create one now.
-        </p>
-        <div className="mt-4 font-semibold flex flex-col gap-y-2">
-          <div
-            className={styles.walletItem}
-            onClick={() => connectWallet("Metamask")}
-          >
-            <Image src={images.metamaskWallet} alt="Metamask" className="w-9" />
-            <p>MetaMask</p>
-          </div>
-          <div
-            className={styles.walletItem}
-            onClick={() => connectWallet("Coinbase")}
-          >
-            <Image src={images.coinbaseWallet} alt="Coinbase" className="w-9" />
-            <p>Coinbase</p>
-          </div>
-          <div
-            className={styles.walletItem}
-            onClick={() => connectWallet("WalletConnect")}
-          >
-            <Image
-              src={images.walletConnect}
-              alt="Wallet connect"
-              className="w-9"
-            />
-            <p>WalletConnect</p>
-          </div>
-          <div
-            className={styles.walletItem}
-            onClick={() => connectWallet("Binance")}
-          >
-            <Image
-              src={images.binanceWallet}
-              alt="Binance wallet"
-              className="w-9"
-            />
-            <p>Binance wallet</p>
-          </div>
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("Coinbase")}
+        >
+          <Image src={images.coinbaseWallet} alt="Coinbase" className="w-9" />
+          <p>Coinbase</p>
+        </div>
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("WalletConnect")}
+        >
+          <Image
+            src={images.walletConnect}
+            alt="Wallet connect"
+            className="w-9"
+          />
+          <p>WalletConnect</p>
+        </div>
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("Binance")}
+        >
+          <Image
+            src={images.binanceWallet}
+            alt="Binance wallet"
+            className="w-9"
+          />
+          <p>Binance wallet</p>
         </div>
       </div>
-    </Wrapper>
+    </div>
   );
 };
 

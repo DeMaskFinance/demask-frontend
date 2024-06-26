@@ -57,7 +57,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
@@ -144,7 +143,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   }, [inputNFT, inputToken, reserveToken, reserveNFT, dmlToken]);
   const addLiquidity = async () => {
     if (!account) {
-      setIsOpen(true);
       return;
     }
 
@@ -296,7 +294,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           </div>
         </div>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

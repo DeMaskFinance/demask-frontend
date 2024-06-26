@@ -20,12 +20,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
   const [isOpenSellNFT, setIsOpenSellNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
@@ -115,10 +115,6 @@ const Sell = () => {
     setIsOpenSellNFT(true);
     document.body.style.overflowY = "hidden";
   };
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
   const dataFake = {
     dmlAddress: dmlToken,
     tokenDecimals: "18",
@@ -144,15 +140,6 @@ const Sell = () => {
                 {idNFT.length > 0 && (
                   <ul className="text-sm text-shader_200">
                     <li className="flex items-center justify-between mb-1">
-                      Send:
-                      <div className="flex items-center font-bold text-white gap-x-1">
-                        <FormatNumber
-                          number={(amountSellDec / 1e18).toString()}
-                        />{" "}
-                        <EtherIcon width={16} height={16} />
-                      </div>
-                    </li>
-                    <li className="flex items-center justify-between mb-1">
                       Receive: NFTs
                       <div className="flex items-center font-bold text-white gap-x-1">
                         {idNFT.length}
@@ -170,7 +157,7 @@ const Sell = () => {
                     </li>
                     <li>
                       <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-                        <div className="">Total Pay</div>
+                        <div className="">Total Cost</div>
                         <div className="flex items-center px-2 py-1 text-white gap-x-1">
                           <FormatNumber
                             number={(amountTokenSell / 1e18).toString()}
@@ -190,7 +177,6 @@ const Sell = () => {
                         account,
                         wallet,
                         collectionAddress,
-                        setIsOpen,
                         setIsOpenTransaction,
                         routerAddress
                       )
@@ -222,13 +208,16 @@ const Sell = () => {
           )}
         </Fragment>
       ) : (
-        <Button
-          className="absolute bottom-0 w-full py-2"
-          primary
-          onClick={handleOpen}
-        >
-          Connect Wallet
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="absolute bottom-0 w-full py-2" primary>
+              Connect Wallet
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-[350px] p-0 border-none">
+            <ModalWallet />
+          </DialogContent>
+        </Dialog>
       )}
       {data && account && (
         <ModalSellNFT
@@ -250,7 +239,6 @@ const Sell = () => {
           setIsOpenError={setIsOpenErrorSell}
         />
       )}
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

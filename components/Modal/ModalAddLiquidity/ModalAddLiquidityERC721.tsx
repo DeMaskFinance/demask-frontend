@@ -36,7 +36,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
@@ -262,7 +261,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     account,
                     wallet,
                     collectionAddress,
-                    setIsOpen,
                     setIsOpenTransaction,
                     routerAddress
                   )
@@ -274,13 +272,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           </div>
         </div>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-
-      <ModalTransation
-        isOpenTransation={isOpenTransaction}
-        setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
-      />
     </Fragment>
   );
 };

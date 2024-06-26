@@ -59,11 +59,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   const [amountTokenMin, setAmountTokenMin] = useState("");
   const [amountTokenDec, setAmountTokenDec] = useState("");
   const [amountNFTMin, setAmountNFTMin] = useState("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const { demask, tokenDefault, account, wallet, slippage } =
-    useContext(AccountContext);
+  const { account, wallet, slippage } = useContext(AccountContext);
   const router = useRouter();
   const queryErc = (router.query.erc as string) || "";
   const collectionAddress = queryErc.split("&")[0] || "";
@@ -302,8 +300,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           )}
         </div>
       </div>
-
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

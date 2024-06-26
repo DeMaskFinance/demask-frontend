@@ -43,7 +43,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
@@ -266,7 +265,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       account,
                       wallet,
                       data.nftAddress,
-                      setIsOpen,
                       setIsOpenTransaction,
                       routerAddress
                     )
@@ -279,7 +277,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           </div>
         </div>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalConfirmAddLiquidity
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
         isOpenTransaction={isOpenTransaction}

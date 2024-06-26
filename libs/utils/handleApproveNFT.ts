@@ -1,13 +1,10 @@
 import abiErc1155 from "@/abi/abiErc1155.json";
-import { ethers } from "ethers";
-import { getProvider } from "../connection/getProvider";
 import ercContract from "./erc/erc.contract";
 
 const handleApproveNFT = async (
   account: string,
   wallet: string,
   nftAddress: string,
-  setIsOpen: any,
   setIsOpenTransaction: any,
   routerAddress: string
 ) => {
@@ -22,8 +19,6 @@ const handleApproveNFT = async (
       console.error(error);
       setIsOpenTransaction(false);
     }
-  } else {
-    setIsOpen(true);
   }
 };
 export default handleApproveNFT;

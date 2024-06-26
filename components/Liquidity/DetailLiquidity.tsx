@@ -144,10 +144,6 @@ const DetailLiquidity = () => {
     setIsOpenAddLiquidity(true);
     document.body.style.overflowY = "hidden";
   };
-  const handleRemoveLiquidity = () => {
-    setIsOpenRemoveLiquidity(true);
-    document.body.style.overflowY = "hidden";
-  };
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -163,9 +159,17 @@ const DetailLiquidity = () => {
     {
       icon: <RemoveIcon width={18} height={18} className="cursor-pointer " />,
       content: "Remove Pool",
-      onClick: () => {
-        handleRemoveLiquidity();
-      },
+      modal: () => (
+        <ModalRemoveLiquidity
+          data={data}
+          routerAddress={routerAddress}
+          type="erc1155"
+          isERC721={false}
+          setHash={setHash}
+          setIsOpenSuccess={setIsOpenSuccessRemove}
+          setIsOpenError={setIsOpenErrorRemove}
+        />
+      ),
     },
     {
       icon: <SwapIcon width={18} height={18} className="cursor-pointer " />,
@@ -253,6 +257,23 @@ const DetailLiquidity = () => {
                           <Link href={action.link} className="group">
                             {action.icon}
                           </Link>
+                        ) : action.modal ? (
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <div>{action.icon}</div>
+                            </DialogTrigger>
+                            <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                              <ModalRemoveLiquidity
+                                data={data}
+                                routerAddress={routerAddress}
+                                type="erc1155"
+                                isERC721={false}
+                                setHash={setHash}
+                                setIsOpenSuccess={setIsOpenSuccessRemove}
+                                setIsOpenError={setIsOpenErrorRemove}
+                              />
+                            </DialogContent>
+                          </Dialog>
                         ) : (
                           <div onClick={action.onClick} className="">
                             {action.icon}
@@ -317,21 +338,28 @@ const DetailLiquidity = () => {
                     </DialogContent>
                   </Dialog>
 
-                  <Button
-                    gradient
-                    className="flex w-full p-3 gap-x-1"
-                    onClick={handleGetReward}
-                  >
-                    {account ? (
-                      <>
-                        Claim
-                        <FormatNumber number={reward} />
-                        ETH
-                      </>
-                    ) : (
-                      "Connect Wallet"
-                    )}
-                  </Button>
+                  {account ? (
+                    <Button
+                      gradient
+                      className="flex w-full p-3 gap-x-1"
+                      onClick={handleGetReward}
+                    >
+                      Claim
+                      <FormatNumber number={reward} />
+                      ETH
+                    </Button>
+                  ) : (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button gradient className="flex w-full p-3 gap-x-1">
+                          Connect Wallet
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="w-[350px] p-0 border-none">
+                        <ModalWallet />
+                      </DialogContent>
+                    </Dialog>
+                  )}
                 </div>
               </div>
             </div>
@@ -340,7 +368,6 @@ const DetailLiquidity = () => {
       ) : (
         <SkeletonPoolDetail />
       )}
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {data && account && (
         <>
@@ -368,15 +395,6 @@ const DetailLiquidity = () => {
       )}
       {data && account && (
         <>
-          <ModalRemoveLiquidity
-            data={data}
-            routerAddress={routerAddress}
-            type="erc1155"
-            isERC721={false}
-            setHash={setHash}
-            setIsOpenSuccess={setIsOpenSuccessRemove}
-            setIsOpenError={setIsOpenErrorRemove}
-          />
           <ModalSuccess
             isOpenSuccess={isOpenSuccessRemove}
             transactionHash={hash}

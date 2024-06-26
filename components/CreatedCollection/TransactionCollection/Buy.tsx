@@ -7,6 +7,7 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
@@ -24,7 +25,6 @@ const Buy = () => {
     useContext(AccountContext);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
@@ -114,10 +114,6 @@ const Buy = () => {
     setIsOpenBuyNFT(true);
     document.body.style.overflowY = "hidden";
   };
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
   const dataFake = {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
@@ -145,7 +141,7 @@ const Buy = () => {
                 <li className="flex items-center justify-between mb-1">
                   Send:
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber number={(amountTokenBuy / 1e18).toString()} />{" "}
+                    <FormatNumber number={(amountInMax / 1e18).toString()} />{" "}
                     <EtherIcon width={16} height={16} />
                   </div>
                 </li>
@@ -159,9 +155,7 @@ const Buy = () => {
                 <li className="flex items-center justify-between mb-4">
                   Price:
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber
-                      number={(amountTokenBuy / idNFT.length / 1e18).toString()}
-                    />{" "}
+                    <FormatNumber number={(amountTokenBuy / 1e18).toString()} />{" "}
                     <EtherIcon width={16} height={16} />
                   </div>
                 </li>
@@ -180,9 +174,16 @@ const Buy = () => {
             )}
 
             {!account ? (
-              <Button className="w-full py-4" primary onClick={handleOpen}>
-                Connect Wallet
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-full py-4" primary>
+                    Connect Wallet
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[350px] p-0 border-none">
+                  <ModalWallet />
+                </DialogContent>
+              </Dialog>
             ) : !isApprovedNFT ? (
               <Button
                 className="w-full py-4"
@@ -192,7 +193,6 @@ const Buy = () => {
                     account,
                     wallet,
                     collectionAddress,
-                    setIsOpen,
                     setIsOpenTransaction,
                     routerAddress
                   )
@@ -253,7 +253,6 @@ const Buy = () => {
           setIsOpenError={setIsOpenErrorBuy}
         />
       )}
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalSuccess
         isOpenSuccess={isOpenSuccessBuy}
         transactionHash={hash}

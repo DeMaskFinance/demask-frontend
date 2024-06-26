@@ -1,16 +1,16 @@
 import { AvatarCustom } from "@/components/Avatars";
 import { Button } from "@/components/Buttons";
 import { LoadingIcon } from "@/components/Icons";
-import { ModalWallet } from "@/components/Modal/ModalWallet";
 import AccountContext from "@/context/AccountContext";
 import { referralApply } from "@/libs/service/referralService";
 import { briefDocument } from "@/libs/utils/formatComon";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { Fragment, useContext, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
+import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { MdDone } from "react-icons/md";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ModalWallet } from "@/components/Modal/ModalWallet";
 interface UserRefInfo {
   avatar?: string;
   userAddress: string;
@@ -61,13 +61,8 @@ const StatusMessage: React.FC<StatusMessageProps> = ({
 };
 const Invite = () => {
   const { account } = useContext(AccountContext);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [check, setCheck] = useState<any>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
   const referral = useRouter().query.code;
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -126,9 +121,16 @@ const Invite = () => {
           {account ? (
             "Connected"
           ) : (
-            <Button className="h-10 px-8" primary onClick={handleOpen}>
-              Connect Wallet
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="h-10 px-8" primary>
+                  Connect Wallet
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[350px] p-0 border-none">
+                <ModalWallet />
+              </DialogContent>
+            </Dialog>
           )}
         </div>
         <div className="flex items-center gap-x-4 mt-8">
@@ -174,7 +176,6 @@ const Invite = () => {
       >
         Confirm
       </Button>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

@@ -53,7 +53,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   setIsOpenSuccess,
   setHash,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const { RPC: rpc } = demask;
@@ -149,7 +148,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   const handleSellNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
-      setIsOpen(true);
       return;
     }
     if (
@@ -365,7 +363,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
           </div>
         </div>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

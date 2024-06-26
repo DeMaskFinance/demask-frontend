@@ -10,7 +10,8 @@ import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
 import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { ModalError } from "@/components/Modal/ModalTransation";
-import { ModalWallet } from "@/components/Modal/ModalWallet";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import TabQuery from "@/components/NavChoice/TabQuery";
 import AccountContext from "@/context/AccountContext";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
@@ -21,14 +22,12 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { NumericFormat } from "react-number-format";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Box from "./Box";
 import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
-import TabQuery from "@/components/NavChoice/TabQuery";
-import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
-import { NumericFormat } from "react-number-format";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -520,7 +519,6 @@ export default function DetailLaunchPad() {
             )
           )}
         </div>
-        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalSuccess
           isOpenSuccess={isOpenSuccess}
           transactionHash={hash}

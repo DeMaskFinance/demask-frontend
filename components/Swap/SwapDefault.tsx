@@ -20,7 +20,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useInformationToken from "@/hooks/useInformationToken";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,34 +27,15 @@ import { useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 export default function SwapDefault() {
   const router = useRouter();
-  const { account, wallet, chainId, demask, slippage } =
-    useContext(AccountContext);
-  const {
-    ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { account, demask, slippage } = useContext(AccountContext);
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [inputNFT, setInputNFT] = useState<string>("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("25%");
-  const { balanceToken } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress
-  );
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
   const handleChoicePercent = (choice: string) => {
     setActiveChoiceNFT(choice);
-  };
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
   };
   const actions = [
     {
@@ -234,16 +214,18 @@ export default function SwapDefault() {
             )}
 
             {!account && (
-              <Button
-                className="w-full py-2 font-semibold"
-                gradient
-                onClick={handleOpen}
-              >
-                Connect Wallet
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-full py-2 font-semibold" gradient>
+                    Connect Wallet
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[350px] p-0 border-none">
+                  <ModalWallet />
+                </DialogContent>
+              </Dialog>
             )}
           </div>
-          <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
       </div>
     </div>

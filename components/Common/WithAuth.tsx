@@ -7,8 +7,6 @@ import { BackgroundDefault } from "../Backgrounds";
 
 function WithAuth({ children }: any) {
   const { isLoggedIn } = useSelector(selectProfile);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <div>
       <div className="mx-auto min-h-[94vh] relative">
@@ -16,11 +14,9 @@ function WithAuth({ children }: any) {
           <div>{children}</div>
         ) : (
           <BackgroundDefault>
-            <ModalWallet
-              isOpen={!isLoggedIn}
-              setIsOpen={setIsOpen}
-              isAuthen={true}
-            />
+            <div className="w-full min-h-[70vh] flex justify-center items-center">
+              <ModalWallet isAuthen={true} />
+            </div>
           </BackgroundDefault>
         )}
       </div>

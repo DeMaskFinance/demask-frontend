@@ -588,7 +588,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   account,
                   wallet,
                   nftAddress,
-                  setIsOpen,
                   setIsOpenTransaction,
                   routerAddress
                 )
@@ -598,14 +597,19 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </Button>
           )}
           {!account && (
-            <Button className="w-full py-2" gradient onClick={handleOpen}>
-              Connect Wallet
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="w-full py-2" gradient onClick={handleOpen}>
+                  Connect Wallet
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[350px] p-0 border-none">
+                <ModalWallet />
+              </DialogContent>
+            </Dialog>
           )}
         </div>
       </div>
-
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       {data && <ModalWarningRemove isOpenWarning={data?.isDeleted} />}
       {data && account && (
         <ModalBuyNFT

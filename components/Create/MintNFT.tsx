@@ -8,11 +8,9 @@ import getMetadataUrl from "@/libs/utils/getMetadata";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Button from "../Buttons/Button";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import { ModalWallet } from "../Modal/ModalWallet";
 interface mintProps {
   amount: number;
   url: string;
@@ -38,9 +36,9 @@ export default function MintNFT({
 }: any) {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
   const { account, wallet, demask, chainId, updateChainId } =
     useContext(AccountContext);
@@ -70,7 +68,7 @@ export default function MintNFT({
         chainId,
         wallet,
         demask,
-        setIsOpen,
+        setIsWrongNetwork,
         updateChainId
       );
       if (!networkSwitched) {
@@ -108,53 +106,48 @@ export default function MintNFT({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (account) {
-      setIsProcess(true);
-      const emptyInputFields = [];
-      if (name === "") {
-        emptyInputFields.push("name");
-      }
+    setIsProcess(true);
+    const emptyInputFields = [];
+    if (name === "") {
+      emptyInputFields.push("name");
+    }
 
-      if (symbol === "") {
-        emptyInputFields.push("symbol");
-      }
-      if (totalSupply === 0 || totalSupply === undefined) {
-        emptyInputFields.push("totalSupply");
-      }
-      if (fileIPFS === null) {
-        emptyInputFields.push("fileIPFS");
-        toast.error("File not found.Try again!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+    if (symbol === "") {
+      emptyInputFields.push("symbol");
+    }
+    if (totalSupply === 0 || totalSupply === undefined) {
+      emptyInputFields.push("totalSupply");
+    }
+    if (fileIPFS === null) {
+      emptyInputFields.push("fileIPFS");
+      toast.error("File not found.Try again!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
 
-      setEmptyInputs(emptyInputFields);
-      if (emptyInputFields.length === 0) {
-        const urlMetadata = getMetadataUrl({
-          attributeItems,
-          fileType,
-          fileIPFS,
-          name,
-          symbol,
-          description,
-        });
-        mintNFT({
-          amount: Number(totalSupply),
-          url: await urlMetadata,
-        });
-      } else {
-        setIsProcess(false);
-      }
+    setEmptyInputs(emptyInputFields);
+    if (emptyInputFields.length === 0) {
+      const urlMetadata = getMetadataUrl({
+        attributeItems,
+        fileType,
+        fileIPFS,
+        name,
+        symbol,
+        description,
+      });
+      mintNFT({
+        amount: Number(totalSupply),
+        url: await urlMetadata,
+      });
     } else {
-      setIsOpen(true);
-      document.body.style.overflowY = "hidden";
+      setIsProcess(false);
     }
   };
   return (
@@ -170,7 +163,6 @@ export default function MintNFT({
             Create NFT
           </Button>
         </div>
-        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
         <ModalTransation
           isOpenTransation={isProcess}
           setIsOpenTransaction={setIsProcess}

@@ -53,7 +53,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const [amountTokenMin, setAmountTokenMin] = useState("");
   const [amountTokenDec, setAmountTokenDec] = useState("");
   const [amountNFTMin, setAmountNFTMin] = useState("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] =
     useState<boolean>(false);
@@ -176,7 +175,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     data: data721,
     isRefetching,
     isSuccess,
-    refetch,
     isFetching,
   } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress],
@@ -196,28 +194,30 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
+  console.log(idNFT, balanceOfDML, data.dmlAddress);
 
   return (
     <Fragment>
-      <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg relative">
+      <div className="h-fit rounded-lg relative">
         <p className="title_modal">Remove Liquidity</p>
-        <div className="flex mt-4 gap-x-3">
-          <div className="relative w-10 h-10 ">
-            <div className="overflow-hidden rounded-lg">
-              <MediaNFT data={data} isControls={false} />
+        {type === "erc1155" && (
+          <div className="flex mt-4 gap-x-3">
+            <div className="relative w-10 h-10 ">
+              <div className="overflow-hidden rounded-lg">
+                <MediaNFT data={data} isControls={false} />
+              </div>
+              <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+                <EtherIcon width={16} height={16} />
+              </div>
             </div>
-            <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
-              <EtherIcon width={16} height={16} />
+            <div>
+              <div className="font-bold text-white truncate">
+                {data?.metadata?.name}
+              </div>
+              <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
             </div>
           </div>
-          <div>
-            <div className="font-bold text-white truncate">
-              {data?.metadata?.name}
-            </div>
-
-            <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
-          </div>
-        </div>
+        )}
         {type === "erc721" && isSuccess && (
           <NFTGrid
             data={data721}
@@ -296,7 +296,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                       account,
                       wallet,
                       data.nftAddress,
-                      setIsOpen,
                       setIsOpenTransaction,
                       routerAddress
                     )
@@ -347,7 +346,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
       />
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

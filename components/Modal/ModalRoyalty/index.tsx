@@ -16,7 +16,6 @@ interface ModalRoyaltyProps {
 const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
   dmlAddress,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const { chainId, demask, account, wallet } = useContext(AccountContext);
 
@@ -147,7 +146,6 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
         </Formik>
       </div>
 
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isProcess}
         setIsOpenTransaction={setIsProcess}

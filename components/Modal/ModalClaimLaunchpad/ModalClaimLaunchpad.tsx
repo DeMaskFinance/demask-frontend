@@ -89,7 +89,6 @@ const ModalClaimLaunchpad: React.FunctionComponent<ModalConfirmClaimProps> = ({
           <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
         </button>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

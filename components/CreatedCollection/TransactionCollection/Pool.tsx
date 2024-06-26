@@ -8,14 +8,9 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import PoolItem from "./PoolItem";
-
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 const Pool = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { account, chainId } = useContext(AccountContext);
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
   const router = useRouter();
   const queryErc = (router.query.erc as string) || "";
   const collectionAddress = queryErc.split("&")[0] || "";
@@ -35,13 +30,19 @@ const Pool = () => {
         💰 Pools accrue trading fees towards depositors
       </div>
       {!account ? (
-        <Button
-          className="absolute bottom-0 flex items-end w-full py-2"
-          gradient
-          onClick={handleOpen}
-        >
-          Connect Wallet
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              className="absolute bottom-0 flex items-end w-full py-2"
+              gradient
+            >
+              Connect Wallet
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-[350px] p-0 border-none">
+            <ModalWallet />
+          </DialogContent>
+        </Dialog>
       ) : (
         <div>
           {isLoading ? (
@@ -65,8 +66,6 @@ const Pool = () => {
           )}
         </div>
       )}
-
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

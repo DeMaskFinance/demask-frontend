@@ -1,3 +1,4 @@
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
@@ -7,15 +8,16 @@ import Tippy from "@tippyjs/react/headless";
 import { ethers } from "ethers";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
+import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
-import { MdLogout } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
+import { AvatarCustom } from "../Avatars";
+import BackgroundParticles from "../Backgrounds/BackGroundParticles";
+import Copy from "../Common/Copy";
 import Maintenance from "../Common/Maintenance";
-import Marquee from "react-fast-marquee";
 import {
-  CopyIcon,
   EditIcon,
   EtherIcon,
   LightIcon,
@@ -30,9 +32,6 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
-import { AvatarCustom } from "../Avatars";
-import Copy from "../Common/Copy";
-import BackgroundParticles from "../Backgrounds/BackGroundParticles";
 const style = {
   btnWallet:
     "flex items-center h-10  pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold transition duration-150 ease-out rounded-lg group bg_gradient active:bg-primary_400 text-white gap-x-2 ",
@@ -40,7 +39,6 @@ const style = {
 
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const {
     account,
     updateAccount,
@@ -66,10 +64,6 @@ export default function Header() {
     true
   );
   const dispatch = useDispatch();
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -306,23 +300,28 @@ export default function Header() {
                 </Tippy>
               </div>
             ) : (
-              <button className={style.btnWallet} onClick={handleOpen}>
-                <WalletIcon width={20} height={20} className="" />
-                <p>
-                  Connect{" "}
-                  <span className="hidden lg:inline-block md:inline-block">
-                    wallet
-                  </span>
-                </p>
-              </button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button className={style.btnWallet}>
+                    <WalletIcon width={20} height={20} className="" />
+                    <p>
+                      Connect{" "}
+                      <span className="hidden lg:inline-block md:inline-block">
+                        wallet
+                      </span>
+                    </p>
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="w-[350px] p-0 border-none">
+                  <ModalWallet />
+                </DialogContent>
+              </Dialog>
             )}
           </div>
         </div>
       </header>
       <Maintenance />
-      <div className="absolute z-[50]">
-        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
+
       {account && <WrongNetwork />}
     </div>
   );

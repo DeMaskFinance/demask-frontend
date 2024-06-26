@@ -52,7 +52,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   setIsOpenSuccess,
   setHash,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [amountInMax, setAmountInMax] = useState<number>(0);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
@@ -138,7 +137,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
-      setIsOpen(true);
       return;
     }
     if (
@@ -363,7 +361,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           </div>
         </div>
       </div>
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

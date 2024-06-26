@@ -69,7 +69,6 @@ export default function AddLiquidity() {
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -178,10 +177,6 @@ export default function AddLiquidity() {
       }
     }
   }, [inputNFT, inputToken, data]);
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
 
   useEffect(() => {
     if (tokenAddress) {
@@ -510,7 +505,6 @@ export default function AddLiquidity() {
                     account,
                     wallet,
                     nftAddress,
-                    setIsOpen,
                     setIsOpenTransaction,
                     routerAddress
                   )
@@ -529,9 +523,16 @@ export default function AddLiquidity() {
               </Button>
             )}
             {!account && (
-              <Button className="w-full py-2" primary onClick={handleOpen}>
-                Connect Wallet
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-full py-2" primary>
+                    Connect Wallet
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[350px] p-0 border-none">
+                  <ModalWallet />
+                </DialogContent>
+              </Dialog>
             )}
             {Math.floor(amountErcDesired) === 0 &&
               inputNFT &&
@@ -579,7 +580,6 @@ export default function AddLiquidity() {
         <SkeletonAddLiquidity />
       )}
       {/* {(isLoading || isFetching) && !isSuccess && <SkeletonAddLiquidity />} */}
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <ModalTransation
         isOpenTransation={isOpenTransaction}

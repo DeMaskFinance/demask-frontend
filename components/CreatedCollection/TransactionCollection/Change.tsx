@@ -5,6 +5,7 @@ import {
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
@@ -35,14 +36,13 @@ const Change = () => {
   const router = useRouter();
   const queryErc = (router.query.erc as string) || "";
   const collectionAddress = queryErc.split("&")[0] || "";
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const {
     ROUTER_721: routerAddress,
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const { balanceToken, bigNumberBalance } = useInformationToken(
+  const { bigNumberBalance } = useInformationToken(
     account,
     nativeAddress,
     wallet,
@@ -128,10 +128,6 @@ const Change = () => {
     } else {
       setIdNFTOutput([...idNFTOutput, Number(item.nftID)]);
     }
-  };
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
   };
   const queryClient = useQueryClient();
 
@@ -236,9 +232,16 @@ const Change = () => {
         )}
         <div className="absolute bottom-0 w-full">
           {!account ? (
-            <Button className="w-full py-4" primary onClick={handleOpen}>
-              Connect Wallet
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="w-full py-4" primary>
+                  Connect Wallet
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[350px] p-0 border-none">
+                <ModalWallet />
+              </DialogContent>
+            </Dialog>
           ) : !isApprovedNFT ? (
             <Button
               className="w-full py-4"
@@ -248,7 +251,6 @@ const Change = () => {
                   account,
                   wallet,
                   collectionAddress,
-                  setIsOpen,
                   setIsOpenTransaction,
                   routerAddress
                 )
@@ -308,7 +310,6 @@ const Change = () => {
         type="Swap NFTs Failed"
         setIsOpenError={setIsOpenErrorSwap}
       />
-      <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
