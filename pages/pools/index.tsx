@@ -100,7 +100,29 @@ export default function Liquidity() {
               onChoiceChange={handleChoiceChange}
               isDefault
             />
-            {account && data?.pages[0]?.combinedRecords.length !== 0 && (
+            {/* {account && data?.pages[0]?.combinedRecords.length !== 0 && (
+              
+            )} */}
+            {!account || data?.pages[0]?.combinedRecords.length === 0 ? (
+              <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200">
+                <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
+                  <SearchIcon
+                    width={20}
+                    height={20}
+                    className="text-primary_400"
+                  />
+                </div>
+                <p>Your active liquidity positions will appear here. </p>
+                <a
+                  href="https://docs.demask.finance/products/dex/how-to-add-remove-lp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-primary_400"
+                >
+                  How to add Liquidity?
+                </a>
+              </div>
+            ) : (
               <>
                 <div className="border-t border-shader_500">
                   {isSuccess &&
@@ -133,27 +155,6 @@ export default function Liquidity() {
                 )}
               </>
             )}
-            {(!account || data?.pages[0]?.combinedRecords.length === 0) &&
-              !isLoading && (
-                <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200">
-                  <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
-                    <SearchIcon
-                      width={20}
-                      height={20}
-                      className="text-primary_400"
-                    />
-                  </div>
-                  <p>Your active liquidity positions will appear here. </p>
-                  <a
-                    href="https://docs.demask.finance/products/dex/how-to-add-remove-lp"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-primary_400"
-                  >
-                    How to add Liquidity?
-                  </a>
-                </div>
-              )}
             {isLoading && account && (
               <div className="flex items-center justify-center w-full h-full grow">
                 <LoadingIcon width={30} height={30} className=" animate-spin" />

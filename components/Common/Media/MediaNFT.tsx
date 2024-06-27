@@ -33,7 +33,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 className={`w-full  h-full transition-transform duration-150 overflow-hidden lg:max-h-[calc(100vh-326px)] object-cover aspect-square ${
                   zoom ? "group-hover:scale-[1.05]" : ""
                 } ${!loaded ? "opacity-0" : "opacity-100"}`}
-                blurDataURL="/PlaceholderIMG.png"
+                blurDataURL="/placeholderIMG.png"
                 onError={(event: any) => {
                   event.target.srcset =
                     "https://api.demask.finance/media/default_image.jpg";
@@ -68,7 +68,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                   }
                 : {})}
               className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
-              poster="/PlaceholderIMG.png"
+              poster="/placeholderIMG.png"
             />
           )}
           {data.metadata?.image &&
@@ -90,7 +90,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
             )}
           {!data.metadata?.image && !data.metadata?.animation_url && (
             <Image
-              src="/PlaceholderIMG.png"
+              src="/placeholderIMG.png"
               alt="noDataIMG"
               width={680}
               height={576}
@@ -102,7 +102,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
         </div>
       ) : (
         <Image
-          src="/PlaceholderIMG.png"
+          src="/placeholderIMG.png"
           alt="placeholder"
           width={680}
           height={576}

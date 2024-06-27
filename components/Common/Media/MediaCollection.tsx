@@ -20,7 +20,7 @@ const MediaCollection: React.FC<MediaCollectionProps> = ({ avatar, zoom }) => {
         />
       ) : (
         <Image
-          src="/PlaceholderIMG.png"
+          src="/placeholderIMG.png"
           alt="placeholder"
           width={1000}
           height={1000}
