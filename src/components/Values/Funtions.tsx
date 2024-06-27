@@ -6,12 +6,12 @@ const Funtions = () => {
   const functionList = [
     {
       title: "All Assets",
-      des: "List ERC721 or ERC1155 listed in ERC20.",
+      des: "List ERC721 or ERC1155 listed in Native Token.",
       img: "/Assets.svg",
     },
     {
       title: "Decentralized",
-      des: "An on-chain AMM Protocol for Trading between an NFT Collection and an ERC20 Token.",
+      des: "An on-chain AMM Protocol for Trading between an NFT Collection and an Native Token.",
       img: "/Decentralized.svg",
     },
     {

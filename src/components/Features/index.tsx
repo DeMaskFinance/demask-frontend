@@ -47,7 +47,7 @@ const Features = () => {
     <div className="pb-16 pt-0 md:py-[143px] px-4" id="features">
       <TitleMain
         title="OUR FEATURES"
-        description="An on-chain AMM Protocol for Trading between an NFT Collection and an ERC20 Token"
+        description="An on-chain AMM Protocol for Trading between an NFT Collection and an Native Token"
         id="tsparticles-2"
         icon={<StartIcon />}
         className="shadow-features border-[#99E0FF] border-opacity-35"

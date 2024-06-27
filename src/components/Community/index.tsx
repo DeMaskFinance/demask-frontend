@@ -44,7 +44,7 @@ const Community = () => {
         className="shadow-community border-[#FFEFD0]"
       />
       <div className="py-2 px-3 text-sm bg-link-gradient rounded-full text-white relative gradient-border flex gap-x-2 items-center w-fit mx-auto mt-8 ">
-        <p className="text-nowrap">Lorem ipsum dolor sit amet, consectetur</p>
+        <p className="text-nowrap">Growth through collaboration and sharing.</p>
         <LDownIcon width={16} height={16} />
         <BackgroundParticles value={6000} id="ts_particle9" />
       </div>
