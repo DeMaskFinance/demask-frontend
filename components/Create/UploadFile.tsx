@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { Button } from "../Buttons";
 import { CreateIcon, DeployIcon, UploadIcon } from "../Icons";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 
 const UploadFileNFT: React.FC<UploadFileProps> = ({
   setFileIPFS,
@@ -213,13 +214,12 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
           </div>
         ) : values.avatar ? (
           <div className="relative w-40 h-40">
-            <Image
-              src={values.avatar}
-              alt="pictureframe"
+            <img
+              src={formatLinkIPFS(values.avatar)}
+              alt="avatar"
               width={504}
               height={160}
               sizes="100vw"
-              quality={100}
               className="object-cover w-full h-full rounded-2xl aspect-square"
             />
           </div>

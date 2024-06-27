@@ -4,7 +4,7 @@ import AccountContext from "@/context/AccountContext";
 import { NFTTopService } from "@/libs/service";
 import { topCollectionService } from "@/libs/service/collectionService";
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { Fragment, useContext } from "react";
 
 const TopCollection = () => {
   const { chainId } = useContext(AccountContext);
@@ -19,7 +19,7 @@ const TopCollection = () => {
   });
 
   return (
-    <div className="">
+    <Fragment>
       {data && data.length > 0 ? (
         <div>
           <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
@@ -40,7 +40,7 @@ const TopCollection = () => {
           )}
         </>
       )}
-    </div>
+    </Fragment>
   );
 };
 

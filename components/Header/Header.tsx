@@ -26,16 +26,13 @@ import {
   UserIcon,
   WalletIcon,
 } from "../Icons";
-import { LogoDeMask } from "../Logo/Logo";
+import { DemaskIcon, LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
-const style = {
-  btnWallet:
-    "flex items-center h-10  pl-2 lg:px-4 pr-2 justify-center text-sm font-semibold transition duration-150 ease-out rounded-lg group bg_gradient active:bg-primary_400 text-white gap-x-2 ",
-};
+import { Button } from "../Buttons";
 
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
@@ -187,7 +184,14 @@ export default function Header() {
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link href="https://demask.finance/" target="_blank">
-              <LogoDeMask width={105} height={24} className="fill-white" />
+              <LogoDeMask
+                width={105}
+                height={24}
+                className="fill-white hidden md:block"
+              />
+              <Button className="md:block py-[9px] px-[9px] md:hidden" gradient>
+                <DemaskIcon width={22} height={22} />
+              </Button>
             </Link>
           </div>
           <div className="hidden w-full lg:block">
@@ -206,24 +210,21 @@ export default function Header() {
             } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
           <div className="flex items-center gap-x-2">
-            <div
-              className="text-primary_400 lg:hidden"
+            <Button
+              className="md:hidden px-[9px] h-10"
+              active
               onClick={() => {
                 setShowSearch(!showSearch);
                 document.body.style.overflowY = "hidden";
               }}
             >
-              <SearchIcon
-                width={20}
-                height={20}
-                className="text-white cursor-pointer"
-              />
-            </div>
+              <SearchIcon width={20} height={20} />
+            </Button>
 
             <div
               className={`${
                 showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
-              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
+              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
                 <Search
@@ -238,7 +239,7 @@ export default function Header() {
                   setShowSearch(false);
                   document.body.style.overflowY = "auto";
                 }}
-                className={`absolute top-2 right-4 flex items-center p-1 rounded-full shadow-md bg-white`}
+                className={`absolute top-2 right-4 flex items-center p-1 rounded-full shadow-md bg-shader_300`}
               >
                 <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
               </button>
@@ -302,15 +303,13 @@ export default function Header() {
             ) : (
               <Dialog>
                 <DialogTrigger asChild>
-                  <button className={style.btnWallet}>
-                    <WalletIcon width={20} height={20} className="" />
-                    <p>
-                      Connect{" "}
-                      <span className="hidden lg:inline-block md:inline-block">
-                        wallet
-                      </span>
-                    </p>
-                  </button>
+                  <Button
+                    gradient
+                    className=" h-10 px-[10px] md:px-3 flex gap-x-2"
+                  >
+                    <WalletIcon width={20} height={20} />
+                    <p className="hidden md:block">Connect Wallet</p>
+                  </Button>
                 </DialogTrigger>
                 <DialogContent className="w-[350px] p-0 border-none">
                   <ModalWallet />

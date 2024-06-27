@@ -68,7 +68,7 @@
 
 @layer base {
   body {
-    @apply bg-shader_900 text-shader_500;
+    @apply bg-shader_900 text-shader_500 box-border;
   }
   header {
     @apply bg-shader_900 border-none;

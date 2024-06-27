@@ -20,13 +20,14 @@ const MediaCollection: React.FC<MediaCollectionProps> = ({ avatar, zoom }) => {
         />
       ) : (
         <Image
-          src="/Placeholder.png"
-          alt="test"
-          width={680}
-          height={576}
+          src="/PlaceholderIMG.png"
+          alt="placeholder"
+          width={1000}
+          height={1000}
           sizes="(max-width: 770px) 100vw"
-          className="w-full rounded-lg h-full object-cover"
-          blurDataURL={`${images.blur}`}
+          className="w-full h-full object-cover"
+          unoptimized
+          // blurDataURL={`${images.blur}`}
         />
       )}
     </div>

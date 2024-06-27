@@ -70,9 +70,7 @@ export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className="box-border w-full overflow-visible">
       <Header />
-      <main
-        className={`lg:mb-0 mb-[100px] ${isEvent ? "mt-[104px]" : "mt-16"}`}
-      >
+      <main className={`lg:mb-0 mb-8 ${isEvent ? "mt-[104px]" : "mt-16"}`}>
         {children}
       </main>
       <Footer />

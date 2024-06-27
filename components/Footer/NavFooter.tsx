@@ -5,11 +5,9 @@ import { useContext, useEffect, useState } from "react";
 import {
   CreateIcon,
   LaunchpadIcon,
-  OthersIcon,
-  SwapIcon,
-  TradeIcon,
+  PoolIcon,
 } from "../Icons/Mobile/IconMobile";
-import { RankIcon } from "../Icons";
+import { DiamondIcon, RankIcon, SeeMoreIcon, SwapIcon } from "../Icons";
 
 export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);
@@ -21,16 +19,16 @@ export default function NavFooter() {
   }, [activeChoice]);
   const router = useRouter();
   const data = [
-    { id: 1, name: "Mint", url: "/create", icon: CreateIcon },
-    { id: 2, name: "Launchpad", url: "/launchpad", icon: LaunchpadIcon },
     { id: 3, name: "Swap", url: `/swap`, icon: SwapIcon },
-    { id: 4, name: "Pools", url: "/pools", icon: TradeIcon },
-    { id: 5, name: "Leaderboard", url: `/leaderboard`, icon: RankIcon },
+    { id: 1, name: "Create", url: "/create", icon: CreateIcon },
+    { id: 2, name: "Launchpad", url: "/launchpad", icon: LaunchpadIcon },
+    { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
+    { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
     {
       id: 6,
-      name: "Docs",
+      name: "More",
       url: "https://docs.demask.finance/",
-      icon: OthersIcon,
+      icon: SeeMoreIcon,
     },
   ];
   return (
@@ -43,45 +41,32 @@ export default function NavFooter() {
           active ? "block" : "hidden"
         } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
       ></div>
-      <footer className="fixed bottom-0 z-20 w-full bg-white lg:hidden">
-        <div>
-          <ul className="border-t flex justify-between pt-4 pb-2 px-4 gap-4 text-[10px] items-center">
-            {data.map((item, index) => (
-              <li
-                className="flex items-center justify-between mb-4"
-                key={index}
+      <footer className="fixed bottom-0 z-20 w-full bg-shader_900 lg:hidden">
+        <ul className="border-t flex justify-between h-16 text-[10px] items-center border-shader_500">
+          {data.map((item, index) => (
+            <li
+              className="flex items-center justify-center flex-1 h-full relative"
+              key={index}
+            >
+              {router.pathname === item.url && (
+                <div
+                  className={`absolute transition-transform duration-100 ease-linear border-t-[3px] border-primary_500 h-full top-0 w-full`}
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(144, 117, 254, 0.15) 0%, rgba(144, 117, 254, 0.00) 100%)",
+                  }}
+                ></div>
+              )}
+              <Link
+                href={`${item.url}`}
+                className={`flex flex-col items-center gap-2 w-full h-full justify-center`}
               >
-                <Link
-                  href={`${item.url}`}
-                  className={`flex flex-col items-center gap-2 ${
-                    router.pathname === "/overview" ? "text-primary_400" : ""
-                  }`}
-                >
-                  {
-                    <item.icon
-                      width={24}
-                      height={24}
-                      className={`fill-shader_600 ${
-                        router.asPath.includes(item.url.split("?")[0])
-                          ? "fill-primary_400"
-                          : ""
-                      }`}
-                    />
-                  }
-                  <p
-                    className={`${
-                      router.asPath.includes(item.url.split("?")[0])
-                        ? "text-primary_400"
-                        : ""
-                    }`}
-                  >
-                    {item.name}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+                {<item.icon width={20} height={20} className="text-white" />}
+                <p className="text-white font-semibold">{item.name}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </footer>
     </>
   );

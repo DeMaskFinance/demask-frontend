@@ -78,12 +78,12 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
         </div>
       ) : (
         <div
-          className={`flex relative items-center p-1 text-sm text-center text-white rounded-lg bg-shader_600 border_500 w-full ${
+          className={`flex relative items-center p-1 text-sm text-center text-white h-10 rounded-lg bg-shader_600 border_500 w-full ${
             isOverview ? "lg:hidden" : ""
           }`}
         >
           <div
-            className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-9 ${
+            className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-8 ${
               activeChoice === "Buy"
                 ? "bg-green"
                 : activeChoice === "Sell"

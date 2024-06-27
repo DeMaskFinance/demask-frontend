@@ -145,7 +145,40 @@ const getFeeManager = async (
     };
   }
 };
-
+const getBuyArrays = async (
+  feeManager: string,
+  amount: number,
+  dmlToken: string,
+  account: string,
+  wallet: string
+) => {
+  if (dmlToken && account) {
+    const contract = await ercContract.erc(wallet, feeManager, abiFeeManager);
+    try {
+      const result = await contract.getBuyArrays(dmlToken, amount);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+const getSellArrays = async (
+  feeManager: string,
+  amount: number,
+  dmlToken: string,
+  account: string,
+  wallet: string
+) => {
+  if (dmlToken && account) {
+    const contract = await ercContract.erc(wallet, feeManager, abiFeeManager);
+    try {
+      const result = await contract.getSellArrays(dmlToken, amount, account);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 const ercContract = {
   erc,
   approveNFT,
@@ -155,5 +188,7 @@ const ercContract = {
   fillCreate,
   setRoyalty,
   getFeeManager,
+  getBuyArrays,
+  getSellArrays,
 };
 export default ercContract;

@@ -40,8 +40,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const collectionAddress = useRouter().query.edit as string;
-  const validInput = validCollectionInput;
-  const uploadFile = uploadFileIPFSCollection;
+  console.log(data);
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required").max(50),
@@ -166,8 +165,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
   const onSubmit = async (values: any) => {
     // Handle form submission
-    console.log("!23312", values);
-
     try {
       await collectionService.updateCollection(
         {

@@ -37,6 +37,7 @@ import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import ModalRoyalty from "../Modal/ModalRoyalty";
 import Classify from "../Profile/Inventory/Classify";
+import { MediaCollection } from "../Common/Media";
 export default function DetailCollection() {
   const { account, chainId, demask } = useContext(AccountContext);
   const [isFilter, setIsFilter] = useState<boolean>(false);
@@ -126,28 +127,12 @@ export default function DetailCollection() {
             }`}
           >
             <div
-              className={` w-16 h-16 ${
+              className={` w-16 h-16 rounded-xl overflow-hidden ${
                 dataDetail?.collaborators.includes(account) &&
                 "group-hover:brightness-[0.8]"
               }`}
             >
-              {dataDetail?.avatar ? (
-                <Image
-                  src={formatLinkIPFS(dataDetail?.avatar)}
-                  alt="banner"
-                  width={64}
-                  height={64}
-                  className="object-cover w-full h-full rounded-xl "
-                />
-              ) : (
-                <Image
-                  src="/Placeholder.png"
-                  width={64}
-                  height={64}
-                  className="object-cover w-full h-full rounded-xl"
-                  alt="1"
-                />
-              )}
+              <MediaCollection avatar={formatLinkIPFS(dataDetail?.avatar)} />
             </div>
             {dataDetail?.collaborators.includes(account) && (
               <div>

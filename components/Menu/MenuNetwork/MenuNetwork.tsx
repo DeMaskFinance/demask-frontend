@@ -1,3 +1,4 @@
+import { DownIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { network } from "@/libs/constants";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
@@ -91,14 +92,14 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       )}
     >
       <button
-        className={`flex items-center px-3 h-10 py-2  justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
+        className={`flex items-center px-[10px] md:px-3 h-10 py-2  justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
       >
         <LogoComponent width={20} height={20} className="" />
         <p className="hidden 2xl:block whitespace-nowrap">
           {filterNetwork?.name}
         </p>
         <span className="text-shader_100 2xl:hidden">
-          <BsCaretDownFill />
+          <DownIcon width={20} height={20} />
         </span>
       </button>
     </Tippy>

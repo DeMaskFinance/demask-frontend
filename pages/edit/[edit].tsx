@@ -14,8 +14,10 @@ const updateMeta = {
   title: "Edit Collection",
 };
 const EditCollection = () => {
-  const collectionAddress = useRouter().query.edit as string;
+  const queryErc = (useRouter().query.edit as string) || "";
+  const collectionAddress = queryErc.split("&")[0] || "";
   const { chainId } = useContext(AccountContext);
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
@@ -25,6 +27,7 @@ const EditCollection = () => {
       }
     },
   });
+  console.log(data);
 
   return (
     <BackgroundDefault>

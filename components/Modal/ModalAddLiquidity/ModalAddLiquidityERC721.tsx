@@ -185,7 +185,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
               ) : (
                 <div>
                   {data ? (
-                    <div className="relative flex items-center justify-between w-full py-2 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 text-primary_100">
+                    <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 text-primary_100">
                       <div className="">Total Liquidity</div>
                       <div className="flex items-center px-2 py-1 text-white gap-x-1">
                         <FormatNumber number={amountErcDesiredToDec} />{" "}
