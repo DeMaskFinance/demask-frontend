@@ -285,10 +285,9 @@ export default function AddLiquidity() {
     // setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
-  console.log(data, nftAddress);
 
   return (
-    <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 pt-6">
+    <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 pt-6 px-4">
       <NextSeo {...updateMeta} />
       <div className="flex items-center justify-between ">
         <div className="">

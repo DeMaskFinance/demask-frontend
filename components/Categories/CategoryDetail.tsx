@@ -41,7 +41,6 @@ const CategoryDetail = ({ label }: { label: string }) => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   return (
     <div>
@@ -56,7 +55,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
               <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>
               <span className="relative inline-flex w-2 h-2 rounded-full bg-primary_500"></span>
             </div>
-            <p>{data?.pages[0].totalRecords} Items</p>
+            <p>{data?.pages[0].totalRecords} Collections</p>
           </div>
           <div className="grid gap-4 mt-4 text-white grid-cols-autoFill">
             {data?.pages.map((page: any, pageIndex: number) => (

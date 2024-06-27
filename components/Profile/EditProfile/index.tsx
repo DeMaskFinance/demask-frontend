@@ -39,14 +39,14 @@ export default function EditProfile() {
           <p className="font-semibold text-white">Back</p>
         </div>
         <h1 className="text-xl font-bold text-primary_300">Edit Profile</h1>
-        <div className=" my-10">
+        <div className="my-4 md:my-10">
           <div className="relative rounded-full cursor-pointer w-fit h-fit group ">
             <div className="group-hover:brightness-50 transition-all duration-200 ease-in">
               <AvatarCustom
                 avatarUrl={profile?.avatar}
                 size={120}
                 userAddress={profile.userAddress!}
-                className="w-36 h-36 rounded-full"
+                className="md:w-36 md:h-36 h-20 w-20 rounded-full"
               />
             </div>
             {avatarLoading ? (

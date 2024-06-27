@@ -26,7 +26,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
             <div className="w-full h-full overflow-hidden ">
               <Image
                 src={formatLinkIPFS(data.metadata.image)}
-                alt="test"
+                alt="imgNFT"
                 width={680}
                 height={576}
                 sizes="(max-width: 770px) 100vw"
@@ -91,7 +91,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
           {!data.metadata?.image && !data.metadata?.animation_url && (
             <Image
               src="/PlaceholderIMG.png"
-              alt="test"
+              alt="noDataIMG"
               width={680}
               height={576}
               sizes="(max-width: 770px) 100vw"
@@ -103,7 +103,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
       ) : (
         <Image
           src="/PlaceholderIMG.png"
-          alt="test"
+          alt="placeholder"
           width={680}
           height={576}
           sizes="(max-width: 770px) 100vw"

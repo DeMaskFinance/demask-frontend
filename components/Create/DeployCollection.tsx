@@ -118,7 +118,7 @@ const DeployCollection = () => {
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
-        <div className="max-w-2xl gap-6 pt-6 mx-auto lg:pb-8">
+        <div className="max-w-2xl gap-6 pt-6 mx-auto px-4">
           {/* UpLoad File */}
           <div className="">
             <div className="sticky top-16">

@@ -1,17 +1,15 @@
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
+import { getNonce, loginAuthen } from "@/libs/service/userService";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import images from "@/public/images";
+import { login } from "@/store/profileSlice";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import Web3 from "web3";
-import Wrapper from "../Wrapper";
-import { getNonce, loginAuthen } from "@/libs/service/userService";
 import { useDispatch } from "react-redux";
-import { login } from "@/store/profileSlice";
-import { useRouter } from "next/router";
+import Web3 from "web3";
 
 interface ModalWalletProps {
   isAuthen?: true;
@@ -148,6 +146,11 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
           <p>Binance wallet</p>
         </div>
       </div>
+      {isAuthen && (
+        <Link href="/swap" className="text-white absolute top-4 right-4">
+          <CgClose />
+        </Link>
+      )}
     </div>
   );
 };

@@ -308,7 +308,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   console.log(isApprovedNFT, account);
 
   return (
-    <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 sticky top-14">
+    <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
       <div className="w-full p-4">
         <div className="flex justify-between gap-4 mb-2">
           <p className="text-xl font-bold text-white">Demask Swaps</p>
