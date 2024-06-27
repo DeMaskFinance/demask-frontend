@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { DemaskIcon, LDownIcon, RightIcon } from "../Icons";
-import Spline from "@splinetool/react-spline";
+import { DemaskIcon, LDownIcon } from "../Icons";
 import Static from "./Static";
 import BackgroundParticles from "../Backgrounds/BackgroundParticles";
 
@@ -40,7 +39,7 @@ const About = () => {
           </div>
         </div>
         <div className="h-1/2">
-          <Spline scene="https://prod.spline.design/UB73Atxy70Sc82dO/scene.splinecode" />
+          {/* <Spline scene="https://prod.spline.design/UB73Atxy70Sc82dO/scene.splinecode" /> */}
           {/* <div data-framer-appear-id="6453br" style={{ opacity: 1 }}>
             <iframe
               src="https://my.spline.design/gitnesssplinetest-e39b09572ab1dc0fd47317d99c8d7599/"
