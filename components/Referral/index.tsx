@@ -101,7 +101,7 @@ const Referral = () => {
         <div className=" mt-6 ">
           <div className="flex items-center">
             {/* PC */}
-            <div className="hidden md:block">
+            <div>
               <TabQuery
                 TABS={TABS}
                 initialItem="items"
@@ -110,7 +110,7 @@ const Referral = () => {
               />
             </div>
             {/* mobile-tablet */}
-            <div className="md:hidden">
+            {/* <div className="md:hidden">
               <Tippy
                 className=""
                 interactive
@@ -149,7 +149,7 @@ const Referral = () => {
                   </span>
                 </button>
               </Tippy>
-            </div>
+            </div> */}
           </div>
           <div className="">{selectedTab ? selectedTab.panel() : null}</div>
         </div>

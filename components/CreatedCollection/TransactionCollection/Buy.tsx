@@ -28,7 +28,6 @@ const Buy = () => {
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [amountInMax, setAmountInMax] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
@@ -58,21 +57,9 @@ const Buy = () => {
       return res;
     },
   });
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        collectionAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, collectionAddress, wallet, isOpenTransaction]);
 
   const dmlToken = data?.dmlAddress;
-  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
+  const { amountTokenBuy } = useAmountInMax(
     "",
     dmlToken,
     nativeAddress,
@@ -185,22 +172,6 @@ const Buy = () => {
                   <ModalWallet />
                 </DialogContent>
               </Dialog>
-            ) : !isApprovedNFT ? (
-              <Button
-                className="w-full py-4"
-                primary
-                onClick={() =>
-                  handleApproveNFT(
-                    account,
-                    wallet,
-                    collectionAddress,
-                    setIsOpenTransaction,
-                    routerAddress
-                  )
-                }
-              >
-                Approve NFT
-              </Button>
             ) : (
               <Button
                 disabled={

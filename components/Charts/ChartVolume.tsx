@@ -10,17 +10,6 @@ import ChartLoading from "./ChartLoading";
 import { EtherIcon } from "../Icons";
 interface ChartVolumnProps {}
 
-interface DataPoint {
-  _id: string;
-  date: string;
-  volumeInDay: number;
-}
-
-interface GroupedData {
-  startDate: string;
-  endDate: string;
-  totalVolume: number;
-}
 const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [activeChoice, setActiveChoice] = useState<string>("1D");
@@ -59,13 +48,15 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   };
 
   return (
-    <div className="p-6 bg_main">
-      {chartVolume && (
+    <div className="p-6 bg_main h-[354px]">
+      {LoadingVolume ? (
+        <ChartLoading />
+      ) : (
         <div>
           <div className="flex justify-between mb-2">
             <div className="mb-2 text-dark1">
               <p className="title text-shader_100">Volume</p>
-              <div className="flex items-center my-2 text-2xl font-bold text-white gap-x-1">
+              <div className="flex items-center text-2xl font-bold text-white gap-x-1">
                 {formatNumber(Number(activeData)?.toFixed(2))}
                 <p>
                   <EtherIcon width={18} height={18} />
@@ -143,7 +134,6 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
           </div>
         </div>
       )}
-      {LoadingVolume && <ChartLoading />}
     </div>
   );
 };

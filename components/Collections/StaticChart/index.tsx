@@ -7,7 +7,7 @@ import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 
-function StatisticChart() {
+function StatisticAnalytics() {
   const { chainId } = useContext(AccountContext);
   const { isLoading, data, isFetching } = useQuery({
     queryKey: ["tvl_volume", chainId],
@@ -21,7 +21,7 @@ function StatisticChart() {
   console.log(data);
 
   return (
-    <div className="grid grid-cols-4 gap-4 my-4  text-white font-semibold">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4  text-white font-semibold">
       <div className="bg_main p-3">
         <span className=" text-sm text-shader_200">Volume 24H </span>
         <div className="flex items-center  gap-x-1 font-bold">
@@ -132,4 +132,4 @@ function StatisticChart() {
   );
 }
 
-export default StatisticChart;
+export default StatisticAnalytics;

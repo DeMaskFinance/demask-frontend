@@ -1,28 +1,23 @@
 import abiDML from "@/abi/abiDML.json";
-import abiRouter from "@/abi/abiRouter.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
-import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useInformationDML from "@/hooks/useInformationDML";
 import { getProvider } from "@/libs/connection/getProvider";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import BigNumber from "bignumber.js";
-import { ethers } from "ethers";
-import { memo, useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
-import { CgClose } from "react-icons/cg";
-import "react-toastify/dist/ReactToastify.css";
-import { ModalTransation } from "../ModalTransation";
-import { ModalWallet } from "../ModalWallet";
-import Wrapper from "../Wrapper";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
-import { useRouter } from "next/router";
+import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQueryClient } from "@tanstack/react-query";
+import BigNumber from "bignumber.js";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { memo, useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import "react-toastify/dist/ReactToastify.css";
+import { ModalTransation } from "../ModalTransation";
+import Wrapper from "../Wrapper";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
   inputLiquidity: string;
@@ -259,16 +254,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           the transaction will revert
         </p>
         <div className="flex flex-col items-center mt-6">
-          {!isApprovedLiquidity && account && (
-            <Button
-              className="w-[126px] py-2 mx-auto"
-              primary
-              onClick={handleApproveDML}
-            >
-              APPROVE
-            </Button>
-          )}
-          {isApprovedLiquidity && (
+          {isApprovedLiquidity ? (
             <Button
               disabled={isLoadingInforDML}
               primary={!isLoadingInforDML}
@@ -280,6 +266,14 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               {isLoadingInforDML && (
                 <BiLoaderAlt className="ml-1 text-white animate-spin" />
               )}
+            </Button>
+          ) : (
+            <Button
+              className="w-[126px] py-2 mx-auto"
+              primary
+              onClick={handleApproveDML}
+            >
+              APPROVE
             </Button>
           )}
         </div>

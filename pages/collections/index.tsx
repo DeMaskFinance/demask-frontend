@@ -5,26 +5,22 @@ import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
 import { ChartTVL, ChartVolumn } from "@/components/Charts";
 import ListTracsaction from "@/components/Collections/Transaction/ListTracsaction";
-import StatisticChart from "@/components/Collections/StaticChart";
 import { BackgroundDefault } from "@/components/Backgrounds";
+import StatisticAnalytics from "@/components/Collections/StaticChart";
 const updateMeta = {
   ...SEO,
   title: "Collections",
 };
 export default function Collections() {
-  const [activeChoice, setActiveChoice] = useState<string>("TVL");
-  const handleChoiceChange = (choice: string) => {
-    setActiveChoice(choice);
-  };
   return (
     <BackgroundDefault>
       <NextSeo {...updateMeta} />
-      <section className="max-w-screen-xl px-4 pt-10 mx-auto lg:px-8">
-        <h1 className="text-2xl font-bold text-primary_100 mb-10 text-center">
+      <section className="max-w-screen-xl px-4 mx-auto lg:px-8">
+        <h1 className="text-base md:text-2xl font-bold text-primary_100 py-4 md:py-10 text-center">
           DEMASK INFO & ANALYTICS
         </h1>
-        <StatisticChart />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 h-[372px]">
+        <StatisticAnalytics />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
           <ChartTVL />
           <ChartVolumn />
         </div>

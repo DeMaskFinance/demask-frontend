@@ -66,13 +66,15 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
   };
 
   return (
-    <div className="h-full p-6 border rounded-lg bg_main">
-      {Chart && (
+    <div className="h-[354px] p-6 border rounded-lg bg_main">
+      {isLoading ? (
+        <ChartLoading />
+      ) : (
         <div>
           <div className="mb-2 text-dark1 ">
             <p className="title text-shader_100">Total Volume Locked (TVL)</p>
             {activeData && (
-              <div className="flex items-center my-2 text-2xl font-bold text-white gap-x-1">
+              <div className="flex items-center text-2xl font-bold text-white gap-x-1">
                 {formatNumber(Number(activeData).toFixed(2))}
                 <p>
                   <EtherIcon width={18} height={18} />
@@ -119,12 +121,12 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
                   }}
                 />
                 {/* <YAxis
-              dataKey="value"
-              tickLine={false}
-              axisLine={false}
-              tickCount={6}
-              tickFormatter={(number) => `$${number.toFixed(2)}`}
-            /> */}
+     dataKey="value"
+     tickLine={false}
+     axisLine={false}
+     tickCount={6}
+     tickFormatter={(number) => `$${number.toFixed(2)}`}
+   /> */}
                 <Tooltip
                   content={<CustomTooltip />}
                   cursor={{ strokeDasharray: "4 4" }}
@@ -141,7 +143,6 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
           </div>
         </div>
       )}
-      {(isLoading || isFetching) && <ChartLoading />}
     </div>
   );
 };

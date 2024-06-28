@@ -10,6 +10,7 @@ import useTotalSupply from "@/hooks/useTotalSupply";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import abiDML from "@/abi/abiDML.json";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
@@ -22,6 +23,10 @@ import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import { getProvider } from "@/libs/connection/getProvider";
+import { ethers } from "ethers";
+import BigNumber from "bignumber.js";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -47,13 +52,14 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const [activeChoice, setActiveChoice] = useState<string>("");
   const [isSufficientLiquidity, setIsSufficientLiquidity] =
     useState<boolean>(false);
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [showRequiredMessage, setShowRequiredMessage] = useState(false);
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [amountTokenMin, setAmountTokenMin] = useState("");
   const [amountTokenDec, setAmountTokenDec] = useState("");
   const [amountNFTMin, setAmountNFTMin] = useState("");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [isApprovedLiquidity, setIsApprovedLiquidity] =
+    useState<boolean>(false);
   const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] =
     useState<boolean>(false);
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
@@ -71,6 +77,14 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     wallet,
     isOpenTransaction
   );
+  const currentAllowance = useAllowanceDML(
+    account,
+    data.dmlAddress,
+    wallet,
+    isOpenTransaction,
+    inputLiquidity,
+    routerAddress
+  );
   const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputLiquidity(e.target.value);
     setShowRequiredMessage(false);
@@ -82,6 +96,43 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     }
   };
 
+  const handleApproveDML = async () => {
+    const providerChoice = await getProvider(wallet);
+    const provider = new ethers.providers.Web3Provider(providerChoice);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(data.dmlAddress, abiDML, signer);
+    const inputLiquidityBN = new BigNumber(inputLiquidity)
+      .times(new BigNumber(10).pow(Number(data.dmlDecimals)))
+      .toFixed(0);
+
+    try {
+      const result = await contract.approve(routerAddress, inputLiquidityBN);
+      setIsOpenTransaction(true);
+      await provider.waitForTransaction(result.hash);
+      setIsOpenTransaction(false);
+    } catch (error) {
+      setIsOpenTransaction(false);
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    const checkApproveToken = async () => {
+      if (
+        currentAllowance &&
+        Number(currentAllowance) <
+          Number(
+            Number(
+              handleBignumber(Number(inputLiquidity), Number(data.dmlDecimals))
+            ).toFixed(0)
+          )
+      ) {
+        setIsApprovedLiquidity(false);
+      } else {
+        setIsApprovedLiquidity(true);
+      }
+    };
+    checkApproveToken();
+  }, [account, wallet, inputLiquidity, currentAllowance, isOpenTransaction]);
   useEffect(() => {
     if (balanceOfDML && activeChoice !== "" && activeChoice !== "0%") {
       let liquidityPercentage = 0;
@@ -149,18 +200,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setAmountTokenDec(resAmountTokenMinShow);
     }
   }, [inputLiquidity, data]);
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        data.nftAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, data.nftAddress, wallet, isOpenTransaction]);
 
   const handleRemoveLiquidity = () => {
     if (inputLiquidity === "") {
@@ -287,25 +326,16 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               </p>
             )}
             <div className="flex justify-center">
-              {!isApprovedNFT && (
+              {!isApprovedLiquidity ? (
                 <Button
                   className="w-[126px] py-2 mx-auto"
                   primary
-                  onClick={() =>
-                    handleApproveNFT(
-                      account,
-                      wallet,
-                      data.nftAddress,
-                      setIsOpenTransaction,
-                      routerAddress
-                    )
-                  }
+                  onClick={handleApproveDML}
                 >
-                  Approve NFT
+                  APPROVE
                 </Button>
-              )}
-              {isApprovedNFT && (
-                <div>
+              ) : (
+                <>
                   {isERC721 ? (
                     <Button
                       className="p-2 mx-auto"
@@ -327,7 +357,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                       Remove Liquidity
                     </Button>
                   )}
-                </div>
+                </>
               )}
             </div>
           </div>

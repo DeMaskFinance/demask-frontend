@@ -496,7 +496,18 @@ export default function AddLiquidity() {
                 )}
               </div>
             </div>
-            {!isApprovedNFT && account && (
+            {!account ? (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-full py-2" primary>
+                    Connect Wallet
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[350px] p-0 border-none">
+                  <ModalWallet />
+                </DialogContent>
+              </Dialog>
+            ) : !isApprovedNFT ? (
               <Button
                 className="w-full py-3"
                 primary
@@ -512,8 +523,7 @@ export default function AddLiquidity() {
               >
                 Approve NFT
               </Button>
-            )}
-            {isApprovedNFT && account && (
+            ) : (
               <Button
                 className="w-full py-3"
                 primary
@@ -521,18 +531,6 @@ export default function AddLiquidity() {
               >
                 Add Liquidity
               </Button>
-            )}
-            {!account && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full py-2" primary>
-                    Connect Wallet
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-[350px] p-0 border-none">
-                  <ModalWallet />
-                </DialogContent>
-              </Dialog>
             )}
             {Math.floor(amountErcDesired) === 0 &&
               inputNFT &&

@@ -561,7 +561,18 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           </div>
         )}
         <div className="flex justify-center w-full">
-          {isApprovedNFT && activeChoice === "Buy" && account && (
+          {!account ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="w-full py-2" gradient onClick={handleOpen}>
+                  Connect Wallet
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[350px] p-0 border-none">
+                <ModalWallet />
+              </DialogContent>
+            </Dialog>
+          ) : activeChoice === "Buy" ? (
             <Button
               type="button"
               className="py-2 w-full"
@@ -570,8 +581,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             >
               Buy Now
             </Button>
-          )}
-          {isApprovedNFT && activeChoice === "Sell" && account && (
+          ) : isApprovedNFT ? (
             <Button
               type="button"
               className="py-2 w-full"
@@ -580,8 +590,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             >
               Sell Now
             </Button>
-          )}
-          {!isApprovedNFT && account && (
+          ) : (
             <Button
               className="w-full py-2"
               primary
@@ -597,18 +606,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             >
               Approve NFT
             </Button>
-          )}
-          {!account && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="w-full py-2" gradient onClick={handleOpen}>
-                  Connect Wallet
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[350px] p-0 border-none">
-                <ModalWallet />
-              </DialogContent>
-            </Dialog>
           )}
         </div>
       </div>

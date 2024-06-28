@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import abiDML from "@/abi/abiDML.json";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import { getProvider } from "@/libs/connection/getProvider";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { useEffect, useState } from "react";
 const useBananceOfDML = (
   account: string,
   dmlToken: string,
@@ -13,10 +11,14 @@ const useBananceOfDML = (
   const [balanceOfDML, setBalanceOfDML] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
   const [balanceDML, setBalanceDML] = useState("");
-  
+
   useEffect(() => {
     const getBalanceOf = async () => {
-      if (dmlToken!=='0x0000000000000000000000000000000000000000' && account && wallet) {
+      if (
+        dmlToken !== "0x0000000000000000000000000000000000000000" &&
+        account &&
+        wallet
+      ) {
         try {
           const contract = await ercContract.erc(wallet, dmlToken, abiDML);
           const result = await contract.balanceOf(account);

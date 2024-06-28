@@ -34,7 +34,7 @@ function ListTracsaction() {
   return (
     <div className="mb-20 transactionList">
       <div className="bg_main">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center rounded-t-lg overflow-hidden">
           <TabGroups
             choices={["Transactions"]}
             activeChoice="Transactions"

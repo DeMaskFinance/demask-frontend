@@ -57,8 +57,8 @@ function TopNft() {
   };
 
   return (
-    <div className="bg_main my-6">
-      <div className="flex justify-between items-center">
+    <div className="bg_main my-4 md:my-6">
+      <div className="flex justify-between items-center rounded-t-lg overflow-hidden">
         <TabGroups
           choices={["Trending", "Newest"]}
           activeChoice={activeChoice}
