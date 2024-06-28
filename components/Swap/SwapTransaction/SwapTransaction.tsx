@@ -394,7 +394,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     View detail
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="w-full bg-shader_800 border border-shader_500 p-0">
+                <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-0">
                   <DialogHeader>
                     <DialogDescription>
                       <ModalDetail
