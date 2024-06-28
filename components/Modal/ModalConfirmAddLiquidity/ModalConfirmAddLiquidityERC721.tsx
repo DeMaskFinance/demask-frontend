@@ -52,30 +52,15 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
-  const {
-    ROUTER_721: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
-  const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const router = useRouter();
   const queryErc = (router.query.erc as string) || "";
   const collectionAddress = queryErc.split("&")[0] || "";
-
-  const { bigNumberBalance } = useInformationToken(
-    account,
-    tokenAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    isOpenTransaction
-  );
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -245,7 +230,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
                NFT or the transaction will revert
             </p>
             <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
-              <p className="text-primary_200">Total Pay</p>
+              <p className="text-primary_200">Total ETH</p>
               <div className="flex items-center font-bold text-white gap-x-1">
                 <FormatNumber number={amountErcDesiredToDec} />
                 <EtherIcon width={14} height={14} />
@@ -254,22 +239,10 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           </div>
           <div className="flex flex-col items-center mt-6">
             <Button
-              disabled={
-                isLoadingInforDML ||
-                preFectch ||
-                Math.floor(amountErcDesired) === 0
-              }
-              primary={
-                !isLoadingInforDML &&
-                !preFectch &&
-                Math.floor(amountErcDesired) > 0
-              }
+              disabled={isLoadingInforDML || Math.floor(amountErcDesired) === 0}
+              primary={!isLoadingInforDML && Math.floor(amountErcDesired) > 0}
               className="w-[144px] py-2"
-              active={
-                isLoadingInforDML ||
-                preFectch ||
-                Math.floor(amountErcDesired) === 0
-              }
+              active={isLoadingInforDML || Math.floor(amountErcDesired) === 0}
               onClick={addLiquidity}
             >
               Create pool

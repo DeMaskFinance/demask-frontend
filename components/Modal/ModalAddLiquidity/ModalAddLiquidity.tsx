@@ -47,7 +47,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, chainId } =
     useContext(AccountContext);
   console.log(isSufficientToken);
 
@@ -79,6 +79,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
   const handleChoicePercent = (item: string) => {

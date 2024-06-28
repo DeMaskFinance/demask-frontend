@@ -89,26 +89,24 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               </audio>
             )}
           {!data.metadata?.image && !data.metadata?.animation_url && (
-            <Image
+            <img
               src="/placeHolderIMG.png"
               alt="noDataIMG"
               width={680}
               height={576}
               sizes="(max-width: 770px) 100vw"
-              className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
-              blurDataURL={`${images.blur}`}
+              className="w-full h-full lg:max-h-[calc(100vh-326px)] object-cover"
             />
           )}
         </div>
       ) : (
-        <Image
+        <img
           src="/placeHolderIMG.png"
           alt="placeholder"
           width={680}
           height={576}
           sizes="(max-width: 770px) 100vw"
-          className="w-full rounded-lg h-full lg:max-h-[calc(100vh-326px)] object-cover"
-          blurDataURL={`${images.blur}`}
+          className="w-full h-full lg:max-h-[calc(100vh-326px)] object-cover"
         />
       )}
     </>

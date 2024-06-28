@@ -31,7 +31,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, type }) => {
             {type === "collection" && (
               <span className="flex text-xs item-center">
                 <span className="block font-normal text-shader_200">
-                  192 items
+                  {item?.totalSupply} items
                 </span>
               </span>
             )}

@@ -148,7 +148,7 @@ export default function SwapDefault() {
                   Select
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
+              <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
                 <DialogHeader>
                   <DialogDescription>
                     <ModalSearchCollectionSwap />
@@ -192,7 +192,9 @@ export default function SwapDefault() {
                 <div className="flex text-sm text-primary_300">{slippage}%</div>
               </div>
               <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-                <div className="">Total Pay</div>
+                <div className="">
+                  {activeChoice === "Buy" ? "Total Pay" : "Total Receipts"}
+                </div>
                 <div className="flex items-center px-2 py-1 text-white gap-x-1">
                   0
                   <EtherIcon width={16} height={16} />

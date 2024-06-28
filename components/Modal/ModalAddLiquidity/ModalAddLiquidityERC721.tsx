@@ -70,13 +70,14 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     true
   );
 
-  const { balanceToken, bigNumberBalance, allowanceToken } = useInformation(
+  const { balanceToken, bigNumberBalance } = useInformation(
     account,
     nativeAddress,
     wallet,
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
 

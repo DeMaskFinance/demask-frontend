@@ -48,6 +48,7 @@ const Buy = () => {
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
   const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({

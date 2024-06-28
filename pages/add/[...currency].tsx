@@ -131,13 +131,14 @@ export default function AddLiquidity() {
     isOpenTransaction
   );
 
-  const { balanceToken, bigNumberBalance, allowanceToken } = useBalanceToken(
+  const { balanceToken, bigNumberBalance } = useBalanceToken(
     account,
     tokenAddress,
     wallet,
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
   const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {

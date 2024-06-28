@@ -58,6 +58,7 @@ export default function Header() {
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     true
   );
   const dispatch = useDispatch();

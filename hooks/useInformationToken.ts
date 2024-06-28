@@ -10,6 +10,7 @@ const useInformationToken = (
   routerAddress: string,
   rpc: string,
   nativeAddress: string,
+  chainId: string,
   isOpenTransaction?: boolean,
   isOpenBuyNFT?: boolean,
   isOpenSellNFT?: boolean
@@ -17,7 +18,6 @@ const useInformationToken = (
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
   const [decimals, setDecimals] = useState("18");
-  const [allowanceToken, setAllowanceToken] = useState("");
   const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(true);
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   useEffect(() => {
@@ -51,12 +51,6 @@ const useInformationToken = (
             const bigNumberBalance = await contract.balanceOf(account);
             setBigNumberBalance(bigNumberBalance.toString());
             setIsLoadingApprove(false);
-            const tokenAllowance = await contract.allowance(
-              account,
-              routerAddress
-            );
-            const currentAllowance = tokenAllowance.toString();
-            setAllowanceToken(currentAllowance);
             const decimals = await contract.decimals();
             const decimalsInt = Number(decimals);
             const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
@@ -82,13 +76,13 @@ const useInformationToken = (
     isOpenSellNFT,
     routerAddress,
     rpc,
+    chainId,
   ]);
 
   return {
     balanceToken,
     bigNumberBalance,
     decimals,
-    allowanceToken,
     isLoadingApprove,
     isLoadingBalance,
   };

@@ -85,7 +85,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
                       />
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
+                  <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
                     <DialogHeader>
                       <DialogDescription>
                         {selectedItem && (
@@ -131,7 +131,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500">
+        <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500">
           <DialogHeader>
             <DialogDescription>
               <ModalSearchCollectionSwap />

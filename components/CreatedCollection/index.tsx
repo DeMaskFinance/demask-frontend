@@ -27,7 +27,6 @@ import {
   formatTypeChain,
 } from "@/libs/utils/formatComon";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useRef, useState } from "react";
@@ -35,11 +34,11 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
+import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
 import Classify from "../Profile/Inventory/Classify";
-import { MediaCollection } from "../Common/Media";
 export default function DetailCollection() {
-  const { account, chainId, demask } = useContext(AccountContext);
+  const { account, chainId } = useContext(AccountContext);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const inputAvatar = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
@@ -116,6 +115,7 @@ export default function DetailCollection() {
       setAvatarLoading(false);
     }
   };
+  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
@@ -200,11 +200,12 @@ export default function DetailCollection() {
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                        <DialogHeader>
-                          <DialogDescription>
-                            <ModalRoyalty dmlAddress={dataDetail.dmlAddress} />
-                          </DialogDescription>
-                        </DialogHeader>
+                        <DialogDescription>
+                          <ModalRoyalty
+                            dmlAddress={dataDetail.dmlAddress}
+                            creatorAddress={dataDetail.creatorAddress}
+                          />
+                        </DialogDescription>
                       </DialogContent>
                     </Dialog>
                   )}
@@ -246,7 +247,7 @@ export default function DetailCollection() {
                     <EyeIcon width={16} height={16} />
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="w-[425px] bg-shader_800 border border-shader_500 p-4">
+                <DialogContent className="w-[90vw] md:w-[425px] bg-shader_800 border border-shader_500 p-4">
                   <DialogHeader>
                     <DialogTitle className="text-base font-bold text-white">
                       Description

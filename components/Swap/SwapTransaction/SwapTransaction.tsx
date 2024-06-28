@@ -107,6 +107,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
   usePreventUserFromErasingContent(checkExit);
@@ -347,29 +348,30 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <div className="p-4 border rounded-lg border-shader_500 bg-shader_700">
           <div>
             <div className="flex pb-5 border-b gap-x-5 border-shader_500">
-              <div className="w-[157px] h-[157px] rounded-xl overflow-hidden">
+              <div className="w-[157px] h-[157px] aspect-square rounded-xl overflow-hidden">
                 <MediaNFT data={data} isControls={true} />
               </div>
               <div className="flex-grow font-semibold text-white ">
+                <Link
+                  href={`/collection/${nftAddress}?typeERC=erc1155`}
+                  className="text-primary_400 text-sm"
+                >
+                  Pudgy Penguin
+                </Link>
                 <div className="flex gap-x-1">
                   <h4>{data?.metadata?.name}</h4>
                   <p>#{idNFT}</p>
                 </div>
-                <div className="flex items-center gap-x-1">
-                  <h4 className="font-normal text-shader_200">{`${nftAddress.slice(
-                    0,
-                    6
-                  )}...${nftAddress.slice(-5)}`}</h4>
-                  <Copy content={nftAddress} />
-                </div>
-                <p className="mt-2 mb-2 text-primary_400">Liquidity Pool:</p>
+                <p className="mb-2 mt-3 text-shader_200 text-sm">
+                  Liquidity Pool:
+                </p>
                 <div className="flex gap-x-2 whitespace-nowrap">
-                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
-                    <p className="font-normal text-primary_200">Reserve NFT</p>
+                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
+                    <p className="font-normal text-primary_200 ">Reserve NFT</p>
                     <p>{data.reserveNFT}</p>
                   </div>
-                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
-                    <p className="font-normal text-primary_200">
+                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
+                    <p className="font-normal text-primary_200 ">
                       Reserve Token
                     </p>
                     <div className="flex items-center gap-x-1">
@@ -412,7 +414,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     Select
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
+                <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
                   <DialogHeader>
                     <DialogDescription>
                       <ModalSearchCollectionSwap />

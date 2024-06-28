@@ -88,6 +88,7 @@ export default function DetailLaunchPad() {
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
 

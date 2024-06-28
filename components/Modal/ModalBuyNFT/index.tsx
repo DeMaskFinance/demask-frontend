@@ -58,7 +58,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const { demask, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline, chainId } =
     useContext(AccountContext);
   const { RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
   const { bigNumberBalance } = useInformationToken(
@@ -68,6 +68,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction,
     isOpenBuyNFT
   );
@@ -351,7 +352,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 disabled={isLoadingInforDML}
                 primary={!isLoadingInforDML}
                 className="px-8 py-3"
-                // active={isLoadingInforDML || preFectch}
                 isLoadingBtn={isLoadingInforDML}
                 onClick={handleBuyNFT}
               >

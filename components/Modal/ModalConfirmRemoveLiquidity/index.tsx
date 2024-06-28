@@ -59,7 +59,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   const [amountTokenMin, setAmountTokenMin] = useState("");
   const [amountTokenDec, setAmountTokenDec] = useState("");
   const [amountNFTMin, setAmountNFTMin] = useState("");
-  const [preFectch, setPreFetch] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const { account, wallet, slippage } = useContext(AccountContext);
   const router = useRouter();
@@ -250,22 +249,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           <FormatNumber number={amountTokenDec} />
           <p>ETH</p>
         </div>
-        {preFectch && (
-          <div className="flex items-center justify-between p-4 mt-8 font-semibold text-white rounded-lg bg-primary_400">
-            <p className="text-xs">Price Updated</p>
-            <Button
-              disabled={isLoadingInforDML}
-              primary
-              className="px-6 py-2 bg-primary_400"
-              onClick={() => {
-                setUpdatePrice(!updatePrice);
-                setPreFetch(false);
-              }}
-            >
-              Accept
-            </Button>
-          </div>
-        )}
+
         <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
           <p>Slippage tolerance</p>
           <p>{slippage}%</p>
@@ -286,10 +270,10 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           )}
           {isApprovedLiquidity && (
             <Button
-              disabled={isLoadingInforDML || preFectch}
-              primary={!isLoadingInforDML && !preFectch}
+              disabled={isLoadingInforDML}
+              primary={!isLoadingInforDML}
               className="w-[144px] py-2"
-              active={isLoadingInforDML || preFectch}
+              active={isLoadingInforDML}
               onClick={removeLiquidity}
             >
               REMOVE

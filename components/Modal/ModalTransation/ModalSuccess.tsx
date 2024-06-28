@@ -74,7 +74,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   isMint,
   metadataLink,
 }) => {
-  const { demask, chainId } = useContext(AccountContext);
+  const { demask } = useContext(AccountContext);
   const [metadataRes, setMetadataRes] = useState<any>();
   const [isLoadingMeta, setIsLoadingMeta] = useState(false);
   const metadataIPFS = formatLinkIPFS(metadataLink!);
@@ -82,6 +82,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       setIsLoadingMeta(true);
+      console.log(metadataIPFS);
       const res = await fetch(metadataIPFS);
       const metadata = await res.json();
       setMetadataRes({

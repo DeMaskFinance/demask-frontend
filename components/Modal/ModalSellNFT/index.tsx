@@ -337,7 +337,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                 </p>
               )}
               <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
-                <p className="text-primary_200">Total Pay</p>
+                <p className="text-primary_200">Total Receipts</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber
                     number={Number(
@@ -353,7 +353,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                 disabled={isLoadingInforDML}
                 primary={!isLoadingInforDML}
                 className="px-8 py-3"
-                // active={isLoadingInforDML || preFectch}
+                active={isLoadingInforDML}
                 isLoadingBtn={isLoadingInforDML}
                 onClick={handleSellNFT}
               >

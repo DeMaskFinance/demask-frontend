@@ -24,22 +24,7 @@ export default function Collections() {
           DEMASK INFO & ANALYTICS
         </h1>
         <StatisticChart />
-        <div className="lg:hidden">
-          <div className="pt-3 rounded-lg shadow-chart">
-            <div className="mb-4 ml-2">
-              <TabGroups
-                choices={["TVL", "VOLUMN"]}
-                activeChoice={activeChoice}
-                onChoiceChange={handleChoiceChange}
-                isOverview
-              />
-            </div>
-            {/* Charts Mobile/Tablet */}
-            {/* {activeChoice === "TVL" ? <ChartTVL /> : <ChartVolumn />} */}
-          </div>
-        </div>
-        {/* Charts PC */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 md:grid-cols-2 h-[372px]">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 h-[372px]">
           <ChartTVL />
           <ChartVolumn />
         </div>

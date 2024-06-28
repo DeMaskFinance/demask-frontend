@@ -323,7 +323,7 @@ const DetailLiquidity = () => {
                         <EyeIcon width={20} height={20} />
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-3xl bg-shader_800 border border-shader_500 p-0">
+                    <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
                       <DialogHeader>
                         <DialogDescription>
                           {data && (

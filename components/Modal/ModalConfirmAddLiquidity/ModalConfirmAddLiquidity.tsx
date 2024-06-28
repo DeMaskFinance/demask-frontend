@@ -16,7 +16,6 @@ import { memo, useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
-import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
@@ -57,7 +56,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const { demask, tokenDefault, account, wallet, slippage, txDeadline } =
+  const { demask, chainId, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const {
     ROUTER: routerAddress,
@@ -76,6 +75,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     isOpenTransaction
   );
   const dmlToken = useDMLToken(
@@ -272,7 +272,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 </p>
               )}
               <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
-                <p className="text-primary_200">Total Pay</p>
+                <p className="text-primary_200">Total ETH</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber number={amountErcDesiredToDec} />
                   <EtherIcon width={14} height={14} />
@@ -284,7 +284,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 disabled={isLoadingInforDML}
                 primary={!isLoadingInforDML}
                 className="px-8 py-3"
-                // active={isLoadingInforDML || preFectch}
+                active={isLoadingInforDML}
                 isLoadingBtn={isLoadingInforDML}
                 onClick={addLiquidity}
               >

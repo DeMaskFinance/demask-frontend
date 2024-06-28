@@ -15,10 +15,9 @@ const updateMeta = {
   title: "Liquidity",
 };
 export default function Liquidity() {
-  const { account, wallet, chainId, demask, tokenDefault } =
-    useContext(AccountContext);
+  const { account, chainId, demask } = useContext(AccountContext);
   const router = useRouter();
-  const [activeChoice, setActiveChoice] = useState<string>("NFTs pool");
+  const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
   const [type, setType] = useState<string>("erc1155");
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const handleAddLiquidity = () => {
@@ -63,12 +62,9 @@ export default function Liquidity() {
   );
 
   const handleChoiceChange = (choice: string) => {
-    console.log(choice);
-
     setActiveChoice(choice);
-    choice === "NFTs pool" ? setType("erc1155") : setType("erc721");
+    choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
-  console.log(account, isLoading, data, type);
 
   return (
     <BackgroundDefault>
@@ -95,14 +91,11 @@ export default function Liquidity() {
           </p>
           <div className="rounded-lg bg-shader_800 min-h-[70vh] flex flex-col">
             <TabGroups
-              choices={["NFTs pool", "Collection pool"]}
+              choices={["ERC-1155", "ERC-721"]}
               activeChoice={activeChoice}
               onChoiceChange={handleChoiceChange}
               isDefault
             />
-            {/* {account && data?.pages[0]?.combinedRecords.length !== 0 && (
-              
-            )} */}
             {!account || data?.pages[0]?.combinedRecords.length === 0 ? (
               <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200">
                 <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
