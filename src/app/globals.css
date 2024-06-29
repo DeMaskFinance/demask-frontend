@@ -79,10 +79,10 @@
     animation-play-state: paused;
   }
 }
-html {
+/* html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
-}
+} */
 html *::-webkit-scrollbar {
   border-radius: 0;
   width: 8px;

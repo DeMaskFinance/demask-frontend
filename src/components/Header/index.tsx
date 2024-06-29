@@ -5,11 +5,11 @@ import { Button } from "../ui/button";
 import BackgroundParticles from "../Backgrounds/BackgroundParticles";
 import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
+import { useLenis } from "lenis/react";
+import ScrollToParams from "lenis/react";
+import LenisInstance from "lenis/react";
 const Header = () => {
   const [isEvent, setIsEvent] = useState(true);
-  const [linked, setLinked] = useState<string>("#about");
 
   const navList = [
     {
@@ -29,6 +29,7 @@ const Header = () => {
       id: "#community",
     },
   ];
+  const lenisInstance: any = useLenis();
   return (
     <div className={`${isEvent ? "pb-[100px]" : "pb-[56px]"}`}>
       <div className="top-0 left-0 right-0 z-50 fixed">
@@ -70,11 +71,12 @@ const Header = () => {
           <ul className="gap-x-8 md:flex hidden">
             {navList.map((item, index) => (
               <a
-                href={`${item.id}`}
-                className={`hover:text-shader_200 text-shader_100`}
+                // href={`${item.id}`}
+                className={`hover:text-shader_200 text-shader_100 cursor-pointer`}
                 key={index}
-                onClick={() => {
-                  setLinked(item.id);
+                onClick={(e) => {
+                  e.preventDefault();
+                  lenisInstance.scrollTo(item.id);
                 }}
               >
                 {item.title}

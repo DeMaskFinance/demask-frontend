@@ -51,8 +51,8 @@ export default function RootLayout({
         <AOSInit />
         <body className={titillium.className}>
           <Header />
-          {children}
-          {/* <SmoothScrolling></SmoothScrolling> */}
+
+          <SmoothScrolling>{children}</SmoothScrolling>
           <Footer />
         </body>
       </html>
