@@ -1,29 +1,34 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
 import {
   CreateIcon,
   LaunchpadIcon,
   PoolIcon,
 } from "../Icons/Mobile/IconMobile";
+import { CgClose } from "react-icons/cg";
 
+const moreNav = [
+  { id: 1, name: "Category", url: "/category" },
+  { id: 2, name: "Collections", url: "/collections", icon: LaunchpadIcon },
+  { id: 3, name: "Referral", url: "/referral", icon: PoolIcon },
+];
+const data = [
+  { id: 3, name: "Swap", url: `/swap`, icon: SwapIcon },
+  { id: 1, name: "Create", url: "/create", icon: CreateIcon },
+  { id: 2, name: "Collections", url: "/collections", icon: LaunchpadIcon },
+  { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
+  { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
+  {
+    id: 6,
+    name: "More",
+    icon: SeeMoreIcon,
+  },
+];
 export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);
   const router = useRouter();
-  const data = [
-    { id: 3, name: "Swap", url: `/swap`, icon: SwapIcon },
-    { id: 1, name: "Create", url: "/create", icon: CreateIcon },
-    { id: 2, name: "Collections", url: "/collections", icon: LaunchpadIcon },
-    { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
-    { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
-    {
-      id: 6,
-      name: "More",
-      url: "https://docs.demask.finance/",
-      icon: SeeMoreIcon,
-    },
-  ];
   return (
     <>
       <div
@@ -35,30 +40,80 @@ export default function NavFooter() {
         } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
       ></div>
       <footer className="fixed bottom-0 z-20 w-full bg-shader_900 lg:hidden">
-        <ul className="border-t flex justify-between h-16 text-[10px] items-center border-shader_500">
+        <ul className="border-t flex justify-between h-16 text-[10px] items-center border-shader_500 relative">
           {data.map((item, index) => (
-            <li
-              className="flex items-center justify-center flex-1 h-full relative"
-              key={index}
-            >
-              {router.pathname === item.url && (
-                <div
-                  className={`absolute transition-transform duration-100 ease-linear border-t-[3px] border-primary_500 h-full top-0 w-full`}
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(144, 117, 254, 0.15) 0%, rgba(144, 117, 254, 0.00) 100%)",
+            <Fragment>
+              {item.url ? (
+                <li
+                  className="flex items-center justify-center flex-1 h-full relative"
+                  key={index}
+                >
+                  {router.pathname === item.url && (
+                    <div
+                      className={`absolute transition-transform duration-100 ease-linear border-t-[3px] border-primary_500 h-full top-0 w-full`}
+                      style={{
+                        background:
+                          "linear-gradient(180deg, rgba(144, 117, 254, 0.15) 0%, rgba(144, 117, 254, 0.00) 100%)",
+                      }}
+                    ></div>
+                  )}
+                  <Link
+                    href={`${item.url}`}
+                    className={`flex flex-col items-center gap-2 w-full h-full justify-center`}
+                  >
+                    {
+                      <item.icon
+                        width={20}
+                        height={20}
+                        className="text-white"
+                      />
+                    }
+                    <p className="text-white font-semibold">{item.name}</p>
+                  </Link>
+                </li>
+              ) : (
+                <li
+                  className="flex items-center justify-center flex-1 h-full relative"
+                  onClick={() => {
+                    console.log("123");
+
+                    setActive(true);
                   }}
-                ></div>
+                >
+                  {<item.icon width={20} height={20} className="text-white" />}
+                </li>
               )}
-              <Link
-                href={`${item.url}`}
-                className={`flex flex-col items-center gap-2 w-full h-full justify-center`}
-              >
-                {<item.icon width={20} height={20} className="text-white" />}
-                <p className="text-white font-semibold">{item.name}</p>
-              </Link>
-            </li>
+            </Fragment>
           ))}
+
+          {active && (
+            <div className="absolute left-0 right-0 bottom-16">
+              <div
+                className="top-0 bottom-16 left-0 right-0 bg-[rgba(0,0,0,0.65)] -z-10 fixed"
+                onClick={() => setActive(false)}
+              ></div>
+              <div className=" bg-shader_800 text-white h-[40vh] rounded-t-xl z-50">
+                <div className="text-sm item_menu h-12 flex justify-between px-3">
+                  <p>More</p>
+                  <button className="text-lg " onClick={() => setActive(false)}>
+                    <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+                  </button>
+                </div>
+                {moreNav.map((moreItem) => (
+                  <Link
+                    key={moreItem.id}
+                    href={`${moreItem.url}`}
+                    className="text-sm item_menu h-12 px-3"
+                    onClick={() => {
+                      setActive(false);
+                    }}
+                  >
+                    {moreItem.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </ul>
       </footer>
     </>

@@ -193,7 +193,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenConfirmAddLiquidity(false);
   };
-  console.log(isSufficientToken, reserveToken);
 
   return (
     <Wrapper isOpen={isOpenConfirmAddLiquidity} onClick={handleClose}>

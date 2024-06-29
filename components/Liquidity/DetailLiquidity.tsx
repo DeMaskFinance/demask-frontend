@@ -42,6 +42,7 @@ import { BsClock } from "react-icons/bs";
 import "react-toastify/dist/ReactToastify.css";
 import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
+import Back from "../Common/Back";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -153,7 +154,13 @@ const DetailLiquidity = () => {
 
   const actions = [
     {
-      icon: <PlusIcon width={18} height={18} className="cursor-pointer " />,
+      icon: (
+        <PlusIcon
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
+        />
+      ),
       content: "Add Pool",
       onClick: () => {
         handleAddLiquidity();
@@ -175,36 +182,37 @@ const DetailLiquidity = () => {
       ),
     },
     {
-      icon: <SwapIcon width={18} height={18} className="cursor-pointer " />,
+      icon: (
+        <SwapIcon
+          width={18}
+          height={18}
+          className="cursor-pointer text-primary_200"
+        />
+      ),
       content: "Swap",
-      link: `/swap/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}?chainId=${chainId}`,
+      link: `/swap/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
     },
   ];
   return (
-    <div>
+    <div className="px-3">
       {isLoading ? (
         <SkeletonPoolDetail />
       ) : isSuccess ? (
         <div>
-          <div
-            className="flex items-center mb-6 cursor-pointer gap-x-2"
-            onClick={() => router.back()}
-          >
-            <LeftIcon width={20} height={20} />
-
-            <p className="font-semibold text-white">Back</p>
-          </div>
-          <div className="flex flex-col lg:flex-row gap-x-4">
+          <Back />
+          <div className="flex flex-col-reverse lg:flex-row gap-4">
             <div className="flex-auto">
               {account && isSuccess && data.liquidityHistory.length > 0 ? (
                 <div>
                   <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
-                    <TabGroups
-                      choices={options}
-                      activeChoice={activeChoice}
-                      onChoiceChange={handleChoiceChange}
-                      isDefault
-                    />
+                    <div className="rounded-t-lg overflow-hidden">
+                      <TabGroups
+                        choices={options}
+                        activeChoice={activeChoice}
+                        onChoiceChange={handleChoiceChange}
+                        isDefault
+                      />
+                    </div>
                     <div className="flex-grow">
                       <div className="grid gap-x-4 font-semibold text-sm uppercase lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] bg-shader_600 text-shader_200">
                         <p className="py-3 pl-4">Action</p>
@@ -239,12 +247,12 @@ const DetailLiquidity = () => {
                 </div>
               )}
             </div>
-            <div className="w-full lg:w-[400px] mb-20 lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
+            <div className="w-full lg:w-[400px] lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-x-1">
                   <p className="text-lg font-bold">{data?.metadata?.name}</p>
                   <p className="text-sm text-primary_400">
-                    ({data?.metadata?.name}/ETH)
+                    ({data?.metadata?.symbol}/ETH)
                   </p>
                 </div>
                 <div className="flex items-center gap-x-2">

@@ -49,8 +49,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenModal(false);
   };
-  const { account, wallet, chainId, demask, tokenDefault } =
-    useContext(AccountContext);
+  const { account, wallet } = useContext(AccountContext);
 
   useEffect(() => {}, [isOpenTransation]);
 

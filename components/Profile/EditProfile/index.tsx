@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import EditProfileForm from "./EditProfileForm";
+import Back from "@/components/Common/Back";
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
@@ -30,14 +31,7 @@ export default function EditProfile() {
   return (
     <BackgroundDefault>
       <div className="px-4 pb-20 lg:px-0 lg:pb-0 mx-auto max-w-[600px]">
-        <div
-          className="flex items-center cursor-pointer gap-x-2 my-6"
-          onClick={() => router.back()}
-        >
-          <LeftIcon width={20} height={20} />
-
-          <p className="font-semibold text-white">Back</p>
-        </div>
+        <Back />
         <h1 className="text-xl font-bold text-primary_300">Edit Profile</h1>
         <div className="my-4 md:my-10">
           <div className="relative rounded-full cursor-pointer w-fit h-fit group ">

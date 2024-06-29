@@ -25,6 +25,7 @@ import { FaAngleDown } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
 import { SEO } from "../../next-seo.config";
 import { UploadFileNFT } from "@/components/Create/UploadFile";
+import Back from "@/components/Common/Back";
 
 const styles = {
   title: "block my-4 text-base font-semibold",
@@ -152,15 +153,8 @@ export default function Creator() {
       <NextSeo {...updateMeta} />
 
       <WithAuth>
-        <div className="py-8 pb-24 mx-auto container-main lg:pb-8 px-3">
-          <div
-            className="flex items-center cursor-pointer gap-x-2"
-            onClick={() => router.back()}
-          >
-            <LeftIcon width={20} height={20} />
-
-            <p className="font-semibold text-white">Back</p>
-          </div>
+        <div className="pb-24 mx-auto container-main lg:pb-8 px-3">
+          <Back />
           <h2 className="mt-4 text-xl font-bold text-primary_300">
             Create an NFT
           </h2>

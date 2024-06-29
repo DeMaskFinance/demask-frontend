@@ -27,6 +27,8 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import BigNumber from "bignumber.js";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
+import { replaceDot } from "@/libs/utils/formatComon";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -85,11 +87,13 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     inputLiquidity,
     routerAddress
   );
-  const handleGetLiquidity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputLiquidity(e.target.value);
+  const handleGetLiquidity = (values: NumberFormatValues) => {
+    const { value } = values;
+    const inputValue = replaceDot(value);
+    setInputLiquidity(inputValue);
     setShowRequiredMessage(false);
     setActiveChoice("");
-    if (Number(e.target.value) > Number(balanceOfDML)) {
+    if (Number(inputValue) > Number(balanceOfDML)) {
       setIsSufficientLiquidity(true);
     } else {
       setIsSufficientLiquidity(false);
@@ -174,15 +178,14 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         (Number(amountLIQUIDITY) * Number(data.reserveNFT)) /
         Number(totalSupply);
       const amountToken =
-        (Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals)) /
+        (Number(amountLIQUIDITY) * Number(data.tokenDecimals)) /
         Number(totalSupply);
       const resAmountToken =
-        (Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals)) /
+        (Number(amountLIQUIDITY) * Number(data.tokenDecimals)) /
           Number(totalSupply) +
         (((Number(amountLIQUIDITY) * Number(data.reserveNFT)) %
           Number(totalSupply)) *
-          (Number(data.reserveTokenDecimals) -
-            Number(amountToken.toFixed(0)))) /
+          (Number(data.tokenDecimals) - Number(amountToken.toFixed(0)))) /
           ((Number(data.reserveNFT) - Math.floor(Number(resAmountNFT))) *
             Number(totalSupply));
       const resAmountTokenMinShow = divideByDecimal(
@@ -237,7 +240,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
 
   return (
     <Fragment>
-      <div className="h-fit rounded-lg relative">
+      <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
         <p className="title_modal">Remove Liquidity</p>
         {type === "erc1155" && (
           <div className="flex mt-4 gap-x-3">
@@ -276,13 +279,19 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               </div>
             </div>
             <div className="flex mt-4 gap-x-2">
-              <input
+              <NumericFormat
+                name="amountLiquidityRemove"
+                id="amountLiquidityRemove"
+                autoComplete="off"
+                placeholder="Input amount Token"
                 className="input_item"
-                inputMode="decimal"
-                type="number"
-                placeholder="Enter amount"
                 value={inputLiquidity}
-                onChange={handleGetLiquidity}
+                inputMode="decimal"
+                onValueChange={handleGetLiquidity}
+                decimalSeparator=","
+                thousandSeparator="."
+                minLength={1}
+                maxLength={30}
               />
               <TabGroups
                 choices={["25%", "50%", "75%", "100%"]}
@@ -305,7 +314,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
               NFT Receive
               <div className="flex items-center justify-between gap-x-1">
-                {data.reserveTokenDecimals ? (
+                {data.tokenDecimals ? (
                   <p>{amountNFTMin}</p>
                 ) : (
                   <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
@@ -332,7 +341,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   primary
                   onClick={handleApproveDML}
                 >
-                  APPROVE
+                  Approve
                 </Button>
               ) : (
                 <>

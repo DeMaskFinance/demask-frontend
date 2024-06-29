@@ -57,7 +57,6 @@ const PoolItem = ({ liquidity }: any) => {
 
   const data = {
     reserveNFT: liquidity?.reserveNFT,
-    reserveTokenDecimals: "18",
     tokenDecimals: "18",
     dmlAddress: liquidity?.dmlAddress,
     dmlDecimals: "18",

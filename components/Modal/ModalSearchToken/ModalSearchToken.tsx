@@ -54,7 +54,7 @@ const ModalSearchToken = () => {
   };
 
   return (
-    <div className=" h-fit rounded-lg relative">
+    <div className="w-[360px] md:w-[400px] lg:w-[500px] h-fit rounded-lg relative">
       <div className="border-b border-shader_600 p-4">
         <div className="flex items-center justify-between mb-3 font-semibold text-white title ">
           Select a Token

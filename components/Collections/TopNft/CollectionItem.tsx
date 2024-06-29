@@ -5,6 +5,7 @@ import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
 import { formatLinkIPFS, formatPercent } from "@/libs/utils/formatComon";
+import Link from "next/link";
 import React, { useContext } from "react";
 interface CollectionItemProps {
   data: any;
@@ -27,6 +28,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   const skeleton = (
     <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />
   );
+  console.log(data);
 
   return (
     <>
@@ -43,10 +45,8 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
               >
                 <td className="py-2 lg:w-full md:w-full w-[200px]">
-                  <a
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    // href={`${process.env.NEXT_PUBLIC_LINK_APP}/swap/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`}
+                  <Link
+                    href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
                     className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
                   >
                     <div className="relative flex items-center gap-2 group">
@@ -60,7 +60,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                         {isFetching ? skeleton : item?.name}
                       </span>
                     </div>
-                  </a>
+                  </Link>
                 </td>
                 <td className="py-2 flex items-center gap-x-1 justify-end lg:w-full md:w-full w-[140px]">
                   {isFetching ? (

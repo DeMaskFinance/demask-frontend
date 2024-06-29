@@ -21,6 +21,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
+import { replaceDot } from "@/libs/utils/formatComon";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -88,9 +90,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       return res;
     },
   });
-  const handleGetToken = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputToken(e.target.value);
-    if (Number(e.target.value) > Number(balanceToken)) {
+  const handleGetToken = (values: NumberFormatValues) => {
+    const { value } = values;
+    const inputValue = replaceDot(value);
+    setInputToken(inputValue);
+    if (Number(inputValue) > Number(balanceToken)) {
       setIsSufficientToken(true);
     } else {
       setIsSufficientToken(false);
@@ -176,12 +180,19 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           <div>
             <div className="my-4">
               {dmlToken === "0x0000000000000000000000000000000000000000" ? (
-                <input
-                  className="input_item"
-                  type="number"
+                <NumericFormat
+                  name="amountToken721"
+                  id="amountToken721"
+                  autoComplete="off"
                   placeholder="Input amount Token"
+                  className="input_item"
                   value={inputToken}
-                  onChange={handleGetToken}
+                  inputMode="decimal"
+                  onValueChange={handleGetToken}
+                  decimalSeparator=","
+                  thousandSeparator="."
+                  minLength={1}
+                  maxLength={30}
                 />
               ) : (
                 <div>

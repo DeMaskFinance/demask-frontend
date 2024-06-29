@@ -22,6 +22,7 @@ import useFileHandler from "@/hooks/useFileHandler";
 import { UploadFileCollection } from "../Create/UploadFile";
 import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
 import Image from "next/image";
+import Back from "../Common/Back";
 
 interface EditCollectionProps {
   data: any;
@@ -226,14 +227,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
   return (
     <div className="mx-auto max-w-[634px] mb-16">
-      <div
-        className="flex items-center cursor-pointer gap-x-2 my-6 "
-        onClick={() => router.back()}
-      >
-        <LeftIcon width={20} height={20} />
-
-        <p className="font-semibold text-white">Back</p>
-      </div>
+      <Back />
       <h1 className="text-xl font-bold text-primary_300 mb-4">
         Edit Collection
       </h1>

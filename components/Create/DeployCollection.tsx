@@ -16,6 +16,7 @@ import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import Back from "../Common/Back";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -26,7 +27,6 @@ const validationSchema = yup.object().shape({
   symbol: yup.string().required("Symbol is a required").max(10),
 });
 const DeployCollection = () => {
-  const router = useRouter();
   const [fileIPFS, setFileIPFS] = useState<any>(null);
   const [fileType, setFileType] = useState<string | null>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -122,14 +122,7 @@ const DeployCollection = () => {
           {/* UpLoad File */}
           <div className="">
             <div className="sticky top-16">
-              <div
-                className="flex items-center cursor-pointer gap-x-2"
-                onClick={() => router.back()}
-              >
-                <LeftIcon width={20} height={20} />
-
-                <p className="font-semibold text-white">Back</p>
-              </div>
+              <Back />
               <h2 className="mt-4 text-xl font-bold text-primary_300">
                 Create an Collection
               </h2>

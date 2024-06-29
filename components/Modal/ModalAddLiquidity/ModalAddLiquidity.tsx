@@ -18,6 +18,8 @@ import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
+import { replaceDot } from "@/libs/utils/formatComon";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -86,9 +88,11 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     setInputNFT(Math.floor((parseFloat(item) / 100) * +balanceNFT).toString());
     setActiveChoiceNFT(item);
   };
-  const handleGetNFT = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputNFT(e.target.value);
-    if (Number(e.target.value) > Number(balanceNFT)) {
+  const handleGetNFT = (values: NumberFormatValues) => {
+    const { value } = values;
+    setInputNFT(replaceDot(value));
+    const numericValue = Number(value.replace(/,/g, ""));
+    if (numericValue > Number(balanceNFT)) {
       setIsSufficientNFT(true);
     } else {
       setIsSufficientNFT(false);
@@ -97,34 +101,29 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   };
   useEffect(() => {
     if (inputNFT) {
-      let amountErcDesired;
-      if (data?.dmlAddress !== null && data && inputNFT) {
-        amountErcDesired =
-          ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
-          (1 + slippage / 100);
-      } else {
-        amountErcDesired = handleBignumber(
-          Number(inputToken),
-          Number(data?.dmlDecimals)
-        );
-      }
+      let amountErcDesired =
+        ((Number(inputNFT) * +data.tokenDecimals) / +data.reserveNFT) *
+        (1 + slippage / 100);
+      console.log(amountErcDesired);
+
       setAmountErcDesired(amountErcDesired);
-      if (amountErcDesired) {
-        const amountErcDesiredToDec = divideByDecimal(
-          amountErcDesired?.toString(),
-          data?.dmlDecimals
-        );
-        setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-        if (Number(amountErcDesired) > Number(bigNumberBalance)) {
-          setIsSufficientToken(true);
-        } else {
-          setIsSufficientToken(false);
-        }
+
+      const amountErcDesiredToDec = divideByDecimal(
+        amountErcDesired?.toString(),
+        data?.dmlDecimals
+      );
+      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
+
+      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
+        setIsSufficientToken(true);
+      } else {
+        setIsSufficientToken(false);
       }
     } else {
       setAmountErcDesiredToDec(0);
     }
-  }, [inputNFT, inputToken, data]);
+  }, [inputNFT, data, slippage, bigNumberBalance]);
+
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -148,7 +147,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-4 relative">
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[532px] rounded-lg p-4 relative">
           <div className="flex justify-between title_modal">
             <p>Add Liquidity</p>
             <button className="text-lg " onClick={handleClose}>
@@ -184,12 +183,18 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                     </p>
                   </div>
                   <div className="flex gap-x-2">
-                    <input
-                      className="input_item w-[60%]"
-                      type="number"
-                      placeholder="Input amount NFT"
+                    <NumericFormat
+                      name="amountNFTAdd"
+                      id="amountNFTAdd"
+                      autoComplete="off"
+                      placeholder="NFT quantity"
+                      pattern="^[1-9][0-9]*$"
+                      decimalScale={0}
+                      decimalSeparator=","
+                      thousandSeparator="."
+                      className="input_item"
                       value={inputNFT}
-                      onChange={handleGetNFT}
+                      onValueChange={handleGetNFT}
                     />
                     <div className="w-[40%]">
                       <TabGroups

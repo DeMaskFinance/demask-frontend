@@ -273,7 +273,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               primary
               onClick={handleApproveDML}
             >
-              APPROVE
+              Approve
             </Button>
           )}
         </div>

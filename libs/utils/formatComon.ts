@@ -53,6 +53,10 @@ const formatTypeChain = (type: String): String => {
 const briefDocument = (doc: String, start: number, end: number) => {
   return `${doc.slice(0, start)}...${doc.slice(-end)}`;
 };
+const replaceDot = (numString: string): string => {
+  const replaced = numString.replace(/,/, ".");
+  return replaced;
+};
 export {
   formatToUnit,
   formatPercent,
@@ -60,4 +64,5 @@ export {
   formatDate,
   formatTypeChain,
   briefDocument,
+  replaceDot,
 };

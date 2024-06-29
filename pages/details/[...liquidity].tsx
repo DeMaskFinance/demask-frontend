@@ -9,7 +9,7 @@ const updateMeta = {
 export default function DetailPool() {
   return (
     <BackgroundDefault>
-      <div className="py-8 min-h-[94vh] max-w-screen-sm md:max-w-screen-xl mx-auto">
+      <div className="min-h-[94vh] max-w-screen-sm md:max-w-screen-xl mx-auto">
         <NextSeo {...updateMeta} />
         <DetailLiquidity />
       </div>
