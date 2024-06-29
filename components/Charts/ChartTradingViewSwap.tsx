@@ -299,59 +299,61 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               fontFamily: "unset",
             }}
           >
-            <div className="flex items-center gap-3 md:flex-wrap mb-2.5 text-sm flex-wrap h-[33px] bg-shader_600 pl-4">
+            <div className="flex items-center gap-2 md:flex-wrap mb-2.5 text-sm flex-wrap bg-shader_600 pl-4">
               <div className="flex text-shader_200 item-center">
                 <span className="">Time:</span>
                 <span>{formatDate(legendData?.time)}</span>
               </div>
-              <div className="flex item-center">
-                <span className="text-shader_200">O:</span>
-                <div
-                  className={`${
-                    legendData?.change ? "text-red" : "text-green"
-                  }`}
-                >
-                  <FormatNumber number={legendData?.open} />
+              <div className="flex">
+                <div className="flex item-center">
+                  <span className="text-shader_200">O:</span>
+                  <div
+                    className={`${
+                      legendData?.change ? "text-red" : "text-green"
+                    }`}
+                  >
+                    <FormatNumber number={legendData?.open} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex item-center">
-                <span className="text-shader_200">L:</span>
-                <div
-                  className={`${
-                    legendData?.change ? "text-red" : "text-green"
-                  }`}
-                >
-                  <FormatNumber number={legendData?.low} />
+                <div className="flex item-center">
+                  <span className="text-shader_200">L:</span>
+                  <div
+                    className={`${
+                      legendData?.change ? "text-red" : "text-green"
+                    }`}
+                  >
+                    <FormatNumber number={legendData?.low} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex item-center">
-                <span className="text-shader_200">H:</span>
-                <div
-                  className={`${
-                    legendData?.change ? "text-red" : "text-green"
-                  }`}
-                >
-                  <FormatNumber number={legendData?.high} />
+                <div className="flex item-center">
+                  <span className="text-shader_200">H:</span>
+                  <div
+                    className={`${
+                      legendData?.change ? "text-red" : "text-green"
+                    }`}
+                  >
+                    <FormatNumber number={legendData?.high} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex item-center">
-                <span className="text-shader_200">C:</span>
-                <div
-                  className={`${
-                    legendData?.change ? "text-red" : "text-green"
-                  }`}
-                >
-                  <FormatNumber number={legendData?.close} />
+                <div className="flex item-center">
+                  <span className="text-shader_200">C:</span>
+                  <div
+                    className={`${
+                      legendData?.change ? "text-red" : "text-green"
+                    }`}
+                  >
+                    <FormatNumber number={legendData?.close} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex item-center">
-                <span className="text-shader_200">Vol:</span>
-                <div
-                  className={`${
-                    legendData?.change ? "text-red" : "text-green"
-                  }`}
-                >
-                  <FormatNumber number={legendData?.value} />
+                <div className="flex item-center">
+                  <span className="text-shader_200">Vol:</span>
+                  <div
+                    className={`${
+                      legendData?.change ? "text-red" : "text-green"
+                    }`}
+                  >
+                    <FormatNumber number={legendData?.value} />
+                  </div>
                 </div>
               </div>
             </div>

@@ -346,83 +346,75 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           />
         </div>
         <div className="p-4 border rounded-lg border-shader_500 bg-shader_700">
-          <div>
-            <div className="flex pb-5 border-b gap-x-5 border-shader_500">
-              <div className="w-[157px] h-[157px] aspect-square rounded-xl overflow-hidden">
-                <MediaNFT data={data} isControls={true} />
+          <div className="md:flex pb-5 border-b gap-x-5 border-shader_500">
+            <div className="w-[157px] h-[157px] aspect-square rounded-xl overflow-hidden mx-auto">
+              <MediaNFT data={data} isControls={true} />
+            </div>
+            <div className="flex-grow font-semibold text-white text-center md:text-left">
+              <Link
+                href={`/collection/${nftAddress}?typeERC=erc1155`}
+                className="text-primary_400 text-sm"
+              >
+                {data?.collectionName}
+              </Link>
+              <div className="flex gap-x-1 justify-center md:justify-start">
+                <h4>{data?.metadata?.name}</h4>
+                <p>#{idNFT}</p>
               </div>
-              <div className="flex-grow font-semibold text-white ">
-                <Link
-                  href={`/collection/${nftAddress}?typeERC=erc1155`}
-                  className="text-primary_400 text-sm"
-                >
-                  Pudgy Penguin
-                </Link>
-                <div className="flex gap-x-1">
-                  <h4>{data?.metadata?.name}</h4>
-                  <p>#{idNFT}</p>
+              <p className="mb-2 mt-3 text-shader_200 text-sm">
+                Liquidity Pool:
+              </p>
+              <div className="flex gap-x-2 whitespace-nowrap">
+                <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
+                  <p className="font-normal text-primary_200 ">Reserve NFT</p>
+                  <p>{data.reserveNFT}</p>
                 </div>
-                <p className="mb-2 mt-3 text-shader_200 text-sm">
-                  Liquidity Pool:
-                </p>
-                <div className="flex gap-x-2 whitespace-nowrap">
-                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
-                    <p className="font-normal text-primary_200 ">Reserve NFT</p>
-                    <p>{data.reserveNFT}</p>
-                  </div>
-                  <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
-                    <p className="font-normal text-primary_200 ">
-                      Reserve Token
-                    </p>
-                    <div className="flex items-center gap-x-1">
-                      <FormatNumber number={data.reserveToken} />
-                      <EtherIcon width={16} height={16} />
-                    </div>
+                <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
+                  <p className="font-normal text-primary_200 ">Reserve Token</p>
+                  <div className="flex items-center gap-x-1">
+                    <FormatNumber number={data.reserveToken} />
+                    <EtherIcon width={16} height={16} />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex justify-center mx-auto mt-5 gap-x-2">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button active className="border-2 gap-x-2">
-                    <EyeIcon
-                      width={20}
-                      height={20}
-                      className="text-shader_200"
+          </div>
+          <div className="flex justify-center mx-auto mt-5 gap-x-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button active className="border-2 gap-x-2">
+                  <EyeIcon width={20} height={20} className="text-shader_200" />
+                  View detail
+                </Button>
+              </DialogTrigger>
+              <DialogContent className=" bg-shader_800 border border-shader_500 p-0">
+                <DialogHeader>
+                  <DialogDescription>
+                    <ModalDetail
+                      type="erc1155"
+                      idNFT={idNFT}
+                      nftAddress={nftAddress}
                     />
-                    View detail
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-0">
-                  <DialogHeader>
-                    <DialogDescription>
-                      <ModalDetail
-                        type="erc1155"
-                        idNFT={idNFT}
-                        nftAddress={nftAddress}
-                      />
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
 
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="flex whitespace-nowrap gap-x-2" green_2>
-                    <ImgIcon width={20} height={20} />
-                    Select
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
-                  <DialogHeader>
-                    <DialogDescription>
-                      <ModalSearchCollectionSwap />
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
-            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="flex whitespace-nowrap gap-x-2" green_2>
+                  <ImgIcon width={20} height={20} />
+                  Select
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
+                <DialogHeader>
+                  <DialogDescription>
+                    <ModalSearchCollectionSwap />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         <form className="mt-5">
@@ -513,7 +505,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           </div>
 
           <div className="mt-2 text-slate-200">
-            <div className="items-center justify-between block mb-4 lg:flex">
+            <div className="items-center justify-between  mb-4 flex">
               <p className="mr-1 text-xs font-normal">Slippage </p>
               <div className="flex text-sm text-primary_300">{slippage}%</div>
             </div>

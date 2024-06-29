@@ -45,7 +45,7 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
   console.log(nftAddress);
 
   return (
-    <div className="w-[60vw] rounded-lg relative min-h-[500px] flex justify-center items-center ">
+    <div className="rounded-lg relative min-h-[500px] md:w-[838px] flex justify-center items-center ">
       {isLoading || isFetching ? (
         <div className="flex items-center justify-center h-full w-full">
           <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
@@ -106,11 +106,11 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
               </div>
             </div>
             <div className="p-4 overflow-y-scroll min-h-[500px] max-h-[60vh]">
-              <div className="flex gap-x-4">
-                <div className=" flex max-h-[350px] aspect-square rounded-xl h-fit overflow-hidden">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex max-h-[350px] aspect-square rounded-xl h-fit overflow-hidden">
                   <MediaNFT data={data} isControls />
                 </div>
-                <div className="w-full max-w-lg mx-auto ">
+                <div className="w-full max-w-lg mx-auto flex-1">
                   <Disclosure
                     as="div"
                     className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"

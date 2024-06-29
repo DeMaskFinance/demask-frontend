@@ -84,6 +84,9 @@
   .title {
     @apply font-semibold text-white;
   }
+  .title_page {
+    @apply text-base md:text-2xl font-bold text-primary_100 py-4 md:py-10 text-center;
+  }
   .title_label {
     @apply mt-1 mb-4 text-base font-semibold text-shader_100 flex;
   }

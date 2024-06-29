@@ -1,27 +1,20 @@
-import AccountContext from "@/context/AccountContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
+import { DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
 import {
   CreateIcon,
   LaunchpadIcon,
   PoolIcon,
 } from "../Icons/Mobile/IconMobile";
-import { DiamondIcon, RankIcon, SeeMoreIcon, SwapIcon } from "../Icons";
 
 export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);
-  const [mode, setMode] = useState<string>("");
-  const [activeChoice, setActiveChoice] = useState<string>(mode);
-  const { chainId } = useContext(AccountContext);
-  useEffect(() => {
-    setMode(localStorage.getItem("MODE_DEMASK") || "NEWFEEDS");
-  }, [activeChoice]);
   const router = useRouter();
   const data = [
     { id: 3, name: "Swap", url: `/swap`, icon: SwapIcon },
     { id: 1, name: "Create", url: "/create", icon: CreateIcon },
-    { id: 2, name: "Launchpad", url: "/launchpad", icon: LaunchpadIcon },
+    { id: 2, name: "Collections", url: "/collections", icon: LaunchpadIcon },
     { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
     { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
     {

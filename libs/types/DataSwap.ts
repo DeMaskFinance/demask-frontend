@@ -15,4 +15,5 @@ interface DataBase {
   isDeleted: boolean;
   name?: string;
   avatar?: string;
+  collectionName: string;
 }

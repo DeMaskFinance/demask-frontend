@@ -16,9 +16,7 @@ export default function Collections() {
     <BackgroundDefault>
       <NextSeo {...updateMeta} />
       <section className="max-w-screen-xl px-4 mx-auto lg:px-8">
-        <h1 className="text-base md:text-2xl font-bold text-primary_100 py-4 md:py-10 text-center">
-          DEMASK INFO & ANALYTICS
-        </h1>
+        <h1 className="title_page">DEMASK INFO & ANALYTICS</h1>
         <StatisticAnalytics />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
           <ChartTVL />

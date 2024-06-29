@@ -9,6 +9,7 @@ import AccountContext from "@/context/AccountContext";
 import { SkeletonSubCategory } from "../Skeleton/SkeletonCategory";
 import SwiperCustom from "../SwiperCustom";
 import NFTCategory from "./NFTCategory";
+import SearchNotFound from "../Search/SearchNotFound";
 
 const Category = ({ label }: { label: string }) => {
   const { chainId } = useContext(AccountContext);
@@ -37,7 +38,9 @@ const Category = ({ label }: { label: string }) => {
                 ? "text-yellow"
                 : label === "Music"
                 ? "text-blue"
-                : "text-red"
+                : label === "Membership"
+                ? "text-red"
+                : "text-white"
             } text-lg font-bold mb-3`}
           >
             {label}

@@ -49,7 +49,6 @@ const DetailLiquidity = () => {
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
   const [reward, setReward] = useState("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
@@ -62,8 +61,6 @@ const DetailLiquidity = () => {
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
-  const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
-    useState<boolean>(false);
 
   const [page, setPage] = useState(1);
   const { ROUTER: routerAddress } = demask;
@@ -74,14 +71,21 @@ const DetailLiquidity = () => {
   }, [liquidity]);
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
     useQuery({
-      queryKey: ["liquidityHistory", account, dmlTokenLiquidity, chainId],
+      queryKey: [
+        "liquidityHistory",
+        account,
+        dmlTokenLiquidity,
+        chainId,
+        activeChoice,
+      ],
       queryFn: async () => {
         if (account && dmlTokenLiquidity) {
           const res = await liquidityHistory(
             account,
             dmlTokenLiquidity,
             page,
-            chainId
+            chainId,
+            activeChoice
           );
           return res;
         }
@@ -106,7 +110,7 @@ const DetailLiquidity = () => {
     fetchDataReward();
   }, [dmlTokenLiquidity, account, data]);
 
-  const { balanceOfDML, balanceDML, totalSupply } = useBananceOfDML(
+  const { balanceDML, totalSupply } = useBananceOfDML(
     account,
     dmlTokenLiquidity,
     wallet
@@ -117,7 +121,6 @@ const DetailLiquidity = () => {
   ) => {
     e.preventDefault();
     if (!account) {
-      setIsOpen(true);
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
@@ -179,7 +182,7 @@ const DetailLiquidity = () => {
   ];
   return (
     <div>
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <SkeletonPoolDetail />
       ) : isSuccess ? (
         <div>
@@ -198,7 +201,7 @@ const DetailLiquidity = () => {
                   <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
                     <TabGroups
                       choices={options}
-                      activeChoice="All"
+                      activeChoice={activeChoice}
                       onChoiceChange={handleChoiceChange}
                       isDefault
                     />

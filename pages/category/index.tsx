@@ -33,7 +33,7 @@ export default function Categories() {
           <CategoryType label={"Gaming"} />
           <CategoryType label={"Film"} />
           <CategoryType label={"Music"} />
-          <CategoryType label={"Memberships"} />
+          <CategoryType label={"Membership"} />
           <CategoryType label={"Others"} />
         </div>
       ),
@@ -81,11 +81,11 @@ export default function Categories() {
     <BackgroundDefault>
       <NextSeo {...updateMeta} />
 
-      <div className=" py-10 mx-auto  min-h-[83vh] px-10">
-        <h1 className="mb-10 text-2xl font-bold title">
+      <div className=" mx-auto  min-h-[83vh] px-3 md:px-10">
+        <h1 className="text-lg md:text-2xl py-4 md:pt-10 md:pb-6 font-bold title">
           BROWSE ALL NFT COLLECTIONS
         </h1>
-        <div className="flex mb-6 gap-x-3">
+        <div className="flex gap-x-3 mb-4 md:mb-6 h-11 max-w-[100vw] overflow-x-auto">
           {types.map((type, index: number) => (
             <div
               key={index}
@@ -94,7 +94,7 @@ export default function Categories() {
               }}
               className={`${
                 option.key === type.key ? "bg-shader_400" : "bg-shader_700"
-              } flex gap-x-1 border border-shader_400 rounded-lg py-2 px-3 text-white font-semibold text-lg items-center hover:bg-shader_400 transition-all duration-300 cursor-pointer `}
+              } flex gap-x-1 border whitespace-nowrap border-shader_400 rounded-lg h-11 px-3 text-white font-semibold text-lg items-center hover:bg-shader_400 transition-all duration-300 cursor-pointer `}
             >
               {type.icon}
               {type.title}

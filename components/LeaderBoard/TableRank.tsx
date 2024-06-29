@@ -59,19 +59,19 @@ const ItemTableRank = ({ item, currentRank }: any) => {
       </td>
       <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
         <div className="flex items-center justify-end md:gap-2">
-          -
+          <FormatNumber number={item?.refPoint} />
           <EtherIcon width={18} height={18} />
         </div>
       </td>
       <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
         <div className="flex items-center justify-end md:gap-2">
-          <FormatNumber number={item?.volume} />
+          <FormatNumber number={item?.tradePoint} />
           <EtherIcon width={18} height={18} />
         </div>
       </td>
       <td className="py-4 lg:w-full md:w-[175px] w-[200px]">
         <div className="flex items-center justify-end md:gap-2">
-          <FormatNumber number={item?.volume} />
+          <FormatNumber number={item?.totalPoints} />
           <EtherIcon width={18} height={18} />
         </div>
       </td>
@@ -92,8 +92,8 @@ const TableRank = () => {
 
   return (
     <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-md bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
-      <table className="flex-grow w-full text-sm text-left border-collapse min-h-[500px] flex flex-col font-semibold">
-        <thead className="uppercase bg-shader_600 text-shader_200">
+      <table className="w-full text-left border-collapse min-h-[550px]">
+        <thead className=" bg-shader_600 text-shader_200">
           <tr className="flex px-4 py-3">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
@@ -108,7 +108,7 @@ const TableRank = () => {
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
               Trading point
             </th>
-            <th className="flex justify-end lg:w-full md:w-full w-[140px] pr-2">
+            <th className="flex justify-end lg:w-full md:w-full w-[200px] pr-2">
               Season volume
             </th>
           </tr>

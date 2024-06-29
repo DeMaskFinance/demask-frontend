@@ -19,7 +19,7 @@ const Cards = () => {
       {isLoading ? (
         <SkeletonLeaderBoard />
       ) : isSuccess ? (
-        <div className="max-w-[400px] lg:max-w-[800px] mx-auto flex gap-x-5">
+        <div className="max-w-[400px] lg:max-w-[800px] mx-auto flex gap-x-2 md:gap-x-4">
           {data && data.data ? (
             <>
               <div className="mt-6 basis-1/3">

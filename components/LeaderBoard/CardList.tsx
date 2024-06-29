@@ -8,6 +8,7 @@ import {
   SecondRankIcon,
   ThirdRankIcon,
 } from "../Icons";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center px-2 h-[372px] border rounded-lg text-shader_700 mb-10  border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
@@ -33,7 +34,7 @@ export const CardListLoading = () => {
 const CardList = ({ data }: any) => {
   return (
     <div
-      className={`flex relative overflow-hidden flex-col bg-shader_700 border-shader_500 items-center justify-center border p-6 rounded-10 text-white w-full h-fit`}
+      className={`flex relative overflow-hidden flex-col bg-shader_700 border-shader_500 items-center justify-center border p-2 md:p-6 rounded-10 text-white w-full h-fit`}
     >
       <div>
         {data?.rank === 1 ? (
@@ -54,7 +55,9 @@ const CardList = ({ data }: any) => {
             alt="leaderboardImg"
             src={data?.avatar}
             className={`object-cover ${
-              data?.rank === 1 ? "w-24 h-24" : "w-20 h-20"
+              data?.rank === 1
+                ? "md:w-24 md:h-24 w-16 h-16"
+                : "md:w-20 md:h-20 w-16 h-16"
             } rounded-full`}
           />
         ) : (
@@ -63,12 +66,14 @@ const CardList = ({ data }: any) => {
               <AvatarDiceBear size={60} seed={data?.userAddress} />
             </div>
             <div className="block lg:hidden">
-              <AvatarDiceBear size={60} seed={data?.userAddress} />
+              <AvatarDiceBear size={40} seed={data?.userAddress} />
             </div>
           </Fragment>
         )}
       </div>
-      <h2 className="text-xl font-semibold">{data?.name}</h2>
+      <h2 className="md:text-xl font-semibold text-lg truncate ">
+        {data?.name}
+      </h2>
       <div
         className={`relative flex flex-col items-center w-full  pb-2 rounded-lg ${
           data?.rank === 1 ? "mt-1" : "mt-8"
@@ -114,7 +119,7 @@ const CardList = ({ data }: any) => {
             alt="fill"
             width={350}
             height={160}
-            className="h-40 w-[350px]"
+            className="h-20 md:h-40 w-[350px]"
           />
         ) : data?.rank === 2 ? (
           <Image
@@ -122,7 +127,7 @@ const CardList = ({ data }: any) => {
             alt="fill"
             width={350}
             height={160}
-            className="h-40 w-[350px]"
+            className="h-20 md:h-40 w-[350px]"
           />
         ) : data?.rank === 3 ? (
           <Image
@@ -130,7 +135,7 @@ const CardList = ({ data }: any) => {
             alt="fill"
             width={350}
             height={160}
-            className="h-40 w-[350px]"
+            className="h-20 md:h-40 w-[350px]"
           />
         ) : (
           <div></div>

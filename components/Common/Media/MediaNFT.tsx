@@ -36,7 +36,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 blurDataURL="/placeHolderIMG.png"
                 onError={(event: any) => {
                   event.target.srcset =
-                    "https://api.demask.finance/media/default_image.jpg";
+                    "https://file.demask.finance/e46abbd0950de661583d93ebed957ec6.png";
                 }}
                 unoptimized
                 onLoadingComplete={() => setLoaded(true)}

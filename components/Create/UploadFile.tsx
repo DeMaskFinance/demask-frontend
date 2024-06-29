@@ -104,7 +104,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
         ) : (
           <div
             onClick={handleClickFile}
-            className="cursor-pointer h-fit lg:h-[60vh] flex flex-col justify-center w-full items-center"
+            className="cursor-pointer h-[60vh] flex flex-col justify-center w-full items-center"
           >
             <div className="p-2 bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg">
               <CreateIcon width={24} height={24} />
@@ -242,11 +242,13 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
         <div className="self-center text-left">
           <h5 className="title">Drag or drop to upload image</h5>
           <div className="text-sm text-shader_200">
-            <p>You may change this after deploying your contract.</p>
-            <p>
-              Recommended size: 300 x 300px. File types: JPG, PNG, SVG, or GIF
-            </p>
+            <p>Recommended size: 300 x 300px.</p>
+            <p>File types: JPG, PNG, SVG, or GIF</p>
           </div>
+          {/* <Button className="flex gap-x-2 px-3 h-10 text-white" active>
+            <UploadIcon width={20} height={20} className="text-white" />
+            Upload Image
+          </Button> */}
         </div>
       </div>
       ;

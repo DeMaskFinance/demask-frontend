@@ -152,7 +152,7 @@ export default function Creator() {
       <NextSeo {...updateMeta} />
 
       <WithAuth>
-        <div className="py-8 pb-24 mx-auto container-main lg:pb-8 lg:px-0">
+        <div className="py-8 pb-24 mx-auto container-main lg:pb-8 px-3">
           <div
             className="flex items-center cursor-pointer gap-x-2"
             onClick={() => router.back()}

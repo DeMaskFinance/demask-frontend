@@ -118,7 +118,7 @@ const DeployCollection = () => {
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
-        <div className="max-w-2xl gap-6 pt-6 mx-auto px-4">
+        <div className="max-w-2xl gap-6 pt-6 mx-auto px-3">
           {/* UpLoad File */}
           <div className="">
             <div className="sticky top-16">
@@ -214,7 +214,7 @@ const DeployCollection = () => {
                           type="button"
                           name="category"
                           id="category"
-                          className={`px-3 py-1 mb-4 mr-4 text-sm h-[34px] font-semibold text-white border-shader_500  border rounded-lg cursor-pointer ${
+                          className={`px-2 py-1 mb-4 mr-4 text-sm h-[34px] font-semibold text-white border-shader_500  border rounded-lg cursor-pointer ${
                             values.category.includes(item.value)
                               ? "bg-primary_500 "
                               : "bg-shader_700"

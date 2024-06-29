@@ -79,7 +79,7 @@ const Pagination = ({
 
   return (
     <div className="flex justify-end w-full px-4 mx-auto text-sm bg-shader_800">
-      <div className="flex flex-col py-4 gap-x-8 lg:flex-row md:flex-row ">
+      <div className="flex py-4 gap-x-8 ">
         <div className="flex gap-x-1">
           <button
             onClick={prevPage}

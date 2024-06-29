@@ -150,7 +150,7 @@ const Search: FunctionComponent<SearchProps> = ({
             <SearchIcon
               width={20}
               height={20}
-              className={`cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 hidden lg:block -translate-y-1/2 text-white`}
+              className={`cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 -translate-y-1/2 text-white`}
             />
           </div>
         </div>

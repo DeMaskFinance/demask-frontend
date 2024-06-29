@@ -72,10 +72,13 @@ export default function Liquidity() {
       <div className="py-8 max-w-[908px]  mx-auto min-h-[94vh] pb-40 lg:pb-0 px-4 md:px-0">
         <div className="w-full">
           <div className="flex flex-wrap justify-between w-full gap-y-2">
-            <div className="flex items-center gap-x-2">
+            <div>
               <h2 className="text-2xl font-semibold text_gradient">
                 Your Liquidity
               </h2>
+              <p className="mt-2 textshader_900 title">
+                List of your liquidity positions
+              </p>
             </div>
             <Button
               type="button"
@@ -86,10 +89,8 @@ export default function Liquidity() {
               + Add Liquidity
             </Button>
           </div>
-          <p className="mt-2 mb-6 textshader_900 title">
-            List of your liquidity positions
-          </p>
-          <div className="rounded-lg bg-shader_800 min-h-[70vh] flex flex-col">
+
+          <div className="rounded-lg bg-shader_800 min-h-[70vh] flex flex-col mt-4 md:mt-8 overflow-hidden">
             <TabGroups
               choices={["ERC-1155", "ERC-721"]}
               activeChoice={activeChoice}
