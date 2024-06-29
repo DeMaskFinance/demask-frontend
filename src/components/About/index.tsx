@@ -13,11 +13,17 @@ const About = () => {
       >
         <div className="w-[655px] h-[150px] bg-linear-g2 absolute top-0 right-1/4 blur-[100px] opacity-20 rounded-full rotate-25 -z-10"></div>
         <div className="flex flex-col items-center text-lg px-16 h-1/2 justify-end">
-          <div className="py-2 px-3 text-sm bg-link-gradient rounded-full text-white relative gradient-border flex gap-x-2 items-center">
-            <p className="text-nowrap">The Campaigns on Galxe, NOW LIVE!</p>
-            <LDownIcon width={16} height={16} />
-            <BackgroundParticles value={6000} id="ts_particle8" />
-          </div>
+          <a
+            href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <div className="py-2 px-3 text-sm bg-link-gradient rounded-full text-white relative gradient-border flex gap-x-2 items-center">
+              <p className="text-nowrap">The Campaigns on Galxe, NOW LIVE!</p>
+              <LDownIcon width={16} height={16} />
+              <BackgroundParticles value={6000} id="ts_particle8" />
+            </div>
+          </a>
           <h1 className="font-bold text-white text-3xl md:text-medium leading-snug my-2 md:my-0">
             DEMASK FINANCE
           </h1>
@@ -28,13 +34,19 @@ const About = () => {
 
           <div className="btn_animation btn_active mt-8">
             <div className="overlay">
-              <Button
-                variant="gradient"
-                className="flex rounded-3xl gap-x-2 px-7"
+              <a
+                href="https://app.demask.finance/swap"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <DemaskIcon width={20} height={20} />
-                <p>Launch app</p>
-              </Button>
+                <Button
+                  variant="gradient"
+                  className="flex rounded-3xl gap-x-2 px-7"
+                >
+                  <DemaskIcon width={20} height={20} />
+                  <p>Launch app</p>
+                </Button>
+              </a>
             </div>
           </div>
         </div>

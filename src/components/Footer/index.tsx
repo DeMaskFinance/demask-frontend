@@ -14,8 +14,8 @@ const styles = {
 };
 export default function Footer() {
   const linksLeft = [
-    { href: "https://demask.finance/", text: "About" },
-    { href: "https://demaskfi.substack.com/", text: "Blog" },
+    { href: "#about", text: "About" },
+    { href: "https://substack.com/@demaskfi/", text: "Blog" },
     { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Deck" },
   ];
   const linksRight = [
@@ -84,7 +84,7 @@ export default function Footer() {
                 key={index}
                 className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
               >
-                <a href={link.href} rel="noreferrer noopener" target="_blank">
+                <a href={link.href} rel="noreferrer noopener">
                   {link.text}
                 </a>
               </li>

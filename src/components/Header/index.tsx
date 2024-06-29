@@ -71,9 +71,7 @@ const Header = () => {
             {navList.map((item, index) => (
               <a
                 href={`${item.id}`}
-                className={`${
-                  item.id === linked ? "text-shader_200" : "text-shader_100"
-                }`}
+                className={`hover:text-shader_200 text-shader_100`}
                 key={index}
                 onClick={() => {
                   setLinked(item.id);
@@ -83,7 +81,11 @@ const Header = () => {
               </a>
             ))}
           </ul>
-          <div>
+          <a
+            href="https://app.demask.finance/swap"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
               variant="gradient"
               className="flex items-center gap-x-2 pl-4 pr-2 h-10"
@@ -91,7 +93,7 @@ const Header = () => {
               <p>Launch app</p>
               <RightIcon width={20} height={20} />
             </Button>
-          </div>
+          </a>
         </header>
       </div>
     </div>
