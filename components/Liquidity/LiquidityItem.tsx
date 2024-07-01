@@ -150,7 +150,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           href={
             type === "erc1155"
               ? `/details/${liquidity.dmlAddress}`
-              : `/swap/type/${liquidity.nftAddress}&tab=pool}`
+              : `/swap/type/${liquidity.nftAddress}?tab=pool}`
           }
         >
           <div className="flex justify-center mx-auto mt-3 text-sm gap-x-1 text-primary_300">

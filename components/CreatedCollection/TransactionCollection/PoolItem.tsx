@@ -33,12 +33,7 @@ const PoolItem = ({ liquidity }: any) => {
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
-
-  const handleAddLiquidity = () => {
-    setIsOpenAddLiquidity(true);
-  };
+  const collectionAddress = (router.query.erc as string) || "";
 
   const data = {
     reserveNFT: liquidity?.reserveNFT,
@@ -94,13 +89,9 @@ const PoolItem = ({ liquidity }: any) => {
     <div className="mb-4 text-white font-semibold text-sm">
       <p className="text-primary_400">Liquidity Pool:</p>
       <div className="flex gap-x-2 whitespace-nowrap mt-4">
-        <Dialog>
+        <Dialog open={isOpenAddLiquidity} onOpenChange={setIsOpenAddLiquidity}>
           <DialogTrigger asChild>
-            <Button
-              green_2
-              className="w-full py-3 px-3 flex gap-x-2"
-              onClick={handleAddLiquidity}
-            >
+            <Button green_2 className="w-full py-3 px-3 flex gap-x-2">
               <PlusIcon className="text-green" width={20} height={20} />
               Add Liquidity
             </Button>
@@ -110,9 +101,8 @@ const PoolItem = ({ liquidity }: any) => {
               /* 
           // @ts-ignore */
               data={data}
-              isOpenAddLiquidity={isOpenAddLiquidity}
-              setIsOpenLiquidity={setIsOpenAddLiquidity}
               setHash={setHash}
+              setIsOpenAddLiquidity={setIsOpenAddLiquidity}
               setIsOpenSuccess={setIsOpenSuccess}
               setIsOpenError={setIsOpenError}
             />

@@ -11,27 +11,26 @@ import useInformation from "@/hooks/useInformationToken";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { replaceDot } from "@/libs/utils/formatComon";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
-import { ModalTransation } from "../ModalTransation";
-import { ModalWallet } from "../ModalWallet";
-import { NumberFormatValues, NumericFormat } from "react-number-format";
-import { replaceDot } from "@/libs/utils/formatComon";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalAddLiquidityERC721: React.FunctionComponent<
   ModalAddLiquidityERC721Props
-> = ({ setHash, setIsOpenSuccess, setIsOpenError }) => {
+> = ({ setHash, setIsOpenSuccess, setIsOpenError, setIsOpenAddLiquidity }) => {
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
@@ -49,8 +48,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -141,12 +139,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
 
-  const handleAddLiquidity = () => {
-    if (idNFT.length > 0 && !isSufficientToken) {
-      setIsOpenConfirmAddLiquidity(true);
-    }
-  };
-
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
     if (isExist) {
@@ -225,7 +217,10 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           </div>
           <div className="flex justify-center">
             {isApprovedNFT ? (
-              <Dialog>
+              <Dialog
+                open={isOpenConfirmAddLiquidity}
+                onOpenChange={setIsOpenConfirmAddLiquidity}
+              >
                 <DialogTrigger asChild>
                   <Button
                     className="w-[126px] py-2 mx-auto whitespace-nowrap"
@@ -239,7 +234,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       amountErcDesiredToDec === 0 ||
                       isSufficientToken
                     }
-                    onClick={handleAddLiquidity}
+                    disabled={
+                      idNFT.length === 0 ||
+                      amountErcDesiredToDec === 0 ||
+                      isSufficientToken
+                    }
                   >
                     Add Liquidity
                   </Button>
@@ -250,6 +249,10 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       data={data}
                       isOpenTransaction={isOpenTransaction}
                       setIsOpenTransaction={setIsOpenTransaction}
+                      setIsOpenAddLiquidity={setIsOpenAddLiquidity}
+                      setIsOpenConfirmAddLiquidity={
+                        setIsOpenConfirmAddLiquidity
+                      }
                       tokenAddress={demask.NATIVE_ADDRESS}
                       nftAddress={collectionAddress}
                       idNFT={""}

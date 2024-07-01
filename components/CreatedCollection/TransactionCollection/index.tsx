@@ -1,20 +1,18 @@
 import { RefetchIcon, SettingIcon } from "@/components/Icons";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import TabQuery from "@/components/NavChoice/TabQuery";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react/headless";
 import { useState } from "react";
 import { BsCaretDownFill } from "react-icons/bs";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import Buy from "./Buy";
 import Change from "./Change";
 import Pool from "./Pool";

@@ -30,6 +30,8 @@ interface ModalConfirmAddLiquidityERC721Props {
   isOpenTransaction: boolean;
   inputNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenConfirmAddLiquidity: React.Dispatch<React.SetStateAction<boolean>>;
   setIdNFT: React.Dispatch<React.SetStateAction<number[]>>;
   setInputToken: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,6 +53,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setHash,
   setIsOpenSuccess,
   setIsOpenError,
+  setIsOpenAddLiquidity,
+  setIsOpenConfirmAddLiquidity,
 }) => {
   const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
@@ -59,8 +63,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -135,10 +138,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         setInputToken("");
         setAmountErcDesiredToDec("");
         setIdNFT([]);
-        // setIsOpenConfirmAddLiquidity(false);
-        // if (setIsOpenLiquidity) {
-        //   setIsOpenLiquidity(false);
-        // }
+        setIsOpenConfirmAddLiquidity(false);
+        setIsOpenAddLiquidity(false);
         if (check.status === 1) {
           setIsOpenSuccess(true);
         } else {
@@ -153,16 +154,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       }
     }
   };
-  console.log(data);
 
   return (
     <Fragment>
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
-        <div className="px-4 pt-4">
-          <div className="flex justify-between text-primary_200 border-shader_500">
-            <p className="title_modal">Create Pool</p>
-          </div>
-        </div>
+        <p className="title_modal pb-4">Create Pool</p>
         <div className="text-sm text-shader_200">
           <div className="flex items-center pb-4 border-b gap-x-3 border-shader_500">
             <div className="w-[65px] h-[65px] rounded-lg overflow-hidden">

@@ -38,8 +38,7 @@ const Sell = () => {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
     queryFn: async () => {

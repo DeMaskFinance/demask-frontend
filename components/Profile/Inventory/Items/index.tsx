@@ -144,7 +144,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                             href={
                               item.type === "erc1155"
                                 ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                                : `/swap/type/${item.nftAddress}&tab=pool`
+                                : `/swap/type/${item.nftAddress}?tab=pool`
                             }
                             className="basis-1/2"
                           >
@@ -157,7 +157,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                             href={
                               item.type === "erc1155"
                                 ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                                : `/swap/type/${item.nftAddress}`
+                                : `/swap/type/${item.nftAddress}?tab=buy`
                             }
                             className="basis-1/2"
                           >

@@ -34,8 +34,7 @@ const Change = () => {
   const [isOpenSuccessSwap, setIsOpenSuccessSwap] = useState<boolean>(false);
   const [isOpenErrorSwap, setIsOpenErrorSwap] = useState<boolean>(false);
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const {
     ROUTER_721: routerAddress,

@@ -66,8 +66,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const { account, wallet, slippage } = useContext(AccountContext);
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
   const currentAllowance = useAllowanceDML(
     account,
     data.dmlAddress,

@@ -12,8 +12,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 const Pool = () => {
   const { account, chainId } = useContext(AccountContext);
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
 
   const { isLoading, data, isSuccess } = useQuery({
     queryKey: ["poolERC721", collectionAddress, chainId],

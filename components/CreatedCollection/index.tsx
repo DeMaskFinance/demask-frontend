@@ -226,7 +226,7 @@ export default function DetailCollection() {
             </div>
             <div className="flex items-center gap-x-2">
               {dataDetail?.collaborators.includes(account) && (
-                <Link href={`/edit/${collectionAddress}&type=${typeERC}`}>
+                <Link href={`/edit/${collectionAddress}?type=${typeERC}`}>
                   <Button
                     primary
                     className="flex h-8 px-3 text-sm font-bold gap-x-2"

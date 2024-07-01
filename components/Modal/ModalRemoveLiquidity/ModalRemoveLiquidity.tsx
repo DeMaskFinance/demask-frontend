@@ -63,8 +63,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     useState<boolean>(false);
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
+  const collectionAddress = (router.query.erc as string) || "";
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     setIdNFT([]);
