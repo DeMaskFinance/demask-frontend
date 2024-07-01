@@ -76,7 +76,7 @@ const Static = () => {
     },
   ];
   return (
-    <article className="grid grid-cols-2 lg:grid-cols-4 gap-y-3 p-6 gap-x-10 w-fit mx-auto mb-8">
+    <article className="grid grid-cols-2 lg:grid-cols-4 gap-y-3 p-6 gap-x-10 w-fit mx-auto text-left">
       {amountList.map((item, index) => (
         <div
           key={index}

@@ -3,16 +3,29 @@ import { Button } from "../ui/button";
 import { DemaskIcon, LDownIcon } from "../Icons";
 import Static from "./Static";
 import BackgroundParticles from "../Backgrounds/BackgroundParticles";
+import Spline from "@splinetool/react-spline";
 
 const About = () => {
   return (
-    <div>
+    <div className="h-[90vh] relative w-full">
+      <div className=" absolute top-0 bottom-0 left-0 right-0">
+        <video
+          muted
+          autoPlay
+          loop
+          playsInline
+          className="w-screen h-full object-cover"
+        >
+          <source src="/homeVideo.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <div
-        className=" text-center h-[86vh] md:h-[90vh] w-full relative"
+        className=" text-center h-full w-full relative flex flex-col"
         id="about"
       >
-        <div className="w-[655px] h-[150px] bg-linear-g2 absolute top-0 right-1/4 blur-[100px] opacity-20 rounded-full rotate-25 -z-10"></div>
-        <div className="flex flex-col items-center text-lg px-16 h-1/2 justify-end">
+        <div className="w-[655px] h-[150px] bg-linear-g2 absolute top-0 right-1/4 blur-[100px] opacity-35 rounded-full rotate-25 z-10"></div>
+        <div className="flex flex-col items-center text-lg h-[40%] justify-end">
           <a
             href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
             rel="noopener noreferrer"
@@ -50,26 +63,12 @@ const About = () => {
             </div>
           </div>
         </div>
-        <div className="h-1/2">
-          {/* <Spline scene="https://prod.spline.design/UB73Atxy70Sc82dO/scene.splinecode" /> */}
-          {/* <div data-framer-appear-id="6453br" style={{ opacity: 1 }}>
-            <iframe
-              src="https://my.spline.design/gitnesssplinetest-e39b09572ab1dc0fd47317d99c8d7599/"
-              // style={{width:100%,height:100%,border:none}}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              sandbox="allow-same-origin allow-scripts allow-downloads allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
-            ></iframe>
-          </div> */}
-          {/* <Spline
-            className="spline"
-            scene="https://prod.spline.design/k99HVzraHEeIFQii/scene.splinecode"
-          /> */}
+        <div className="flex-1 relative">
+          <div className="absolute bottom-0 left-0 right-0 z-50">
+            <Static />
+            <div className="w-[900px] h-[200px] bg-linear-g2 absolute bottom-0 right-1/2 blur-[100px] opacity-20 rounded-full rotate-25 -z-10 translate-x-1/2"></div>
+          </div>
         </div>
-      </div>
-      <div className="relative">
-        <Static />
-        <div className="w-[1174px] h-[287px] bg-linear-g2 absolute bottom-0 right-1/2 blur-[100px] opacity-20 rounded-full rotate-25 -z-10 translate-x-1/2"></div>
       </div>
     </div>
   );

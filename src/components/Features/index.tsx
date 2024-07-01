@@ -74,7 +74,7 @@ const Features = () => {
                 alt="img_features"
                 width={450}
                 height={300}
-                className="object-cover w-full h-full"
+                className=" w-full h-full"
                 quality={100}
                 priority={true}
               />
