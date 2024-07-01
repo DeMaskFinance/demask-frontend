@@ -15,7 +15,6 @@ interface ModalSuccessProps {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
   transactionHash: string;
-  isTransaction?: boolean;
   isMint?: boolean;
   metadataLink?: string;
 }
@@ -35,7 +34,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
     setIsOpenSuccess(false);
   };
   return (
-    <Wrapper isOpen={isOpenSuccess} onClick={handleClose} isTransaction>
+    <Wrapper isOpen={isOpenSuccess} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           <div>
@@ -101,7 +100,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
     setIsOpenSuccess(false);
   };
   return (
-    <Wrapper isOpen={isOpenSuccess} onClick={handleClose} isTransaction>
+    <Wrapper isOpen={isOpenSuccess} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           {isMint ? (

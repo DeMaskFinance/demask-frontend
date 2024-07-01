@@ -37,7 +37,7 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
   useEffect(() => {}, [isOpenTransation]);
 
   return (
-    <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
+    <Wrapper isOpen={isOpenModal} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
           <h3 className="pt-4 pb-8 text-xl text-center">

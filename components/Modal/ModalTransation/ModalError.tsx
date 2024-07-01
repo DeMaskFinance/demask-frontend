@@ -11,7 +11,6 @@ interface ModalErrorProps {
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
   transactionHash: string;
-  isTransaction?: boolean;
 }
 
 const ModalError: React.FunctionComponent<ModalErrorProps> = ({
@@ -30,7 +29,7 @@ const ModalError: React.FunctionComponent<ModalErrorProps> = ({
     setIsOpenError(false);
   };
   return (
-    <Wrapper isOpen={isOpenError} onClick={handleClose} isTransaction>
+    <Wrapper isOpen={isOpenError} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           <div className="flex justify-between">

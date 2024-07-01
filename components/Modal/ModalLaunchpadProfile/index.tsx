@@ -54,7 +54,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
   useEffect(() => {}, [isOpenTransation]);
 
   return (
-    <Wrapper isOpen={isOpenModal} onClick={handleClose} isTransaction>
+    <Wrapper isOpen={isOpenModal} onClick={handleClose}>
       <div className="container_modal">
         <div className="h-fit w-[260px] md:w-[300px] lg:w-[350px] p-4 relative rounded-lg">
           <h3 className="title_modal">Confirm refund</h3>
