@@ -173,14 +173,15 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         (Number(amountLIQUIDITY) * Number(data.reserveNFT)) /
         Number(totalSupply);
       const amountToken =
-        (Number(amountLIQUIDITY) * Number(data.tokenDecimals)) /
+        (Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals)) /
         Number(totalSupply);
       const resAmountToken =
-        (Number(amountLIQUIDITY) * Number(data.tokenDecimals)) /
+        (Number(amountLIQUIDITY) * Number(data.reserveTokenDecimals)) /
           Number(totalSupply) +
         (((Number(amountLIQUIDITY) * Number(data.reserveNFT)) %
           Number(totalSupply)) *
-          (Number(data.tokenDecimals) - Number(amountToken.toFixed(0)))) /
+          (Number(data.reserveTokenDecimals) -
+            Number(amountToken.toFixed(0)))) /
           ((Number(data.reserveNFT) - Math.floor(Number(resAmountNFT))) *
             Number(totalSupply));
       const resAmountTokenMinShow = divideByDecimal(
@@ -231,7 +232,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
-  console.log(idNFT, balanceOfDML, data.dmlAddress);
+  console.log(amountTokenMin, inputLiquidity);
 
   return (
     <Fragment>
@@ -309,7 +310,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
               NFT Receive
               <div className="flex items-center justify-between gap-x-1">
-                {data.tokenDecimals ? (
+                {data.reserveTokenDecimals ? (
                   <p>{amountNFTMin}</p>
                 ) : (
                   <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
