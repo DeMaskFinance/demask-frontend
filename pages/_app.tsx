@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "@/components/Layouts";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
-import { Poppins, Roboto_Mono } from "next/font/google";
+import { Poppins, Roboto_Mono, Titillium_Web } from "next/font/google";
 import MaintenanceError from "./maintenanceError";
 import {
   EthereumClient,
@@ -14,7 +14,13 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { arbitrum, mainnet, polygon, zkSyncTestnet } from "wagmi/chains";
+import {
+  arbitrum,
+  mainnet,
+  polygon,
+  zkSyncTestnet,
+  goerli,
+} from "wagmi/chains";
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,19 +29,12 @@ import { QueryParamProvider } from "use-query-params";
 import { Provider } from "react-redux";
 import store, { persistor } from "../store";
 import { PersistGate } from "redux-persist/integration/react";
-// import { ThemeProvider } from "next-themes";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
-const poppins = Poppins({
+const titillium = Titillium_Web({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-  adjustFontFallback: false,
-});
-const roboto = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "900", "600", "700"],
   display: "swap",
   // adjustFontFallback: false,
 });
@@ -48,7 +47,7 @@ const queryClient = new QueryClient({
     },
   },
 });
-const chains = [arbitrum, mainnet, polygon, zkSyncTestnet];
+const chains = [arbitrum, mainnet, polygon, zkSyncTestnet, goerli];
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
@@ -101,26 +100,24 @@ export default function App({
             <QueryParamProvider adapter={NextAdapterPages}>
               <style jsx global>{`
                 html {
-                  font-family: ${roboto.style.fontFamily};
+                  font-family: ${titillium.style.fontFamily};
                 }
               `}</style>
-              {/* <ThemeProvider attribute="class">
-              </ThemeProvider> */}
-                <WagmiConfig config={wagmiConfig}>
-                  {isMaintenanceMode ? (
-                    <Layout>
-                      <MaintenanceError />
-                    </Layout>
-                  ) : Component.PageLayout ? (
-                    <Component.PageLayout>
-                      <Component {...pageProps} />
-                    </Component.PageLayout>
-                  ) : (
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  )}
-                </WagmiConfig>
+              <WagmiConfig config={wagmiConfig}>
+                {isMaintenanceMode ? (
+                  <Layout>
+                    <MaintenanceError />
+                  </Layout>
+                ) : Component.PageLayout ? (
+                  <Component.PageLayout>
+                    <Component {...pageProps} />
+                  </Component.PageLayout>
+                ) : (
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                )}
+              </WagmiConfig>
               <Web3Modal
                 projectId={projectId}
                 ethereumClient={ethereumClient}

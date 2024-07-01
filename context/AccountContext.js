@@ -1,16 +1,11 @@
-import { getProvider } from "@/libs/connection/getProvider";
-import React, { createContext, useEffect, useState } from "react";
 import {
-  Goerli_DEMASK,
-  tokenBsc,
-  tokenMatic,
-  tokenGoerli,
-  tokenBlast,
-  Zksync_DEMASK,
-  tokenzkSync,
+  BLAST_DEMASK,
   network,
-  BLAST_DEMASK
+  SEPOLIA_DEMASK,
+  tokenBlast,
+  tokenSepolia
 } from "@/libs/constants";
+import { createContext, useEffect, useState } from "react";
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
@@ -42,16 +37,13 @@ export const AccountProvider = ({ children }) => {
     }
   }, [account]);
   useEffect(() => {
-    if (chainId === "280") {
-      setDemask(Zksync_DEMASK);
-      setTokenDefault(tokenzkSync);
-    } else if (chainId === "5") {
-      setDemask(Goerli_DEMASK);
-      setTokenDefault(tokenGoerli);
-    } else if (chainId === "168587773") {
+     if (chainId === "168587773") {
       setDemask(BLAST_DEMASK);
       setTokenDefault(tokenBlast);
-    }
+    }  else if (chainId === "11155111") {
+      setDemask(SEPOLIA_DEMASK);
+      setTokenDefault(tokenSepolia);
+    } 
   }, [chainId]);
   useEffect(() => {
     let storedSlippage = localStorage.getItem("SLIPPAGE_DEMASK");

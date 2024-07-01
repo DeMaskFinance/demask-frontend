@@ -1,45 +1,41 @@
-import { ActiveLink } from "@/components/Link";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
-import Icons from "@/public/icons/icon";
+import formatNumber from "@/libs/utils/formatNumer";
+import { logout, selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { ethers } from "ethers";
-import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
+import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
-import { MdLogout } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
-import { LightIcon, ProfileIcon, SearchIcon } from "../Icons";
-import { LogoDeMask, LogoDeMaskBeta } from "../Logo/Logo";
+import { AvatarCustom } from "../Avatars";
+import BackgroundParticles from "../Backgrounds/BackGroundParticles";
+import Copy from "../Common/Copy";
+import Maintenance from "../Common/Maintenance";
+import {
+  EditIcon,
+  EtherIcon,
+  LightIcon,
+  LogoutIcon,
+  SearchIcon,
+  UserIcon,
+  WalletIcon,
+} from "../Icons";
+import { DemaskIcon, LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
-import Search from "../Search/SearchHeader";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
-import { version } from "@/libs/constants";
-import { useRouter } from "next/router";
-import useInformationToken from "@/hooks/useInformationToken";
-import formatNumber from "@/libs/utils/formatNumer";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectProfile } from "@/store/profileSlice";
-import Marquee from "react-fast-marquee";
-import Maintenance from "../Common/Maintenance";
-const style = {
-  itemNav: `flex 3xl:gap-x-8 text-dark2 text-lg gap-x-4 font-medium`,
-  menuSub:
-    "pt-1 pb-1 w-full bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium",
-  itemSub:
-    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
-  btnWallet:
-    "flex items-center justify-center py-1 pl-2 cursor-pointer lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2 group",
-};
+import Search from "../Search/SearchHeader";
+import { Button } from "../Buttons";
 
 export default function Header() {
   const headerRef = useRef<HTMLParagraphElement>(null);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const router = useRouter();
   const {
     account,
     updateAccount,
@@ -54,7 +50,7 @@ export default function Header() {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const { isLoggedIn } = useSelector(selectProfile);
+  const { isLoggedIn, profile } = useSelector(selectProfile);
   const { balanceToken, isLoadingBalance } = useInformationToken(
     account,
     nativeAddress,
@@ -62,13 +58,10 @@ export default function Header() {
     routerAddress,
     rpc,
     nativeAddress,
+    chainId,
     true
   );
   const dispatch = useDispatch();
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -95,9 +88,6 @@ export default function Header() {
         const selectedAddress = accounts[0];
         // console.log("selectedADD", selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
-          // console.log(provider);
-          // console.log("namehehee:", provider.selectedAddress);
-          // console.log("chainID:", provider.chainId);
           disconnectWallet();
         }
       }
@@ -118,6 +108,26 @@ export default function Header() {
             "translate-y-[-100%]",
             !isScrolledUp && currentScrollPos > 120
           );
+          if (isScrolledUp) {
+            headerClassList.add(
+              "border-b",
+              "border-solid",
+              "border-shader_500"
+            );
+          } else {
+            headerClassList.remove(
+              "border-b",
+              "border-solid",
+              "border-shader_500"
+            );
+          }
+          if (currentScrollPos === 0) {
+            headerClassList.remove(
+              "border-b",
+              "border-solid",
+              "border-shader_500"
+            );
+          }
         }
 
         prevScrollPos = currentScrollPos;
@@ -135,27 +145,33 @@ export default function Header() {
   return (
     <div
       ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+      className="fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ease-in-out"
     >
       {isEvent && (
-        <div>
+        <div className="relative">
           <a
-            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
+            href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
             rel="noopener noreferrer"
             target="_blank"
-            className="block cursor-pointer text-white text-[8px] bg-gradient-to-b from-[#BA8DE6] to-[#7B54E8] text-sm font-light"
           >
-            <Marquee autoFill pauseOnHover gradient gradientColor="#7F57E8">
-              <div className="flex items-center justify-center h-10 mr-20 gap-x-3">
-                <span>
-                  <LightIcon width={24} height={24} />
-                </span>
-                <span>The Campaigns on Galxe, NOW LIVE!</span>
-              </div>
-            </Marquee>
+            <div className="block cursor-pointer text-white bg-event-gradient  bg-blend-screen relative overflow-hidden -z-50 h-11">
+              <Marquee autoFill pauseOnHover gradient gradientColor="#7C7FF8">
+                <div className="flex items-center justify-center h-11 mr-20 gap-x-3 font-semibold">
+                  <span>
+                    <LightIcon width={24} height={24} />
+                  </span>
+                  <span>
+                    Blast Big Bang - The airdrop Demask Finance x BleBle
+                    Campaign on Galxe
+                  </span>
+                </div>
+              </Marquee>
+              <BackgroundParticles value={1800} id="particles-js" />
+            </div>
           </a>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setIsEvent(false);
             }}
             className={`absolute top-2 right-4 flex items-center p-1 z-[60]`}
@@ -164,34 +180,27 @@ export default function Header() {
           </button>
         </div>
       )}
-      <header className="flex items-center justify-between w-full gap-2 shadow-md bg-secondary1 h-header lg:px-primary md:px-14">
-        <div className="flex items-center flex-shrink-0 gap-2">
+
+      <header className="flex items-center justify-between gap-2 px-4 text-sm ease-in-out shadow-md lg:shadow-none h-header">
+        <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
-            <Link
-              href="https://demask.finance/"
-              target="_blank"
-              className={`p-2 border border-secondary1 rounded-xl block hover:border-white ${
-                router.pathname === "/" ? "bg-white" : ""
-              }`}
-            >
+            <Link href="https://demask.finance/" target="_blank">
               <LogoDeMask
-                width={94}
+                width={105}
                 height={24}
-                className={`${
-                  router.pathname === "/" ? "fill-[#7413DC]" : "fill-white"
-                }`}
+                className="fill-white hidden md:block"
               />
+              <Button className="md:block py-[9px] px-[9px] md:hidden" gradient>
+                <DemaskIcon width={22} height={22} />
+              </Button>
             </Link>
-            <p className="text-xs font-semibold text-dark3 lg:hidden">
-              {version}
-            </p>
           </div>
-          <div className="hidden ml-8 lg:block">
+          <div className="hidden w-full lg:block">
             <MenuHeader />
           </div>
         </div>
-
-        <div className="flex items-center justify-end flex-shrink-0 gap-x-6">
+        {/* Search mobile */}
+        <div className="flex items-center justify-end flex-shrink-0 gap-x-6 ">
           <div
             onClick={() => {
               setShowSearch(false);
@@ -201,25 +210,22 @@ export default function Header() {
               showSearch ? "block" : "hidden"
             } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
-          <div className="flex gap-2 lg:gap-x-6 md:gap-x-4">
-            <div
-              className="text-secondary5 lg:hidden"
+          <div className="flex items-center gap-x-2">
+            <Button
+              className="md:hidden px-[9px] h-10"
+              active
               onClick={() => {
                 setShowSearch(!showSearch);
                 document.body.style.overflowY = "hidden";
               }}
             >
-              <SearchIcon
-                width={32}
-                height={32}
-                className="cursor-pointer fill-secondary3 active:fill-secondary2"
-              />
-            </div>
+              <SearchIcon width={20} height={20} />
+            </Button>
 
             <div
               className={`${
                 showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
-              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg-white z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
+              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
                 <Search
@@ -234,106 +240,89 @@ export default function Header() {
                   setShowSearch(false);
                   document.body.style.overflowY = "auto";
                 }}
-                className={`absolute top-2 right-4 flex items-center p-1 rounded-full shadow-md bg-white`}
+                className={`absolute top-2 right-4 flex items-center p-1 rounded-full shadow-md bg-shader_300`}
               >
-                <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
+                <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
               </button>
             </div>
             <MenuNetwork />
+
             {isLoggedIn && account ? (
-              <Tippy
-                interactive
-                render={(attrs) => (
-                  <div
-                    className="w-[200px] px-2  border rounded-lg shadow-xl box bg-white border-dark4 pb-1 pt-1"
-                    tabIndex={-1}
-                    {...attrs}
-                  >
-                    <ul className="pb-2 mt-2">
-                      <Link
-                        href={`/profile?chain=${chainId}`}
-                        className={`${style.itemSub}`}
-                      >
-                        Profile
-                      </Link>
-                      <Link
-                        href={`/profile/edit?chain=${chainId}`}
-                        className={`${style.itemSub}`}
-                      >
-                        Edit profile
-                      </Link>
-                      <li
-                        className={`${style.itemSub} justify-between mb-2`}
-                        onClick={disconnectWallet}
-                      >
-                        <div>Disconnect</div>
-                        <MdLogout />
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              >
-                <div>
-                  <div className={style.btnWallet}>
-                    <ProfileIcon
-                      width={24}
-                      height={24}
-                      className="fill-white"
-                    />
-                    {`${account.slice(0, 2)}...${account.slice(-4)}`}
-                    <div className="items-center hidden pl-2 transition duration-150 ease-out border-l border-white lg:flex group-hover:border-secondary5">
-                      <Image
-                        className="hidden group-hover:block"
-                        src={Icons.wallet}
-                        alt="wallet connect"
-                      />
-                      <Image
-                        className="block group-hover:hidden"
-                        src={Icons.walletHover}
-                        alt="wallet connect hover"
-                      />
-                      {isLoadingBalance ? (
-                        <div className="w-[30px] h-[10px] border rounded-lg ml-2 bg-slate-200 animate-pulse"></div>
-                      ) : (
-                        <span className="ml-2">
-                          {formatNumber(balanceToken)}
-                        </span>
-                      )}
-                      <span className="ml-1">ETH</span>
-                    </div>
-                  </div>
+              <div className="flex items-center gap-x-2">
+                <div className="flex items-center px-3 py-2 font-bold text-white rounded-lg gap-x-2 bg-shader_700">
+                  {isLoadingBalance ? (
+                    <div className="w-12 h-6 border rounded-lg bg-slate-700 animate-pulse"></div>
+                  ) : (
+                    <span className="">{formatNumber(balanceToken)}</span>
+                  )}
+                  <EtherIcon width={16} height={16} />
                 </div>
-              </Tippy>
+                <Tippy
+                  interactive
+                  render={(attrs) => (
+                    <div className="" tabIndex={-1} {...attrs}>
+                      <ul className="pb-2 w-[173px] menu font-semibold">
+                        <li className="text-sm p-2 rounded-lg items-center gap-x-2 bg-primary_500 bg-opacity-[0.15] flex text-primary_300">
+                          {`${account.slice(0, 8)}...${account.slice(-6)}`}
+                          <Copy content={account} />
+                        </li>
+                        <Link
+                          href={`/profile`}
+                          className="text-sm item_menu gap-x-2"
+                        >
+                          <UserIcon width={18} height={18} />
+                          My Profile
+                        </Link>
+                        <Link
+                          href={`/profile/edit`}
+                          className="text-sm item_menu gap-x-2"
+                        >
+                          <EditIcon width={18} height={18} />
+                          Edit profile
+                        </Link>
+                        <li
+                          className={`text-sm item_menu gap-x-2 mb-2`}
+                          onClick={disconnectWallet}
+                        >
+                          <LogoutIcon width={18} height={18} />
+                          <div>Disconnect</div>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                >
+                  <div className="flex items-center justify-center border-2 rounded-full cursor-pointer border-primary_400 h-9 w-9">
+                    <AvatarCustom
+                      avatarUrl={profile?.avatar}
+                      size={20}
+                      userAddress={profile?.userAddress}
+                      className="w-full h-full rounded-full"
+                    />
+                  </div>
+                </Tippy>
+              </div>
             ) : (
-              <button
-                className={`flex items-center justify-center py-1 pl-2 lg:px-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary2 group cursor-not-allowed`}
-              >
-                <Image
-                  className="hidden group-hover:block"
-                  src={Icons.wallet}
-                  alt="wallet connect"
-                />
-                <Image
-                  className="block group-hover:hidden"
-                  src={Icons.walletHover}
-                  alt="wallet connect hover"
-                />
-                <p>
-                  CONNECT{" "}
-                  <span className="hidden lg:inline-block md:inline-block">
-                    WALLET
-                  </span>
-                </p>
-              </button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    gradient
+                    className=" h-10 px-[10px] md:px-3 flex gap-x-2"
+                  >
+                    <WalletIcon width={20} height={20} />
+                    <p className="hidden md:block">Connect Wallet</p>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[350px] p-0 border-none">
+                  <ModalWallet />
+                </DialogContent>
+              </Dialog>
             )}
           </div>
         </div>
       </header>
       <Maintenance />
-      <div className="absolute z-[50]">
-        <ModalWallet isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
-      <WrongNetwork />
+
+      {account && <WrongNetwork />}
     </div>
   );
 }

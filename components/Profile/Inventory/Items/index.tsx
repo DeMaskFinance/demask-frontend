@@ -1,57 +1,276 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
 import {
-  AddIcon,
-  BlastIcon,
-  GoerliIcon,
-  SwapIconProfile,
-  ZkSyncIcon,
+  EtherIcon,
+  EyeIcon,
+  NFTIcon,
+  PlusIcon,
+  SwapIcon,
 } from "@/components/Icons";
-import { LogoIconCard } from "@/components/Logo/Logo";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
+import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import useDebounce from "@/hooks/useDebounce";
 import { nftsUserService } from "@/libs/service/profileService";
+import { formatTypeChain } from "@/libs/utils/formatComon";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import Classify from "../Classify";
+import FilterItems from "./FilterItems";
+import SearchNotFound from "@/components/Search/SearchNotFound";
 interface ModalDetailProps {
-  data: any;
+  type: string;
   nftAddress: string;
   nftID: string;
   setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenDetail: boolean;
 }
-const Items = () => {
-  const { account, chainId, demask } = useContext(AccountContext);
+interface ItemListProps {
+  data: any;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  fetchNextPage: any;
+  hasNextPage: boolean | undefined;
+}
+export const ItemList: React.FC<ItemListProps> = ({
+  data,
+  isSuccess,
+  isLoading,
+  isFetching,
+  fetchNextPage,
+  hasNextPage,
+}) => {
+  const { chainId, demask } = useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
   const { ref, inView } = useInView();
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+  console.log(data);
+
+  return (
+    <div className="font-semibold">
+      {isLoading ? (
+        <div className="grid gap-4 mt-4 grid-cols-autoFill text-shader_600">
+          <SkeletonSubCategory length={5} />
+        </div>
+      ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
+        <Fragment>
+          <div className="flex items-center my-4 text-sm text-primary_300 gap-x-2">
+            <div className="relative flex w-2 h-2">
+              <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-primary_500"></span>
+            </div>
+            <p>{data?.pages[0].totalRecords} Items</p>
+          </div>
+          <div className="grid gap-4 mt-4 text-white grid-cols-autoFill">
+            {data?.pages.map((page: any, pageIndex: number) => (
+              <Fragment key={pageIndex}>
+                {page?.data?.map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className="relative overflow-hidden border rounded-lg border-shader_500 hover:border-shader_400"
+                  >
+                    <div className="relative items-center text-sm transition-all rounded-md cursor-pointer group lg:text-base hover:shadow-home">
+                      <div className="relative overflow-hidden aspect-square">
+                        <div className="w-full h-full overflow-hidden rounded-t-lg">
+                          <MediaNFT data={item} isControls={false} hover zoom />
+                        </div>
+                      </div>
+                      <div className="relative w-full p-3 rounded-b-lg bg-shader_700 group-hover:bg-shader_600">
+                        <Link
+                          href={`/collection/${item.nftAddress}?typeERC=${item.type}`}
+                          className="flex-wrap max-w-full text-xs font-semibold hover:underline text-primary_300 line-clamp-1 hover:underline-offset-1"
+                        >
+                          {item?.collectionName ? (
+                            <ModalDocument data={item?.collectionName} />
+                          ) : (
+                            <p>--</p>
+                          )}
+                        </Link>
+                        <div className="flex w-full font-bold text-white">
+                          <h6
+                            title={item.metadata?.name}
+                            className="flex items-start w-full gap-2 uppercase "
+                          >
+                            <span className="flex-wrap max-w-full line-clamp-1">
+                              {item.metadata?.name ? (
+                                <ModalDocument data={item.metadata?.name} />
+                              ) : (
+                                <p>--</p>
+                              )}
+                            </span>
+                          </h6>
+                        </div>
+                        <div className="flex justify-between mt-2 text-sm text-shader_200">
+                          <p>Floor price</p>
+                          <p>Balance</p>
+                        </div>
+                        <div className="flex justify-between font-bold text-white">
+                          <div className="flex items-center gap-x-1">
+                            <FormatNumber number={item.floorPrice} />
+                            <EtherIcon width={16} height={16} />
+                          </div>
+                          <div>
+                            {item.nftBalance ? (
+                              <div className="flex items-center gap-x-1">
+                                <FormatNumber number={item.nftBalance} />
+                                <NFTIcon width={16} height={16} />
+                              </div>
+                            ) : (
+                              <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-700 "></span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
+                          <Link
+                            href={
+                              item.type === "erc1155"
+                                ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                                : `/swap/type/${item.nftAddress}?tab=pool`
+                            }
+                            className="basis-1/2"
+                          >
+                            <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
+                              <PlusIcon width={20} height={20} />
+                              <p>Add</p>
+                            </Button>
+                          </Link>
+                          <Link
+                            href={
+                              item.type === "erc1155"
+                                ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                                : `/swap/type/${item.nftAddress}?tab=buy`
+                            }
+                            className="basis-1/2"
+                          >
+                            <Button
+                              className="flex items-center w-full py-3 gap-x-2"
+                              primary
+                            >
+                              <SwapIcon
+                                width={20}
+                                height={20}
+                                className="fill-shader_700"
+                              />
+                              <p>Swap</p>
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="absolute flex items-center justify-between w-full px-2 transition-all duration-150 top-1 opacity-60 group-hover:opacity-100">
+                        <div className="flex items-center gap-x-1">
+                          <EtherIcon width={20} height={20} />
+                          <p className="text-[10px] bg-black bg-opacity-40 rounded-xl px-2 h-5 leading-5 backdrop-opacity-50 font-semibold">
+                            {formatTypeChain(item.type)}
+                          </p>
+                        </div>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <div
+                              className="flex items-center justify-center w-6 h-6 rounded-full bg-primary_500"
+                              onClick={() => {
+                                setSelectedItem(item);
+                              }}
+                            >
+                              <EyeIcon width={16} height={16} />
+                            </div>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-6xl p-0 border bg-shader_800 border-shader_500">
+                            <DialogHeader>
+                              <DialogDescription>
+                                {selectedItem && (
+                                  <ModalDetail
+                                    type={selectedItem?.type}
+                                    idNFT={selectedItem?.nftID}
+                                    nftAddress={selectedItem?.nftAddress}
+                                  />
+                                )}
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </Fragment>
+            ))}
+            {isFetching && hasNextPage && <SkeletonSubCategory length={4} />}
+            <div ref={ref} style={{ height: "1px" }}></div>
+          </div>
+        </Fragment>
+      ) : (
+        <div className="h-[300px]">
+          <SearchNotFound />
+        </div>
+      )}
+    </div>
+  );
+};
+const Items = () => {
+  const { account, chainId, demask } = useContext(AccountContext);
+  const [typeERC, setTypeERC] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [isFilter, setIsFilter] = useState<boolean>(false);
+  const [searchCollection, setSearchCollection] = useState<string>("");
+  let debouncedSearch = useDebounce(searchCollection);
+
   const fetchDataNFTs = async (
     pageParam = 1,
     chain: string | string[],
-    account: string
+    account: string,
+    typeERC: string,
+    debouncedSearch: string,
+    category: string
   ) => {
-    const data = await nftsUserService(account, chain, pageParam);
-    return data;
+    const data = await nftsUserService(
+      account,
+      chain,
+      typeERC,
+      debouncedSearch,
+      category,
+      pageParam
+    );
+    return data.data;
   };
 
   const {
     data,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
     isSuccess,
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
+    ["NFTsUser", chainId, account, typeERC, category, debouncedSearch],
+    ({ pageParam = 1 }) =>
+      fetchDataNFTs(
+        pageParam,
+        chainId,
+        account,
+        typeERC,
+        debouncedSearch,
+        category
+      ),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -59,110 +278,24 @@ const Items = () => {
           : page?.currentPage + 1,
     }
   );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
   return (
-    <div>
-      {isLoading ? (
-        <div className="mt-4">
-          <SkeletonCategory />
-        </div>
-      ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
-        <div>
-          <h1 className="text-2xl font-semibold text-center">My Items</h1>
-          <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
-            {data?.pages.map((page, pageIndex) => (
-              <Fragment key={pageIndex}>
-                {page?.data?.map((item: any, index: number) => (
-                  <div key={index} className="relative overflow-hidden">
-                    <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
-                      <div
-                        className="relative h-[240px]"
-                        onClick={() => {
-                          setSelectedItem(item);
-                          setIsOpenDetail(true);
-                          document.body.style.overflowY = "hidden";
-                        }}
-                      >
-                        <MediaNFT data={item} isControls={false} hover />
-                      </div>
-                      <div className="w-full">
-                        <div className="flex w-full mt-2">
-                          <div className="w-full">
-                            <h6
-                              title={item.metadata.name}
-                              className="flex items-start gap-2 font-medium uppercase"
-                            >
-                              <span className="flex-wrap max-w-full text-xl line-clamp-1">
-                                <ModalDocument data={item.metadata.name} />
-                              </span>
-                            </h6>
-                          </div>
-                          {/* <ActiveIcon width={24} height={24} className="mr-4 fill-yellow" /> */}
-                        </div>
-                        <LogoIconCard chainId={chainId}/>
-                        <div className="flex justify-between text-sm">
-                          <p>Floor price</p>
-                          <p>Balance</p>
-                        </div>
-                        <div className="flex justify-between font-semibold text-dark2">
-                          <div>
-                            <FormatNumber number={item.floorPrice} />
-                          </div>
-                          <div>
-                            {item.nftBalance ? (
-                              <FormatNumber number={item.nftBalance} />
-                            ) : (
-                              <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex justify-between mt-2">
-                          <Link
-                            href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
-                          >
-                            <Button className="flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
-                              <p>Add</p>
-                              <div>
-                                <AddIcon width={24} height={24} />
-                              </div>
-                            </Button>
-                          </Link>
-                          <Link
-                            href={`/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
-                          >
-                            <Button className="flex items-center px-6 py-2 text-white transition-all duration-100 bg-dark3 hover:bg-secondary5 gap-x-2">
-                              <p>Swap</p>
-                              <div>
-                                <SwapIconProfile width={24} height={24} />
-                              </div>
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </Fragment>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <p>No data available.</p>
-      )}
-      {selectedItem && (
-        <ModalDetail
-          data={selectedItem}
-          idNFT={selectedItem?.nftID}
-          nftAddress={selectedItem?.nftAddress}
-          setIsOpenDetail={setIsOpenDetail}
-          isOpenDetail={isOpenDetail}
+    <div className="flex">
+      {isFilter && <FilterItems setIsFilter={setIsFilter} />}
+      <div className="flex-auto">
+        <Classify
+          setSearchCollection={setSearchCollection}
+          setIsFilter={setIsFilter}
+          isFilter={isFilter}
         />
-      )}
-      <div ref={ref} style={{ height: "1px" }}></div>
+        <ItemList
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          data={data}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
+      </div>
     </div>
   );
 };

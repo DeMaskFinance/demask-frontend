@@ -8,8 +8,15 @@ const nextConfig = {
       "demask.infura-ipfs.io",
       "api.demask.finance",
       "file.demask.finance",
+      "metadata.degods.com",
+      "cf-ipfs.com",
+      "1b21fea1b71e52bc8b81e22b5a53a188.ipfscdn.io",
+      "",
+      "ipfs",
+      "ipfs.io"
     ],
-  },
+    unoptimized: true,
+  }, 
   env: {
     NEXT_PUBLIC_APP_PORT: process.env.NEXT_PUBLIC_APP_PORT,
   },

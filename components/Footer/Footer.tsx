@@ -1,126 +1,107 @@
 import { version } from "@/libs/constants";
 import Link from "next/link";
-import { useState } from "react";
-import { Button } from "../Buttons";
-import { EmailIcon } from "../Icons";
+import {
+  BgGradient,
+  DiscordIcon,
+  GithubIcon,
+  GmailIcon,
+  TeleIcon,
+  TwitterIcon,
+} from "../Icons";
 import { LogoDeMask } from "../Logo/Logo";
-import useSvgComponents from "../Picture/Picture";
-import { useTheme } from "next-themes";
-
+const styles = {
+  icon: "cursor-pointer",
+};
 export default function Footer() {
-  const svgComponents = useSvgComponents();
-  // const { theme, setTheme } = useTheme();
-  const [activeChoice, setActiveChoice] = useState<string>("Light");
-
-  const handleChoiceChange = (choice: string) => {
-    setActiveChoice(choice);
-    // setTheme(theme === "light" ? "dark" : "light");
-  };
+  const links = [
+    { href: "https://demask.finance/", text: "About" },
+    { href: "https://substack.com/@demaskfi", text: "Blog" },
+    { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Deck" },
+    { href: "https://demask.finance/", text: "Developer" },
+    { href: "https://docs.demask.finance/", text: "Docs" },
+    { href: "https://demask.finance/media-kit", text: "Branding & Media Kit" },
+  ];
+  const policy = [
+    { href: "https://demask.finance/", text: "Terms" },
+    { href: "https://demask.finance/", text: "Privacy Policy" },
+  ];
   return (
-    <footer className="justify-between hidden items-center px-4 pt-8 pb-10 overflow-hidden lg:flex lg:px-[156px] md:px-14 bg-dark4">
-      <div>
-        <div className="flex gap-x-[120px]">
-          <ul className="flex font-semibold gap-x-8 text-dark2">
-            <li>
-              <Link
-                href="https://demask.finance/"
-                target="_blank"
-                className="text-dark1"
-              >
-                About
-              </Link>
-            </li>
-            <li className="transition-all duration-100 hover:text-secondary5 whitespace-nowrap">
-              <a
-                href="https://demask.finance/media-kit"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Branding & Media Kit
-              </a>
-            </li>
-            <li className="transition-all duration-100 hover:text-secondary5">
-              <a
-                href="https://substack.com/@demaskfi"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Blog
-              </a>
-            </li>
-          </ul>
-          <ul className="flex font-semibold gap-x-8 text-dark2">
-            <li>
-              <Link
-                href="https://demask.finance/"
-                target="_blank"
-                className="text-dark1"
-              >
-                Developer
-              </Link>
-            </li>
-            <li className="transition-all duration-100 hover:text-secondary5">
-              <a
-                href="https://github.com/DeMaskFinance"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Github
-              </a>
-            </li>
-            <li className="transition-all duration-100 hover:text-secondary5">
-              <a
-                href=" https://docs.demask.finance/"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Documentation
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div className="flex items-center mt-8 gap-x-8">
-          <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
-            <div
-              className={`p-2 cursor-pointer rounded-lg text-sm flex gap-2 items-center ${
-                activeChoice === "Light" ? "bg-secondary5" : ""
-              }`}
-              onClick={() => handleChoiceChange("Light")}
+    <footer className="relative hidden overflow-hidden border-t lg:block border-shader_600 bg-shader_900">
+      <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
+        <BgGradient className="w-[905px] h-[218px]" />
+      </div>
+      <div className="flex items-center justify-between pt-8 pb-10  px-4 2xl:px-[150px] md:px-14 z-10 relative">
+        <div>
+          <Link href="https://demask.finance/" target="_blank">
+            <LogoDeMask width={200} height={56} className="fill-white" />
+          </Link>
+          <p className="text-xs font-semibold text-primary_400 mb-[20px]">
+            {version}
+          </p>
+          <div className="flex items-center mt-2 gap-x-4">
+            <a href="mailto:contact@demask.finance">
+              <GmailIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://twitter.com/DemaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <svgComponents.buttonLight />
-            </div>
+              <TwitterIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://t.me/DemaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <TeleIcon width={32} height={32} className={styles.icon} />
+            </a>
 
-            <div
-              className={`p-2 cursor-pointer rounded-lg text-sm flex items-center gap-2 ${
-                activeChoice === "Dark" ? "bg-dark0" : ""
-              }`}
-              onClick={() => handleChoiceChange("Dark")}
+            <a
+              href="https://discord.com/invite/demaskfinance"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <svgComponents.buttonDark />
-            </div>
+              <DiscordIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://github.com/DeMaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubIcon width={32} height={32} className={styles.icon} />
+            </a>
           </div>
-          <a href="mailto:contact@demask.finance">
-            <Button
-              third
-              className="flex items-center px-6 py-2 transition-all duration-200 ease-in-out border hover:border-secondary5 gap-x-1 hover:bg-white hover:text-secondary5 group"
-            >
-              <span>Contact Us</span>
-              <span>
-                <EmailIcon
-                  width={24}
-                  height={24}
-                  className="group-hover:fill-secondary5"
-                />
-              </span>
-            </Button>
-          </a>
+        </div>
+        <div>
+          <ul className="flex font-semibold text-white gap-x-8">
+            {links.map((link, index) => (
+              <li
+                key={index}
+                className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+              >
+                <a href={link.href} rel="noreferrer noopener" target="_blank">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
-      <div>
-        <Link href="https://demask.finance/" target="_blank">
-          <LogoDeMask width={245} height={56} />
-        </Link>
-        <p className="text-xs font-semibold text-dark3">{version}</p>
+      <div className="flex justify-between text-sm px-4 2xl:px-[150px] md:px-14 bg-shader_700 text-shader_200 py-4 font-semibold">
+        <p>Copyright © 2024 Demask. All rights reserved.</p>
+        <ul className="flex gap-x-4">
+          {policy.map((link, index) => (
+            <li
+              key={index}
+              className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+            >
+              <a href={link.href} rel="noreferrer noopener" target="_blank">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

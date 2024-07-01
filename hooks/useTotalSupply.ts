@@ -1,4 +1,4 @@
-import getTotalSupply from "@/libs/utils/getTotalSupply";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import { useEffect, useState } from "react";
 const useTotalSupply = (
   account: string,
@@ -11,7 +11,7 @@ const useTotalSupply = (
     const fetchTotalSupplyDML = async () => {
       if (account && dmlAddress && wallet) {
         try {
-          const res = await getTotalSupply(account, wallet, dmlAddress);
+          const res = await ercContract.getTotalSupply(account, wallet, dmlAddress);
           setTotalSupply(res);
         } catch (error) {
           console.error(error);

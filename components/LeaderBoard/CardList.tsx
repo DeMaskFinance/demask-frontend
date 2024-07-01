@@ -1,100 +1,144 @@
+import { formatToUnit } from "@/libs/utils/formatComon";
 import Image from "next/image";
-import React, { Fragment, useContext } from "react";
-import { DiamondIcon, EtherIcon, RankIcon } from "../Icons";
-import FormatNumber from "../Common/FormatNumber";
-import { AvatarUser } from "../Avatars";
-import { formatToUnit } from "@/libs/utils/formatToUnit";
-import AccountContext from "@/context/AccountContext";
-import { chainBlast } from "@/libs/constants";
+import { Fragment } from "react";
+import { AvatarDiceBear } from "../Avatars/AvatarCustom";
+import {
+  DiamondIcon,
+  RankGoldIcon,
+  SecondRankIcon,
+  ThirdRankIcon,
+} from "../Icons";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
 export const CardListLoading = () => {
   return (
-    <div className="flex animate-pulse flex-col items-center justify-center p-2 border rounded-lg text-dark1 mb-10 h-fit border-secondary5 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
-      <div className="w-[80px] h-[80px] rounded-full bg-slate-200" />
+    <div className="flex animate-pulse flex-col items-center justify-center px-2 h-[372px] border rounded-lg text-shader_700 mb-10  border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">
+      <div className="w-[80px] h-[80px] rounded-full bg-slate-700 " />
       <div className="mt-2 mb-6 text-2xl font-semibold">
-        <div className="w-20 h-4 rounded bg-slate-200"></div>
+        <div className="w-20 h-4 rounded-full bg-slate-700 "></div>
       </div>
 
-      <div className="bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative">
+      <div className="bg-shader_600 rounded-lg w-full flex flex-col items-center pt-6 relative">
         <div className="absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit">
-          <RankIcon width={24} height={24} className="fill-[#1D85E8]" />
+          <RankGoldIcon width={24} height={24} className="fill-[#1D85E8]" />
         </div>
-        <div className="pb-2 font-semibold border-b border-dark1 w-[60%] text-center">
-          <div className="h-4 rounded-full bg-slate-200"></div>
+        <div className="pb-2 font-semibold border-b border-shader_700 w-[60%] text-center">
+          <div className="h-4 rounded-full bg-slate-700 "></div>
         </div>
         <div className="flex my-2 text-sm font-semibold">
-          <div className="w-20 h-4 rounded-full bg-slate-200"></div>
+          <div className="w-20 h-4 rounded-full bg-slate-700 "></div>
         </div>
-        <p className="text-xs font-medium whitespace-nowrap">Season Volume</p>
       </div>
     </div>
   );
 };
 const CardList = ({ data }: any) => {
-  const { chainId, demask } = useContext(AccountContext);
   return (
     <div
-      className={`flex flex-col items-center justify-center p-2 border rounded-lg text-dark1 w-full h-fit ${
-        data?.rank === 1
-          ? "border-yellow shadow-[0px_8px_24px_0px_rgba(255,194,88,0.25)]"
-          : data?.rank === 2
-          ? "border-blue shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]"
-          : data?.rank === 3
-          ? "border-red shadow-[0px_8px_24px_0px_rgba(253,128,130,0.25)]"
-          : ""
-      }`}
+      className={`flex relative overflow-hidden flex-col bg-shader_700 border-shader_500 items-center justify-center border p-2 md:p-6 rounded-10 text-white w-full h-fit`}
     >
-      {data?.avatar ? (
-        <Image
-          width={600}
-          height={600}
-          alt="leaderboardImg"
-          src={data?.avatar}
-          className="object-cover w-full h-full rounded-full max-w-[120px]"
-        />
-      ) : (
-        <AvatarUser width={120} height={120} />
-      )}
-      <h2 className="mt-2 mb-6 text-lg font-semibold lg:text-2xl">
-        {data?.name ? data?.name : "-"}
-      </h2>
-      <div className="bg-[#F8F8F8] rounded-lg w-full flex flex-col items-center pt-6 pb-2 relative">
-        <div className="absolute p-2 bg-white rounded-full -top-4 shadow-swiper w-fit">
-          <RankIcon
-            width={24}
-            height={24}
-            className={`${
-              data?.rank === 1
-                ? "fill-yellow"
-                : data?.rank === 2
-                ? "fill-blue"
-                : data?.rank === 3
-                ? "fill-red"
-                : ""
-            }`}
-          />
-        </div>
-        {chainId === chainBlast ? (
-          <div className="flex items-center mt-2 font-semibold gap-x-2 text-dark1">
-            {data?.volume ? (
-              <FormatNumber number={(data?.volume * 100).toString()} />
-            ) : (
-              "-"
-            )}
-            <DiamondIcon width={20} height={20} className="" />
-          </div>
+      <div>
+        {data?.rank === 1 ? (
+          <RankGoldIcon width={90} height={90} />
+        ) : data?.rank === 2 ? (
+          <SecondRankIcon width={46} height={52} className="mb-4" />
+        ) : data?.rank === 3 ? (
+          <ThirdRankIcon width={46} height={52} className="mb-4" />
         ) : (
-          <div className="relative flex flex-col items-center w-full">
-            <div className="pb-2 font-semibold border-b border-dark1 w-[60%] text-center">
-              {formatToUnit(data?.point)}
+          <div></div>
+        )}
+      </div>
+      <div className="mb-4 ">
+        {data?.avatar ? (
+          <Image
+            width={600}
+            height={600}
+            alt="leaderboardImg"
+            src={data?.avatar}
+            className={`object-cover ${
+              data?.rank === 1
+                ? "md:w-24 md:h-24 w-16 h-16"
+                : "md:w-20 md:h-20 w-16 h-16"
+            } rounded-full`}
+          />
+        ) : (
+          <Fragment>
+            <div className="hidden lg:block">
+              <AvatarDiceBear size={60} seed={data?.userAddress} />
             </div>
-            <div className="flex my-2 text-sm font-semibold">
-              <FormatNumber number={data?.volume} />
-              <EtherIcon width={20} height={20} className="fill-dark1" />
+            <div className="block lg:hidden">
+              <AvatarDiceBear size={40} seed={data?.userAddress} />
             </div>
-            <p className="text-xs font-medium whitespace-nowrap">
-              Season Volume
-            </p>
-          </div>
+          </Fragment>
+        )}
+      </div>
+      <h2 className="md:text-xl font-semibold text-lg truncate ">
+        {data?.name}
+      </h2>
+      <div
+        className={`relative flex flex-col items-center w-full  pb-2 rounded-lg ${
+          data?.rank === 1 ? "mt-1" : "mt-8"
+        }`}
+      >
+        <p
+          className={`mb-3 text-lg font-bold ${
+            data?.rank === 1
+              ? "text-yellow"
+              : data?.rank === 2
+              ? "text-blue"
+              : data?.rank === 3
+              ? "text-primary_500"
+              : ""
+          }`}
+        >
+          Top {data?.rank}
+        </p>
+        <div
+          className={`flex items-center font-bold text-center border-shader_700 gap-x-1 bg-opacity-[0.15] rounded-lg 
+          px-4
+          py-2
+        ${
+          data?.rank === 1
+            ? "bg-yellow"
+            : data?.rank === 2
+            ? "bg-blue"
+            : data?.rank === 3
+            ? "bg-primary_500"
+            : ""
+        }
+        `}
+        >
+          <DiamondIcon width={20} height={20} />
+          {formatToUnit(data?.point)}
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 ">
+        {data?.rank === 1 ? (
+          <Image
+            src="/fillYellow.svg"
+            alt="fill"
+            width={350}
+            height={160}
+            className="h-20 md:h-40 w-[350px]"
+          />
+        ) : data?.rank === 2 ? (
+          <Image
+            src="/fillBlue.svg"
+            alt="fill"
+            width={350}
+            height={160}
+            className="h-20 md:h-40 w-[350px]"
+          />
+        ) : data?.rank === 3 ? (
+          <Image
+            src="/fillPurple.svg"
+            alt="fill"
+            width={350}
+            height={160}
+            className="h-20 md:h-40 w-[350px]"
+          />
+        ) : (
+          <div></div>
         )}
       </div>
     </div>

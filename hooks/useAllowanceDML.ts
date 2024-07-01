@@ -9,7 +9,6 @@ const useAllowanceDML = (
   isApprovedDML: boolean,
   inputLiquidity: string,
   routerAddress: string
-  // rpc: string
 ) => {
   const [currentAllowance, setCurrentAllowance] = useState<string | null>(null);
   useEffect(() => {

@@ -1,31 +1,30 @@
-import { formatToUnit } from '@/libs/utils/formatToUnit';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light.css';
+import FormatNumber from "@/components/Common/FormatNumber";
+import { formatToUnit } from "@/libs/utils/formatComon";
+import formatNumber from "@/libs/utils/formatNumer";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
 const ModalNumber = ({ data }: { data: string }) => {
-    return (
-        <div>
-            {Number(data) >= 1000 || Number(data) < 0.001 ? (
-                <Tippy content={
-                    <div>
-                        <span className='text-sm font-normal text-dark0'>
-                            {Number(data).toLocaleString("en")}
-                        </span>
-                    </div>
-                }
-                    theme='light'
-                >
-                    <div className=''>
-                        {formatToUnit(data)}
-                    </div>
-                </Tippy>
-            ) : (
-                <div className=''>
-                    {formatToUnit(data)}
-                </div>
-            )}
-        </div>
-    )
-}
+  console.log(data);
 
-export default ModalNumber
+  return (
+    <div>
+      {Number(data) >= 1000 || Number(data) < 0.001 ? (
+        <Tippy
+          content={
+            <div>
+              <FormatNumber number={data} />
+            </div>
+          }
+          theme="dark"
+        >
+          <div className="">{formatToUnit(data)}</div>
+        </Tippy>
+      ) : (
+        <div className="">{formatToUnit(data)}</div>
+      )}
+    </div>
+  );
+};
+
+export default ModalNumber;

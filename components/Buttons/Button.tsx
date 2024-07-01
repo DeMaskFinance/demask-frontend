@@ -14,7 +14,12 @@ interface ButtonProps {
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
   third?: boolean;
+  green?: boolean;
+  gradient?: boolean;
   isLoadingBtn?: boolean;
+  green_2?: boolean;
+  red?: boolean;
+  red_2?: boolean;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -30,7 +35,12 @@ const Button: FunctionComponent<ButtonProps> = ({
   className,
   type,
   third,
-  isLoadingBtn
+  green,
+  isLoadingBtn,
+  gradient,
+  green_2,
+  red,
+  red_2,
 }) => {
   return (
     <button
@@ -43,20 +53,55 @@ const Button: FunctionComponent<ButtonProps> = ({
       flex
       items-center
       justify-center
-      ${primary ? "bg-secondary2 text-white font-medium hover:bg-white hover:text-secondary5 border boder-white hover:border-secondary5 rounded-lg transition-all duration-150 ease-linear" : ""}
-      ${third ? "bg-secondary5 text-white font-medium text-sm" : ""}
-      ${active ? "bg-dark3 px-3 py-2 text-white hover:bg-white hover:text-secondary5 border border-dark3 hover:border-secondary5" : ""}
-      ${secondary ? "bg-white text-dark3" : ""}
-      ${outline ? " border border-dark3 " : ""}
+      transition-all duration-150 ease-linear
+      font-semibold
+      ${
+        primary
+          ? "bg-primary_500 text-white  hover:bg-primary_600 rounded-lg"
+          : ""
+      }
+      ${
+        third &&
+        "bg-primary_500 bg-opacity-[0.15] text-white px-3 py-2 hover:bg-opacity-[0.25]"
+      }
+      ${
+        active &&
+        !isLoadingBtn &&
+        "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600"
+      }
+      ${secondary && "bg-blue bg-opacity-[0.15] text-white rounded-md"}
+      ${outline ? " border border-shader_500  " : ""}
+      ${
+        green &&
+        "bg-green border-green hover:bg-opacity-80 text-white  border rounded-lg"
+      }
+      ${
+        red &&
+        "bg-red border-red hover:bg-opacity-80 text-white  border rounded-lg"
+      }
+      ${gradient && "bg_gradient text-white hover:opacity-[0.85]"}
+      ${
+        green_2 &&
+        "bg-green text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-green border-opacity-15"
+      }
+      ${
+        red_2 &&
+        "bg-red text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-red border-opacity-15"
+      }
+      ${isLoadingBtn && "opacity-[0.35]"}
       ${className}
       `}
     >
-      {children}
-      {
-        isLoadingBtn && (
-          <BiLoaderAlt className="ml-2 text-white animate-spin" />
-        )
-      }
+      {isLoadingBtn ? (
+        <div
+          className={`flex items-center justify-center w-full rounded-lg bg-primary_500 ${className}`}
+        >
+          <BiLoaderAlt className="mr-2 text-base text-white animate-spin" />
+          <p className="text-white">Fetching Quotes</p>
+        </div>
+      ) : (
+        <>{children}</>
+      )}
     </button>
   );
 };

@@ -5,7 +5,7 @@ const useAmountOutMin = (
   dmlToken: string,
   tokenAddress: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | number[],
   wallet: string,
   account: string,
   rpc: string,
@@ -13,15 +13,11 @@ const useAmountOutMin = (
   updatePrice: boolean
 ) => {
   const [amountTokenSell, setAmountTokenSell] = useState(0);
-  const [feeTradingSell, setFeeTradingSell] = useState(0);
   const [isLoadingSell, setIsLoadingSell] = useState<boolean>(false);
   useEffect(() => {
     const getAmountOutMin = async () => {
       setIsLoadingSell(true);
-      if (
-        inputNFT &&
-        dmlToken !== "0x0000000000000000000000000000000000000000"
-      ) {
+      if (dmlToken !== "0x0000000000000000000000000000000000000000") {
         const amountAFee = await getAmountSell(
           wallet,
           tokenAddress,
@@ -31,19 +27,28 @@ const useAmountOutMin = (
           rpc,
           routerAddress
         );
-        setAmountTokenSell(amountAFee[0].toString());
-        setFeeTradingSell(amountAFee[1].toString());
+        if (amountAFee) {
+          setAmountTokenSell(amountAFee.toString());
+        }
       } else {
-        setFeeTradingSell(0);
         setAmountTokenSell(0);
       }
       setIsLoadingSell(false);
     };
 
     getAmountOutMin();
-  }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, account,updatePrice]);
+  }, [
+    inputNFT,
+    dmlToken,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    account,
+    updatePrice,
+  ]);
 
-  return { amountTokenSell, isLoadingSell, feeTradingSell };
+  return { amountTokenSell, isLoadingSell };
 };
 
 export default useAmountOutMin;

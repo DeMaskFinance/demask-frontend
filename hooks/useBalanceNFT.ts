@@ -1,10 +1,10 @@
-import getBalanceNFT from "@/libs/utils/getBalanceNFT";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import { useEffect, useState } from "react";
 
 const useBalanceNFT = (
   account: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | number[],
   wallet: string,
   isOpenTransaction?: boolean
 ) => {
@@ -13,7 +13,7 @@ const useBalanceNFT = (
     const fetchBalanceNFT = async () => {
       if (account && nftAddress && idNFT) {
         try {
-          const balance = await getBalanceNFT(
+          const balance = await erc1155Contract.getBalanceNFT(
             account,
             nftAddress,
             idNFT,

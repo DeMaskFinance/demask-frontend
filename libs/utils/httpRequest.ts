@@ -25,7 +25,7 @@ const onError = (error: any) => {
 };
 request.interceptors.request.use(
   (config) => {
-    const { isLoggedIn, accessToken } = store.getState().profile;
+    const { isLoggedIn, accessToken } = store.getState().profile;   
     if (isLoggedIn) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

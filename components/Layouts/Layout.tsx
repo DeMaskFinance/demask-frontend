@@ -10,31 +10,12 @@ import { logout, selectProfile, userData } from "@/store/profileSlice";
 import * as userService from "@/libs/service/userService";
 import { getProvider } from "@/libs/connection/getProvider";
 import { network } from "@/libs/constants";
+import { Toaster } from "@/components/ui/sonner";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
-  const router = useRouter();
   const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (!router.query?.chain) {
-      router.push({
-        pathname: router.pathname,
-        query: { ...router.query, chain: chainId },
-      });
-    } else {
-      const targetNetwork = network.find(
-        (item) => item.chain === router.query.chain
-      );
-      if (targetNetwork) {
-        updateChainId(router.query.chain);
-      } else {
-        updateChainId(network[0].chain); // Use default chain if target not found
-      }
-    }
-  }, [chainId, router.asPath, router.isReady]);
-  console.log(chainId);
-
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
       userService.profileInfor().then((userInfo) => {
@@ -63,7 +44,8 @@ export default function Layout({ children }: PropsWithChildren) {
 
           const handleChainChanged = (networkId: string) => {
             if (
-              (PORT === "3000" && (networkId === "280" || networkId === "5")) ||
+              (PORT === "3000" &&
+                (networkId === "11155111" || networkId === "5")) ||
               (PORT === "1307" && networkId === "168587773")
             ) {
               updateChainId(networkId);
@@ -86,11 +68,14 @@ export default function Layout({ children }: PropsWithChildren) {
     initProvider();
   }, [wallet]);
   return (
-    <div className="box-border w-full overflow-hidden">
+    <div className="box-border w-full overflow-visible">
       <Header />
-      <main className={`${isEvent ? "mt-[104px]" : "mt-16"}`}>{children}</main>
+      <main className={`lg:mb-0 mb-16 ${isEvent ? "mt-[104px]" : "mt-16"}`}>
+        {children}
+      </main>
       <Footer />
       <NavFooter />
+      <Toaster richColors />
     </div>
   );
 }

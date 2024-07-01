@@ -3,6 +3,5 @@ const Icons ={
     wind2:require('./wind2.svg').default,
     walletHover:require('./walletHover.svg').default,
     wallet:require('./wallet.svg').default,
-    deleteIcon:require('./noneacancelDelete.svg').default,
 }
 export default Icons;

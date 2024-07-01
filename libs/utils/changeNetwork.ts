@@ -6,23 +6,23 @@ export const changeNetwork = async (
   wallet: string,
   demask: any,
   setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
-  updateChainId: any,
-  setTab?: any
+  updateChainId: any
 ) => {
   try {
     const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
+    console.log(networkId, chainId);
+
     if (networkId !== chainId) {
       try {
         await provider.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: Web3.utils.toHex(chainId) }],
         });
+
         setIsWrongNetwork(false);
         updateChainId(chainId);
-        setTab(chainId)
         document.body.style.overflowY = "auto";
-        // window.location.replace(`/swap?chain=${chainId}`);
       } catch (errors: any) {
         // This error code indicates that the chain has not been added to MetaMask
         if (errors.code === 4902) {
@@ -44,17 +44,12 @@ export const changeNetwork = async (
           setIsWrongNetwork(false);
           document.body.style.overflowY = "auto";
         } else {
+          console.error("Failed:", errors);
           return false;
         }
       }
     }
   } catch (error) {
-    // if (wallet === "Metamask") {
-    //   window.open('https://metamask.io/download/', '_blank', 'noopener,noreferrer');
-    // }
-    // if (wallet === "Coinbase") {
-    //   window.open('https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad', '_blank', 'noopener,noreferrer');
-    // }
     console.error("Failed to switch network:", error);
     return;
   }

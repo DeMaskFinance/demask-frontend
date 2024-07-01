@@ -1,67 +1,54 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { DiamondIcon, EtherIcon, RankIcon } from "../Icons";
-import FormatNumber from "../Common/FormatNumber";
-import Image from "next/image";
-import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
-import { SkeletonTable } from "../Skeleton";
-import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import AccountContext from "@/context/AccountContext";
+import { leaderBoardAPI } from "@/libs/service/leaderBoard";
 import { useQuery } from "@tanstack/react-query";
-import { AvatarUser } from "../Avatars";
 import Link from "next/link";
-import axios from "axios";
-import { chainBlast } from "@/libs/constants";
+import React, { useContext, useState } from "react";
+import { AvatarCustom } from "../Avatars";
+import FormatNumber from "../Common/FormatNumber";
+import {
+  EtherIcon,
+  LoadingIcon,
+  RankGoldIcon,
+  SecondRankIcon,
+  ThirdRankIcon,
+  UnRankIcon,
+} from "../Icons";
+import { Pagination } from "../Common/Pagination";
+import SearchNotFound from "../Search/SearchNotFound";
 
 const ItemTableRank = ({ item, currentRank }: any) => {
-  const { demask, chainId } = useContext(AccountContext);
+  const { demask, account } = useContext(AccountContext);
   return (
     <tr
-      className={`flex px-2 text-xs border-b rounded-lg hover:cursor-pointer  group hover:bg-slate-100 ${
-        currentRank
-          ? "bg-gradient-to-b from-[#BA8DE6] text-white to-[#7B54E8]"
-          : "text-dark2"
+      className={`flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500 ${
+        currentRank ? "bg-primary_500 bg-opacity-25" : "text-white"
       }`}
     >
-      <td className="py-2 flex items-center justify-start md:w-[70%] w-[100px]">
-        <div className="flex items-center justify-end gap-x-1">
+      <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
+        <div className="flex items-center justify-end gap-x-3">
           {item?.rank}
-          <RankIcon
-            width={18}
-            height={18}
-            className={`${
-              currentRank
-                ? "fill-white"
-                : `${
-                    item?.rank === 1
-                      ? "fill-yellow"
-                      : item?.rank === 2
-                      ? "fill-blue"
-                      : item?.rank === 3
-                      ? "fill-red"
-                      : ""
-                  } `
-            }`}
-          />
+          {item?.rank === 1 ? (
+            <RankGoldIcon width={20} height={20} />
+          ) : item?.rank === 2 ? (
+            <SecondRankIcon width={16} height={16} />
+          ) : item?.rank === 3 ? (
+            <ThirdRankIcon width={16} height={16} />
+          ) : (
+            <UnRankIcon width={16} height={16} />
+          )}
         </div>
       </td>
-      <td className="py-2 flex items-center justify-start gap-x-1 lg:w-full md:w-full w-[100px]">
-        {item?.avatar ? (
-          <Image
-            src={item?.avatar}
-            width={120}
-            alt="userIMG"
-            height={120}
-            className="object-cover w-6 h-6 mr-2 rounded-lg"
-          />
-        ) : (
-          <AvatarUser width={24} height={24} />
-        )}
-        <p>{item?.name}</p>
+      <td className="py-4 flex items-center justify-start gap-x-2 lg:w-full md:w-full w-[100px]">
+        <AvatarCustom
+          avatarUrl={item?.avatar}
+          size={24}
+          userAddress={item.userAddress!}
+          className="w-6 h-6 rounded-lg"
+        />
+        {item.userAddress === account ? "You" : <p>{item?.name}</p>}
       </td>
       <td
-        className={`py-2 flex ${
-          currentRank ? "text-white" : "text-secondary5"
-        } items-center justify-center lg:w-full md:w-full w-[140px]`}
+        className={`py-4 flex text-primary_400 items-center justify-center lg:w-full md:w-full w-[140px]`}
       >
         <Link
           target="_blank"
@@ -70,47 +57,22 @@ const ItemTableRank = ({ item, currentRank }: any) => {
           {`${item?.userAddress.slice(0, 4)}...${item?.userAddress.slice(-4)}`}
         </Link>
       </td>
-      <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-        <div className="flex items-center justify-end md:gap-1">
-          {chainId === chainBlast ? (
-            <Fragment>
-              <FormatNumber number={(item?.volume * 100).toString()} />
-              <DiamondIcon
-                width={18}
-                height={18}
-                className={`${currentRank ? "fill-white" : ""}`}
-              />
-            </Fragment>
-          ) : (
-            <Fragment>
-              -
-              <EtherIcon
-                width={18}
-                height={18}
-                className={`${currentRank ? "fill-white" : "fill-dark2"}`}
-              />
-            </Fragment>
-          )}
+      <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+        <div className="flex items-center justify-end md:gap-2">
+          <FormatNumber number={item?.refPoint} />
+          <EtherIcon width={18} height={18} />
         </div>
       </td>
-      <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
+      <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
         <div className="flex items-center justify-end md:gap-2">
-          <FormatNumber number={item?.volume} />
-          <EtherIcon
-            width={18}
-            height={18}
-            className={`${currentRank ? "fill-white" : "fill-dark2"}`}
-          />
+          <FormatNumber number={item?.tradePoint} />
+          <EtherIcon width={18} height={18} />
         </div>
       </td>
-      <td className="py-2 lg:w-full md:w-[175px] w-[200px]">
+      <td className="py-4 lg:w-full md:w-[175px] w-[200px]">
         <div className="flex items-center justify-end md:gap-2">
-          <FormatNumber number={item?.volume} />
-          <EtherIcon
-            width={18}
-            height={18}
-            className={`${currentRank ? "fill-white" : "fill-dark2"}`}
-          />
+          <FormatNumber number={item?.totalPoints} />
+          <EtherIcon width={18} height={18} />
         </div>
       </td>
     </tr>
@@ -128,30 +90,11 @@ const TableRank = () => {
       },
     });
 
-  const prevPage = () => {
-    const prevPageNumber = Math.max(page - 1, 1);
-    setPage(prevPageNumber);
-  };
-
-  const nextPage = () => {
-    const nextPageNumber = Math.min(page + 1, data?.totalPages);
-    setPage(nextPageNumber);
-  };
-
-  useEffect(() => {
-    if (data === null) {
-      setPage(1);
-    }
-  }, [data]);
-  useEffect(() => {
-    refetch();
-  }, [page, refetch, account]);
-
   return (
-    <div className="px-2 py-4 mt-10 overflow-x-scroll border rounded-lg border-dark3 shadow-home min-h-[500px] flex flex-col justify-between">
-      <table className="w-full text-left border-collapse">
-        <thead className="">
-          <tr className="flex px-2 pb-2 text-sm border-b">
+    <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-md bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
+      <table className="w-full text-left border-collapse min-h-[550px]">
+        <thead className=" bg-shader_600 text-shader_200">
+          <tr className="flex px-4 py-3">
             <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
             <th className="flex justify-start lg:w-full md:w-full w-[100px]">
               Name
@@ -160,75 +103,53 @@ const TableRank = () => {
               Address
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              {chainId === chainBlast ? "DM Point" : "Reward"}
+              Ref point
             </th>
             <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              Season Volume
+              Trading point
             </th>
-            <th className="flex justify-end lg:w-full md:w-full w-[140px] pr-2">
-              Total Volume
+            <th className="flex justify-end lg:w-full md:w-full w-[200px] pr-2">
+              Season volume
             </th>
           </tr>
         </thead>
 
-        <tbody className="flex flex-col">
+        <tbody className="flex flex-col h-full flex-auto">
           {isLoading || isFetching ? (
-            <SkeletonTable length={9} />
+            <div className="w-full h-full flex-auto justify-center items-center flex">
+              <LoadingIcon width={30} height={30} className="animate-spin" />
+            </div>
+          ) : isSuccess && data ? (
+            <>
+              {account && (
+                <ItemTableRank item={data?.userRank} currentRank={true} />
+              )}
+              {data.data.map((item: any, index: number) => (
+                <React.Fragment key={index}>
+                  <ItemTableRank item={item} currentRank={false} />
+                </React.Fragment>
+              ))}
+            </>
           ) : (
-            isSuccess &&
-            data && (
-              <>
-                {account && (
-                  <ItemTableRank item={data?.userRank} currentRank={true} />
-                )}
-                {data.data.map((item: any, index: number) => (
-                  <React.Fragment key={index}>
-                    <ItemTableRank item={item} currentRank={false} />
-                  </React.Fragment>
-                ))}
-              </>
-            )
+            <div className="w-full h-full flex-auto justify-center items-center flex">
+              <SearchNotFound />
+            </div>
           )}
         </tbody>
       </table>
-      <div className="flex justify-center gap-4 pt-6 text-sm">
-        <button
-          onClick={prevPage}
-          disabled={isPreviousData || page === 1 || isFetching}
-          className={`${
-            isPreviousData || page === 1 || isFetching
-              ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-secondary2 transition-all"
-          } w-5 flex items-center text-center justify-center rounded-full transition-all`}
-        >
-          <MdNavigateBefore />
-        </button>
-        <p>
-          Page
-          <span className="px-2 font-medium text-secondary2">{page}</span> of
-          <span
-            className="px-2 font-medium cursor-pointer text-secondary2"
-            onClick={() =>
-              page !== data?.totalPages && setPage(data?.totalPages)
-            }
-          >
-            {data?.totalPages}
-          </span>
-        </p>
-        <button
-          onClick={nextPage}
-          disabled={isPreviousData || page === data?.totalPages || isFetching}
-          className={`${
-            isPreviousData || page === data?.totalPages || isFetching
-              ? "text-white bg-slate-300"
-              : "hover:text-white hover:bg-secondary2 transition-all"
-          } w-5 flex items-center text-center justify-center rounded-full transition-all`}
-        >
-          <MdOutlineNavigateNext />
-        </button>
-      </div>
+      {isSuccess && (
+        <Pagination
+          data={data}
+          isPreviousData={isPreviousData}
+          page={page}
+          setPage={setPage}
+          refetch={refetch}
+          totalPages={15}
+          isFetching={isFetching}
+        />
+      )}
     </div>
   );
 };
-
+export { ItemTableRank };
 export default TableRank;

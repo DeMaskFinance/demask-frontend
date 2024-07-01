@@ -1,145 +1,235 @@
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
-import React, { memo, useContext } from "react";
-import MediaNFT from "@/components/Common/MediaNFT";
 import Copy from "@/components/Common/Copy";
+import MediaNFT from "@/components/Common/Media/MediaNFT";
+import { RefetchIcon, ShareIcon, TwitterIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
+import { refreshNFTService } from "@/libs/service/nftService";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
+import Tippy from "@tippyjs/react/headless";
+import React, { memo, useContext } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { HiChevronDown } from "react-icons/hi2";
+import ModalDocument from "../ModalLength/ModalDocument";
 interface ModalDetailProps {
-  data: any;
+  type: string;
   nftAddress: string;
   idNFT: string;
-  setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpenDetail: boolean;
 }
 
 const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
-  data,
+  type,
   nftAddress,
   idNFT,
-  setIsOpenDetail,
-  isOpenDetail,
 }) => {
-  const { demask } = useContext(AccountContext);
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpenDetail(false);
-  };
-  const formattedDescription = data?.metadata?.description?.split("\n")?.map((line: number, index: number) => (
-    <React.Fragment key={index}>
-      {line}
-      <br />
-    </React.Fragment>
-  ));
+  const { demask, chainId } = useContext(AccountContext);
+  const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
+    queryKey: ["refreshNFTService", chainId, nftAddress, idNFT, type],
+    queryFn: async () => {
+      const res = await refreshNFTService(chainId, nftAddress, idNFT, type);
+      return res.data;
+    },
+  });
+
+  const formattedDescription = data?.metadata?.description
+    ?.split("\n")
+    ?.map((line: number, index: number) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
+  console.log(nftAddress);
 
   return (
-    <Wrapper isOpen={isOpenDetail} onClick={handleClose}>
-      <div className="flex items-center">
-        <div className="z-50 flex flex-col justify-center max-h-[80vh] cursor-default">
-          <div className="bg-white h-fit w-[360px] md:w-[400px] lg:w-[550px] rounded-lg p-8 relative overflow-y-scroll">
-            <div className="flex justify-between mb-4">
-              <p className="py-2 text-xl font-medium">NFT Details</p>
-              <button
-                className="text-lg "
-                onClick={handleClose}
-              >
-                <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
-              </button>
-            </div>
-            <div className="flex gap-x-4">
-              <div className="w-[240px] h-[240px]">
-                <MediaNFT data={data} isControls />
-              </div>
-              <ul>
-                {data?.metadata?.name && (
-                  <li className="mb-4">
-                    <p className="font-medium text-dark2">Name</p>
-                    <div className="flex gap-x-2">
-                      <div className="w-6 h-6">
-                        <MediaNFT data={data} isControls />
+    <div className="rounded-lg relative min-h-[500px] md:w-[838px] flex justify-center items-center ">
+      {isLoading || isFetching ? (
+        <div className="flex items-center justify-center h-full w-full">
+          <BiLoaderAlt className="text-2xl text-center animate-spin text-primary_400" />
+        </div>
+      ) : (
+        isSuccess && (
+          <div className="w-full">
+            <div className="flex justify-between p-4 border-b text-primary_200 border-shader_500">
+              <div>
+                <div className="flex items-center gap-x-[6px]">
+                  <p className="text-lg font-semibold text-white max-w-[100px]">
+                    <ModalDocument data={data?.metadata?.name} />
+                  </p>
+                  <div className="px-2 py-1 text-sm font-normal rounded-lg bg-primary_500 bg-opacity-[0.15]">
+                    {data?.nftID}
+                  </div>
+                  <div
+                    className="border rounded-full border-shader_400 p-[7px]"
+                    onClick={() => refetch()}
+                  >
+                    <RefetchIcon
+                      width={16}
+                      height={16}
+                      className="cursor-pointer text-primary_200"
+                    />
+                  </div>
+                  <Tippy
+                    interactive
+                    placement="bottom"
+                    render={(attrs) => (
+                      <div className="" tabIndex={-1} {...attrs}>
+                        <ul className="pb-2 w-[160px] menu font-semibold">
+                          <li className="item_menu">
+                            <Copy content="123" title="Copy Link" />
+                          </li>
+                          <li className="item_menu gap-x-2">
+                            <TwitterIcon width={20} height={20} />
+                            Share on Twitter
+                          </li>
+                          <li></li>
+                        </ul>
                       </div>
-                      <a href={data?.metadata?.uri} rel="noreferrer noopener"
-                        target="_blank" className="text-dark3 ">{data?.metadata?.name}</a>
+                    )}
+                  >
+                    <div
+                      className="border rounded-full border-shader_400 p-[7px]"
+                      onClick={() => refetch()}
+                    >
+                      <ShareIcon
+                        width={16}
+                        height={16}
+                        className="cursor-pointer text-primary_200"
+                      />
                     </div>
-                  </li>
-                )}
-                {data?.metadata?.symbol && (
-                  <li className="mb-4">
-                    <p className="font-medium text-dark2">Symbol</p>
-                    <p className="text-sm font-light text-dark3">{data?.metadata?.symbol}</p>
-                  </li>
-                )}
-                <li className="mb-4">
-                  <p className="font-medium text-dark2">Type</p>
-                  <p className="text-sm font-light text-dark3">ERC-1155</p>
-                </li>
-                <li className="mb-4">
-                  <p className="font-medium text-dark2">Contract Address</p>
-                  <div className="flex gap-x-1">
-                    <a target="_blank" rel="noopener noreferrer" href={`${demask.urltxHash}address/${nftAddress}`} className="text-sm font-light cursor-pointer text-secondary2">{`${nftAddress.slice(0, 2)}...${nftAddress.slice(-4)}`}</a>
-                    <Copy content={nftAddress} />
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-4">
-              {data.metadata?.description && (
-                <div className="mb-4">
-                  <p className="font-medium text-dark2">Description</p>
-                  <p className="text-sm font-light text-dark3">{formattedDescription}</p>
+                  </Tippy>
                 </div>
-              )}
-              <div className="mb-4">
-                <p className="font-medium text-dark2">Attributes</p>
-                {data.metadata?.attributes.length > 0 ? (
-                  <div className="text-sm font-light text-dark3">
-                    {data.metadata?.attributes.map((item: any, index: number) => (
-                      <ul className="flex gap-x-4" key={index}>
-                        <li>{item.trait_type}</li>
-                        <li>{item.value}</li>
-                      </ul>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm font-light text-dark3">None</p>
-                )}
+                <p className="text-primary_300">{data?.metadata?.symbol}</p>
               </div>
-              <div className="grid grid-cols-2 gap-y-4">
-                <div className="">
-                  <p className="mb-1 font-medium text-dark2">Category</p>
-                  {data.metadata?.category.length > 0 ? (
-                    <div className="flex gap-x-4">
-                      {data.metadata?.category.map((item: any, index: number) => (
-                        <p className="px-4 py-1 text-sm font-medium border rounded-lg text-dark2 border-dark3" key={index}>
-                          {item}
-                        </p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>None</p>
-                  )}
+            </div>
+            <div className="p-4 overflow-y-scroll min-h-[500px] max-h-[60vh]">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex max-h-[350px] aspect-square rounded-xl h-fit overflow-hidden">
+                  <MediaNFT data={data} isControls />
                 </div>
-                <div>
-                  <p className="font-medium text-dark2">Token ID</p>
-                  <div className="flex items-center gap-x-1">
-                    <a target="_blank" rel="noopener noreferrer" href={data.uri} className="text-sm font-light cursor-pointer text-secondary5">{idNFT}</a>
-                    <Copy content={idNFT} />
-                  </div>
-                </div>
-                <div>
-                  <p className="font-medium text-dark2">Royalty Fee (%)</p>
-                  <p className="text-sm font-light text-dark3">{data?.royaltyFee}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-dark2">Last Updated</p>
-                  <p className="text-sm font-light text-dark3">20 minutes ago</p>
+                <div className="w-full max-w-lg mx-auto flex-1">
+                  <Disclosure
+                    as="div"
+                    className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
+                    defaultOpen={true}
+                  >
+                    <DisclosureButton className="flex items-center justify-between w-full group">
+                      <span className="title">Description</span>
+                      <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
+                    </DisclosureButton>
+                    <DisclosurePanel className="mt-2 text-sm text-shader_200">
+                      {data?.metadata?.description ? (
+                        <p>{formattedDescription}</p>
+                      ) : (
+                        <p>No data</p>
+                      )}
+                    </DisclosurePanel>
+                  </Disclosure>
+                  <Disclosure
+                    as="div"
+                    className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
+                    defaultOpen={true}
+                  >
+                    <DisclosureButton className="flex items-center justify-between w-full group">
+                      <span className="title">Attributes</span>
+                      <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
+                    </DisclosureButton>
+                    <DisclosurePanel className="mt-2 text-sm ">
+                      {data.metadata?.attributes.length > 0 ? (
+                        <div className="grid grid-cols-3 gap-4 ">
+                          {data.metadata?.attributes.map(
+                            (item: any, index: number) => (
+                              <ul
+                                className="p-3 rounded-lg bg-primary_500 bg-opacity-10"
+                                key={index}
+                              >
+                                <li className="text-primary_200">
+                                  <ModalDocument data={item.trait_type} />
+                                </li>
+                                <li className="font-bold text-white">
+                                  {item.value}
+                                </li>
+                              </ul>
+                            )
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-shader_200">No data</p>
+                      )}
+                    </DisclosurePanel>
+                  </Disclosure>
+                  <Disclosure
+                    as="div"
+                    className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
+                    defaultOpen={true}
+                  >
+                    <DisclosureButton className="flex items-center justify-between w-full group">
+                      <span className="title">Detail</span>
+                      <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
+                    </DisclosureButton>
+                    <DisclosurePanel className="text-sm text-shader_200">
+                      <ul>
+                        <li className="flex justify-between py-2 border-b border-shader_500">
+                          <p>Name</p>
+                          <p className="font-semibold text-shader_100">
+                            {data?.metadata?.name}
+                          </p>
+                        </li>
+                        <li className="flex justify-between py-2 border-b border-shader_500">
+                          <p>Type</p>
+                          <p className="font-semibold text-shader_100">Art</p>
+                        </li>
+                        <li className="flex justify-between py-2 border-b border-shader_500">
+                          <p>Token Standard</p>
+                          <p className="font-semibold uppercase text-shader_100">
+                            {type}
+                          </p>
+                        </li>
+                        <li className="flex justify-between py-2 border-b border-shader_500">
+                          <p>ID</p>
+                          <a
+                            href={data?.uri}
+                            target="_blank"
+                            className="flex items-center font-semibold text-primary_400 gap-x-1"
+                          >
+                            {data?.nftID}
+                            <Copy content={data?.nftID} />
+                          </a>
+                        </li>
+                        <li className="flex justify-between py-2 border-b border-shader_500">
+                          <p>Contract</p>
+                          <div className="flex items-center font-semibold text-primary_400 gap-x-1">
+                            <a
+                              href={`${demask.urltxHash}address/${nftAddress}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {`${nftAddress.slice(0, 6)}...${nftAddress.slice(
+                                -8
+                              )}`}
+                            </a>
+                            <Copy content={nftAddress} />
+                          </div>
+                        </li>
+                        <li className="flex justify-between pt-2">
+                          <p>Last Update</p>
+                          <p className="font-semibold text-shader_100">
+                            {data?.updatedTime}
+                          </p>
+                        </li>
+                      </ul>
+                    </DisclosurePanel>
+                  </Disclosure>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </Wrapper >
+        )
+      )}
+    </div>
   );
 };
 

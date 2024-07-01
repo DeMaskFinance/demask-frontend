@@ -1,35 +1,29 @@
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
+import { getNonce, loginAuthen } from "@/libs/service/userService";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import images from "@/public/images";
+import { login } from "@/store/profileSlice";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import Web3 from "web3";
-import Wrapper from "../Wrapper";
-import { getNonce, loginAuthen } from "@/libs/service/userService";
 import { useDispatch } from "react-redux";
-import { login } from "@/store/profileSlice";
+import Web3 from "web3";
 
 interface ModalWalletProps {
-  isOpen?: boolean;
-  setIsOpen?: any;
+  isAuthen?: true;
 }
 const styles = {
   walletItem:
-    "flex items-center px-4 py-4 gap-x-4 mx-4 hover:bg-dark4 rounded-lg cursor-not-allowed",
+    "flex items-center p-2 gap-x-4 text-white  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
 };
 
-const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
-  const { account, wallet, chainId, demask, tokenDefault, updateAccount, updateWallet, updateChainId } = useContext(AccountContext);
-  const [tab, setTab] = useQueryParam("chain", withDefault(StringParam, chainId));
+const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
+  const { chainId, demask, updateAccount, updateWallet, updateChainId } =
+    useContext(AccountContext);
   const dispatch = useDispatch();
-  const handleClose = (e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpen(false);
-  };
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
   const connectWallet = async (walletName: string) => {
     try {
       let provider;
@@ -44,22 +38,38 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
       } else {
         provider = await getProvider(walletName);
         if (walletName !== "WalletConnect") {
-          const networkSwitched = await changeNetwork(chainId, walletName, demask, setIsOpen, updateChainId, setTab);
-          if (!networkSwitched) {
+          if (!window.ethereum) {
+            walletName === "Metamask"
+              ? window.open(
+                  "https://metamask.io/download/",
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              : window.open(
+                  "https://chromewebstore.google.com/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad",
+                  "_blank",
+                  "noopener,noreferrer"
+                );
             return;
-          }
-          accounts = await provider
-            .request({
-              method: "eth_requestAccounts",
-            })
-            .catch((error: any) => {
-              if (error.code === 4001) {
-                // EIP-1193 userRejectedRequest error
-                console.log("Please connect to MetaMask.");
-              } else {
+          } else {
+            const networkSwitched = await changeNetwork(
+              chainId,
+              walletName,
+              demask,
+              setIsWrongNetwork,
+              updateChainId
+            );
+            if (!networkSwitched) {
+              return;
+            }
+            accounts = await provider
+              .request({
+                method: "eth_requestAccounts",
+              })
+              .catch((error: any) => {
                 console.error(error);
-              }
-            });
+              });
+          }
         } else {
           await provider.connect();
           accounts = await provider.accounts;
@@ -67,7 +77,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
       }
       if (walletName !== "Binance") {
         const { data: sign } = await getNonce(accounts[0]);
-        const msg = `${Buffer.from(String(sign.nonce), 'utf8').toString('hex')}`;
+        const msg = `${Buffer.from(String(sign.nonce), "utf8").toString(
+          "hex"
+        )}`;
         const signedData = await provider?.request({
           method: "personal_sign",
           params: [msg, accounts[0]],
@@ -76,71 +88,70 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isOpen, setIsOpen }) => {
           userAddress: accounts[0],
           signature: signedData,
         });
-        console.log(loginData);
-        
-        dispatch(login({ accessToken: loginData.accessToken, user: accounts[0] }));
+
+        dispatch(
+          login({ accessToken: loginData.accessToken, user: accounts[0] })
+        );
         updateAccount(accounts[0]);
         updateWallet(walletName);
-        document.body.style.overflowY = "auto";
-        setIsOpen(false);
       }
     } catch (error) {
       console.error(error);
     }
-  }
-
+  };
 
   return (
-    <Wrapper isOpen={isOpen} onClick={handleClose}>
-      <div className="w-[550px] h-fit max-w-[calc(100%-32px)] bg-white text-black text-center rounded-lg relative pb-4">
-        <h2 className="p-6 mb-3 text-xl font-medium">Connect your wallet</h2>
-        <p>If you don't have a wallet, you can create one now.</p>
-        <div className="mt-4 font-medium">
-          <div
-            className={styles.walletItem}
-            // onClick={() => connectWallet("Metamask")}
-          >
-            <Image src={images.metamaskWallet} alt="Metamask" className="w-8" />
-            <p>MetaMask</p>
-          </div>
-          <div
-            className={styles.walletItem}
-            // onClick={() => connectWallet("Coinbase")}
-          >
-            <Image src={images.coinbaseWallet} alt="Coinbase" className="w-8" />
-            <p>Coinbase</p>
-          </div>
-          <div
-            className={styles.walletItem}
-            // onClick={() => connectWallet("WalletConnect")}
-          >
-            <Image
-              src={images.walletConnect}
-              alt="Wallet connect"
-              className="w-8"
-            />
-            <p>WalletConnect</p>
-          </div>
-          <div
-            className={styles.walletItem}
-            // onClick={() => connectWallet("Binance")}
-          >
-            <Image
-              src={images.binanceWallet}
-              alt="Binance wallet"
-              className="w-8"
-            />
-            <p>Binance wallet</p>
-          </div>
-        </div>
-        <button
-          className="absolute top-0 right-0 p-6 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red" />
-        </button>
+    <div className=" h-fit bg_main w-[350px]  text-shader_200  rounded-lg relative p-4">
+      <div className="flex items-center justify-between">
+        <h2 className="font-bold text-white ">Connect your wallet</h2>
       </div>
-    </Wrapper>
+      <p className="mt-1 text-sm">
+        If you don't have a wallet, you can create one now.
+      </p>
+      <div className="mt-4 font-semibold flex flex-col gap-y-2">
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("Metamask")}
+        >
+          <Image src={images.metamaskWallet} alt="Metamask" className="w-9" />
+          <p>MetaMask</p>
+        </div>
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("Coinbase")}
+        >
+          <Image src={images.coinbaseWallet} alt="Coinbase" className="w-9" />
+          <p>Coinbase</p>
+        </div>
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("WalletConnect")}
+        >
+          <Image
+            src={images.walletConnect}
+            alt="Wallet connect"
+            className="w-9"
+          />
+          <p>WalletConnect</p>
+        </div>
+        <div
+          className={styles.walletItem}
+          onClick={() => connectWallet("Binance")}
+        >
+          <Image
+            src={images.binanceWallet}
+            alt="Binance wallet"
+            className="w-9"
+          />
+          <p>Binance wallet</p>
+        </div>
+      </div>
+      {isAuthen && (
+        <Link href="/swap" className="text-white absolute top-4 right-4">
+          <CgClose />
+        </Link>
+      )}
+    </div>
   );
 };
 

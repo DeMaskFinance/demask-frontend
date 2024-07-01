@@ -1,147 +1,218 @@
-import React, { memo, useEffect } from 'react'
-import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
+import React, { Fragment, memo, useEffect } from "react";
+import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 
 interface PaginationProps {
-    data:any,
-    page:number,
-    pageNumberInput:string,
-    isPreviousData:boolean,
-    setPage:any,
-    setPageNumberInput:any,
-    refetch:any,
+  data: any;
+  page: number;
+  pageNumberInput?: string;
+  isPreviousData: boolean;
+  setPage: any;
+  refetch: any;
+  totalPages: number;
+  isFetching: boolean;
+  setPageNumberInput?: any;
 }
 const Pagination = ({
-    data,
-    page,
-    pageNumberInput,
-    isPreviousData,
-    setPage,
-    setPageNumberInput,
-    refetch,
-}:PaginationProps) => {
-    const goToPage = (pageNum: number) => {
-        const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
-        setPage(newPageNumber);
-        setPageNumberInput(String(newPageNumber));
-    };
-    const generatePagination = (currentPage: number, totalPages: any) => {
-        const buttons = [];
-        const maxButtonsToShow = 3;
+  data,
+  page,
+  pageNumberInput,
+  isPreviousData,
+  setPage,
+  setPageNumberInput,
+  refetch,
+}: PaginationProps) => {
+  const goToPage = (pageNum: number) => {
+    const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
+    setPage(newPageNumber);
+  };
+  const generatePagination = (currentPage: number, totalPages: any) => {
+    const buttons = [];
+    const maxButtonsToShow = 3;
 
-        if (totalPages <= maxButtonsToShow + 2) {
-            for (let i = 1; i <= totalPages; i++) {
-                buttons.push(i);
-            }
-        } else {
-            const showFirstDots = currentPage > maxButtonsToShow;
-            const showLastDots = currentPage < totalPages - maxButtonsToShow + 1;
+    if (totalPages <= maxButtonsToShow + 2) {
+      for (let i = 1; i <= totalPages; i++) {
+        buttons.push(i);
+      }
+    } else {
+      const showFirstDots = currentPage > maxButtonsToShow;
+      const showLastDots = currentPage < totalPages - maxButtonsToShow + 1;
 
-            buttons.push(1);
-            buttons.push(2);
+      buttons.push(1);
+      buttons.push(2);
 
-            if (showFirstDots) {
-                buttons.push("...");
-            }
+      if (showFirstDots) {
+        buttons.push("...");
+      }
 
-            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-                if (i > 2 && i < totalPages - 1) {
-                    buttons.push(i);
-                }
-            }
-
-            if (showLastDots) {
-                buttons.push("...");
-            }
-
-            buttons.push(totalPages - 1);
-            buttons.push(totalPages);
+      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+        if (i > 2 && i < totalPages - 1) {
+          buttons.push(i);
         }
+      }
 
-        return buttons;
-    };
+      if (showLastDots) {
+        buttons.push("...");
+      }
 
-    const prevPage = () => {
-        const prevPageNumber = Math.max(page - 1, 1);
-        setPage(prevPageNumber);
-    };
+      buttons.push(totalPages - 1);
+      buttons.push(totalPages);
+    }
 
-    const nextPage = () => {
-        const nextPageNumber = Math.min(page + 1, data?.totalPages);
-        setPage(nextPageNumber);
-    };
+    return buttons;
+  };
 
-    useEffect(() => {
-        if (data === null) {
-            setPage(1);
-        }
-    }, [data]);
-    // useEffect(() => {
-    //     refetch();
-    // }, [page]);
-    
-    return (
-        <div className="flex justify-center w-full mx-auto text-sm">
-            <div className="flex flex-col gap-4 py-8 lg:flex-row md:flex-row lg:gap-10 md:gap-8">
-                <div className="flex gap-1 lg:gap-10 md:gap-8">
-                    <button
-                        onClick={prevPage}
-                        disabled={isPreviousData || page === 1}
-                        className={`${isPreviousData || page === 1
-                            ? "text-dark3 hover:border-red"
-                            : "text-dark2"
-                            }`}
-                    >
-                        <MdNavigateBefore className="text-xl border border-transparent" />
-                    </button>
-                    {generatePagination(page, data?.totalPages).map(
-                        (pageNum, index) => (
-                            <React.Fragment key={index}>
-                                {pageNum === "..." ? (
-                                    <span>...</span>
-                                ) : (
-                                    <button
-                                        className={`text-sm min-w-[32px] rounded-lg text-dark2 p-1 ${pageNum === page ? "bg-secondary2 text-white" : ""
-                                            }`}
-                                        onClick={() => goToPage(pageNum)}
-                                    >
-                                        {pageNum}
-                                    </button>
-                                )}
-                            </React.Fragment>
-                        )
-                    )}
-                    <button
-                        onClick={nextPage}
-                        disabled={isPreviousData || page === data?.totalPages}
-                        className={`${isPreviousData || page === data?.totalPages
-                            ? "text-dark3 hover:border"
-                            : ""
-                            }`}
-                    >
-                        <MdOutlineNavigateNext className="text-xl text-dark2" />
-                    </button>
-                </div>
-                <div className="flex items-center justify-center gap-4 ml-4 text-dark2">
-                    <span>Go to page </span>
-                    <div>
-                        <input
-                            type="number"
-                            min="1"
-                            max={data?.totalPages || 1}
-                            value={pageNumberInput}
-                            onChange={(e) => setPageNumberInput(e.target.value)}
-                            className="w-12 px-2 py-1 text-sm text-center border rounded outline-none max-w-fit"
-                        />{" "}
-                        <button
-                            onClick={() => goToPage(parseInt(pageNumberInput))}
-                            className="px-2 py-1 text-white border rounded bg-secondary2 hover:translate-x-1 transtion-all"
-                        >
-                            Go
-                        </button>
-                    </div>
-                </div>
-            </div>
+  const prevPage = () => {
+    const prevPageNumber = Math.max(page - 1, 1);
+    setPage(prevPageNumber);
+  };
+
+  const nextPage = () => {
+    const nextPageNumber = Math.min(page + 1, data?.totalPages);
+    setPage(nextPageNumber);
+  };
+
+  useEffect(() => {
+    if (data === null) {
+      setPage(1);
+    }
+  }, [data]);
+
+  return (
+    <div className="flex justify-end w-full px-4 mx-auto text-sm bg-shader_800">
+      <div className="flex py-4 gap-x-8 ">
+        <div className="flex gap-x-1">
+          <button
+            onClick={prevPage}
+            disabled={isPreviousData || page === 1}
+            className={`w-8 ${
+              isPreviousData || page === 1
+                ? "text-primary_400 opacity-30"
+                : "text-primary_400"
+            }`}
+          >
+            <MdNavigateBefore className="mx-auto text-2xl border border-transparent" />
+          </button>
+          {generatePagination(page, data?.totalPages).map((pageNum, index) => (
+            <React.Fragment key={index}>
+              {pageNum === "..." ? (
+                <span className="text-shader_200 leading-[30px]">...</span>
+              ) : (
+                <button
+                  className={`text-sm w-8 rounded-full text-shader_200 p-1 ${
+                    pageNum === page ? "bg-primary_500 text-white" : ""
+                  }`}
+                  onClick={() => goToPage(pageNum)}
+                >
+                  {pageNum}
+                </button>
+              )}
+            </React.Fragment>
+          ))}
+          <button
+            onClick={nextPage}
+            disabled={page === data?.totalPages}
+            className={`${
+              page === data?.totalPages
+                ? "text-primary_400 opacity-30"
+                : "text-primary_400"
+            }`}
+          >
+            <MdOutlineNavigateNext className="mx-auto text-2xl " />
+          </button>
         </div>
-    )
-}
-export default memo(Pagination);
+        <div className="flex items-center justify-center gap-4 font-semibold text-shader_200">
+          <span>Page {page}</span>
+          <input
+            type="number"
+            min="1"
+            max={data?.totalPages || 1}
+            value={pageNumberInput}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                const target = event.target as HTMLInputElement;
+                const pageNumber = Number(target.value);
+                if (!isNaN(pageNumber)) {
+                  goToPage(pageNumber);
+                }
+              }
+            }}
+            className="block w-12 py-1 text-sm text-center text-white border rounded-lg outline-none bg-shader_800 border-shader_500"
+          />
+          <span>of {data?.totalPages}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+const TablePagination: React.FC<PaginationProps> = ({
+  data,
+  page,
+  setPage,
+  totalPages,
+  isFetching,
+  refetch,
+  isPreviousData,
+}) => {
+  const prevPage = () => {
+    const prevPageNumber = Math.max(page - 1, 1);
+    setPage(prevPageNumber);
+  };
+
+  const nextPage = () => {
+    const nextPageNumber = Math.min(page + 1, totalPages);
+    setPage(nextPageNumber);
+  };
+
+  useEffect(() => {
+    if (totalPages === 0) {
+      setPage(1);
+    }
+  }, [totalPages]);
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [page]);
+
+  return (
+    <Fragment>
+      {data?.length > 0 && (
+        <div className="flex justify-center gap-4 pt-6 text-sm font-semibold">
+          <button
+            onClick={prevPage}
+            disabled={isPreviousData || page === 1 || isFetching}
+            className={`${
+              isPreviousData || page === 1 || isFetching
+                ? "text-white bg-slate-300"
+                : "hover:text-white hover:bg-primary_500 transition-all"
+            } w-8 flex items-center text-center justify-center rounded-full transition-all`}
+          >
+            <MdNavigateBefore />
+          </button>
+          <p>
+            Page
+            <span className="px-2 text-primary_500">{page}</span> of
+            <span
+              className="px-2 cursor-pointer text-primary_500"
+              onClick={() => page !== totalPages && setPage(totalPages)}
+            >
+              {totalPages}
+            </span>
+          </p>
+          <button
+            onClick={nextPage}
+            disabled={isPreviousData || page === totalPages || isFetching}
+            className={`${
+              isPreviousData || page === totalPages || isFetching
+                ? "text-white bg-slate-300"
+                : "hover:text-white hover:bg-primary_500 transition-all"
+            } w-8 flex items-center text-center justify-center rounded-full transition-all`}
+          >
+            <MdOutlineNavigateNext />
+          </button>
+        </div>
+      )}
+    </Fragment>
+  );
+};
+
+export { Pagination, TablePagination };

@@ -6,7 +6,7 @@ const useAmountInMax = (
   dmlToken: string,
   tokenAddress: string,
   nftAddress: string,
-  idNFT: string,
+  idNFT: string | number[],
   wallet: string,
   account: string,
   rpc: string,
@@ -14,16 +14,12 @@ const useAmountInMax = (
   updatePrice: boolean
 ) => {
   const [amountTokenBuy, setAmountTokenBuy] = useState(0);
-  const [feeTradingBuy, setFeeTradingBuy] = useState(0);
   const [isLoadingBuy, setIsLoadingBuy] = useState<boolean>(false);
-
   useEffect(() => {
     const getAmountInMax = async () => {
       setIsLoadingBuy(true);
-      if (
-        inputNFT &&
-        dmlToken !== "0x0000000000000000000000000000000000000000"
-      ) {
+
+      if (dmlToken !== "0x0000000000000000000000000000000000000000") {
         const amountAFee = await getAmountBuy(
           wallet,
           tokenAddress,
@@ -34,20 +30,27 @@ const useAmountInMax = (
           routerAddress
         );
         if (amountAFee) {
-          setAmountTokenBuy(amountAFee[0].toString());
-          setFeeTradingBuy(amountAFee[1].toString());
+          setAmountTokenBuy(amountAFee.toString());
         }
       } else {
-        setFeeTradingBuy(0);
         setAmountTokenBuy(0);
       }
       setIsLoadingBuy(false);
     };
 
     getAmountInMax();
-  }, [inputNFT, dmlToken, tokenAddress, nftAddress, idNFT, wallet, account,updatePrice]);
+  }, [
+    inputNFT,
+    dmlToken,
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    wallet,
+    account,
+    updatePrice,
+  ]);
 
-  return { amountTokenBuy, isLoadingBuy, feeTradingBuy };
+  return { amountTokenBuy, isLoadingBuy };
 };
 
 export default useAmountInMax;

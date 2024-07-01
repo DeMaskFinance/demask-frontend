@@ -1,54 +1,79 @@
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/MediaNFT";
-import { EditIcon } from "@/components/Icons";
+import {
+  EditIcon,
+  EtherIcon,
+  EyeIcon,
+  SeeMoreIcon,
+  StarIcon,
+  TickSuccessIcon,
+  TwitterIcon,
+  WebsiteIcon,
+} from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
-import { ModalDetail } from "@/components/Modal/ModalDedail";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
-import Items from "@/components/Profile/Inventory/Items";
-import SkeletonCategory from "@/components/Skeleton/SkeletonCategory";
+import { ItemList } from "@/components/Profile/Inventory/Items";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import { nftsUserService } from "@/libs/service/profileService";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import Image from "next/image";
+import * as collectionService from "@/libs/service/collectionService";
+import {
+  briefDocument,
+  formatLinkIPFS,
+  formatTypeChain,
+} from "@/libs/utils/formatComon";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-interface ModalDetailProps {
-  data: any;
-  nftAddress: string;
-  nftID: string;
-  setIsOpenDetail: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpenDetail: boolean;
-}
-export default function CreatedCollection() {
-  const { account, chainId, demask } = useContext(AccountContext);
-  const address = useRouter().query.created;
-  const { NATIVE_ADDRESS: nativeAddress } = demask;
-  const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
-    null
-  );
-  const { ref, inView } = useInView();
+import { Fragment, useContext, useRef, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { Button } from "../Buttons";
+import Copy from "../Common/Copy";
+import { MediaCollection } from "../Common/Media";
+import ModalRoyalty from "../Modal/ModalRoyalty";
+import Classify from "../Profile/Inventory/Classify";
+export default function DetailCollection() {
+  const { account, chainId } = useContext(AccountContext);
+  const [isFilter, setIsFilter] = useState<boolean>(false);
+  const inputAvatar = useRef(null);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [searchCollection, setSearchCollection] = useState<string>("");
+  const [typeERC] = useQueryParam("typeERC", withDefault(StringParam, ""));
+  const collectionAddress = useRouter().query.collection as string;
+  //Data ERC1155
   const fetchDataNFTs = async (
-    pageParam = 1,
+    typeERC: string,
+    collectionAddress: string | string[],
     chain: string | string[],
-    account: string
+    pageParam = 1
   ) => {
-    const data = await nftsUserService(account, chain, pageParam);
-    return data;
+    const data = await collectionService.collectionListAllERC(
+      typeERC,
+      collectionAddress,
+      chain,
+      pageParam,
+      10
+    );
+    return data.data;
   };
 
   const {
     data,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
     isSuccess,
     isLoading,
     isFetching,
   } = useInfiniteQuery(
-    ["NFTsUser", chainId, account],
-    ({ pageParam = 1 }) => fetchDataNFTs(pageParam, chainId, account),
+    ["NFTsAllERC", chainId, collectionAddress, typeERC],
+    ({ pageParam = 1 }) =>
+      fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
     {
       getNextPageParam: (page) =>
         page?.currentPage === page?.totalPages
@@ -56,118 +81,290 @@ export default function CreatedCollection() {
           : page?.currentPage + 1,
     }
   );
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
+
+  const {
+    data: dataDetail,
+    isLoading: isLoadingDetail,
+    isSuccess: isSuccessDetail,
+    refetch,
+  } = useQuery({
+    queryKey: ["detailCollection", chainId, collectionAddress],
+    queryFn: async () => {
+      if (collectionAddress) {
+        const res = await collectionService.collectionDetail(
+          collectionAddress,
+          chainId
+        );
+        return res.data;
+      }
+    },
+  });
+
+  const handleUploadAvatar = async (file: any) => {
+    try {
+      setAvatarLoading(true);
+      await collectionService.uploadFileCollection({
+        avatar: file,
+        chainId,
+        collectionAddress,
+      });
+      refetch();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setAvatarLoading(false);
     }
-  }, [inView]);
+  };
+  console.log(dataDetail);
+
   return (
-    <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-14 mb-[100px]">
-      <section>
-        <div className="flex items-center justify-center gap-x-6">
-          <div className="h-[120px]">
-            <Image
-              src="/images/test.png"
-              width={620}
-              height={620}
-              className="object-cover w-full h-full rounded-lg"
-              alt="1"
-            />
+    <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
+      <section className="justify-between p-4 lg:flex bg-shader_700 gap-x-10 3xl:gap-x-80">
+        <div className="text-xs lg:flex gap-x-1">
+          <div
+            className={`relative rounded-full w-fit h-fit group ${
+              dataDetail?.collaborators.includes(account) && "cursor-pointer"
+            }`}
+          >
+            <div
+              className={` w-16 h-16 rounded-xl overflow-hidden ${
+                dataDetail?.collaborators.includes(account) &&
+                "group-hover:brightness-[0.8]"
+              }`}
+            >
+              <MediaCollection avatar={formatLinkIPFS(dataDetail?.avatar)} />
+            </div>
+            {dataDetail?.collaborators.includes(account) && (
+              <div>
+                {avatarLoading ? (
+                  <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-xl bg-slate-600/[.7]">
+                    <BiLoaderAlt className="text-4xl text-white animate-spin" />
+                  </div>
+                ) : (
+                  <div
+                    className="absolute top-0 left-0 flex-col items-center justify-center hidden w-full h-full text-white rounded-xl group-hover:flex"
+                    onClick={() => {
+                      if (inputAvatar.current) {
+                        (inputAvatar.current as HTMLInputElement).click();
+                      }
+                    }}
+                  >
+                    <EditIcon width={16} height={16} />
+                    <p className="text-xs">64px x 64px</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div>
-            <div className="flex items-center gap-x-2">
-              <p className="text-2xl font-semibold">123</p>
-              <Link href="/edit/123">
-                <EditIcon width={24} height={24} className="fill-dark3" />
-              </Link>
-            </div>
-            <LogoIconCard chainId={chainId} />
-            <div className="flex justify-between text-sm gap-x-3">
-              <p>Total Volume</p>
-              <p>Total Items</p>
-            </div>
-            <div className="flex justify-between font-semibold text-dark2">
-              <div>
-                <FormatNumber number={"123"} />
+            <input
+              type="file"
+              ref={inputAvatar}
+              accept="image/png,image/jpeg,image/gif"
+              hidden
+              onChange={async (e) => {
+                if (e.target.files) {
+                  const file = e.target.files[0];
+                  if (file && file.size < 10485760) {
+                    handleUploadAvatar(file);
+                  } else {
+                    console.log("Oversize");
+                  }
+                }
+              }}
+            />
+          </div>
+          <div className="flex flex-col mt-4 font-bold lg:mt-0 ">
+            <div className="flex items-center ">
+              <div className="flex items-center text-lg font-bold title whitespace-nowrap gap-x-1">
+                <LogoIconCard chainId={chainId} />
+                {dataDetail?.name}
+                <TickSuccessIcon width={20} height={19} />
+                <Button
+                  secondary
+                  className="flex items-center px-3 py-1 gap-x-1"
+                >
+                  <StarIcon width={16} height={16} />
+                  Royalties {dataDetail?.royalty}%
+                </Button>
+                {dataDetail?.collaborators.includes(account) &&
+                  dataDetail?.dmlAddress && (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button secondary className="px-[6px] h-[28px]">
+                          <EditIcon
+                            width={16}
+                            height={16}
+                            className="text-blue"
+                          />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                        <DialogDescription>
+                          <ModalRoyalty
+                            dmlAddress={dataDetail.dmlAddress}
+                            creatorAddress={dataDetail.creatorAddress}
+                          />
+                        </DialogDescription>
+                      </DialogContent>
+                    </Dialog>
+                  )}
               </div>
-              <div>789</div>
+            </div>
+            <div className="flex items-center gap-x-1 my-[10px] font-semibold">
+              {dataDetail?.creatorAddress ? (
+                <Fragment>
+                  <span className="text-sm text-shader_100">Created by</span>
+                  <span className="text-sm text-primary_300">
+                    {briefDocument(dataDetail.creatorAddress, 8, 6)}
+                  </span>
+                  <Copy content={dataDetail.creatorAddress} />
+                </Fragment>
+              ) : (
+                <p>--</p>
+              )}
+            </div>
+            <div className="flex items-center gap-x-2">
+              {dataDetail?.collaborators.includes(account) && (
+                <Link href={`/edit/${collectionAddress}?type=${typeERC}`}>
+                  <Button
+                    primary
+                    className="flex h-8 px-3 text-sm font-bold gap-x-2"
+                  >
+                    Edit
+                    <EditIcon width={16} height={16} />
+                  </Button>
+                </Link>
+              )}
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    className="flex h-8 px-3 text-sm font-bold gap-x-2"
+                    third
+                  >
+                    Description
+                    <EyeIcon width={16} height={16} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[90vw] md:w-[425px] bg-shader_800 border border-shader_500 p-4">
+                  <DialogHeader>
+                    <DialogTitle className="text-base font-bold text-white">
+                      Description
+                    </DialogTitle>
+                    <DialogDescription>
+                      <div className="flex mt-4 mb-2 gap-x-2">
+                        <LogoIconCard
+                          chainId={chainId}
+                          width={24}
+                          height={24}
+                        />
+                        <Button
+                          third
+                          className="!rounded-full text-primary_300 text-xs"
+                        >
+                          {formatTypeChain(dataDetail?.type)}
+                        </Button>
+                      </div>
+                      <p className="font-semibold text-primary_400">
+                        Joined {dataDetail?.createdAt}
+                      </p>
+                      <p className="mt-1 text-shader_200">
+                        {dataDetail?.description
+                          ? dataDetail.description
+                          : "No data"}
+                      </p>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+              <p className="w-[1px] h-4 bg-shader_400"></p>
+              <div className="flex gap-x-2">
+                {dataDetail?.socials?.website && (
+                  <Link
+                    href={dataDetail.socials?.website}
+                    target="_blank"
+                    className="mr-3"
+                  >
+                    <WebsiteIcon width={18} height={18} />
+                  </Link>
+                )}
+                {dataDetail?.socials?.twitter && (
+                  <Link
+                    href={dataDetail.socials?.twitter}
+                    target="_blank"
+                    className="mr-3"
+                  >
+                    <TwitterIcon width={18} height={18} />
+                  </Link>
+                )}
+                <SeeMoreIcon />
+              </div>
             </div>
           </div>
         </div>
-      </section>
-      <div>
-        {isLoading ? (
-          <SkeletonCategory />
-        ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
-          <div>
-            <div className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-dark2">
-              {data?.pages.map((page, pageIndex) => (
-                <Fragment key={pageIndex}>
-                  {page?.data?.map((item: any, index: number) => (
-                    <div key={index} className="relative overflow-hidden">
-                      <div className="relative items-center p-3 text-sm transition-all border rounded-md cursor-pointer lg:text-base hover:-translate-y-1 hover:shadow-home">
-                        <div
-                          className="relative h-[240px]"
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setIsOpenDetail(true);
-                            document.body.style.overflowY = "hidden";
-                          }}
-                        >
-                          <MediaNFT data={item} isControls={false} hover />
-                        </div>
-                        <div className="w-full">
-                          <div className="flex w-full mt-2">
-                            <div className="w-full">
-                              <h6
-                                title={item.metadata.name}
-                                className="flex items-start gap-2 font-medium uppercase"
-                              >
-                                <span className="flex-wrap max-w-full text-xl line-clamp-1">
-                                  <ModalDocument data={item.metadata.name} />
-                                </span>
-                              </h6>
-                            </div>
-                            {/* <ActiveIcon width={24} height={24} className="mr-4 fill-yellow" /> */}
-                          </div>
-                          <LogoIconCard chainId={chainId} />
-                          <div className="flex justify-between text-sm">
-                            <p>Floor price</p>
-                            <p>Balance</p>
-                          </div>
-                          <div className="flex justify-between font-semibold text-dark2">
-                            <div>
-                              <FormatNumber number={item.floorPrice} />
-                            </div>
-                            <div>
-                              {item.nftBalance ? (
-                                <FormatNumber number={item.nftBalance} />
-                              ) : (
-                                <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-200"></span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Fragment>
-              ))}
+        <div className="flex self-center mt-4 overflow-auto font-semibold text-white rounded-lg lg:overflow-visible lg:gap-x-14 gap-x-10 lg:mt-0">
+          <div className="">
+            <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+              Total Volume
+            </p>
+            <div className="flex items-center text-lg font-bold gap-x-1">
+              <FormatNumber number={dataDetail?.volume} />
+              <EtherIcon width={16} height={16} />
             </div>
           </div>
-        ) : (
-          <p>No data available.</p>
-        )}
-        {selectedItem && (
-          <ModalDetail
-            data={selectedItem}
-            idNFT={selectedItem?.nftID}
-            nftAddress={selectedItem?.nftAddress}
-            setIsOpenDetail={setIsOpenDetail}
-            isOpenDetail={isOpenDetail}
-          />
-        )}
-        <div ref={ref} style={{ height: "1px" }}></div>
+          <div className="">
+            <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+              Total Sale
+            </p>
+            <div className="flex items-center text-lg font-bold gap-x-1">
+              {dataDetail?.totalSale ? (
+                <FormatNumber number={dataDetail?.totalSale} />
+              ) : (
+                0
+              )}
+              <EtherIcon width={16} height={16} />
+            </div>
+          </div>
+          <div className=" gird">
+            <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+              Listed/Supply
+            </p>
+            <div className="flex items-center text-lg font-bold ">
+              <FormatNumber number={dataDetail?.countNFTsInPool} />/
+              <FormatNumber number={dataDetail?.totalSupply} />
+            </div>
+          </div>
+          <div className="">
+            <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+              Owner
+            </p>
+            <div className="flex items-center text-lg font-bold ">
+              <FormatNumber number={dataDetail?.countOwner} />
+            </div>
+          </div>
+          <div className="">
+            <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
+              Chain
+            </p>
+            <div className="flex items-center text-lg font-bold ">Ethereum</div>
+          </div>
+        </div>
+      </section>
+      <div className="px-4 pt-4">
+        <Classify
+          setIsFilter={setIsFilter}
+          isFilter={isFilter}
+          setSearchCollection={setSearchCollection}
+        />
+        <ItemList
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+          isFetching={isFetching}
+          data={data}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
       </div>
     </div>
   );

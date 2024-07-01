@@ -2,7 +2,8 @@ import abiDML from "@/abi/abiDML.json";
 import { ethers } from "ethers";
 import { getProvider } from "../connection/getProvider";
 import divideByDecimal from "./divideByDecimal";
-import viewReward from "./viewReward";
+import erc1155Contract from "./erc/erc1155.contract";
+import ercContract from "./erc/erc.contract";
 interface RewardDMLProps {
   wallet: string;
   dmlTokenLiquidity: string;
@@ -18,19 +19,15 @@ interface RewardDMLProps {
   setHash: React.Dispatch<React.SetStateAction<string>>
 }
 const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, data, setReward, setIsOpenErrorCollect, setIsOpenSuccessCollect, setHash }: RewardDMLProps) => {
-  const providerChoice = await getProvider(wallet);
-  const provider = new ethers.providers.Web3Provider(providerChoice);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, signer);
-
+  const contract = await ercContract.erc(wallet, dmlTokenLiquidity, abiDML);
   try {
     const result = await contract.getReward(
       [data.tokenAddress],
       account
     );
     setIsOpenTransaction(true);
-    const check = await provider.waitForTransaction(result.hash);
-    const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);
+    const check = await result.wait();
+    const resultTest = await ercContract.viewReward(dmlTokenLiquidity, account, wallet);
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
     setHash(result.hash);
     setReward(rewardDec);

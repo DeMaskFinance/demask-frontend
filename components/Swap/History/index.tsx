@@ -1,124 +1,105 @@
-import React, { useContext, useEffect, useState } from 'react'
-import HistoryItem from './HistoryItem'
+import { Pagination } from "@/components/Common/Pagination";
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
-import { MdNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
-import AccountContext from '@/context/AccountContext';
+import React, { useContext, useState } from "react";
+import HistoryItem from "./HistoryItem";
+import { TabGroups } from "@/components/NavChoice";
 interface HistorySwapProps {
-    data: DataBase
+  data: DataBase;
+  typeERC: string;
 }
-const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({ data }) => {
-    const [page, setPage] = useState(1);
-    const [tab, setTab] = useQueryParam("historyType", withDefault(StringParam, "All"));
-    const { account, wallet, chainId, demask } = useContext(AccountContext);
-    const { isLoading, data: dataHistory, isFetching, refetch, isPreviousData } = useQuery({
-        queryKey: ["historySwap", chainId, tab],
-        queryFn: async () => {
-            const res = await categoryAPI(`transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${tab}`);
-            return res;
-        },
+const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
+  data,
+  typeERC,
+}) => {
+  const [page, setPage] = useState(1);
+  const [activeChoice, setActiveChoice] = useState<string>("All");
+  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const {
+    isLoading,
+    data: dataHistory,
+    isFetching,
+    refetch,
+    isSuccess,
+    isPreviousData,
+  } = useQuery({
+    queryKey: ["historySwap", chainId, activeChoice, data, page],
+    queryFn: async () => {
+      const res = await categoryAPI(
+        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${activeChoice}&type=${typeERC}`
+      );
+      return res;
+    },
 
-        keepPreviousData: true,
-    });
+    keepPreviousData: true,
+  });
 
-    const prevPage = () => setPage((prev) => Math.max(prev - 1, 1));
-    const nextPage = () =>
-        setPage((next) => Math.min(next + 1, dataHistory?.totalPages));
-    useEffect(() => {
-        refetch();
-    }, [page, refetch]);
-    const options = [{
-        tab: 'All'
-    }, {
-        tab: 'Buy'
-    }, { tab: 'Sell' }, { tab: 'Add' }, { tab: 'Remove' }];
-    return (
-        <div className='w-full mt-[15px]  mb-14 lg:mb-0'>
-            <div className="w-full p-2 py-2 min-h-[350px] overflow-x-scroll border rounded-lg border-dark3 lg:overflow-visible">
-                <div className='sticky left-0 flex items-center gap-2 p-1 mb-2 text-base text-center text-white rounded-lg lg:left-2 bg-dark3 w-max'>
-                    {options.map((item, idx) => (
-                        <button
-                            key={idx}
-                            className={`py-2 px-4 ${tab === item.tab ? "bg-secondary5" : ""
-                                } rounded-lg text-xs`}
-                            type="button"
-                            onClick={() => {
-                                setTab(item.tab)
-                            }}
-                        >
-                            {item.tab}
-                        </button>
-                    ))}
-                </div>
-                <table className="w-full text-left border-collapse">
-                    <thead className="">
-                        <tr className="flex pb-2 text-sm border-b ">
-                            <th className="flex justify-start pl-2 md:w-[70%] w-[100px]">
-                                Type
-                            </th>
-                            <th className="flex justify-center lg:w-full md:w-full w-[100px]">
-                                NFT amount
-                            </th>
-                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                                Price
-                            </th>
-                            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                                Total
-                            </th>
-                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
-                                From
-                            </th>
-                            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
-                                Tx
-                            </th>
-                            <th className="flex  lg:w-full md:w-full w-[200px] pr-2">
-                                <p className='lg:w-full flex items-center justify-end md:w-[175px] w-[200px]'>Time</p>
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody className="flex flex-col">
-                        <HistoryItem data={dataHistory} isFetching={isFetching} isLoading={isLoading} demask={demask} />
-                    </tbody>
-                </table>
-            </div >
-            <div className="flex justify-center gap-10 pt-4 pb-2 text-dark2">
-                <button
-                    onClick={prevPage}
-                    disabled={isPreviousData || page === 1 || isFetching}
-                    className={`${isPreviousData || page === 1 || isFetching
-                        ? "text-white bg-slate-300"
-                        : "hover:text-white hover:bg-secondary2 transition-all"
-                        } w-6 flex items-center text-center justify-center rounded-full transition-all`}
-                >
-                    <MdNavigateBefore />
-                </button>
-                <p>
-                    Page
-                    <span className="px-2 font-medium text-secondary2">{page}</span> of
-                    <span
-                        className="px-2 font-medium cursor-pointer text-secondary2"
-                        onClick={() =>
-                            page !== dataHistory?.totalPages && setPage(dataHistory?.totalPages)
-                        }
-                    >
-                        {dataHistory?.totalPages}
-                    </span>
+  const options = ["All", "Buy", "Sell", "Add", "Remove"];
+  const handleChoiceChange = (choice: string) => {
+    setActiveChoice(choice);
+  };
+  return (
+    <div className="w-full font-semibold lg:mb-0">
+      <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_800">
+        <TabGroups
+          choices={options}
+          activeChoice={activeChoice}
+          onChoiceChange={handleChoiceChange}
+          isDefault
+        />
+        <table className="w-full text-left border-collapse">
+          <thead className=" bg-shader_600 text-shader_200">
+            <tr className="flex px-4 py-3 text-sm">
+              <th className="flex justify-start pl-2 md:w-[70%] w-[100px]">
+                TYPE
+              </th>
+              <th className="flex justify-center lg:w-full md:w-full w-[100px]">
+                NFT AMOUNT
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                PRICE
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                TOTAL
+              </th>
+              <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                FROM
+              </th>
+              <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                TX
+              </th>
+              <th className="flex  lg:w-full md:w-full w-[200px] pr-2">
+                <p className="lg:w-full flex items-center justify-end md:w-[175px] w-[200px]">
+                  TIME
                 </p>
-                <button
-                    onClick={nextPage}
-                    disabled={isPreviousData || page === dataHistory?.totalPages || isFetching}
-                    className={`${isPreviousData || page === dataHistory?.totalPages || isFetching
-                        ? "text-white bg-slate-300"
-                        : "hover:text-white hover:bg-secondary2 transition-all"
-                        } w-6 flex items-center text-center justify-center rounded-full transition-all`}
-                >
-                    <MdOutlineNavigateNext />
-                </button>
-            </div>
-        </div>
+              </th>
+            </tr>
+          </thead>
 
-    )
+          <tbody className="flex flex-col h-[620px]">
+            <HistoryItem
+              data={dataHistory}
+              isFetching={isFetching}
+              isSuccess={isSuccess}
+              isLoading={isLoading}
+              demask={demask}
+            />
+          </tbody>
+        </table>
+      </div>
+      {isSuccess && (
+        <Pagination
+          data={dataHistory}
+          isPreviousData={isPreviousData}
+          page={page}
+          setPage={setPage}
+          refetch={refetch}
+          totalPages={15}
+          isFetching={isFetching}
+        />
+      )}
+    </div>
+  );
 };
 export default HistorySwap;

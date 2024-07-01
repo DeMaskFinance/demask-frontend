@@ -1,4 +1,4 @@
-import { uploadFileToIPFS } from "./uploadFileIPFS";
+import { uploadFileIPFSMint, uploadMetadataIPFS } from "../service/IPFSService";
 
 interface MetadataProps {
   attributeItems: object[];
@@ -7,7 +7,6 @@ interface MetadataProps {
   name: string;
   symbol: string;
   description: string;
-  selectedCategory: string[];
 }
 const getMetadataUrl = async ({
   attributeItems,
@@ -16,14 +15,13 @@ const getMetadataUrl = async ({
   name,
   symbol,
   description,
-  selectedCategory,
 }: MetadataProps) => {
   const simplifiedAttributes = attributeItems.map(
     ({ trait_type, value }: any) => ({ trait_type, value })
   );
   const attributesMetadata = simplifiedAttributes.filter((attribute) => {
-      return attribute.trait_type !== "" || attribute.value !== "";
-    });
+    return attribute.trait_type !== "" || attribute.value !== "";
+  });
   const initialMetadata = {
     name: name,
     symbol: symbol,
@@ -31,7 +29,6 @@ const getMetadataUrl = async ({
     image: "",
     animation_url: "",
     attributes: attributesMetadata,
-    category: selectedCategory,
   };
   if (fileType.startsWith("video/")) {
     initialMetadata.animation_url = await fileIPFS; // use fileIPFS for animation_url
@@ -40,15 +37,15 @@ const getMetadataUrl = async ({
     const response = await fetch(imagePath);
     const blob = await response.blob();
     const file = new File([blob], "audio.svg", { type: "image/svg" });
-    const audioImage = await uploadFileToIPFS(file);
-    console.log(audioImage);
+    const audioImage = await uploadFileIPFSMint(file);
     initialMetadata.image = audioImage || "";
     initialMetadata.animation_url = await fileIPFS;
   } else {
     initialMetadata.image = await fileIPFS;
   }
-  const metadata = JSON.stringify(initialMetadata);
-  const urlMetadata = await uploadFileToIPFS(metadata);
+  const urlMetadata = await uploadMetadataIPFS(initialMetadata);
+  console.log(urlMetadata);
+
   return urlMetadata;
 };
 export default getMetadataUrl;

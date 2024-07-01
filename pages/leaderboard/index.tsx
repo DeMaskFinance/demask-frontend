@@ -12,7 +12,9 @@ import "swiper/css/pagination";
 // import required modules
 import TableRank from "@/components/LeaderBoard/TableRank";
 import Cards from "@/components/LeaderBoard/Cards";
-import AccountContext from "@/context/AccountContext";
+import { BackgroundDefault } from "@/components/Backgrounds";
+import { AvatarCustom } from "@/components/Avatars";
+import BackgroundParticles from "@/components/Backgrounds/BackGroundParticles";
 const updateMeta = {
   ...SEO,
   title: "Leaderboard",
@@ -27,25 +29,11 @@ const LeaderBoard = () => {
   return (
     <div>
       <NextSeo {...updateMeta} />
-      <div className="py-8 min-h-[75vh] max-w-[1048px] mx-auto flex flex-col gap-y-10 mb-[100px] text-center">
-        {chainId === "5" ? (
-          <div>
-            <h1 className="text-3xl font-medium leading-[normal] lg:text-5xl bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent whitespace-nowrap">
-              Monad Devnet Season
-            </h1>
-            {/* <h2 className="flex flex-wrap items-center justify-center mt-3 text-base italic font-normal lg:text-xl gap-x-2">
-              <span className="text-dark1">Sharing</span>
-              <span className="text-yellow whitespace-nowrap">100% Blast points, 0.5% Total Supply BleBle</span>
-              <span className="text-dark1">&</span>
-              <span className="text-purple whitespace-nowrap">100 OG Demask NFTs</span>
-            </h2> */}
-          </div>
-        ) : (
-          <div>
-            <h1 className="text-4xl leading-[normal] font-semibold bg-gradient-to-b text-center from-[#BA8DE6] to-[#7B54E8] bg-clip-text text-transparent">
-              Season 1
-            </h1>
-            <div className="flex justify-center mt-10">
+      <BackgroundDefault>
+        <div className="min-h-[94vh] max-w-7xl mx-auto flex flex-col gap-y-4 lg:gap-y-10 relative px-3">
+          <div className="flex flex-col justify-center ">
+            <h1 className="title_page ">Season 1</h1>
+            <div className="w-[257px] mx-auto">
               <TabGroups
                 choices={["Current Season", "Previous Season"]}
                 activeChoice={activeChoice}
@@ -53,10 +41,11 @@ const LeaderBoard = () => {
               />
             </div>
           </div>
-        )}
-        <Cards />
-        <TableRank />
-      </div>
+          <Cards />
+          <TableRank />
+        </div>
+        <BackgroundParticles value={800} id="particle-container1" />
+      </BackgroundDefault>
     </div>
   );
 };

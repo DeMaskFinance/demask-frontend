@@ -3,16 +3,20 @@ import Image from "next/image";
 import React, { useState, useEffect, FunctionComponent } from "react";
 
 interface IStateAvt {
-    id:number,
-    avt:typeof import("*.png"),
+  id: number;
+  avt: typeof import("*.png");
 }
 interface AvatarProps {
-    activeSlideIndex?:number,
-    width:number,
-    height:number,
+  activeSlideIndex?: number;
+  width: number;
+  height: number;
 }
 
-const AvatarUser: FunctionComponent<AvatarProps> = ({ activeSlideIndex,width,height }) => {
+const AvatarUser: FunctionComponent<AvatarProps> = ({
+  activeSlideIndex,
+  width,
+  height,
+}) => {
   const [avatarUser, setAvatarUser] = useState<IStateAvt>({
     id: 1,
     avt: avatarsIcon.avtUser1,
@@ -61,9 +65,9 @@ const AvatarUser: FunctionComponent<AvatarProps> = ({ activeSlideIndex,width,hei
   }, [activeSlideIndex]);
 
   return (
-    <div className="mr-2 rounded-full">
+    <div className="rounded-full">
       <Image src={avatarUser.avt} alt="avatar" width={width} height={height} />
     </div>
   );
-}
+};
 export default AvatarUser;

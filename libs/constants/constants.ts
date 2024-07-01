@@ -1,20 +1,17 @@
 import {
-  MaticIcon,
-  USDCIcon,
-  USDTIcon,
-  PolygonIcon,
+  BlastIcon,
   BscIcon,
   EtherIcon,
-  ZkSyncIcon,
-  GoerliIcon,
-  BlastIcon,
   MonadIcon,
+  SepoliaIcon,
+  USDCIcon,
+  USDTIcon,
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
   logo: any;
   chain: string;
-  sign:string;
+  sign: string;
   disable?: boolean;
 }
 const version = "Version 0.1.8";
@@ -27,15 +24,7 @@ const tokenGoerli = [
     symbolNative: "ETH",
   },
 ];
-const tokenzkSync = [
-  {
-    name: "zkSync Testnet",
-    symbol: "ETH",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
-    logo: ZkSyncIcon,
-    symbolNative: "WETH",
-  },
-];
+
 const tokenBlast = [
   {
     name: "Blast Testnet",
@@ -45,6 +34,15 @@ const tokenBlast = [
     symbolNative: "WETH",
   },
 ];
+const tokenSepolia = [
+  {
+    name: "Sepolia Testnet",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
+    logo: EtherIcon,
+    symbolNative: "ETH",
+  },
+];
 const activeNFTPercent = [
   { text: "25%", percent: 0.25 },
   { text: "50%", percent: 0.5 },
@@ -52,76 +50,56 @@ const activeNFTPercent = [
   { text: "MAX", percent: 1 },
 ];
 const BLAST_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_BLAST,
+  RPC: "https://rpc.ankr.com/blast_testnet_sepolia",
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BLAST,
   FACTORY: process.env.NEXT_PUBLIC_FACTORY_BLAST,
+  FACTORY_721: process.env.NEXT_PUBLIC_FACTORY_721_BLAST,
   ROUTER: process.env.NEXT_PUBLIC_ROUTER_BLAST,
+  ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_BLAST,
   CREATOR: process.env.NEXT_PUBLIC_CREATOR_BLAST,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BLAST,
-  WETH: process.env.NEXT_PUBLIC_WETH_BLAST,
   NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_BLAST,
-  USDT: process.env.NEXT_PUBLIC_USDT_BLAST,
-  USDC: process.env.NEXT_PUBLIC_USDC_BLAST,
-  urltxHash: "https://testnet.blastscan.io/",
+  CREATE_COLLECTION: process.env.NEXT_PUBLIC_CREATE_COLLECTION_BLAST,
+  FEE_MANAGER: process.env.NEXT_PUBLIC_FEE_MANAGER_BLAST,
+  urltxHash: "https://sepolia.blastscan.io/",
   chainName: "Blast Testnet",
   NAME: "Blast Testnet",
   CURRENCY: "ETH",
 };
-const Zksync_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_Zksync,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_Zksync,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_Zksync,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_Zksync,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_Zksync,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_Zksync,
-  WETH: process.env.NEXT_PUBLIC_WETH_Zksync,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Zksync,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_Zksync,
-  USDT: process.env.NEXT_PUBLIC_USDT_Zksync,
-  USDC: process.env.NEXT_PUBLIC_USDC_Zksync,
-  ROYALTY: process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Zksync,
-  urltxHash: "https://goerli.explorer.zksync.io/",
-  chainName: "zkSync Testnet",
-  NAME: "zkSync Testnet",
+const SEPOLIA_DEMASK = {
+  RPC: "https://rpc.sepolia.org",
+  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_SEPOLIA,
+  FACTORY: process.env.NEXT_PUBLIC_FACTORY_SEPOLIA,
+  FACTORY_721: process.env.NEXT_PUBLIC_FACTORY_721_SEPOLIA,
+  ROUTER: process.env.NEXT_PUBLIC_ROUTER_SEPOLIA,
+  ROUTER_721: process.env.NEXT_PUBLIC_ROUTER_721_SEPOLIA,
+  CREATOR: process.env.NEXT_PUBLIC_CREATOR_SEPOLIA,
+  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
+  CREATE_COLLECTION: process.env.NEXT_PUBLIC_CREATE_COLLECTION_SEPOLIA,
+  FEE_MANAGER: process.env.NEXT_PUBLIC_FEE_MANAGER_SEPOLIA,
+  urltxHash: "https://sepolia.etherscan.io/",
+  chainName: "Sepolia Testnet",
+  NAME: "Sepolia Testnet",
   CURRENCY: "ETH",
 };
-const Goerli_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_Goerli,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_Goerli,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_Goerli,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_Goerli,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_Goerli,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_Goerli,
-  WETH: process.env.NEXT_PUBLIC_WETH_Goerli,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_Goerli,
-  USDT: process.env.NEXT_PUBLIC_USDT_Goerli,
-  USDC: process.env.NEXT_PUBLIC_USDC_Goerli,
-  ROYALTY: process.env.NEXT_PUBLIC_ROYALTY_ENGINE_Goerli,
-  urltxHash: "https://goerli.etherscan.io/",
-  chainName: "Goerli Testnet",
-  NAME: "Goerli Testnet",
-  CURRENCY: "ETH",
-};
+
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [];
-const chainBlast = "5";
+
 if (PORT === "3000") {
   network = [
     {
-      name: "Monad Devnet",
-      logo: MonadIcon,
-      chain: "5",
-      sign: "monad-devnet",
-      // disable: true,
+      name: "Sepolia Testnet",
+      logo: SepoliaIcon,
+      chain: "11155111",
     },
     {
-      name: "Goerli Testnet",
-      logo: GoerliIcon,
-      chain: "5",
-      sign: "goerli-testnet",
+      name: "Monad Devnet",
+      logo: MonadIcon,
+      chain: "1",
+      disable: true,
     },
   ];
 } else if (PORT === "1307") {
@@ -162,6 +140,36 @@ const mediaType = {
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
+let validNFTsInput = [
+  "video/mp4",
+  "video/x-msvideo",
+  "video/x-matroska",
+  "video/quicktime",
+  "video/x-ms-wmv",
+  "video/x-flv",
+  "video/webm",
+  "audio/mpeg",
+  "audio/wav",
+  "audio/ogg",
+  "audio/aac",
+  "audio/flac",
+  "audio/x-ms-wma",
+  "application/pdf",
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/bmp",
+  "image/svg+xml",
+  "image/tiff",
+];
+let validCollectionInput = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/svg+xml",
+];
 const Category = [
   {
     id: 1,
@@ -185,17 +193,17 @@ const Category = [
   },
 ];
 export {
+  activeNFTPercent,
   amountNFT,
+  BLAST_DEMASK,
+  Category,
   mediaType,
   network,
-  BLAST_DEMASK,
-  Zksync_DEMASK,
-  Goerli_DEMASK,
-  tokenzkSync,
-  tokenGoerli,
+  SEPOLIA_DEMASK,
   tokenBlast,
-  Category,
+  tokenGoerli,
+  tokenSepolia,
+  validCollectionInput,
+  validNFTsInput,
   version,
-  activeNFTPercent,
-  chainBlast,
 };

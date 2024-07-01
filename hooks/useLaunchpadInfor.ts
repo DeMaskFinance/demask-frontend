@@ -24,21 +24,9 @@ const useLaunchpadInfor = (
             abiLaunchPad,
             signer
           );
-          console.log(contract);
-          
-          // const result = await contract.dml();
-          // const totalSoldout = await contract.totalSoldout();
-          // setDML(result);
           const balanceOf = await contract.balanceOf(account); 
           setBalance(balanceOf);
           const releaseable = await contract.releasable(account);
-          console.log({
-            account,
-            launchpadAddress,
-            wallet,
-            balanceOf,
-            releaseable
-          });
           setRelease(releaseable);
           // setTotalSoldout(totalSoldout.toString());
         } catch (error) {
