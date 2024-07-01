@@ -256,7 +256,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Fragment>
   );

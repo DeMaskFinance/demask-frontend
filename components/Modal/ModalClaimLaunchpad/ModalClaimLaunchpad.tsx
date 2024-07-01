@@ -92,7 +92,6 @@ const ModalClaimLaunchpad: React.FunctionComponent<ModalConfirmClaimProps> = ({
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Wrapper>
   );

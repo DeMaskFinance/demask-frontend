@@ -49,6 +49,7 @@ const DetailLiquidity = () => {
   const router = useRouter();
   const { liquidity } = router.query;
   const [dmlTokenLiquidity, setDmlTokenLiquidity] = useState<string>("");
+  const [isOpenRemoveLiquididy, setIsOpenRemoveLiquididy] = useState(false);
   const [reward, setReward] = useState("");
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [isOpenTransation, setIsOpenTransaction] = useState<boolean>(false);
@@ -169,17 +170,7 @@ const DetailLiquidity = () => {
     {
       icon: <RemoveIcon width={18} height={18} className="cursor-pointer " />,
       content: "Remove Pool",
-      modal: () => (
-        <ModalRemoveLiquidity
-          data={data}
-          routerAddress={routerAddress}
-          type="erc1155"
-          isERC721={false}
-          setHash={setHash}
-          setIsOpenSuccess={setIsOpenSuccessRemove}
-          setIsOpenError={setIsOpenErrorRemove}
-        />
-      ),
+      modal: true,
     },
     {
       icon: (
@@ -193,6 +184,9 @@ const DetailLiquidity = () => {
       link: `/swap/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
     },
   ];
+  const closeModal = () => {
+    setIsOpenRemoveLiquididy(false);
+  };
   return (
     <div className="px-3">
       {isLoading ? (
@@ -269,7 +263,10 @@ const DetailLiquidity = () => {
                             {action.icon}
                           </Link>
                         ) : action.modal ? (
-                          <Dialog>
+                          <Dialog
+                            open={isOpenRemoveLiquididy}
+                            onOpenChange={setIsOpenRemoveLiquididy}
+                          >
                             <DialogTrigger asChild>
                               <div>{action.icon}</div>
                             </DialogTrigger>
@@ -282,6 +279,7 @@ const DetailLiquidity = () => {
                                 setHash={setHash}
                                 setIsOpenSuccess={setIsOpenSuccessRemove}
                                 setIsOpenError={setIsOpenErrorRemove}
+                                closeModal={closeModal}
                               />
                             </DialogContent>
                           </Dialog>
@@ -435,7 +433,6 @@ const DetailLiquidity = () => {
       <ModalTransation
         isOpenTransation={isOpenTransation}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </div>
   );

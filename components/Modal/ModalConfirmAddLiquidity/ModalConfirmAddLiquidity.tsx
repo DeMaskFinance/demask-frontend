@@ -301,7 +301,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Wrapper>
   );

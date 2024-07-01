@@ -35,6 +35,7 @@ interface ModalConfirmRemoveLiquidityProps {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
+  closeModal: () => void;
 }
 
 const ModalConfirmRemoveLiquidity: React.FunctionComponent<
@@ -53,6 +54,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   setHash,
   setIsOpenSuccess,
   setIsOpenError,
+  closeModal,
 }) => {
   const [isSufficientLiquidity, setIsSufficientLiquidity] =
     useState<boolean>(false);
@@ -205,7 +207,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         setHash(result.hash);
         setIsOpenTransaction(false);
         setInputLiquidity("");
-        // setIsOpenRemoveLiquidity(false);
+        closeModal();
         setIsOpenConfirmRemoveLiquidity(false);
         if (check.status === 1) {
           setIsOpenSuccess(true);
@@ -304,7 +306,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Wrapper>
   );

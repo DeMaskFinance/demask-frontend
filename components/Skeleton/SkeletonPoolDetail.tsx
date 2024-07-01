@@ -3,7 +3,7 @@ import { SkeletonTable } from "./SkeletonTable";
 
 const SkeletonPoolDetail = () => {
   return (
-    <div className="flex flex-col lg:flex-row gap-x-10">
+    <div className="flex flex-col lg:flex-row gap-x-10 py-4 md:py-6">
       <div className="grow">
         <div className="flex flex-wrap justify-between mb-6 lg:flex-nowrap">
           <div className="flex gap-x-4">

@@ -641,7 +641,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
       <ModalSuccess
         isOpenSuccess={isOpenSuccessBuy}

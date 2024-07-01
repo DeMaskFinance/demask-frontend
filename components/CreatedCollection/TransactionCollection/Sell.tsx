@@ -242,7 +242,6 @@ const Sell = () => {
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
       <ModalSuccess
         isOpenSuccess={isOpenSuccessSell}

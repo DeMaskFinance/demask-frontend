@@ -555,7 +555,6 @@ export default function AddLiquidity() {
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
       {data && account && (
         <ModalConfirmAddLiquidity

@@ -32,6 +32,7 @@ interface ModalRemoveLiquidityProps {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
+  closeModal: () => void;
 }
 
 const ModalRemoveLiquidity: React.FunctionComponent<
@@ -44,6 +45,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   setHash,
   setIsOpenSuccess,
   setIsOpenError,
+  closeModal,
 }) => {
   const [inputLiquidity, setInputLiquidity] = useState<any>("");
   const [activeChoice, setActiveChoice] = useState<string>("");
@@ -87,7 +89,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const inputValue = replaceDot(value);
     setInputLiquidity(inputValue);
     setShowRequiredMessage(false);
-    setActiveChoice("");
+    // setActiveChoice("");
     if (Number(inputValue) > Number(balanceOfDML)) {
       setIsSufficientLiquidity(true);
     } else {
@@ -211,7 +213,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const {
     isLoading,
     data: data721,
-    isRefetching,
     isSuccess,
     isFetching,
   } = useQuery({
@@ -296,12 +297,12 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               />
             </div>
             {isSufficientLiquidity && (
-              <p className="mb-2 ml-1 -mt-1 text-xs text-red" key="liquidity">
+              <p className="mb-2 ml-1 mt-1 text-xs text-red" key="liquidity">
                 Insufficient Liquidity balance
               </p>
             )}
             {showRequiredMessage && (
-              <p className="mx-auto ml-3 -mt-3 text-xs text-red" key="emptyNFT">
+              <p className="mx-auto ml-3 mt-2 text-xs text-red" key="emptyNFT">
                 Required
               </p>
             )}
@@ -382,11 +383,11 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         setHash={setHash}
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
+        closeModal={closeModal}
       />
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Fragment>
   );

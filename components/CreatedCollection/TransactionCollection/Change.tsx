@@ -314,7 +314,6 @@ const Change = () => {
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </div>
   );

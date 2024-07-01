@@ -240,7 +240,6 @@ const Buy = () => {
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </div>
   );

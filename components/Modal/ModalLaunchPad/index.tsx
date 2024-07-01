@@ -74,7 +74,6 @@ const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
       <ModalTransation
         isOpenTransation={isOpenTransation}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Wrapper>
   );

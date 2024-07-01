@@ -366,7 +366,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
     </Wrapper>
   );

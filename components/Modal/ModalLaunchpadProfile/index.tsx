@@ -133,7 +133,7 @@ const ModalLaunchPadProfile: React.FunctionComponent<
       {/* <ModalTransation
         isOpenTransation={isOpenTransation}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
+        
       /> */}
     </Wrapper>
   );

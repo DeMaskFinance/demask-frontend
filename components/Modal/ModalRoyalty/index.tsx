@@ -147,7 +147,6 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       <ModalTransation
         isOpenTransation={isProcess}
         setIsOpenTransaction={setIsProcess}
-        isTransaction={true}
       />
     </div>
   );

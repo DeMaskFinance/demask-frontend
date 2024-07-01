@@ -166,7 +166,6 @@ export default function MintNFT({
         <ModalTransation
           isOpenTransation={isProcess}
           setIsOpenTransaction={setIsProcess}
-          isTransaction={true}
         />
         {isOpenSuccess && (
           <ModalSuccessCreate

@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import { EtherIcon, NFTIcon, PlusIcon } from "@/components/Icons";
+import { EtherIcon, PlusIcon } from "@/components/Icons";
 import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
 import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
@@ -8,26 +8,17 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import React, { useContext, useEffect, useState } from "react";
 
 const PoolItem = ({ liquidity }: any) => {
-  const { account, wallet, chainId, demask, slippage } =
-    useContext(AccountContext);
+  const { account, wallet, demask } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -57,11 +48,6 @@ const PoolItem = ({ liquidity }: any) => {
     nftAddress: collectionAddress,
     tokenAddress: nativeAddress,
   };
-  const { balanceDML, totalSupply } = useBananceOfDML(
-    account,
-    liquidity.dmlAddress,
-    wallet
-  );
   const dmlTokenLiquidity = data.dmlAddress;
   useEffect(() => {
     const fetchDataReward = async () => {
@@ -184,7 +170,6 @@ const PoolItem = ({ liquidity }: any) => {
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
-        isTransaction={true}
       />
 
       <ModalSuccess

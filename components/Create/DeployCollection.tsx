@@ -321,7 +321,6 @@ const DeployCollection = () => {
       <ModalTransation
         isOpenTransation={isProcess}
         setIsOpenTransaction={setIsProcess}
-        isTransaction={true}
       />
       {isOpenSuccess && (
         <ModalSuccessCreate
