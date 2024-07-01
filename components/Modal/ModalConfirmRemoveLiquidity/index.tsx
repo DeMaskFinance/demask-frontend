@@ -13,19 +13,24 @@ import { useQueryClient } from "@tanstack/react-query";
 import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import { memo, useContext, useEffect, useState } from "react";
+import { Fragment, memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
+import { CgClose } from "react-icons/cg";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
+  isOpenConfirmRemoveLiquidity: boolean;
   inputLiquidity: string;
   isOpenTransaction: boolean;
   totalSupply: string;
   routerAddress: string;
   idNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenConfirmRemoveLiquidity: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setInputLiquidity: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,12 +41,14 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   ModalConfirmRemoveLiquidityProps
 > = ({
   data,
+  isOpenConfirmRemoveLiquidity,
   inputLiquidity,
   isOpenTransaction,
   idNFT,
   totalSupply,
   routerAddress,
   setIsOpenTransaction,
+  setIsOpenConfirmRemoveLiquidity,
   setInputLiquidity,
   setHash,
   setIsOpenSuccess,
@@ -199,7 +206,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         setIsOpenTransaction(false);
         setInputLiquidity("");
         // setIsOpenRemoveLiquidity(false);
-        // setIsOpenConfirmRemoveLiquidity(false);
+        setIsOpenConfirmRemoveLiquidity(false);
         if (check.status === 1) {
           setIsOpenSuccess(true);
         } else {
@@ -225,59 +232,75 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       clearInterval(load);
     };
   }, []);
+  const handleClose = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    document.body.style.overflowY = "auto";
+    setIsOpenConfirmRemoveLiquidity(false);
+  };
   return (
-    <Wrapper>
-      <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
-        <p className="title_modal">You will receive</p>
-        <div className="content_modal">
-          {reserveToken ? (
-            <p>{amountNFTMin}</p>
-          ) : (
-            <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
-          )}
-          <p>{data?.metadata?.symbol}</p>
-        </div>
-        <div className="flex justify-center mx-auto text-xl font-semibold text-shader_600">
-          +
-        </div>
-        <div className="content_modal">
-          <FormatNumber number={amountTokenDec} />
-          <p>ETH</p>
-        </div>
+    <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
+      <div className="container_modal">
+        <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
+          <div className="flex justify-between title_modal">
+            <p className="title_modal">You will receive</p>
 
-        <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
-          <p>Slippage tolerance</p>
-          <p>{slippage}%</p>
-        </div>
-        <p className="mt-2 mb-6 text-sm text-shader_600">
-          Output is estimated. You will receive at least {amountNFTMin} NFT or
-          the transaction will revert
-        </p>
-        <div className="flex flex-col items-center mt-6">
-          {isApprovedLiquidity ? (
-            <Button
-              disabled={isLoadingInforDML}
-              primary={!isLoadingInforDML}
-              className="w-[144px] py-2"
-              active={isLoadingInforDML}
-              onClick={removeLiquidity}
-            >
-              REMOVE
-              {isLoadingInforDML && (
-                <BiLoaderAlt className="ml-1 text-white animate-spin" />
-              )}
-            </Button>
-          ) : (
-            <Button
-              className="w-[126px] py-2 mx-auto"
-              primary
-              onClick={handleApproveDML}
-            >
-              Approve
-            </Button>
-          )}
+            <button className="text-lg " onClick={handleClose}>
+              <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />
+            </button>
+          </div>
+          <div className="content_modal">
+            {reserveToken ? (
+              <p>{amountNFTMin}</p>
+            ) : (
+              <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
+            )}
+            <p>{data?.metadata?.symbol}</p>
+          </div>
+          <div className="flex justify-center mx-auto text-xl font-semibold text-shader_100">
+            +
+          </div>
+          <div className="content_modal">
+            <FormatNumber number={amountTokenDec} />
+            <p>ETH</p>
+          </div>
+
+          <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
+            <p>Slippage tolerance</p>
+            <p>{slippage}%</p>
+          </div>
+          <p className="mt-2 mb-6 text-sm text-shader_200">
+            Output is estimated. You will receive at least {amountNFTMin} NFT or
+            the transaction will revert
+          </p>
+          <div className="flex flex-col items-center mt-6">
+            {isApprovedLiquidity ? (
+              <Button
+                disabled={isLoadingInforDML}
+                primary={!isLoadingInforDML}
+                className="w-[144px] py-2"
+                active={isLoadingInforDML}
+                onClick={removeLiquidity}
+              >
+                REMOVE
+                {isLoadingInforDML && (
+                  <BiLoaderAlt className="ml-1 text-white animate-spin" />
+                )}
+              </Button>
+            ) : (
+              <Button
+                className="w-[126px] py-2 mx-auto"
+                primary
+                onClick={handleApproveDML}
+              >
+                Approve
+              </Button>
+            )}
+          </div>
         </div>
       </div>
+
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

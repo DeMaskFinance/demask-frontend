@@ -98,7 +98,7 @@ const Profile = () => {
           <AvatarCustom
             avatarUrl={profile?.avatar}
             size={120}
-            userAddress={profile.userAddress!}
+            userAddress={profile?.userAddress!}
             className="w-16 h-16 rounded-full"
           />
           <div>

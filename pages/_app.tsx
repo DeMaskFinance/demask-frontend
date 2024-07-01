@@ -29,17 +29,9 @@ import { QueryParamProvider } from "use-query-params";
 import { Provider } from "react-redux";
 import store, { persistor } from "../store";
 import { PersistGate } from "redux-persist/integration/react";
-import { ThemeProvider } from "next-themes";
-// import { ThemeProvider } from "next-themes";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
-const roboto = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
-  display: "swap",
-  adjustFontFallback: false,
-});
 const titillium = Titillium_Web({
   subsets: ["latin"],
   weight: ["200", "300", "400", "900", "600", "700"],
@@ -111,23 +103,21 @@ export default function App({
                   font-family: ${titillium.style.fontFamily};
                 }
               `}</style>
-              <ThemeProvider attribute="class">
-                <WagmiConfig config={wagmiConfig}>
-                  {isMaintenanceMode ? (
-                    <Layout>
-                      <MaintenanceError />
-                    </Layout>
-                  ) : Component.PageLayout ? (
-                    <Component.PageLayout>
-                      <Component {...pageProps} />
-                    </Component.PageLayout>
-                  ) : (
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  )}
-                </WagmiConfig>
-              </ThemeProvider>
+              <WagmiConfig config={wagmiConfig}>
+                {isMaintenanceMode ? (
+                  <Layout>
+                    <MaintenanceError />
+                  </Layout>
+                ) : Component.PageLayout ? (
+                  <Component.PageLayout>
+                    <Component {...pageProps} />
+                  </Component.PageLayout>
+                ) : (
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                )}
+              </WagmiConfig>
               <Web3Modal
                 projectId={projectId}
                 ethereumClient={ethereumClient}

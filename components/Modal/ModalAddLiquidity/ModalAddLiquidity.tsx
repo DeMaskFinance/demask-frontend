@@ -20,6 +20,7 @@ import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { replaceDot } from "@/libs/utils/formatComon";
+import FormatNumber from "@/components/Common/FormatNumber";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -51,7 +52,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     useState<boolean>(false);
   const { demask, account, wallet, slippage, chainId } =
     useContext(AccountContext);
-  console.log(isSufficientToken);
 
   const {
     ROUTER: routerAddress,
@@ -84,6 +84,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     chainId,
     isOpenTransaction
   );
+  console.log(data);
+
   const handleChoicePercent = (item: string) => {
     setInputNFT(Math.floor((parseFloat(item) / 100) * +balanceNFT).toString());
     setActiveChoiceNFT(item);
@@ -102,7 +104,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   useEffect(() => {
     if (inputNFT) {
       let amountErcDesired =
-        ((Number(inputNFT) * +data.tokenDecimals) / +data.reserveNFT) *
+        ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
         (1 + slippage / 100);
       console.log(amountErcDesired);
 
@@ -227,7 +229,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       <div className="flex items-center justify-between font-semibold input_item bg-primary_400 bg-opacity-10">
                         <p>Liquidity</p>
                         <div className="flex items-center font-bold gap-x-1">
-                          {amountErcDesiredToDec}
+                          <FormatNumber number={amountErcDesiredToDec} />
                           <EtherIcon width={16} height={16} />
                         </div>
                       </div>

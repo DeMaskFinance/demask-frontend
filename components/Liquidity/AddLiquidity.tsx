@@ -141,7 +141,7 @@ export default function AddLiquidity() {
     let amountErcDesired;
     if (data?.dmlAddress !== null && data && inputNFT) {
       amountErcDesired =
-        ((Number(inputNFT) * +data.tokenDecimals) / +data.reserveNFT) *
+        ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
         (1 + slippage / 100);
     } else {
       amountErcDesired = handleBignumber(
@@ -320,7 +320,7 @@ export default function AddLiquidity() {
           <div className="order-2">
             <div>
               <p className="title_label">
-                <span className="">Choose NFT</span>
+                <span className="">Choose Collection</span>
                 <span className="text-red">*</span>
               </p>
 

@@ -39,7 +39,7 @@ export default function EditProfile() {
               <AvatarCustom
                 avatarUrl={profile?.avatar}
                 size={120}
-                userAddress={profile.userAddress!}
+                userAddress={profile?.userAddress!}
                 className="md:w-36 md:h-36 h-20 w-20 rounded-full"
               />
             </div>

@@ -110,14 +110,11 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     true,
     updatePrice
   );
+  console.log(reserveToken.toString(), reserveNFT.toString());
 
   useEffect(() => {
     let amountErcDesired;
-    if (
-      dmlToken !== "0x0000000000000000000000000000000000000000" &&
-      data &&
-      inputNFT
-    ) {
+    if (dmlToken !== "0x0000000000000000000000000000000000000000" && inputNFT) {
       amountErcDesired =
         ((Number(inputNFT) * +reserveToken) / +reserveNFT) *
         (1 + slippage / 100);
@@ -128,6 +125,14 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       );
     }
     setAmountErcDesired(amountErcDesired);
+    console.log(
+      amountErcDesired,
+      inputNFT,
+      reserveNFT.toString(),
+      reserveToken.toString(),
+      dmlToken
+    );
+
     if (amountErcDesired) {
       const amountErcDesiredToDec = divideByDecimal(
         amountErcDesired?.toString(),

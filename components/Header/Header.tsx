@@ -295,7 +295,7 @@ export default function Header() {
                     <AvatarCustom
                       avatarUrl={profile?.avatar}
                       size={20}
-                      userAddress={profile.userAddress!}
+                      userAddress={profile?.userAddress}
                       className="w-full h-full rounded-full"
                     />
                   </div>

@@ -8,7 +8,7 @@ interface AvatarProps {
 }
 interface AvatarCustomProps {
   avatarUrl?: string;
-  userAddress: string;
+  userAddress?: string;
   size: number;
   className: string;
   zoom?: boolean;
@@ -49,7 +49,7 @@ const AvatarCustom: FunctionComponent<AvatarCustomProps> = ({
           }`}
         />
       ) : (
-        <AvatarDiceBear size={size} seed={userAddress} />
+        <AvatarDiceBear size={size} seed={userAddress!} />
       )}
     </>
   );

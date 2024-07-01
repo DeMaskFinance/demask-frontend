@@ -3,12 +3,12 @@ import request from "../utils/httpRequest";
 const liquidityListAPI = async (
   accountUser: string,
   page: number,
-  action: string,
+  type: string,
   chainId: string | string[]
 ) => {
   try {
     const res = await request.get(
-      `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&action=${action}&page=${page}`
+      `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&type=${type}&page=${page}`
     );
     return res.data;
   } catch (error) {
@@ -20,11 +20,11 @@ const liquidityHistory = async (
   dmlToken: string,
   page: number,
   chainId: string | string[],
-  type: string
+  action: string
 ) => {
   try {
     const res = await request.get(
-      `liquidity-history?chainId=${chainId}&userAddress=${accountUser.toLocaleLowerCase()}&dmlAddress=${dmlToken.toLocaleLowerCase()}&page=${page}&type=${type}`
+      `liquidity-history?chainId=${chainId}&userAddress=${accountUser.toLocaleLowerCase()}&dmlAddress=${dmlToken.toLocaleLowerCase()}&page=${page}&action=${action}`
     );
     return res.data;
   } catch (error) {

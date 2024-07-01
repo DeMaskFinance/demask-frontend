@@ -1,3 +1,4 @@
+import abiDML from "@/abi/abiDML.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
@@ -5,30 +6,24 @@ import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGr
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import useTotalSupply from "@/hooks/useTotalSupply";
+import { getProvider } from "@/libs/connection/getProvider";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import abiDML from "@/abi/abiDML.json";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import { replaceDot } from "@/libs/utils/formatComon";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
+import BigNumber from "bignumber.js";
+import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { CgClose } from "react-icons/cg";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
-import { ModalWallet } from "../ModalWallet";
-import Wrapper from "../Wrapper";
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
-import BigNumber from "bignumber.js";
-import useAllowanceDML from "@/hooks/useAllowanceDML";
-import { NumberFormatValues, NumericFormat } from "react-number-format";
-import { replaceDot } from "@/libs/utils/formatComon";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -374,6 +369,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       </div>
       <ModalConfirmRemoveLiquidity
         routerAddress={routerAddress}
+        isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity}
+        setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
         data={data}

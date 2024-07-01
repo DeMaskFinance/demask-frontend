@@ -118,7 +118,7 @@
     @apply w-full  border rounded-lg transition-all duration-200 font-semibold text-white   bg-shader_800 outline-none border-shader_500;
   }
   .content_modal {
-    @apply flex justify-between text-lg font-semibold text-shader_800;
+    @apply flex justify-between text-lg font-semibold text-shader_100;
   }
   .title_modal {
     @apply text-base font-bold text-white;

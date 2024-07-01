@@ -28,8 +28,6 @@ import React, { useContext, useEffect, useState } from "react";
 const PoolItem = ({ liquidity }: any) => {
   const { account, wallet, chainId, demask, slippage } =
     useContext(AccountContext);
-  const [isOpenRemoveLiquidity, setIsOpenRemoveLiquidity] =
-    useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -49,10 +47,6 @@ const PoolItem = ({ liquidity }: any) => {
 
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
-  };
-  const handleRemoveLiquidity = () => {
-    setIsOpenRemoveLiquidity(true);
-    document.body.style.overflowY = "hidden";
   };
 
   const data = {
@@ -121,7 +115,7 @@ const PoolItem = ({ liquidity }: any) => {
               className="w-full py-3 px-3 flex gap-x-2"
               onClick={handleAddLiquidity}
             >
-              <PlusIcon className="text-green" />
+              <PlusIcon className="text-green" width={20} height={20} />
               Add Liquidity
             </Button>
           </DialogTrigger>
@@ -140,11 +134,7 @@ const PoolItem = ({ liquidity }: any) => {
         </Dialog>
         <Dialog>
           <DialogTrigger asChild>
-            <Button
-              red_2
-              className="w-full py-3 px-3 flex gap-x-2"
-              onClick={handleRemoveLiquidity}
-            >
+            <Button red_2 className="w-full py-3 px-3 flex gap-x-2">
               <TrashIcon className="text-red" width={20} height={20} />
               Remove Liquidity
             </Button>
