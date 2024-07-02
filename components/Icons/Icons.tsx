@@ -480,6 +480,8 @@ export const SortIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
   height,
+  fill1,
+  fill2,
 }) => {
   return (
     <svg
@@ -490,8 +492,8 @@ export const SortIcon: React.FunctionComponent<IconProps> = ({
       viewBox="0 0 11 14"
       fill="none"
     >
-      <path d="M5.6001 0L10.6001 5H0.600098L5.6001 0Z" fill="#687184" />
-      <path d="M5.6001 14L10.6001 9H0.600098L5.6001 14Z" fill="#687184" />
+      <path d="M5.6001 0L10.6001 5H0.600098L5.6001 0Z" fill={fill1} />
+      <path d="M5.6001 14L10.6001 9H0.600098L5.6001 14Z" fill={fill2} />
     </svg>
   );
 };

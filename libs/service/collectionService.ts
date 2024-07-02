@@ -71,7 +71,7 @@ const createCollection = async (
     console.error(error);
   }
 };
-const collectionTypeDetail = async (
+const collectionTypeCategory = async (
   label: string,
   chainId: string | string[],
   page: number,
@@ -86,6 +86,7 @@ const collectionTypeDetail = async (
     console.error(error);
   }
 };
+
 const collectionListBuy = async (
   contractAddress: string | string[],
   chainId: string | string[]
@@ -224,7 +225,7 @@ export {
   fetchDataSellNFTs,
   fetchDataBuyNFTs,
   getSignature,
-  collectionTypeDetail,
+  collectionTypeCategory,
   createCollection,
   collectionListAllERC,
   topCollectionService,

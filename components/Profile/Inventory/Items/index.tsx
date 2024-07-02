@@ -213,7 +213,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                 ))}
               </Fragment>
             ))}
-            {isFetching && hasNextPage && <SkeletonSubCategory length={4} />}
+            {isFetching && hasNextPage && <SkeletonSubCategory length={6} />}
             <div ref={ref} style={{ height: "1px" }}></div>
           </div>
         </Fragment>

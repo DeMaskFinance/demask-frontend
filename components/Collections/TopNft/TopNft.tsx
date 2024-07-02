@@ -92,19 +92,16 @@ function TopNft() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "floorPrice" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "floorPrice" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={
-                      //     sortField === "floorPrice" ? "#000D34" : "#A3A9B9"
-                      //   }
+                      fill1={
+                        sortField === "floorPrice" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "floorPrice" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 )}
@@ -119,23 +116,16 @@ function TopNft() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "changePrice24h" &&
-                      //     sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "changePrice24h" &&
-                      //     sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={
-                      //     sortField === "changePrice24h"
-                      //       ? "#000D34"
-                      //       : "#A3A9B9"
-                      //   }
+                      fill1={
+                        sortField === "changePrice24h" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "changePrice24h" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 )}
@@ -150,19 +140,16 @@ function TopNft() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "volume24h" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "volume24h" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={
-                      //     sortField === "volume24h" ? "#000D34" : "#A3A9B9"
-                      //   }
+                      fill1={
+                        sortField === "volume24h" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "volume24h" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 )}
@@ -177,17 +164,16 @@ function TopNft() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "TVL" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "TVL" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={sortField === "TVL" ? "#000D34" : "#A3A9B9"}
+                      fill1={
+                        sortField === "TVL" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "TVL" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 )}
@@ -202,19 +188,16 @@ function TopNft() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "totalSupply" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "totalSupply" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={
-                      //     sortField === "totalSupply" ? "#000D34" : "#A3A9B9"
-                      //   }
+                      fill1={
+                        sortField === "totalSupply" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "totalSupply" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 )}

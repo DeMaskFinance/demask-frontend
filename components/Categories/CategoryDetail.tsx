@@ -1,11 +1,11 @@
 import AccountContext from "@/context/AccountContext";
-import { collectionTypeDetail } from "@/libs/service/collectionService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { SkeletonSubCategory } from "../Skeleton/SkeletonCategory";
 import NFTCategory from "./NFTCategory";
 import SearchNotFound from "../Search/SearchNotFound";
+import { collectionTypeCategory } from "@/libs/service/collectionService";
 
 const CategoryDetail = ({ label }: { label: string }) => {
   const { chainId } = useContext(AccountContext);
@@ -15,7 +15,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
     chain: string | string[],
     pageParam: number
   ) => {
-    const data = await collectionTypeDetail(label, chain, pageParam, 10);
+    const data = await collectionTypeCategory(label, chain, pageParam, 20);
     return data;
   };
   const {
@@ -41,13 +41,13 @@ const CategoryDetail = ({ label }: { label: string }) => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
+  console.log(data, inView);
 
   return (
     <div>
       {isLoading ? (
         <div className="grid gap-4 mt-4 grid-cols-autoFill text-shader_600">
-          <SkeletonSubCategory length={5} />
+          <SkeletonSubCategory length={4} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <Fragment>
@@ -58,7 +58,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
             </div>
             <p>{data?.pages[0].totalRecords} Collections</p>
           </div>
-          <div className="grid gap-4 mt-4 text-white grid-cols-autoFill">
+          <div className="grid gap-4 pb-4 text-white grid-cols-autoFill">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (

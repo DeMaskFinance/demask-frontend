@@ -6,6 +6,7 @@ import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
 import { formatLinkIPFS, formatPercent } from "@/libs/utils/formatComon";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 interface CollectionItemProps {
   data: any;
@@ -29,7 +30,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
     <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />
   );
   console.log(data);
-
+  const router = useRouter();
   return (
     <>
       {isLoading || isFetching ? (
@@ -43,24 +44,22 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
               <tr
                 key={idx}
                 className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
+                onClick={() => {
+                  router.push(
+                    `/collection/${item.contractAddress}?typeERC=${item.type}`
+                  );
+                }}
               >
                 <td className="py-2 lg:w-full md:w-full w-[200px]">
-                  <Link
-                    href={`/collection/${item.contractAddress}?typeERC=${item.type}`}
-                    className="flex items-center justify-start transition-all hover:text-secondary4 hover:font-medium"
-                  >
-                    <div className="relative flex items-center gap-2 group">
-                      <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
-                        <MediaCollection
-                          avatar={formatLinkIPFS(item?.avatar)}
-                        />
-                      </div>
-
-                      <span className="line-clamp-1 truncate  max-w-[133px] block">
-                        {isFetching ? skeleton : item?.name}
-                      </span>
+                  <div className="relative flex items-center gap-2 group">
+                    <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
+                      <MediaCollection avatar={formatLinkIPFS(item?.avatar)} />
                     </div>
-                  </Link>
+
+                    <span className="line-clamp-1 truncate  max-w-[133px] block">
+                      {isFetching ? skeleton : item?.name}
+                    </span>
+                  </div>
                 </td>
                 <td className="py-2 flex items-center gap-x-1 justify-end lg:w-full md:w-full w-[140px]">
                   {isFetching ? (

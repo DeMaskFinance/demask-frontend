@@ -57,7 +57,7 @@ export default function DetailCollection() {
       collectionAddress,
       chain,
       pageParam,
-      10
+      20
     );
     return data.data;
   };
@@ -115,7 +115,6 @@ export default function DetailCollection() {
       setAvatarLoading(false);
     }
   };
-  console.log(dataDetail);
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">

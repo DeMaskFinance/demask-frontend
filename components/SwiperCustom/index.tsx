@@ -31,18 +31,8 @@ const SwiperCustom: React.FC<SwiperCustomProps> = ({
   };
   const handleSlideChange = () => {
     const swiperInstance = swiperRef.current.swiper;
-
-    if (swiperInstance.isBeginning) {
-      setShowPrevButton(false);
-    } else {
-      setShowPrevButton(true);
-    }
-
-    if (swiperInstance.isEnd) {
-      setShowNextButton(false);
-    } else {
-      setShowNextButton(true);
-    }
+    setShowPrevButton(!swiperInstance.isBeginning);
+    setShowNextButton(!swiperInstance.isEnd);
   };
   useEffect(() => {
     if (swiperRef.current.swiper.slides.length <= slidesPerView) {
@@ -67,25 +57,28 @@ const SwiperCustom: React.FC<SwiperCustomProps> = ({
           modules={[Navigation]}
           className="hidden mySwiper lg:block md:block"
           slidesPerView={slidesPerView}
-          slidesPerGroup={1}
           ref={swiperRef}
           onSlideChange={handleSlideChange}
           breakpoints={{
             0: {
               slidesPerView: 1.3,
               spaceBetween: 30,
+              slidesPerGroup: 1,
             },
             480: {
               slidesPerView: 1.3,
               spaceBetween: 30,
+              slidesPerGroup: 1,
             },
             768: {
               slidesPerView: 2.5,
               spaceBetween: 30,
+              slidesPerGroup: 1,
             },
             1024: {
               slidesPerView: 6,
               spaceBetween: 12,
+              slidesPerGroup: 5,
             },
           }}
         >

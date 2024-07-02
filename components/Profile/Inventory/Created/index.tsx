@@ -39,7 +39,7 @@ const Created = () => {
       category,
       search,
       pageParam,
-      10
+      20
     );
     return data;
   };
@@ -96,7 +96,6 @@ const Created = () => {
                   {page?.data?.data?.map((item: any, itemIndex: number) => (
                     <div key={itemIndex}>
                       <NFTCategory item={item} />
-                      <div ref={ref} style={{ height: "1px" }}></div>
                     </div>
                   ))}
                 </Fragment>

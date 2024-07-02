@@ -70,17 +70,16 @@ function ListTracsaction() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "amountNFT" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "amountNFT" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={sortField === "amountNFT" ? "#000D34" : "#A3A9B9"}
+                      fill1={
+                        sortField === "amountNFT" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "amountNFT" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 </th>
@@ -93,19 +92,16 @@ function ListTracsaction() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "amountToken" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "amountToken" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={
-                      //     sortField === "amountToken" ? "#000D34" : "#A3A9B9"
-                      //   }
+                      fill1={
+                        sortField === "amountToken" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "amountToken" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 </th>
@@ -121,17 +117,16 @@ function ListTracsaction() {
                     <SortIcon
                       width={16}
                       height={16}
-                      //   fill1={
-                      //     sortField === "blockTime" && sortOrder === "asc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill2={
-                      //     sortField === "blockTime" && sortOrder === "desc"
-                      //       ? "white"
-                      //       : "#A3A9B9"
-                      //   }
-                      //   fill3={sortField === "blockTime" ? "#000D34" : "#A3A9B9"}
+                      fill1={
+                        sortField === "blockTime" && sortOrder === "asc"
+                          ? "white"
+                          : "#687184"
+                      }
+                      fill2={
+                        sortField === "blockTime" && sortOrder === "desc"
+                          ? "white"
+                          : "#687184"
+                      }
                     />
                   </div>
                 </th>

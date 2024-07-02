@@ -146,17 +146,17 @@ const Profile = () => {
                 </DialogContent>
               </Dialog>
               <p className="w-[1px] h-4 bg-shader_400"></p>
-              {profile.socials?.website && (
-                <a href={profile.socials?.website} target="_blank">
+              {profile?.socials?.website && (
+                <a href={profile?.socials?.website} target="_blank">
                   <WebsiteIcon width={18} height={18} />
                 </a>
               )}
-              {profile.socials?.twitter && (
+              {profile?.socials?.twitter && (
                 <a href={profile.socials?.twitter} target="_blank">
                   <TwitterIcon width={18} height={18} />
                 </a>
               )}
-              {profile.socials?.telegram && (
+              {profile?.socials?.telegram && (
                 <a href={profile.socials?.telegram} target="_blank">
                   <TeleIcon width={18} height={18} />
                 </a>
