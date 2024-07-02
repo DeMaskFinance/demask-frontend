@@ -34,10 +34,10 @@ const Features = () => {
       title: "Leaderboard & Referral",
       des: () => (
         <div>
-          <p>
-            Share income with active traders at the top of the leaderboard.{" "}
+          <p className="mx-auto w-full md:w-[80%]">
+            Share income with active traders at the top of the leaderboard.
+            Share fees from swap.
           </p>
-          <p> Share fees from swap..</p>
         </div>
       ),
       img: "/Leaderboard.svg",
@@ -60,15 +60,17 @@ const Features = () => {
         {featureList.map((item, index) => (
           <div
             key={index}
-            className="text-center bg-feature-gradient  rounded-xl border border-shader_400 overflow-hidden"
+            className="text-center bg-feature-gradient rounded-xl border border-shader_400 overflow-hidden h-[248px] md:h-[385px] flex flex-col justify-between md:gap-y-8 gap-y-6"
           >
-            <div className="px-6 pt-6 flex flex-col items-center justify-center mb-8">
-              <p className="text-xl font-bold text-white">{item.title}</p>
-              <div className="font-normal">
+            <div className="px-6 pt-4 md:pt-6 flex flex-col items-center justify-center">
+              <p className="md:text-xl text-lg font-bold text-white">
+                {item.title}
+              </p>
+              <div className="font-normal text-sm md:text-base">
                 <item.des />
               </div>
             </div>
-            <div className="w-[592px] h-[252px]">
+            <div className="w-full">
               <Image
                 src={item.img}
                 alt="img_features"

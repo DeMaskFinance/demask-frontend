@@ -29,7 +29,9 @@ const TitleMain: React.FC<TitleMainProps> = ({
         {icon}
         <BackgroundParticles value={18000} id={id} />
       </div>
-      <h2 className="text-3xl font-bold text-white mt-3">{title}</h2>
+      <h2 className="md:text-3xl text-2xl font-bold text-white mt-3">
+        {title}
+      </h2>
       <p>{description}</p>
     </div>
   );
