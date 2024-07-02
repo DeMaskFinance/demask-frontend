@@ -36,7 +36,7 @@ const Header = () => {
         {isEvent && (
           <div className="relative">
             <a
-              href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
+              href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa/GCd7Ft4Npv"
               rel="noopener noreferrer"
               target="_blank"
             >

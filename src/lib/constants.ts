@@ -1,2 +1,2 @@
-const version = "Version 0.1.8";
+const version = "Version 0.2.0";
 export { version };
