@@ -27,7 +27,7 @@ const About = () => {
         <div className="w-[655px] h-[150px] bg-linear-g2 absolute top-0 right-1/4 blur-[100px] opacity-35 rounded-full rotate-25 z-10"></div>
         <div className="flex flex-col items-center text-lg h-[40%] justify-end">
           <a
-            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa/GCd7Ft4Npv"
+            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
             rel="noopener noreferrer"
             target="_blank"
           >

@@ -68,7 +68,7 @@ const Features = () => {
                 <item.des />
               </div>
             </div>
-            <div className="w-[592px] h-[275px]">
+            <div className="w-[592px] h-[252px]">
               <Image
                 src={item.img}
                 alt="img_features"
