@@ -150,7 +150,7 @@ export default function Header() {
       {isEvent && (
         <div className="relative">
           <a
-            href="https://galxe.com/MeeT2AiDRo73NiBYKoZdwa/campaign/GCd7Ft4Npv"
+            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa/GCd7Ft4Npv"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -160,10 +160,7 @@ export default function Header() {
                   <span>
                     <LightIcon width={24} height={24} />
                   </span>
-                  <span>
-                    Blast Big Bang - The airdrop Demask Finance x BleBle
-                    Campaign on Galxe
-                  </span>
+                  <span>The Campaigns on Galxe, NOW LIVE!</span>
                 </div>
               </Marquee>
               <BackgroundParticles value={1800} id="particles-js" />

@@ -1,11 +1,8 @@
 import {
   BlastIcon,
-  BscIcon,
   EtherIcon,
   MonadIcon,
   SepoliaIcon,
-  USDCIcon,
-  USDTIcon,
 } from "../../components/Icons";
 interface NetworkItem {
   name: string;
@@ -13,7 +10,7 @@ interface NetworkItem {
   chain: string;
   disable?: boolean;
 }
-const version = "Version 0.1.8";
+const version = "Version 0.2.0";
 const tokenGoerli = [
   {
     name: "Goerli",

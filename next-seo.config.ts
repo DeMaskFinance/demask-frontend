@@ -1,8 +1,8 @@
 import { DefaultSeoProps } from "next-seo";
 
 export const SEO: DefaultSeoProps = {
-  titleTemplate: "%s | App DeMask",
-  defaultTitle: "App DeMask",
+  titleTemplate: "%s | App Demask",
+  defaultTitle: "App Demask",
   description:
     "Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program. TEST",
   twitter: {

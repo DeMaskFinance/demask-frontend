@@ -1,12 +1,9 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import { formatToUnit } from "@/libs/utils/formatComon";
-import formatNumber from "@/libs/utils/formatNumer";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 const ModalNumber = ({ data }: { data: string }) => {
-  console.log(data);
-
   return (
     <div>
       {Number(data) >= 1000 || Number(data) < 0.001 ? (
