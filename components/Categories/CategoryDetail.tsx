@@ -41,6 +41,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
       fetchNextPage();
     }
   }, [inView]);
+  console.log(data);
 
   return (
     <div>

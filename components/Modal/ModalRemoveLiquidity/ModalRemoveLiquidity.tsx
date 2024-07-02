@@ -232,7 +232,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setIdNFT([...idNFT, Number(item.nftID)]);
     }
   };
-  console.log(amountTokenMin, inputLiquidity);
 
   return (
     <Fragment>

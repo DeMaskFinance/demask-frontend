@@ -42,7 +42,10 @@ const PoolItem = ({ liquidity }: any) => {
     dmlDecimals: "18",
     nftAddress: collectionAddress,
     tokenAddress: nativeAddress,
+    reserveTokenDecimals: liquidity?.reserveTokenDecimals,
   };
+  console.log(liquidity);
+
   const dmlTokenLiquidity = data.dmlAddress;
   useEffect(() => {
     const fetchDataReward = async () => {

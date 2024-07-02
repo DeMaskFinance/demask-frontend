@@ -2,6 +2,8 @@ import React, { FunctionComponent } from "react";
 import { createAvatar } from "@dicebear/core";
 import { bottts, identicon, pixelArt } from "@dicebear/collection";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 interface AvatarProps {
   size: number;
   seed: string;
@@ -39,15 +41,18 @@ const AvatarCustom: FunctionComponent<AvatarCustomProps> = ({
   return (
     <>
       {avatarUrl ? (
-        <Image
-          src={avatarUrl}
-          width={600}
-          height={600}
-          alt="user avatar"
-          className={`object-cover transition-transform duration-150 ${className} ${
-            zoom ? "group-hover:scale-[1.05]" : ""
-          }`}
-        />
+        <Avatar
+          className={`relative overflow-hidden rounded-full ${className}`}
+        >
+          <AvatarImage
+            src={avatarUrl}
+            alt="user avatar"
+            className={`object-cover transition-transform duration-150 ${className} ${
+              zoom ? "group-hover:scale-[1.05]" : ""
+            }`}
+          />
+          <AvatarFallback className="bg-slate-500"></AvatarFallback>
+        </Avatar>
       ) : (
         <AvatarDiceBear size={size} seed={userAddress!} />
       )}
