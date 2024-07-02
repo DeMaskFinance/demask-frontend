@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import { ModalWallet } from "../ModalWallet";
 import Wrapper from "../Wrapper";
+import useFee from "@/hooks/useFee";
 interface ModalBuyNFTProps {
   isOpenBuyNFT: boolean;
   tokenAddress: string;
@@ -100,6 +101,15 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     account,
     rpc,
     routerAddress,
+    updatePrice
+  );
+  const { feeBuy } = useFee(
+    amountTokenBuy,
+    data.dmlAddress,
+    wallet,
+    account,
+    rpc,
+    demask.FEE_MANAGER,
     updatePrice
   );
 
@@ -303,23 +313,31 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                 </div>
               </div>
               <div
-                className={`overflow-hidden will-change-[height] ${
-                  seeDetail ? "h-[56px] opacity-100" : "h-0 opacity-0"
+                className={`overflow-hidden will-change-[height] flex justify-between ${
+                  seeDetail ? "h-[100px] opacity-100" : "h-0 opacity-0"
                 } transition-all duration-100 ease-linear`}
               >
-                <div className="flex justify-between mb-4 ">
-                  <p>Trading fee</p>
-                  <div className="flex items-center font-bold text-white gap-x-1">
-                    0
-                    <EtherIcon width={14} height={14} />
-                  </div>
+                <div className="flex flex-col gap-y-1">
+                  <p>Protocol Fee</p>
+                  <p>Referral Fee</p>
+                  <p>Pool Fee</p>
+                  <p>Royalty Fee</p>
                 </div>
-                <div className="flex justify-between ">
-                  <p>Royalties Fee</p>
-                  <div className="flex items-center font-bold text-white gap-x-1">
-                    0
-                    <EtherIcon width={14} height={14} />
-                  </div>
+                <div className="flex flex-col gap-y-1 items-end">
+                  {feeBuy.map((fee, index) => (
+                    <div
+                      className="flex items-center font-bold text-white gap-x-1"
+                      key={index}
+                    >
+                      <FormatNumber
+                        number={divideByDecimal(
+                          fee[1].toString(),
+                          data.tokenDecimals
+                        )}
+                      />
+                      <EtherIcon width={14} height={14} />
+                    </div>
+                  ))}
                 </div>
               </div>
               {!isSufficientNFT && reserveNFT && (

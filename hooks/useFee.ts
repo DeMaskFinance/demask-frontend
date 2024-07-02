@@ -11,6 +11,8 @@ const useFee = (
   updatePrice: boolean
 ) => {
   const [totalFee, setTotalFee] = useState(0);
+  const [feeBuy, setFeeBuy] = useState<any[]>([]);
+  const [feeSell, setFeeSell] = useState<any[]>([]);
   useEffect(() => {
     const getFee = async () => {
       if (
@@ -25,6 +27,22 @@ const useFee = (
           dmlToken
         );
         setTotalFee(totalFee.toString());
+        const feeBuyArrays = await ercContract.getBuyArrays(
+          feeManager,
+          amount,
+          dmlToken,
+          account,
+          wallet
+        );
+        setFeeBuy(feeBuyArrays);
+        const feeSellArrays = await ercContract.getSellArrays(
+          feeManager,
+          amount,
+          dmlToken,
+          account,
+          wallet
+        );
+        setFeeSell(feeSellArrays);
       } else {
         setTotalFee(0);
       }
@@ -35,6 +53,8 @@ const useFee = (
 
   return {
     totalFee,
+    feeBuy,
+    feeSell,
   };
 };
 

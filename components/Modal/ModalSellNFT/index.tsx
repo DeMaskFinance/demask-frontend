@@ -101,7 +101,15 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     demask.FEE_MANAGER,
     updatePrice
   );
-
+  const { feeSell } = useFee(
+    amountTokenSell,
+    data.dmlAddress,
+    wallet,
+    account,
+    rpc,
+    demask.FEE_MANAGER,
+    updatePrice
+  );
   const balanceNFT = useNFTBalance(
     account,
     nftAddress,
@@ -202,6 +210,17 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       }
     }
   };
+  // const lastElementArray = feeSell.slice(-1)[0];
+
+  // const secondElement =
+  //   lastElementArray && lastElementArray.length >= 2
+  //     ? lastElementArray[1]
+  //     : null;
+  // const formattedNumber = secondElement
+  //   ? divideByDecimal(secondElement.toString(), data.tokenDecimals)
+  //   : 0;
+  // console.log(formattedNumber);
+
   return (
     <Wrapper isOpen={isOpenSellNFT} onClick={handleClose}>
       <div className="container_modal">
@@ -305,30 +324,50 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                   </div>
                 </div>
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  0
+                  {feeSell &&
+                  feeSell.length > 0 &&
+                  feeSell.slice(-1)[0].length >= 2 ? (
+                    <FormatNumber
+                      number={divideByDecimal(
+                        feeSell.slice(-1)[0][1].toString(),
+                        data.tokenDecimals
+                      )}
+                    />
+                  ) : (
+                    0
+                  )}
+
                   <p>
                     <EtherIcon width={14} height={14} />
                   </p>
                 </div>
               </div>
               <div
-                className={`overflow-hidden will-change-[height] ${
-                  seeDetail ? "h-[56px] opacity-100" : "h-0 opacity-0"
+                className={`overflow-hidden flex justify-between will-change-[height] ${
+                  seeDetail ? "h-[100px] opacity-100" : "h-0 opacity-0"
                 } transition-all duration-100 ease-linear`}
               >
-                <div className="flex justify-between mb-4 ">
-                  <p>Trading fee</p>
-                  <div className="flex items-center font-bold text-white gap-x-1">
-                    0
-                    <EtherIcon width={14} height={14} />
-                  </div>
+                <div className="flex flex-col gap-y-[6px]">
+                  <p>Protocol Fee</p>
+                  <p>Referral Fee</p>
+                  <p>Pool Fee</p>
+                  <p>Royalty Fee</p>
                 </div>
-                <div className="flex justify-between ">
-                  <p>Royalties Fee</p>
-                  <div className="flex items-center font-bold text-white gap-x-1">
-                    0
-                    <EtherIcon width={14} height={14} />
-                  </div>
+                <div className="flex flex-col gap-y-1 items-end">
+                  {feeSell.slice(0, 4).map((fee, index) => (
+                    <div
+                      className="flex items-center font-bold text-white gap-x-1"
+                      key={index}
+                    >
+                      <FormatNumber
+                        number={divideByDecimal(
+                          fee[1].toString(),
+                          data.tokenDecimals
+                        )}
+                      />
+                      <EtherIcon width={14} height={14} />
+                    </div>
+                  ))}
                 </div>
               </div>
               {!isSufficientNFT && reserveNFT && (
