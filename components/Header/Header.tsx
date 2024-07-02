@@ -150,7 +150,7 @@ export default function Header() {
       {isEvent && (
         <div className="relative">
           <a
-            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa/GCd7Ft4Npv"
+            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
             rel="noopener noreferrer"
             target="_blank"
           >
