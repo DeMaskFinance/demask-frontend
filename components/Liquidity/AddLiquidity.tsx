@@ -135,7 +135,6 @@ export default function AddLiquidity() {
     chainId,
     isOpenTransaction
   );
-  console.log(data);
 
   useEffect(() => {
     let amountErcDesired;

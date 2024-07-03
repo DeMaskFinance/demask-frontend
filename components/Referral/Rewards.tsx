@@ -14,14 +14,13 @@ import Link from "next/link";
 const Rewards = () => {
   const { chainId, account, demask } = useContext(AccountContext);
   const [page, setPage] = useState(1);
-  const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
-    useQuery({
-      queryKey: ["myRewards", chainId, account, page],
-      queryFn: async () => {
-        const res = await referralHistoryUser(account, chainId, page);
-        return res;
-      },
-    });
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["myRewards", chainId, account, page],
+    queryFn: async () => {
+      const res = await referralHistoryUser(account, chainId, page);
+      return res;
+    },
+  });
 
   return (
     <table className="w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">

@@ -18,7 +18,6 @@ function StatisticAnalytics() {
 
     keepPreviousData: true,
   });
-  console.log(data);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4  text-white font-semibold">

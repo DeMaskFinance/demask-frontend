@@ -118,7 +118,6 @@ const Search: FunctionComponent<SearchProps> = ({
     const searchsHistory = savedHistory ? JSON.parse(savedHistory) : [];
     setSearchHistory(searchsHistory);
   }, []);
-  console.log(data);
 
   return (
     <>

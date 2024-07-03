@@ -63,7 +63,6 @@ export const ItemList: React.FC<ItemListProps> = ({
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
 
   return (
     <div className="font-semibold">

@@ -36,12 +36,10 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const [checkCollaborator, setCheckCollaborator] = useState<boolean>(false);
   const imgCollection = useRef(null);
   const { account, chainId } = useContext(AccountContext);
-  const router = useRouter();
   const [fileIPFS, setFileIPFS] = useState<any>(null);
   const [fileType, setFileType] = useState<string | null>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const collectionAddress = useRouter().query.edit as string;
-  console.log(data);
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required").max(50),
@@ -223,7 +221,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     telegram: data?.socials?.telegram,
     website: data?.socials?.website,
   };
-  console.log(data, initialValues);
 
   return (
     <div className="mx-auto max-w-[634px] mb-16">

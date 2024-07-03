@@ -44,7 +44,6 @@ const PoolItem = ({ liquidity }: any) => {
     tokenAddress: nativeAddress,
     reserveTokenDecimals: liquidity?.reserveTokenDecimals,
   };
-  console.log(liquidity);
 
   const dmlTokenLiquidity = data.dmlAddress;
   useEffect(() => {
@@ -86,7 +85,6 @@ const PoolItem = ({ liquidity }: any) => {
       console.log("No account and DML");
     }
   };
-  console.log(data);
 
   return (
     <div className="mb-4 text-white font-semibold text-sm">

@@ -114,7 +114,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             className=""
             onValueChange={(i) => {
               setVal(i);
-              console.log(i);
             }}
           />
         </div>

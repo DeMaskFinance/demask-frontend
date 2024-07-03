@@ -84,7 +84,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     chainId,
     isOpenTransaction
   );
-  console.log(data);
 
   const handleChoicePercent = (item: string) => {
     setInputNFT(Math.floor((parseFloat(item) / 100) * +balanceNFT).toString());
@@ -106,7 +105,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       let amountErcDesired =
         ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
         (1 + slippage / 100);
-      console.log(amountErcDesired);
 
       setAmountErcDesired(amountErcDesired);
 

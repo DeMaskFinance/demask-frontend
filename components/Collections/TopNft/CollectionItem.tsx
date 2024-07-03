@@ -29,7 +29,6 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   const skeleton = (
     <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />
   );
-  console.log(data);
   const router = useRouter();
   return (
     <>

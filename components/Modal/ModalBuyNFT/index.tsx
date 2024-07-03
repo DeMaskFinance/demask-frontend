@@ -103,7 +103,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     routerAddress,
     updatePrice
   );
-  const { feeBuy } = useFee(
+  const { feeBuy, totalFee } = useFee(
     amountTokenBuy,
     data.dmlAddress,
     wallet,
@@ -306,7 +306,12 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                   </div>
                 </div>
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  0
+                  <FormatNumber
+                    number={divideByDecimal(
+                      totalFee.toString(),
+                      data.tokenDecimals
+                    )}
+                  />
                   <p>
                     <EtherIcon width={14} height={14} />
                   </p>

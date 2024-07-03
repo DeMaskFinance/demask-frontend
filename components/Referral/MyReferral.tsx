@@ -12,17 +12,16 @@ import { DiamondIcon, LoadingIcon } from "../Icons";
 const MyReferral = () => {
   const { chainId, account, demask } = useContext(AccountContext);
   const [page, setPage] = useState(1);
-  const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
-    useQuery(
-      ["myReferral", chainId, account, page],
-      async () => {
-        const res = await referralTopUser(account, chainId);
-        return res;
-      },
-      {
-        enabled: !!account,
-      }
-    );
+  const { data, isLoading, isSuccess } = useQuery(
+    ["myReferral", chainId, account, page],
+    async () => {
+      const res = await referralTopUser(account, chainId);
+      return res;
+    },
+    {
+      enabled: !!account,
+    }
+  );
 
   return (
     <table className="w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">

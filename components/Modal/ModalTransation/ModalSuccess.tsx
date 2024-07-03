@@ -81,7 +81,6 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       setIsLoadingMeta(true);
-      console.log(metadataIPFS);
       const res = await fetch(metadataIPFS);
       const metadata = await res.json();
       setMetadataRes({

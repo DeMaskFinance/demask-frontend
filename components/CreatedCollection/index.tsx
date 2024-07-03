@@ -308,7 +308,7 @@ export default function DetailCollection() {
               Total Volume
             </p>
             <div className="flex items-center text-lg font-bold gap-x-1">
-              <FormatNumber number={dataDetail?.volume} />
+              <FormatNumber number={dataDetail?.volume || 0} />
               <EtherIcon width={16} height={16} />
             </div>
           </div>
@@ -330,8 +330,8 @@ export default function DetailCollection() {
               Listed/Supply
             </p>
             <div className="flex items-center text-lg font-bold ">
-              <FormatNumber number={dataDetail?.countNFTsInPool} />/
-              <FormatNumber number={dataDetail?.totalSupply} />
+              <FormatNumber number={dataDetail?.countNFTsInPool || "0"} />/
+              <FormatNumber number={dataDetail?.totalSupply || "0"} />
             </div>
           </div>
           <div className="">
@@ -339,7 +339,7 @@ export default function DetailCollection() {
               Owner
             </p>
             <div className="flex items-center text-lg font-bold ">
-              <FormatNumber number={dataDetail?.countOwner} />
+              <FormatNumber number={dataDetail?.countOwner || 0} />
             </div>
           </div>
           <div className="">

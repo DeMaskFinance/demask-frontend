@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import CollectionItem from "./CollectionItem";
 import { useRouter } from "next/router";
+import { Pagination } from "@/components/Common/Pagination";
 function TopNft() {
   const [activeChoice, setActiveChoice] = useState<string>("Trending");
   const [page, setPage] = useState(1);
@@ -17,17 +18,18 @@ function TopNft() {
   const [sortOrder, setSortOrder] = useState("desc");
   const router = useRouter();
 
-  const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["topNft", chainId, sortField, sortOrder, page],
-    queryFn: async () => {
-      const res = await categoryAPI(
-        `top-collection-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
-      );
-      return res;
-    },
+  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
+    useQuery({
+      queryKey: ["topNft", chainId, sortField, sortOrder, page],
+      queryFn: async () => {
+        const res = await categoryAPI(
+          `top-collection-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
+        );
+        return res;
+      },
 
-    keepPreviousData: true,
-  });
+      keepPreviousData: true,
+    });
   const {
     isLoading: isLoadingNewest,
     data: dataNewest,
@@ -229,6 +231,17 @@ function TopNft() {
             )}
           </tbody>
         </table>
+        {isSuccess && (
+          <Pagination
+            data={data}
+            isPreviousData={isPreviousData}
+            page={page}
+            setPage={setPage}
+            refetch={refetch}
+            totalPages={15}
+            isFetching={isFetching}
+          />
+        )}
       </div>
     </div>
   );

@@ -89,7 +89,6 @@ const Profile = () => {
     : new Date();
   const monthName = fullTime.toLocaleString("default", { month: "long" });
   const yearName = fullTime.toLocaleString("default", { year: "numeric" });
-  console.log(profile);
 
   return (
     <div className="">

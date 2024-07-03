@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import TransactionItem from "./TransactionItem";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Pagination } from "@/components/Common/Pagination";
 
 function ListTracsaction() {
   const [page, setPage] = useState(1);
@@ -14,17 +15,18 @@ function ListTracsaction() {
   const [sortField, setSortField] = useState("blockTime");
   const [sortOrder, setSortOrder] = useState("desc");
   const router = useRouter();
-  const { isLoading, refetch, data, isFetching, isPreviousData } = useQuery({
-    queryKey: ["transaction", chainId, sortField, sortOrder],
-    queryFn: async () => {
-      const res = await categoryAPI(
-        `transaction-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
-      );
-      return res;
-    },
+  const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } =
+    useQuery({
+      queryKey: ["transaction", chainId, sortField, sortOrder, page],
+      queryFn: async () => {
+        const res = await categoryAPI(
+          `transaction-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
+        );
+        return res;
+      },
 
-    refetchInterval: 60000,
-  });
+      refetchInterval: 60000,
+    });
 
   const handleSort = (field: string) => {
     setSortField(field);
@@ -140,6 +142,17 @@ function ListTracsaction() {
                 isFetching={isFetching}
               />
             </tbody>
+            {isSuccess && (
+              <Pagination
+                data={data}
+                isPreviousData={isPreviousData}
+                page={page}
+                setPage={setPage}
+                refetch={refetch}
+                totalPages={15}
+                isFetching={isFetching}
+              />
+            )}
           </table>
         </div>
       </div>

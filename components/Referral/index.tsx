@@ -99,57 +99,14 @@ const Referral = () => {
         </div>
         {account && <StaticTable />}
         <div className=" mt-6 ">
-          <div className="flex items-center">
+          <div className="flex items-center w-full">
             {/* PC */}
-            <div>
-              <TabQuery
-                TABS={TABS}
-                initialItem="items"
-                indexChoice={indexChoice}
-                isDefault={false}
-              />
-            </div>
-            {/* mobile-tablet */}
-            {/* <div className="md:hidden">
-              <Tippy
-                className=""
-                interactive
-                hideOnClick
-                visible={visible}
-                onClickOutside={() => setVisible(false)}
-                render={(attrs) => (
-                  <div
-                    className="w-[280px] px-2 pt-1 pb-1 border text-sm rounded-lg shadow-xl box border-shader_500 font-medium bg-shader_700 "
-                    tabIndex={-1}
-                    {...attrs}
-                  >
-                    <ul className="flex flex-col mt-2 font-normal gap-y-3">
-                      {TABS.map((item, index) => (
-                        <li
-                          key={index}
-                          onClick={() => setTab(item.key)}
-                          className={`cursor-pointer  p-2 ${
-                            tab === item.key ? "rounded-lg bg-primary_400" : ""
-                          } `}
-                        >
-                          <h2 className="font-semibold">{item.title}</h2>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              >
-                <button
-                  className={`${style.btnWallet} flex`}
-                  onClick={() => setVisible(true)}
-                >
-                  {selectedTab?.title}
-                  <span className="lg:hidden">
-                    <BsCaretDownFill />
-                  </span>
-                </button>
-              </Tippy>
-            </div> */}
+            <TabQuery
+              TABS={TABS}
+              initialItem="items"
+              indexChoice={indexChoice}
+              isDefault={false}
+            />
           </div>
           <div className="">{selectedTab ? selectedTab.panel() : null}</div>
         </div>

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import { TableRowSkeleton } from "../Skeleton";
 import { AvatarCustom } from "../Avatars";
-import { TablePagination } from "../Common/Pagination";
+import { Pagination, TablePagination } from "../Common/Pagination";
 import { ItemTableRank } from "../LeaderBoard/TableRank";
 import {
   LoadingIcon,
@@ -23,7 +23,6 @@ const Leaderboard = () => {
       const res = await referralLeaderboardUser(account, page);
       return res;
     });
-  console.log(data);
 
   return (
     <table className="w-full text-sm text-left border-collapse min-h-[500px] flex flex-col">
@@ -94,6 +93,17 @@ const Leaderboard = () => {
         </tbody>
       ) : (
         <SearchNotFound />
+      )}
+      {isSuccess && (
+        <Pagination
+          data={data}
+          isPreviousData={isPreviousData}
+          page={page}
+          setPage={setPage}
+          refetch={refetch}
+          totalPages={15}
+          isFetching={isFetching}
+        />
       )}
     </table>
   );

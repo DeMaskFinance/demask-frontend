@@ -324,22 +324,17 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                   </div>
                 </div>
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  {feeSell &&
-                  feeSell.length > 0 &&
-                  feeSell.slice(-1)[0].length >= 2 ? (
+                  {totalFee ? (
                     <FormatNumber
                       number={divideByDecimal(
-                        feeSell.slice(-1)[0][1].toString(),
+                        totalFee.toString(),
                         data.tokenDecimals
                       )}
                     />
                   ) : (
                     0
                   )}
-
-                  <p>
-                    <EtherIcon width={14} height={14} />
-                  </p>
+                  <EtherIcon width={14} height={14} />
                 </div>
               </div>
               <div

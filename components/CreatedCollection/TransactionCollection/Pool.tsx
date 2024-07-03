@@ -21,7 +21,6 @@ const Pool = () => {
       return res.data;
     },
   });
-  console.log(data);
 
   return (
     <div className="h-full text-shader_500 ">

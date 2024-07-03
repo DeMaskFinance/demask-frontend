@@ -306,7 +306,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
-  console.log(isApprovedNFT, account);
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">

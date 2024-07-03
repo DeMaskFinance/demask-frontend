@@ -75,8 +75,6 @@ export default function NavFooter() {
                 <li
                   className="flex items-center justify-center flex-1 h-full relative"
                   onClick={() => {
-                    console.log("123");
-
                     setActive(true);
                   }}
                 >

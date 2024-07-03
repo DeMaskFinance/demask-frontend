@@ -7,9 +7,7 @@ import React, { useContext } from "react";
 
 const TradeERC721 = () => {
   const router = useRouter();
-  const queryErc = (router.query.erc as string) || "";
-  const collectionAddress = queryErc.split("&")[0] || "";
-  console.log(useRouter());
+  const collectionAddress = (router.query.erc as string) || "";
 
   const { chainId } = useContext(AccountContext);
   const { data, isLoading, isSuccess, refetch } = useQuery({
@@ -21,7 +19,6 @@ const TradeERC721 = () => {
       }
     },
   });
-  console.log(data, collectionAddress, chainId);
 
   return (
     <div>

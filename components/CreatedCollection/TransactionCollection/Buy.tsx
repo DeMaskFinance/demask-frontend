@@ -39,7 +39,6 @@ const Buy = () => {
   } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-  console.log(collectionAddress);
 
   const { bigNumberBalance } = useInformationToken(
     account,
@@ -107,7 +106,6 @@ const Buy = () => {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
-  console.log(data, idNFT, amountTokenBuy);
 
   return (
     <div>

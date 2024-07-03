@@ -97,7 +97,6 @@ const Sell = () => {
       setAmountSellDec(0);
     }
   }, [data, slippage, amountTokenSell]);
-  console.log(totalFee, amountSellDec, amountTokenSell);
 
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));

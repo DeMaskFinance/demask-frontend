@@ -42,7 +42,6 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
         <br />
       </React.Fragment>
     ));
-  console.log(nftAddress);
 
   return (
     <div className="rounded-lg relative min-h-[500px] md:w-[838px] flex justify-center items-center ">

@@ -1,4 +1,4 @@
-import { TablePagination } from "@/components/Common/Pagination";
+import { Pagination, TablePagination } from "@/components/Common/Pagination";
 import { SkeletonTable } from "@/components/Skeleton";
 import AccountContext from "@/context/AccountContext";
 import { historyUserService } from "@/libs/service/profileService";
@@ -59,6 +59,17 @@ export default function History() {
                 <HistoryItem key={index} item={item} />
               ))}
             </tbody>
+            {isSuccess && (
+              <Pagination
+                data={data}
+                isPreviousData={isPreviousData}
+                page={page}
+                setPage={setPage}
+                refetch={refetch}
+                totalPages={15}
+                isFetching={isFetching}
+              />
+            )}
           </table>
         </div>
       ) : (
