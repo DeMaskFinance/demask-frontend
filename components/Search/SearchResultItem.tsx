@@ -6,7 +6,7 @@ import { formatLinkIPFS } from "@/libs/utils/formatComon";
 interface SearchResultItemProps {
   item: any;
   type: "collection" | "account";
-  handleFocus: () => void;
+  handleFocus?: () => void;
 }
 
 const SearchResultItem: React.FC<SearchResultItemProps> = ({

@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 interface MenuHeaderProps {}
 const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const { chainId } = useContext(AccountContext);
   const router = useRouter();
   const data = [
     { name: "Swap", url: `/swap` },
@@ -85,11 +84,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
           </React.Fragment>
         ))}
       </ul>
-      <Search
-        isFocused={isFocused}
-        handleFocus={handleFocus}
-        setShowSearch={setIsFocused}
-      />
+      <Search handleFocus={handleFocus} />
     </div>
   );
 };

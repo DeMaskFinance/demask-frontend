@@ -4,7 +4,7 @@ import { topCollectionService } from "@/libs/service/collectionService";
 import { useQuery } from "@tanstack/react-query";
 import { Fragment, useContext } from "react";
 interface TopCollectionProps {
-  handleFocus: () => void;
+  handleFocus?: () => void;
 }
 
 const TopCollection: React.FC<TopCollectionProps> = ({ handleFocus }) => {
