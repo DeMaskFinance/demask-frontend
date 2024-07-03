@@ -21,15 +21,10 @@ import TopCollection from "../Modal/ModalSearchCollection/TopCollection";
 import SearchResultItem from "./SearchResultItem";
 
 interface SearchProps {
-  isFocused: boolean;
-  handleFocus: any;
-  setShowSearch?: React.Dispatch<React.SetStateAction<boolean>>;
+  handleFocus: () => void;
 }
 
-const Search: FunctionComponent<SearchProps> = ({
-  isFocused,
-  setShowSearch,
-}) => {
+const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLParagraphElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -124,7 +119,7 @@ const Search: FunctionComponent<SearchProps> = ({
       <div className="relative w-full">
         <div
           ref={inputRef}
-          className={`flex ${isFocused} text-primary_400  rounded-lg items-center relative `}
+          className={`flex text-primary_400  rounded-lg items-center relative `}
         >
           <input
             value={searchTerm}
@@ -225,6 +220,7 @@ const Search: FunctionComponent<SearchProps> = ({
                         <SearchResultItem
                           key={index}
                           item={item}
+                          handleFocus={handleFocus}
                           type="collection"
                         />
                       ))}
@@ -239,6 +235,7 @@ const Search: FunctionComponent<SearchProps> = ({
                         <SearchResultItem
                           key={index}
                           item={item}
+                          handleFocus={handleFocus}
                           type="account"
                         />
                       ))}
@@ -258,7 +255,7 @@ const Search: FunctionComponent<SearchProps> = ({
               )}
             </>
           ) : (
-            <TopCollection />
+            <TopCollection handleFocus={handleFocus} />
           )}
         </ul>
       </div>

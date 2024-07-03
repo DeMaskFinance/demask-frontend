@@ -244,7 +244,8 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     { key: "1h" },
     { key: "1d" },
   ];
-
+  const mobileHeight = 300;
+  const currentHeight = window.innerWidth <= 768 ? mobileHeight : height;
   return (
     <div className="w-full h-full">
       {isLoading ? (
@@ -299,12 +300,12 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               fontFamily: "unset",
             }}
           >
-            <div className="flex items-center gap-2 md:flex-wrap mb-2.5 text-sm flex-wrap bg-shader_600 pl-4">
+            <div className="flex items-center gap-2 md:flex-wrap py-[6px] text-xs md:text-sm flex-wrap bg-shader_600 px-3">
               <div className="flex text-shader_200 item-center">
                 <span className="">Time:</span>
                 <span>{formatDate(legendData?.time)}</span>
               </div>
-              <div className="flex">
+              <div className="flex gap-x-2 font-semibold">
                 <div className="flex item-center">
                   <span className="text-shader_200">O:</span>
                   <div
@@ -362,9 +363,9 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             ref={chartContainerRef}
             id="chart"
             // className="w-full h-[calc(100%-120px)]"
-            className={`w-full `}
+            className={`w-full`}
             style={{
-              height: `${height}px`,
+              height: `${currentHeight}px`,
             }}
           />
           <div className="flex items-center justify-between h-10 pl-3 text-sm font-semibold text-white bg-shader_800">

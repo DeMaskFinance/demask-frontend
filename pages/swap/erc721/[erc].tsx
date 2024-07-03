@@ -21,9 +21,7 @@ const TradeERC721 = () => {
   });
 
   return (
-    <div>
-      <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data} />
-    </div>
+    <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data} />
   );
 };
 

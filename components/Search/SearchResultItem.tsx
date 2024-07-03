@@ -6,9 +6,14 @@ import { formatLinkIPFS } from "@/libs/utils/formatComon";
 interface SearchResultItemProps {
   item: any;
   type: "collection" | "account";
+  handleFocus: () => void;
 }
 
-const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, type }) => {
+const SearchResultItem: React.FC<SearchResultItemProps> = ({
+  item,
+  type,
+  handleFocus,
+}) => {
   const linkHref =
     type === "collection"
       ? `/collection/${item.contractAddress}`
@@ -18,6 +23,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, type }) => {
     <Link
       className="flex items-center p-3 cursor-pointer hover:bg-shader_500 group gap-x-2 border-y border-shader_600"
       href={linkHref}
+      onClick={handleFocus}
     >
       <div className="item_search">
         <div className="flex items-center gap-x-[10px]">

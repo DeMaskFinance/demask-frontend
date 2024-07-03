@@ -62,11 +62,11 @@ export default function Header() {
     true
   );
   const dispatch = useDispatch();
-
-  const [isFocused, setIsFocused] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleFocus = () => {
-    setIsFocused(true);
+    setShowSearch(false);
+    document.body.style.overflowY = "auto";
   };
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
@@ -141,7 +141,6 @@ export default function Header() {
     }
   }, []);
 
-  const [showSearch, setShowSearch] = useState(false);
   return (
     <div
       ref={headerRef}
@@ -187,7 +186,7 @@ export default function Header() {
                 height={24}
                 className="fill-white hidden md:block"
               />
-              <Button className="md:block py-[9px] px-[9px] md:hidden" gradient>
+              <Button className="block py-[9px] px-[9px] md:hidden" gradient>
                 <DemaskIcon width={22} height={22} />
               </Button>
             </Link>
@@ -225,11 +224,7 @@ export default function Header() {
               } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
-                <Search
-                  isFocused={isFocused}
-                  handleFocus={handleFocus}
-                  setShowSearch={setShowSearch}
-                />
+                <Search handleFocus={handleFocus} />
               </div>
 
               <button

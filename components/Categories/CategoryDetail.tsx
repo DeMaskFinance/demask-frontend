@@ -45,7 +45,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
   return (
     <div>
       {isLoading ? (
-        <div className="grid gap-4 mt-4 grid-cols-autoFill text-shader_600">
+        <div className="grid gap-4 mt-4 grid-cols-2 md:grid-cols-autoFill text-shader_600">
           <SkeletonSubCategory length={4} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
@@ -57,7 +57,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
             </div>
             <p>{data?.pages[0].totalRecords} Collections</p>
           </div>
-          <div className="grid gap-4 pb-4 text-white grid-cols-autoFill">
+          <div className="grid md:gap-4 gap-2 pb-4 text-white grid-cols-2 md:grid-cols-autoFill">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (

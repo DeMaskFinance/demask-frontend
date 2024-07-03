@@ -86,11 +86,11 @@ const Created = () => {
       <div className="mt-4">
         <div>
           {isLoading ? (
-            <div className="grid gap-4 text-white grid-cols-autoFill">
+            <div className="grid gap-4 text-white grid-cols-2 md:grid-cols-autoFill">
               <SkeletonSubCategory length={4} />
             </div>
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
-            <div className="grid gap-4 text-white grid-cols-autoFill">
+            <div className="grid gap-4 text-white grid-cols-2 md:grid-cols-autoFill">
               {data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
                   {page?.data?.data?.map((item: any, itemIndex: number) => (

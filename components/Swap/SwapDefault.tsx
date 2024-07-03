@@ -149,11 +149,7 @@ export default function SwapDefault() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
-                <DialogHeader>
-                  <DialogDescription>
-                    <ModalSearchCollectionSwap />
-                  </DialogDescription>
-                </DialogHeader>
+                <ModalSearchCollectionSwap />
               </DialogContent>
             </Dialog>
           </div>

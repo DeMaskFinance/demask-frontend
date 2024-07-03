@@ -1,12 +1,13 @@
-import MediaNFT from "@/components/Common/Media/MediaNFT";
 import SearchResultItem from "@/components/Search/SearchResultItem";
 import AccountContext from "@/context/AccountContext";
-import { NFTTopService } from "@/libs/service";
 import { topCollectionService } from "@/libs/service/collectionService";
 import { useQuery } from "@tanstack/react-query";
-import React, { Fragment, useContext } from "react";
+import { Fragment, useContext } from "react";
+interface TopCollectionProps {
+  handleFocus: () => void;
+}
 
-const TopCollection = () => {
+const TopCollection: React.FC<TopCollectionProps> = ({ handleFocus }) => {
   const { chainId } = useContext(AccountContext);
   const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
     queryKey: ["topNFT", chainId],
@@ -27,7 +28,12 @@ const TopCollection = () => {
           </p>
           <div className="block mb-2 max-h-[300px] ">
             {data.map((item: any, index: number) => (
-              <SearchResultItem key={index} item={item} type="collection" />
+              <SearchResultItem
+                key={index}
+                item={item}
+                type="collection"
+                handleFocus={handleFocus}
+              />
             ))}
           </div>
         </div>

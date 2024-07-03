@@ -41,7 +41,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                 Created {item?.blockTimestamp}
               </p>
             </div>
-            <div className="relative flex items-center justify-between w-full h-10 px-3 my-2 mb-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
+            <div className="relative hidden md:flex items-center justify-between w-full h-10 px-3 my-2 mb-2 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
               <div className="text-sm text-shader_100 group-hover:hidden">
                 Floor Price
               </div>

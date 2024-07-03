@@ -15,8 +15,8 @@ const useAmountOutMin = (
   const [amountTokenSell, setAmountTokenSell] = useState(0);
   const [isLoadingSell, setIsLoadingSell] = useState<boolean>(false);
   useEffect(() => {
+    setIsLoadingSell(true);
     const getAmountOutMin = async () => {
-      setIsLoadingSell(true);
       if (dmlToken !== "0x0000000000000000000000000000000000000000") {
         const amountAFee = await getAmountSell(
           wallet,
@@ -27,9 +27,7 @@ const useAmountOutMin = (
           rpc,
           routerAddress
         );
-        if (amountAFee) {
-          setAmountTokenSell(amountAFee.toString());
-        }
+        setAmountTokenSell(amountAFee.toString());
       } else {
         setAmountTokenSell(0);
       }

@@ -1,6 +1,6 @@
+import { Fragment } from "react";
 import ChartTradingViewSwap from "../Charts/ChartTradingViewSwap";
 import TransactionCollection from "../CreatedCollection/TransactionCollection";
-import { SkeletonSwap } from "../Skeleton";
 import HistorySwap from "../Swap/History";
 interface DetailERC721Props {
   data: any;
@@ -17,9 +17,9 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
       {isLoading ? (
         <p>Loading...</p>
       ) : isSuccess ? (
-        <div>
+        <Fragment>
           {data && (
-            <div className="flex min-h-[94vh] flex-col-reverse border-y md:flex-row border-shader_600">
+            <div className="flex  flex-col-reverse border-y md:flex-row border-shader_600">
               <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px] z-0">
                 {data && (
                   <ChartTradingViewSwap
@@ -33,7 +33,7 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
               <TransactionCollection />
             </div>
           )}
-        </div>
+        </Fragment>
       ) : (
         <p>No data</p>
       )}
