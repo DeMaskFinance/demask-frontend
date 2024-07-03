@@ -42,10 +42,10 @@ const ItemTableRank = ({ item, currentRank }: any) => {
         <AvatarCustom
           avatarUrl={item?.avatar}
           size={24}
-          userAddress={item.userAddress!}
+          userAddress={item?.userAddress!}
           className="w-6 h-6 rounded-lg"
         />
-        {item.userAddress === account ? "You" : <p>{item?.name}</p>}
+        {item?.userAddress === account ? "You" : <p>{item?.name}</p>}
       </td>
       <td
         className={`py-4 flex text-primary_400 items-center justify-center lg:w-full md:w-full w-[140px]`}
