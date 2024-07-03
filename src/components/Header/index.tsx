@@ -32,7 +32,7 @@ const Header = () => {
   const lenisInstance: any = useLenis();
   return (
     <div className={`${isEvent ? "pb-[100px]" : "pb-[56px]"}`}>
-      <div className="top-0 left-0 right-0 z-50 fixed">
+      <div className="top-0 left-0 right-0 z-[99999] fixed">
         {isEvent && (
           <div className="relative">
             <a
