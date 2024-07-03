@@ -351,7 +351,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
             <div className="flex-grow font-semibold text-white text-center md:text-left">
               <Link
-                href={`/collection/${nftAddress}?typeERC=erc1155`}
+                href={`/collection/${nftAddress}`}
                 className="text-primary_400 text-sm"
               >
                 {data?.collectionName}

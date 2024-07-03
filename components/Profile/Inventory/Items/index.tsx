@@ -95,7 +95,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                       </div>
                       <div className="relative w-full p-3 rounded-b-lg bg-shader_700 group-hover:bg-shader_600">
                         <Link
-                          href={`/collection/${item.nftAddress}?typeERC=${item.type}`}
+                          href={`/collection/${item.nftAddress}`}
                           className="flex-wrap max-w-full text-xs font-semibold hover:underline text-primary_300 line-clamp-1 hover:underline-offset-1"
                         >
                           {item?.collectionName ? (
@@ -143,7 +143,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                             href={
                               item.type === "erc1155"
                                 ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                                : `/swap/type/${item.nftAddress}?tab=pool`
+                                : `/swap/erc721/${item.nftAddress}?tab=pool`
                             }
                             className="basis-1/2"
                           >
@@ -155,8 +155,8 @@ export const ItemList: React.FC<ItemListProps> = ({
                           <Link
                             href={
                               item.type === "erc1155"
-                                ? `/swap/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                                : `/swap/type/${item.nftAddress}?tab=buy`
+                                ? `/swap/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+                                : `/swap/erc721/${item.nftAddress}?tab=buy`
                             }
                             className="basis-1/2"
                           >

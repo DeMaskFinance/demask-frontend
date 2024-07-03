@@ -11,7 +11,7 @@ interface SearchResultItemProps {
 const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, type }) => {
   const linkHref =
     type === "collection"
-      ? `/collection/${item.contractAddress}?typeERC=${item.type}`
+      ? `/collection/${item.contractAddress}`
       : `/account/${item.account}`;
 
   return (

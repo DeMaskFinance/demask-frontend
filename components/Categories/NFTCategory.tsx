@@ -13,7 +13,7 @@ interface NFTCategoryProps {
 
 const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
   return (
-    <Link href={`/collection/${item.contractAddress}?typeERC=${item.type}`}>
+    <Link href={`/collection/${item.contractAddress}`}>
       <div className="relative overflow-hidden transition-all duration-200 border rounded-lg border-shader_500 hover:border-shader_400">
         <div className="relative items-center text-sm transition-all rounded-md cursor-pointer group lg:text-base hover:shadow-home">
           <div className="relative w-full h-[186px] overflow-hidden">

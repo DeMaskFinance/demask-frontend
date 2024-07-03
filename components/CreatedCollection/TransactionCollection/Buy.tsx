@@ -7,15 +7,13 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useInformationToken from "@/hooks/useInformationToken";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -59,7 +57,7 @@ const Buy = () => {
   });
 
   const dmlToken = data?.dmlAddress;
-  const { amountTokenBuy } = useAmountInMax(
+  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
     "",
     dmlToken,
     nativeAddress,
@@ -128,8 +126,17 @@ const Buy = () => {
                 <li className="flex items-center justify-between mb-1">
                   Send:
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber number={(amountInMax / 1e18).toString()} />{" "}
-                    <EtherIcon width={16} height={16} />
+                    <div className="flex items-center font-bold text-white gap-x-1">
+                      {isLoadingBuy ? (
+                        <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
+                      ) : (
+                        <FormatNumber
+                          number={(amountInMax / 1e18).toString()}
+                        />
+                      )}
+
+                      <EtherIcon width={16} height={16} />
+                    </div>
                   </div>
                 </li>
                 <li className="flex items-center justify-between mb-1">
@@ -142,7 +149,14 @@ const Buy = () => {
                 <li className="flex items-center justify-between mb-4">
                   Price:
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber number={(amountTokenBuy / 1e18).toString()} />{" "}
+                    {isLoadingBuy ? (
+                      <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
+                    ) : (
+                      <FormatNumber
+                        number={(amountTokenBuy / 1e18).toString()}
+                      />
+                    )}
+
                     <EtherIcon width={16} height={16} />
                   </div>
                 </li>
@@ -150,9 +164,13 @@ const Buy = () => {
                   <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                     <div className="">Total Pay</div>
                     <div className="flex items-center px-2 py-1 text-white gap-x-1">
-                      <FormatNumber
-                        number={(amountTokenBuy / 1e18).toString()}
-                      />{" "}
+                      {isLoadingBuy ? (
+                        <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
+                      ) : (
+                        <FormatNumber
+                          number={(amountTokenBuy / 1e18).toString()}
+                        />
+                      )}
                       <EtherIcon width={16} height={16} />
                     </div>
                   </div>
@@ -175,17 +193,20 @@ const Buy = () => {
               <Button
                 disabled={
                   idNFT.length === 0 ||
+                  isLoadingBuy ||
                   !isSufficientTokenBuy ||
                   Math.floor(amountInMax) === 0
                 }
                 primary={
                   idNFT.length !== 0 &&
                   isSufficientTokenBuy &&
-                  Math.floor(amountInMax) !== 0
+                  Math.floor(amountInMax) !== 0 &&
+                  !isLoadingBuy
                 }
                 className="w-full py-4"
                 active={
                   idNFT.length === 0 ||
+                  isLoadingBuy ||
                   !isSufficientTokenBuy ||
                   Math.floor(amountInMax) === 0
                 }

@@ -1,21 +1,5 @@
 import request from "../utils/httpRequest";
 
-const collectionListERC1155 = async (
-  type: string,
-  contractAddress: string | string[],
-  chainId: string | string[],
-  page: number,
-  limit: number
-) => {
-  try {
-    const res = await request.get(
-      `NFT-list-from-collection?type=${type}&contractAddress=${contractAddress}&chainId=${chainId}&page=${page}&limit=${limit}`
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
 const collectionListAllERC = async (
   type: string,
   contractAddress: string | string[],
@@ -25,7 +9,7 @@ const collectionListAllERC = async (
 ) => {
   try {
     const res = await request.get(
-      `all-nft-list-from-collection?chainId=${chainId}&type=${type}&contractAddress=${contractAddress}&page=${page}&limit=${limit}`
+      `all-nft-list-from-collection?chainId=${chainId}&contractAddress=${contractAddress}&page=${page}&limit=${limit}`
     );
     return res.data;
   } catch (error) {
@@ -93,7 +77,7 @@ const collectionListBuy = async (
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?type=erc721&contractAddress=${contractAddress}&chainId=${chainId}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&chainId=${chainId}`
     );
     return res.data;
   } catch (error) {
@@ -114,7 +98,7 @@ const collectionListSell = async (
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?type=erc721&contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}`
     );
     return res.data;
   } catch (error) {
@@ -215,7 +199,6 @@ const getSignature = async (
 };
 export {
   collectionDetail,
-  collectionListERC1155,
   collectionListBuy,
   collectionListSell,
   collectionListUserService,

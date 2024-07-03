@@ -5,13 +5,13 @@ import HistorySwap from "@/components/Swap/History";
 import SwapTransaction from "@/components/Swap/SwapTransaction/SwapTransaction";
 import AccountContext from "@/context/AccountContext";
 import { swapAPI } from "@/libs/service";
+import { SEO } from "@/next-seo.config";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { SEO } from "../../next-seo.config";
 const updateMeta = {
   ...SEO,
   title: "Swap",

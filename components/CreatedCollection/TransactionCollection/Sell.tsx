@@ -69,7 +69,7 @@ const Sell = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  const { amountTokenSell } = useAmountOutMin(
+  const { amountTokenSell, isLoadingSell } = useAmountOutMin(
     "",
     dmlToken,
     nativeAddress,
@@ -147,9 +147,14 @@ const Sell = () => {
                     <li className="flex items-center justify-between mb-4">
                       Price:
                       <div className="flex items-center font-bold text-white gap-x-1">
-                        <FormatNumber
-                          number={(amountTokenSell / 1e18).toString()}
-                        />{" "}
+                        {isLoadingSell ? (
+                          <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
+                        ) : (
+                          <FormatNumber
+                            number={(amountTokenSell / 1e18).toString()}
+                          />
+                        )}
+
                         <EtherIcon width={16} height={16} />
                       </div>
                     </li>
@@ -157,9 +162,13 @@ const Sell = () => {
                       <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                         <div className="">Total Cost</div>
                         <div className="flex items-center px-2 py-1 text-white gap-x-1">
-                          <FormatNumber
-                            number={(amountTokenSell / 1e18).toString()}
-                          />{" "}
+                          {isLoadingSell ? (
+                            <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
+                          ) : (
+                            <FormatNumber
+                              number={(amountTokenSell / 1e18).toString()}
+                            />
+                          )}
                           <EtherIcon width={16} height={16} />
                         </div>
                       </div>
@@ -185,14 +194,20 @@ const Sell = () => {
                 ) : (
                   <Button
                     disabled={
-                      idNFT.length === 0 || Math.floor(amountSellDec) === 0
+                      idNFT.length === 0 ||
+                      Math.floor(amountSellDec) === 0 ||
+                      isLoadingSell
                     }
                     primary={
-                      idNFT.length !== 0 && Math.floor(amountSellDec) !== 0
+                      idNFT.length !== 0 &&
+                      Math.floor(amountSellDec) !== 0 &&
+                      !isLoadingSell
                     }
                     className="w-full py-4"
                     active={
-                      idNFT.length === 0 || Math.floor(amountSellDec) === 0
+                      idNFT.length === 0 ||
+                      Math.floor(amountSellDec) === 0 ||
+                      isLoadingSell
                     }
                     onClick={handleSell}
                   >

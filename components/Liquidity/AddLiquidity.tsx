@@ -245,7 +245,7 @@ export default function AddLiquidity() {
         />
       ),
       content: "Swap",
-      link: `/swap/${nftAddress}/${tokenAddress}/${idNFT}`,
+      link: `/swap/erc1155/${nftAddress}/${tokenAddress}/${idNFT}`,
     },
     {
       icon: (
