@@ -35,7 +35,7 @@ const Community = () => {
     },
   ];
   return (
-    <div className="relative " id="community">
+    <div className="relative pt-[100px]" id="community">
       <TitleMain
         title="JOIN OUR COMMUNITY"
         description="Connect, Share, and Grow Together"

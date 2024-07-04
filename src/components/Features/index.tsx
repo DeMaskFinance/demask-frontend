@@ -44,10 +44,10 @@ const Features = () => {
     },
   ];
   return (
-    <div className="pb-16 pt-0 md:py-[143px] px-4" id="features">
+    <div className="pb-16 pt-0 md:pt-[100px] px-4" id="features">
       <TitleMain
-        title="OUR FEATURES"
-        description="An on-chain AMM Protocol for Trading between an NFT Collection and a Native Token"
+        title="OUR PRODUCTS"
+        description="A Hub for the NFT Market"
         id="tsparticles-2"
         icon={<StartIcon />}
         className="shadow-features border-[#99E0FF] border-opacity-35"

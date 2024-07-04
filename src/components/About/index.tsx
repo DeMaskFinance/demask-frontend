@@ -3,11 +3,10 @@ import { Button } from "../ui/button";
 import { DemaskIcon, LDownIcon } from "../Icons";
 import Static from "./Static";
 import BackgroundParticles from "../Backgrounds/BackgroundParticles";
-import Spline from "@splinetool/react-spline";
 
 const About = () => {
   return (
-    <div className="h-[90vh] relative w-full">
+    <div className="h-[90vh] relative w-full" id="about">
       <div className=" absolute top-0 bottom-0 left-0 right-0">
         <video
           muted
@@ -20,10 +19,7 @@ const About = () => {
           Your browser does not support the video tag.
         </video>
       </div>
-      <div
-        className=" text-center h-full w-full relative flex flex-col"
-        id="about"
-      >
+      <div className=" text-center h-full w-full relative flex flex-col">
         <div className="w-[655px] h-[150px] bg-linear-g2 absolute top-0 right-1/4 blur-[100px] opacity-35 rounded-full rotate-25 z-10"></div>
         <div className="flex flex-col items-center text-lg h-[40%] justify-end z-20">
           <a

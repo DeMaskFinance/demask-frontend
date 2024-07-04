@@ -82,7 +82,7 @@ const Static = () => {
           key={index}
           className="flex flex-col md:items-center justify-between  w-full"
         >
-          <div className="flex items-center gap-x-2 text-white font-bold text-3xl">
+          <div className="flex items-center gap-x-2 text-white font-bold text-4xl">
             {item.amount()}
             {item.icon}
           </div>

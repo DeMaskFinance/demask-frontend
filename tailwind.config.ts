@@ -101,11 +101,17 @@ const config = {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-100%)" },
         },
+        "infinite-scroll-reverse": {
+          from: { transform: "translateX(-100%)" },
+          to: { transform: "translateX(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "infinite-scroll": "infinite-scroll 50s linear infinite",
+        "infinite-scroll-reverse":
+          "infinite-scroll-reverse 50s linear infinite",
       },
       height: {
         header: "56px",
@@ -130,6 +136,14 @@ const config = {
       },
       fontSize: {
         medium: "4rem",
+        big: [
+          "2.5rem",
+          {
+            lineHeight: "2.25rem",
+            letterSpacing: "-0.02em",
+            fontWeight: "700",
+          },
+        ],
       },
     },
   },

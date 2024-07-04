@@ -1,3 +1,4 @@
+"use client";
 import { version } from "@/lib/constants";
 import Link from "next/link";
 import {
@@ -31,14 +32,16 @@ export default function Footer() {
     <footer className="relative overflow-hidden border-t border-shader_600 bg-shader_900">
       <div className="md:flex items-center justify-between pt-8 pb-10  px-4 2xl:px-[150px] md:px-14 z-10 relative">
         <div className="flex justify-center items-center flex-col md:block">
-          <Link
-            href="https://demask.finance/"
-            target="_blank"
-            className="flex items-center gap-x-3"
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo(0, 0);
+            }}
+            className="flex items-center gap-x-3 cursor-pointer"
           >
             <DemaskIcon width={48} height={48} />
             <DemaskTitle width={148} height={26} />
-          </Link>
+          </div>
           <p className="text-xs font-semibold text-primary_400 mb-[20px]">
             {version}
           </p>
