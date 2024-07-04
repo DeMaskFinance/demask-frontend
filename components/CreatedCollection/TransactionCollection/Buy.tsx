@@ -137,7 +137,13 @@ const Buy = () => {
                   Send:
                   <div className="flex items-center font-bold text-white gap-x-1">
                     <div className="flex items-center font-bold text-white gap-x-1">
-                      <FormatNumber number={(amountInMax / 1e18).toString()} />
+                      {isLoadingBuy ? (
+                        <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
+                      ) : (
+                        <FormatNumber
+                          number={(amountInMax / 1e18).toString()}
+                        />
+                      )}
 
                       <EtherIcon width={16} height={16} />
                     </div>

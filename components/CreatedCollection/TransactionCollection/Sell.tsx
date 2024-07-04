@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import useDebounce from "@/hooks/useDebounce";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -46,7 +47,7 @@ const Sell = () => {
       return res;
     },
   });
-
+  const debouncedIdNFT = useDebounce(idNFT, 1000);
   const dmlToken = useDMLToken(
     account,
     collectionAddress,
@@ -74,7 +75,7 @@ const Sell = () => {
     dmlToken,
     nativeAddress,
     collectionAddress,
-    idNFT,
+    debouncedIdNFT,
     wallet,
     account,
     rpc,
