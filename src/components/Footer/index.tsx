@@ -21,7 +21,7 @@ export default function Footer() {
   const linksRight = [
     { href: "https://demask.finance/", text: "Developer" },
     { href: "https://docs.demask.finance/", text: "Docs" },
-    { href: "https://demask.finance/media-kit", text: "Branding & Media Kit" },
+    // { href: "/media-kit", text: "Branding & Media Kit" },
   ];
   const policy = [
     { href: "https://demask.finance/", text: "Terms" },
@@ -101,6 +101,10 @@ export default function Footer() {
                 </a>
               </li>
             ))}
+
+            <li className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap">
+              <Link href="/media-kit">Branding & Media Kit</Link>
+            </li>
           </div>
         </ul>
       </div>
