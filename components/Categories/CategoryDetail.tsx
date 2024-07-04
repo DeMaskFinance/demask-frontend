@@ -46,7 +46,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
     <div>
       {isLoading ? (
         <div className="grid gap-4 mt-4 grid-cols-2 md:grid-cols-autoFill text-shader_600">
-          <SkeletonSubCategory length={4} />
+          <SkeletonSubCategory length={24} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <Fragment>

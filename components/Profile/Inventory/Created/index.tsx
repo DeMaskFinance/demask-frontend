@@ -87,7 +87,7 @@ const Created = () => {
         <div>
           {isLoading ? (
             <div className="grid gap-4 text-white grid-cols-2 md:grid-cols-autoFill">
-              <SkeletonSubCategory length={4} />
+              <SkeletonSubCategory length={24} />
             </div>
           ) : isSuccess && data?.pages[0]?.data.data.length > 0 ? (
             <div className="grid gap-4 text-white grid-cols-2 md:grid-cols-autoFill">

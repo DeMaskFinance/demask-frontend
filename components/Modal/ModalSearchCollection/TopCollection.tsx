@@ -9,8 +9,8 @@ interface TopCollectionProps {
 
 const TopCollection: React.FC<TopCollectionProps> = ({ handleFocus }) => {
   const { chainId } = useContext(AccountContext);
-  const { isLoading, data, isFetching, refetch, isPreviousData } = useQuery({
-    queryKey: ["topNFT", chainId],
+  const { isLoading, data, isFetching } = useQuery({
+    queryKey: ["topCollection", chainId],
     queryFn: async () => {
       const res = await topCollectionService(chainId);
       return res.data;

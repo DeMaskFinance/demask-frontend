@@ -32,7 +32,7 @@ const collectionDetail = async (
 const topCollectionService = async (chainId: string | string[]) => {
   try {
     const res = await request.get(
-      `top-collection-list?chainId=${chainId}&sortField=TVL&sortOrder=asc&page=1&limit=4`
+      `top-collection-list?chainId=${chainId}&sortField=volume24h&sortOrder=desc&page=1&limit=4`
     );
     return res.data;
   } catch (error) {

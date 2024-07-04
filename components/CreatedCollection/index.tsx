@@ -37,12 +37,14 @@ import Copy from "../Common/Copy";
 import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
 import Classify from "../Profile/Inventory/Classify";
+import formatNumber from "@/libs/utils/formatNumer";
 export default function DetailCollection() {
   const { account, chainId } = useContext(AccountContext);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const inputAvatar = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [typeERC] = useQueryParam("typeERC", withDefault(StringParam, ""));
   const collectionAddress = useRouter().query.collection as string;
   //Data ERC1155
@@ -115,6 +117,7 @@ export default function DetailCollection() {
       setAvatarLoading(false);
     }
   };
+  const handleDialogClose = () => setIsDialogOpen(false);
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
@@ -184,11 +187,12 @@ export default function DetailCollection() {
                   className="flex items-center px-3 py-1 gap-x-1"
                 >
                   <StarIcon width={16} height={16} />
-                  Royalties {dataDetail?.royalty}%
+                  Royalties{" "}
+                  {formatNumber((dataDetail?.royalty / 10000).toString())}%
                 </Button>
                 {dataDetail?.collaborators.includes(account) &&
                   dataDetail?.dmlAddress && (
-                    <Dialog>
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                       <DialogTrigger asChild>
                         <Button secondary className="px-[6px] h-[28px]">
                           <EditIcon
@@ -203,6 +207,7 @@ export default function DetailCollection() {
                           <ModalRoyalty
                             dmlAddress={dataDetail.dmlAddress}
                             creatorAddress={dataDetail.creatorAddress}
+                            onSuccess={handleDialogClose}
                           />
                         </DialogDescription>
                       </DialogContent>

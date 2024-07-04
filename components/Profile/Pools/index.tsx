@@ -46,8 +46,8 @@ export default function Pools() {
   return (
     <div>
       {isLoading || isFetching ? (
-        <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-8 md:grid-cols-3 text-shader_600">
-          <SkeletonSubCategory length={6} />
+        <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6 md:grid-cols-2 text-shader_600">
+          <SkeletonSubCategory length={10} />
         </div>
       ) : isSuccess && data?.pages[0]?.combinedRecords.length !== 0 ? (
         <div>

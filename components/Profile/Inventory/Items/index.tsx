@@ -68,7 +68,7 @@ export const ItemList: React.FC<ItemListProps> = ({
     <div className="font-semibold">
       {isLoading ? (
         <div className="grid gap-4 mt-4 grid-cols-2 md:grid-cols-autoFill text-shader_600">
-          <SkeletonSubCategory length={5} />
+          <SkeletonSubCategory length={24} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <Fragment>

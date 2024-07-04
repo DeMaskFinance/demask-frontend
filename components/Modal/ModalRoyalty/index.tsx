@@ -8,13 +8,16 @@ import React, { useContext, useState } from "react";
 import * as yup from "yup";
 import { ModalTransation } from "../ModalTransation";
 import { briefDocument } from "@/libs/utils/formatComon";
+import { toast } from "sonner";
 interface ModalRoyaltyProps {
   dmlAddress: string;
   creatorAddress: string;
+  onSuccess: () => void;
 }
 const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
   dmlAddress,
   creatorAddress,
+  onSuccess,
 }) => {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const { chainId, demask, account, wallet } = useContext(AccountContext);
@@ -46,7 +49,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       const res = await collectionService.getSignature(
         dmlAddress,
         values.creatorEarning,
-        values.royalty,
+        values.royalty * 10000,
         chainId,
         blockTime
       );
@@ -55,7 +58,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
         demask.FEE_MANAGER,
         dmlAddress,
         values.creatorEarning,
-        values.royalty,
+        values.royalty * 10000,
         blockTime,
         res.signature,
         account,
@@ -63,10 +66,13 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       );
       await trans.wait();
       setIsProcess(false);
-      showToast("Set Royalty successed!", ToastType.Success);
+      onSuccess();
+      toast.success("Set Royalty Successed");
     } catch (error) {
       console.error(error);
       setIsProcess(false);
+      onSuccess();
+      toast.error("Set Royalty Error");
     }
   };
   return (
@@ -112,6 +118,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
                     name="royalty"
                     value={values.royalty}
                     placeholder="0"
+                    autoComplete="off"
                     onChange={handleChange}
                     className="input_item"
                   />
