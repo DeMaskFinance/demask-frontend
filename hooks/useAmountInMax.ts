@@ -16,8 +16,8 @@ const useAmountInMax = (
   const [amountTokenBuy, setAmountTokenBuy] = useState(0);
   const [isLoadingBuy, setIsLoadingBuy] = useState<boolean>(false);
   useEffect(() => {
-    setIsLoadingBuy(true);
     const getAmountInMax = async () => {
+      setIsLoadingBuy(true);
       if (dmlToken !== "0x0000000000000000000000000000000000000000") {
         const amountAFee = await getAmountBuy(
           wallet,
@@ -31,10 +31,10 @@ const useAmountInMax = (
         if (amountAFee) {
           setAmountTokenBuy(amountAFee.toString());
         }
+        setIsLoadingBuy(false);
       } else {
         setAmountTokenBuy(0);
       }
-      setIsLoadingBuy(false);
     };
 
     getAmountInMax();

@@ -30,6 +30,8 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
     <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />
   );
   const router = useRouter();
+  console.log(data);
+
   return (
     <>
       {isLoading || isFetching ? (
@@ -44,7 +46,9 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 key={idx}
                 className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
                 onClick={() => {
-                  router.push(`/collection/${item.contractAddress}`);
+                  item.type === "erc1155"
+                    ? router.push(`/collection/${item.contractAddress}`)
+                    : router.push(`/swap/erc721/${item.contractAddress}`);
                 }}
               >
                 <td className="py-2 lg:w-full md:w-full w-[200px]">

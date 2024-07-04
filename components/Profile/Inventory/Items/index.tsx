@@ -52,7 +52,7 @@ export const ItemList: React.FC<ItemListProps> = ({
   fetchNextPage,
   hasNextPage,
 }) => {
-  const { chainId, demask } = useContext(AccountContext);
+  const { demask } = useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null

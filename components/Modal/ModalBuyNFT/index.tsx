@@ -103,6 +103,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     routerAddress,
     updatePrice
   );
+
   const { feeBuy, totalFee } = useFee(
     amountTokenBuy,
     data.dmlAddress,
@@ -116,9 +117,10 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   useEffect(() => {
     const load = setInterval(() => {
       if (isOpenBuyNFT) {
-        setUpdatePrice(!updatePrice);
+        setUpdatePrice((prevState) => !prevState);
       }
     }, 20000);
+
     return () => {
       clearInterval(load);
     };

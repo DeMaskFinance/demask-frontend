@@ -160,7 +160,7 @@ const Sell = () => {
                     </li>
                     <li>
                       <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-                        <div className="">Total Cost</div>
+                        <div className="">Total Receipts</div>
                         <div className="flex items-center px-2 py-1 text-white gap-x-1">
                           {isLoadingSell ? (
                             <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>

@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
+import useDebounce from "@/hooks/useDebounce";
 const Buy = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -27,6 +28,7 @@ const Buy = () => {
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [amountInMax, setAmountInMax] = useState<number>(0);
+  const [loadingPrice, setLoadingPrice] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
@@ -37,6 +39,7 @@ const Buy = () => {
   } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
+  const debouncedIdNFT = useDebounce(idNFT, 1000);
 
   const { bigNumberBalance } = useInformationToken(
     account,
@@ -62,7 +65,7 @@ const Buy = () => {
     dmlToken,
     nativeAddress,
     collectionAddress,
-    idNFT,
+    debouncedIdNFT,
     wallet,
     account,
     rpc,
@@ -78,11 +81,17 @@ const Buy = () => {
     }
   }, [account, amountInMax, data, isOpenBuyNFT]);
   useEffect(() => {
+    console.log(123);
+
     if (data && amountTokenBuy) {
+      setLoadingPrice(true);
+
       setAmountInMax(amountTokenBuy * (1 + slippage / 100));
     } else {
-      setAmountInMax(0);
+      // setAmountInMax(0);
+      setLoadingPrice(false);
     }
+    setLoadingPrice(false);
   }, [data, slippage, amountTokenBuy]);
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
@@ -104,6 +113,7 @@ const Buy = () => {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
+  console.log(amountTokenBuy);
 
   return (
     <div>
@@ -127,13 +137,7 @@ const Buy = () => {
                   Send:
                   <div className="flex items-center font-bold text-white gap-x-1">
                     <div className="flex items-center font-bold text-white gap-x-1">
-                      {isLoadingBuy ? (
-                        <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
-                      ) : (
-                        <FormatNumber
-                          number={(amountInMax / 1e18).toString()}
-                        />
-                      )}
+                      <FormatNumber number={(amountInMax / 1e18).toString()} />
 
                       <EtherIcon width={16} height={16} />
                     </div>

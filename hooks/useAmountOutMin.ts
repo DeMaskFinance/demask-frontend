@@ -27,7 +27,9 @@ const useAmountOutMin = (
           rpc,
           routerAddress
         );
-        setAmountTokenSell(amountAFee.toString());
+        if (amountAFee) {
+          setAmountTokenSell(amountAFee.toString());
+        }
       } else {
         setAmountTokenSell(0);
       }

@@ -82,11 +82,7 @@ const TransactionCollection = () => {
             </div>
           </DialogTrigger>
           <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
-            <DialogHeader>
-              <DialogDescription>
-                <ModalSetting />
-              </DialogDescription>
-            </DialogHeader>
+            <ModalSetting />
           </DialogContent>
         </Dialog>
       ),

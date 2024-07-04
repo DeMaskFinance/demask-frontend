@@ -210,16 +210,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       }
     }
   };
-  // const lastElementArray = feeSell.slice(-1)[0];
-
-  // const secondElement =
-  //   lastElementArray && lastElementArray.length >= 2
-  //     ? lastElementArray[1]
-  //     : null;
-  // const formattedNumber = secondElement
-  //   ? divideByDecimal(secondElement.toString(), data.tokenDecimals)
-  //   : 0;
-  // console.log(formattedNumber);
 
   return (
     <Wrapper isOpen={isOpenSellNFT} onClick={handleClose}>
