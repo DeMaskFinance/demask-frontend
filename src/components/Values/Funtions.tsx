@@ -11,7 +11,7 @@ const Funtions = () => {
     },
     {
       title: "Decentralized",
-      des: "An on-chain AMM Protocol for Trading between an NFT Collection and an Native Token.",
+      des: "An on-chain AMM Protocol for Trading between an NFT Collection and a Native Token.",
       img: "/Decentralized.svg",
     },
     {

@@ -42,7 +42,7 @@ const About = () => {
           </h1>
           <div className="text-sm md:text-base">
             <p>An on-chain AMM Protocol for Trading between an</p>
-            <p>NFT Collection and an Native Token</p>
+            <p>NFT Collection and a Native Token</p>
           </div>
 
           <div className="btn_animation btn_active mt-8">
