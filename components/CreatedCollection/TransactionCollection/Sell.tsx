@@ -152,7 +152,11 @@ const Sell = () => {
                           <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
                         ) : (
                           <FormatNumber
-                            number={(amountTokenSell / 1e18).toString()}
+                            number={(
+                              amountTokenSell /
+                              1e18 /
+                              debouncedIdNFT.length
+                            ).toString()}
                           />
                         )}
 

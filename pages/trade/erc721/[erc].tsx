@@ -1,10 +1,14 @@
 import DetailERC721 from "@/components/ERC721/DetailERC721";
 import AccountContext from "@/context/AccountContext";
 import { collectionDetail } from "@/libs/service/collectionService";
+import { SEO } from "@/next-seo.config";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
-
+const updateMeta = {
+  ...SEO,
+  title: "Trade",
+};
 const TradeERC721 = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";

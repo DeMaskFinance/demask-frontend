@@ -147,7 +147,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
         </div>
       </div>
       {isAuthen && (
-        <Link href="/swap" className="text-white absolute top-4 right-4">
+        <Link href="/trade" className="text-white absolute top-4 right-4">
           <CgClose />
         </Link>
       )}

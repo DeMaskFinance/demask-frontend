@@ -55,7 +55,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
         <div>
           <div className="flex justify-between mb-2">
             <div className="mb-2 text-dark1">
-              <p className="title text-shader_100">Volume</p>
+              <p className="title text-shader_100">Demask Volume</p>
               <div className="flex items-center text-2xl font-bold text-white gap-x-1">
                 {formatNumber(Number(activeData)?.toFixed(2))}
                 <p>

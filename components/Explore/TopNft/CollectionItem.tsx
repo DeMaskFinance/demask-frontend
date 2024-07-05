@@ -48,7 +48,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 onClick={() => {
                   item.type === "erc1155"
                     ? router.push(`/collection/${item.contractAddress}`)
-                    : router.push(`/swap/erc721/${item.contractAddress}`);
+                    : router.push(`/trade/erc721/${item.contractAddress}`);
                 }}
               >
                 <td className="py-2 lg:w-full md:w-full w-[200px]">

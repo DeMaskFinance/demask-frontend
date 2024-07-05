@@ -1,5 +1,5 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
-import ListTracsaction from "@/components/Collections/Transaction/ListTracsaction";
+import ListTracsaction from "@/components/Explore/Transaction/ListTracsaction";
 import { LeftIcon } from "@/components/Icons";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
@@ -10,7 +10,6 @@ const updateMeta = {
   title: "Trending",
 };
 const Trending = () => {
-  const router = useRouter();
   return (
     <BackgroundDefault>
       <div className="min-h-[94vh] max-w-screen-lg mx-auto px-3">

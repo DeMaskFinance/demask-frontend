@@ -1,20 +1,18 @@
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
-import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { SkeletonSwap } from "@/components/Skeleton";
-import HistorySwap from "@/components/Swap/History";
-import SwapTransaction from "@/components/Swap/SwapTransaction/SwapTransaction";
+import HistorySwap from "@/components/Trade/History";
+import SwapTransaction from "@/components/Trade/TradeTransaction";
 import AccountContext from "@/context/AccountContext";
 import { swapAPI } from "@/libs/service";
 import { SEO } from "@/next-seo.config";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 const updateMeta = {
   ...SEO,
-  title: "Swap",
+  title: "Trade",
 };
 const Swap: React.FC = () => {
   const router = useRouter();
@@ -24,7 +22,7 @@ const Swap: React.FC = () => {
   const { chainId } = useContext(AccountContext);
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["swap", idNFT, nftAddress, chainId, tokenAddress],
+    queryKey: ["trade", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
       const res = await swapAPI(
         tokenAddress.toLocaleLowerCase(),

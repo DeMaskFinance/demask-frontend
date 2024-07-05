@@ -73,7 +73,7 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
     setSearchTerm(item.metadata?.name);
     item.type === "erc1155"
       ? router.replace(
-          `/swap/erc1155/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`
+          `/trade/erc1155/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`
         )
       : router.replace(`/collection/${item.nftAddress}`);
     document.body.style.overflowY = "auto";

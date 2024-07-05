@@ -1,5 +1,5 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
-import TopNft from "@/components/Collections/TopNft/TopNft";
+import TopNft from "@/components/Explore/TopNft/TopNft";
 import { LeftIcon } from "@/components/Icons";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";

@@ -21,7 +21,7 @@ const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({
   ) => {
     e.preventDefault();
     document.body.style.overflowY = "auto";
-    router.replace("/swap");
+    router.replace("/trade");
   };
   return (
     <Wrapper isOpen={isOpenWarning} onClick={handleClose}>
@@ -35,7 +35,7 @@ const ModalWarningRemove: React.FunctionComponent<ModalWarningRemoveProps> = ({
               not tradable directly on the DeMask interface.
             </p>
           </div>
-          <Link href={`/swap`}>
+          <Link href={`/trade`}>
             <Button primary className="px-6 py-2 mx-auto">
               Return to Swap
             </Button>

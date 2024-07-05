@@ -11,13 +11,13 @@ import { CgClose } from "react-icons/cg";
 
 const moreNav = [
   { id: 1, name: "Category", url: "/category" },
-  { id: 2, name: "Collections", url: "/collections", icon: LaunchpadIcon },
+  { id: 2, name: "Explore", url: "/explore", icon: LaunchpadIcon },
   { id: 3, name: "Referral", url: "/referral", icon: PoolIcon },
 ];
 const data = [
-  { id: 3, name: "Swap", url: `/swap`, icon: SwapIcon },
+  { id: 3, name: "Swap", url: `/trade`, icon: SwapIcon },
   { id: 1, name: "Create", url: "/create", icon: CreateIcon },
-  { id: 2, name: "Collections", url: "/collections", icon: LaunchpadIcon },
+  { id: 2, name: "Explore", url: "/explore", icon: LaunchpadIcon },
   { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
   { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
   {

@@ -40,11 +40,11 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
         updateChainId
       );
       if (check) {
-        router.replace(`/swap`);
+        router.replace(`/trade`);
       }
     } else {
       updateChainId(chain);
-      router.replace(`/swap`);
+      router.replace(`/trade`);
     }
   };
   useEffect(() => {

@@ -337,3 +337,10 @@ html *::-webkit-scrollbar-track {
 .tippy-arrow {
   color: #3a404d !important;
 }
+.show-more-less-clickable {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: var(--Primary-A300, #bfacfe);
+}

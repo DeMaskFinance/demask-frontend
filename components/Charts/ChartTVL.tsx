@@ -72,7 +72,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
       ) : (
         <div>
           <div className="mb-2 text-dark1 ">
-            <p className="title text-shader_100">Total Volume Locked (TVL)</p>
+            <p className="title text-shader_100">Demask TVL</p>
             {activeData && (
               <div className="flex items-center text-2xl font-bold text-white gap-x-1">
                 {formatNumber(Number(activeData).toFixed(2))}

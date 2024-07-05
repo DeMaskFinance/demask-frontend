@@ -1,5 +1,6 @@
 import getAmountBuy from "@/libs/utils/getAmountBuy";
 import { useEffect, useState } from "react";
+import useDebounce from "./useDebounce";
 
 const useAmountInMax = (
   inputNFT: string,

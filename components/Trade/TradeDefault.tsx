@@ -26,7 +26,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
-export default function SwapDefault() {
+export default function TradeDefault() {
   const router = useRouter();
   const { account, demask, slippage } = useContext(AccountContext);
   const [activeChoice, setActiveChoice] = useState<string>("Buy");

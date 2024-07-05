@@ -12,9 +12,9 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
-    { name: "Swap", url: `/swap` },
+    { name: "Trade", url: `/trade` },
+    { name: "Explore", url: "/explore" },
     { name: "Create", url: "/create" },
-    { name: "Collections", url: "/collections" },
     { name: "Category", url: "/category" },
     // { name: "Launchpad", url: "/launchpad" },
     { name: "Pools", url: "/pools" },

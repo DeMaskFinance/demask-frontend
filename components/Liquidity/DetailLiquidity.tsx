@@ -181,7 +181,7 @@ const DetailLiquidity = () => {
         />
       ),
       content: "Swap",
-      link: `/swap/erc1155/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
+      link: `/trade/erc1155/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
     },
   ];
   const closeModal = () => {

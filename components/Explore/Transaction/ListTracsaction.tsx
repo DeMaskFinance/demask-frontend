@@ -1,9 +1,9 @@
-import { RightIcon, SortIcon } from "@/components/Icons";
+import { LoadingIcon, RightIcon, SortIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import TransactionItem from "./TransactionItem";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -136,23 +136,29 @@ function ListTracsaction() {
             </thead>
 
             <tbody className="flex flex-col flex-auto">
-              <TransactionItem
-                data={data}
-                isLoading={isLoading}
-                isFetching={isFetching}
-              />
+              {isLoading || isFetching ? (
+                <div className="w-full h-full flex-auto justify-center items-center flex">
+                  <LoadingIcon
+                    width={30}
+                    height={30}
+                    className="animate-spin"
+                  />
+                </div>
+              ) : (
+                <Fragment>
+                  <TransactionItem data={data} isFetching={isFetching} />
+                  <Pagination
+                    data={data}
+                    isPreviousData={isPreviousData}
+                    page={page}
+                    setPage={setPage}
+                    refetch={refetch}
+                    totalPages={15}
+                    isFetching={isFetching}
+                  />
+                </Fragment>
+              )}
             </tbody>
-            {isSuccess && (
-              <Pagination
-                data={data}
-                isPreviousData={isPreviousData}
-                page={page}
-                setPage={setPage}
-                refetch={refetch}
-                totalPages={15}
-                isFetching={isFetching}
-              />
-            )}
           </table>
         </div>
       </div>

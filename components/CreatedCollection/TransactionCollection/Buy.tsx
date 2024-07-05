@@ -39,7 +39,7 @@ const Buy = () => {
   } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-  const debouncedIdNFT = useDebounce(idNFT, 1000);
+  const debouncedIdNFT = useDebounce(idNFT, 1500);
 
   const { bigNumberBalance } = useInformationToken(
     account,
@@ -113,7 +113,7 @@ const Buy = () => {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
-  console.log(amountTokenBuy);
+  console.log(amountTokenBuy, debouncedIdNFT.length);
 
   return (
     <div>
@@ -163,7 +163,11 @@ const Buy = () => {
                       <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
                     ) : (
                       <FormatNumber
-                        number={(amountTokenBuy / 1e18).toString()}
+                        number={(
+                          amountTokenBuy /
+                          1e18 /
+                          debouncedIdNFT.length
+                        ).toString()}
                       />
                     )}
 

@@ -1,9 +1,9 @@
-import SwapDefault from "@/components/Swap/SwapDefault";
+import SwapDefault from "@/components/Trade/TradeDefault";
 import { SEO } from "@/next-seo.config";
 import { NextSeo } from "next-seo";
 const updateMeta = {
   ...SEO,
-  title: "Swap",
+  title: "Trade",
 };
 export default function Swap() {
   return (

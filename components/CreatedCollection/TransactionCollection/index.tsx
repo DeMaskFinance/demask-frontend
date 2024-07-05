@@ -1,29 +1,20 @@
 import { RefetchIcon, SettingIcon } from "@/components/Icons";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import TabQuery from "@/components/NavChoice/TabQuery";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import AccountContext from "@/context/AccountContext";
 import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react/headless";
-import { useState } from "react";
-import { BsCaretDownFill } from "react-icons/bs";
+import { useContext } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Buy from "./Buy";
 import Change from "./Change";
 import Pool from "./Pool";
 import Sell from "./Sell";
-const style = {
-  btnWallet:
-    "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-primary_500 active:bg-primary_400 text-white hover:text-primary_500 gap-x-2 border-primary_400",
-};
+
 const TransactionCollection = () => {
   const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "buy"));
-  const [visible, setVisible] = useState(true);
+  const { isEvent } = useContext(AccountContext);
   const TABS = [
     {
       title: "Buy",
@@ -91,7 +82,11 @@ const TransactionCollection = () => {
   const indexChoice = TABS.findIndex((item) => item.key === tab);
 
   return (
-    <div className="flex flex-col  h-full p-4 w-full md:w-[480px] relative md:sticky md:top-14">
+    <div
+      className={`flex flex-col  h-full p-4 w-full md:w-[480px] relative md:sticky ${
+        isEvent ? "md:top-[104px]" : "md:top-14"
+      }`}
+    >
       <div className="flex justify-between gap-4 mb-2">
         <p className="text-xl font-bold text-white">Demask Swaps</p>
         <div className="flex items-center gap-x-2">

@@ -33,6 +33,7 @@ const config = {
       },
       opacity: {
         15: "0.15",
+        65: "0.65",
       },
       height: {
         header: "56px",
