@@ -240,7 +240,7 @@ const Sell = () => {
           setIsOpenTransaction={setIsOpenTransaction}
           tokenAddress={nativeAddress}
           nftAddress={collectionAddress}
-          idNFT={idNFT}
+          idNFT={debouncedIdNFT}
           routerAddress={routerAddress}
           /* 
           // @ts-ignore */
