@@ -81,11 +81,8 @@ const Buy = () => {
     }
   }, [account, amountInMax, data, isOpenBuyNFT]);
   useEffect(() => {
-    console.log(123);
-
     if (data && amountTokenBuy) {
       setLoadingPrice(true);
-
       setAmountInMax(amountTokenBuy * (1 + slippage / 100));
     } else {
       // setAmountInMax(0);
@@ -93,17 +90,6 @@ const Buy = () => {
     }
     setLoadingPrice(false);
   }, [data, slippage, amountTokenBuy]);
-  const handleChoiceNFT = (item: any) => {
-    const isExist = idNFT.includes(Number(item.nftID));
-    if (isExist) {
-      const arr = idNFT.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFT(arr);
-    } else {
-      setIdNFT([...idNFT, Number(item.nftID)]);
-    }
-  };
 
   const handleBuy = () => {
     setIsOpenBuyNFT(true);
@@ -113,7 +99,7 @@ const Buy = () => {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
-  console.log(amountTokenBuy, debouncedIdNFT.length);
+  console.log(amountTokenBuy, debouncedIdNFT.length, idNFT, debouncedIdNFT);
 
   return (
     <div>
@@ -126,9 +112,9 @@ const Buy = () => {
           <NFTGrid
             data={data}
             isFetching={isFetching}
-            handleChoiceNFT={handleChoiceNFT}
             idNFT={idNFT}
             isSearch
+            setIdNFT={setIdNFT}
           />
           <div className="w-full mt-4">
             {idNFT.length > 0 && (
@@ -163,11 +149,11 @@ const Buy = () => {
                       <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
                     ) : (
                       <FormatNumber
-                        number={(
-                          amountTokenBuy /
-                          1e18 /
-                          debouncedIdNFT.length
-                        ).toString()}
+                        number={
+                          amountTokenBuy
+                            ? (amountTokenBuy / 1e18 / idNFT.length).toString()
+                            : "0"
+                        }
                       />
                     )}
 

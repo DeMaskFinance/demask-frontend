@@ -19,19 +19,20 @@ import {
 interface NFTGridProps {
   data: any;
   isFetching: boolean;
-  handleChoiceNFT: (item: any) => void;
   idNFT: number[];
   isSearch: boolean;
+  setIdNFT: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const NFTGrid: React.FC<NFTGridProps> = ({
   data,
   isFetching,
-  handleChoiceNFT,
   idNFT,
   isSearch,
+  setIdNFT,
 }) => {
   const { chainId } = useContext(AccountContext);
+  const [val, setVal] = useState([0]);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
@@ -48,7 +49,23 @@ const NFTGrid: React.FC<NFTGridProps> = ({
     }
   };
 
-  const [val, setVal] = useState([0]);
+  const handleChoiceNFT = (item: any) => {
+    const isExist = idNFT.includes(Number(item.nftID));
+    if (isExist) {
+      const arr = idNFT.filter((itemArr) => {
+        return itemArr !== Number(item.nftID);
+      });
+      setIdNFT(arr);
+    } else {
+      setIdNFT([...idNFT, Number(item.nftID)]);
+    }
+  };
+  const hanldeListNFT = (val: number) => {
+    const newList = data.data.slice(0, val);
+    setIdNFT(newList.map((item: any) => +item.nftID));
+  };
+  console.log(data);
+
   return (
     <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
       <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[260px] ">
@@ -109,11 +126,12 @@ const NFTGrid: React.FC<NFTGridProps> = ({
         <div className="flex-grow px-4">
           <Slider
             defaultValue={val}
-            max={100}
+            max={data?.data?.length}
             step={1}
             className=""
             onValueChange={(i) => {
               setVal(i);
+              hanldeListNFT(i[0]);
             }}
           />
         </div>

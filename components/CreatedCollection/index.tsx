@@ -53,7 +53,7 @@ export default function DetailCollection() {
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
       <CollectionDetail collectionAddress={collectionAddress} />
-      <div className="px-4 pt-4">
+      <div className="md:px-4 pt-4 px-3">
         <Classify
           setIsFilter={setIsFilter}
           isFilter={isFilter}

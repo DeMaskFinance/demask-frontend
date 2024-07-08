@@ -6,7 +6,7 @@ import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SEO } from "../../next-seo.config";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import { TabGroups } from "@/components/NavChoice";

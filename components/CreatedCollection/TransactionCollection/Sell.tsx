@@ -98,18 +98,8 @@ const Sell = () => {
       setAmountSellDec(0);
     }
   }, [data, slippage, amountTokenSell]);
+  console.log(data);
 
-  const handleChoiceNFT = (item: any) => {
-    const isExist = idNFT.includes(Number(item.nftID));
-    if (isExist) {
-      const arr = idNFT.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFT(arr);
-    } else {
-      setIdNFT([...idNFT, Number(item.nftID)]);
-    }
-  };
   const handleSell = () => {
     setIsOpenSellNFT(true);
     document.body.style.overflowY = "hidden";
@@ -131,7 +121,7 @@ const Sell = () => {
               <NFTGrid
                 data={data}
                 isFetching={isFetching}
-                handleChoiceNFT={handleChoiceNFT}
+                setIdNFT={setIdNFT}
                 idNFT={idNFT}
                 isSearch
               />

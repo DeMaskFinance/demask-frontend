@@ -34,6 +34,19 @@ interface ChartSwapProps {
   typeERC: string;
   height: number;
 }
+interface DataItemProps {
+  label: string;
+  value: string;
+  isRed: boolean;
+}
+const DataItem: React.FC<DataItemProps> = ({ label, value, isRed }) => (
+  <div className="flex items-center gap-x-1">
+    <span className="text-shader_200">{label}:</span>
+    <div className={isRed ? "text-red" : "text-green"}>
+      <FormatNumber number={value} />
+    </div>
+  </div>
+);
 const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   dataSwap,
   typeERC,
@@ -246,6 +259,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   ];
   const mobileHeight = 300;
   const currentHeight = window.innerWidth <= 768 ? mobileHeight : height;
+  const isRed = legendData?.change;
   return (
     <div className="w-full h-full">
       {isLoading ? (
@@ -306,56 +320,11 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                 <span>{formatDate(legendData?.time)}</span>
               </div>
               <div className="flex gap-x-2 font-semibold">
-                <div className="flex item-center">
-                  <span className="text-shader_200">O:</span>
-                  <div
-                    className={`${
-                      legendData?.change ? "text-red" : "text-green"
-                    }`}
-                  >
-                    <FormatNumber number={legendData?.open} />
-                  </div>
-                </div>
-                <div className="flex item-center">
-                  <span className="text-shader_200">L:</span>
-                  <div
-                    className={`${
-                      legendData?.change ? "text-red" : "text-green"
-                    }`}
-                  >
-                    <FormatNumber number={legendData?.low} />
-                  </div>
-                </div>
-                <div className="flex item-center">
-                  <span className="text-shader_200">H:</span>
-                  <div
-                    className={`${
-                      legendData?.change ? "text-red" : "text-green"
-                    }`}
-                  >
-                    <FormatNumber number={legendData?.high} />
-                  </div>
-                </div>
-                <div className="flex item-center">
-                  <span className="text-shader_200">C:</span>
-                  <div
-                    className={`${
-                      legendData?.change ? "text-red" : "text-green"
-                    }`}
-                  >
-                    <FormatNumber number={legendData?.close} />
-                  </div>
-                </div>
-                <div className="flex item-center">
-                  <span className="text-shader_200">Vol:</span>
-                  <div
-                    className={`${
-                      legendData?.change ? "text-red" : "text-green"
-                    }`}
-                  >
-                    <FormatNumber number={legendData?.value} />
-                  </div>
-                </div>
+                <DataItem label="O" value={legendData?.open} isRed={isRed} />
+                <DataItem label="L" value={legendData?.low} isRed={isRed} />
+                <DataItem label="H" value={legendData?.high} isRed={isRed} />
+                <DataItem label="C" value={legendData?.close} isRed={isRed} />
+                <DataItem label="Vol" value={legendData?.value} isRed={isRed} />
               </div>
             </div>
           </div>

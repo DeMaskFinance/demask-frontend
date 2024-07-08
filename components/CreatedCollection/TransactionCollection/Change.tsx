@@ -107,28 +107,28 @@ const Change = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  const handleChoiceNFTInput = (item: any) => {
-    const isExist = idNFTInput.includes(Number(item.nftID));
-    if (isExist) {
-      const arr = idNFTInput.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFTInput(arr);
-    } else {
-      setIdNFTInput([...idNFTInput, Number(item.nftID)]);
-    }
-  };
-  const handleChoiceNFTOutput = (item: any) => {
-    const isExist = idNFTOutput.includes(Number(item.nftID));
-    if (isExist) {
-      const arr = idNFTOutput.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFTOutput(arr);
-    } else {
-      setIdNFTOutput([...idNFTOutput, Number(item.nftID)]);
-    }
-  };
+  // const handleChoiceNFTInput = (item: any) => {
+  //   const isExist = idNFTInput.includes(Number(item.nftID));
+  //   if (isExist) {
+  //     const arr = idNFTInput.filter((itemArr) => {
+  //       return itemArr !== Number(item.nftID);
+  //     });
+  //     setIdNFTInput(arr);
+  //   } else {
+  //     setIdNFTInput([...idNFTInput, Number(item.nftID)]);
+  //   }
+  // };
+  // const handleChoiceNFTOutput = (item: any) => {
+  //   const isExist = idNFTOutput.includes(Number(item.nftID));
+  //   if (isExist) {
+  //     const arr = idNFTOutput.filter((itemArr) => {
+  //       return itemArr !== Number(item.nftID);
+  //     });
+  //     setIdNFTOutput(arr);
+  //   } else {
+  //     setIdNFTOutput([...idNFTOutput, Number(item.nftID)]);
+  //   }
+  // };
   const queryClient = useQueryClient();
 
   const handleSwap = async () => {
@@ -180,7 +180,7 @@ const Change = () => {
                 <NFTGrid
                   data={inputData}
                   isFetching={isInputDataFetching}
-                  handleChoiceNFT={handleChoiceNFTInput}
+                  setIdNFT={setIdNFTInput}
                   idNFT={idNFTInput}
                   isSearch={false}
                 />
@@ -222,7 +222,8 @@ const Change = () => {
             <NFTGrid
               data={data}
               isFetching={isFetching}
-              handleChoiceNFT={handleChoiceNFTOutput}
+              // handleChoiceNFT={handleChoiceNFTOutput}
+              setIdNFT={setIdNFTOutput}
               idNFT={idNFTOutput}
               isSearch={false}
             />

@@ -1,4 +1,4 @@
-import { RefetchIcon, SettingIcon } from "@/components/Icons";
+import { RefetchIcon, RightIcon, SettingIcon } from "@/components/Icons";
 import ModalSetting from "@/components/Modal/ModalSetting";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -11,10 +11,14 @@ import Buy from "./Buy";
 import Change from "./Change";
 import Pool from "./Pool";
 import Sell from "./Sell";
+import { Button } from "@/components/Buttons";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const TransactionCollection = () => {
-  const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "buy"));
+  const [tab] = useQueryParam("tab", withDefault(StringParam, "buy"));
   const { isEvent } = useContext(AccountContext);
+  const collectionAddress = (useRouter().query.erc as string) || "";
   const TABS = [
     {
       title: "Buy",
@@ -118,6 +122,15 @@ const TransactionCollection = () => {
           isDefault={true}
         />
       </div>
+      <Button third className="mt-4 h-10  ">
+        <Link
+          href={`/collection/${collectionAddress}`}
+          className="w-full flex justify-center items-center text-primary_300 gap-x-2"
+        >
+          Collection Details
+          <RightIcon width={20} height={20} />
+        </Link>
+      </Button>
       <div className="relative h-full min-h-[500px]">
         {selectedTab ? selectedTab.panel() : null}
       </div>

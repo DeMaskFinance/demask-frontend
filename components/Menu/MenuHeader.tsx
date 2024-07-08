@@ -7,24 +7,33 @@ import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-interface MenuHeaderProps {}
-const MenuHeader: React.FC<MenuHeaderProps> = () => {
+const subMenuRewards = [
+  { id: 1, name: "Leaderboard", url: "/leaderboard" },
+  { id: 2, name: "Referral", url: "/referral" },
+];
+const subMenuOthers = [
+  { id: 1, name: "Create", url: "/create" },
+  { id: 2, name: "Category", url: "/category" },
+  // { id: 2, name: "Category", url: "/category" },
+];
+const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
-    { name: "Trade", url: `/trade` },
     { name: "Explore", url: "/explore" },
-    { name: "Create", url: "/create" },
-    { name: "Category", url: "/category" },
+    { name: "Trade", url: `/trade` },
     // { name: "Launchpad", url: "/launchpad" },
     { name: "Pools", url: "/pools" },
-    { name: "Rewards", url: "/leaderboard", subRewardMenu: true },
+    {
+      name: "Rewards",
+      url: "/leaderboard",
+      subMenu: subMenuRewards,
+      icon: <DiamondIcon width={32} height={32} />,
+    },
+    { name: "Others", url: "/category", subMenu: subMenuOthers },
   ];
-  const subMenuRewardData = [
-    { id: 1, name: "Leaderboard", url: "/leaderboard" },
-    { id: 2, name: "Referral", url: "/referral" },
-  ];
-  const isMatchingUrl = subMenuRewardData.some((menu) =>
+
+  const isMatchingUrl = subMenuRewards.some((menu) =>
     router.pathname.startsWith(menu.url)
   );
 
@@ -36,14 +45,14 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
       <ul className="flex items-center font-semibold text-shader_100 3xl:gap-x-8 gap-x-8">
         {data.map((item, index) => (
           <React.Fragment key={index}>
-            {item.subRewardMenu ? (
+            {item.subMenu ? (
               <li>
                 <Tippy
                   interactive
                   render={(attrs) => (
                     <div className="" tabIndex={-1} {...attrs}>
                       <ul className="w-40 menu">
-                        {subMenuRewardData.map((item) => (
+                        {item.subMenu.map((item) => (
                           <ActiveLink href={item.url} key={item.id}>
                             <li
                               className={`item_menu ${
@@ -61,13 +70,13 @@ const MenuHeader: React.FC<MenuHeaderProps> = () => {
                   )}
                 >
                   <Link
-                    href={`/leaderboard`}
+                    href={`${item.url}`}
                     className={`flex items-center gap-x-1  ${
                       isMatchingUrl &&
                       "text-primary_400 hover:text-primary_400  active:text-primary_400"
                     }`}
                   >
-                    <DiamondIcon width={32} height={32} />
+                    {item.icon}
                     {item.name}
                   </Link>
                 </Tippy>

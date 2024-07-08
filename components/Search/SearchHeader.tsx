@@ -119,7 +119,7 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
       <div className="relative w-full">
         <div
           ref={inputRef}
-          className={`flex text-primary_400  rounded-lg items-center relative `}
+          className={`flex text-primary_400  rounded-lg items-center relative flex-1`}
         >
           <input
             value={searchTerm}
@@ -147,14 +147,12 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
               className={`cursor-pointer absolute top-1/2 right-0 left-2 bottom-0 -translate-y-1/2 text-white`}
             />
           </div>
-        </div>
-
-        <ul
-          className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 bg-shader_700 border-shader_700 ${
-            click ? "block" : "block lg:hidden"
-          }  bg-shader_600 w-full rounded-lg mt-3 lg:mt-1 absolute top-12 right-0 left-0`}
-        >
-          {/* <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
+          <ul
+            className={`max-h-[83vh] lg:max-h-72 overflow-y-auto overflow-x-hidden z-50 bg-shader_700 border-shader_700 ${
+              click ? "block" : "block lg:hidden"
+            }  bg-shader_600 w-full rounded-lg mt-3 lg:mt-1 absolute top-12 right-0 left-0`}
+          >
+            {/* <div className={`${debouncedSearch === "" ? "block" : "hidden"}`}>
             <p className="my-2 ml-2 text-sm font-semibold text-primary_400">
               <span className="">Searched</span>
               {isMounted && <span className="">({searchHistory.length})</span>}
@@ -207,57 +205,58 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
               </div>
             )}
           </div> */}
-          {debouncedSearch ? (
-            <>
-              {data ? (
-                <div>
-                  {data.collectionList.length > 0 && (
-                    <div>
-                      <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
-                        Collections
-                      </p>
-                      {data.collectionList.map((item: any, index: number) => (
-                        <SearchResultItem
-                          key={index}
-                          item={item}
-                          handleFocus={handleFocus}
-                          type="collection"
-                        />
-                      ))}
-                    </div>
-                  )}
-                  {data.userList.length > 0 && (
-                    <div>
-                      <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
-                        Accounts
-                      </p>
-                      {data.userList.map((item: any, index: number) => (
-                        <SearchResultItem
-                          key={index}
-                          item={item}
-                          handleFocus={handleFocus}
-                          type="account"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : isFetching ? (
-                <div className="w-full h-[100px] flex-auto justify-center items-center flex">
-                  <LoadingIcon
-                    width={30}
-                    height={30}
-                    className="animate-spin"
-                  />
-                </div>
-              ) : (
-                <span className="text-base text-primary_400">No Result</span>
-              )}
-            </>
-          ) : (
-            <TopCollection handleFocus={handleFocus} />
-          )}
-        </ul>
+            {debouncedSearch ? (
+              <>
+                {data ? (
+                  <div>
+                    {data.collectionList.length > 0 && (
+                      <div>
+                        <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
+                          Collections
+                        </p>
+                        {data.collectionList.map((item: any, index: number) => (
+                          <SearchResultItem
+                            key={index}
+                            item={item}
+                            handleFocus={handleFocus}
+                            type="collection"
+                          />
+                        ))}
+                      </div>
+                    )}
+                    {data.userList.length > 0 && (
+                      <div>
+                        <p className="ml-2 text-sm font-semibold text-primary_400 my-2">
+                          Accounts
+                        </p>
+                        {data.userList.map((item: any, index: number) => (
+                          <SearchResultItem
+                            key={index}
+                            item={item}
+                            handleFocus={handleFocus}
+                            type="account"
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : isFetching ? (
+                  <div className="w-full h-[100px] flex-auto justify-center items-center flex">
+                    <LoadingIcon
+                      width={30}
+                      height={30}
+                      className="animate-spin"
+                    />
+                  </div>
+                ) : (
+                  <span className="text-base text-primary_400">No Result</span>
+                )}
+              </>
+            ) : (
+              <TopCollection handleFocus={handleFocus} />
+            )}
+          </ul>
+        </div>
       </div>
     </>
   );

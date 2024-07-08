@@ -177,7 +177,7 @@ export default function Header() {
         </div>
       )}
 
-      <header className="text-shader_200 w-screen h-header flex gap-x-14 border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
+      <header className="text-shader_200 w-screen h-header flex gap-x-28 3xl:gap-x-[500px] border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link href="https://demask.finance/" target="_blank">

@@ -10,19 +10,18 @@ import {
 import { CgClose } from "react-icons/cg";
 
 const moreNav = [
-  { id: 1, name: "Category", url: "/category" },
-  { id: 2, name: "Explore", url: "/explore", icon: LaunchpadIcon },
-  { id: 3, name: "Referral", url: "/referral", icon: PoolIcon },
+  { id: 1, name: "Create", url: "/create" },
+  { id: 2, name: "Category", url: "/category" },
+  { id: 3, name: "Referral", url: "/referral" },
 ];
 const data = [
-  { id: 3, name: "Swap", url: `/trade`, icon: SwapIcon },
-  { id: 1, name: "Create", url: "/create", icon: CreateIcon },
   { id: 2, name: "Explore", url: "/explore", icon: LaunchpadIcon },
+  { id: 3, name: "Trade", url: `/trade`, icon: SwapIcon },
   { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
   { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
   {
     id: 6,
-    name: "More",
+    name: "Others",
     icon: SeeMoreIcon,
   },
 ];
@@ -73,12 +72,13 @@ export default function NavFooter() {
                 </li>
               ) : (
                 <li
-                  className="flex items-center justify-center flex-1 h-full relative"
+                  className="flex items-center flex-col text-white justify-center flex-1 h-full gap-2 relative"
                   onClick={() => {
                     setActive(true);
                   }}
                 >
                   {<item.icon width={20} height={20} className="text-white" />}
+                  {item.name}
                 </li>
               )}
             </Fragment>
@@ -91,7 +91,7 @@ export default function NavFooter() {
                 onClick={() => setActive(false)}
               ></div>
               <div className=" bg-shader_800 text-white h-[40vh] rounded-t-xl z-50">
-                <div className="text-sm item_menu h-12 flex justify-between px-3">
+                <div className="text-sm  items-center font-semibold h-12 flex justify-between px-3">
                   <p>More</p>
                   <button className="text-lg " onClick={() => setActive(false)}>
                     <CgClose className="text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red" />

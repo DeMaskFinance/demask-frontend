@@ -221,17 +221,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       return res;
     },
   });
-  const handleChoiceNFT = (item: any) => {
-    const isExist = idNFT.includes(Number(item.nftID));
-    if (isExist) {
-      const arr = idNFT.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFT(arr);
-    } else if (+amountNFTMin > idNFT.length) {
-      setIdNFT([...idNFT, Number(item.nftID)]);
-    }
-  };
 
   return (
     <Fragment>
@@ -259,7 +248,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           <NFTGrid
             data={data721}
             isFetching={isFetching}
-            handleChoiceNFT={handleChoiceNFT}
+            setIdNFT={setIdNFT}
             idNFT={idNFT}
             isSearch={false}
           />

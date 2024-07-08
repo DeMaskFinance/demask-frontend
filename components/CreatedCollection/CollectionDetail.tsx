@@ -280,7 +280,9 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               TVL
             </p>
             <div className="flex items-center text-lg font-bold gap-x-1">
-              <FormatNumber number={data?.reserveToken || 0} />
+              <FormatNumber
+                number={(+data?.reserveToken * 2).toString() || "0"}
+              />
               <EtherIcon width={16} height={16} />
             </div>
           </div>

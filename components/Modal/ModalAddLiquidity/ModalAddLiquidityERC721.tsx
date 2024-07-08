@@ -139,18 +139,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
 
-  const handleChoiceNFT = (item: any) => {
-    const isExist = idNFT.includes(Number(item.nftID));
-    if (isExist) {
-      const arr = idNFT.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFT(arr);
-    } else {
-      setIdNFT([...idNFT, Number(item.nftID)]);
-    }
-  };
-
   return (
     <Fragment>
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
@@ -163,7 +151,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           <NFTGrid
             data={data}
             isFetching={isFetching}
-            handleChoiceNFT={handleChoiceNFT}
+            setIdNFT={setIdNFT}
             idNFT={idNFT}
             isSearch={false}
           />
