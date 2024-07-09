@@ -232,11 +232,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const handleSell = () => {
     if (inputNFTValue === "") {
       setShowRequiredMessage(true);
-    } else if (
-      isSufficientNFT &&
-      data.dmlAddress !== null &&
-      Math.floor(amountSellDec) !== 0
-    ) {
+    } else {
       setIsOpenSellNFT(true);
       document.body.style.overflowY = "hidden";
     }
@@ -309,6 +305,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
+  console.log(isLoadingSell, inputNFTValue, amountSellDec);
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
@@ -369,7 +366,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               <div className="flex gap-x-2 whitespace-nowrap">
                 <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
                   <p className="font-normal text-primary_200 ">Reserve NFT</p>
-                  <p>{data.reserveNFT}</p>
+                  <FormatNumber number={data.reserveNFT} />
                 </div>
                 <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2 text-sm">
                   <p className="font-normal text-primary_200 ">Reserve Token</p>
@@ -565,23 +562,105 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               </DialogContent>
             </Dialog>
           ) : activeChoice === "Buy" ? (
-            <Button
-              type="button"
-              className="py-2 w-full"
-              green
-              onClick={handleBuy}
-            >
-              Buy Now
-            </Button>
+            <Dialog open={isOpenBuyNFT} onOpenChange={setIsOpenBuyNFT}>
+              <DialogTrigger asChild>
+                <Button
+                  disabled={
+                    inputNFTValue === "" ||
+                    data.dmlAddress === null ||
+                    isLoadingBuy ||
+                    !isSufficientTokenBuy ||
+                    Math.floor(amountInMax) === 0
+                  }
+                  primary={
+                    inputNFTValue !== "" &&
+                    data.dmlAddress !== null &&
+                    isSufficientTokenBuy &&
+                    Math.floor(amountInMax) !== 0 &&
+                    !isLoadingBuy
+                  }
+                  className="w-full py-4"
+                  active={
+                    inputNFTValue === "" ||
+                    data.dmlAddress === null ||
+                    isLoadingBuy ||
+                    !isSufficientTokenBuy ||
+                    Math.floor(amountInMax) === 0
+                  }
+                  onClick={handleBuy}
+                >
+                  Buy now
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="p-0 border-none">
+                <ModalBuyNFT
+                  isOpenBuyNFT={isOpenBuyNFT}
+                  isOpenTransaction={isOpenTransaction}
+                  setIsOpenTransaction={setIsOpenTransaction}
+                  tokenAddress={tokenAddress}
+                  nftAddress={nftAddress}
+                  idNFT={idNFT}
+                  routerAddress={routerAddress}
+                  data={data}
+                  setIsOpenBuyNFT={setIsOpenBuyNFT}
+                  inputNFT={inputNFTValue}
+                  setInputNFT={setInputNFT}
+                  setHash={setHash}
+                  setIsOpenSuccess={setIsOpenSuccessBuy}
+                  setIsOpenError={setIsOpenErrorBuy}
+                />
+              </DialogContent>
+            </Dialog>
           ) : isApprovedNFT ? (
-            <Button
-              type="button"
-              className="py-2 w-full"
-              red
-              onClick={handleSell}
-            >
-              Sell Now
-            </Button>
+            <Dialog open={isOpenSellNFT} onOpenChange={setIsOpenSellNFT}>
+              <DialogTrigger asChild>
+                <Button
+                  disabled={
+                    !isSufficientNFT ||
+                    Math.floor(amountSellDec) === 0 ||
+                    isLoadingSell ||
+                    inputNFTValue === "" ||
+                    data.dmlAddress === null
+                  }
+                  primary={
+                    inputNFTValue !== "" &&
+                    Math.floor(amountSellDec) !== 0 &&
+                    isSufficientNFT &&
+                    !isLoadingSell &&
+                    data.dmlAddress !== null
+                  }
+                  className="w-full py-4"
+                  active={
+                    inputNFTValue === "" ||
+                    !isSufficientNFT ||
+                    Math.floor(amountSellDec) === 0 ||
+                    data.dmlAddress === null ||
+                    isLoadingSell
+                  }
+                  onClick={handleSell}
+                >
+                  Sell now
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="p-0 border-none">
+                <ModalSellNFT
+                  isOpenSellNFT={isOpenSellNFT}
+                  isOpenTransaction={isOpenTransaction}
+                  setIsOpenTransaction={setIsOpenTransaction}
+                  tokenAddress={tokenAddress}
+                  nftAddress={nftAddress}
+                  idNFT={idNFT}
+                  data={data}
+                  routerAddress={routerAddress}
+                  setIsOpenSellNFT={setIsOpenSellNFT}
+                  inputNFT={inputNFTValue}
+                  setInputNFT={setInputNFT}
+                  setHash={setHash}
+                  setIsOpenSuccess={setIsOpenSuccessSell}
+                  setIsOpenError={setIsOpenErrorSell}
+                />
+              </DialogContent>
+            </Dialog>
           ) : (
             <Button
               className="w-full py-2"
@@ -602,42 +681,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         </div>
       </div>
       {data && <ModalWarningRemove isOpenWarning={data?.isDeleted} />}
-      {data && account && (
-        <ModalBuyNFT
-          isOpenBuyNFT={isOpenBuyNFT}
-          isOpenTransaction={isOpenTransaction}
-          setIsOpenTransaction={setIsOpenTransaction}
-          tokenAddress={tokenAddress}
-          nftAddress={nftAddress}
-          idNFT={idNFT}
-          routerAddress={routerAddress}
-          data={data}
-          setIsOpenBuyNFT={setIsOpenBuyNFT}
-          inputNFT={inputNFTValue}
-          setInputNFT={setInputNFT}
-          setHash={setHash}
-          setIsOpenSuccess={setIsOpenSuccessBuy}
-          setIsOpenError={setIsOpenErrorBuy}
-        />
-      )}
-      {data && account && (
-        <ModalSellNFT
-          isOpenSellNFT={isOpenSellNFT}
-          isOpenTransaction={isOpenTransaction}
-          setIsOpenTransaction={setIsOpenTransaction}
-          tokenAddress={tokenAddress}
-          nftAddress={nftAddress}
-          idNFT={idNFT}
-          data={data}
-          routerAddress={routerAddress}
-          setIsOpenSellNFT={setIsOpenSellNFT}
-          inputNFT={inputNFTValue}
-          setInputNFT={setInputNFT}
-          setHash={setHash}
-          setIsOpenSuccess={setIsOpenSuccessSell}
-          setIsOpenError={setIsOpenErrorSell}
-        />
-      )}
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

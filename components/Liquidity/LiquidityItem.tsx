@@ -75,6 +75,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
       console.log("No account and DML");
     }
   };
+  console.log(liquidity);
+
   return (
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
       <div className="flex p-4 border-b bg-shader_600 gap-x-3 border-shader_500">
@@ -105,7 +107,9 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             )}
           </div>
 
-          <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
+          <p className="text-sm font-semibold text-primary_300">
+            {liquidity?.metadata?.symbol || "BJG"}/ETH
+          </p>
         </div>
       </div>
       <div className="p-4 font-semibold bg-shader_700">

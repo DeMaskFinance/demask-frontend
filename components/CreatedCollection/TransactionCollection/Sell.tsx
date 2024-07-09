@@ -33,6 +33,7 @@ const Sell = () => {
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
   const {
     ROUTER_721: routerAddress,
@@ -97,9 +98,11 @@ const Sell = () => {
     if (data && amountTokenSell) {
       setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
       setTotalPay(amountTokenSell - totalFee);
+      setTotalPrice(amountTokenSell * (1 - slippage / 100));
     } else {
       setAmountSellDec(0);
       setTotalPay(0);
+      setTotalPrice(0);
     }
   }, [data, slippage, amountTokenSell, totalFee]);
   console.log(totalPay);
@@ -116,7 +119,7 @@ const Sell = () => {
     <Fragment>
       {account ? (
         <Fragment>
-          {isLoading ? (
+          {isLoading || isFetching ? (
             <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
               <SkeletonItemTransaction />
             </div>
@@ -147,7 +150,7 @@ const Sell = () => {
                         ) : (
                           <FormatNumber
                             number={(
-                              amountTokenSell /
+                              totalPrice /
                               1e18 /
                               debouncedIdNFT.length
                             ).toString()}
@@ -194,27 +197,51 @@ const Sell = () => {
                     Approve NFT
                   </Button>
                 ) : (
-                  <Button
-                    disabled={
-                      idNFT.length === 0 ||
-                      Math.floor(amountSellDec) === 0 ||
-                      isLoadingSell
-                    }
-                    primary={
-                      idNFT.length !== 0 &&
-                      Math.floor(amountSellDec) !== 0 &&
-                      !isLoadingSell
-                    }
-                    className="w-full py-4"
-                    active={
-                      idNFT.length === 0 ||
-                      Math.floor(amountSellDec) === 0 ||
-                      isLoadingSell
-                    }
-                    onClick={handleSell}
-                  >
-                    SELL {idNFT.length} NFTs
-                  </Button>
+                  <Dialog open={isOpenSellNFT} onOpenChange={setIsOpenSellNFT}>
+                    <DialogTrigger asChild>
+                      <Button
+                        disabled={
+                          idNFT.length === 0 ||
+                          Math.floor(amountSellDec) === 0 ||
+                          isLoadingSell
+                        }
+                        primary={
+                          idNFT.length !== 0 &&
+                          Math.floor(amountSellDec) !== 0 &&
+                          !isLoadingSell
+                        }
+                        className="w-full py-4"
+                        active={
+                          idNFT.length === 0 ||
+                          Math.floor(amountSellDec) === 0 ||
+                          isLoadingSell
+                        }
+                        onClick={handleSell}
+                      >
+                        SELL {idNFT.length} NFTs
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className=" p-0 border-none">
+                      <ModalSellNFT
+                        isOpenSellNFT={isOpenSellNFT}
+                        isOpenTransaction={isOpenTransaction}
+                        setIsOpenTransaction={setIsOpenTransaction}
+                        tokenAddress={nativeAddress}
+                        nftAddress={collectionAddress}
+                        idNFT={debouncedIdNFT}
+                        routerAddress={routerAddress}
+                        /* 
+          // @ts-ignore */
+                        data={dataFake}
+                        setIsOpenSellNFT={setIsOpenSellNFT}
+                        inputNFT={""}
+                        setInputNFT={setIdNFT}
+                        setHash={setHash}
+                        setIsOpenSuccess={setIsOpenSuccessSell}
+                        setIsOpenError={setIsOpenErrorSell}
+                      />
+                    </DialogContent>
+                  </Dialog>
                 )}
               </div>
             </div>
@@ -233,26 +260,6 @@ const Sell = () => {
             <ModalWallet />
           </DialogContent>
         </Dialog>
-      )}
-      {data && account && (
-        <ModalSellNFT
-          isOpenSellNFT={isOpenSellNFT}
-          isOpenTransaction={isOpenTransaction}
-          setIsOpenTransaction={setIsOpenTransaction}
-          tokenAddress={nativeAddress}
-          nftAddress={collectionAddress}
-          idNFT={debouncedIdNFT}
-          routerAddress={routerAddress}
-          /* 
-          // @ts-ignore */
-          data={dataFake}
-          setIsOpenSellNFT={setIsOpenSellNFT}
-          inputNFT={""}
-          setInputNFT={setIdNFT}
-          setHash={setHash}
-          setIsOpenSuccess={setIsOpenSuccessSell}
-          setIsOpenError={setIsOpenErrorSell}
-        />
       )}
       <ModalTransation
         isOpenTransation={isOpenTransaction}

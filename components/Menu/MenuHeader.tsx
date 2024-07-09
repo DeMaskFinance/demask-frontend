@@ -73,6 +73,7 @@ const MenuHeader = () => {
                     href={`${item.url}`}
                     className={`flex items-center gap-x-1  ${
                       isMatchingUrl &&
+                      item.subMenu === subMenuRewards &&
                       "text-primary_400 hover:text-primary_400  active:text-primary_400"
                     }`}
                   >

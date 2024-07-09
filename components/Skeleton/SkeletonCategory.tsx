@@ -42,12 +42,12 @@ const SkeletonCategory = () => {
   );
 };
 const SkeletonItemTransaction = () => {
-  const array = Array.from({ length: 4 }, (_, index) => index);
+  const array = Array.from({ length: 8 }, (_, index) => index);
   return (
     <Fragment>
       {array.map((item, index) => (
         <div
-          className="w-full h-full min-w-[90px] min-h-[154px] rounded-lg bg-slate-700  animate-pulse"
+          className="w-full h-full min-w-[90px] min-h-[124px] rounded-lg bg-slate-700  animate-pulse"
           key={index}
         ></div>
       ))}

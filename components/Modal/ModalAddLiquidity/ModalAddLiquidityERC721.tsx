@@ -125,7 +125,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         setIsSufficientToken(false);
       }
     }
-  }, [idNFT, inputToken, data]);
+  }, [idNFT, inputToken, data, bigNumberBalance]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(

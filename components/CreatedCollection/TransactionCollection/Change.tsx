@@ -107,28 +107,6 @@ const Change = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  // const handleChoiceNFTInput = (item: any) => {
-  //   const isExist = idNFTInput.includes(Number(item.nftID));
-  //   if (isExist) {
-  //     const arr = idNFTInput.filter((itemArr) => {
-  //       return itemArr !== Number(item.nftID);
-  //     });
-  //     setIdNFTInput(arr);
-  //   } else {
-  //     setIdNFTInput([...idNFTInput, Number(item.nftID)]);
-  //   }
-  // };
-  // const handleChoiceNFTOutput = (item: any) => {
-  //   const isExist = idNFTOutput.includes(Number(item.nftID));
-  //   if (isExist) {
-  //     const arr = idNFTOutput.filter((itemArr) => {
-  //       return itemArr !== Number(item.nftID);
-  //     });
-  //     setIdNFTOutput(arr);
-  //   } else {
-  //     setIdNFTOutput([...idNFTOutput, Number(item.nftID)]);
-  //   }
-  // };
   const queryClient = useQueryClient();
 
   const handleSwap = async () => {
@@ -171,7 +149,7 @@ const Change = () => {
       <div className="my-2">
         {account ? (
           <Fragment>
-            {isInputDataLoading ? (
+            {isInputDataLoading || isInputDataFetching ? (
               <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
                 <SkeletonItemTransaction />
               </div>
@@ -213,7 +191,7 @@ const Change = () => {
         <p className="text-sm text-shader_200">Pick your items to receive</p>
       </div>
       <div className="my-2 pb-14">
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
             <SkeletonItemTransaction />
           </div>

@@ -44,6 +44,38 @@ interface ItemListProps {
   fetchNextPage: any;
   hasNextPage: boolean | undefined;
 }
+interface NFTItem {
+  nftID: string | number;
+  nftAddress: string;
+}
+interface TradeProps {
+  item: NFTItem;
+  nativeAddress: string;
+}
+const Trade: React.FC<TradeProps> = ({ item, nativeAddress }) => {
+  return (
+    <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
+      <Link
+        href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
+        className="basis-1/2"
+      >
+        <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
+          <PlusIcon width={20} height={20} />
+          <p>Add</p>
+        </Button>
+      </Link>
+      <Link
+        href={`/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
+        className="basis-1/2"
+      >
+        <Button className="flex items-center w-full py-3 gap-x-2" primary>
+          <SwapIcon width={20} height={20} className="fill-shader_700" />
+          <p>Swap</p>
+        </Button>
+      </Link>
+    </div>
+  );
+};
 export const ItemList: React.FC<ItemListProps> = ({
   data,
   isSuccess,
@@ -138,41 +170,9 @@ export const ItemList: React.FC<ItemListProps> = ({
                             )}
                           </div>
                         </div>
-                        <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
-                          <Link
-                            href={
-                              item.type === "erc1155"
-                                ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                                : `/trade/erc721/${item.nftAddress}?tab=pool`
-                            }
-                            className="basis-1/2"
-                          >
-                            <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
-                              <PlusIcon width={20} height={20} />
-                              <p>Add</p>
-                            </Button>
-                          </Link>
-                          <Link
-                            href={
-                              item.type === "erc1155"
-                                ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-                                : `/trade/erc721/${item.nftAddress}?tab=buy`
-                            }
-                            className="basis-1/2"
-                          >
-                            <Button
-                              className="flex items-center w-full py-3 gap-x-2"
-                              primary
-                            >
-                              <SwapIcon
-                                width={20}
-                                height={20}
-                                className="fill-shader_700"
-                              />
-                              <p>Swap</p>
-                            </Button>
-                          </Link>
-                        </div>
+                        {item.type === "erc1155" && (
+                          <Trade nativeAddress={nativeAddress} item={item} />
+                        )}
                       </div>
                       <div className="absolute flex items-center justify-between w-full px-2 transition-all duration-150 top-1 opacity-60 group-hover:opacity-100">
                         <div className="flex items-center gap-x-1">
@@ -193,17 +193,15 @@ export const ItemList: React.FC<ItemListProps> = ({
                             </div>
                           </DialogTrigger>
                           <DialogContent className="max-w-6xl p-0 border bg-shader_800 border-shader_500">
-                            <DialogHeader>
-                              <DialogDescription>
-                                {selectedItem && (
-                                  <ModalDetail
-                                    type={selectedItem?.type}
-                                    idNFT={selectedItem?.nftID}
-                                    nftAddress={selectedItem?.nftAddress}
-                                  />
-                                )}
-                              </DialogDescription>
-                            </DialogHeader>
+                            <DialogDescription>
+                              {selectedItem && (
+                                <ModalDetail
+                                  type={selectedItem?.type}
+                                  idNFT={selectedItem?.nftID}
+                                  nftAddress={selectedItem?.nftAddress}
+                                />
+                              )}
+                            </DialogDescription>
                           </DialogContent>
                         </Dialog>
                       </div>

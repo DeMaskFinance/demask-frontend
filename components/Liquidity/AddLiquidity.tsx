@@ -164,7 +164,7 @@ export default function AddLiquidity() {
         setIsSufficientToken(false);
       }
     }
-  }, [inputNFT, inputToken, data]);
+  }, [inputNFT, inputToken, data, bigNumberBalance]);
 
   useEffect(() => {
     if (tokenAddress) {

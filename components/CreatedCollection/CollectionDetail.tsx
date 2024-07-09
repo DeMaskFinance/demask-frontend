@@ -3,8 +3,10 @@ import {
   EditIcon,
   EtherIcon,
   EyeIcon,
+  PlusIcon,
   SeeMoreIcon,
   StarIcon,
+  SwapIcon,
   TickSuccessIcon,
   TwitterIcon,
   WebsiteIcon,
@@ -81,9 +83,11 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
     }
   };
   const handleDialogClose = () => setIsDialogOpen(false);
+  console.log(data);
+
   return (
     <section className="bg-shader_700 p-4 w-full">
-      <div className="justify-between  3xl:flex ">
+      <div className="justify-between  3xl:flex gap-2">
         <div className="text-xs ">
           <div className="flex gap-x-1">
             <div
@@ -219,7 +223,35 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                   </Button>
                 </Link>
               )}
-
+              {data?.type === "erc721" && (
+                <div className="flex gap-x-2 text-white text-sm">
+                  <Link
+                    href={`/trade/erc721/${collectionAddress}?tab=pool`}
+                    className="basis-1/2"
+                  >
+                    <Button className="flex items-center w-full h-10 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400 px-4 ">
+                      <PlusIcon width={20} height={20} />
+                      <p>Add</p>
+                    </Button>
+                  </Link>
+                  <Link
+                    href={`/trade/erc721/${collectionAddress}`}
+                    className="basis-1/2"
+                  >
+                    <Button
+                      className="flex items-center w-full h-10 gap-x-2 px-4"
+                      primary
+                    >
+                      <SwapIcon
+                        width={20}
+                        height={20}
+                        className="fill-shader_700"
+                      />
+                      <p>Swap</p>
+                    </Button>
+                  </Link>
+                </div>
+              )}
               <p className="w-[1px] h-4 bg-shader_400"></p>
               <div className="flex gap-x-2">
                 {data?.dmlAddress && (
@@ -281,7 +313,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             </p>
             <div className="flex items-center text-lg font-bold gap-x-1">
               <FormatNumber
-                number={(+data?.reserveToken * 2).toString() || "0"}
+                number={(+data?.reserveToken || 0 * 2).toString() || "0"}
               />
               <EtherIcon width={16} height={16} />
             </div>

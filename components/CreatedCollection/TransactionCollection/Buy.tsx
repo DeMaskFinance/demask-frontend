@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 import useDebounce from "@/hooks/useDebounce";
+import useFee from "@/hooks/useFee";
 const Buy = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -28,6 +29,7 @@ const Buy = () => {
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
   const [amountInMax, setAmountInMax] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [loadingPrice, setLoadingPrice] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
@@ -72,24 +74,35 @@ const Buy = () => {
     routerAddress,
     true
   );
-
+  const { totalFee } = useFee(
+    amountTokenBuy,
+    dmlToken,
+    wallet,
+    account,
+    rpc,
+    demask.FEE_MANAGER,
+    true
+  );
   useEffect(() => {
     if (Number(amountInMax) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [account, amountInMax, data, isOpenBuyNFT]);
+  }, [account, amountInMax, data, bigNumberBalance]);
   useEffect(() => {
     if (data && amountTokenBuy) {
       setLoadingPrice(true);
       setAmountInMax(amountTokenBuy * (1 + slippage / 100));
+      setTotalPrice(+amountTokenBuy + +totalFee);
     } else {
       // setAmountInMax(0);
       setLoadingPrice(false);
+      setTotalPrice(0);
     }
     setLoadingPrice(false);
-  }, [data, slippage, amountTokenBuy]);
+  }, [data, slippage, amountTokenBuy, totalFee]);
+  console.log(totalPrice);
 
   const handleBuy = () => {
     setIsOpenBuyNFT(true);
@@ -99,11 +112,11 @@ const Buy = () => {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
   };
-  console.log(amountTokenBuy, debouncedIdNFT.length, idNFT, debouncedIdNFT);
+  console.log(data);
 
   return (
     <div>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
           <SkeletonItemTransaction />
         </div>
@@ -150,8 +163,8 @@ const Buy = () => {
                     ) : (
                       <FormatNumber
                         number={
-                          amountTokenBuy
-                            ? (amountTokenBuy / 1e18 / idNFT.length).toString()
+                          totalPrice
+                            ? (totalPrice / 1e18 / idNFT.length).toString()
                             : "0"
                         }
                       />
@@ -190,30 +203,54 @@ const Buy = () => {
                 </DialogContent>
               </Dialog>
             ) : (
-              <Button
-                disabled={
-                  idNFT.length === 0 ||
-                  isLoadingBuy ||
-                  !isSufficientTokenBuy ||
-                  Math.floor(amountInMax) === 0
-                }
-                primary={
-                  idNFT.length !== 0 &&
-                  isSufficientTokenBuy &&
-                  Math.floor(amountInMax) !== 0 &&
-                  !isLoadingBuy
-                }
-                className="w-full py-4"
-                active={
-                  idNFT.length === 0 ||
-                  isLoadingBuy ||
-                  !isSufficientTokenBuy ||
-                  Math.floor(amountInMax) === 0
-                }
-                onClick={handleBuy}
-              >
-                BUY {idNFT.length} NFTs
-              </Button>
+              <Dialog open={isOpenBuyNFT} onOpenChange={setIsOpenBuyNFT}>
+                <DialogTrigger asChild>
+                  <Button
+                    disabled={
+                      idNFT.length === 0 ||
+                      isLoadingBuy ||
+                      !isSufficientTokenBuy ||
+                      Math.floor(amountInMax) === 0
+                    }
+                    primary={
+                      idNFT.length !== 0 &&
+                      isSufficientTokenBuy &&
+                      Math.floor(amountInMax) !== 0 &&
+                      !isLoadingBuy
+                    }
+                    className="w-full py-4"
+                    active={
+                      idNFT.length === 0 ||
+                      isLoadingBuy ||
+                      !isSufficientTokenBuy ||
+                      Math.floor(amountInMax) === 0
+                    }
+                    onClick={handleBuy}
+                  >
+                    BUY {idNFT.length} NFTs
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="p-0 border-none">
+                  <ModalBuyNFT
+                    isOpenBuyNFT={isOpenBuyNFT}
+                    isOpenTransaction={isOpenTransaction}
+                    setIsOpenTransaction={setIsOpenTransaction}
+                    tokenAddress={nativeAddress}
+                    nftAddress={collectionAddress}
+                    idNFT={debouncedIdNFT}
+                    routerAddress={routerAddress}
+                    /* 
+          // @ts-ignore */
+                    data={dataFake}
+                    setIsOpenBuyNFT={setIsOpenBuyNFT}
+                    inputNFT={""}
+                    setInputNFT={setIdNFT}
+                    setHash={setHash}
+                    setIsOpenSuccess={setIsOpenSuccessBuy}
+                    setIsOpenError={setIsOpenErrorBuy}
+                  />
+                </DialogContent>
+              </Dialog>
             )}
             {!isSufficientTokenBuy && account && (
               <p className="text-xs text-red" key="Tokenbalance">
@@ -224,26 +261,6 @@ const Buy = () => {
         </div>
       ) : (
         <p className="mt-4">No data available.</p>
-      )}
-      {data && account && (
-        <ModalBuyNFT
-          isOpenBuyNFT={isOpenBuyNFT}
-          isOpenTransaction={isOpenTransaction}
-          setIsOpenTransaction={setIsOpenTransaction}
-          tokenAddress={nativeAddress}
-          nftAddress={collectionAddress}
-          idNFT={debouncedIdNFT}
-          routerAddress={routerAddress}
-          /* 
-          // @ts-ignore */
-          data={dataFake}
-          setIsOpenBuyNFT={setIsOpenBuyNFT}
-          inputNFT={""}
-          setInputNFT={setIdNFT}
-          setHash={setHash}
-          setIsOpenSuccess={setIsOpenSuccessBuy}
-          setIsOpenError={setIsOpenErrorBuy}
-        />
       )}
       <ModalSuccess
         isOpenSuccess={isOpenSuccessBuy}
