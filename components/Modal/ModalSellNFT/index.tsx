@@ -142,6 +142,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     }
   }, [data, slippage, amountTokenSell, totalFee]);
   const queryClient = useQueryClient();
+  console.log(totalPay);
 
   useEffect(() => {
     const load = setInterval(() => {
@@ -269,7 +270,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                     <FormatNumber
                       number={Number(
                         divideByDecimal(
-                          amountTokenSell.toString(),
+                          amountSellDec.toString(),
                           data.tokenDecimals
                         )
                       ).toString()}
@@ -364,9 +365,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                 <p className="text-primary_200">Total Receipts</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber
-                    number={Number(
-                      divideByDecimal(totalPay.toString(), data.tokenDecimals)
-                    ).toString()}
+                    number={divideByDecimal(totalPay, data.tokenDecimals)}
                   />
                   <EtherIcon width={14} height={14} />
                 </div>

@@ -78,6 +78,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [inputNFT, setInputNFT] = useState<string>("");
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
   const [amountInMax, setAmountInMax] = useState<number>(0);
+  const [totalPay, setTotalPay] = useState<number>(0);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -168,9 +169,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     if (inputNFTValue && data && amountTokenSell && amountTokenBuy) {
       setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
       setAmountInMax(amountTokenBuy * (1 + slippage / 100));
+      setTotalPay(amountTokenSell - totalFee);
     } else {
       setAmountSellDec(0);
       setAmountInMax(0);
+      setTotalPay(0);
     }
   }, [slippage, amountTokenSell, totalFee, amountTokenBuy]);
 
@@ -518,9 +521,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   ) : (
                     <FormatNumber
                       number={divideByDecimal(
-                        activeChoice === "Buy"
-                          ? amountTokenBuy
-                          : amountTokenSell,
+                        activeChoice === "Buy" ? amountTokenBuy : totalPay,
                         data.tokenDecimals
                       )}
                     />

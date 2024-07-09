@@ -263,7 +263,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                     <FormatNumber
                       number={Number(
                         divideByDecimal(
-                          amountTokenBuy.toString(),
+                          amountInMax.toString(),
                           data.tokenDecimals
                         )
                       ).toString()}

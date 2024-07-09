@@ -22,6 +22,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import useDebounce from "@/hooks/useDebounce";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -40,6 +41,7 @@ const Sell = () => {
   } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
+  const [totalPay, setTotalPay] = useState<number>(0);
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
     queryFn: async () => {
@@ -94,11 +96,13 @@ const Sell = () => {
   useEffect(() => {
     if (data && amountTokenSell) {
       setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
+      setTotalPay(amountTokenSell - totalFee);
     } else {
       setAmountSellDec(0);
+      setTotalPay(0);
     }
-  }, [data, slippage, amountTokenSell]);
-  console.log(data);
+  }, [data, slippage, amountTokenSell, totalFee]);
+  console.log(totalPay);
 
   const handleSell = () => {
     setIsOpenSellNFT(true);
@@ -161,7 +165,10 @@ const Sell = () => {
                             <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
                           ) : (
                             <FormatNumber
-                              number={(amountTokenSell / 1e18).toString()}
+                              number={divideByDecimal(
+                                totalPay.toString(),
+                                "18"
+                              )}
                             />
                           )}
                           <EtherIcon width={16} height={16} />

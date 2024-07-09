@@ -24,7 +24,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: `/trade`,
+        destination: `/explore`,
         permanent: true,
       },
     ];
