@@ -3,7 +3,7 @@ import React from "react";
 const Guidelines = () => {
   return (
     <div>
-      <h2 className="title">Logo Guidelines</h2>
+      <h2 className="title text-whitet">Logo Guidelines</h2>
       <div className="font-normal">
         <p className="my-6">
           To ensure the logo remains clear and legible in all uses, there is to
@@ -11,7 +11,7 @@ const Guidelines = () => {
           and other elements. This area is to be equivalent to the full height
           and width of the logomark. Always use more where possible.
         </p>
-        <p>
+        <p className="text-white font-semibold">
           To maintain consistency in the logo usage, do not do any of the
           following with the logo:
         </p>
