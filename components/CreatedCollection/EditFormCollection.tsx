@@ -43,7 +43,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required").max(50),
-    description: yup.string().required("Description is a required").max(1000),
+    description: yup.string().max(1000).nullable(),
     url: yup.string().url().nullable(),
     collaborator: yup
       .string()
@@ -67,7 +67,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     twitter: yup
       .string()
       .max(200)
-      .matches(/^(https:\/\/twitter.com\/).+$/, {
+      .matches(/^(https:\/\/x.com\/).+$/, {
         message: "Invalid twitter url",
         excludeEmptyString: true,
       })
@@ -75,10 +75,13 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
     facebook: yup
       .string()
       .max(200)
-      .matches(/^(https:\/\/facebook.com\/).+$/, {
-        message: "Invalid facebook url",
-        excludeEmptyString: true,
-      })
+      .matches(
+        /(?:https?:\/\/)?(?:www\.)?facebook\.com\/.(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-\.]*)/,
+        {
+          message: "Invalid facebook url",
+          excludeEmptyString: true,
+        }
+      )
       .nullable(),
     discord: yup
       .string()
@@ -114,13 +117,13 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
       icon: <TwitterIcon width={20} height={20} />,
       title: "Twitter",
       name: "twitter",
-      placeHolder: "https://twitter.com/",
+      placeHolder: "https://x.com/",
       value: 612,
     },
     {
       icon: <FacebookIcon width={20} height={20} />,
       title: "Facebook",
-      name: "facbook",
+      name: "facebook",
       placeHolder: "https://facebook.com/",
       value: 53342,
     },
@@ -164,6 +167,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
   const onSubmit = async (values: any) => {
     // Handle form submission
+    console.log(values);
     try {
       await collectionService.updateCollection(
         {
@@ -274,10 +278,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   htmlFor="description"
                   className={`title_label flex justify-between`}
                 >
-                  <div className="flex">
-                    Description
-                    <p className="text-primary_400">*</p>
-                  </div>
+                  <div className="flex">Description</div>
                   <p className="font-normal text-shader_300 text-sm">
                     {values.description?.length | 0}/1000
                   </p>

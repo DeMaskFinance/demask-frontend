@@ -3,10 +3,12 @@ import {
   EditIcon,
   EtherIcon,
   EyeIcon,
+  FacebookIcon,
   PlusIcon,
   SeeMoreIcon,
   StarIcon,
   SwapIcon,
+  TeleIcon,
   TickSuccessIcon,
   TwitterIcon,
   WebsiteIcon,
@@ -83,7 +85,12 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
     }
   };
   const handleDialogClose = () => setIsDialogOpen(false);
-  console.log(data);
+  const socialIcons = [
+    { url: data?.socials?.website, Icon: WebsiteIcon },
+    { url: data?.socials?.twitter, Icon: TwitterIcon },
+    { url: data?.socials?.facebook, Icon: FacebookIcon },
+    { url: data?.socials?.telegram, Icon: TeleIcon },
+  ];
 
   return (
     <section className="bg-shader_700 p-4 w-full">
@@ -253,33 +260,22 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                 </div>
               )}
               <p className="w-[1px] h-4 bg-shader_400"></p>
-              <div className="flex gap-x-2">
+              <div className="flex items-center gap-x-2">
                 {data?.dmlAddress && (
                   <Link
                     href={`${demask.urltxHash}address/${data.dmlAddress}`}
                     target="_blank"
-                    className="mr-3"
                   >
                     <LogoIconCard chainId={chainId} width={18} height={18} />
                   </Link>
                 )}
-                {data?.socials?.website && (
-                  <Link
-                    href={data.socials?.website}
-                    target="_blank"
-                    className="mr-3"
-                  >
-                    <WebsiteIcon width={18} height={18} />
-                  </Link>
-                )}
-                {data?.socials?.twitter && (
-                  <Link
-                    href={data.socials?.twitter}
-                    target="_blank"
-                    className="mr-3"
-                  >
-                    <TwitterIcon width={18} height={18} />
-                  </Link>
+                {socialIcons.map(
+                  ({ url, Icon }, index) =>
+                    url && (
+                      <Link key={index} href={url} target="_blank" className="">
+                        <Icon width={18} height={18} />
+                      </Link>
+                    )
                 )}
                 <SeeMoreIcon />
               </div>

@@ -13,6 +13,7 @@ import Copy from "../Common/Copy";
 import {
   EditIcon,
   EyeIcon,
+  FacebookIcon,
   SeeMoreIcon,
   TeleIcon,
   TwitterIcon,
@@ -89,7 +90,12 @@ const Profile = () => {
     : new Date();
   const monthName = fullTime.toLocaleString("default", { month: "long" });
   const yearName = fullTime.toLocaleString("default", { year: "numeric" });
-
+  const socialIcons = [
+    { url: profile?.socials?.website, Icon: WebsiteIcon },
+    { url: profile?.socials?.twitter, Icon: TwitterIcon },
+    { url: profile?.socials?.facebook, Icon: FacebookIcon },
+    { url: profile?.socials?.telegram, Icon: TeleIcon },
+  ];
   return (
     <div className="">
       <section>
@@ -145,20 +151,13 @@ const Profile = () => {
                 </DialogContent>
               </Dialog>
               <p className="w-[1px] h-4 bg-shader_400"></p>
-              {profile?.socials?.website && (
-                <a href={profile?.socials?.website} target="_blank">
-                  <WebsiteIcon width={18} height={18} />
-                </a>
-              )}
-              {profile?.socials?.twitter && (
-                <a href={profile.socials?.twitter} target="_blank">
-                  <TwitterIcon width={18} height={18} />
-                </a>
-              )}
-              {profile?.socials?.telegram && (
-                <a href={profile.socials?.telegram} target="_blank">
-                  <TeleIcon width={18} height={18} />
-                </a>
+              {socialIcons.map(
+                ({ url, Icon }, index) =>
+                  url && (
+                    <Link key={index} href={url} target="_blank" className="">
+                      <Icon width={18} height={18} />
+                    </Link>
+                  )
               )}
               <SeeMoreIcon />
             </div>

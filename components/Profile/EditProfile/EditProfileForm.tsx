@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
   twitter: yup
     .string()
     .max(200)
-    .matches(/^(https:\/\/twitter.com\/).+$/, {
+    .matches(/^(https:\/\/x.com\/).+$/, {
       message: "Invalid twitter url",
       excludeEmptyString: true,
     })
@@ -29,10 +29,13 @@ const validationSchema = yup.object().shape({
   facebook: yup
     .string()
     .max(200)
-    .matches(/^(https:\/\/facebook.com\/).+$/, {
-      message: "Invalid facebook url",
-      excludeEmptyString: true,
-    })
+    .matches(
+      /(?:https?:\/\/)?(?:www\.)?facebook\.com\/.(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-\.]*)/,
+      {
+        message: "Invalid facebook url",
+        excludeEmptyString: true,
+      }
+    )
     .nullable(),
   discord: yup
     .string()
@@ -70,7 +73,7 @@ export default function EditProfileForm() {
       icon: <TwitterIcon width={20} height={20} />,
       title: "Twitter",
       name: "twitter",
-      placeHolder: "https://twitter.com/",
+      placeHolder: "https://x.com/",
       value: profile?.socials?.twitter,
     },
     {
