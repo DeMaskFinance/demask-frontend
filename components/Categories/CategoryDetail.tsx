@@ -63,7 +63,7 @@ const CategoryDetail = ({ label }: { label: string }) => {
                 {page?.data?.map((item: any, index: number) => (
                   <div
                     key={index}
-                    className="relative overflow-hidden border rounded-lg border-shader_500 hover:border-shader_400"
+                    className="relative overflow-hidden rounded-lg border-shader_500 hover:border-shader_400"
                   >
                     <NFTCategory item={item} />
                   </div>

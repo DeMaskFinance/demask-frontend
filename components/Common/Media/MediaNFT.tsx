@@ -17,7 +17,6 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
   hideAudio,
   zoom,
 }) => {
-  const [loaded, setLoaded] = useState(false);
   return (
     <>
       {data?.metadata ? (
@@ -32,25 +31,16 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 sizes="(max-width: 770px) 100vw"
                 className={`w-full  h-full transition-transform duration-150 overflow-hidden lg:max-h-[calc(100vh-326px)] object-cover aspect-square ${
                   zoom ? "group-hover:scale-[1.05]" : ""
-                } ${!loaded ? "opacity-0" : "opacity-100"}`}
+                } `}
                 blurDataURL="/placeHolderIMG.png"
                 onError={(event: any) => {
                   event.target.srcset =
                     "https://file.demask.finance/e46abbd0950de661583d93ebed957ec6.png";
                 }}
                 unoptimized
-                onLoadingComplete={() => setLoaded(true)}
-                // onLoad={(e) => {
-                //   setLoading(false);
-                // }}
                 placeholder="blur"
                 loading="lazy"
               />
-              {!loaded && (
-                <div
-                  className={`w-full h-full rounded-lg animate-pulse bg-slate-700  `}
-                ></div>
-              )}
             </div>
           )}
           {!data.metadata?.image && data.metadata?.animation_url && (

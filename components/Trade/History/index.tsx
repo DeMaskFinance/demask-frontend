@@ -58,7 +58,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
                 NFT AMOUNT
               </th>
               <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                PRICE
+                AVG PRICE
               </th>
               <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                 TOTAL

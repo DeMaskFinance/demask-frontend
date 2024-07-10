@@ -1,9 +1,9 @@
 import MediaNFT from "@/components/Common/Media/MediaNFT";
-import { EtherIcon, LoadingIcon } from "@/components/Icons";
+import { EtherIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
 import { getColorType } from "@/libs/utils/getColorType";
-import Image from "next/image";
+import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
 import React, { useContext } from "react";
 interface TransactionItemProps {
@@ -14,6 +14,42 @@ interface TransactionItemProps {
 const skeleton = (
   <div className="w-[100%] h-8 bg-slate-700 animate-pulse mr-2 rounded-xl" />
 );
+
+const ListNFT = () => {
+  const item = {
+    metadata: {
+      image: "https://file.demask.finance/dfcc08b045228e0adb97263af08eb0b9.png",
+    },
+  };
+  return (
+    <div className="grid grid-cols-3 w-40 gap-1 bg-shader_400 p-1 rounded-lg max-h-32 overflow-y-scroll">
+      <div className="rounded-lg overflow-hidden aspect-square">
+        <MediaNFT data={item} isControls={false} zoom />
+      </div>
+      <div className="rounded-lg overflow-hidden">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+      <div className="rounded-lg overflow-hidden">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+      <div className="rounded-lg overflow-hidden">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+      <div className="rounded-lg overflow-hidden aspect-square">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+      <div className="rounded-lg overflow-hidden">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+      <div className="rounded-lg overflow-hidden">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+      <div className="rounded-lg overflow-hidden">
+        <MediaNFT data={item} isControls={false} />
+      </div>
+    </div>
+  );
+};
 const TransactionItem: React.FC<TransactionItemProps> = ({
   data,
   isFetching,
@@ -33,16 +69,27 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
               href={`${demask.urltxHash}tx/${item.transactionHash}`}
               className="relative group"
             >
-              <span className="flex items-center gap-x-2">
-                <span className="flex-shrink-0 block">
-                  <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
-                    <MediaNFT data={item} isControls={false} />
-                  </div>
-                </span>
+              <div className="flex items-center gap-x-2 ">
+                <div className="flex-shrink-0 block relative ">
+                  <Tippy
+                    interactive
+                    render={(attrs) => (
+                      <div className="" tabIndex={-1} {...attrs}>
+                        <div className=" p-1 w-fit block rounded-md">
+                          <ListNFT />
+                        </div>
+                      </div>
+                    )}
+                  >
+                    <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
+                      <MediaNFT data={item} isControls={false} />
+                    </div>
+                  </Tippy>
+                </div>
                 <span className="line-clamp-1 truncate  max-w-[133px] block">
                   {isFetching ? skeleton : item.metadata?.name}
                 </span>
-              </span>
+              </div>
             </Link>
           </td>
           <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] ">

@@ -117,7 +117,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                 {page?.data?.map((item: any, index: number) => (
                   <div
                     key={index}
-                    className="relative overflow-hidden border rounded-lg border-shader_500 hover:border-shader_400"
+                    className="relative overflow-hidden rounded-lg border-shader_500 hover:border-shader_400"
                   >
                     <div className="relative items-center text-sm transition-all rounded-md cursor-pointer group lg:text-base hover:shadow-home">
                       <div className="relative overflow-hidden aspect-square">
@@ -125,7 +125,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                           <MediaNFT data={item} isControls={false} hover zoom />
                         </div>
                       </div>
-                      <div className="relative w-full p-3 rounded-b-lg bg-shader_700 group-hover:bg-shader_600">
+                      <div className="relative w-full p-3 rounded-b-lg bg-shader_700 group-hover:bg-shader_600 border-x-[1px] border-b-[1px] border-shader_500">
                         <Link
                           href={`/collection/${item.nftAddress}`}
                           className="flex-wrap max-w-full text-xs font-semibold hover:underline text-primary_300 line-clamp-1 hover:underline-offset-1"

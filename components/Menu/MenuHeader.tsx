@@ -1,4 +1,3 @@
-import AccountContext from "@/context/AccountContext";
 import React, { useContext, useState } from "react";
 import { ActiveLink } from "../Link";
 import Search from "../Search/SearchHeader";
@@ -14,7 +13,6 @@ const subMenuRewards = [
 const subMenuOthers = [
   { id: 1, name: "Create", url: "/create" },
   { id: 2, name: "Category", url: "/category" },
-  // { id: 2, name: "Category", url: "/category" },
 ];
 const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);

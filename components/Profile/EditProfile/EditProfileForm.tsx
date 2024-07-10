@@ -232,7 +232,7 @@ export default function EditProfileForm() {
                 <ErrorMessage
                   name={item.name}
                   component="div"
-                  className="text-xs text-red"
+                  className="text-xs text-red -mt-2 mb-1"
                 />
               </div>
             ))}

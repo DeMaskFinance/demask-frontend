@@ -155,7 +155,9 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                 <div className="flex items-center text-lg font-bold title whitespace-nowrap gap-x-1">
                   <LogoIconCard chainId={chainId} />
                   {data?.name}
-                  <TickSuccessIcon width={20} height={19} />
+                  {data?.isVerified && (
+                    <TickSuccessIcon width={20} height={19} />
+                  )}
                   <Button
                     third
                     className="flex items-center px-3 h-[28px] text-sm gap-x-1"

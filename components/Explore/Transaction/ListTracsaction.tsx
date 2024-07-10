@@ -25,7 +25,7 @@ function ListTracsaction() {
         return res;
       },
 
-      refetchInterval: 60000,
+      // refetchInterval: 60000,
     });
 
   const handleSort = (field: string) => {
@@ -53,7 +53,7 @@ function ListTracsaction() {
             </Link>
           )}
         </div>
-        <div className=" overflow-x-auto">
+        <div className=" overflow-x-auto md:overflow-visible">
           <table className="w-full text-left border-collapse min-h-[550px]">
             <thead className=" bg-shader_600 text-shader_200">
               <tr className="flex px-4 py-3">
