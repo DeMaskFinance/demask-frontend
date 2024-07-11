@@ -12,16 +12,9 @@ import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollect
 import ModalSetting from "@/components/Modal/ModalSetting";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import Tippy from "@tippyjs/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
@@ -80,11 +73,7 @@ export default function TradeDefault() {
             </div>
           </DialogTrigger>
           <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
-            <DialogHeader>
-              <DialogDescription>
-                <ModalSetting />
-              </DialogDescription>
-            </DialogHeader>
+            <ModalSetting />
           </DialogContent>
         </Dialog>
       ),

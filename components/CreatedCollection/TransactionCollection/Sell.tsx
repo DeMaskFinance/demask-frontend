@@ -107,10 +107,6 @@ const Sell = () => {
   }, [data, slippage, amountTokenSell, totalFee]);
   console.log(totalPay);
 
-  const handleSell = () => {
-    setIsOpenSellNFT(true);
-    document.body.style.overflowY = "hidden";
-  };
   const dataFake = {
     dmlAddress: dmlToken,
     tokenDecimals: "18",
@@ -216,7 +212,6 @@ const Sell = () => {
                           Math.floor(amountSellDec) === 0 ||
                           isLoadingSell
                         }
-                        onClick={handleSell}
                       >
                         SELL {idNFT.length} NFTs
                       </Button>

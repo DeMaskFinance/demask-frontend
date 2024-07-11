@@ -76,7 +76,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                     render={(attrs) => (
                       <div className="" tabIndex={-1} {...attrs}>
                         <div className=" p-1 w-fit block rounded-md">
-                          <ListNFT />
+                          {/* <ListNFT /> */}
                         </div>
                       </div>
                     )}

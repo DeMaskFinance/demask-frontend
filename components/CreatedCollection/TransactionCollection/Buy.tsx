@@ -104,10 +104,6 @@ const Buy = () => {
   }, [data, slippage, amountTokenBuy, totalFee]);
   console.log(totalPrice);
 
-  const handleBuy = () => {
-    setIsOpenBuyNFT(true);
-    document.body.style.overflowY = "hidden";
-  };
   const dataFake = {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
@@ -225,7 +221,6 @@ const Buy = () => {
                       !isSufficientTokenBuy ||
                       Math.floor(amountInMax) === 0
                     }
-                    onClick={handleBuy}
                   >
                     BUY {idNFT.length} NFTs
                   </Button>

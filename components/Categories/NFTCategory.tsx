@@ -1,11 +1,9 @@
 import { formatLinkIPFS, formatTypeChain } from "@/libs/utils/formatComon";
-import FormatNumber from "../Common/FormatNumber";
-import MediaNFT from "../Common/Media/MediaNFT";
-import { EtherIcon, NFTIcon, VerifyIcon } from "../Icons";
-import ModalDocument from "../Modal/ModalLength/ModalDocument";
-import { AvatarCustom } from "../Avatars";
 import Link from "next/link";
+import FormatNumber from "../Common/FormatNumber";
 import { MediaCollection } from "../Common/Media";
+import { EtherIcon, VerifyIcon } from "../Icons";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
 
 interface NFTCategoryProps {
   item: any;

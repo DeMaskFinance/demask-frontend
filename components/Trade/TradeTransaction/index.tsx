@@ -282,11 +282,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </div>
           </DialogTrigger>
           <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
-            <DialogHeader>
-              <DialogDescription>
-                <ModalSetting />
-              </DialogDescription>
-            </DialogHeader>
+            <ModalSetting />
           </DialogContent>
         </Dialog>
       ),
@@ -387,15 +383,11 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </Button>
               </DialogTrigger>
               <DialogContent className=" bg-shader_800 border border-shader_500 p-0">
-                <DialogHeader>
-                  <DialogDescription>
-                    <ModalDetail
-                      type="erc1155"
-                      idNFT={idNFT}
-                      nftAddress={nftAddress}
-                    />
-                  </DialogDescription>
-                </DialogHeader>
+                <ModalDetail
+                  type="erc1155"
+                  idNFT={idNFT}
+                  nftAddress={nftAddress}
+                />
               </DialogContent>
             </Dialog>
 
@@ -407,11 +399,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
-                <DialogHeader>
-                  <DialogDescription>
-                    <ModalSearchCollectionSwap />
-                  </DialogDescription>
-                </DialogHeader>
+                <ModalSearchCollectionSwap />
               </DialogContent>
             </Dialog>
           </div>

@@ -29,6 +29,7 @@ import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import FilterItems from "./FilterItems";
 import SearchNotFound from "@/components/Search/SearchNotFound";
+import { useRouter } from "next/router";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -89,6 +90,7 @@ export const ItemList: React.FC<ItemListProps> = ({
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
+  const collectionAddress = useRouter().query.collection as string;
   const { ref, inView } = useInView();
   useEffect(() => {
     if (inView) {
