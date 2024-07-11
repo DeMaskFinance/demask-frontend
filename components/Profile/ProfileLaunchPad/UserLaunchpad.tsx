@@ -8,10 +8,7 @@ export default function UserLaunchpad() {
       <h1 className="text-xl font-semibold text-shader_900">
         Upcoming Projects
       </h1>
-      <TabLaunchPad
-        query={"Upcoming"}
-        desc={"There are currently no launchpads in the list."}
-      />
+      <TabLaunchPad query={"Upcoming"} />
     </div>
   );
 }

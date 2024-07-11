@@ -44,6 +44,7 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
       setTranslateX(totalWidth);
     }
   }, [activeChoice, choices]);
+  console.log(activeChoice, choices, isInclude);
 
   return (
     <Fragment>

@@ -1,18 +1,17 @@
 import { AvatarCustom } from "@/components/Avatars";
 import { BackgroundDefault } from "@/components/Backgrounds";
-import { EditIcon, LeftIcon, UploadIcon } from "@/components/Icons";
+import Back from "@/components/Common/Back";
+import { UploadIcon } from "@/components/Icons";
 import { uploadFile } from "@/libs/service/userService";
 import { selectProfile, userData } from "@/store/profileSlice";
-import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 import EditProfileForm from "./EditProfileForm";
-import Back from "@/components/Common/Back";
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
-  const router = useRouter();
   const [avatarLoading, setAvatarLoading] = useState(false);
   const { user, profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
@@ -20,8 +19,10 @@ export default function EditProfile() {
     try {
       setAvatarLoading(true);
       const res = await uploadFile({ avatar: file });
+      toast.success("Update Successed");
       dispatch(userData({ profile: res }));
     } catch (error) {
+      toast.error("Update Error");
       console.error(error);
     } finally {
       setAvatarLoading(false);

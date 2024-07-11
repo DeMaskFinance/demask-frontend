@@ -8,11 +8,25 @@ import Link from "next/link";
 import React, { useContext } from "react";
 
 interface TabLaunchPadProps {
-  item: LaunchpadData;
+  // item: LaunchpadData;
+  item: any;
   query: string;
 }
+const Live = () => {
+  return (
+    <div className="relative hidden md:flex items-center justify-between w-full h-10 px-3 my-2 mb-2 text-base font-semibold rounded-lg bg-green2 bg-opacity-10 text-green2 text-sm">
+      <div className="flex items-center gap-x-1 font-bold">
+        <div className="relative flex w-2 h-2">
+          <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-green"></span>
+          <span className="relative inline-flex w-2 h-2 rounded-full bg-green2"></span>
+        </div>
+        LIVE
+      </div>
+      <div className="text-white ">12d 05h 45m 23s</div>
+    </div>
+  );
+};
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
-  const { chainId } = useContext(AccountContext);
   const blockNumber =
     query === "Upcoming"
       ? item.startTime
@@ -23,67 +37,51 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
   return (
     <div className="h-full group">
       <Link href={`launchpad/${item.launchpad}`} className="block h-full">
-        <div className="flex flex-col justify-between h-full">
-          <div className="relative flex flex-col h-full">
-            <div className="h-[123px] overflow-hidden rounded-lg">
-              <MediaNFT data={item} isControls={false} hover />
+        <div className="relative overflow-hidden rounded-lg border-shader_500 hover:border-shader_400">
+          <div className="relative items-center text-sm transition-all rounded-md cursor-pointer group lg:text-base hover:shadow-home">
+            <div className="relative overflow-hidden aspect-square">
+              <div className="w-full h-full overflow-hidden rounded-t-lg">
+                <MediaNFT data={item} isControls={false} hover zoom />
+              </div>
             </div>
-
-            <div className="flex flex-col justify-between flex-grow">
-              <div>
-                <div
+            <div className="relative w-full p-3 rounded-b-lg bg-shader_700 group-hover:bg-shader_600 border-x-[1px] border-b-[1px] border-shader_500">
+              <div className="flex w-full font-bold text-white">
+                <h6
                   title={item.metadata?.name}
-                  className="flex items-start gap-2 py-2 text-xl font-medium uppercase title"
+                  className="flex items-start w-full gap-2 uppercase "
                 >
-                  <ModalDocument data={item.metadata?.name} />
-                  <svg
-                    className="flex-shrink-0"
-                    width="25"
-                    height="24"
-                    viewBox="0 0 25 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      opacity="0.4"
-                      d="M17.3199 1.91H7.67995C5.55995 1.91 3.81995 3.65 3.81995 5.77V19.86C3.81995 21.66 5.10995 22.42 6.68995 21.55L11.5699 18.84C12.0899 18.55 12.9299 18.55 13.4399 18.84L18.3199 21.55C19.8999 22.43 21.1899 21.67 21.1899 19.86V5.77C21.1799 3.65 19.4499 1.91 17.3199 1.91Z"
-                      fill="#9075FE"
-                    />
-                    <path
-                      d="M11.59 13.251C11.4 13.251 11.21 13.181 11.06 13.031L9.55999 11.531C9.42051 11.3899 9.34229 11.1994 9.34229 11.001C9.34229 10.8026 9.42051 10.6121 9.55999 10.471C9.84999 10.181 10.33 10.181 10.62 10.471L11.59 11.441L15.06 7.97099C15.35 7.68099 15.83 7.68099 16.12 7.97099C16.41 8.26099 16.41 8.74099 16.12 9.03099L12.12 13.031C11.97 13.181 11.78 13.251 11.59 13.251Z"
-                      fill="#9075FE"
-                    />
-                  </svg>
+                  <span className="flex-wrap max-w-full line-clamp-1">
+                    {item.metadata?.name ? (
+                      <ModalDocument data={item.metadata?.name} />
+                    ) : (
+                      <p>--</p>
+                    )}
+                  </span>
+                </h6>
+              </div>
+              <div className="flex justify-between mt-2 text-sm text-shader_200">
+                <div>
+                  <p>Price</p>
+                  <div className="flex items-center gap-x-1 text-white font-bold">
+                    <FormatNumber number={"1237"} />
+                    <EtherIcon width={16} height={16} />
+                  </div>
                 </div>
-                <div className="mt-2">
-                  <div className="flex flex-col gap-2">
-                    <div className="line-clamp-3">
-                      {item.metadata.description}
-                    </div>
+                <div>
+                  <p>Items</p>
+                  <div className="flex items-center gap-x-1 text-white font-bold">
+                    <FormatNumber number={"123"} />
+                  </div>
+                </div>
+                <div>
+                  <p>Mint</p>
+                  <div className="flex items-center gap-x-1 text-white font-bold">
+                    <FormatNumber number={item?.nftBalance || 0} />%
                   </div>
                 </div>
               </div>
-              <div className="flex items-center p-2 mt-1 text-white transition-all duration-300 ease-linear rounded-lg gap-x-1 bg-shader_500 group-hover:bg-primary_400">
-                <span className="text-sm">Total raise </span>
-                {query === "Upcoming" ? (
-                  <p>0 ETH</p>
-                ) : (
-                  <div className="flex items-center">
-                    <FormatNumber
-                      number={(+item.totalSold / 1e18).toString()}
-                    />
-                    <EtherIcon width={16} height={16} className="fill-white" />
-                  </div>
-                )}
-              </div>
+              <Live />
             </div>
-          </div>
-          <div className="pt-2 mt-2 border-t">
-            <CountdownTime
-              query={query}
-              blockNumber={+blockNumber}
-              isSuccess={item.isSuccess}
-            />
           </div>
         </div>
       </Link>

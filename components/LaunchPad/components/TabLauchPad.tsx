@@ -1,22 +1,21 @@
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import ActiveLaunchItem from "./TabLaunchPadItem";
-import { useInView } from "react-intersection-observer";
-import { useQueryParam, StringParam, withDefault } from "use-query-params";
+import SearchNotFound from "@/components/Search/SearchNotFound";
+import {
+  SkeletonCategory,
+  SkeletonSubCategory,
+} from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
-import { SkeletonCategory } from "@/components/Skeleton/SkeletonCategory";
-import Image from "next/image";
-import images from "@/public/images";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React, { Fragment, useContext, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import TabLaunchPadItem from "./TabLaunchPadItem";
 
 type TabLaunchPadProps = {
   query: string;
-  desc: string;
 };
-const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
+const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const [choice] = useQueryParam("choice", withDefault(StringParam, "Active"));
 
   const fetchDataPage = async (
     pageParam = 1,
@@ -24,7 +23,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
     query: string
   ) => {
     const data = await categoryAPI(
-      `launchpad?chainId=${chainId}&status=${query}&page=${pageParam}&limit=8`
+      `launchpad?chainId=${chainId}&status=${query}&page=${pageParam}&limit=20`
     );
     return data;
   };
@@ -45,17 +44,55 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
       fetchNextPage();
     }
   }, [inView]);
+  const item = {
+    // launchpad: "123",
 
+    blockNumber: 123,
+    blockTime: 123,
+    blockTimestamp: "123",
+    endTime: "123",
+    hardcap: "123",
+    id: "678",
+    launchpad: "string",
+    nftAddress: "123",
+    nftID: "789",
+    price: "9.2",
+    purchaseLimit: "89",
+    softcap: "12",
+    startTime: "1212",
+    tge: "122",
+    tokenDecimals: "18",
+    tokenName: "9HN",
+    tokenPayment: "122",
+    tokenSymbol: "122",
+    transactionHash: "23",
+    vesting: "92",
+    metadata: {
+      name: "abc",
+      image:
+        "https://i.seadn.io/s/raw/files/a9948c4c063b12bbf2db92888ed41bd1.png?auto=format&dpr=1&w=136&h=136&fr=1",
+    },
+    reserveTokenDecimals: "18",
+    // reserveToken: string;
+    // reserveNFT: string;
+    // royaltyFee: number;
+    // amount: string;
+    // totalSold: string;
+    // isSuccess: boolean;
+    // isClaim: boolean;
+    // status: string;
+    // launchpadInfo: LaunchpadInfo;
+  };
   return (
-    <div className="mb-8 containe">
+    <div className="mb-8  px-10">
       {isLoading ? (
-        <div className="mt-8">
-          <SkeletonCategory />
+        <div className="grid gap-4 mt-8 grid-cols-2 md:grid-cols-autoFill text-shader_600">
+          <SkeletonSubCategory length={24} />
         </div>
       ) : (
         <>
           <div className="mt-4">
-            {isSuccess && data?.pages[0]?.data.length > 0 ? (
+            {/* {isSuccess && data?.pages[0]?.data.length > 0 ? (
               data.pages.map((page, pageIndex) => (
                 <Fragment key={pageIndex}>
                   <ul className="grid grid-cols-1 gap-6 mt-4 lg:grid-cols-4 md:grid-cols-3 text-shader_600">
@@ -74,11 +111,16 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, desc }) => {
                 </Fragment>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center">
-                <Image alt="emptyLaunchpad" src={images.emptyLaunchpad} />
-                <p>{desc}</p>
-              </div>
-            )}
+              <SearchNotFound />
+            )} */}
+            <ul className="grid grid-cols-2 md:grid-cols-autoFill gap-6 text-shader_600">
+              <TabLaunchPadItem item={item} query={query} />
+              <TabLaunchPadItem item={item} query={query} />
+              <TabLaunchPadItem item={item} query={query} />
+              <TabLaunchPadItem item={item} query={query} />
+              <TabLaunchPadItem item={item} query={query} />
+              <TabLaunchPadItem item={item} query={query} />
+            </ul>
           </div>
           <div ref={ref} style={{ height: "1px" }}></div>
         </>

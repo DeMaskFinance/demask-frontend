@@ -44,7 +44,8 @@ export default function CardLaunchpad() {
 
   return (
     <>
-      <div className="mb-8 containe">
+      <SkeletonCategory />
+      {/* <div className="mb-8">
         {isLoading ? (
           <div className="mt-8">
             <SkeletonCategory />
@@ -75,7 +76,7 @@ export default function CardLaunchpad() {
             <div ref={ref} style={{ height: "1px" }}></div>
           </>
         )}
-      </div>
+      </div> */}
     </>
   );
 }

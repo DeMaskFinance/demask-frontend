@@ -12,7 +12,8 @@ const subMenuRewards = [
 ];
 const subMenuOthers = [
   { id: 1, name: "Create", url: "/create" },
-  { id: 2, name: "Category", url: "/category" },
+  { id: 2, name: "Launchpad", url: "/launchpad" },
+  { id: 3, name: "Category", url: "/category" },
 ];
 const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
@@ -20,7 +21,6 @@ const MenuHeader = () => {
   const data = [
     { name: "Explore", url: "/explore" },
     { name: "Trade", url: `/trade` },
-    // { name: "Launchpad", url: "/launchpad" },
     { name: "Pools", url: "/pools" },
     {
       name: "Rewards",

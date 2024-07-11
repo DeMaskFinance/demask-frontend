@@ -1,5 +1,4 @@
 import { TabGroups } from "@/components/NavChoice";
-import TopNft from "@/components/Explore/TopNft/TopNft";
 import React, { useState } from "react";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
@@ -7,6 +6,7 @@ import { ChartTVL, ChartVolumn } from "@/components/Charts";
 import ListTracsaction from "@/components/Explore/Transaction/ListTracsaction";
 import { BackgroundDefault } from "@/components/Backgrounds";
 import StatisticAnalytics from "@/components/Explore/StaticChart";
+import TopCollection from "@/components/Explore/TopNft/TopCollection";
 const updateMeta = {
   ...SEO,
   title: "Explore",
@@ -24,7 +24,7 @@ export default function ExplorePage() {
         </div>
 
         {/* Top or Trending */}
-        <TopNft />
+        <TopCollection />
         {/* Transaction */}
         <ListTracsaction />
       </section>

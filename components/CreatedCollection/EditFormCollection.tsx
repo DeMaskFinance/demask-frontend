@@ -1,28 +1,25 @@
 import AccountContext from "@/context/AccountContext";
-import { Category, validCollectionInput } from "@/libs/constants";
+import { Category } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
+import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
 import { useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useContext, useRef, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import * as yup from "yup";
 import { toast } from "sonner";
+import * as yup from "yup";
 import { Button } from "../Buttons";
+import Back from "../Common/Back";
+import { UploadFileCollection } from "../Create/UploadFile";
 import {
   FacebookIcon,
-  LeftIcon,
   PlusIcon,
   TeleIcon,
   TwitterIcon,
   UploadIcon,
   WebsiteIcon,
 } from "../Icons";
-import useFileHandler from "@/hooks/useFileHandler";
-import { UploadFileCollection } from "../Create/UploadFile";
-import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
-import Image from "next/image";
-import Back from "../Common/Back";
 
 interface EditCollectionProps {
   data: any;
@@ -167,7 +164,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
   const onSubmit = async (values: any) => {
     // Handle form submission
-    console.log(values);
     try {
       await collectionService.updateCollection(
         {
@@ -203,11 +199,11 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
           collectionAddress,
         });
       }
-      toast.success("Updated Successed");
+      toast.success("Update Successed");
       queryClient.refetchQueries(["detailCollection"]);
       setSelectedImage("");
     } catch (error) {
-      toast.error("Updated Error");
+      toast.error("Update Error");
       console.error(error);
     }
   };

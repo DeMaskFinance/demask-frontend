@@ -1,30 +1,27 @@
 import { Button } from "@/components/Buttons";
-import showToast, { ToastType } from "@/components/Toast/ToastCustom";
 import AccountContext from "@/context/AccountContext";
 import * as collectionService from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
+import { toast } from "sonner";
 import * as yup from "yup";
 import { ModalTransation } from "../ModalTransation";
-import { briefDocument } from "@/libs/utils/formatComon";
-import { toast } from "sonner";
 interface ModalRoyaltyProps {
-  dmlAddress: string;
-  creatorAddress: string;
+  data: any;
   onSuccess: () => void;
 }
 const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
-  dmlAddress,
-  creatorAddress,
+  data,
   onSuccess,
 }) => {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const { chainId, demask, account, wallet } = useContext(AccountContext);
 
   const initialValues = {
-    creatorEarning: creatorAddress,
-    royalty: "",
+    creatorEarning: data.creatorAddress,
+    royalty: data.royalty / 10000,
   };
 
   const validationSchema = yup.object().shape({
@@ -41,13 +38,14 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       .min(0, "Royalty must be greater than 0%")
       .max(10, "Royalty must be less than 10%"),
   });
+  const queryClient = useQueryClient();
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
       const blockTime = Math.floor(Date.now() / 1000);
       setIsProcess(true);
       const res = await collectionService.getSignature(
-        dmlAddress,
+        data.dmlAddress,
         values.creatorEarning,
         values.royalty * 10000,
         chainId,
@@ -56,7 +54,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
 
       const trans = await ercContract.setRoyalty(
         demask.FEE_MANAGER,
-        dmlAddress,
+        data.dmlAddress,
         values.creatorEarning,
         values.royalty * 10000,
         blockTime,
@@ -67,6 +65,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       await trans.wait();
       setIsProcess(false);
       onSuccess();
+      queryClient.refetchQueries(["detailCollection"]);
       toast.success("Set Royalty Successed");
     } catch (error) {
       console.error(error);

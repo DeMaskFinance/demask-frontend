@@ -98,7 +98,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     } else {
       setIsSufficientNFT(false);
     }
-    setActiveChoiceNFT("");
+    // setActiveChoiceNFT("");
   };
   useEffect(() => {
     if (inputNFT) {
@@ -196,13 +196,11 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       value={inputNFT}
                       onValueChange={handleGetNFT}
                     />
-                    <div className="w-[40%]">
-                      <TabGroups
-                        choices={["25%", "50%", "75%", "100%"]}
-                        activeChoice={activeChoiceNFT}
-                        onChoiceChange={handleChoicePercent}
-                      />
-                    </div>
+                    <TabGroups
+                      choices={["25%", "50%", "75%", "100%"]}
+                      activeChoice={activeChoiceNFT}
+                      onChoiceChange={handleChoicePercent}
+                    />
                   </div>
                   {isSufficientNFT && (
                     <p

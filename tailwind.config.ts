@@ -30,6 +30,8 @@ const config = {
           "linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, #BCB4FF 80%, rgba(255, 255, 255, 0.00) 100%)",
         "event-gradient":
           "linear-gradient(90deg, #7B80F6 0%, #CD5FE2 33.33%, #846AF0 66.67%, #31AFF0 100%)",
+        launchpad:
+          "linear-gradient(90deg, #13151A 0%, rgba(19, 21, 26, 0.00) 100%)",
       },
       opacity: {
         15: "0.15",
@@ -110,6 +112,7 @@ const config = {
         base1: "#D5D0FF",
         base2: "#DFDBFF",
         green: "#04B186",
+        green2: "#4ADE80",
         red: "#EF4444",
         yellow: "#FFA959",
         blue: "#22D3EE",

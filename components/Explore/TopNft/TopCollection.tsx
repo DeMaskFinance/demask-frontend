@@ -9,7 +9,7 @@ import Link from "next/link";
 import CollectionItem from "./CollectionItem";
 import { useRouter } from "next/router";
 import { Pagination } from "@/components/Common/Pagination";
-function TopNft() {
+function TopCollection() {
   const [activeChoice, setActiveChoice] = useState<string>("Trending");
   const [page, setPage] = useState(1);
   const [pageNewest, setPageNewest] = useState(1);
@@ -20,7 +20,7 @@ function TopNft() {
 
   const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
     useQuery({
-      queryKey: ["topNft", chainId, sortField, sortOrder, page],
+      queryKey: ["topCollection", chainId, sortField, sortOrder, page],
       queryFn: async () => {
         const res = await categoryAPI(
           `top-collection-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
@@ -247,4 +247,4 @@ function TopNft() {
   );
 }
 
-export default TopNft;
+export default TopCollection;

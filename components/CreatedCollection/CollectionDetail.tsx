@@ -183,8 +183,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                         <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                           <DialogDescription>
                             <ModalRoyalty
-                              dmlAddress={data.dmlAddress}
-                              creatorAddress={data.creatorAddress}
+                              data={data}
                               onSuccess={handleDialogClose}
                             />
                           </DialogDescription>
