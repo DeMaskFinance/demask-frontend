@@ -63,7 +63,7 @@ const BLAST_DEMASK = {
   CURRENCY: "ETH",
 };
 const SEPOLIA_DEMASK = {
-  RPC: "https://rpc.ankr.com/eth_sepolia/0700baff3c0c4d16b543a371eacdcd774de241f8b186067655ea883ecbc54a18",
+  RPC: "https://rpc.sepolia.org",
   REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_SEPOLIA,
   FACTORY: process.env.NEXT_PUBLIC_FACTORY_SEPOLIA,
   FACTORY_721: process.env.NEXT_PUBLIC_FACTORY_721_SEPOLIA,

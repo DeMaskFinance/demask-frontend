@@ -48,6 +48,7 @@ interface ItemListProps {
 interface NFTItem {
   nftID: string | number;
   nftAddress: string;
+  type: string;
 }
 interface TradeProps {
   item: NFTItem;
@@ -57,7 +58,11 @@ const Trade: React.FC<TradeProps> = ({ item, nativeAddress }) => {
   return (
     <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
       <Link
-        href={`/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
+        href={`${
+          item.type === "erc1155"
+            ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+            : `/trade/erc721/${item.nftAddress}?tab=pool`
+        }`}
         className="basis-1/2"
       >
         <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
@@ -66,7 +71,11 @@ const Trade: React.FC<TradeProps> = ({ item, nativeAddress }) => {
         </Button>
       </Link>
       <Link
-        href={`/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`}
+        href={`${
+          item.type === "erc1155"
+            ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+            : `/trade/erc721/${item.nftAddress}`
+        }`}
         className="basis-1/2"
       >
         <Button className="flex items-center w-full py-3 gap-x-2" primary>
@@ -153,26 +162,31 @@ export const ItemList: React.FC<ItemListProps> = ({
                           </h6>
                         </div>
                         <div className="flex justify-between mt-2 text-sm text-shader_200">
-                          <p>Floor price</p>
-                          <p>Balance</p>
+                          <p>Last Sale</p>
+                          {item.type == "erc1155" && <p>Balance</p>}
                         </div>
                         <div className="flex justify-between font-bold text-white">
                           <div className="flex items-center gap-x-1">
                             <FormatNumber number={item.floorPrice} />
                             <EtherIcon width={16} height={16} />
                           </div>
-                          <div>
-                            {item.nftBalance ? (
-                              <div className="flex items-center gap-x-1">
-                                <FormatNumber number={item.nftBalance} />
-                                <NFTIcon width={16} height={16} />
-                              </div>
-                            ) : (
-                              <span className="block w-16 h-4 rounded-xl animate-pulse bg-slate-700 "></span>
-                            )}
-                          </div>
+                          {item.type == "erc1155" && (
+                            <div className="flex items-center gap-x-1">
+                              <FormatNumber number={item?.nftBalance || 0} />
+                              <NFTIcon width={16} height={16} />
+                            </div>
+                          )}
                         </div>
-                        {item.type === "erc1155" && (
+                        {collectionAddress ? (
+                          <Fragment>
+                            {item.type === "erc1155" && (
+                              <Trade
+                                nativeAddress={nativeAddress}
+                                item={item}
+                              />
+                            )}
+                          </Fragment>
+                        ) : (
                           <Trade nativeAddress={nativeAddress} item={item} />
                         )}
                       </div>

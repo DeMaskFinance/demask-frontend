@@ -20,7 +20,7 @@ function Error({ statusCode, statusMessage }: ErrorProps) {
       <div className="">
         <Logo404Page width={492} height={376} className="w-full h-full" />
       </div>
-      <h3 className="text-xl font-semibold text-shader_600">{statusCode}</h3>
+      <h3 className="text-xl font-semibold text-shader_100">{statusCode}</h3>
       <p
         className="mt-2 text-sm font-semibold cursor-pointer text-primary_500"
         onClick={() => router.refresh()}

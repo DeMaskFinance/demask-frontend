@@ -107,6 +107,9 @@ const Buy = () => {
   const dataFake = {
     dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
+    metadata: {
+      image: data?.avatar,
+    },
   };
   console.log(data);
 

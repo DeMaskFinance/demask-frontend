@@ -3,7 +3,7 @@ import { BsClock } from "react-icons/bs";
 export default function ChartNoTransfers() {
   return (
     <div className="h-full p-2 text-white">
-      <p className="font-semibold">Volume and Price</p>
+      {/* <p className="font-semibold">Volume and Price</p> */}
       <div className="flex items-center justify-center h-[80%]">
         <div className="flex flex-col items-center justify-center">
           <BsClock className="w-8 h-8 mb-6" />

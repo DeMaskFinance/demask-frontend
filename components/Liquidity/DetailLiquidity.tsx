@@ -43,6 +43,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
 import Back from "../Common/Back";
+import ChartNoTransfers from "../Charts/ChartNoTransfers";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -196,50 +197,43 @@ const DetailLiquidity = () => {
           <Back />
           <div className="flex flex-col-reverse lg:flex-row gap-4">
             <div className="flex-auto">
-              {account && isSuccess && data.liquidityHistory.length > 0 ? (
-                <div>
-                  <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
-                    <div className="rounded-t-lg overflow-hidden">
-                      <TabGroups
-                        choices={options}
-                        activeChoice={activeChoice}
-                        onChoiceChange={handleChoiceChange}
-                        isDefault
-                      />
-                    </div>
-                    <div className="flex-grow">
-                      <div className="grid gap-x-4 font-semibold text-sm uppercase lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] bg-shader_600 text-shader_200">
-                        <p className="py-3 pl-4">Action</p>
-                        <p className="py-3 mx-auto">Liquidity</p>
-                        <p className="py-3 mx-auto">NFT</p>
-                        <p className="py-3 mx-auto">Token</p>
-                        <p className="flex justify-end py-3 pr-4">Time</p>
-                      </div>
-                      <LiquiditiesHistory
-                        data={data}
-                        isFetching={isFetching}
-                        isLoading={isLoading}
-                      />
-                    </div>
-                    <Pagination
-                      data={data}
-                      isPreviousData={isPreviousData}
-                      page={page}
-                      setPage={setPage}
-                      refetch={refetch}
-                      totalPages={15}
-                      isFetching={isFetching}
-                    />
+              <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
+                <div className="rounded-t-lg overflow-hidden">
+                  <TabGroups
+                    choices={options}
+                    activeChoice={activeChoice}
+                    onChoiceChange={handleChoiceChange}
+                    isDefault
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="grid gap-x-4 font-semibold text-sm uppercase lg:grid-cols-[repeat(4,4fr),200px] grid-cols-[150px,100px,100px,100px,200px] bg-shader_600 text-shader_200">
+                    <p className="py-3 pl-4">Action</p>
+                    <p className="py-3 mx-auto">Liquidity</p>
+                    <p className="py-3 mx-auto">NFT</p>
+                    <p className="py-3 mx-auto">Token</p>
+                    <p className="flex justify-end py-3 pr-4">Time</p>
                   </div>
+                  {account && isSuccess && data.liquidityHistory.length > 0 ? (
+                    <LiquiditiesHistory
+                      data={data}
+                      isFetching={isFetching}
+                      isLoading={isLoading}
+                    />
+                  ) : (
+                    <ChartNoTransfers />
+                  )}
                 </div>
-              ) : (
-                <div className="flex items-center mt-8 gap-x-2">
-                  <BsClock className="w-5 h-5" />
-                  <p className="text-sm font-medium text-shader_700">
-                    No events in this time range
-                  </p>
-                </div>
-              )}
+                <Pagination
+                  data={data}
+                  isPreviousData={isPreviousData}
+                  page={page}
+                  setPage={setPage}
+                  refetch={refetch}
+                  totalPages={15}
+                  isFetching={isFetching}
+                />
+              </div>
             </div>
             <div className="w-full lg:w-[400px] lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
               <div className="flex items-center justify-between mb-4">

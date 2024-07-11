@@ -146,7 +146,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
           fontSize: 56,
           color: "#21242D",
           visible: true,
-          fontFamily: "Roboto",
+          fontFamily: "Titillium Web",
         },
       });
       const candlestickSeries = chart.addCandlestickSeries({

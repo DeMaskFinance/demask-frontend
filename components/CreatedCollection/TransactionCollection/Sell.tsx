@@ -110,6 +110,9 @@ const Sell = () => {
   const dataFake = {
     dmlAddress: dmlToken,
     tokenDecimals: "18",
+    metadata: {
+      image: data?.avatar,
+    },
   };
   return (
     <Fragment>

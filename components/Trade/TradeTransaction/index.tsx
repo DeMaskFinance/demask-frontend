@@ -166,7 +166,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   );
 
   useEffect(() => {
-    if (inputNFTValue && data && amountTokenSell && amountTokenBuy) {
+    if (inputNFTValue && data) {
       setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
       setAmountInMax(amountTokenBuy * (1 + slippage / 100));
       setTotalPay(amountTokenSell - totalFee);
@@ -176,7 +176,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       setTotalPay(0);
     }
   }, [slippage, amountTokenSell, totalFee, amountTokenBuy]);
-
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "Buy") {
@@ -226,7 +225,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       Math.floor(amountInMax) !== 0
     ) {
       setIsOpenBuyNFT(true);
-      document.body.style.overflowY = "hidden";
     }
   };
   const handleSell = () => {
@@ -234,14 +232,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       setShowRequiredMessage(true);
     } else {
       setIsOpenSellNFT(true);
-      document.body.style.overflowY = "hidden";
     }
   };
 
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
   const actions = [
     {
       icon: (
@@ -301,7 +294,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
-  console.log(isLoadingSell, inputNFTValue, amountSellDec);
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
@@ -541,7 +533,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           {!account ? (
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="w-full py-2" gradient onClick={handleOpen}>
+                <Button className="w-full py-2" gradient>
                   Connect Wallet
                 </Button>
               </DialogTrigger>

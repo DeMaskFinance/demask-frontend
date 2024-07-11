@@ -53,7 +53,7 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
             </div>
 
             <div className="flex justify-between mt-2 text-sm text-shader_200">
-              <p>Floor Price</p>
+              <p>Last Sale</p>
               <p>Total Volume</p>
             </div>
             <div className="flex justify-between font-bold text-white">
