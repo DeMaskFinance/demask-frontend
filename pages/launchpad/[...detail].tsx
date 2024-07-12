@@ -11,9 +11,7 @@ export default function LauchPad() {
   return (
     <section className="">
       <NextSeo {...updateMeta} />
-      <div className="max-w-5xl px-4 py-8 mx-auto">
-        <DetailLaunchPad />
-      </div>
+      <DetailLaunchPad />
     </section>
   );
 }

@@ -35,7 +35,6 @@ import Search from "../Search/SearchHeader";
 import { Button } from "../Buttons";
 
 export default function Header() {
-  const headerRef = useRef<HTMLParagraphElement>(null);
   const {
     account,
     updateAccount,
@@ -94,58 +93,9 @@ export default function Header() {
     };
     getAddress();
   }, [provider, wallet]);
-  // useEffect(() => {
-  //   if (window.innerWidth >= 768) {
-  //     let prevScrollPos = window.scrollY;
-
-  //     const handleScroll = () => {
-  //       const currentScrollPos = window.scrollY;
-  //       const isScrolledUp = prevScrollPos > currentScrollPos;
-  //       if (headerRef.current) {
-  //         const headerClassList = headerRef.current.classList;
-  //         headerClassList.toggle("translate-y-0", isScrolledUp);
-  //         headerClassList.toggle(
-  //           "translate-y-[-100%]",
-  //           !isScrolledUp && currentScrollPos > 120
-  //         );
-  //         if (isScrolledUp) {
-  //           headerClassList.add(
-  //             "border-b",
-  //             "border-solid",
-  //             "border-shader_500"
-  //           );
-  //         } else {
-  //           headerClassList.remove(
-  //             "border-b",
-  //             "border-solid",
-  //             "border-shader_500"
-  //           );
-  //         }
-  //         if (currentScrollPos === 0) {
-  //           headerClassList.remove(
-  //             "border-b",
-  //             "border-solid",
-  //             "border-shader_500"
-  //           );
-  //         }
-  //       }
-
-  //       prevScrollPos = currentScrollPos;
-  //     };
-
-  //     window.addEventListener("scroll", handleScroll);
-
-  //     return () => {
-  //       window.removeEventListener("scroll", handleScroll);
-  //     };
-  //   }
-  // }, []);
 
   return (
-    <div
-      // ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-50 "
-    >
+    <div className="fixed top-0 left-0 right-0 z-50 ">
       {isEvent && (
         <div className="relative">
           <a
@@ -177,7 +127,7 @@ export default function Header() {
         </div>
       )}
 
-      <header className="text-shader_200 w-screen h-header flex gap-x-28 3xl:gap-x-[500px] border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
+      <header className="text-shader_200 w-screen h-header flex md:gap-x-28 3xl:gap-x-[500px] border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
             <Link href="https://demask.finance/" target="_blank">

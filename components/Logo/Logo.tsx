@@ -998,7 +998,7 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
       {chainId === "11155111" ? (
         <>
           <SepoliaIcon className={className} width={width} height={height} />
-          <span>zkSync</span>
+          <span>Sepolia</span>
         </>
       ) : chainId === "5" ? (
         <>

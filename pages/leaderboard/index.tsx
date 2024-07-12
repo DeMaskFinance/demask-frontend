@@ -13,7 +13,6 @@ import "swiper/css/pagination";
 import TableRank from "@/components/LeaderBoard/TableRank";
 import Cards from "@/components/LeaderBoard/Cards";
 import { BackgroundDefault } from "@/components/Backgrounds";
-import { AvatarCustom } from "@/components/Avatars";
 import BackgroundParticles from "@/components/Backgrounds/BackGroundParticles";
 const updateMeta = {
   ...SEO,

@@ -82,7 +82,7 @@ const Rule: React.FC<{ data: LaunchpadData }> = ({ data }) => {
           <p>{data?.metadata?.description}</p>
           <div className="flex items-center mt-2 gap-x-4">
             <p className="font-semibold">Website</p>
-            <div className="px-2 py-1 cursor-pointer bg-shader_500 gap-x-1 bg-shader_700 border-shader_700">
+            <div className="px-2 py-1 cursor-pointer bg-shader_500 gap-x-1 border-shader_700">
               <a
                 className="flex items-center gap-x-1 hover:text-primary_500"
                 rel="noreferrer noopener"

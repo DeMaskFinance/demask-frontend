@@ -81,7 +81,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
       <div className="flex p-4 border-b bg-shader_600 gap-x-3 border-shader_500">
         <div className="relative w-10 h-10 ">
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg w-full h-full">
             {liquidity?.metadata ? (
               <MediaNFT data={liquidity} isControls={false} />
             ) : (
@@ -108,7 +108,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           </div>
 
           <p className="text-sm font-semibold text-primary_300">
-            {liquidity?.metadata?.symbol || "BJG"}/ETH
+            {liquidity?.metadata?.symbol || liquidity?.symbol}/ETH
           </p>
         </div>
       </div>

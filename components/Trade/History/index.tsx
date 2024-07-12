@@ -95,7 +95,6 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
           page={page}
           setPage={setPage}
           refetch={refetch}
-          totalPages={15}
           isFetching={isFetching}
         />
       )}

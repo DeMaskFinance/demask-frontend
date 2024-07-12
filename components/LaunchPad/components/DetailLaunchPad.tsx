@@ -3,7 +3,7 @@ import { Button } from "@/components/Buttons";
 import CountdownTime from "@/components/Common/CountdownTime";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
-import { EtherIcon, LaunchpadStatus } from "@/components/Icons";
+import { EtherIcon } from "@/components/Icons";
 import { LogoIconTable } from "@/components/Logo/Logo";
 import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalClaimLaunchpad";
 import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
@@ -20,7 +20,7 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { NumericFormat } from "react-number-format";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
@@ -28,16 +28,14 @@ import Box from "./Box";
 import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
+import { BackgroundDefault } from "@/components/Backgrounds";
+import Image from "next/image";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [isMaxBuy, setIsMaxBuy] = useState<boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [isOpenModalRefund, setIsOpenModalRefund] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputNFT, setInpuNFT] = useState<any>(1);
-  const [amountLeave, setAmountLeave] = useState(0);
   const [amount, setAmount] = useState<string>("");
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -47,7 +45,6 @@ export default function DetailLaunchPad() {
   const [isOpenSuccessRefund, setIsOpenSuccessRefund] =
     useState<boolean>(false);
   const [isOpenErrorRefund, setIsOpenErrorRefund] = useState<boolean>(false);
-  const [isOpenConfirmClaim, setIsOpenConfirmClaim] = useState(false);
   const { account, wallet, chainId, demask } = useContext(AccountContext);
   const [errors, setErrors] = useState<string>("");
   const router = useRouter();
@@ -141,7 +138,6 @@ export default function DetailLaunchPad() {
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
-      setIsOpen(true);
       return;
     }
 
@@ -185,10 +181,6 @@ export default function DetailLaunchPad() {
       console.error(error);
     }
   };
-  const handleOpen = () => {
-    document.body.style.overflowY = "hidden";
-    setIsOpen(true);
-  };
   const selectedTab = TABS.find((data) => data.key === tab);
   const blockNumber =
     data?.status === "Upcoming"
@@ -198,8 +190,8 @@ export default function DetailLaunchPad() {
       : "";
 
   return (
-    <div>
-      <div className="">
+    <div className="max-w-5xl px-4 relative mx-auto">
+      <BackgroundDefault>
         <div className="">
           {isLoading ? (
             <div className="h-[600px]">
@@ -208,315 +200,17 @@ export default function DetailLaunchPad() {
               </div>
             </div>
           ) : (
-            data &&
-            data?.metadata && (
-              <>
-                <div className="flex justify-between mb-6">
-                  <h1 className="text-2xl font-medium text_gradient">
-                    Detail Launchpad
-                  </h1>
-                  <div className="flex justify-between datas-center gap-x-1">
-                    <CountdownTime
-                      query={data.status}
-                      blockNumber={blockNumber}
-                      isSuccess={data.isSuccess}
-                    />
-                  </div>
+            data && (
+              <div>
+                <div>
+                  <Image
+                    src=""
+                    width={1000}
+                    height={1000}
+                    alt="img_launchpad"
+                  />
                 </div>
-                <div className="block p-4 border rounded-lg lg:flex gap-x-8 shadow-swiper ">
-                  <div className="w-full lg:w-[50%] relative">
-                    <MediaNFT data={data} isControls />
-                    <div className="absolute top-0 right-0 ">
-                      <LaunchpadStatus
-                        width={100}
-                        height={80}
-                        className={`${
-                          data.status === "Active"
-                            ? "fill-primary_400"
-                            : data.status === "Upcoming"
-                            ? "fill-shader_500"
-                            : data.isSuccess
-                            ? "fill-green"
-                            : "fill-red"
-                        }`}
-                      />
-                      <p className="absolute top-[50%] right-[50%] translate-x-[50%] text-sm -translate-y-[80%] text-white font-semibold">
-                        {data.status === "Active"
-                          ? "Sale"
-                          : data.status === "Upcoming"
-                          ? "Soon"
-                          : data.isSuccess
-                          ? "Success"
-                          : "Failed"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className=" w-full lg:w-[50%] mt-4 lg:mt-0">
-                    <div className="relative max-w-full text-2xl font-semibold text-shader_700">
-                      <ModalDocument data={data.metadata.name} />
-                    </div>
-                    <div className="flex items-center text-3xl font-semibold datas-center text-primary_400">
-                      <FormatNumber number={(data.price / 1e18).toString()} />
-                      <EtherIcon
-                        width={20}
-                        height={20}
-                        className="mb-2 fill-primary_400"
-                      />
-                    </div>
-                    {account && (
-                      <div className="p-2 border rounded-lg text-shader_700 border-shader_600 w-fit">
-                        <p className="mb-2 font-normal">Your NFT Balance</p>
-                        <p className="font-semibold">{data?.amount}</p>
-                      </div>
-                    )}
-                    <div className="grid grid-cols-2 my-3 lg:grid-cols-4 text-shader_700">
-                      <div>
-                        <p>Supported</p>
-                        <div className="flex justify-start">
-                          <LogoIconTable
-                            width={18}
-                            height={18}
-                            chainId={chainId}
-                            className="float-left mt-1 gap-x-1"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <p>Total raise</p>
-                        <div className="flex items-center mt-1 font-semibold gap-x-1">
-                          <FormatNumber
-                            number={(data.totalSold / 1e18).toString()}
-                          />
-                          <EtherIcon
-                            width={16}
-                            height={16}
-                            className="mb-1 fill-shader_700"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <p>Soft Cap</p>
-                        <div className="flex items-center mt-1 font-semibold gap-x-1">
-                          <FormatNumber
-                            number={(data.softcap / 1e18).toString()}
-                          />
-                          <EtherIcon
-                            width={16}
-                            height={16}
-                            className="mb-1 fill-shader_700"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <p>Hard Cap</p>
-                        <div className="flex items-center mt-1 font-semibold gap-x-1">
-                          <FormatNumber
-                            number={(data.hardcap / 1e18).toString()}
-                          />
-                          <EtherIcon
-                            width={16}
-                            height={16}
-                            className="mb-1 fill-shader_700"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full lg:w-[80%]">
-                      <p className="mb-2">Type</p>
-                      <div className="flex justify-between p-2 rounded-lg datas-center bg-shader_500 ">
-                        <div className="flex item-center gap-x-2">
-                          <div className="w-8 h-8 overflow-hidden rounded-lg">
-                            <MediaNFT data={data} isControls hideAudio={true} />
-                          </div>
-                          <div className="relative font-semibold text-shader_700 max-w-[250px] flex items-center">
-                            <ModalDocument data={data.metadata.name} />
-                          </div>
-                        </div>
-                        <div className="flex items-center text-sm font-semibold text-primary_400">
-                          <FormatNumber
-                            number={(data.totalSold / 1e18).toString()}
-                          />
-                          /
-                          <FormatNumber
-                            number={(data.hardcap / 1e18).toString()}
-                          />
-                        </div>
-                      </div>
-                      <div className="my-3">
-                        <p className="mb-4">Progress</p>
-                        <ProgressBar
-                          softcap={softcap}
-                          hardcap={hardcap}
-                          amount={totalSold}
-                          isRefetching={isRefetching}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
-                      <div className="">
-                        {account ? (
-                          <>
-                            {data.status === "Ended" ? (
-                              <div>
-                                <p className="mb-2">
-                                  Claiming & Refunding Phase
-                                </p>
-                                <div className="flex gap-x-2">
-                                  {data.isClaim ? (
-                                    <button
-                                      // disabled={data.status === null ? true : !data.status}
-                                      className={`border ${
-                                        !data.status
-                                          ? "text-white  bg-shader_500"
-                                          : "border-green bg-green hover:border-green hover:text-green hover:bg-white text-white"
-                                      } px-6 py-2 rounded-lg transition-all text-sm font-medium`}
-                                      onClick={() => {
-                                        setIsOpenConfirmClaim(true);
-                                      }}
-                                    >
-                                      Claim
-                                    </button>
-                                  ) : (
-                                    <button
-                                      // disabled={data.status === null ? true : data.status}
-                                      className={`${
-                                        Number(data.amount) >=
-                                        Number(data.softcap)
-                                          ? "text-white  bg-shader_500"
-                                          : "text-red border border-red hover:border-red hover:text-white hover:bg-red"
-                                      }  px-6 py-2 rounded-lg transition-all text-sm font-medium`}
-                                      onClick={() => {
-                                        setIsOpenModalRefund(true);
-                                        setAmount(data?.amount);
-                                        setAmountLeave(data?.amount);
-                                      }}
-                                    >
-                                      Refund
-                                    </button>
-                                  )}
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="mb-4 gap-x-4">
-                                <div className="flex items-center">
-                                  <p className="">Buying Phase</p>
-                                  <div className="flex items-center text-xs">
-                                    (
-                                    {inputNFT ? (
-                                      <FormatNumber
-                                        number={inputNFT.toString()}
-                                      />
-                                    ) : (
-                                      0
-                                    )}
-                                    <EtherIcon
-                                      width={12}
-                                      height={12}
-                                      className="mb-[2px] fill-gray-600"
-                                    />
-                                    )
-                                  </div>
-                                </div>
-                                <div className="text-shader_600 text-[10px] font-medium mb-2 flex items-center">
-                                  The maximum number of Tokens you can buy is{" "}
-                                  <span className="ml-1 text-xs font-semibold text-primary_400">
-                                    {Number(data.purchaseLimit) / 1e18}
-                                  </span>
-                                  <EtherIcon
-                                    width={12}
-                                    height={12}
-                                    className=" fill-primary_400"
-                                  />
-                                </div>
-                                <NumericFormat
-                                  thousandSeparator=","
-                                  decimalScale={0}
-                                  onChange={(e) => {
-                                    let newValue = e.target.value.replace(
-                                      /,/g,
-                                      ""
-                                    );
-                                    setAmount(newValue);
-                                    if (
-                                      Number(newValue) >
-                                      Number(data.purchaseLimit - data.amount)
-                                    ) {
-                                      setIsMaxBuy(true);
-                                    } else {
-                                      setIsMaxBuy(false);
-                                    }
-                                  }}
-                                  min="1"
-                                  className="px-2 py-2 mb-2 border rounded-md outline-none"
-                                  value={amount}
-                                />
-                                <br />
-                                {isMaxBuy && (
-                                  <p
-                                    className="mt-0 mb-2 ml-2 text-xs text-red"
-                                    key="maxBuy"
-                                  >
-                                    Exceed the quantity that can be purchased(
-                                    {Number(data.purchaseLimit - data.amount)})
-                                  </p>
-                                )}
-                                <button
-                                  disabled={
-                                    errors !== "" || !amount || +amount < 1
-                                      ? true
-                                      : false
-                                  }
-                                  onClick={() => {
-                                    setIsOpenModal(!isOpenModal);
-                                  }}
-                                  className={`w-full py-2 rounded-md text-sm text-white  ${
-                                    errors !== "" || !amount || +amount < 1
-                                      ? "bg-slate-400"
-                                      : "bg-primary_500 text-white font-medium hover:bg-white hover:text-primary_400 border boder-white hover:border-primary_400 rounded-lg transition-all duration-150 ease-linear"
-                                  }`}
-                                >
-                                  Buy
-                                </button>
-                                {amount && (
-                                  <p className="mt-2 text-xs text-red">
-                                    {errors}
-                                  </p>
-                                )}
-                              </div>
-                            )}
-                            <ModalLaunchPad
-                              setIsOpenTransaction={setIsOpenTransaction}
-                              isOpenTransation={isOpenTransaction}
-                              setIsOpenModal={setIsOpenModal}
-                              isOpenModal={isOpenModal}
-                              inputNFT={inputNFT}
-                              handleBuyNFT={handleBuyNFT}
-                              data={data}
-                            />
-                            <ModalClaimLaunchpad
-                              data={data}
-                              isOpenConfirmClaim={isOpenConfirmClaim}
-                              setIsOpenConfirmClaim={setIsOpenConfirmClaim}
-                              setHash={setHash}
-                              setIsOpenSuccess={setIsOpenSuccess}
-                              setIsOpenError={setIsOpenError}
-                            />
-                          </>
-                        ) : (
-                          <Button
-                            className="w-full py-2 mt-2"
-                            primary
-                            onClick={handleOpen}
-                          >
-                            Connect Wallet
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
+              </div>
             )
           )}
         </div>
@@ -556,44 +250,29 @@ export default function DetailLaunchPad() {
           type="Refund NFT Failed"
           setIsOpenError={setIsOpenErrorRefund}
         />
-        <ModalLaunchPadProfile
-          isOpenModal={isOpenModalRefund}
-          setIsOpenModal={setIsOpenModalRefund}
-          isOpenTransation={isOpenTransaction}
-          setIsOpenTransaction={setIsOpenTransaction}
-          amount={+amount}
-          setAmount={setAmount}
-          setAmountLeave={setAmountLeave}
-          amountLeave={amountLeave}
-          tokenLaunchpad={tokenLaunchpad}
-          refetch={refetch}
-          setHash={setHash}
-          setIsOpenSuccess={setIsOpenSuccessRefund}
-          setIsOpenError={setIsOpenErrorRefund}
-        />
-      </div>
-      <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 ">
-        <div className="flex justify-center">
-          <TabQuery
-            TABS={TABS}
-            initialItem="rule"
-            indexChoice={indexChoice}
-            isDefault
-          />
-        </div>
-        {isLoading ? (
-          <div>
-            <BiLoaderAlt className="animate-spin text-primary_400" />
+        <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 ">
+          <div className="flex justify-center">
+            <TabQuery
+              TABS={TABS}
+              initialItem="rule"
+              indexChoice={indexChoice}
+              isDefault
+            />
           </div>
-        ) : (
-          isSuccess &&
-          data && (
-            <div className="mt-5 lg:pb-0">
-              {selectedTab ? selectedTab.panel() : null}
+          {isLoading ? (
+            <div>
+              <BiLoaderAlt className="animate-spin text-primary_400" />
             </div>
-          )
-        )}
-      </div>
+          ) : (
+            isSuccess &&
+            data && (
+              <div className="mt-5 lg:pb-0">
+                {selectedTab ? selectedTab.panel() : null}
+              </div>
+            )
+          )}
+        </div>
+      </BackgroundDefault>
     </div>
   );
 }

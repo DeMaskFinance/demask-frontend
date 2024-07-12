@@ -46,6 +46,7 @@ const config = {
       },
       gridTemplateColumns: {
         autoFill: "repeat(auto-fill, minmax(220px, 1fr))",
+        autoFillLaunchpad: "repeat(auto-fill, minmax(250px, 1fr))",
       },
       flexBasis: {
         "1/7": "14.2857143%",

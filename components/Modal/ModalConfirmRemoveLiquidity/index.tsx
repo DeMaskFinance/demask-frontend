@@ -174,13 +174,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       try {
         setIsOpenTransaction(true);
         let result;
-
-        if (idNFT.length > 0) {
-          result = await ercContract721.removeERC20ERC721(
+        if (data.nftID) {
+          result = await erc1155Contract.removeERC20ERC1155(
             wallet,
-            collectionAddress,
+            data.nftAddress,
             data.tokenAddress,
-            idNFT,
+            data.nftID,
             routerAddress,
             liquidity,
             amountTokenMin,
@@ -189,11 +188,11 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             slippage
           );
         } else {
-          result = await erc1155Contract.removeERC20ERC1155(
+          result = await ercContract721.removeERC20ERC721(
             wallet,
-            data.nftAddress,
+            collectionAddress,
             data.tokenAddress,
-            data.nftID,
+            idNFT,
             routerAddress,
             liquidity,
             amountTokenMin,

@@ -91,52 +91,54 @@ const TableRank = () => {
     });
 
   return (
-    <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-md bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
-      <table className="w-full text-left border-collapse min-h-[550px]">
-        <thead className=" bg-shader_600 text-shader_200">
-          <tr className="flex px-4 py-3">
-            <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
-            <th className="flex justify-start lg:w-full md:w-full w-[100px]">
-              Name
-            </th>
-            <th className="flex justify-center lg:w-full md:w-full w-[140px]">
-              Address
-            </th>
-            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              Ref point
-            </th>
-            <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-              Trading point
-            </th>
-            <th className="flex justify-end lg:w-full md:w-full w-[200px] pr-2">
-              Season volume
-            </th>
-          </tr>
-        </thead>
+    <div>
+      <div className="mt-10 overflow-x-scroll overflow-y-hidden border rounded-md bg-shader_800 text-shader_200 border-shader_500 shadow-home  flex flex-col justify-between">
+        <table className="w-full text-left border-collapse min-h-[550px]">
+          <thead className=" bg-shader_600 text-shader_200">
+            <tr className="flex px-4 py-3">
+              <th className="flex justify-start md:w-[70%] w-[100px]">Place</th>
+              <th className="flex justify-start lg:w-full md:w-full w-[100px]">
+                Name
+              </th>
+              <th className="flex justify-center lg:w-full md:w-full w-[140px]">
+                Address
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Ref point
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                Trading point
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[200px] pr-2">
+                Season volume
+              </th>
+            </tr>
+          </thead>
 
-        <tbody className="flex flex-col h-full flex-auto">
-          {isLoading || isFetching ? (
-            <div className="w-full h-full flex-auto justify-center items-center flex">
-              <LoadingIcon width={30} height={30} className="animate-spin" />
-            </div>
-          ) : isSuccess && data ? (
-            <>
-              {account && (
-                <ItemTableRank item={data?.userRank} currentRank={true} />
-              )}
-              {data.data.map((item: any, index: number) => (
-                <React.Fragment key={index}>
-                  <ItemTableRank item={item} currentRank={false} />
-                </React.Fragment>
-              ))}
-            </>
-          ) : (
-            <div className="w-full h-full flex-auto justify-center items-center flex">
-              <SearchNotFound />
-            </div>
-          )}
-        </tbody>
-      </table>
+          <tbody className="flex flex-col h-full flex-auto">
+            {isLoading || isFetching ? (
+              <div className="w-full h-full flex-auto justify-center items-center flex">
+                <LoadingIcon width={30} height={30} className="animate-spin" />
+              </div>
+            ) : isSuccess && data ? (
+              <>
+                {account && (
+                  <ItemTableRank item={data?.userRank} currentRank={true} />
+                )}
+                {data.data.map((item: any, index: number) => (
+                  <React.Fragment key={index}>
+                    <ItemTableRank item={item} currentRank={false} />
+                  </React.Fragment>
+                ))}
+              </>
+            ) : (
+              <div className="w-full h-full flex-auto justify-center items-center flex">
+                <SearchNotFound />
+              </div>
+            )}
+          </tbody>
+        </table>
+      </div>
       {isSuccess && (
         <Pagination
           data={data}
@@ -144,7 +146,6 @@ const TableRank = () => {
           page={page}
           setPage={setPage}
           refetch={refetch}
-          totalPages={15}
           isFetching={isFetching}
         />
       )}

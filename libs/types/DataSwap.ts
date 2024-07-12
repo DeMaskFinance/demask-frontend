@@ -16,4 +16,5 @@ interface DataBase {
   name?: string;
   avatar?: string;
   collectionName: string;
+  symbol?: string;
 }

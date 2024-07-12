@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
 import {
   CreateIcon,
@@ -28,6 +28,34 @@ const data = [
 export default function NavFooter() {
   const [active, setActive] = useState<boolean>(false);
   const router = useRouter();
+  const footerRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      let prevScrollPos = window.scrollY;
+
+      const handleScroll = () => {
+        const currentScrollPos = window.scrollY;
+        const isScrolledUp = prevScrollPos > currentScrollPos;
+        if (footerRef.current) {
+          const headerClassList = footerRef.current.classList;
+          headerClassList.toggle("translate-y-0", isScrolledUp);
+          headerClassList.toggle(
+            "translate-y-[100%]",
+            !isScrolledUp && currentScrollPos > 120
+          );
+        }
+
+        prevScrollPos = currentScrollPos;
+      };
+
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
   return (
     <>
       <div
@@ -38,7 +66,10 @@ export default function NavFooter() {
           active ? "block" : "hidden"
         } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
       ></div>
-      <footer className="fixed bottom-0 z-20 w-full bg-shader_900 lg:hidden">
+      <footer
+        ref={footerRef}
+        className="fixed bottom-0 z-20 w-full bg-shader_900 lg:hidden transition-all duration-300"
+      >
         <ul className="border-t flex justify-between h-16 text-[10px] items-center border-shader_500 relative">
           {data.map((item, index) => (
             <Fragment>

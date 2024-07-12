@@ -247,10 +247,10 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         {type === "erc721" && isSuccess && (
           <NFTGrid
             data={data721}
-            isFetching={isFetching}
             setIdNFT={setIdNFT}
             idNFT={idNFT}
             isSearch={false}
+            isRemove
           />
         )}
         <div>

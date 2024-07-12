@@ -23,6 +23,7 @@ const PoolItem = ({ liquidity }: any) => {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
+  const [isOpenRemoveLiquididy, setIsOpenRemoveLiquididy] = useState(false);
   const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
     useState<boolean>(false);
   const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
@@ -62,6 +63,9 @@ const PoolItem = ({ liquidity }: any) => {
     };
     fetchDataReward();
   }, [dmlTokenLiquidity, account, data]);
+  const closeModal = () => {
+    setIsOpenRemoveLiquididy(false);
+  };
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -109,7 +113,10 @@ const PoolItem = ({ liquidity }: any) => {
             />
           </DialogContent>
         </Dialog>
-        <Dialog>
+        <Dialog
+          open={isOpenRemoveLiquididy}
+          onOpenChange={setIsOpenRemoveLiquididy}
+        >
           <DialogTrigger asChild>
             <Button red_2 className="w-full py-3 px-3 flex gap-x-2">
               <TrashIcon className="text-red" width={20} height={20} />
@@ -127,6 +134,7 @@ const PoolItem = ({ liquidity }: any) => {
               setHash={setHash}
               setIsOpenSuccess={setIsOpenSuccessRemove}
               setIsOpenError={setIsOpenErrorRemove}
+              closeModal={closeModal}
             />
           </DialogContent>
         </Dialog>

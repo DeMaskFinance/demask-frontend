@@ -274,30 +274,32 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
         </div>
       ) : data && newData?.length > 0 ? (
         <div className="">
-          <div>
-            <div className="hidden text-sm font-semibold lg:flex w-fit text-primary_300 ">
-              <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
-                <p className="mr-1 text-shader_200">Price 1D</p>
+          <div className="text-sm font-semibold grid md:w-fit text-primary_300 md:grid-rows-1 md:grid-cols-4 grid-cols-2 grid-rows-2">
+            <div className="md:flex items-center p-4 border-r border-t border-shader_500 ">
+              <p className="mr-1 text-shader_200">Price 1D</p>
+              <div className="flex">
                 <FormatNumber number={data[data.length - 1]?.closePrice} />(
                 {formatPercent(data[data.length - 1]?.changePrice)}%)
               </div>
-              <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
-                <p className="mr-1 text-shader_200">Volume 1D</p>
-                <div className="flex items-center gap-x-1">
-                  <FormatNumber number={data[data.length - 1]?.volume} />
-                  <EtherIcon width={16} height={16} />
-                </div>
+            </div>
+            <div className="md:flex items-center p-4 border-r border-t border-shader_500 ">
+              <p className="mr-1 text-shader_200">Volume 1D</p>
+              <div className="flex items-center gap-x-1">
+                <FormatNumber number={data[data.length - 1]?.volume} />
+                <EtherIcon width={16} height={16} />
               </div>
-              <div className="flex items-center px-4 py-4 border-r border-shader_500 ">
-                <p className="mr-1 text-shader_200">Reserve NFT</p>
-                <div className="flex items-center gap-x-1">
-                  <FormatNumber number={dataSwap?.reserveNFT} />
-                  <NFTIcon width={16} height={16} />
-                </div>
+            </div>
+            <div className="md:flex items-center p-4 border-r border-t border-shader_500 ">
+              <p className="mr-1 text-shader_200">Reserve NFT</p>
+              <div className="flex items-center gap-x-1">
+                <FormatNumber number={dataSwap?.reserveNFT} />
+                <NFTIcon width={16} height={16} />
               </div>
-              <div className="flex items-center p-4 border-r border-shader_500">
-                <div className="flex items-center text-sm gap-x-1">
-                  <p className="text-shader_200">Reserve Token</p>
+            </div>
+            <div className="md:flex items-center p-4 border-r border-t border-shader_500 whitespace-nowrap">
+              <div className="md:flex items-center text-sm gap-x-1">
+                <p className="text-shader_200">Reserve Token</p>
+                <div className="flex items-center">
                   <FormatNumber number={dataSwap.reserveToken} />
                   <span>
                     <EtherIcon width={16} height={16} />

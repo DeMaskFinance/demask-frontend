@@ -224,16 +224,17 @@ const DetailLiquidity = () => {
                     <ChartNoTransfers />
                   )}
                 </div>
+              </div>
+              {isSuccess && (
                 <Pagination
                   data={data}
                   isPreviousData={isPreviousData}
                   page={page}
                   setPage={setPage}
                   refetch={refetch}
-                  totalPages={15}
                   isFetching={isFetching}
                 />
-              </div>
+              )}
             </div>
             <div className="w-full lg:w-[400px] lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
               <div className="flex items-center justify-between mb-4">

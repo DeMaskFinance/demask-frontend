@@ -14,7 +14,7 @@ interface TabLaunchPadProps {
 }
 const Live = () => {
   return (
-    <div className="relative hidden md:flex items-center justify-between w-full h-10 px-3 my-2 mb-2 text-base font-semibold rounded-lg bg-green2 bg-opacity-10 text-green2 text-sm">
+    <div className="relative hidden md:flex items-center justify-between w-full h-10 px-3 font-semibold rounded-lg bg-green2 bg-opacity-10 text-green2 text-sm">
       <div className="flex items-center gap-x-1 font-bold">
         <div className="relative flex w-2 h-2">
           <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-green"></span>
@@ -59,7 +59,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item, query }) => {
                   </span>
                 </h6>
               </div>
-              <div className="flex justify-between mt-2 text-sm text-shader_200">
+              <div className="flex justify-between my-2 text-sm text-shader_200">
                 <div>
                   <p>Price</p>
                   <div className="flex items-center gap-x-1 text-white font-bold">

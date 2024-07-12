@@ -175,23 +175,6 @@ export const SwapIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
-export const LaunchpadStatus: React.FunctionComponent<IconProps> = ({
-  className,
-  width,
-  height,
-}) => {
-  return (
-    <svg
-      className={className}
-      width={width}
-      height={height}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 100 80"
-    >
-      <path d="M0 7.99999C0 3.58171 3.58172 0 8 0H125C129.418 0 133 3.58172 133 8V70.2368C133 75.2867 128.379 79.0734 123.427 78.0807L6.42729 54.622C2.68968 53.8726 0 50.5901 0 46.7781V7.99999Z" />
-    </svg>
-  );
-};
 export const SettingIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,

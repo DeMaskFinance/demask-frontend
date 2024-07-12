@@ -147,20 +147,21 @@ function ListTracsaction() {
               ) : (
                 <Fragment>
                   <TransactionItem data={data} isFetching={isFetching} />
-                  <Pagination
-                    data={data}
-                    isPreviousData={isPreviousData}
-                    page={page}
-                    setPage={setPage}
-                    refetch={refetch}
-                    totalPages={15}
-                    isFetching={isFetching}
-                  />
                 </Fragment>
               )}
             </tbody>
           </table>
         </div>
+        {isSuccess && (
+          <Pagination
+            data={data}
+            isPreviousData={isPreviousData}
+            page={page}
+            setPage={setPage}
+            refetch={refetch}
+            isFetching={isFetching}
+          />
+        )}
       </div>
     </div>
   );

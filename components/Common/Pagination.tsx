@@ -8,9 +8,7 @@ interface PaginationProps {
   isPreviousData: boolean;
   setPage: any;
   refetch: any;
-  totalPages: number;
   isFetching: boolean;
-  setPageNumberInput?: any;
 }
 const Pagination = ({
   data,
@@ -18,8 +16,6 @@ const Pagination = ({
   pageNumberInput,
   isPreviousData,
   setPage,
-  setPageNumberInput,
-  refetch,
 }: PaginationProps) => {
   const goToPage = (pageNum: number) => {
     const newPageNumber = Math.max(1, Math.min(pageNum, data?.totalPages));
@@ -120,7 +116,7 @@ const Pagination = ({
             <MdOutlineNavigateNext className="mx-auto text-2xl " />
           </button>
         </div>
-        <div className="flex items-center justify-center gap-4 font-semibold text-shader_200">
+        <div className="md:flex items-center justify-center gap-4 font-semibold text-shader_200 hidden">
           <span>Page {page}</span>
           <input
             type="number"
@@ -148,7 +144,6 @@ const TablePagination: React.FC<PaginationProps> = ({
   data,
   page,
   setPage,
-  totalPages,
   isFetching,
   refetch,
   isPreviousData,
@@ -159,15 +154,15 @@ const TablePagination: React.FC<PaginationProps> = ({
   };
 
   const nextPage = () => {
-    const nextPageNumber = Math.min(page + 1, totalPages);
+    const nextPageNumber = Math.min(page + 1, data?.totalPages);
     setPage(nextPageNumber);
   };
 
   useEffect(() => {
-    if (totalPages === 0) {
+    if (data?.totalPages === 0) {
       setPage(1);
     }
-  }, [totalPages]);
+  }, [data?.totalPages]);
 
   // useEffect(() => {
   //   refetch();
@@ -193,16 +188,18 @@ const TablePagination: React.FC<PaginationProps> = ({
             <span className="px-2 text-primary_500">{page}</span> of
             <span
               className="px-2 cursor-pointer text-primary_500"
-              onClick={() => page !== totalPages && setPage(totalPages)}
+              onClick={() =>
+                page !== data?.totalPages && setPage(data?.totalPages)
+              }
             >
-              {totalPages}
+              {data?.totalPages}
             </span>
           </p>
           <button
             onClick={nextPage}
-            disabled={isPreviousData || page === totalPages || isFetching}
+            disabled={isPreviousData || page === data?.totalPages || isFetching}
             className={`${
-              isPreviousData || page === totalPages || isFetching
+              isPreviousData || page === data?.totalPages || isFetching
                 ? "text-white bg-slate-300"
                 : "hover:text-white hover:bg-primary_500 transition-all"
             } w-8 flex items-center text-center justify-center rounded-full transition-all`}

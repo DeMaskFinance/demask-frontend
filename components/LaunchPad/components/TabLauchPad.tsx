@@ -113,7 +113,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
             ) : (
               <SearchNotFound />
             )} */}
-            <ul className="grid grid-cols-2 md:grid-cols-autoFill gap-6 text-shader_600">
+            <ul className="grid grid-cols-2 md:grid-cols-autoFillLaunchpad gap-6 text-shader_600">
               <TabLaunchPadItem item={item} query={query} />
               <TabLaunchPadItem item={item} query={query} />
               <TabLaunchPadItem item={item} query={query} />

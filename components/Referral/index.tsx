@@ -99,7 +99,7 @@ const Referral = () => {
         </div>
         {account && <StaticTable />}
         <div className=" mt-6 ">
-          <div className="flex items-center w-full">
+          <div className="flex items-center w-full whitespace-nowrap">
             {/* PC */}
             <TabQuery
               TABS={TABS}

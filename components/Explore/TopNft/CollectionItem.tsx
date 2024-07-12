@@ -12,19 +12,11 @@ interface CollectionItemProps {
   data: any;
   isFetching: boolean;
   isLoading: boolean;
-  isPreviousData: boolean;
-  page: number;
-  setPage: any;
-  refetch: any;
 }
 const CollectionItem: React.FC<CollectionItemProps> = ({
   data,
   isFetching,
   isLoading,
-  isPreviousData,
-  page,
-  setPage,
-  refetch,
 }) => {
   const skeleton = (
     <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />

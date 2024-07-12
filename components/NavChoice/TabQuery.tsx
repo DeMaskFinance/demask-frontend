@@ -67,7 +67,7 @@ const TabQuery: React.FC<TabQueryProps> = ({
         </div>
       ) : (
         <div
-          className={`flex relative items-center py-1 text-sm text-center text-white bg-shader_800 w-full`}
+          className={`flex relative items-center py-1 text-sm text-center text-white bg-shader_800 w-full overflow-x-auto`}
         >
           <div
             className={`absolute transition-transform duration-100 ease-linear border-b-[3px] border-primary_500 h-full bottom-0`}

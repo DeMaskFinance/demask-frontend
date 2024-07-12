@@ -212,37 +212,28 @@ function TopCollection() {
               <CollectionItem
                 isLoading={isLoading}
                 data={data}
-                isPreviousData={isPreviousData}
                 isFetching={isFetching}
-                page={page}
-                setPage={setPage}
-                refetch={refetch}
               />
             ) : (
               <CollectionItem
                 isLoading={isLoadingNewest}
                 data={dataNewest}
-                isPreviousData={isPreviousDataNewest}
                 isFetching={isFetchingNewest}
-                page={pageNewest}
-                setPage={setPageNewest}
-                refetch={refetchNewest}
               />
             )}
           </tbody>
         </table>
-        {isSuccess && (
-          <Pagination
-            data={data}
-            isPreviousData={isPreviousData}
-            page={page}
-            setPage={setPage}
-            refetch={refetch}
-            totalPages={15}
-            isFetching={isFetching}
-          />
-        )}
       </div>
+      {isSuccess && (
+        <Pagination
+          data={data}
+          isPreviousData={isPreviousData}
+          page={page}
+          setPage={setPage}
+          refetch={refetch}
+          isFetching={isFetching}
+        />
+      )}
     </div>
   );
 }

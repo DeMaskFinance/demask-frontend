@@ -101,6 +101,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   useEffect(() => {
     let amountErcDesired;
+    console.log("123");
+
     if (
       dmlToken !== "0x0000000000000000000000000000000000000000" &&
       data &&
@@ -125,7 +127,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         setIsSufficientToken(false);
       }
     }
-  }, [idNFT, inputToken, data, bigNumberBalance]);
+  }, [idNFT, inputToken, data, bigNumberBalance, reserveToken, reserveNFT]);
   useEffect(() => {
     const checkApproveNFT = async () => {
       const result = await ercContract.approveNFT(
@@ -137,7 +139,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       setIsApprovedNFT(result);
     };
     checkApproveNFT();
-  }, [account, collectionAddress, wallet, isOpenTransaction]);
+  }, [account, collectionAddress, wallet]);
+  console.log(idNFT.length, amountErcDesiredToDec, isSufficientToken);
 
   return (
     <Fragment>
@@ -150,7 +153,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         ) : (
           <NFTGrid
             data={data}
-            isFetching={isFetching}
             setIdNFT={setIdNFT}
             idNFT={idNFT}
             isSearch={false}

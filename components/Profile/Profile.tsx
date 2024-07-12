@@ -20,12 +20,10 @@ import {
   WebsiteIcon,
 } from "../Icons";
 import TabQuery from "../NavChoice/TabQuery";
-import History from "./History";
+import History from "./Activity";
 import Created from "./Inventory/Created";
 import Items from "./Inventory/Items";
 import Pools from "./Pools";
-import UserLaunchpad from "./ProfileLaunchPad/UserLaunchpad";
-import Referral from "./Referral";
 import {
   Dialog,
   DialogContent,

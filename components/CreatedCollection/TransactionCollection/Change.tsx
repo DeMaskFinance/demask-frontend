@@ -157,7 +157,6 @@ const Change = () => {
               <div className="flex flex-col ">
                 <NFTGrid
                   data={inputData}
-                  isFetching={isInputDataFetching}
                   setIdNFT={setIdNFTInput}
                   idNFT={idNFTInput}
                   isSearch={false}
@@ -199,7 +198,6 @@ const Change = () => {
           <div className="flex flex-col ">
             <NFTGrid
               data={data}
-              isFetching={isFetching}
               // handleChoiceNFT={handleChoiceNFTOutput}
               setIdNFT={setIdNFTOutput}
               idNFT={idNFTOutput}

@@ -121,13 +121,7 @@ const Buy = () => {
         </div>
       ) : isSuccess && data?.data?.length > 0 ? (
         <div className="flex flex-col ">
-          <NFTGrid
-            data={data}
-            isFetching={isFetching}
-            idNFT={idNFT}
-            isSearch
-            setIdNFT={setIdNFT}
-          />
+          <NFTGrid data={data} idNFT={idNFT} isSearch setIdNFT={setIdNFT} />
           <div className="w-full mt-4">
             {idNFT.length > 0 && (
               <ul className="text-sm text-shader_200">

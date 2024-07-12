@@ -57,7 +57,7 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
 
   useEffect(() => {
     function handleClickOutside(event: any) {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
         if (click) {
           setClick(false);
         }
@@ -68,6 +68,7 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [click]);
+  console.log(click);
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata?.name);
@@ -118,7 +119,6 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
     <>
       <div className="relative w-full">
         <div
-          ref={inputRef}
           className={`flex text-primary_400  rounded-lg items-center relative flex-1`}
         >
           <input
