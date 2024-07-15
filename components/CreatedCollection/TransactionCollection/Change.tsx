@@ -9,7 +9,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
-import useInformationToken from "@/hooks/useInformationToken";
 import {
   fetchDataBuyNFTs,
   fetchDataSellNFTs,
@@ -24,8 +23,15 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 
 const Change = () => {
-  const { account, chainId, demask, wallet, slippage, txDeadline } =
-    useContext(AccountContext);
+  const {
+    account,
+    chainId,
+    demask,
+    wallet,
+    bigNumberBalance,
+    txDeadline,
+    updateBalance,
+  } = useContext(AccountContext);
   const [idNFTInput, setIdNFTInput] = useState<number[]>([]);
   const [idNFTOutput, setIdNFTOutput] = useState<number[]>([]);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
@@ -41,16 +47,6 @@ const Change = () => {
     RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
-  const { bigNumberBalance } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction
-  );
   //data Input
   const {
     data: inputData,
@@ -135,6 +131,7 @@ const Change = () => {
       }
       queryClient.refetchQueries(["collectionNFTBUY"]);
       queryClient.refetchQueries(["collectionNFTSell"]);
+      await updateBalance();
     } catch (error) {
       setIsOpenTransaction(false);
       console.error(error);

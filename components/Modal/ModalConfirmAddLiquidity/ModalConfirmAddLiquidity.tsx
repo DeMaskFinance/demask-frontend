@@ -6,7 +6,6 @@ import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
-import useInformationToken from "@/hooks/useInformationToken";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
@@ -56,8 +55,15 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const { demask, chainId, account, wallet, slippage, txDeadline } =
-    useContext(AccountContext);
+  const {
+    demask,
+    account,
+    wallet,
+    slippage,
+    txDeadline,
+    bigNumberBalance,
+    updateBalance,
+  } = useContext(AccountContext);
   const {
     ROUTER: routerAddress,
     RPC: rpc,
@@ -68,16 +74,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const { bigNumberBalance } = useInformationToken(
-    account,
-    tokenAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction
-  );
   const dmlToken = useDMLToken(
     account,
     nftAddress,
@@ -169,6 +165,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         setInputToken("");
         setAmountErcDesiredToDec("");
         setIsOpenConfirmAddLiquidity(false);
+        await updateBalance();
         if (setIsOpenLiquidity) {
           setIsOpenLiquidity(false);
         }

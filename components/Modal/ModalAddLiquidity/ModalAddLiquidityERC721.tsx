@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
-import useInformation from "@/hooks/useInformationToken";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
@@ -40,8 +39,15 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, account, wallet, slippage, chainId } =
-    useContext(AccountContext);
+  const {
+    demask,
+    account,
+    wallet,
+    slippage,
+    chainId,
+    bigNumberBalance,
+    balanceToken,
+  } = useContext(AccountContext);
   const {
     ROUTER_721: routerAddress,
     RPC: rpc,
@@ -59,7 +65,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction,
     isOpenConfirmAddLiquidity
   );
-  const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
+  const { reserveNFT, reserveToken } = useInformationDML(
     dmlToken,
     wallet,
     account,
@@ -68,17 +74,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     false,
     isOpenConfirmAddLiquidity,
     true
-  );
-
-  const { balanceToken, bigNumberBalance } = useInformation(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction
   );
 
   const { data, isSuccess, isLoading, isFetching } = useQuery({
@@ -101,8 +96,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   useEffect(() => {
     let amountErcDesired;
-    console.log("123");
-
     if (
       dmlToken !== "0x0000000000000000000000000000000000000000" &&
       data &&
@@ -140,7 +133,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet]);
-  console.log(idNFT.length, amountErcDesiredToDec, isSufficientToken);
 
   return (
     <Fragment>

@@ -1,4 +1,3 @@
-import abiErc20 from "@/abi/abiErc20.json";
 import { getProvider } from "@/libs/connection/getProvider";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
@@ -17,49 +16,22 @@ const useInformationToken = (
 ) => {
   const [balanceToken, setBalanceToken] = useState("0");
   const [bigNumberBalance, setBigNumberBalance] = useState("0");
-  const [decimals, setDecimals] = useState("18");
-  const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(true);
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   useEffect(() => {
     const getInformationToken = async () => {
-      if (tokenAddress && account && nativeAddress) {
+      if (tokenAddress && account) {
         const providerChoice = await getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
-        if (tokenAddress === nativeAddress) {
-          setDecimals("18");
-          setIsLoadingApprove(false);
-          setIsLoadingBalance(true);
-          try {
-            const balance = await provider.getBalance(account);
-            const balanceInMatic = parseFloat(
-              ethers.utils.formatEther(balance)
-            ).toFixed(4);
-            setBalanceToken(balanceInMatic);
-            setBigNumberBalance(balance.toString());
-            setIsLoadingBalance(false);
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          const contract = new ethers.Contract(
-            tokenAddress,
-            abiErc20,
-            providerChoice
-          );
-
-          try {
-            const bigNumberBalance = await contract.balanceOf(account);
-            setBigNumberBalance(bigNumberBalance.toString());
-            setIsLoadingApprove(false);
-            const decimals = await contract.decimals();
-            const decimalsInt = Number(decimals);
-            const divisor = ethers.BigNumber.from(10).pow(decimalsInt);
-            const balance = bigNumberBalance.div(divisor);
-            setBalanceToken(balance.toString());
-            // setDecimals(decimals);
-          } catch (error) {
-            console.error(error);
-          }
+        try {
+          const balance = await provider.getBalance(account);
+          const balanceInMatic = parseFloat(
+            ethers.utils.formatEther(balance)
+          ).toFixed(4);
+          setBalanceToken(balanceInMatic);
+          setBigNumberBalance(balance.toString());
+          setIsLoadingBalance(false);
+        } catch (error) {
+          console.error(error);
         }
       } else {
         setBalanceToken("0"); // No Account
@@ -82,8 +54,6 @@ const useInformationToken = (
   return {
     balanceToken,
     bigNumberBalance,
-    decimals,
-    isLoadingApprove,
     isLoadingBalance,
   };
 };

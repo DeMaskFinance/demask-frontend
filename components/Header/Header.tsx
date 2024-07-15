@@ -1,13 +1,12 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import formatNumber from "@/libs/utils/formatNumer";
 import { logout, selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { ethers } from "ethers";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +14,7 @@ import "tippy.js/dist/tippy.css"; // optional
 import Web3 from "web3";
 import { AvatarCustom } from "../Avatars";
 import BackgroundParticles from "../Backgrounds/BackGroundParticles";
+import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import Maintenance from "../Common/Maintenance";
 import {
@@ -32,7 +32,6 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
-import { Button } from "../Buttons";
 
 export default function Header() {
   const {
@@ -43,6 +42,8 @@ export default function Header() {
     demask,
     isEvent,
     setIsEvent,
+    balanceToken,
+    isLoadingBalance,
   } = useContext(AccountContext);
   const {
     ROUTER: routerAddress,
@@ -50,17 +51,6 @@ export default function Header() {
     NATIVE_ADDRESS: nativeAddress,
   } = demask;
   const { isLoggedIn, profile } = useSelector(selectProfile);
-  const { balanceToken, isLoadingBalance } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    true
-  );
-  console.log(balanceToken);
 
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);

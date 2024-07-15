@@ -44,7 +44,6 @@ const getMetadataUrl = async ({
     initialMetadata.image = await fileIPFS;
   }
   const urlMetadata = await uploadMetadataIPFS(initialMetadata);
-  console.log(urlMetadata);
 
   return urlMetadata;
 };

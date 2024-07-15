@@ -21,7 +21,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
   type,
 }) => {
-  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const { account, wallet, updateBalance, demask } = useContext(AccountContext);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
@@ -71,11 +71,11 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         setIsOpenErrorCollect,
         setHash,
       });
+      await updateBalance();
     } else {
       console.log("No account and DML");
     }
   };
-  console.log(liquidity);
 
   return (
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">

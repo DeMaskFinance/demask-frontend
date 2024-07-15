@@ -1,26 +1,23 @@
 import { Button } from "@/components/Buttons";
 import Copy from "@/components/Common/Copy";
 import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/Media/MediaNFT";
+import { MediaCollection } from "@/components/Common/Media";
 import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import useDMLToken from "@/hooks/useDMLToken";
 import useInformationDML from "@/hooks/useInformationDML";
-import useInformationToken from "@/hooks/useInformationToken";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc721Contract from "@/libs/utils/erc/erc721.contract";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import { useRouter } from "next/router";
 import { Fragment, memo, useContext, useEffect, useState } from "react";
-import { CgClose } from "react-icons/cg";
+import { BiLoaderAlt } from "react-icons/bi";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
-import { BiLoaderAlt } from "react-icons/bi";
-import { MediaCollection } from "@/components/Common/Media";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   tokenAddress: string;
@@ -56,7 +53,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setIsOpenAddLiquidity,
   setIsOpenConfirmAddLiquidity,
 }) => {
-  const { demask, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline, updateBalance } =
     useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -148,6 +145,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
         queryClient.refetchQueries(["detailCollection"]);
+        await updateBalance();
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

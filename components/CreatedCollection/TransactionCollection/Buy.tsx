@@ -12,7 +12,6 @@ import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
-import useInformationToken from "@/hooks/useInformationToken";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -21,7 +20,7 @@ import NFTGrid from "./NFTsGrids";
 import useDebounce from "@/hooks/useDebounce";
 import useFee from "@/hooks/useFee";
 const Buy = () => {
-  const { account, chainId, demask, wallet, slippage } =
+  const { account, chainId, demask, wallet, slippage, bigNumberBalance } =
     useContext(AccountContext);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -43,16 +42,6 @@ const Buy = () => {
   const collectionAddress = (router.query.erc as string) || "";
   const debouncedIdNFT = useDebounce(idNFT, 1500);
 
-  const { bigNumberBalance } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction
-  );
   const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress],
     queryFn: async () => {
@@ -102,7 +91,6 @@ const Buy = () => {
     }
     setLoadingPrice(false);
   }, [data, slippage, amountTokenBuy, totalFee]);
-  console.log(totalPrice);
 
   const dataFake = {
     dmlAddress: data?.dmlAddress,
@@ -111,7 +99,6 @@ const Buy = () => {
       image: data?.avatar,
     },
   };
-  console.log(data);
 
   return (
     <div>
@@ -173,9 +160,7 @@ const Buy = () => {
                       {isLoadingBuy ? (
                         <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
                       ) : (
-                        <FormatNumber
-                          number={(amountTokenBuy / 1e18).toString()}
-                        />
+                        <FormatNumber number={(totalPrice / 1e18).toString()} />
                       )}
                       <EtherIcon width={16} height={16} />
                     </div>

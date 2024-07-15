@@ -23,7 +23,6 @@ import NFTGrid from "./NFTsGrids";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import useDebounce from "@/hooks/useDebounce";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import useInformationToken from "@/hooks/useInformationToken";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -61,17 +60,6 @@ const Sell = () => {
     "",
     isOpenTransaction
   );
-  const { bigNumberBalance } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction
-  );
-  console.log(bigNumberBalance);
 
   useEffect(() => {
     const checkApproveNFT = async () => {

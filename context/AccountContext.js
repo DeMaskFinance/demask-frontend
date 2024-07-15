@@ -1,3 +1,4 @@
+import { getProvider } from "@/libs/connection/getProvider";
 import {
   BLAST_DEMASK,
   network,
@@ -5,6 +6,7 @@ import {
   tokenBlast,
   tokenSepolia
 } from "@/libs/constants";
+import { ethers } from "ethers";
 import { createContext, useEffect, useState } from "react";
 const AccountContext = createContext();
 
@@ -17,6 +19,9 @@ export const AccountProvider = ({ children }) => {
   const [slippage, setSlippage] = useState(5);
   const [txDeadline, setTxDeadline] = useState(20);
   const [isEvent, setIsEvent] = useState(true);
+  const [balanceToken, setBalanceToken] = useState("0");
+  const [bigNumberBalance, setBigNumberBalance] = useState("0");
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
@@ -74,6 +79,32 @@ export const AccountProvider = ({ children }) => {
     setTxDeadline(newTime);
     localStorage.setItem("TXDEADLINE_DEMASK", newTime);
   };
+  const updateBalance = async () => {
+    if (tokenDefault && account) {
+      setIsLoadingBalance(true);
+      const providerChoice = await getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
+      try {
+        const balance = await provider.getBalance(account);
+        const balanceInMatic = parseFloat(
+          ethers.utils.formatEther(balance)
+        ).toFixed(4);
+        setBalanceToken(balanceInMatic);
+        setBigNumberBalance(balance.toString());
+        setIsLoadingBalance(false);
+      } catch (error) {
+        console.error(error);
+        setIsLoadingBalance(false);
+      }
+    } else {
+      setBalanceToken("0"); // No Account
+    }
+  };
+
+  useEffect(() => {
+    updateBalance();
+  }, [tokenDefault, account, wallet, chainId]);
+
   return (
     <AccountContext.Provider
       value={{
@@ -90,7 +121,11 @@ export const AccountProvider = ({ children }) => {
         slippage,
         updateSlippage,
         isEvent,
-        setIsEvent
+        setIsEvent,
+        balanceToken,
+        bigNumberBalance,
+        isLoadingBalance,
+        updateBalance,
       }}
     >
       {children}

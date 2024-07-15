@@ -25,7 +25,6 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   const { isLoggedIn } = useSelector(selectProfile);
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log(wallet);
 
   useEffect(() => {
     if (

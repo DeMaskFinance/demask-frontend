@@ -57,6 +57,8 @@ const buyERC20ERC721 = async (
   account: string,
   txDeadline: number
 ) => {
+  console.log(amountInMax, Math.floor(amountInMax));
+
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   const estimatedGas = await contract.estimateGas.buyERC20ERC721(
     tokenAddress,

@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 const PoolItem = ({ liquidity }: any) => {
-  const { account, wallet, demask } = useContext(AccountContext);
+  const { account, wallet, demask, updateBalance } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -85,6 +85,7 @@ const PoolItem = ({ liquidity }: any) => {
         setIsOpenErrorCollect,
         setHash,
       });
+      await updateBalance();
     } else {
       console.log("No account and DML");
     }

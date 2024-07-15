@@ -22,8 +22,6 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
     <div className="w-full h-8 bg-slate-700 animate-pulse rounded-xl" />
   );
   const router = useRouter();
-  console.log(data);
-
   return (
     <>
       {isLoading || isFetching ? (

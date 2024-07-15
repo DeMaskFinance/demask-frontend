@@ -27,7 +27,6 @@ const Classify: React.FC<ClassifyProps> = ({
       typeNumber: "High to Low",
     },
   ];
-  console.log(isFocused);
 
   return (
     <div className="flex text-sm font-normal gap-x-4 text-shader_500">

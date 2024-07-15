@@ -53,7 +53,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   setIsOpenSuccess,
   setHash,
 }) => {
-  const { demask, account, wallet, slippage, txDeadline } =
+  const { demask, account, wallet, slippage, txDeadline, updateBalance } =
     useContext(AccountContext);
   const { RPC: rpc } = demask;
   const [amountSellDec, setAmountSellDec] = useState<number>(0);
@@ -199,6 +199,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
         queryClient.refetchQueries(["detailCollection"]);
+        await updateBalance();
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

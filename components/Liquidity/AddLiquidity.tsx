@@ -34,7 +34,6 @@ import {
 } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import useBalanceToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { swapAPI } from "@/libs/service";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
@@ -67,8 +66,16 @@ export default function AddLiquidity() {
     useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const { account, wallet, chainId, demask, tokenDefault, slippage } =
-    useContext(AccountContext);
+  const {
+    account,
+    wallet,
+    chainId,
+    demask,
+    tokenDefault,
+    slippage,
+    bigNumberBalance,
+    balanceToken,
+  } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -78,11 +85,7 @@ export default function AddLiquidity() {
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
-  const {
-    ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { ROUTER: routerAddress } = demask;
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -122,17 +125,6 @@ export default function AddLiquidity() {
     nftAddress,
     idNFT,
     wallet,
-    isOpenTransaction
-  );
-
-  const { balanceToken, bigNumberBalance } = useBalanceToken(
-    account,
-    tokenAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
     isOpenTransaction
   );
 

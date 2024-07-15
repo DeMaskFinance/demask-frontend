@@ -24,20 +24,13 @@ import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import ModalWarningRemove from "@/components/Modal/ModalWarningRemove";
 import { TabGroups } from "@/components/NavChoice";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useAmountOutMin from "@/hooks/useAmountOutMin";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useDebounce from "@/hooks/useDebounce";
 import useFee from "@/hooks/useFee";
-import useInformationToken from "@/hooks/useInformationToken";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
@@ -63,7 +56,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   nftAddress,
   refetch,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const [isOpenSellNFT, setIsOpenSellNFT] = useState<boolean>(false);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
@@ -84,14 +76,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
 
-  const { account, wallet, chainId, demask, slippage } =
+  const { account, wallet, bigNumberBalance, demask, slippage, balanceToken } =
     useContext(AccountContext);
   const [checkExit, setCheckExit] = useState<boolean>(false);
-  const {
-    ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { ROUTER: routerAddress, RPC: rpc } = demask;
 
   let inputNFTValue = useDebounce(inputNFT, 1000);
   const balanceNFT = useNFTBalance(
@@ -99,16 +87,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     nftAddress,
     idNFT,
     wallet,
-    isOpenTransaction
-  );
-  const { balanceToken, bigNumberBalance } = useInformationToken(
-    account,
-    tokenAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
     isOpenTransaction
   );
   usePreventUserFromErasingContent(checkExit);

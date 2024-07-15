@@ -1,26 +1,23 @@
 import { Button } from "@/components/Buttons";
-import AccountContext from "@/context/AccountContext";
-import useNFTBalance from "@/hooks/useBalanceNFT";
-import useInformation from "@/hooks/useInformationToken";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import handleBignumber from "@/libs/utils/handleBignumber";
-import { useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
-import { CgClose } from "react-icons/cg";
-import "react-toastify/dist/ReactToastify.css";
-import { ModalError, ModalTransation } from "../ModalTransation";
-import { ModalWallet } from "../ModalWallet";
-import Wrapper from "../Wrapper";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
+import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
-import { NumberFormatValues, NumericFormat } from "react-number-format";
+import AccountContext from "@/context/AccountContext";
+import useNFTBalance from "@/hooks/useBalanceNFT";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import { replaceDot } from "@/libs/utils/formatComon";
-import FormatNumber from "@/components/Common/FormatNumber";
+import formatNumber from "@/libs/utils/formatNumer";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import { useContext, useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
+import "react-toastify/dist/ReactToastify.css";
+import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
+import { ModalTransation } from "../ModalTransation";
+import Wrapper from "../Wrapper";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -50,14 +47,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, account, wallet, slippage, chainId } =
+  const { demask, account, wallet, slippage, bigNumberBalance } =
     useContext(AccountContext);
 
-  const {
-    ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { ROUTER: routerAddress } = demask;
 
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
@@ -71,17 +64,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     data.nftAddress,
     data.nftID,
     wallet,
-    isOpenTransaction
-  );
-
-  const { bigNumberBalance } = useInformation(
-    account,
-    data.tokenAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
     isOpenTransaction
   );
 

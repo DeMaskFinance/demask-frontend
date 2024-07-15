@@ -7,7 +7,6 @@ import AccountContext from "@/context/AccountContext";
 import useAmountInMax from "@/hooks/useAmountInMax";
 import useFee from "@/hooks/useFee";
 import useInformationDML from "@/hooks/useInformationDML";
-import useInformationToken from "@/hooks/useInformationToken";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
@@ -57,22 +56,17 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
   const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { demask, account, wallet, slippage, txDeadline, chainId } =
-    useContext(AccountContext);
-  const { RPC: rpc, NATIVE_ADDRESS: nativeAddress } = demask;
-  console.log(data);
-
-  const { bigNumberBalance } = useInformationToken(
+  const {
+    demask,
     account,
-    tokenAddress,
     wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction,
-    isOpenBuyNFT
-  );
+    slippage,
+    txDeadline,
+    bigNumberBalance,
+    updateBalance,
+  } = useContext(AccountContext);
+  const { RPC: rpc } = demask;
+
   const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
     data.dmlAddress,
     wallet,
@@ -194,13 +188,13 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         queryClient.refetchQueries(["collectionNFTBUY"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
         queryClient.refetchQueries(["detailCollection"]);
+        await updateBalance();
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
       }
     }
   };
-  console.log(data);
 
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative bg_main">

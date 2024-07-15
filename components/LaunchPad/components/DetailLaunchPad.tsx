@@ -4,7 +4,6 @@ import { ModalError } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import AccountContext from "@/context/AccountContext";
-import useInformationToken from "@/hooks/useInformationToken";
 import { getProvider } from "@/libs/connection/getProvider";
 import { LaunchPadAPI } from "@/libs/service/launchpadService";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
@@ -66,17 +65,6 @@ export default function DetailLaunchPad() {
 
   const tokenLaunchpad = data?.launchpad;
 
-  const { balanceToken } = useInformationToken(
-    account,
-    nativeAddress,
-    wallet,
-    routerAddress,
-    rpc,
-    nativeAddress,
-    chainId,
-    isOpenTransaction
-  );
-
   const currentTime = Math.floor(new Date().getTime() / 1000);
   const startTime = data?.startTime;
   const endTime = data?.endTime;
@@ -89,21 +77,21 @@ export default function DetailLaunchPad() {
 
   const checkTime = currentTime > startTime && currentTime < endTime;
 
-  useEffect(() => {
-    if (currentTime < startTime) {
-      setErrors("Comming soon");
-    } else if (!checkTime) {
-      setErrors("Sold out");
-    } else if (+totalSold + +amount * data.price >= parseInt(hardcap)) {
-      setErrors("Sold out");
-    } else if (inputNFT > balanceToken) {
-      setErrors("Insufficient Token balance");
-    } else if (inputNFT > data?.purchaseLimit / 1e18) {
-      setErrors("Amount express");
-    } else {
-      setErrors("");
-    }
-  }, [startTime, endTime, inputNFT, amount]);
+  // useEffect(() => {
+  //   if (currentTime < startTime) {
+  //     setErrors("Comming soon");
+  //   } else if (!checkTime) {
+  //     setErrors("Sold out");
+  //   } else if (+totalSold + +amount * data.price >= parseInt(hardcap)) {
+  //     setErrors("Sold out");
+  //   } else if (inputNFT > balanceToken) {
+  //     setErrors("Insufficient Token balance");
+  //   } else if (inputNFT > data?.purchaseLimit / 1e18) {
+  //     setErrors("Amount express");
+  //   } else {
+  //     setErrors("");
+  //   }
+  // }, [startTime, endTime, inputNFT, amount]);
 
   const TABS = [
     {

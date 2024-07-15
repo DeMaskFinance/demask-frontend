@@ -9,6 +9,7 @@ import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 import Web3 from "web3";
 
 interface ModalWalletProps {
@@ -16,7 +17,7 @@ interface ModalWalletProps {
 }
 const styles = {
   walletItem:
-    "flex items-center p-2 gap-x-4 text-white  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
+    "items-center p-2 gap-x-4 text-white hidden lg:flex  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
 };
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
@@ -30,7 +31,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
       let accounts;
       if (walletName === "Binance") {
         if (!window.BinanceChain) {
-          alert("Binance Wallet not found");
+          toast.error("Binance Wallet not found");
           return false;
         }
         provider = new Web3(window.BinanceChain);
@@ -124,7 +125,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
           <p>Coinbase</p>
         </div>
         <div
-          className={styles.walletItem}
+          className="flex items-center p-2 gap-x-4 text-white  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold"
           onClick={() => connectWallet("WalletConnect")}
         >
           <Image

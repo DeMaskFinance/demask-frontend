@@ -68,7 +68,6 @@ const Search: FunctionComponent<SearchProps> = ({ handleFocus }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [click]);
-  console.log(click);
 
   const handleResultItemClick = (item: any) => {
     setSearchTerm(item.metadata?.name);

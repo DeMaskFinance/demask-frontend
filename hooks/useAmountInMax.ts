@@ -16,7 +16,6 @@ const useAmountInMax = (
 ) => {
   const [amountTokenBuy, setAmountTokenBuy] = useState(0);
   const [isLoadingBuy, setIsLoadingBuy] = useState<boolean>(false);
-  console.log(idNFT);
 
   useEffect(() => {
     const getAmountInMax = async () => {
