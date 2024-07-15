@@ -25,6 +25,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   const { isLoggedIn } = useSelector(selectProfile);
   const router = useRouter();
   const dispatch = useDispatch();
+  console.log(wallet);
 
   useEffect(() => {
     if (
@@ -38,7 +39,6 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
       const checkNetwork = async () => {
         const provider = await getProvider(wallet);
         const networkId = await provider.request({ method: "net_version" });
-
         if (networkId !== chainId) {
           setIsWrongNetwork(true);
           document.body.style.overflowY = "hidden";

@@ -1,14 +1,5 @@
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
-import { Button } from "@/components/Buttons";
-import CountdownTime from "@/components/Common/CountdownTime";
-import FormatNumber from "@/components/Common/FormatNumber";
-import MediaNFT from "@/components/Common/Media/MediaNFT";
-import { EtherIcon } from "@/components/Icons";
-import { LogoIconTable } from "@/components/Logo/Logo";
-import ModalClaimLaunchpad from "@/components/Modal/ModalClaimLaunchpad/ModalClaimLaunchpad";
-import ModalLaunchPad from "@/components/Modal/ModalLaunchPad";
-import ModalLaunchPadProfile from "@/components/Modal/ModalLaunchpadProfile";
-import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
+import { BackgroundDefault } from "@/components/Backgrounds";
 import { ModalError } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
@@ -19,17 +10,14 @@ import { LaunchPadAPI } from "@/libs/service/launchpadService";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { NumericFormat } from "react-number-format";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Box from "./Box";
-import ProgressBar from "./ProgessLaunchPad";
 import Rule from "./Rule";
 import Timeline from "./Timeline";
-import { BackgroundDefault } from "@/components/Backgrounds";
-import Image from "next/image";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");

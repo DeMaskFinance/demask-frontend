@@ -60,6 +60,8 @@ export default function Header() {
     chainId,
     true
   );
+  console.log(balanceToken);
+
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);
 

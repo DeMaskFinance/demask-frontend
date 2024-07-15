@@ -299,7 +299,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <div className="md:flex items-center p-4 border-r border-t border-shader_500 whitespace-nowrap">
               <div className="md:flex items-center text-sm gap-x-1">
                 <p className="text-shader_200">Reserve Token</p>
-                <div className="flex items-center">
+                <div className="flex items-center gap-x-1">
                   <FormatNumber number={dataSwap.reserveToken} />
                   <span>
                     <EtherIcon width={16} height={16} />

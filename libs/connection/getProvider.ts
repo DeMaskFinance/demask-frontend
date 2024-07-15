@@ -26,6 +26,19 @@ export const getProvider = async (wallet: string) => {
       }
     else provider = window.coinbaseWalletExtension;
   }
+  if (wallet === "OKX") {
+    if (window.ethereum?.providers) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const p of window.ethereum?.providers) {
+        if (p.isOkxWallet) {
+          provider = p;
+          break;
+        }
+      }
+    } else if (window?.okxwallet) {
+      provider = window.okxwallet;
+    }
+  }
   if (wallet === "WalletConnect") {
     provider = await EthereumProvider.init({
       projectId: "1af0159e7a959f2fff3f96c541aef2cb", // REQUIRED your projectId

@@ -1,8 +1,5 @@
 import abiDML from "@/abi/abiDML.json";
-import { ethers } from "ethers";
-import { getProvider } from "../connection/getProvider";
 import divideByDecimal from "./divideByDecimal";
-import erc1155Contract from "./erc/erc1155.contract";
 import ercContract from "./erc/erc.contract";
 interface RewardDMLProps {
   wallet: string;
@@ -12,22 +9,33 @@ interface RewardDMLProps {
   data: {
     dmlDecimals: string;
     tokenAddress: string;
-  }
+  };
   setReward: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenSuccessCollect: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenErrorCollect: React.Dispatch<React.SetStateAction<boolean>>;
-  setHash: React.Dispatch<React.SetStateAction<string>>
+  setHash: React.Dispatch<React.SetStateAction<string>>;
 }
-const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, data, setReward, setIsOpenErrorCollect, setIsOpenSuccessCollect, setHash }: RewardDMLProps) => {
+const getRewardDML = async ({
+  wallet,
+  dmlTokenLiquidity,
+  setIsOpenTransaction,
+  account,
+  data,
+  setReward,
+  setIsOpenErrorCollect,
+  setIsOpenSuccessCollect,
+  setHash,
+}: RewardDMLProps) => {
   const contract = await ercContract.erc(wallet, dmlTokenLiquidity, abiDML);
   try {
-    const result = await contract.getReward(
-      [data.tokenAddress],
-      account
-    );
+    const result = await contract.getReward([data.tokenAddress], account);
     setIsOpenTransaction(true);
     const check = await result.wait();
-    const resultTest = await ercContract.viewReward(dmlTokenLiquidity, account, wallet);
+    const resultTest = await ercContract.viewReward(
+      dmlTokenLiquidity,
+      account,
+      wallet
+    );
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
     setHash(result.hash);
     setReward(rewardDec);

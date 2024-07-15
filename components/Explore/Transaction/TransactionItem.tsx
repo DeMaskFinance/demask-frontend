@@ -130,7 +130,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
               href={`${demask.urltxHash}address/${item.sender}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary5"
+              className="text-primary_400 hover:text-primary_500"
             >
               {isFetching
                 ? skeleton

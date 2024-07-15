@@ -145,6 +145,16 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
           />
           <p>Binance wallet</p>
         </div>
+        <div className={styles.walletItem} onClick={() => connectWallet("OKX")}>
+          <Image
+            src={images.okxWallet}
+            alt="OKX wallet"
+            width={400}
+            height={400}
+            className="w-9 h-9 object-cover"
+          />
+          <p>OKX wallet</p>
+        </div>
       </div>
       {isAuthen && (
         <Link href="/trade" className="text-white absolute top-4 right-4">

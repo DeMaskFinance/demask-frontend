@@ -268,7 +268,7 @@ const Change = () => {
               Swap
             </Button>
           )}
-          {account && !isSufficientToken && (
+          {account && !isSufficientToken && idNFTInput.length !== 0 && (
             <p className="text-xs text-red" key="Tokenbalance">
               Insufficient Token balance
             </p>

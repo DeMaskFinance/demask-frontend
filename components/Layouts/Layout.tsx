@@ -1,16 +1,13 @@
-import React, { useContext, useEffect } from "react";
-import Header from "../Header";
-import { PropsWithChildren } from "react";
+import { Toaster } from "@/components/ui/sonner";
+import AccountContext from "@/context/AccountContext";
+import { getProvider } from "@/libs/connection/getProvider";
+import * as userService from "@/libs/service/userService";
+import { logout, selectProfile, userData } from "@/store/profileSlice";
+import { PropsWithChildren, useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
-import AccountContext from "@/context/AccountContext";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectProfile, userData } from "@/store/profileSlice";
-import * as userService from "@/libs/service/userService";
-import { getProvider } from "@/libs/connection/getProvider";
-import { network } from "@/libs/constants";
-import { Toaster } from "@/components/ui/sonner";
+import Header from "../Header";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);

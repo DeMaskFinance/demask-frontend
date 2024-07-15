@@ -244,7 +244,7 @@ const Buy = () => {
                 </DialogContent>
               </Dialog>
             )}
-            {!isSufficientTokenBuy && account && (
+            {!isSufficientTokenBuy && account && idNFT.length !== 0 && (
               <p className="text-xs text-red" key="Tokenbalance">
                 Insufficient Token balance
               </p>
