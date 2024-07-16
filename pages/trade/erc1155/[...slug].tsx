@@ -39,7 +39,6 @@ const Swap: React.FC = () => {
       setNftAddress(slug[0]);
       setTokenAddress(slug[1]);
       setIdNFT(slug[2]);
-      // setInputNFT("");
     }
   }, [slug]);
 

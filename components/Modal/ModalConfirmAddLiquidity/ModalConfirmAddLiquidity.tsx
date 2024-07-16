@@ -66,7 +66,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   } = useContext(AccountContext);
   const {
     ROUTER: routerAddress,
-    RPC: rpc,
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;

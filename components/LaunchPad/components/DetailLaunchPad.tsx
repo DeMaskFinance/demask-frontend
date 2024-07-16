@@ -1,5 +1,6 @@
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import { BackgroundDefault } from "@/components/Backgrounds";
+import Back from "@/components/Common/Back";
 import { ModalError } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
@@ -14,28 +15,21 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import Box from "./Box";
-import Rule from "./Rule";
-import Timeline from "./Timeline";
+import Overview from "./Overview";
+import Team from "./Team";
+import SwiperCustom from "@/components/SwiperCustom";
+import { SwiperSlide } from "swiper/react";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [inputNFT, setInpuNFT] = useState<any>(1);
   const [amount, setAmount] = useState<string>("");
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
-  const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
-  const [isOpenErrorBuy, setIsOpenErrorBuy] = useState<boolean>(false);
-  const [isOpenSuccessRefund, setIsOpenSuccessRefund] =
-    useState<boolean>(false);
-  const [isOpenErrorRefund, setIsOpenErrorRefund] = useState<boolean>(false);
   const { account, wallet, chainId, demask } = useContext(AccountContext);
-  const [errors, setErrors] = useState<string>("");
   const router = useRouter();
-  const [tab] = useQueryParam("tab", withDefault(StringParam, "rule"));
+  const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
   const { detail } = router.query;
 
   useEffect(() => {
@@ -54,20 +48,7 @@ export default function DetailLaunchPad() {
       return res;
     },
   });
-  const softcap = data?.softcap;
-  const hardcap = data?.hardcap;
-  const totalSold = data?.totalSold;
-  const {
-    ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
-
   const tokenLaunchpad = data?.launchpad;
-
-  const currentTime = Math.floor(new Date().getTime() / 1000);
-  const startTime = data?.startTime;
-  const endTime = data?.endTime;
 
   useEffect(() => {
     if (data && data?.price) {
@@ -75,100 +56,26 @@ export default function DetailLaunchPad() {
     }
   }, [amount, data]);
 
-  const checkTime = currentTime > startTime && currentTime < endTime;
-
-  // useEffect(() => {
-  //   if (currentTime < startTime) {
-  //     setErrors("Comming soon");
-  //   } else if (!checkTime) {
-  //     setErrors("Sold out");
-  //   } else if (+totalSold + +amount * data.price >= parseInt(hardcap)) {
-  //     setErrors("Sold out");
-  //   } else if (inputNFT > balanceToken) {
-  //     setErrors("Insufficient Token balance");
-  //   } else if (inputNFT > data?.purchaseLimit / 1e18) {
-  //     setErrors("Amount express");
-  //   } else {
-  //     setErrors("");
-  //   }
-  // }, [startTime, endTime, inputNFT, amount]);
-
   const TABS = [
     {
-      title: "Rule Introduction",
-      panel: () => <Rule data={data} />,
-      key: "rule",
+      title: "Overview",
+      panel: () => <Overview data={data} />,
+      key: "overview",
     },
     {
-      title: "Box Information",
-      panel: () => <Box data={data} />,
-      key: "box",
-    },
-    {
-      title: "Timeline",
-      panel: () => <Timeline />,
-      key: "timeline",
+      title: "Team",
+      panel: () => <Team data={data} />,
+      key: "team",
     },
   ];
   const indexChoice = TABS.findIndex((item) => item.key === tab);
-  const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (!account) {
-      return;
-    }
-
-    const providerChoice = await getProvider(wallet);
-    const provider = new ethers.providers.Web3Provider(providerChoice);
-    const signer = provider.getSigner();
-
-    const contract = new ethers.Contract(tokenLaunchpad, abiLaunchPad, signer);
-    try {
-      let result;
-      setIsOpenTransaction(true);
-      const estimatedGas = await contract.estimateGas.buy(
-        exponentialToDecimal(+amount),
-        {
-          value: exponentialToDecimal(
-            Math.floor(Number(data.price) * Number(amount))
-          ),
-        }
-      );
-      result = await contract.buy(exponentialToDecimal(+amount), {
-        gasLimit: estimatedGas,
-        value: exponentialToDecimal(
-          Math.floor(Number(data.price) * Number(amount))
-        ),
-      });
-      setHash(result.hash);
-      const check = await result.wait();
-      setIsOpenTransaction(false);
-      setIsOpenModal(false);
-      refetch();
-
-      if (check.status === 1) {
-        setIsOpenSuccessBuy(true);
-      } else {
-        setIsOpenErrorBuy(true);
-      }
-
-      setAmount("");
-    } catch (error) {
-      setIsOpenTransaction(false);
-      console.error(error);
-    }
-  };
   const selectedTab = TABS.find((data) => data.key === tab);
-  const blockNumber =
-    data?.status === "Upcoming"
-      ? data.startTime
-      : data?.status === "Active"
-      ? data.endTime
-      : "";
 
   return (
     <div className="max-w-5xl px-4 relative mx-auto">
       <BackgroundDefault>
         <div className="">
+          <Back />
           {isLoading ? (
             <div className="h-[600px]">
               <div className="flex gap-8">
@@ -177,15 +84,57 @@ export default function DetailLaunchPad() {
             </div>
           ) : (
             data && (
-              <div>
+              <div className="flex">
                 <div>
                   <Image
-                    src=""
-                    width={1000}
-                    height={1000}
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="max-w-[595px] max-h-[595px]"
                     alt="img_launchpad"
                   />
+                  <div className="mt-4">
+                    <SwiperCustom slidesPerView="auto">
+                      <SwiperSlide>
+                        <Image
+                          src="/images/test.png"
+                          width={595}
+                          height={595}
+                          className="w-[136px] h-[136px]"
+                          alt="img_launchpad"
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/images/test.png"
+                          width={595}
+                          height={595}
+                          className="w-[136px] h-[136px]"
+                          alt="img_launchpad"
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/images/test.png"
+                          width={595}
+                          height={595}
+                          className="w-[136px] h-[136px]"
+                          alt="img_launchpad"
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/images/test.png"
+                          width={595}
+                          height={595}
+                          className="w-[136px] h-[136px]"
+                          alt="img_launchpad"
+                        />
+                      </SwiperSlide>
+                    </SwiperCustom>
+                  </div>
                 </div>
+                <div>123</div>
               </div>
             )
           )}
@@ -202,39 +151,13 @@ export default function DetailLaunchPad() {
           type="Claim NFT Failed"
           setIsOpenError={setIsOpenError}
         />
-        <ModalSuccess
-          isOpenSuccess={isOpenSuccessBuy}
-          transactionHash={hash}
-          type="Buy NFT Success"
-          setIsOpenSuccess={setIsOpenSuccessBuy}
-        />
-        <ModalError
-          isOpenError={isOpenErrorBuy}
-          transactionHash={hash}
-          type="Buy NFT Failed"
-          setIsOpenError={setIsOpenErrorBuy}
-        />
-        <ModalSuccess
-          isOpenSuccess={isOpenSuccessRefund}
-          transactionHash={hash}
-          type="Refund NFT Success"
-          setIsOpenSuccess={setIsOpenSuccessRefund}
-        />
-        <ModalError
-          isOpenError={isOpenErrorRefund}
-          transactionHash={hash}
-          type="Refund NFT Failed"
-          setIsOpenError={setIsOpenErrorRefund}
-        />
-        <div className="p-4 mt-4 mb-16 border rounded-lg shadow-swiper lg:mb-0 ">
-          <div className="flex justify-center">
-            <TabQuery
-              TABS={TABS}
-              initialItem="rule"
-              indexChoice={indexChoice}
-              isDefault
-            />
-          </div>
+        <div className="my-14  ">
+          <TabQuery
+            TABS={TABS}
+            initialItem="overview"
+            indexChoice={indexChoice}
+            isDefault={false}
+          />
           {isLoading ? (
             <div>
               <BiLoaderAlt className="animate-spin text-primary_400" />

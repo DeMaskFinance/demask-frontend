@@ -136,7 +136,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   return (
     <Fragment>
-      <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg p-4 relative">
+      <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
         <div className="title_modal">Add Liquidity</div>
         {isLoading ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">

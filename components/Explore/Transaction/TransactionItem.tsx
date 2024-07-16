@@ -20,15 +20,13 @@ interface ListNFTProps {
   item: any;
 }
 const ListNFT: React.FC<ListNFTProps> = ({ item }) => {
-  // const item = {
-  //   metadata: {
-  //     image: "https://file.demask.finance/dfcc08b045228e0adb97263af08eb0b9.png",
-  //   },
-  // };
   return (
-    <div className="grid grid-cols-3 w-40 gap-1 bg-shader_400 p-1 rounded-lg max-h-32 overflow-y-scroll">
+    <div className="grid grid-cols-3 gap-1 w-max bg-shader_400 p-1 rounded-lg max-h-32 overflow-y-auto">
       {item.map((nft: any, index: number) => (
-        <div className="rounded-lg overflow-hidden aspect-square" key={index}>
+        <div
+          className="rounded-lg overflow-hidden aspect-square w-8 h-8"
+          key={index}
+        >
           <MediaNFT data={nft} isControls={false} zoom />
         </div>
       ))}
@@ -40,7 +38,6 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
   isFetching,
 }) => {
   const { demask } = useContext(AccountContext);
-  console.log(data);
 
   return (
     <>
@@ -60,14 +57,16 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                   <Tippy
                     interactive
                     render={(attrs) => (
-                      <div className="" tabIndex={-1} {...attrs}>
-                        <div className=" p-1 w-fit block rounded-md">
-                          <ListNFT item={item.metadataList} />
-                        </div>
+                      <div
+                        className=" p-1 w-fit block rounded-md"
+                        tabIndex={-1}
+                        {...attrs}
+                      >
+                        <ListNFT item={item.metadataList} />
                       </div>
                     )}
                   >
-                    <div className="flex-shrink-0 rounded-md overflow-hidden w-[32px] h-[32px] flex items-center">
+                    <div className="flex-shrink-0 rounded-md overflow-hidden w-8 h-8 flex items-center">
                       <MediaCollection
                         avatar={formatLinkIPFS(item?.avatar)}
                         zoom

@@ -88,7 +88,7 @@ const TransactionCollection = () => {
   return (
     <div
       className={`flex flex-col  h-full p-4 w-full md:w-[480px] relative md:sticky ${
-        isEvent ? "md:top-[104px]" : "md:top-14"
+        isEvent ? "md:top-[50px]" : "md:top-14"
       }`}
     >
       <div className="flex justify-between gap-4 mb-2">

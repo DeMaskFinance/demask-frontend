@@ -1,19 +1,22 @@
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import React, { useEffect, useRef, useState } from "react";
-
+import { GoChevronLeft, GoChevronRight } from "react-icons/go";
+import { Swiper } from "swiper/react";
+import { Navigation } from "swiper";
 interface SwiperCustomProps {
   children: React.ReactNode;
-  slidesPerView: number;
+  slidesPerView?: "auto" | number;
+  spaceBetween?: number;
+  size?: number;
 }
 
 const SwiperCustom: React.FC<SwiperCustomProps> = ({
   children,
   slidesPerView,
+  spaceBetween = 12,
+  size = 48,
 }) => {
   const swiperRef = useRef<any>(null);
   const [showPrevButton, setShowPrevButton] = useState<boolean>(false);
@@ -35,65 +38,74 @@ const SwiperCustom: React.FC<SwiperCustomProps> = ({
     setShowNextButton(!swiperInstance.isEnd);
   };
   useEffect(() => {
-    if (swiperRef.current.swiper.slides.length <= slidesPerView) {
+    if (
+      swiperRef.current &&
+      swiperRef.current.swiper.slides.length <=
+        swiperRef.current.swiper.params.slidesPerView
+    ) {
       setShowNextButton(false);
     }
-  }, [swiperRef.current]);
-
-  return (
-    <div>
-      <div className="relative swiper-custom">
-        <button
-          type="button"
-          className={`flex items-center justify-center text-3xl text-dark1 swiper-button-prev-custom ${
-            !showPrevButton && "hidden"
-          }`}
-          onClick={goPrev}
-        >
-          <GoChevronLeft />
-        </button>
-        <Swiper
-          navigation={true}
-          modules={[Navigation]}
-          className="hidden mySwiper lg:block md:block"
-          slidesPerView={slidesPerView}
-          ref={swiperRef}
-          onSlideChange={handleSlideChange}
-          breakpoints={{
+  }, [children]);
+  const swiperProps: any = {
+    navigation: true,
+    modules: [Navigation],
+    spaceBetween,
+    ref: swiperRef,
+    onSlideChange: handleSlideChange,
+    breakpoints:
+      slidesPerView === "auto"
+        ? {}
+        : {
             0: {
               slidesPerView: 1.3,
               spaceBetween: 30,
-              slidesPerGroup: 1,
             },
             480: {
               slidesPerView: 1.3,
               spaceBetween: 30,
-              slidesPerGroup: 1,
             },
             768: {
               slidesPerView: 2.5,
               spaceBetween: 30,
-              slidesPerGroup: 1,
             },
             1024: {
-              slidesPerView: 6,
+              slidesPerView: slidesPerView,
               spaceBetween: 12,
-              slidesPerGroup: 5,
             },
-          }}
-        >
-          {children}
-        </Swiper>
-        <button
-          type="button"
-          className={`flex items-center justify-center text-3xl text-dark1 swiper-button-next-custom ${
-            !showNextButton && "hidden"
-          }`}
-          onClick={goNext}
-        >
-          <GoChevronRight />
-        </button>
-      </div>
+          },
+  };
+
+  return (
+    <div className="relative swiper-custom">
+      <button
+        type="button"
+        className={`flex items-center justify-center  text-dark1 swiper-button-prev-custom  ${
+          !showPrevButton && "hidden"
+        }`}
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+        }}
+        onClick={goPrev}
+        aria-label="Previous slide"
+      >
+        <GoChevronLeft />
+      </button>
+      <Swiper {...swiperProps}>{children}</Swiper>
+      <button
+        type="button"
+        className={`flex items-center justify-center  text-dark1 swiper-button-next-custom  ${
+          !showNextButton && "hidden"
+        }`}
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+        }}
+        onClick={goNext}
+        aria-label="Next slide"
+      >
+        <GoChevronRight />
+      </button>
     </div>
   );
 };

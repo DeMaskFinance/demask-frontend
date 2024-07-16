@@ -2,11 +2,9 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import {
   EditIcon,
   EtherIcon,
-  EyeIcon,
   FacebookIcon,
   PlusIcon,
   SeeMoreIcon,
-  StarIcon,
   SwapIcon,
   TeleIcon,
   TickSuccessIcon,
@@ -14,13 +12,10 @@ import {
   WebsiteIcon,
 } from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
-import { ItemList } from "@/components/Profile/Inventory/Items";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
@@ -30,20 +25,16 @@ import {
   formatLinkIPFS,
   formatTypeChain,
 } from "@/libs/utils/formatComon";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import formatNumber from "@/libs/utils/formatNumer";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Fragment, useContext, useRef, useState } from "react";
+import React, { Fragment, useContext, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import ShowMoreText from "react-show-more-text";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
-import Classify from "../Profile/Inventory/Classify";
-import formatNumber from "@/libs/utils/formatNumer";
-import ShowMoreText from "react-show-more-text";
-import React from "react";
 interface CollectionDetailProps {
   collectionAddress: string;
 }

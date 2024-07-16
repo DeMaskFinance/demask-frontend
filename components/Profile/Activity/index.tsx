@@ -42,7 +42,7 @@ export default function History() {
                     Network
                   </th>
                   <th className="flex justify-start md:basis-1/7 w-[140px]">
-                    Item
+                    Items
                   </th>
                   <th className="flex justify-start md:basis-1/7 w-[140px]">
                     Price
