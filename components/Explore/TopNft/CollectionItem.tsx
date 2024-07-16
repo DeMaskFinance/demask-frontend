@@ -2,6 +2,7 @@ import { AvatarCustom } from "@/components/Avatars";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { MediaCollection } from "@/components/Common/Media";
 import { EtherIcon, LoadingIcon } from "@/components/Icons";
+import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
 import { formatLinkIPFS, formatPercent } from "@/libs/utils/formatComon";
@@ -48,7 +49,11 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                     </div>
 
                     <span className="line-clamp-1 truncate  max-w-[133px] block">
-                      {isFetching ? skeleton : item?.name}
+                      {isFetching ? (
+                        skeleton
+                      ) : (
+                        <ModalDocument data={item?.name} />
+                      )}
                     </span>
                   </div>
                 </td>
