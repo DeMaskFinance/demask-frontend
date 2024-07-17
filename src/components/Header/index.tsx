@@ -6,6 +6,7 @@ import BackgroundParticles from "../Backgrounds/BackgroundParticles";
 import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
 import { useLenis } from "lenis/react";
+import Link from "next/link";
 const Header = () => {
   const [isEvent, setIsEvent] = useState(true);
 
@@ -57,16 +58,10 @@ const Header = () => {
         </div>
       )}
       <header className="text-shader_200 w-screen h-header flex border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
-        <div
-          className="flex items-center gap-x-[6px] cursor-pointer"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo(0, 0);
-          }}
-        >
+        <Link href="/" className="flex items-center gap-x-[6px] cursor-pointer">
           <DemaskIcon width={24} height={24} />
           <DemaskTitle width={76} height={14} />
-        </div>
+        </Link>
         <ul className="gap-x-8 md:flex hidden">
           {navList.map((item, index) => (
             <a

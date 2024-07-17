@@ -24,20 +24,11 @@ const Branding = () => {
       title: "Demask Purple",
       colorHex: "#7413DC",
     },
-    // {
-    //   color: "secondary5",
-    //   title: "Key Purple",
-    //   colorHex: "#9075FE",
-    // },
-    // {
-    //   color: "secondary1",
-    //   title: "Primary Purple",
-    //   colorHex: "#514199",
-    // },
     {
       color: "dark0",
       title: "Dark Hole",
       colorHex: "#181A20",
+      border: true,
     },
     {
       color: "white",
@@ -98,7 +89,7 @@ const Branding = () => {
           <div className={`text-center text-dark2}`} key={index}>
             <div
               className={`w-full h-[120px] rounded-lg bg-[${item.colorHex}] ${
-                item.border && "border border-dark3"
+                item.border && "border border-shader_400"
               }`}
               style={{ backgroundColor: item.colorHex }}
             ></div>

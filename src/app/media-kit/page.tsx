@@ -20,7 +20,7 @@ const MediaKitPage = () => {
           alt="banner"
           className="max-w-[650px] w-full"
         />
-        {/* <DownloadLogo /> */}
+        <DownloadLogo />
         <div className=" md:px-0">
           <Guidelines />
           <Branding />
