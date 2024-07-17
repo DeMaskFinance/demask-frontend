@@ -19,6 +19,8 @@ import Overview from "./Overview";
 import Team from "./Team";
 import SwiperCustom from "@/components/SwiperCustom";
 import { SwiperSlide } from "swiper/react";
+import { EtherIcon, RightIcon } from "@/components/Icons";
+import { Button } from "@/components/Buttons";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -72,10 +74,16 @@ export default function DetailLaunchPad() {
   const selectedTab = TABS.find((data) => data.key === tab);
 
   return (
-    <div className="max-w-5xl px-4 relative mx-auto">
+    <div className="max-w-5xl px-4 md:px-0 relative mx-auto font-semibold">
       <BackgroundDefault>
         <div className="">
-          <Back />
+          <div className="flex justify-between">
+            <Back />
+            <div className="text-primary_300 flex items-center gap-x-1 text-sm">
+              View Collection
+              <RightIcon width={16} height={16} />
+            </div>
+          </div>
           {isLoading ? (
             <div className="h-[600px]">
               <div className="flex gap-8">
@@ -84,8 +92,8 @@ export default function DetailLaunchPad() {
             </div>
           ) : (
             data && (
-              <div className="flex">
-                <div>
+              <div className="flex gap-x-6">
+                <div className="flex-1">
                   <Image
                     src="/images/test.png"
                     width={595}
@@ -93,9 +101,9 @@ export default function DetailLaunchPad() {
                     className="max-w-[595px] max-h-[595px]"
                     alt="img_launchpad"
                   />
-                  <div className="mt-4">
-                    <SwiperCustom slidesPerView="auto">
-                      <SwiperSlide>
+                  <div className="mt-4 ">
+                    <SwiperCustom slidesPerView={4}>
+                      <SwiperSlide className="swiper-item">
                         <Image
                           src="/images/test.png"
                           width={595}
@@ -104,7 +112,7 @@ export default function DetailLaunchPad() {
                           alt="img_launchpad"
                         />
                       </SwiperSlide>
-                      <SwiperSlide>
+                      <SwiperSlide className="swiper-item">
                         <Image
                           src="/images/test.png"
                           width={595}
@@ -113,7 +121,7 @@ export default function DetailLaunchPad() {
                           alt="img_launchpad"
                         />
                       </SwiperSlide>
-                      <SwiperSlide>
+                      <SwiperSlide className="swiper-item">
                         <Image
                           src="/images/test.png"
                           width={595}
@@ -122,7 +130,25 @@ export default function DetailLaunchPad() {
                           alt="img_launchpad"
                         />
                       </SwiperSlide>
-                      <SwiperSlide>
+                      <SwiperSlide className="swiper-item">
+                        <Image
+                          src="/images/test.png"
+                          width={595}
+                          height={595}
+                          className="w-[136px] h-[136px]"
+                          alt="img_launchpad"
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide className="swiper-item">
+                        <Image
+                          src="/images/test.png"
+                          width={595}
+                          height={595}
+                          className="w-[136px] h-[136px]"
+                          alt="img_launchpad"
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide className="swiper-item">
                         <Image
                           src="/images/test.png"
                           width={595}
@@ -134,7 +160,29 @@ export default function DetailLaunchPad() {
                     </SwiperCustom>
                   </div>
                 </div>
-                <div>123</div>
+                <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
+                  <div className="p-4 bg_main">
+                    <div className="flex gap-x-2">
+                      <Button third>ETH</Button>
+                      <p className="text-2xl font-bold">Toshi in Lisbon</p>
+                    </div>
+                    <div className="h-[1px] w-full bg-shader_500 my-4"></div>
+                    <div className="p-3 bg-shader_500 rounded-lg">
+                      <p className="mb-2">Public Sale 1</p>
+                      <p className="text-shader_200">Price</p>
+                      <div className="flex gap-x-1 items-center">
+                        <p>0.001</p>
+                        <EtherIcon width={20} height={20} />
+                      </div>
+                    </div>
+                    <Button gradient className="w-full mt-4 h-10">
+                      Mint now
+                    </Button>
+                  </div>
+                  <div className="p-1 bg_main mt-2">
+                    <p>Mint stage</p>
+                  </div>
+                </div>
               </div>
             )
           )}
