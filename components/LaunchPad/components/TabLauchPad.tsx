@@ -84,7 +84,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
     // launchpadInfo: LaunchpadInfo;
   };
   return (
-    <div className="mb-8  px-10">
+    <div className="mb-8 px-3 lg:px-10">
       {isLoading ? (
         <div className="grid gap-4 mt-8 grid-cols-2 md:grid-cols-autoFill text-shader_600">
           <SkeletonSubCategory length={24} />
@@ -113,7 +113,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
             ) : (
               <SearchNotFound />
             )} */}
-            <ul className="grid grid-cols-2 md:grid-cols-autoFillLaunchpad gap-6 text-shader_600">
+            <ul className="grid grid-cols-1 md:grid-cols-autoFillLaunchpad gap-6 text-shader_600">
               <TabLaunchPadItem item={item} query={query} />
               <TabLaunchPadItem item={item} query={query} />
               <TabLaunchPadItem item={item} query={query} />

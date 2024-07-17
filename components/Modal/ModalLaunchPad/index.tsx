@@ -1,82 +1,63 @@
-import handleApproveToken from "@/libs/utils/handleApproveToken";
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
-import { BiLoaderAlt } from "react-icons/bi";
-import { ModalTransation } from "../ModalTransation";
-import { useEffect } from "react";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon } from "@/components/Icons";
+import { ModalTransation } from "../ModalTransation";
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/Buttons";
+import InputCount from "@/components/Common/InputCount";
 
-interface ModalLaunchPadProps {
-  isOpenTransation: boolean;
-  setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
+interface ModalMintLaunchPadProps {
   inputNFT: number;
-  handleBuyNFT: any;
-  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpenModal: boolean;
-  data: LaunchpadData;
+  // data: LaunchpadData;
 }
 
-const ModalLaunchPad: React.FunctionComponent<ModalLaunchPadProps> = ({
-  isOpenTransation,
-  setIsOpenTransaction,
-  setIsOpenModal,
-  isOpenModal,
+const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   inputNFT,
-  handleBuyNFT,
-  data,
+  // data,
 }) => {
-  const handleClose = (
-    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    document.body.style.overflowY = "auto";
-    setIsOpenModal(false);
-  };
-
-  useEffect(() => {}, [isOpenTransation]);
-
+  const [isOpenTransation, setIsOpenTransaction] = useState(false);
   return (
-    <Wrapper isOpen={isOpenModal} onClick={handleClose}>
-      <div className="container_modal">
-        <div className="h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg p-4 relative">
-          <h3 className="pt-4 pb-8 text-xl text-center">
-            Confirm buy launchpad
-          </h3>
-          <div className="flex flex-col justify-center h-32 p-2 mx-auto text-center border rounded-lg item-center">
-            <p>Total buy</p>
-            <div className="flex items-center justify-center py-4 text-xl font-semibold">
-              <FormatNumber number={inputNFT.toString()} />
-              <EtherIcon
-                width={16}
-                height={16}
-                className="mb-1 fill-shader_700"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={handleBuyNFT}
-              className="px-4 py-1 text-white rounded-md bg-green"
-            >
-              Buy
-            </button>
-          </div>
+    <div className="h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg relative">
+      <h3 className="title_modal">Confirm Mint</h3>
+      <div className="flex items-center pb-4 border-b gap-x-3 border-shader_500">
+        <div className="w-[52px] h-[52px] rounded-lg overflow-hidden mt-4">
+          <Image
+            src="/images/test.png"
+            width={595}
+            height={595}
+            className="w-[52px] h-[52px] "
+            alt="img_launchpad"
+          />
         </div>
-        <button
-          className="absolute top-0 right-0 p-2 text-lg"
-          onClick={handleClose}
-        >
-          <CgClose className="text-xl transition-colors duration-100 ease-linear hover:text-red text-white cursor-pointer" />
-        </button>
+        <div>
+          <p className="text-lg text-shader_200 font-bold">Toshi in lisbon</p>
+          <p className="flex items-center gap-x-1 text-white font-bold">
+            0.0012
+            <EtherIcon width={16} height={16} />
+          </p>
+        </div>
       </div>
+      <div className="w-full h-[1px] bg-shader_500 mb-4"></div>
+      <div className="flex justify-between items-center">
+        <p className="title_modal">Mint Quantity</p>
+        <InputCount />
+      </div>
+      <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 mt-4">
+        <div className="text-primary_100">Total Pay</div>
+        <div className="flex items-center px-2 py-1 text-white gap-x-1">
+          0.0123
+          <EtherIcon width={16} height={16} />
+        </div>
+      </div>
+      <Button className="w-full h-10" primary>
+        Confirm
+      </Button>
       <ModalTransation
         isOpenTransation={isOpenTransation}
         setIsOpenTransaction={setIsOpenTransaction}
       />
-    </Wrapper>
+    </div>
   );
 };
 
-export default ModalLaunchPad;
+export default ModalMintLaunchPad;

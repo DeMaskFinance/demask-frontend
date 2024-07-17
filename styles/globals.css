@@ -184,9 +184,22 @@ body {
 .swiper-button-next-custom {
   right: -23px;
 }
-
 .swiper-pagination-bullet-active {
-  background-color: #9075fe !important;
+  background-color: white !important;
+}
+@media (min-width: 640px) {
+  .swiper-pagination-bullet,
+  .swiper-pagination-bullet-active {
+    width: 100px !important;
+    height: 6px;
+    border-radius: 6px !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .swiper-pagination {
+    display: none;
+  }
 }
 
 .highcharts-navigator-mask-inside {
@@ -281,43 +294,7 @@ html *::-webkit-scrollbar-track {
     transform: rotate(360deg);
   }
 }
-.Timeline_lineBright__iam07:not(:last-child):before {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 2px;
-  background: #6c6d71;
-  top: 16px;
-  z-index: 1;
-}
-.Timeline_lineBrightActive__UU57x:before {
-  background: #9075fe !important;
-}
-.Timeline_circleLight__X_ZC0:after {
-  position: absolute;
-  content: "";
-  width: 78px;
-  height: 78px;
-  background: rgba(163, 152, 255, 0.1);
-  border-radius: 50%;
-  z-index: -1;
-}
-.Timeline_circleLight__X_ZC0:before {
-  position: absolute;
-  content: "";
-  width: 58px;
-  height: 58px;
-  background: rgba(144, 117, 254, 0.5);
-  border-radius: 50%;
-  z-index: -1;
-}
-@media screen and (max-width: 1024px) {
-  .Timeline_lineBright__iam07:not(:last-child):before {
-    width: 2px;
-    height: 100%;
-    left: 17.5px;
-  }
-}
+
 .tippy-box {
   background-color: #3a404d !important;
 }

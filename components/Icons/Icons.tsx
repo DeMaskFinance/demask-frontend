@@ -55,6 +55,30 @@ export const NFTIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+export const DoneIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M20 10C20 15.5225 15.5225 20 10 20C4.4775 20 0 15.5225 0 10C0 4.4775 4.4775 0 10 0C15.5225 0 20 4.4775 20 10Z"
+        fill="#04B186"
+      />
+      <path
+        d="M8.48941 14.034L4.72137 10.3787C4.53721 10.2 4.53721 9.91079 4.72137 9.7326L5.38737 9.08652C5.57154 8.90787 5.86968 8.90787 6.05337 9.08652L8.82241 11.7727L13.9465 6.80196C14.1306 6.62331 14.4288 6.62331 14.6125 6.80196L15.2785 7.44803C15.4626 7.62669 15.4626 7.91591 15.2785 8.09411L9.15541 14.034C8.97172 14.2126 8.6731 14.2126 8.48941 14.034Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
 export const CheckIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,
@@ -75,6 +99,29 @@ export const CheckIcon: React.FunctionComponent<IconProps> = ({
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const MinusIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M4.1665 10H15.8332"
+        stroke="#BFACFE"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );

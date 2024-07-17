@@ -21,6 +21,7 @@ import SwiperCustom from "@/components/SwiperCustom";
 import { SwiperSlide } from "swiper/react";
 import { EtherIcon, RightIcon } from "@/components/Icons";
 import { Button } from "@/components/Buttons";
+import SaleLaunchPad from "./SaleLaunchPad";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");
@@ -29,7 +30,7 @@ export default function DetailLaunchPad() {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
-  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const { account, chainId } = useContext(AccountContext);
   const router = useRouter();
   const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
   const { detail } = router.query;
@@ -50,13 +51,6 @@ export default function DetailLaunchPad() {
       return res;
     },
   });
-  const tokenLaunchpad = data?.launchpad;
-
-  useEffect(() => {
-    if (data && data?.price) {
-      setInpuNFT(+amount * (data?.price / 1e18));
-    }
-  }, [amount, data]);
 
   const TABS = [
     {
@@ -74,7 +68,7 @@ export default function DetailLaunchPad() {
   const selectedTab = TABS.find((data) => data.key === tab);
 
   return (
-    <div className="max-w-5xl px-4 md:px-0 relative mx-auto font-semibold">
+    <div className="max-w-[1221px] px-4 md:px-0 relative mx-auto font-semibold">
       <BackgroundDefault>
         <div className="">
           <div className="flex justify-between">
@@ -92,17 +86,17 @@ export default function DetailLaunchPad() {
             </div>
           ) : (
             data && (
-              <div className="flex gap-x-6">
+              <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex-1">
                   <Image
                     src="/images/test.png"
                     width={595}
                     height={595}
-                    className="max-w-[595px] max-h-[595px]"
+                    className="max-w-[595px] max-h-[595px] w-full"
                     alt="img_launchpad"
                   />
                   <div className="mt-4 ">
-                    <SwiperCustom slidesPerView={4}>
+                    <SwiperCustom slidesPerView="auto">
                       <SwiperSlide className="swiper-item">
                         <Image
                           src="/images/test.png"
@@ -160,29 +154,7 @@ export default function DetailLaunchPad() {
                     </SwiperCustom>
                   </div>
                 </div>
-                <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
-                  <div className="p-4 bg_main">
-                    <div className="flex gap-x-2">
-                      <Button third>ETH</Button>
-                      <p className="text-2xl font-bold">Toshi in Lisbon</p>
-                    </div>
-                    <div className="h-[1px] w-full bg-shader_500 my-4"></div>
-                    <div className="p-3 bg-shader_500 rounded-lg">
-                      <p className="mb-2">Public Sale 1</p>
-                      <p className="text-shader_200">Price</p>
-                      <div className="flex gap-x-1 items-center">
-                        <p>0.001</p>
-                        <EtherIcon width={20} height={20} />
-                      </div>
-                    </div>
-                    <Button gradient className="w-full mt-4 h-10">
-                      Mint now
-                    </Button>
-                  </div>
-                  <div className="p-1 bg_main mt-2">
-                    <p>Mint stage</p>
-                  </div>
-                </div>
+                <SaleLaunchPad />
               </div>
             )
           )}
