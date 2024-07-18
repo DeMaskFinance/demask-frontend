@@ -15,7 +15,7 @@ const moreNav = [
   { id: 3, name: "Referral", url: "/referral" },
 ];
 const data = [
-  { id: 2, name: "Explore", url: "/explore", icon: LaunchpadIcon },
+  { id: 2, name: "Explorer", url: "/explorer", icon: LaunchpadIcon },
   { id: 3, name: "Trade", url: `/trade`, icon: SwapIcon },
   { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
   { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },

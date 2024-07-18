@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
 import { ChartTVL, ChartVolumn } from "@/components/Charts";
-import ListTracsaction from "@/components/Explore/Transaction/ListTracsaction";
+import ListTracsaction from "@/components/Explorer/Transaction/ListTracsaction";
 import { BackgroundDefault } from "@/components/Backgrounds";
-import StatisticAnalytics from "@/components/Explore/StaticChart";
-import TopCollection from "@/components/Explore/TopNft/TopCollection";
+import StatisticAnalytics from "@/components/Explorer/StaticChart";
+import TopCollection from "@/components/Explorer/TopNft/TopCollection";
 const updateMeta = {
   ...SEO,
-  title: "Explore",
+  title: "Explorer",
 };
-export default function ExplorePage() {
+export default function ExplorerPage() {
   return (
     <BackgroundDefault>
       <NextSeo {...updateMeta} />

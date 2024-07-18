@@ -19,7 +19,7 @@ const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
-    { name: "Explore", url: "/explore" },
+    { name: "Explorer", url: "/explorer" },
     { name: "Trade", url: `/trade` },
     { name: "Pools", url: "/pools" },
     {
