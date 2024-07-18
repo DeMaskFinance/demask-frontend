@@ -78,7 +78,7 @@ const Header = () => {
           ))}
         </ul>
         <a
-          href="https://app.demask.finance/explore"
+          href="https://app.demask.finance/explorer"
           target="_blank"
           rel="noopener noreferrer"
         >
