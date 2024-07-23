@@ -17,7 +17,7 @@ const SkeletonPoolDetail = () => {
           <SkeletonTable length={6} />
         </div>
       </div>
-      <div className="w-full lg:w-[400px] mb-20 lg:mb-0 p-6 border rounded-lg shadow-home">
+      <div className="w-full lg:w-[400px] mb-20 lg:mb-0 p-6 border border-shader_500 rounded-lg shadow-home">
         <div className="mx-auto my-6 rounded-lg h-60 w-60 bg-slate-700 "></div>
         <div className="flex justify-between my-6">
           <div className="h-6 rounded-full w-36 bg-slate-700 "></div>

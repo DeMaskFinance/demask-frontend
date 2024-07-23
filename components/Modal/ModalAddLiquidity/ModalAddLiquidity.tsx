@@ -5,16 +5,17 @@ import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import { erc1155TradingAdd } from "@/libs/service/tradeService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import { replaceDot } from "@/libs/utils/formatComon";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import "react-toastify/dist/ReactToastify.css";
 import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
@@ -39,19 +40,42 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
-  const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
+  const [inputToken, setInputToken] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, account, wallet, slippage, bigNumberBalance } =
+  const { demask, account, wallet, slippage, bigNumberBalance, chainId } =
     useContext(AccountContext);
 
   const { ROUTER: routerAddress } = demask;
-
+  const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
+    {
+      queryKey: [
+        "1155TradingAdd",
+        data.tokenAddress,
+        chainId,
+        data.nftAddress,
+        data.nftID,
+        inputNFT,
+        slippage,
+      ],
+      queryFn: async () => {
+        const res = await erc1155TradingAdd(
+          data.tokenAddress,
+          chainId,
+          data.nftAddress,
+          data.nftID,
+          +inputNFT,
+          slippage
+        );
+        return res.data;
+      },
+      refetchInterval: 20000,
+    }
+  );
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -106,18 +130,13 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     }
   }, [inputNFT, data, slippage, bigNumberBalance]);
 
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        data.nftAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, data.nftAddress, wallet, isOpenTransaction]);
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    data.nftAddress,
+    routerAddress,
+    isOpenAddLiquidity
+  );
 
   const handleAddLiquidity = () => {
     if (inputNFT && !isSufficientNFT && !isSufficientToken) {
@@ -263,23 +282,27 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           </div>
         </div>
       </div>
-      {/* <ModalConfirmAddLiquidity
-        isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
-        isOpenTransaction={isOpenTransaction}
-        setIsOpenTransaction={setIsOpenTransaction}
-        data={data}
-        tokenAddress={data.tokenAddress}
-        nftAddress={data.nftAddress}
-        idNFT={data.nftID}
-        setInputToken={setInputToken}
-        setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
-        inputNFT={inputNFT}
-        setInputNFT={setInputNFT}
-        setIsOpenLiquidity={setIsOpenLiquidity}
-        setHash={setHash}
-        setIsOpenSuccess={setIsOpenSuccess}
-        setIsOpenError={setIsOpenError}
-      /> */}
+      {dataTradingAdd && (
+        <ModalConfirmAddLiquidity
+          isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
+          isOpenTransaction={isOpenTransaction}
+          isFetching={isFetchingAdd}
+          setIsOpenTransaction={setIsOpenTransaction}
+          data={data}
+          amountErcDesired={dataTradingAdd?.amountETHDecimals}
+          tokenAddress={data.tokenAddress}
+          nftAddress={data.nftAddress}
+          idNFT={data.nftID}
+          setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
+          inputNFT={inputNFT}
+          setInputNFT={setInputNFT}
+          setIsOpenLiquidity={setIsOpenLiquidity}
+          setInputToken={setInputToken}
+          setHash={setHash}
+          setIsOpenSuccess={setIsOpenSuccess}
+          setIsOpenError={setIsOpenError}
+        />
+      )}
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

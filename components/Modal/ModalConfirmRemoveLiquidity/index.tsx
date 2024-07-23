@@ -3,9 +3,7 @@ import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
-import useInformationDML from "@/hooks/useInformationDML";
 import { getProvider } from "@/libs/connection/getProvider";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleBignumber from "@/libs/utils/handleBignumber";
@@ -13,18 +11,20 @@ import { useQueryClient } from "@tanstack/react-query";
 import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import { Fragment, memo, useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
-import { CgClose } from "react-icons/cg";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
+  dataTradingRemove: DataRemove;
   isOpenConfirmRemoveLiquidity: boolean;
+  isFetching: boolean;
   inputLiquidity: string;
   isOpenTransaction: boolean;
-  totalSupply: string;
   routerAddress: string;
   idNFT: number[];
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,11 +42,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
   ModalConfirmRemoveLiquidityProps
 > = ({
   data,
+  dataTradingRemove,
   isOpenConfirmRemoveLiquidity,
+  isFetching,
   inputLiquidity,
   isOpenTransaction,
   idNFT,
-  totalSupply,
   routerAddress,
   setIsOpenTransaction,
   setIsOpenConfirmRemoveLiquidity,
@@ -60,10 +61,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     useState<boolean>(false);
   const [isApprovedLiquidity, setIsApprovedLiquidity] =
     useState<boolean>(false);
-  const [amountTokenMin, setAmountTokenMin] = useState("");
-  const [amountTokenDec, setAmountTokenDec] = useState("");
-  const [amountNFTMin, setAmountNFTMin] = useState("");
-  const [updatePrice, setUpdatePrice] = useState<boolean>(false);
   const { account, wallet, slippage } = useContext(AccountContext);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
@@ -74,18 +71,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     isOpenTransaction,
     inputLiquidity,
     routerAddress
-  );
-
-  const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
-    data.dmlAddress,
-    wallet,
-    account,
-    isOpenTransaction,
-    false,
-    false,
-    false,
-    true,
-    updatePrice
   );
 
   useEffect(() => {
@@ -107,65 +92,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     checkApproveToken();
   }, [account, wallet, inputLiquidity, currentAllowance, isOpenTransaction]);
 
-  useEffect(() => {
-    if (data && inputLiquidity) {
-      const amountLIQUIDITY = handleBignumber(
-        Number(inputLiquidity),
-        Number(data.dmlDecimals)
-      );
-      const resAmountNFT =
-        (Number(amountLIQUIDITY) * Number(reserveNFT)) / Number(totalSupply);
-      const amountToken =
-        (Number(amountLIQUIDITY) * Number(reserveToken)) / Number(totalSupply);
-      const resAmountToken =
-        (Number(amountLIQUIDITY) * Number(reserveToken)) / Number(totalSupply) +
-        (((Number(amountLIQUIDITY) * Number(reserveNFT)) %
-          Number(totalSupply)) *
-          (Number(reserveToken) - Number(amountToken.toFixed(0)))) /
-          ((Number(reserveNFT) - Math.floor(Number(resAmountNFT))) *
-            Number(totalSupply));
-      const resAmountTokenMinShow = divideByDecimal(
-        resAmountToken.toString(),
-        data.dmlDecimals
-      );
-      const resAmountNFTMin = Math.floor(
-        Number(resAmountNFT * (1 - slippage / 100))
-      );
-      const resAmountTokenMin = Math.floor(
-        Number(resAmountToken * (1 - slippage / 100))
-      );
-      setAmountNFTMin(resAmountNFTMin.toString());
-      setAmountTokenMin(Math.floor(resAmountTokenMin).toString());
-      setAmountTokenDec(resAmountTokenMinShow);
-    }
-  }, [inputLiquidity, reserveNFT, reserveToken]);
-
-  const handleApproveDML = async () => {
-    const providerChoice = await getProvider(wallet);
-    const provider = new ethers.providers.Web3Provider(providerChoice);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(data.dmlAddress, abiDML, signer);
-    const inputLiquidityBN = new BigNumber(inputLiquidity)
-      .times(new BigNumber(10).pow(Number(data.dmlDecimals)))
-      .toFixed(0);
-
-    try {
-      const result = await contract.approve(routerAddress, inputLiquidityBN);
-      setIsOpenTransaction(true);
-      await provider.waitForTransaction(result.hash);
-      setIsOpenTransaction(false);
-    } catch (error) {
-      setIsOpenTransaction(false);
-      console.error(error);
-    }
-  };
-
   const queryClient = useQueryClient();
   const removeLiquidity = async () => {
     if (
       inputLiquidity &&
       !isSufficientLiquidity &&
-      Number(amountTokenMin) > 0
+      Number(dataTradingRemove.amountETHDecimals) > 0
     ) {
       const liquidity = handleBignumber(
         Number(inputLiquidity),
@@ -182,8 +114,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             data.nftID,
             routerAddress,
             liquidity,
-            amountTokenMin,
-            amountNFTMin,
+            dataTradingRemove.amountETHDecimals,
+            dataTradingRemove.amountNFT,
             account,
             slippage
           );
@@ -195,8 +127,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             idNFT,
             routerAddress,
             liquidity,
-            amountTokenMin,
-            amountNFTMin,
+            dataTradingRemove.amountETHDecimals,
+            dataTradingRemove.amountNFT,
             account,
             slippage
           );
@@ -224,14 +156,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     }
   };
 
-  useEffect(() => {
-    const load = setInterval(() => {
-      setUpdatePrice(!updatePrice);
-    }, 20000);
-    return () => {
-      clearInterval(load);
-    };
-  }, []);
   const handleClose = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -251,18 +175,14 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             </button>
           </div>
           <div className="content_modal">
-            {reserveToken ? (
-              <p>{amountNFTMin}</p>
-            ) : (
-              <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
-            )}
+            <FormatNumber number={dataTradingRemove.amountNFT} />
             <p>{data?.metadata?.symbol}</p>
           </div>
           <div className="flex justify-center mx-auto text-xl font-semibold text-shader_100">
             +
           </div>
           <div className="content_modal">
-            <FormatNumber number={amountTokenDec} />
+            <FormatNumber number={dataTradingRemove.amountETH} />
             <p>ETH</p>
           </div>
 
@@ -271,20 +191,20 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             <p>{slippage}%</p>
           </div>
           <p className="mt-2 mb-6 text-sm text-shader_200">
-            Output is estimated. You will receive at least {amountNFTMin} NFT or
-            the transaction will revert
+            Output is estimated. You will receive at least{" "}
+            {dataTradingRemove.amountNFT} NFT or the transaction will revert
           </p>
           <div className="flex flex-col items-center mt-6">
             {isApprovedLiquidity ? (
               <Button
-                disabled={isLoadingInforDML}
-                primary={!isLoadingInforDML}
+                disabled={isFetching}
+                primary={!isFetching}
                 className="w-[144px] py-2"
-                active={isLoadingInforDML}
+                active={isFetching}
                 onClick={removeLiquidity}
               >
                 REMOVE
-                {isLoadingInforDML && (
+                {isFetching && (
                   <BiLoaderAlt className="ml-1 text-white animate-spin" />
                 )}
               </Button>
@@ -292,7 +212,16 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               <Button
                 className="w-[126px] py-2 mx-auto"
                 primary
-                onClick={handleApproveDML}
+                onClick={() => {
+                  handleApproveDML(
+                    account,
+                    wallet,
+                    data.dmlAddress,
+                    inputLiquidity,
+                    setIsOpenTransaction,
+                    routerAddress
+                  );
+                }}
               >
                 Approve
               </Button>

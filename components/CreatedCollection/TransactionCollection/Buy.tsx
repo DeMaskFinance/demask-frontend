@@ -62,7 +62,6 @@ const Buy = () => {
       return res.data;
     },
   });
-  console.log(data721Trading);
 
   useEffect(() => {
     if (Number(data721Trading?.maxAmountDecimals) > Number(bigNumberBalance)) {
@@ -90,11 +89,11 @@ const Buy = () => {
         <div className="flex flex-col ">
           <NFTGrid data={data} idNFT={idNFT} isSearch setIdNFT={setIdNFT} />
           <div className="w-full mt-4">
-            {idNFT.length > 0 && data721Trading && (
+            {idNFT.length > 0 && (
               <StaticDetailBuy
                 data={data721Trading}
                 inputNFTValue={idNFT.length}
-                isFetching={isFetching}
+                isFetching={isFetching721Trading}
               />
             )}
 

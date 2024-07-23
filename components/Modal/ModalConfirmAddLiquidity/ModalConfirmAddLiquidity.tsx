@@ -9,7 +9,6 @@ import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import Tippy from "@tippyjs/react";
 import { memo, useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
@@ -56,11 +55,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
 }) => {
   const { demask, account, wallet, slippage, txDeadline, updateBalance } =
     useContext(AccountContext);
-  const {
-    ROUTER: routerAddress,
-    NATIVE_ADDRESS: nativeAddress,
-    FACTORY: factoryAddress,
-  } = demask;
+  const { ROUTER: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const addLiquidity = async () => {
     if (!account) {

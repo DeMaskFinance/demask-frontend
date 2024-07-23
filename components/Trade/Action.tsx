@@ -13,17 +13,17 @@ interface Action {
 }
 
 interface ActionsProps {
-  nftAddress: string;
-  tokenAddress: string;
-  idNFT: string;
+  link: string;
   refetch: () => void;
+  IconSwap: React.ReactNode;
+  contentTrade: string;
 }
 
 const Actions: React.FC<ActionsProps> = ({
-  nftAddress,
-  tokenAddress,
-  idNFT,
+  link,
   refetch,
+  IconSwap,
+  contentTrade,
 }) => {
   const actions: Action[] = [
     {
@@ -38,15 +38,9 @@ const Actions: React.FC<ActionsProps> = ({
       onClick: () => refetch(),
     },
     {
-      icon: (
-        <PoolIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Pool",
-      link: `/add/${nftAddress}/${tokenAddress}/${idNFT}`,
+      icon: IconSwap,
+      content: contentTrade,
+      link: link,
     },
     {
       icon: (

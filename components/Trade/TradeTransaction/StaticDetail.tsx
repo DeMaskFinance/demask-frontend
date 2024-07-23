@@ -5,19 +5,17 @@ interface BaseProps {
   isFetching: boolean;
 }
 interface StaticDetailBuyProps extends BaseProps {
-  data: DataBuy;
+  data: DataBuy | undefined;
 }
 
 interface StaticDetailSellProps extends BaseProps {
-  data: DataSell;
+  data: DataSell | undefined;
 }
 const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
   data,
   inputNFTValue,
   isFetching,
 }) => {
-  console.log(data);
-
   return (
     <div className="w-full">
       {inputNFTValue > 0 && (
@@ -49,7 +47,7 @@ const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
               {isFetching ? (
                 <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
               ) : (
-                <FormatNumber number={data.price || 0} />
+                <FormatNumber number={data?.price || 0} />
               )}
 
               <EtherIcon width={16} height={16} />
@@ -62,7 +60,7 @@ const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
                 {isFetching ? (
                   <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
                 ) : (
-                  <FormatNumber number={data.totalPay} />
+                  <FormatNumber number={data?.totalPay || 0} />
                 )}
                 <EtherIcon width={16} height={16} />
               </div>
@@ -95,7 +93,7 @@ const StaticDetailSell: React.FC<StaticDetailSellProps> = ({
               {isFetching ? (
                 <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
               ) : (
-                <FormatNumber number={data.price} />
+                <FormatNumber number={data?.price || 0} />
               )}
 
               <EtherIcon width={16} height={16} />
@@ -108,7 +106,7 @@ const StaticDetailSell: React.FC<StaticDetailSellProps> = ({
                 {isFetching ? (
                   <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
                 ) : (
-                  <FormatNumber number={data.totalReceipts} />
+                  <FormatNumber number={data?.totalReceipts || 0} />
                 )}
                 <EtherIcon width={16} height={16} />
               </div>

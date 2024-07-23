@@ -133,8 +133,8 @@ const removeERC20ERC1155 = async (
   idNFT: string | number[],
   routerAddress: string,
   liquidity: number,
-  amountTokenMin: string,
-  amountNFTMin: string,
+  amountTokenMin: number,
+  amountNFTMin: number,
   account: string,
   txDeadline: number
 ) => {

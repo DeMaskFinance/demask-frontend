@@ -72,12 +72,9 @@ export default function NavFooter() {
       >
         <ul className="border-t flex justify-between h-16 text-[10px] items-center border-shader_500 relative">
           {data.map((item, index) => (
-            <Fragment>
+            <Fragment key={index}>
               {item.url ? (
-                <li
-                  className="flex items-center justify-center flex-1 h-full relative"
-                  key={index}
-                >
+                <li className="flex items-center justify-center flex-1 h-full relative">
                   {router.pathname === item.url && (
                     <div
                       className={`absolute transition-transform duration-100 ease-linear border-t-[3px] border-primary_500 h-full top-0 w-full`}

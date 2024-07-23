@@ -83,14 +83,15 @@ const erc1155TradingAdd = async (
     console.error(error);
   }
 };
-const erc1155TradingRemove = async (
+const ercTradingRemove = async (
   dmlAddress: string,
   chainId: string | string[],
-  amountLiquidity: number
+  amountLiquidity: number,
+  account: string
 ) => {
   try {
     const res = await request.get(
-      `erc1155-trading-remove?chainId=${chainId}&amountLiquidity=${amountLiquidity}&dmlAddress=${dmlAddress}`
+      `trading-remove?chainId=${chainId}&amountLiquidity=${amountLiquidity}&dmlAddress=${dmlAddress}&userAddress=${account}`
     );
     return res.data;
   } catch (error) {
@@ -128,13 +129,29 @@ const erc721TradingSell = async (
     console.error(error);
   }
 };
+const erc721TradingAdd = async (
+  contractAddress: string,
+  chainId: string | string[],
+  amountNFT: number,
+  slippage: number
+) => {
+  try {
+    const res = await request.get(
+      `erc721-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 export {
   swapAPI,
   swapChartAPI,
   erc1155TradingBuy,
   erc1155TradingAdd,
-  erc1155TradingRemove,
+  ercTradingRemove,
   erc1155TradingSell,
   erc721TradingBuy,
   erc721TradingSell,
+  erc721TradingAdd,
 };

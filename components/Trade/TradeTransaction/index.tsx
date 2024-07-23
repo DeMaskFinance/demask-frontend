@@ -1,7 +1,13 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
-import { EtherIcon, EyeIcon, ImgIcon, NFTIcon } from "@/components/Icons";
+import {
+  EtherIcon,
+  EyeIcon,
+  ImgIcon,
+  NFTIcon,
+  PoolIcon,
+} from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
@@ -17,13 +23,13 @@ import { TabGroups } from "@/components/NavChoice";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import useDebounce from "@/hooks/useDebounce";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import {
   erc1155TradingBuy,
   erc1155TradingSell,
 } from "@/libs/service/tradeService";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
@@ -60,7 +66,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [inputNFT, setInputNFT] = useState<string>("");
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
 
   const {
@@ -88,6 +93,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     data: dataBuy,
     isLoading,
     isFetching,
+    isSuccess,
   } = useQuery<DataBuy>({
     queryKey: [
       "1155TradingBuy",
@@ -132,18 +138,13 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       return res.data;
     },
   });
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        nftAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, nftAddress, wallet, isOpenTransaction]);
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    nftAddress,
+    routerAddress,
+    isOpenBuyNFT
+  );
   useEffect(() => {
     if (inputNFTValue) {
       setCheckExit(true);
@@ -213,7 +214,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
-  console.log(dataSell);
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
@@ -221,9 +221,15 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         <div className="flex justify-between gap-4 mb-2">
           <p className="text-xl font-bold text-white">Demask Swaps</p>
           <Actions
-            nftAddress={nftAddress}
-            tokenAddress={tokenAddress}
-            idNFT={idNFT}
+            IconSwap={
+              <PoolIcon
+                width={18}
+                height={18}
+                className="cursor-pointer text-primary_200"
+              />
+            }
+            contentTrade="Trade"
+            link={`/add/${nftAddress}/${tokenAddress}/${idNFT}`}
             refetch={refetch}
           />
         </div>
@@ -298,7 +304,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </Dialog>
           </div>
         </div>
-        <form className="mt-5">
+        <form className="mt-5 mb-4">
           <div>
             <div className="flex flex-wrap items-center justify-between mb-2">
               {account && (
@@ -384,14 +390,14 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             )}
           </div>
         </form>
-        {dataBuy && activeChoice === "Buy" && (
+        {activeChoice === "Buy" && (
           <StaticDetailBuy
             data={dataBuy}
             inputNFTValue={+inputNFT}
             isFetching={isFetching}
           />
         )}
-        {dataSell && activeChoice === "Sell" && (
+        {activeChoice === "Sell" && (
           <StaticDetailSell
             data={dataSell}
             inputNFTValue={+inputNFT}
@@ -399,7 +405,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
           />
         )}
         {inputNFTValue && (
-          <div className="h-4">
+          <div className="">
             {activeChoice === "Buy" &&
               dataBuy?.maxAmount === 0 &&
               !isFetching && (

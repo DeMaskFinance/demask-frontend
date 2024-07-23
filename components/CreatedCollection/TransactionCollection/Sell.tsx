@@ -25,6 +25,7 @@ import useDebounce from "@/hooks/useDebounce";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { erc721TradingSell } from "@/libs/service/tradeService";
 import { StaticDetailSell } from "@/components/Trade/TradeTransaction/StaticDetail";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -33,7 +34,6 @@ const Sell = () => {
   const [idNFT, setIdNFT] = useState<number[]>([]);
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const router = useRouter();
@@ -46,19 +46,14 @@ const Sell = () => {
     },
   });
   const debouncedIdNFT = useDebounce(idNFT, 1000);
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    collectionAddress,
+    routerAddress,
+    isOpenTransaction
+  );
 
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        collectionAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, collectionAddress, wallet, isOpenTransaction]);
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,
@@ -100,11 +95,11 @@ const Sell = () => {
             <div className="flex flex-col ">
               <NFTGrid data={data} setIdNFT={setIdNFT} idNFT={idNFT} isSearch />
               <div className="w-full mt-4">
-                {idNFT.length > 0 && data721Trading && (
+                {idNFT.length > 0 && (
                   <StaticDetailSell
                     data={data721Trading}
                     inputNFTValue={debouncedIdNFT.length}
-                    isFetching={isFetching}
+                    isFetching={isFetching721Trading}
                   />
                 )}
                 {!isApprovedNFT ? (

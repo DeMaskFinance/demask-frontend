@@ -7,6 +7,7 @@ import {
   PoolIcon,
   RefetchIcon,
   SettingIcon,
+  SwapIcon,
 } from "@/components/Icons";
 import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
 import ModalSetting from "@/components/Modal/ModalSetting";
@@ -42,9 +43,15 @@ export default function TradeDefault() {
           <div className="flex justify-between gap-4">
             <p className="text-lg text-white">Demask Swaps</p>
             <Actions
-              nftAddress={demask.CREATOR}
-              tokenAddress={demask.NATIVE_ADDRESS}
-              idNFT={demask.IDNFT}
+              IconSwap={
+                <SwapIcon
+                  width={18}
+                  height={18}
+                  className="cursor-pointer text-primary_200"
+                />
+              }
+              contentTrade="Swap"
+              link={`/trade/erc1155/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}
               refetch={router.refresh}
             />
           </div>

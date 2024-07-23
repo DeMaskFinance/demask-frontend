@@ -5,11 +5,8 @@ import { EtherIcon } from "@/components/Icons";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useDMLToken from "@/hooks/useDMLToken";
-import useInformationDML from "@/hooks/useInformationDML";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
+import { erc721TradingAdd } from "@/libs/service/tradeService";
 import { replaceDot } from "@/libs/utils/formatComon";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
@@ -18,8 +15,8 @@ import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import "react-toastify/dist/ReactToastify.css";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,8 +31,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [inputToken, setInputToken] = useState<string>("");
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
-  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
@@ -48,33 +43,9 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     bigNumberBalance,
     balanceToken,
   } = useContext(AccountContext);
-  const {
-    ROUTER_721: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { ROUTER_721: routerAddress } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-  const dmlToken = useDMLToken(
-    account,
-    collectionAddress,
-    nativeAddress,
-    wallet,
-    demask.FACTORY_721,
-    "",
-    isOpenTransaction,
-    isOpenConfirmAddLiquidity
-  );
-  const { reserveNFT, reserveToken } = useInformationDML(
-    dmlToken,
-    wallet,
-    account,
-    isOpenTransaction,
-    false,
-    false,
-    isOpenConfirmAddLiquidity,
-    true
-  );
 
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
@@ -83,6 +54,22 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       return res;
     },
   });
+  const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
+    {
+      queryKey: ["721TradingAdd", slippage, collectionAddress, chainId, idNFT],
+      queryFn: async () => {
+        const res = await erc721TradingAdd(
+          collectionAddress,
+          chainId,
+          idNFT.length,
+          slippage
+        );
+        return res.data;
+      },
+      refetchInterval: 20000,
+    }
+  );
+
   const handleGetToken = (values: NumberFormatValues) => {
     const { value } = values;
     const inputValue = replaceDot(value);
@@ -96,43 +83,30 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   useEffect(() => {
     let amountErcDesired;
-    if (
-      dmlToken !== "0x0000000000000000000000000000000000000000" &&
-      data &&
-      idNFT
-    ) {
-      amountErcDesired =
-        ((Number(idNFT.length) * +reserveToken) / +reserveNFT) *
-        (1 + slippage / 100);
+    if (data?.dmlAddress !== null && dataTradingAdd && idNFT) {
+      amountErcDesired = dataTradingAdd?.amountETHDecimals;
     } else {
-      amountErcDesired = handleBignumber(Number(inputToken), Number(18));
+      amountErcDesired = handleBignumber(Number(inputToken), 18);
+    }
+    if (idNFT.length === 0) {
+      setAmountErcDesired("");
     }
     setAmountErcDesired(amountErcDesired);
     if (amountErcDesired) {
-      const amountErcDesiredToDec = divideByDecimal(
-        amountErcDesired?.toString(),
-        "18"
-      );
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
         setIsSufficientToken(true);
       } else {
         setIsSufficientToken(false);
       }
     }
-  }, [idNFT, inputToken, data, bigNumberBalance, reserveToken, reserveNFT]);
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        collectionAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, collectionAddress, wallet]);
+  }, [idNFT, inputToken, dataTradingAdd, bigNumberBalance, data]);
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    collectionAddress,
+    routerAddress,
+    isOpenConfirmAddLiquidity
+  );
 
   return (
     <Fragment>
@@ -153,7 +127,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         <div>
           <div>
             <div className="my-4">
-              {dmlToken === "0x0000000000000000000000000000000000000000" ? (
+              {data?.dmlAddress === null ? (
                 <NumericFormat
                   name="amountToken721"
                   id="amountToken721"
@@ -174,7 +148,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 text-primary_100">
                       <div className="">Total Liquidity</div>
                       <div className="flex items-center px-2 py-1 text-white gap-x-1">
-                        <FormatNumber number={amountErcDesiredToDec} />{" "}
+                        <FormatNumber number={dataTradingAdd?.amountETH || 0} />{" "}
                         <EtherIcon width={16} height={16} />
                       </div>
                     </div>
@@ -204,29 +178,31 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                 onOpenChange={setIsOpenConfirmAddLiquidity}
               >
                 <DialogTrigger asChild>
-                  <Button
-                    className="w-[126px] py-2 mx-auto whitespace-nowrap"
-                    primary={
-                      idNFT.length > 0 &&
-                      amountErcDesiredToDec > 0 &&
-                      !isSufficientToken
-                    }
-                    active={
-                      idNFT.length === 0 ||
-                      amountErcDesiredToDec === 0 ||
-                      isSufficientToken
-                    }
-                    disabled={
-                      idNFT.length === 0 ||
-                      amountErcDesiredToDec === 0 ||
-                      isSufficientToken
-                    }
-                  >
-                    Add Liquidity
-                  </Button>
+                  {dataTradingAdd && (
+                    <Button
+                      className="w-[126px] py-2 mx-auto whitespace-nowrap"
+                      primary={
+                        idNFT.length > 0 &&
+                        dataTradingAdd?.amountETHDecimals > 0 &&
+                        !isSufficientToken
+                      }
+                      active={
+                        idNFT.length === 0 ||
+                        dataTradingAdd?.amountETHDecimals === 0 ||
+                        isSufficientToken
+                      }
+                      disabled={
+                        idNFT.length === 0 ||
+                        dataTradingAdd?.amountETHDecimals === 0 ||
+                        isSufficientToken
+                      }
+                    >
+                      Add Liquidity
+                    </Button>
+                  )}
                 </DialogTrigger>
                 <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                  {data && (
+                  {data && dataTradingAdd && (
                     <ModalConfirmAddLiquidityERC721
                       data={data}
                       isOpenTransaction={isOpenTransaction}
@@ -235,11 +211,9 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       setIsOpenConfirmAddLiquidity={
                         setIsOpenConfirmAddLiquidity
                       }
-                      tokenAddress={demask.NATIVE_ADDRESS}
-                      nftAddress={collectionAddress}
-                      idNFT={""}
                       inputNFT={idNFT}
-                      inputToken={inputToken}
+                      dataTradingAdd={dataTradingAdd}
+                      isFetching={isFetchingAdd}
                       setIdNFT={setIdNFT}
                       setInputToken={setInputToken}
                       setHash={setHash}

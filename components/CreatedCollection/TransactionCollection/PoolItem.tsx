@@ -131,7 +131,6 @@ const PoolItem = ({ liquidity }: any) => {
               data={data}
               routerAddress={routerAddress}
               type="erc721"
-              isERC721={true}
               setHash={setHash}
               setIsOpenSuccess={setIsOpenSuccessRemove}
               setIsOpenError={setIsOpenErrorRemove}

@@ -270,7 +270,6 @@ const DetailLiquidity = () => {
                                 data={data}
                                 routerAddress={routerAddress}
                                 type="erc1155"
-                                isERC721={false}
                                 setHash={setHash}
                                 setIsOpenSuccess={setIsOpenSuccessRemove}
                                 setIsOpenError={setIsOpenErrorRemove}
@@ -328,17 +327,13 @@ const DetailLiquidity = () => {
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
-                      <DialogHeader>
-                        <DialogDescription>
-                          {data && (
-                            <ModalDetail
-                              type="erc1155"
-                              idNFT={data.nftID}
-                              nftAddress={data.nftAddress}
-                            />
-                          )}
-                        </DialogDescription>
-                      </DialogHeader>
+                      {data && (
+                        <ModalDetail
+                          type="erc1155"
+                          idNFT={data.nftID}
+                          nftAddress={data.nftAddress}
+                        />
+                      )}
                     </DialogContent>
                   </Dialog>
 

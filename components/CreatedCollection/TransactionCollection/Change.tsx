@@ -21,6 +21,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 
 const Change = () => {
   const {
@@ -34,7 +35,6 @@ const Change = () => {
   } = useContext(AccountContext);
   const [idNFTInput, setIdNFTInput] = useState<number[]>([]);
   const [idNFTOutput, setIdNFTOutput] = useState<number[]>([]);
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessSwap, setIsOpenSuccessSwap] = useState<boolean>(false);
@@ -91,18 +91,13 @@ const Change = () => {
     }
   }, [account, amountTokenBuy, data, bigNumberBalance]);
 
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        collectionAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, collectionAddress, wallet, isOpenTransaction]);
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    collectionAddress,
+    routerAddress,
+    isOpenTransaction
+  );
   const queryClient = useQueryClient();
 
   const handleSwap = async () => {

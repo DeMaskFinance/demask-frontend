@@ -6,16 +6,12 @@ import {
   EtherIcon,
   EyeIcon,
   NFTIcon,
-  RefetchIcon,
-  SettingIcon,
   SwapIcon,
-  TokenIconNotDefine,
 } from "@/components/Icons";
 import { ModalConfirmAddLiquidity } from "@/components/Modal/ModalConfirmAddLiquidity";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
 import { ModalSearchToken } from "@/components/Modal/ModalSearchToken";
-import ModalSetting from "@/components/Modal/ModalSetting";
 import {
   ModalError,
   ModalTransation,
@@ -27,24 +23,23 @@ import { SkeletonAddLiquidity } from "@/components/Skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import useDebounce from "@/hooks/useDebounce";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
 import { getMetadata } from "@/libs/service/nftService";
 import { erc1155TradingAdd } from "@/libs/service/tradeService";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import { replaceDot } from "@/libs/utils/formatComon";
 import formatNumber from "@/libs/utils/formatNumer";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
-import Tippy from "@tippyjs/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FaAngleDown } from "react-icons/fa";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import Back from "../Common/Back";
+import Actions from "../Trade/Action";
 
 export default function AddLiquidity() {
   const router = useRouter();
@@ -55,7 +50,6 @@ export default function AddLiquidity() {
   const [idNFT, setIdNFT] = useState("");
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
@@ -65,14 +59,12 @@ export default function AddLiquidity() {
     wallet,
     chainId,
     demask,
-    tokenDefault,
     slippage,
     bigNumberBalance,
     balanceToken,
   } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [checkExit, setCheckExit] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -129,8 +121,13 @@ export default function AddLiquidity() {
       refetchInterval: 20000,
     }
   );
-  console.log(dataTradingAdd);
-
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    nftAddress,
+    routerAddress,
+    isOpenConfirmAddLiquidity
+  );
   const balanceNFT = useNFTBalance(
     account,
     nftAddress,
@@ -144,10 +141,7 @@ export default function AddLiquidity() {
     if (data?.dmlAddress !== null && dataTradingAdd && inputNFT) {
       amountErcDesired = dataTradingAdd?.amountETHDecimals;
     } else {
-      amountErcDesired = handleBignumber(
-        Number(inputToken),
-        Number(data?.tokenDecimals)
-      );
+      amountErcDesired = handleBignumber(Number(inputToken), 18);
     }
     if (!inputNFT) {
       setAmountErcDesired("");
@@ -162,14 +156,6 @@ export default function AddLiquidity() {
     }
   }, [inputNFT, inputToken, dataTradingAdd, bigNumberBalance]);
 
-  useEffect(() => {
-    if (tokenAddress) {
-      const icon = (tokenDefault || []).find(
-        (item: any) => item.address.toLowerCase() === tokenAddress
-      );
-      setTokenSymbolIcon(icon);
-    }
-  }, [currency, chainId, tokenAddress]);
   const handleGetNFT = (values: NumberFormatValues) => {
     const { value } = values;
     setInputNFT(value);
@@ -205,67 +191,7 @@ export default function AddLiquidity() {
       setCheckExit(false);
     }
   }, [inputNFT]);
-  useEffect(() => {
-    const checkApproveNFT = async () => {
-      const result = await ercContract.approveNFT(
-        account,
-        wallet,
-        nftAddress,
-        routerAddress
-      );
-      setIsApprovedNFT(result);
-    };
-    checkApproveNFT();
-  }, [account, nftAddress, wallet, isOpenTransaction]);
 
-  const actions = [
-    {
-      icon: (
-        <RefetchIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Refresh",
-      onClick: () => {
-        refetch();
-      },
-    },
-    {
-      icon: (
-        <SwapIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Swap",
-      link: `/trade/erc1155/${nftAddress}/${tokenAddress}/${idNFT}`,
-    },
-    {
-      icon: (
-        <SettingIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Setting",
-      dialog: (
-        <Dialog>
-          <DialogTrigger asChild>
-            <div className="cursor-pointer text-primary_200">
-              <SettingIcon width={18} height={18} />
-            </div>
-          </DialogTrigger>
-          <DialogContent className="w-fit p-4 border bg-shader_800 border-shader_500">
-            <ModalSetting />
-          </DialogContent>
-        </Dialog>
-      ),
-    },
-  ];
   const handleChoicePercent = (item: string) => {
     {
       dataTradingAdd &&
@@ -288,28 +214,18 @@ export default function AddLiquidity() {
             </h2>
           </div>
         </div>
-        <div className="flex items-center gap-x-2">
-          {actions.map((action, index) => (
-            <Tippy
-              key={index}
-              content={<div className="text-xs">{action.content}</div>}
-              theme="dark"
-              placement="bottom"
-            >
-              <div className="border rounded-full border-shader_400 p-[7px]">
-                {action.link ? (
-                  <Link href={action.link} className="group">
-                    {action.icon}
-                  </Link>
-                ) : action.dialog ? (
-                  action.dialog
-                ) : (
-                  <div onClick={action.onClick}>{action.icon}</div>
-                )}
-              </div>
-            </Tippy>
-          ))}
-        </div>
+        <Actions
+          IconSwap={
+            <SwapIcon
+              width={18}
+              height={18}
+              className="cursor-pointer text-primary_200"
+            />
+          }
+          contentTrade="Swap"
+          link={`/trade/erc1155/${nftAddress}/${tokenAddress}/${idNFT}`}
+          refetch={refetch}
+        />
       </div>
       {isLoading || isFetching ? (
         <SkeletonAddLiquidity />
@@ -352,21 +268,8 @@ export default function AddLiquidity() {
                   <div className="input_item">
                     <div className="flex items-center justify-between cursor-pointer text-shader_500">
                       <div className="flex items-center gap-x-2 title">
-                        {tokenSymbolIcon ? (
-                          <div>
-                            {/* @ts-ignore */}
-                            <tokenSymbolIcon.logo width={20} height={20} />
-                          </div>
-                        ) : (
-                          <div>
-                            <TokenIconNotDefine
-                              width={24}
-                              height={24}
-                              className="fill-primary_400"
-                            />
-                          </div>
-                        )}
-                        {data?.tokenSymbol}
+                        <EtherIcon width={18} height={18} />
+                        ETH
                       </div>
                       <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
                     </div>
@@ -437,7 +340,7 @@ export default function AddLiquidity() {
                     <EtherIcon width={12} height={12} />
                   </div>
                 </div>
-                {data.dmlAddress === null ? (
+                {data?.dmlAddress === null ? (
                   <NumericFormat
                     name="amountToken"
                     id="amountToken"

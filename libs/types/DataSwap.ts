@@ -42,3 +42,10 @@ interface DataAdd extends BaseDataTrade {
   amountETH: number;
   amountETHDecimals: number;
 }
+interface DataRemove extends DataAdd {
+  balanceDml: number;
+  balanceDmlDecimals: number;
+  totalSupplyDml: number;
+  totalSupplyDmlDecimals: number;
+  amountNFT: number;
+}

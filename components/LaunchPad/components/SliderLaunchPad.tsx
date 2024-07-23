@@ -18,7 +18,6 @@ const SliderLaunchPad = () => {
       setAnimate(false);
     }, 1000);
   };
-  console.log(animate);
 
   return (
     <>
