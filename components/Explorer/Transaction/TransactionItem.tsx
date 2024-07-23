@@ -3,7 +3,7 @@ import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon } from "@/components/Icons";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import { formatLinkIPFS, formatTypeChain } from "@/libs/utils/formatComon";
 import { getColorType } from "@/libs/utils/getColorType";
 import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
@@ -112,6 +112,9 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                 </div>
               )}
             </span>
+          </td>
+          <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] gap-x-1">
+            <p>{formatTypeChain(item.type)}</p>
           </td>
           <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
             <a

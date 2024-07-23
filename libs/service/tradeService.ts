@@ -1,0 +1,140 @@
+import request from "../utils/httpRequest";
+
+const swapAPI = async (
+  tokenAddress: string,
+  chainId: string | string[],
+  nftAddress: string,
+  idNFT: string
+) => {
+  try {
+    const res = await request.get(
+      `reserveDML?nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}&chainId=${chainId}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const swapChartAPI = async (
+  tokenAddress: string,
+  chainId: string | string[],
+  nftAddress: string,
+  idNFT: string,
+  interval: string
+) => {
+  try {
+    const res = await request.get(
+      `chart?nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}&chainId=${chainId}&interval=${interval}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+//ERC 1155
+const erc1155TradingBuy = async (
+  tokenAddress: string,
+  chainId: string | string[],
+  nftAddress: string,
+  idNFT: string,
+  amountNFT: string,
+  slippage: number
+) => {
+  try {
+    const res = await request.get(
+      `erc1155-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const erc1155TradingSell = async (
+  tokenAddress: string,
+  chainId: string | string[],
+  nftAddress: string,
+  idNFT: string,
+  amountNFT: string,
+  slippage: number
+) => {
+  try {
+    const res = await request.get(
+      `erc1155-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const erc1155TradingAdd = async (
+  tokenAddress: string,
+  chainId: string | string[],
+  nftAddress: string,
+  idNFT: string,
+  amountNFT: number,
+  slippage: number
+) => {
+  try {
+    const res = await request.get(
+      `erc1155-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const erc1155TradingRemove = async (
+  dmlAddress: string,
+  chainId: string | string[],
+  amountLiquidity: number
+) => {
+  try {
+    const res = await request.get(
+      `erc1155-trading-remove?chainId=${chainId}&amountLiquidity=${amountLiquidity}&dmlAddress=${dmlAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+//ERC721
+const erc721TradingBuy = async (
+  contractAddress: string,
+  chainId: string | string[],
+  amountNFT: number,
+  slippage: number
+) => {
+  try {
+    const res = await request.get(
+      `erc721-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const erc721TradingSell = async (
+  contractAddress: string,
+  chainId: string | string[],
+  amountNFT: number,
+  slippage: number
+) => {
+  try {
+    const res = await request.get(
+      `erc721-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export {
+  swapAPI,
+  swapChartAPI,
+  erc1155TradingBuy,
+  erc1155TradingAdd,
+  erc1155TradingRemove,
+  erc1155TradingSell,
+  erc721TradingBuy,
+  erc721TradingSell,
+};

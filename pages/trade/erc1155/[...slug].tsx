@@ -4,6 +4,7 @@ import HistorySwap from "@/components/Trade/History";
 import SwapTransaction from "@/components/Trade/TradeTransaction";
 import AccountContext from "@/context/AccountContext";
 import { swapAPI } from "@/libs/service";
+import { getMetadata } from "@/libs/service/nftService";
 import { SEO } from "@/next-seo.config";
 import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
@@ -22,13 +23,13 @@ const Swap: React.FC = () => {
   const { chainId } = useContext(AccountContext);
   const { slug } = router.query;
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["trade", idNFT, nftAddress, chainId, tokenAddress],
+    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
-      const res = await swapAPI(
-        tokenAddress.toLocaleLowerCase(),
+      const res = await getMetadata(
         chainId,
         nftAddress.toLowerCase(),
-        idNFT
+        idNFT,
+        tokenAddress
       );
       return res;
     },
@@ -41,6 +42,7 @@ const Swap: React.FC = () => {
       setIdNFT(slug[2]);
     }
   }, [slug]);
+  console.log(data);
 
   return (
     <div className="">

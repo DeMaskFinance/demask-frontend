@@ -4,25 +4,21 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
-import useAmountInMax from "@/hooks/useAmountInMax";
-import useFee from "@/hooks/useFee";
-import useInformationDML from "@/hooks/useInformationDML";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import { useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 interface ModalBuyNFTProps {
-  isOpenBuyNFT: boolean;
   tokenAddress: string;
   data: DataBase;
+  dataBuy: DataBuy;
   inputNFT: string;
   nftAddress: string;
   idNFT: string | number[];
+  isFetching: boolean;
   routerAddress: string;
   isOpenTransaction: boolean;
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,10 +30,11 @@ interface ModalBuyNFTProps {
 }
 
 const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
-  isOpenBuyNFT,
   tokenAddress,
   data,
+  dataBuy,
   inputNFT,
+  isFetching,
   nftAddress,
   idNFT,
   routerAddress,
@@ -49,13 +46,10 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   setIsOpenSuccess,
   setHash,
 }) => {
-  const [amountInMax, setAmountInMax] = useState<number>(0);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const {
     demask,
     account,
@@ -65,75 +59,19 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     bigNumberBalance,
     updateBalance,
   } = useContext(AccountContext);
-  const { RPC: rpc } = demask;
-
-  const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
-    data.dmlAddress,
-    wallet,
-    account,
-    isOpenTransaction,
-    isOpenBuyNFT,
-    true,
-    true,
-    updatePrice
-  );
-
-  const { amountTokenBuy } = useAmountInMax(
-    inputNFT,
-    data.dmlAddress,
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    wallet,
-    account,
-    rpc,
-    routerAddress,
-    updatePrice
-  );
-
-  const { feeBuy, totalFee } = useFee(
-    amountTokenBuy,
-    data.dmlAddress,
-    wallet,
-    account,
-    rpc,
-    demask.FEE_MANAGER,
-    updatePrice
-  );
 
   useEffect(() => {
-    const load = setInterval(() => {
-      if (isOpenBuyNFT) {
-        setUpdatePrice((prevState) => !prevState);
-      }
-    }, 20000);
-
-    return () => {
-      clearInterval(load);
-    };
-  }, [isOpenBuyNFT]);
-
-  useEffect(() => {
-    if (Number(inputNFT) < Number(reserveNFT)) {
+    if (Number(inputNFT) < Number(dataBuy?.reserveNFT)) {
       setIsSufficientNFT(true);
     } else {
       setIsSufficientNFT(false);
     }
-    if (Number(amountInMax) > Number(bigNumberBalance)) {
+    if (Number(dataBuy.maxAmountDecimals) > Number(bigNumberBalance)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
     }
-  }, [inputNFT, account, reserveNFT, amountInMax, bigNumberBalance]);
-  useEffect(() => {
-    if (data && amountTokenBuy) {
-      setAmountInMax(amountTokenBuy * (1 + slippage / 100));
-      setTotalPrice(+amountTokenBuy + +totalFee);
-    } else {
-      setAmountInMax(0);
-      setTotalPrice(0);
-    }
-  }, [slippage, amountTokenBuy, totalFee]);
+  }, [inputNFT, account, dataBuy, bigNumberBalance]);
 
   const queryClient = useQueryClient();
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -142,9 +80,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       return;
     }
     if (
-      Number(reserveNFT) > 1 &&
-      Number(reserveToken) > 0 &&
-      Math.floor(amountInMax) > 0 &&
+      Number(dataBuy?.reserveNFT) > 1 &&
+      Number(dataBuy?.reserveToken) > 0 &&
+      Math.floor(dataBuy?.maxAmountDecimals) > 0 &&
       isSufficientNFT &&
       isSufficientTokenBuy
     ) {
@@ -158,7 +96,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenAddress,
             idNFT,
             routerAddress,
-            amountInMax,
+            dataBuy.maxAmountDecimals,
             inputNFT,
             account,
             txDeadline
@@ -170,7 +108,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenAddress,
             idNFT,
             routerAddress,
-            amountInMax,
+            dataBuy.maxAmountDecimals,
             account,
             txDeadline
           );
@@ -186,6 +124,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         }
         setInputNFT("");
         queryClient.refetchQueries(["collectionNFTBUY"]);
+        queryClient.refetchQueries(["1155TradingBuy"]);
         queryClient.refetchQueries(["collectionNFTSell"]);
         queryClient.refetchQueries(["detailCollection"]);
         await updateBalance();
@@ -195,6 +134,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       }
     }
   };
+  console.log(dataBuy);
 
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative bg_main">
@@ -226,13 +166,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           <div className="flex justify-between ">
             <p>Price</p>
             <div className="flex items-center font-bold text-white gap-x-1">
-              <FormatNumber
-                number={
-                  totalPrice
-                    ? (totalPrice / 1e18 / idNFT.length).toString()
-                    : "0"
-                }
-              />
+              <FormatNumber number={dataBuy.price} />
 
               <p>
                 <EtherIcon width={14} height={14} />
@@ -243,11 +177,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             <p>Maximum amount</p>
             <div className="flex gap-x-1">
               <div className="flex items-center font-bold text-white gap-x-1">
-                <FormatNumber
-                  number={Number(
-                    divideByDecimal(amountInMax.toString(), data.tokenDecimals)
-                  ).toString()}
-                />
+                <FormatNumber number={dataBuy.maxAmount} />
                 <EtherIcon width={14} height={14} />
               </div>
             </div>
@@ -288,12 +218,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               </div>
             </div>
             <div className="flex items-center font-bold text-white gap-x-1">
-              <FormatNumber
-                number={divideByDecimal(
-                  totalFee.toString(),
-                  data.tokenDecimals
-                )}
-              />
+              <FormatNumber number={dataBuy.totalFee} />
               <p>
                 <EtherIcon width={14} height={14} />
               </p>
@@ -311,28 +236,23 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <p>Royalty Fee</p>
             </div>
             <div className="flex flex-col gap-y-1 items-end">
-              {feeBuy.map((fee, index) => (
+              {dataBuy.fees.map((fee, index) => (
                 <div
                   className="flex items-center font-bold text-white gap-x-1"
                   key={index}
                 >
-                  <FormatNumber
-                    number={divideByDecimal(
-                      fee[1].toString(),
-                      data.tokenDecimals
-                    )}
-                  />
+                  <FormatNumber number={fee} />
                   <EtherIcon width={14} height={14} />
                 </div>
               ))}
             </div>
           </div>
-          {!isSufficientNFT && reserveNFT && (
+          {!isSufficientNFT && dataBuy?.reserveNFT && (
             <p className="text-xs text-red" key="NFTbalance">
               Insufficient NFT balance
             </p>
           )}
-          {!isSufficientTokenBuy && reserveToken && (
+          {!isSufficientTokenBuy && dataBuy?.reserveToken && (
             <p className="text-xs text-red" key="Tokenbalance">
               Insufficient Token balance
             </p>
@@ -340,21 +260,17 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
             <p className="text-primary_200">Total Pay</p>
             <div className="flex items-center font-bold text-white gap-x-1">
-              <FormatNumber
-                number={Number(
-                  divideByDecimal(amountTokenBuy.toString(), data.tokenDecimals)
-                ).toString()}
-              />
+              <FormatNumber number={dataBuy.totalPay} />
               <EtherIcon width={14} height={14} />
             </div>
           </div>
         </div>
         <div className="flex flex-col items-center">
           <Button
-            disabled={isLoadingInforDML}
-            primary={!isLoadingInforDML}
+            disabled={isFetching}
+            primary={!isFetching}
             className="px-8 py-3"
-            isLoadingBtn={isLoadingInforDML}
+            isLoadingBtn={isFetching}
             onClick={handleBuyNFT}
           >
             Confirm

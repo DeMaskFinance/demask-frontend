@@ -23,4 +23,19 @@ const refreshNFTService = async (
     console.error(error);
   }
 };
-export { NFTTopService, refreshNFTService };
+const getMetadata = async (
+  chainId: string | string[],
+  nftAddress: string,
+  nftID: string,
+  tokenAddress: string
+) => {
+  try {
+    const res = await request.get(
+      `metadata?chainId=${chainId}&nftAddress=${nftAddress}&id=${nftID}&tokenAddress=${tokenAddress}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export { NFTTopService, refreshNFTService, getMetadata };

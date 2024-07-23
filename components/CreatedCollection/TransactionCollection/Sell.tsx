@@ -23,6 +23,8 @@ import NFTGrid from "./NFTsGrids";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import useDebounce from "@/hooks/useDebounce";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { erc721TradingSell } from "@/libs/service/tradeService";
+import { StaticDetailSell } from "@/components/Trade/TradeTransaction/StaticDetail";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -32,17 +34,10 @@ const Sell = () => {
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
   const [isApprovedNFT, setIsApprovedNFT] = useState<boolean>(false);
-  const [amountSellDec, setAmountSellDec] = useState<number>(0);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [hash, setHash] = useState<string>("");
-  const {
-    ROUTER_721: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-  const [totalPay, setTotalPay] = useState<number>(0);
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
     queryFn: async () => {
@@ -51,15 +46,6 @@ const Sell = () => {
     },
   });
   const debouncedIdNFT = useDebounce(idNFT, 1000);
-  const dmlToken = useDMLToken(
-    account,
-    collectionAddress,
-    nativeAddress,
-    wallet,
-    demask.FACTORY_721,
-    "",
-    isOpenTransaction
-  );
 
   useEffect(() => {
     const checkApproveNFT = async () => {
@@ -73,41 +59,30 @@ const Sell = () => {
     };
     checkApproveNFT();
   }, [account, collectionAddress, wallet, isOpenTransaction]);
-  const { amountTokenSell, isLoadingSell } = useAmountOutMin(
-    "",
-    dmlToken,
-    nativeAddress,
-    collectionAddress,
-    debouncedIdNFT,
-    wallet,
-    account,
-    rpc,
-    routerAddress,
-    true
-  );
-  const { totalFee } = useFee(
-    amountTokenSell,
-    dmlToken,
-    wallet,
-    account,
-    rpc,
-    demask.FEE_MANAGER,
-    true
-  );
-  useEffect(() => {
-    if (data && amountTokenSell) {
-      setAmountSellDec((amountTokenSell - totalFee) * (1 - slippage / 100));
-      setTotalPay(amountTokenSell - totalFee);
-      setTotalPrice(amountTokenSell * (1 - slippage / 100));
-    } else {
-      setAmountSellDec(0);
-      setTotalPay(0);
-      setTotalPrice(0);
-    }
-  }, [data, slippage, amountTokenSell, totalFee]);
-
+  const {
+    isLoading: isLoading721Trading,
+    data: data721Trading,
+    isFetching: isFetching721Trading,
+  } = useQuery<DataSell>({
+    queryKey: [
+      "721TradingSell",
+      chainId,
+      collectionAddress,
+      slippage,
+      debouncedIdNFT,
+    ],
+    queryFn: async () => {
+      const res = await erc721TradingSell(
+        collectionAddress,
+        chainId,
+        debouncedIdNFT.length,
+        slippage
+      );
+      return res.data;
+    },
+  });
   const dataFake = {
-    dmlAddress: dmlToken,
+    dmlAddress: data?.dmlAddress,
     tokenDecimals: "18",
     metadata: {
       image: data?.avatar,
@@ -125,52 +100,12 @@ const Sell = () => {
             <div className="flex flex-col ">
               <NFTGrid data={data} setIdNFT={setIdNFT} idNFT={idNFT} isSearch />
               <div className="w-full mt-4">
-                {idNFT.length > 0 && (
-                  <ul className="text-sm text-shader_200">
-                    <li className="flex items-center justify-between mb-1">
-                      Receive: NFTs
-                      <div className="flex items-center font-bold text-white gap-x-1">
-                        {idNFT.length}
-                        <NFTIcon width={16} height={16} />
-                      </div>
-                    </li>
-                    <li className="flex items-center justify-between mb-4">
-                      Price:
-                      <div className="flex items-center font-bold text-white gap-x-1">
-                        {isLoadingSell ? (
-                          <p className="rounded-full animate-pulse bg-slate-600 w-16 h-3"></p>
-                        ) : (
-                          <FormatNumber
-                            number={(
-                              totalPrice /
-                              1e18 /
-                              debouncedIdNFT.length
-                            ).toString()}
-                          />
-                        )}
-
-                        <EtherIcon width={16} height={16} />
-                      </div>
-                    </li>
-                    <li>
-                      <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-                        <div className="">Total Receipts</div>
-                        <div className="flex items-center px-2 py-1 text-white gap-x-1">
-                          {isLoadingSell ? (
-                            <p className="rounded-full animate-pulse bg-slate-600 w-20 h-3"></p>
-                          ) : (
-                            <FormatNumber
-                              number={divideByDecimal(
-                                totalPay.toString(),
-                                "18"
-                              )}
-                            />
-                          )}
-                          <EtherIcon width={16} height={16} />
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
+                {idNFT.length > 0 && data721Trading && (
+                  <StaticDetailSell
+                    data={data721Trading}
+                    inputNFTValue={debouncedIdNFT.length}
+                    isFetching={isFetching}
+                  />
                 )}
                 {!isApprovedNFT ? (
                   <Button
@@ -194,43 +129,46 @@ const Sell = () => {
                       <Button
                         disabled={
                           idNFT.length === 0 ||
-                          Math.floor(amountSellDec) === 0 ||
-                          isLoadingSell
+                          data721Trading?.minAmount === 0 ||
+                          isFetching721Trading
                         }
                         primary={
                           idNFT.length !== 0 &&
-                          Math.floor(amountSellDec) !== 0 &&
-                          !isLoadingSell
+                          data721Trading?.minAmount !== 0 &&
+                          !isFetching721Trading
                         }
                         className="w-full py-4"
                         active={
                           idNFT.length === 0 ||
-                          Math.floor(amountSellDec) === 0 ||
-                          isLoadingSell
+                          data721Trading?.minAmount === 0 ||
+                          isFetching721Trading
                         }
                       >
                         SELL {idNFT.length} NFTs
                       </Button>
                     </DialogTrigger>
                     <DialogContent className=" p-0 border-none">
-                      <ModalSellNFT
-                        isOpenSellNFT={isOpenSellNFT}
-                        isOpenTransaction={isOpenTransaction}
-                        setIsOpenTransaction={setIsOpenTransaction}
-                        tokenAddress={nativeAddress}
-                        nftAddress={collectionAddress}
-                        idNFT={debouncedIdNFT}
-                        routerAddress={routerAddress}
-                        /* 
+                      {data721Trading && (
+                        <ModalSellNFT
+                          isOpenSellNFT={isOpenSellNFT}
+                          isOpenTransaction={isOpenTransaction}
+                          setIsOpenTransaction={setIsOpenTransaction}
+                          tokenAddress={nativeAddress}
+                          nftAddress={collectionAddress}
+                          idNFT={debouncedIdNFT}
+                          routerAddress={routerAddress}
+                          /* 
           // @ts-ignore */
-                        data={dataFake}
-                        setIsOpenSellNFT={setIsOpenSellNFT}
-                        inputNFT={""}
-                        setInputNFT={setIdNFT}
-                        setHash={setHash}
-                        setIsOpenSuccess={setIsOpenSuccessSell}
-                        setIsOpenError={setIsOpenErrorSell}
-                      />
+                          data={dataFake}
+                          dataSell={data721Trading}
+                          setIsOpenSellNFT={setIsOpenSellNFT}
+                          inputNFT={""}
+                          setInputNFT={setIdNFT}
+                          setHash={setHash}
+                          setIsOpenSuccess={setIsOpenSuccessSell}
+                          setIsOpenError={setIsOpenErrorSell}
+                        />
+                      )}
                     </DialogContent>
                   </Dialog>
                 )}

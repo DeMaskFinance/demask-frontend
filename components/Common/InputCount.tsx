@@ -9,15 +9,15 @@ const InputCount = () => {
         <MinusIcon />
       </div>
       <NumericFormat
-        name="amountNFT"
-        id="amountNFT"
+        name="amount"
+        id="amount"
         autoComplete="off"
         placeholder="0"
         pattern="^[1-9][0-9]*$"
         decimalScale={0}
         decimalSeparator=","
         thousandSeparator="."
-        className=" h-full px-3 outline-none placeholder:text-shader_300 bg-shader_600 border-x border-shader_400 font-bold w-24"
+        className=" h-full px-3 outline-none placeholder:text-shader_300 bg-shader_600 border-x border-shader_400 font-bold w-24 text-center"
         // value={inputNFT}
         // onValueChange={handleGetNFT}
       />

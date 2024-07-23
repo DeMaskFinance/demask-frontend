@@ -5,7 +5,6 @@ import {
   CreateIcon,
   EtherIcon,
   EyeIcon,
-  LeftIcon,
   NFTIcon,
   RefetchIcon,
   SettingIcon,
@@ -25,18 +24,13 @@ import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
 import { SkeletonAddLiquidity } from "@/components/Skeleton";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
+import useDebounce from "@/hooks/useDebounce";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
-import { swapAPI } from "@/libs/service";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { getMetadata } from "@/libs/service/nftService";
+import { erc1155TradingAdd } from "@/libs/service/tradeService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { replaceDot } from "@/libs/utils/formatComon";
 import formatNumber from "@/libs/utils/formatNumer";
@@ -46,7 +40,7 @@ import { useQuery } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FaAngleDown } from "react-icons/fa";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
@@ -77,7 +71,6 @@ export default function AddLiquidity() {
     balanceToken,
   } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
-  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [tokenSymbolIcon, setTokenSymbolIcon] = useState();
   const [checkExit, setCheckExit] = useState<boolean>(false);
@@ -86,6 +79,7 @@ export default function AddLiquidity() {
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
   const { ROUTER: routerAddress } = demask;
+  let inputNFTValue = useDebounce(inputNFT, 1000);
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
@@ -98,27 +92,44 @@ export default function AddLiquidity() {
   }, [currency]);
   usePreventUserFromErasingContent(checkExit);
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["liquidity", idNFT, nftAddress, chainId, tokenAddress],
+    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress],
     queryFn: async () => {
-      try {
-        const res = await swapAPI(
-          tokenAddress.toLocaleLowerCase(),
-          chainId,
-          nftAddress.toLowerCase(),
-          idNFT
-        );
-        if (res) {
-          return res;
-        } else {
-          throw new Error("Invalid data from API");
-        }
-      } catch (error) {
-        console.error("Error in queryFn:", error);
-        throw error;
-      }
+      const res = await getMetadata(
+        chainId,
+        nftAddress.toLowerCase(),
+        idNFT,
+        tokenAddress
+      );
+      return res;
     },
     keepPreviousData: true,
   });
+  const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
+    {
+      queryKey: [
+        "1155TradingAdd",
+        tokenAddress,
+        chainId,
+        nftAddress,
+        idNFT,
+        inputNFTValue,
+        slippage,
+      ],
+      queryFn: async () => {
+        const res = await erc1155TradingAdd(
+          tokenAddress,
+          chainId,
+          nftAddress,
+          idNFT,
+          +inputNFTValue,
+          slippage
+        );
+        return res.data;
+      },
+      refetchInterval: 20000,
+    }
+  );
+  console.log(dataTradingAdd);
 
   const balanceNFT = useNFTBalance(
     account,
@@ -130,10 +141,8 @@ export default function AddLiquidity() {
 
   useEffect(() => {
     let amountErcDesired;
-    if (data?.dmlAddress !== null && data && inputNFT) {
-      amountErcDesired =
-        ((Number(inputNFT) * +data.reserveTokenDecimals) / +data.reserveNFT) *
-        (1 + slippage / 100);
+    if (data?.dmlAddress !== null && dataTradingAdd && inputNFT) {
+      amountErcDesired = dataTradingAdd?.amountETHDecimals;
     } else {
       amountErcDesired = handleBignumber(
         Number(inputToken),
@@ -141,22 +150,17 @@ export default function AddLiquidity() {
       );
     }
     if (!inputNFT) {
-      setAmountErcDesiredToDec("");
+      setAmountErcDesired("");
     }
     setAmountErcDesired(amountErcDesired);
     if (amountErcDesired) {
-      const amountErcDesiredToDec = divideByDecimal(
-        amountErcDesired?.toString(),
-        data?.tokenDecimals
-      );
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
       if (Number(amountErcDesired) > Number(bigNumberBalance)) {
         setIsSufficientToken(true);
       } else {
         setIsSufficientToken(false);
       }
     }
-  }, [inputNFT, inputToken, data, bigNumberBalance]);
+  }, [inputNFT, inputToken, dataTradingAdd, bigNumberBalance]);
 
   useEffect(() => {
     if (tokenAddress) {
@@ -175,7 +179,7 @@ export default function AddLiquidity() {
     } else {
       setIsSufficientNFT(false);
     }
-    setActiveChoiceNFT("");
+    // setActiveChoiceNFT("");
   };
   const handleGetToken = (values: NumberFormatValues) => {
     const { value } = values;
@@ -263,9 +267,12 @@ export default function AddLiquidity() {
     },
   ];
   const handleChoicePercent = (item: string) => {
-    setInputNFT(
-      Math.floor((parseFloat(item) / 100) * +data.reserveNFT).toString()
-    );
+    {
+      dataTradingAdd &&
+        setInputNFT(
+          Math.floor((parseFloat(item) / 100) * +balanceNFT).toString()
+        );
+    }
     // setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
@@ -447,10 +454,10 @@ export default function AddLiquidity() {
                   />
                 ) : (
                   <div className="input_item">
-                    {data ? (
-                      <FormatNumber number={amountErcDesiredToDec} />
+                    {dataTradingAdd ? (
+                      <FormatNumber number={dataTradingAdd.amountETH} />
                     ) : (
-                      <BiLoaderAlt className="text-3xl animate-spin text-primary_400" />
+                      <BiLoaderAlt className="text-xl animate-spin text-primary_400" />
                     )}
                   </div>
                 )}
@@ -522,17 +529,13 @@ export default function AddLiquidity() {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="w-full p-0 border bg-shader_800 border-shader_500">
-                    <DialogHeader>
-                      <DialogDescription>
-                        {data && (
-                          <ModalDetail
-                            type="erc1155"
-                            idNFT={idNFT}
-                            nftAddress={nftAddress}
-                          />
-                        )}
-                      </DialogDescription>
-                    </DialogHeader>
+                    {data && (
+                      <ModalDetail
+                        type="erc1155"
+                        idNFT={idNFT}
+                        nftAddress={nftAddress}
+                      />
+                    )}
                   </DialogContent>
                 </Dialog>
               </div>
@@ -551,12 +554,13 @@ export default function AddLiquidity() {
         <ModalConfirmAddLiquidity
           isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
           isOpenTransaction={isOpenTransaction}
+          isFetching={isFetchingAdd}
+          amountErcDesired={amountErcDesired}
           setIsOpenTransaction={setIsOpenTransaction}
           tokenAddress={tokenAddress}
           nftAddress={nftAddress}
           idNFT={idNFT}
           data={data}
-          inputToken={inputToken}
           setInputToken={setInputToken}
           setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
           inputNFT={inputNFT}

@@ -18,3 +18,27 @@ interface DataBase {
   collectionName: string;
   symbol?: string;
 }
+interface BaseDataTrade {
+  reserveToken: number;
+  reserveNFT: number;
+  amount: number;
+  fees: number[];
+  totalFee: number;
+  price: number;
+}
+
+interface DataBuy extends BaseDataTrade {
+  maxAmount: number;
+  maxAmountDecimals: number;
+  totalPay: number;
+}
+
+interface DataSell extends BaseDataTrade {
+  minAmount: number;
+  minAmountDecimals: number;
+  totalReceipts: number;
+}
+interface DataAdd extends BaseDataTrade {
+  amountETH: number;
+  amountETHDecimals: number;
+}

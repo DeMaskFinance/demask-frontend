@@ -14,6 +14,9 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [activeChoice, setActiveChoice] = useState<string>("1D");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeData, setActiveData] = useState<number | null>(null);
+  const [test, setTest] = useState<number>(0);
+  const [hasInitialSetting, setHasInitialSetting] = useState(false);
   const { chainId } = useContext(AccountContext);
   const { data, isLoading: LoadingVolume } = useQuery({
     queryKey: ["ChartVolume", chainId],
@@ -30,10 +33,6 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
     value: Number(dataPoint.dailyVolume),
   }));
   const lastData = chartVolume && chartVolume[chartVolume.length - 1];
-
-  const [activeData, setActiveData] = useState<number | null>(null);
-
-  const [hasInitialSetting, setHasInitialSetting] = useState(false);
 
   useEffect(() => {
     if (lastData && !hasInitialSetting) {
@@ -121,11 +120,13 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                     return "";
                   }}
                 />
-                <Bar dataKey="value" fill="#9075FE" radius={[2, 2, 2, 2]}>
-                  {chartVolume.map((index: number) => (
+                <Bar dataKey="value" radius={[2, 2, 2, 2]}>
+                  {chartVolume.map((_: any, index: number) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={index === hoveredIndex ? "#BFACFE" : "#A398FF"}
+                      onMouseEnter={() => setTest(index)}
+                      fill={index === hoveredIndex ? "#BFACFE" : "#9075FE"}
+                      className="transition-all duration-150 ease-linear"
                     />
                   ))}
                 </Bar>

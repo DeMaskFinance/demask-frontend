@@ -4,24 +4,22 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
-import useDMLToken from "@/hooks/useDMLToken";
-import useInformationDML from "@/hooks/useInformationDML";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
-import handleBignumber from "@/libs/utils/handleBignumber";
 import Tippy from "@tippyjs/react";
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useContext, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
+  isFetching: boolean;
+  amountErcDesired: number;
   tokenAddress: string;
   data: DataBase;
   inputNFT: string;
-  inputToken: string;
   nftAddress: string;
   idNFT: string;
   isOpenTransaction: boolean;
@@ -41,7 +39,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   isOpenConfirmAddLiquidity,
   tokenAddress,
   data,
-  inputToken,
+  amountErcDesired,
+  isFetching,
   inputNFT,
   nftAddress,
   idNFT,
@@ -55,84 +54,14 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const {
-    demask,
-    account,
-    wallet,
-    slippage,
-    txDeadline,
-    bigNumberBalance,
-    updateBalance,
-  } = useContext(AccountContext);
+  const { demask, account, wallet, slippage, txDeadline, updateBalance } =
+    useContext(AccountContext);
   const {
     ROUTER: routerAddress,
     NATIVE_ADDRESS: nativeAddress,
     FACTORY: factoryAddress,
   } = demask;
-  const [amountErcDesired, setAmountErcDesired] = useState<any>();
-  const [amountErcDesiredToDec, setAmountErcDesiredToDec] = useState<any>("0");
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const [updatePrice, setUpdatePrice] = useState<boolean>(false);
-  const dmlToken = useDMLToken(
-    account,
-    nftAddress,
-    tokenAddress,
-    wallet,
-    factoryAddress,
-    idNFT,
-    isOpenTransaction,
-    isOpenConfirmAddLiquidity
-  );
-
-  useEffect(() => {
-    const load = setInterval(() => {
-      if (isOpenConfirmAddLiquidity) {
-        setUpdatePrice(!updatePrice);
-      }
-    }, 20000);
-    return () => {
-      clearInterval(load);
-    };
-  }, [isOpenConfirmAddLiquidity]);
-  const { reserveNFT, reserveToken, isLoadingInforDML } = useInformationDML(
-    dmlToken,
-    wallet,
-    account,
-    isOpenTransaction,
-    false,
-    false,
-    isOpenConfirmAddLiquidity,
-    true,
-    updatePrice
-  );
-
-  useEffect(() => {
-    let amountErcDesired;
-    if (dmlToken !== "0x0000000000000000000000000000000000000000" && inputNFT) {
-      amountErcDesired =
-        ((Number(inputNFT) * +reserveToken) / +reserveNFT) *
-        (1 + slippage / 100);
-    } else {
-      amountErcDesired = handleBignumber(
-        Number(inputToken),
-        Number(data?.tokenDecimals)
-      );
-    }
-    setAmountErcDesired(amountErcDesired);
-
-    if (amountErcDesired) {
-      const amountErcDesiredToDec = divideByDecimal(
-        amountErcDesired?.toString(),
-        data?.tokenDecimals
-      );
-      setAmountErcDesiredToDec(amountErcDesiredToDec.toString());
-      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
-        setIsSufficientToken(true);
-      } else {
-        setIsSufficientToken(false);
-      }
-    }
-  }, [inputNFT, inputToken, reserveToken, reserveNFT, dmlToken]);
   const addLiquidity = async () => {
     if (!account) {
       return;
@@ -162,7 +91,6 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         setIsOpenTransaction(false);
         setInputNFT("");
         setInputToken("");
-        setAmountErcDesiredToDec("");
         setIsOpenConfirmAddLiquidity(false);
         await updateBalance();
         if (setIsOpenLiquidity) {
@@ -232,7 +160,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 <p>Liquidity</p>
                 <div className="flex gap-x-1">
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber number={amountErcDesiredToDec} />
+                    <FormatNumber
+                      number={divideByDecimal(amountErcDesired, "18")}
+                    />
                     <EtherIcon width={14} height={14} />
                   </div>
                 </div>
@@ -258,7 +188,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                   {slippage}%
                 </div>
               </div>
-              {isSufficientToken && reserveToken && (
+              {isSufficientToken && (
                 <p className="text-xs text-red" key="Tokenbalance">
                   Insufficient Token balance
                 </p>
@@ -266,18 +196,20 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
               <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
                 <p className="text-primary_200">Total ETH</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  <FormatNumber number={amountErcDesiredToDec} />
+                  <FormatNumber
+                    number={divideByDecimal(amountErcDesired, "18")}
+                  />
                   <EtherIcon width={14} height={14} />
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center">
               <Button
-                disabled={isLoadingInforDML}
-                primary={!isLoadingInforDML}
+                disabled={isFetching}
+                primary={!isFetching}
                 className="px-8 py-3"
-                active={isLoadingInforDML}
-                isLoadingBtn={isLoadingInforDML}
+                active={isFetching}
+                isLoadingBtn={isFetching}
                 onClick={addLiquidity}
               >
                 Create Pool

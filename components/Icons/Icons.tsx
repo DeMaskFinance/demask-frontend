@@ -217,7 +217,7 @@ export const SwapIcon: React.FunctionComponent<IconProps> = ({
         stroke="currentColor"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -272,14 +272,14 @@ export const EyeIcon: React.FunctionComponent<IconProps> = ({
         stroke="currentColor"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8.00027 10.0002C9.10484 10.0002 10.0003 9.10473 10.0003 8.00016C10.0003 6.89559 9.10484 6.00016 8.00027 6.00016C6.8957 6.00016 6.00027 6.89559 6.00027 8.00016C6.00027 9.10473 6.8957 10.0002 8.00027 10.0002Z"
         stroke="currentColor"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -303,7 +303,7 @@ export const RemoveIcon: React.FunctionComponent<IconProps> = ({
         stroke="#D6C7FE"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -1148,7 +1148,7 @@ export const UploadIcon: React.FunctionComponent<IconProps> = ({
         stroke="currentColor"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -1227,7 +1227,7 @@ export const PlusIcon: React.FunctionComponent<IconProps> = ({
         stroke="currentColor"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

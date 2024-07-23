@@ -387,7 +387,7 @@ export const DeployIcon: React.FunctionComponent<IconProps> = ({
         stroke="#AD97FE"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -411,7 +411,7 @@ export const CreateIcon: React.FunctionComponent<IconProps> = ({
         stroke="#22D3EE"
         strokeWidth="1.5"
         stroke-linecap="round"
-        stroke-Linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

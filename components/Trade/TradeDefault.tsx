@@ -19,6 +19,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
+import Actions from "./Action";
 export default function TradeDefault() {
   const router = useRouter();
   const { account, demask, slippage } = useContext(AccountContext);
@@ -31,54 +32,6 @@ export default function TradeDefault() {
   const handleChoicePercent = (choice: string) => {
     setActiveChoiceNFT(choice);
   };
-  const actions = [
-    {
-      icon: (
-        <RefetchIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Refresh",
-      onClick: () => {
-        router.refresh();
-      },
-    },
-    {
-      icon: (
-        <PoolIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Pool",
-      link: `/add/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`,
-    },
-    {
-      icon: (
-        <SettingIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Setting",
-      dialog: (
-        <Dialog>
-          <DialogTrigger asChild>
-            <div className="cursor-pointer text-primary_200">
-              <SettingIcon width={18} height={18} />
-            </div>
-          </DialogTrigger>
-          <DialogContent className="w-fit bg-shader_800 border border-shader_500 p-4">
-            <ModalSetting />
-          </DialogContent>
-        </Dialog>
-      ),
-    },
-  ];
   return (
     <div className="relative px-4 h-[95vh] md:h-[88vh] flex flex-col mx-auto items-center justify-center overflow-hidden">
       <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
@@ -88,30 +41,12 @@ export default function TradeDefault() {
         <div className="relative w-full p-4 md:p-6 font-semibold border rounded-lg bg-shader_800 border-shader_600">
           <div className="flex justify-between gap-4">
             <p className="text-lg text-white">Demask Swaps</p>
-            <div className="flex items-center gap-x-2">
-              {actions.map((action, index) => (
-                <Tippy
-                  key={index}
-                  content={<div className="text-xs">{action.content}</div>}
-                  theme="dark"
-                  placement="bottom"
-                >
-                  <div className="border rounded-full border-shader_400 p-[7px]">
-                    {action.link ? (
-                      <Link href={action.link} className="group">
-                        {action.icon}
-                      </Link>
-                    ) : action.dialog ? (
-                      action.dialog
-                    ) : (
-                      <div onClick={action.onClick} className="">
-                        {action.icon}
-                      </div>
-                    )}
-                  </div>
-                </Tippy>
-              ))}
-            </div>
+            <Actions
+              nftAddress={demask.CREATOR}
+              tokenAddress={demask.NATIVE_ADDRESS}
+              idNFT={demask.IDNFT}
+              refetch={router.refresh}
+            />
           </div>
           <div className="flex flex-col items-center my-4">
             <TabGroups

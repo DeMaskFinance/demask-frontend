@@ -210,7 +210,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             >
               {data?.description}
             </ShowMoreText>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2 mb-2">
               {data?.collaborators.includes(account) && (
                 <Link href={`/edit/${collectionAddress}`}>
                   <Button
@@ -228,7 +228,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                     href={`/trade/erc721/${collectionAddress}?tab=pool`}
                     className="basis-1/2"
                   >
-                    <Button className="flex items-center w-full h-10 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400 px-4 ">
+                    <Button className="flex items-center w-full h-8 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400 px-4 ">
                       <PlusIcon width={20} height={20} />
                       <p>Add</p>
                     </Button>
@@ -238,7 +238,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                     className="basis-1/2"
                   >
                     <Button
-                      className="flex items-center w-full h-10 gap-x-2 px-4"
+                      className="flex items-center w-full h-8 gap-x-2 px-4"
                       primary
                     >
                       <SwapIcon

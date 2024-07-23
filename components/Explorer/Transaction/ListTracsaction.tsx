@@ -54,7 +54,7 @@ function ListTracsaction() {
       </div>
       <div className=" overflow-x-auto md:overflow-visible">
         <table className="w-full text-left border-collapse min-h-[550px]">
-          <thead className=" bg-shader_600 text-shader_200">
+          <thead className=" bg-shader_600 text-shader_200 uppercase">
             <tr className="flex px-4 py-3">
               <th className="flex justify-start lg:w-full md:w-full w-[200px]">
                 Name
@@ -84,6 +84,7 @@ function ListTracsaction() {
                   />
                 </div>
               </th>
+
               <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
                 Total ETH
                 <div
@@ -106,6 +107,9 @@ function ListTracsaction() {
                   />
                 </div>
               </th>
+              <td className="flex items-center justify-end lg:w-full md:w-full w-[140px] gap-x-1">
+                Type
+              </td>
               <th className="flex justify-end lg:w-full md:w-full w-[140px]">
                 Account
               </th>

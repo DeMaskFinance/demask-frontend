@@ -5,7 +5,11 @@ import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
 import AccountContext from "@/context/AccountContext";
-import { formatLinkIPFS, formatPercent } from "@/libs/utils/formatComon";
+import {
+  formatLinkIPFS,
+  formatPercent,
+  formatTypeChain,
+} from "@/libs/utils/formatComon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
@@ -77,7 +81,6 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                         : "text-red"
                     } `}
                   >
-                    {/* {item.changePrice24h > 0 ? <BsArrowUp /> : item.changePrice24h === 0 ? <p></p> : <BsArrowDown />} */}
                     {isFetching ? (
                       skeleton
                     ) : (
@@ -95,6 +98,9 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   <p>
                     <EtherIcon width={18} height={18} className="fill-dark2" />
                   </p>
+                </td>
+                <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] gap-x-1">
+                  <p>{formatTypeChain(item.type)}</p>
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px] gap-x-1">
                   {isFetching ? skeleton : <FormatNumber number={item.TVL} />}

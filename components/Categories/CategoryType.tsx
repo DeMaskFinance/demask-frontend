@@ -1,17 +1,15 @@
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import AccountContext from "@/context/AccountContext";
+import { collectionTypeCategory } from "@/libs/service/collectionService";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useContext, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { SwiperSlide } from "swiper/react";
-import AccountContext from "@/context/AccountContext";
 import { SkeletonSubCategory } from "../Skeleton/SkeletonCategory";
 import SwiperCustom from "../SwiperCustom";
 import NFTCategory from "./NFTCategory";
-import SearchNotFound from "../Search/SearchNotFound";
-import { useInView } from "react-intersection-observer";
-import { collectionTypeCategory } from "@/libs/service/collectionService";
 
 const Category = ({ label }: { label: string }) => {
   const { chainId } = useContext(AccountContext);

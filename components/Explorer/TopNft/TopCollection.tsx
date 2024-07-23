@@ -79,7 +79,7 @@ function TopCollection() {
       </div>
       <div className="overflow-x-scroll  flex flex-col justify-between w-full">
         <table className="w-full text-left border-collapse min-h-[550px]">
-          <thead className=" bg-shader_600 text-shader_200">
+          <thead className=" bg-shader_600 text-shader_200 uppercase">
             <tr className="flex px-4 py-3">
               <th className="flex justify-start lg:w-full md:w-full w-[200px]">
                 Name
@@ -155,6 +155,9 @@ function TopCollection() {
                     />
                   </div>
                 )}
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
+                Type
               </th>
               <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
                 TVL

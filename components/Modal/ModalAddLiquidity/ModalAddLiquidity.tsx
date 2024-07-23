@@ -263,7 +263,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           </div>
         </div>
       </div>
-      <ModalConfirmAddLiquidity
+      {/* <ModalConfirmAddLiquidity
         isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
         isOpenTransaction={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
@@ -271,7 +271,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         tokenAddress={data.tokenAddress}
         nftAddress={data.nftAddress}
         idNFT={data.nftID}
-        inputToken={inputToken}
         setInputToken={setInputToken}
         setIsOpenConfirmAddLiquidity={setIsOpenConfirmAddLiquidity}
         inputNFT={inputNFT}
@@ -280,7 +279,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         setHash={setHash}
         setIsOpenSuccess={setIsOpenSuccess}
         setIsOpenError={setIsOpenError}
-      />
+      /> */}
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}
