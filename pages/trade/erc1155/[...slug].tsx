@@ -1,4 +1,5 @@
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
+import Maintenance from "@/components/Common/Maintenance";
 import { SkeletonSwap } from "@/components/Skeleton";
 import HistorySwap from "@/components/Trade/History";
 import SwapTransaction from "@/components/Trade/TradeTransaction";
@@ -47,6 +48,7 @@ const Swap: React.FC = () => {
   return (
     <div className="">
       <NextSeo {...updateMeta} />
+      <Maintenance />
       {isLoading || isFetching ? (
         <SkeletonSwap />
       ) : isSuccess ? (

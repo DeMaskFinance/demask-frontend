@@ -143,7 +143,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     wallet,
     nftAddress,
     routerAddress,
-    isOpenBuyNFT
+    isOpenTransaction
   );
   useEffect(() => {
     if (inputNFTValue) {

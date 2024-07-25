@@ -3,7 +3,6 @@ import { DownPriceIcon, EtherIcon, UpPriceIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { formatPercent } from "@/libs/utils/formatComon";
-import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 

@@ -254,7 +254,7 @@ export default function Header() {
           </div>
         </div>
       </header>
-      <Maintenance />
+      {/* <Maintenance /> */}
 
       {account && <WrongNetwork />}
     </div>

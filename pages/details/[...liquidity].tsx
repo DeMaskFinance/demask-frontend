@@ -1,7 +1,7 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
-import { DetailLiquidity } from "@/components/Liquidity";
+import DetailLiquidity from "@/components/Liquidity/DetailLiquidity";
 const updateMeta = {
   ...SEO,
   title: "Detail Liquidity",

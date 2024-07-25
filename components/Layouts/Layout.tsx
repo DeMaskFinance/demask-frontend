@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
 import Header from "../Header";
+import Maintenance from "../Common/Maintenance";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);

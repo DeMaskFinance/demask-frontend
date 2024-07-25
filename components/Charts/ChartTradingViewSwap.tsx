@@ -3,7 +3,6 @@ import { categoryAPI } from "@/libs/service/categoriesChartService";
 import { formatDate, formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
 import { createChart, PriceScaleMode } from "lightweight-charts";
-import { useTheme } from "next-themes";
 import { useContext, useEffect, useRef, useState } from "react";
 import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";

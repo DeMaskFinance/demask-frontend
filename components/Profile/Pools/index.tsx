@@ -1,6 +1,4 @@
-import { LiquiditiesItem } from "@/components/Liquidity";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
-import { SkeletonTable } from "@/components/Skeleton";
 import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
@@ -73,9 +71,7 @@ export default function Pools() {
             ))}
         </div>
       ) : (
-        <div>
-          <p>No data available.</p>
-        </div>
+        <p className="text-shader_200">No data available.</p>
       )}
     </div>
   );

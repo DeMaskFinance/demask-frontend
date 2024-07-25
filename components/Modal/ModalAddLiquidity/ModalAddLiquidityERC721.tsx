@@ -105,7 +105,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     wallet,
     collectionAddress,
     routerAddress,
-    isOpenConfirmAddLiquidity
+    isOpenTransaction
   );
 
   return (

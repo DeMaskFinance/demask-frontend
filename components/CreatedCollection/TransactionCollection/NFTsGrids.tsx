@@ -63,6 +63,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
     const newList = data.data.slice(0, val);
     setIdNFT(newList.map((item: any) => +item.nftID));
   };
+  console.log(idNFT, selectedItem);
 
   return (
     <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
@@ -71,7 +72,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
           <div
             key={index}
             className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
-            onClick={() => handleChoiceNFT(item)}
           >
             <div
               className={`relative items-center text-sm  border-[2px]  rounded-lg cursor-pointer lg:text-base ${
@@ -80,7 +80,10 @@ const NFTGrid: React.FC<NFTGridProps> = ({
                   : "border-shader_400"
               }`}
             >
-              <div className="relative h-[98px] group rounded-t-lg overflow-hidden">
+              <div
+                className="relative h-[98px] group rounded-t-lg overflow-hidden"
+                onClick={() => handleChoiceNFT(item)}
+              >
                 <MediaNFT data={item} isControls={false} hover zoom />
               </div>
               <div className="flex justify-between w-full px-2 py-1 text-xs font-semibold text-white">

@@ -135,7 +135,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     wallet,
     data.nftAddress,
     routerAddress,
-    isOpenAddLiquidity
+    isOpenTransaction
   );
 
   const handleAddLiquidity = () => {

@@ -1,9 +1,8 @@
 import { Fragment } from "react";
 import ChartTradingViewSwap from "../Charts/ChartTradingViewSwap";
+import Maintenance from "../Common/Maintenance";
 import TransactionCollection from "../CreatedCollection/TransactionCollection";
 import HistorySwap from "../Trade/History";
-import { useRouter } from "next/router";
-import CollectionDetail from "../CreatedCollection/CollectionDetail";
 interface DetailERC721Props {
   data: any;
   isSuccess: boolean;
@@ -14,10 +13,9 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
   isSuccess,
   isLoading,
 }) => {
-  const router = useRouter();
-  const collectionAddress = (router.query.erc as string) || "";
   return (
     <div className="min-h-[94vh] text-white">
+      <Maintenance />
       {isLoading ? (
         <p>Loading...</p>
       ) : isSuccess ? (
@@ -27,7 +25,6 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
               <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px] z-0">
                 {data && (
                   <Fragment>
-                    {/* <CollectionDetail collectionAddress={collectionAddress} /> */}
                     <ChartTradingViewSwap
                       dataSwap={data}
                       typeERC="erc721"

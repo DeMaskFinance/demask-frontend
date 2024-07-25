@@ -126,7 +126,7 @@ export default function AddLiquidity() {
     wallet,
     nftAddress,
     routerAddress,
-    isOpenConfirmAddLiquidity
+    isOpenTransaction
   );
   const balanceNFT = useNFTBalance(
     account,

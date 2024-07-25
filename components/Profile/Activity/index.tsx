@@ -74,9 +74,7 @@ export default function History() {
           )}
         </>
       ) : (
-        <div>
-          <p>No data available.</p>
-        </div>
+        <p className="text-shader_200">No data available.</p>
       )}
     </div>
   );
