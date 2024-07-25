@@ -1,30 +1,14 @@
 import request from "../utils/httpRequest";
 
-const swapAPI = async (
-  tokenAddress: string,
+const tradeChartAPI = async (
+  dmlAddress: string,
   chainId: string | string[],
-  nftAddress: string,
-  idNFT: string
+  typeERC: string,
+  intervalTime: string
 ) => {
   try {
     const res = await request.get(
-      `reserveDML?nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}&chainId=${chainId}`
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-const swapChartAPI = async (
-  tokenAddress: string,
-  chainId: string | string[],
-  nftAddress: string,
-  idNFT: string,
-  interval: string
-) => {
-  try {
-    const res = await request.get(
-      `chart?nftAddress=${nftAddress}&tokenAddress=${tokenAddress}&id=${idNFT}&chainId=${chainId}&interval=${interval}`
+      `chart?chainId=${chainId}&dmlAddress=${dmlAddress}&type=${typeERC}&interval=${intervalTime}`
     );
     return res.data;
   } catch (error) {
@@ -145,8 +129,7 @@ const erc721TradingAdd = async (
   }
 };
 export {
-  swapAPI,
-  swapChartAPI,
+  tradeChartAPI,
   erc1155TradingBuy,
   erc1155TradingAdd,
   ercTradingRemove,

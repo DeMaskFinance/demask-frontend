@@ -16,7 +16,7 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"]
-    }
+    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "libs/connection/provider.js", "components/Icons/Icons.js", "context/AccountContext.js", "components/Skeleton", "public/images/index.js"],
   "exclude": ["node_modules"]

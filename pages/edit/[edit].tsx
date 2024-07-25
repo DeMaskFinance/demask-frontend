@@ -1,4 +1,4 @@
-import EditFormCollection from "@/components/CreatedCollection/EditFormCollection";
+import EditFormCollection from "@/components/Collection/EditFormCollection";
 import React, { useContext } from "react";
 import { SEO } from "../../next-seo.config";
 import { NextSeo } from "next-seo";

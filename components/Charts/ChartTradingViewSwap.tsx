@@ -1,14 +1,14 @@
 import AccountContext from "@/context/AccountContext";
-import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { tradeChartAPI } from "@/libs/service/tradeService";
 import { formatDate, formatPercent } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
 import { createChart, PriceScaleMode } from "lightweight-charts";
 import { useContext, useEffect, useRef, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";
 import ChartLoading from "./ChartLoading";
 import ChartNoTransfers from "./ChartNoTransfers";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface BarData {
   time: string;
   value: number;
@@ -68,10 +68,13 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   const { data, isLoading } = useQuery({
     queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC, intervalTime],
     queryFn: async () => {
-      const res = await categoryAPI(
-        `chart?chainId=${chainId}&dmlAddress=${dataSwap.dmlAddress}&type=${typeERC}&interval=${intervalTime}`
+      const res = await tradeChartAPI(
+        dataSwap.dmlAddress,
+        chainId,
+        typeERC,
+        intervalTime
       );
-      return res;
+      return res.data;
     },
   });
   useEffect(() => {

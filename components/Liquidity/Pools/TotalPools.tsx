@@ -13,7 +13,7 @@ const TotalPools = () => {
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
   return (
-    <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden mb-8">
+    <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden mb-8 min-h-[550px] max-h-[550px]">
       <TabGroups
         choices={["ERC-1155", "ERC-721"]}
         activeChoice={activeChoice}
@@ -38,7 +38,7 @@ const TotalPools = () => {
         </div>
       ) : (
         <>
-          <div className="overflow-auto text-sm min-h-[550px] max-h-[550px]">
+          <div className="overflow-auto text-sm ">
             <table className="w-full text-left border-collapse ">
               <thead className=" bg-shader_600 text-shader_200 uppercase sticky top-0 z-10">
                 <tr className="flex px-4 py-3">

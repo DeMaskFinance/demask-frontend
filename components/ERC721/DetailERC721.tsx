@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import ChartTradingViewSwap from "../Charts/ChartTradingViewSwap";
 import Maintenance from "../Common/Maintenance";
-import TransactionCollection from "../CreatedCollection/TransactionCollection";
+import TransactionCollection from "../Collection/TransactionCollection";
 import HistorySwap from "../Trade/History";
 interface DetailERC721Props {
   data: any;

@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
+import NFTGrid from "@/components/Collection/TransactionCollection/NFTsGrids";
 import { EtherIcon } from "@/components/Icons";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";

@@ -1,4 +1,4 @@
-import DetailCollection from "@/components/CreatedCollection";
+import DetailCollection from "@/components/Collection";
 import { SEO } from "../../next-seo.config";
 import { NextSeo } from "next-seo";
 const updateMeta = {

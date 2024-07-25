@@ -17,20 +17,6 @@ const nftsUserService = async (
     console.error(error);
   }
 };
-const poolsUserService = async (
-  account: string,
-  chainId: string | string[],
-  page: number
-) => {
-  try {
-    const res = await request.get(
-      `userPool?chainId=${chainId}&userAddress=${account}&page=${page}`
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
 const historyUserService = async (
   account: string,
   chainId: string | string[],
@@ -46,4 +32,4 @@ const historyUserService = async (
   }
 };
 
-export { nftsUserService, poolsUserService, historyUserService };
+export { nftsUserService, historyUserService };

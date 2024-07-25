@@ -2,7 +2,7 @@ import abiDML from "@/abi/abiDML.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
-import NFTGrid from "@/components/CreatedCollection/TransactionCollection/NFTsGrids";
+import NFTGrid from "@/components/Collection/TransactionCollection/NFTsGrids";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";

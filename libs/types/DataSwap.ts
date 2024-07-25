@@ -17,6 +17,8 @@ interface DataBase {
   avatar?: string;
   collectionName: string;
   symbol?: string;
+  balanceDml?: number;
+  totalSupplyDml?: number;
 }
 interface BaseDataTrade {
   reserveToken: number;

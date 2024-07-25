@@ -47,7 +47,7 @@ const UserPools = () => {
     }
   );
   return (
-    <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden ">
+    <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden min-h-[550px] max-h-[650px]">
       <TabGroups
         choices={["ERC-1155", "ERC-721"]}
         activeChoice={activeChoice}
@@ -71,7 +71,7 @@ const UserPools = () => {
         </div>
       ) : (
         <>
-          <div className="border-t border-shader_500 min-h-[550px] max-h-[650px]">
+          <div className="border-t border-shader_500 ">
             {isSuccess &&
               data.pages.map((page: any, index: number) => (
                 <div

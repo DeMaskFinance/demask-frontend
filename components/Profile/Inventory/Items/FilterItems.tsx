@@ -1,9 +1,4 @@
-import {
-  EtherIcon,
-  LineRightIcon,
-  RightIcon,
-  SearchIcon,
-} from "@/components/Icons";
+import { EtherIcon, LineRightIcon, SearchIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import {
   Accordion,
@@ -16,7 +11,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -194,12 +188,7 @@ const FilterItems: React.FC<FilterItemsProps> = ({ setIsFilter }) => {
                   <input placeholder="Max" className="input_item" />
                 </div>
                 <Select>
-                  <SelectTrigger className="w-full mt-2 bg-primary_500 bg-opacity-15 border-none text-white font-semibold ">
-                    <SelectValue
-                      // placeholder="Select a fruit"
-                      defaultValue="eth"
-                    />
-                  </SelectTrigger>
+                  <SelectTrigger className="w-full mt-2 bg-primary_500 bg-opacity-15 border-none text-white font-semibold "></SelectTrigger>
                   <SelectContent className="menu border-none w-[95%]">
                     <SelectGroup>
                       <SelectItem

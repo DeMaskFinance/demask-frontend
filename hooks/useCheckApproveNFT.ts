@@ -25,8 +25,6 @@ const useCheckApproveNFT = (
         setIsApprovedNFT(false);
       }
     };
-
-    // Gọi hàm kiểm tra nếu các giá trị cần thiết đã thay đổi
     if (account && wallet && nftAddress && routerAddress) {
       checkApproveNFT();
     }

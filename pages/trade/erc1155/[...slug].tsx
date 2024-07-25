@@ -4,7 +4,6 @@ import { SkeletonSwap } from "@/components/Skeleton";
 import HistorySwap from "@/components/Trade/History";
 import SwapTransaction from "@/components/Trade/TradeTransaction";
 import AccountContext from "@/context/AccountContext";
-import { swapAPI } from "@/libs/service";
 import { getMetadata } from "@/libs/service/nftService";
 import { SEO } from "@/next-seo.config";
 import { useQuery } from "@tanstack/react-query";
