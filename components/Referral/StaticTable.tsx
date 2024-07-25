@@ -12,7 +12,6 @@ const StaticTable = () => {
       const res = await referralStaticUser(account, chainId);
       return res.data;
     },
-    enabled: !!account,
   });
 
   return (

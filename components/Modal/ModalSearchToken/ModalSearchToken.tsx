@@ -13,7 +13,7 @@ const ModalSearchToken = () => {
   const handleAddressToken = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setTokenAddress(e.target.value);
   };
-  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
+  const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: ["searchToken", chainId, tokenAddress],
       queryFn: async () => {

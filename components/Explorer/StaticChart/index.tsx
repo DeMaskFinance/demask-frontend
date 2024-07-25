@@ -14,8 +14,6 @@ function StatisticAnalytics() {
       const res = await categoryAPI(`current-volume-tvl?chainId=${chainId}`);
       return res.data;
     },
-
-    keepPreviousData: true,
   });
 
   return (

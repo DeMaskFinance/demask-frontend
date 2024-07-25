@@ -200,7 +200,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         });
       }
       toast.success("Update Successed");
-      queryClient.refetchQueries(["detailCollection"]);
+      queryClient.refetchQueries({ queryKey: ["detailCollection"] });
       setSelectedImage("");
     } catch (error) {
       toast.error("Update Error");

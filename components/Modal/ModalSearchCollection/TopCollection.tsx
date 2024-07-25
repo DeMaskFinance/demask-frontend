@@ -15,8 +15,6 @@ const TopCollection: React.FC<TopCollectionProps> = ({ handleFocus }) => {
       const res = await topCollectionService(chainId);
       return res.data;
     },
-
-    keepPreviousData: true,
   });
 
   return (

@@ -55,9 +55,9 @@ const TransactionCollection = () => {
       ),
       content: "Refresh",
       onClick: () => {
-        queryClient.refetchQueries(["collectionNFTBUY"]);
-        queryClient.refetchQueries(["collectionNFTSell"]);
-        queryClient.refetchQueries(["detailCollection"]);
+        queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
+        queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
+        queryClient.refetchQueries({ queryKey: ["detailCollection"] });
       },
     },
     {

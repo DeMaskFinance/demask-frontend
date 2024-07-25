@@ -65,7 +65,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       await trans.wait();
       setIsProcess(false);
       onSuccess();
-      queryClient.refetchQueries(["detailCollection"]);
+      queryClient.refetchQueries({ queryKey: ["detailCollection"] });
       toast.success("Set Royalty Successed");
     } catch (error) {
       console.error(error);

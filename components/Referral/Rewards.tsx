@@ -11,7 +11,7 @@ import { Pagination } from "../Common/Pagination";
 const Rewards = () => {
   const { chainId, account, demask } = useContext(AccountContext);
   const [page, setPage] = useState(1);
-  const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
+  const { data, isLoading, isSuccess, isFetching, refetch, isPlaceholderData } =
     useQuery({
       queryKey: ["myRewards", chainId, account, page],
       queryFn: async () => {
@@ -98,7 +98,7 @@ const Rewards = () => {
       {isSuccess && (
         <Pagination
           data={data}
-          isPreviousData={isPreviousData}
+          isPlaceholderData={isPlaceholderData}
           page={page}
           setPage={setPage}
           refetch={refetch}

@@ -22,7 +22,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     isFetching,
     refetch,
     isSuccess,
-    isPreviousData,
+    isPlaceholderData,
   } = useQuery({
     queryKey: ["historySwap", chainId, activeChoice, data, page],
     queryFn: async () => {
@@ -31,8 +31,6 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
       );
       return res;
     },
-
-    keepPreviousData: true,
   });
 
   const options = ["All", "Buy", "Sell", "Add", "Remove"];
@@ -91,7 +89,7 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
       {isSuccess && (
         <Pagination
           data={dataHistory}
-          isPreviousData={isPreviousData}
+          isPlaceholderData={isPlaceholderData}
           page={page}
           setPage={setPage}
           refetch={refetch}

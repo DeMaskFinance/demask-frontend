@@ -33,7 +33,6 @@ const Swap: React.FC = () => {
       );
       return res;
     },
-    keepPreviousData: true,
   });
   useEffect(() => {
     if (slug) {

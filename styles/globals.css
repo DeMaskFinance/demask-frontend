@@ -3,7 +3,7 @@
 @tailwind utilities;
 /* Importing external css here to ensure it is loaded by Next */
 @import url("@usecapsule/react-components/css/capsule-core.css");
-@import url("@rainbow-me/rainbowkit/styles.css");
+/* @import url("@rainbow-me/rainbowkit/styles.css"); */
 @layer base {
   :root {
     --background: 0 0% 100%;

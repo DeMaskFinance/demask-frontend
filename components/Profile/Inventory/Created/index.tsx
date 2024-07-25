@@ -47,13 +47,24 @@ const Created = () => {
   const {
     data,
     fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
-  } = useInfiniteQuery(
-    ["UserCollection", chainId, account, typeERC, category, debouncedSearch],
-    ({ pageParam = 1 }) =>
+  } = useInfiniteQuery({
+    queryKey: [
+      "UserCollection",
+      chainId,
+      account,
+      typeERC,
+      category,
+      debouncedSearch,
+    ],
+    queryFn: ({ pageParam = 1 }) =>
       fetchDataNFTs(
         account,
         chainId,
@@ -62,14 +73,13 @@ const Created = () => {
         debouncedSearch,
         pageParam
       ),
-    {
-      getNextPageParam: (page) => {
-        return page.data?.currentPage === page.data?.totalPages
-          ? undefined
-          : page.data?.currentPage + 1;
-      },
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.data?.currentPage < lastPage.data?.totalPages
+        ? lastPage.data?.currentPage + 1
+        : undefined,
+  });
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();

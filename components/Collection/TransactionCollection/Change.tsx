@@ -124,8 +124,8 @@ const Change = () => {
       } else {
         setIsOpenErrorSwap(true);
       }
-      queryClient.refetchQueries(["collectionNFTBUY"]);
-      queryClient.refetchQueries(["collectionNFTSell"]);
+      queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
+      queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
       await updateBalance();
     } catch (error) {
       setIsOpenTransaction(false);

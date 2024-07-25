@@ -81,7 +81,7 @@ const ItemTableRank = ({ item, currentRank }: any) => {
 const TableRank = () => {
   const [page, setPage] = useState(1);
   const { chainId, demask, account } = useContext(AccountContext);
-  const { isLoading, data, isSuccess, refetch, isPreviousData, isFetching } =
+  const { isLoading, data, isSuccess, refetch, isPlaceholderData, isFetching } =
     useQuery({
       queryKey: ["leaderBoardAPI", chainId, account, page],
       queryFn: async () => {
@@ -142,7 +142,7 @@ const TableRank = () => {
       {isSuccess && (
         <Pagination
           data={data}
-          isPreviousData={isPreviousData}
+          isPlaceholderData={isPlaceholderData}
           page={page}
           setPage={setPage}
           refetch={refetch}

@@ -72,7 +72,7 @@ const DetailLiquidity = () => {
       setDmlTokenLiquidity(liquidity[0]);
     }
   }, [liquidity]);
-  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
+  const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: [
         "liquidityHistory",
@@ -93,7 +93,6 @@ const DetailLiquidity = () => {
           return res;
         }
       },
-      keepPreviousData: true,
     });
 
   useEffect(() => {
@@ -228,7 +227,7 @@ const DetailLiquidity = () => {
               {isSuccess && (
                 <Pagination
                   data={data}
-                  isPreviousData={isPreviousData}
+                  isPlaceholderData={isPlaceholderData}
                   page={page}
                   setPage={setPage}
                   refetch={refetch}

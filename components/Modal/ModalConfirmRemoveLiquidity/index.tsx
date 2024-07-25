@@ -144,9 +144,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         } else {
           setIsOpenError(true);
         }
-        queryClient.refetchQueries(["collectionNFTBUY"]);
-        queryClient.refetchQueries(["collectionNFTSell"]);
-        queryClient.refetchQueries(["detailCollection"]);
+        queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
+        queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
+        queryClient.refetchQueries({ queryKey: ["detailCollection"] });
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

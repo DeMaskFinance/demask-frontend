@@ -9,7 +9,7 @@ import HistoryItem from "./ActivityItem";
 export default function History() {
   const [page, setPage] = useState(1);
   const { account, chainId } = useContext(AccountContext);
-  const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } =
+  const { isLoading, refetch, data, isFetching, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: ["historyUser", chainId, page],
       queryFn: async () => {
@@ -65,7 +65,7 @@ export default function History() {
           {isSuccess && (
             <Pagination
               data={data}
-              isPreviousData={isPreviousData}
+              isPlaceholderData={isPlaceholderData}
               page={page}
               setPage={setPage}
               refetch={refetch}

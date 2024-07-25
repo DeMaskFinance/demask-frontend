@@ -15,7 +15,7 @@ function ListTracsaction() {
   const [sortField, setSortField] = useState("blockTime");
   const [sortOrder, setSortOrder] = useState("desc");
   const router = useRouter();
-  const { isLoading, refetch, data, isFetching, isPreviousData, isSuccess } =
+  const { isLoading, refetch, data, isFetching, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: ["transaction", chainId, sortField, sortOrder, page],
       queryFn: async () => {
@@ -154,7 +154,7 @@ function ListTracsaction() {
       {isSuccess && (
         <Pagination
           data={data}
-          isPreviousData={isPreviousData}
+          isPlaceholderData={isPlaceholderData}
           page={page}
           setPage={setPage}
           refetch={refetch}

@@ -18,7 +18,7 @@ function TopCollection() {
   const [sortOrder, setSortOrder] = useState("desc");
   const router = useRouter();
 
-  const { isLoading, data, isFetching, refetch, isPreviousData, isSuccess } =
+  const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: ["topCollection", chainId, sortField, sortOrder, page],
       queryFn: async () => {
@@ -27,15 +27,13 @@ function TopCollection() {
         );
         return res;
       },
-
-      keepPreviousData: true,
     });
   const {
     isLoading: isLoadingNewest,
     data: dataNewest,
     isFetching: isFetchingNewest,
     refetch: refetchNewest,
-    isPreviousData: isPreviousDataNewest,
+    isPlaceholderData: isPlaceholderDataNewest,
   } = useQuery({
     queryKey: ["newestNft", chainId, pageNewest],
     queryFn: async () => {
@@ -44,8 +42,6 @@ function TopCollection() {
       );
       return res;
     },
-
-    keepPreviousData: true,
   });
 
   const handleChoiceChange = (choice: string) => {
@@ -230,7 +226,7 @@ function TopCollection() {
       {isSuccess && (
         <Pagination
           data={data}
-          isPreviousData={isPreviousData}
+          isPlaceholderData={isPlaceholderData}
           page={page}
           setPage={setPage}
           refetch={refetch}

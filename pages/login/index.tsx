@@ -1,9 +1,9 @@
-import { LoginSocials } from "@/components/LoginSocials";
+// import { LoginSocials } from "@/components/LoginSocials";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 
 const Home: NextPage = () => {
-  return <LoginSocials />;
+  return <div>123</div>;
 };
 
 // Getting some weird styling (unrelated to Capsule) when using SSR on this page.

@@ -11,17 +11,14 @@ import { Pagination } from "../Common/Pagination";
 const MyReferral = () => {
   const { chainId, account, demask } = useContext(AccountContext);
   const [page, setPage] = useState(1);
-  const { data, isLoading, isSuccess, isFetching, isPreviousData, refetch } =
-    useQuery(
-      ["myReferral", chainId, account, page],
-      async () => {
+  const { data, isLoading, isSuccess, isFetching, isPlaceholderData, refetch } =
+    useQuery({
+      queryKey: ["myReferral", chainId, account],
+      queryFn: async () => {
         const res = await referralTopUser(account, chainId);
         return res;
       },
-      {
-        enabled: !!account,
-      }
-    );
+    });
 
   return (
     <>
@@ -89,7 +86,7 @@ const MyReferral = () => {
       {isSuccess && (
         <Pagination
           data={data}
-          isPreviousData={isPreviousData}
+          isPlaceholderData={isPlaceholderData}
           page={page}
           setPage={setPage}
           refetch={refetch}

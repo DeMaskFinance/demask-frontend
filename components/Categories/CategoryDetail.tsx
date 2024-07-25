@@ -26,16 +26,16 @@ const CategoryDetail = ({ label }: { label: string }) => {
     isSuccess,
     isLoading,
     isFetching,
-  } = useInfiniteQuery(
-    ["CollectionTypeDetail", chainId, label],
-    ({ pageParam = 1 }) => fetchDetailCollection(label, chainId, pageParam),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
+  } = useInfiniteQuery({
+    queryKey: ["CollectionTypeDetail", chainId, label],
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }) =>
+      fetchDetailCollection(label, chainId, pageParam),
+    getNextPageParam: (page) =>
+      page?.currentPage === page?.totalPages
+        ? undefined
+        : page?.currentPage + 1,
+  });
   useEffect(() => {
     if (inView) {
       fetchNextPage();

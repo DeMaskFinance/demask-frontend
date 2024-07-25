@@ -34,22 +34,24 @@ export default function DetailCollection() {
   const {
     data,
     fetchNextPage,
-    isFetchingNextPage,
+    fetchPreviousPage,
     hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
-  } = useInfiniteQuery(
-    ["NFTsAllERC", chainId, collectionAddress, typeERC],
-    ({ pageParam = 1 }) =>
+  } = useInfiniteQuery({
+    queryKey: ["NFTsAllERC", chainId, collectionAddress, typeERC],
+    queryFn: ({ pageParam = 1 }) =>
       fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.currentPage < lastPage.totalPages
+        ? lastPage.currentPage + 1
+        : undefined,
+  });
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">

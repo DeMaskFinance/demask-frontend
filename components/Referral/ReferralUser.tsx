@@ -13,7 +13,6 @@ const ReferralUser = () => {
       const res = await referralInfor(account);
       return res.data;
     },
-    enabled: !!account,
   });
 
   return (

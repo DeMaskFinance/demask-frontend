@@ -18,10 +18,13 @@ import SearchNotFound from "../Search/SearchNotFound";
 const Leaderboard = () => {
   const { chainId, demask, account } = useContext(AccountContext);
   const [page, setPage] = useState(1);
-  const { data, isLoading, isSuccess, isFetching, refetch, isPreviousData } =
-    useQuery(["referralLeaderboard", account, page], async () => {
-      const res = await referralLeaderboardUser(account, page);
-      return res;
+  const { data, isLoading, isSuccess, isFetching, refetch, isPlaceholderData } =
+    useQuery({
+      queryKey: ["referralLeaderboard", account, page],
+      queryFn: async () => {
+        const res = await referralLeaderboardUser(account, page);
+        return res;
+      },
     });
 
   return (
@@ -105,7 +108,7 @@ const Leaderboard = () => {
           {isSuccess && (
             <Pagination
               data={data}
-              isPreviousData={isPreviousData}
+              isPlaceholderData={isPlaceholderData}
               page={page}
               setPage={setPage}
               refetch={refetch}

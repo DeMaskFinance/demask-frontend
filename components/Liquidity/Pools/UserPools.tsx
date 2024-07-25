@@ -30,22 +30,24 @@ const UserPools = () => {
   const {
     data,
     fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
-    hasNextPage,
-  } = useInfiniteQuery(
-    ["LiquidityList", account, chainId, type],
-    ({ pageParam = 1 }) =>
+  } = useInfiniteQuery({
+    queryKey: ["LiquidityList", account, chainId, type],
+    queryFn: ({ pageParam = 1 }) =>
       fetchDataListLiquidity(account, pageParam, chainId, type),
-    {
-      getNextPageParam: (page: any) =>
-        page?.currentPage < page?.totalPages
-          ? page?.currentPage + 1
-          : undefined,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.currentPage < lastPage.totalPages
+        ? lastPage.currentPage + 1
+        : undefined,
+  });
   return (
     <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden min-h-[550px] max-h-[650px]">
       <TabGroups

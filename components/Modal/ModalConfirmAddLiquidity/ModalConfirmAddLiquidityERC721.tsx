@@ -95,9 +95,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         } else {
           setIsOpenError(true);
         }
-        queryClient.refetchQueries(["collectionNFTBUY"]);
-        queryClient.refetchQueries(["collectionNFTSell"]);
-        queryClient.refetchQueries(["detailCollection"]);
+        queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
+        queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
+        queryClient.refetchQueries({ queryKey: ["detailCollection"] });
         await updateBalance();
       } catch (error) {
         setIsOpenTransaction(false);

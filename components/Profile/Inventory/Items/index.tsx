@@ -268,14 +268,24 @@ const Items = () => {
   const {
     data,
     fetchNextPage,
-    isFetchingNextPage,
+    fetchPreviousPage,
     hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
-  } = useInfiniteQuery(
-    ["NFTsUser", chainId, account, typeERC, category, debouncedSearch],
-    ({ pageParam = 1 }) =>
+  } = useInfiniteQuery({
+    queryKey: [
+      "NFTsUser",
+      chainId,
+      account,
+      typeERC,
+      category,
+      debouncedSearch,
+    ],
+    queryFn: ({ pageParam = 1 }) =>
       fetchDataNFTs(
         pageParam,
         chainId,
@@ -284,13 +294,13 @@ const Items = () => {
         debouncedSearch,
         category
       ),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.currentPage < lastPage.totalPages
+        ? lastPage.currentPage + 1
+        : undefined,
+  });
+
   return (
     <div className="flex">
       {isFilter && <FilterItems setIsFilter={setIsFilter} />}

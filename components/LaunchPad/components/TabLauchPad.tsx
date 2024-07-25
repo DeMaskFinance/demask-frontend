@@ -28,22 +28,22 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
     return data;
   };
 
-  const { data, fetchNextPage, isSuccess, isLoading } = useInfiniteQuery(
-    ["LaunchpadTab", chainId, query],
-    ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, query),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
+  // const { data, fetchNextPage, isSuccess, isLoading } = useInfiniteQuery(
+  //   ["LaunchpadTab", chainId, query],
+  //   ({ pageParam = 1 }) => fetchDataPage(pageParam, chainId, query),
+  //   {
+  //     getNextPageParam: (page) =>
+  //       page?.currentPage === page?.totalPages
+  //         ? undefined
+  //         : page?.currentPage + 1,
+  //   }
+  // );
 
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  // useEffect(() => {
+  //   if (inView) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView]);
   const item = {
     // launchpad: "123",
 
@@ -85,7 +85,7 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
   };
   return (
     <div className="mb-8 px-3 lg:px-10">
-      {isLoading ? (
+      {/* {isLoading ? (
         <div className="grid gap-4 mt-8 grid-cols-2 md:grid-cols-autoFill text-shader_600">
           <SkeletonSubCategory length={24} />
         </div>
@@ -113,18 +113,19 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
             ) : (
               <SearchNotFound />
             )} */}
-            <ul className="grid grid-cols-1 md:grid-cols-autoFillLaunchpad gap-6 text-shader_600">
-              <TabLaunchPadItem item={item} query={query} />
-              <TabLaunchPadItem item={item} query={query} />
-              <TabLaunchPadItem item={item} query={query} />
-              <TabLaunchPadItem item={item} query={query} />
-              <TabLaunchPadItem item={item} query={query} />
-              <TabLaunchPadItem item={item} query={query} />
-            </ul>
-          </div>
+
+      {/* </div>
           <div ref={ref} style={{ height: "1px" }}></div>
-        </>
-      )}
+        </> */}
+
+      <ul className="grid grid-cols-1 md:grid-cols-autoFillLaunchpad gap-6 text-shader_600">
+        <TabLaunchPadItem item={item} query={query} />
+        <TabLaunchPadItem item={item} query={query} />
+        <TabLaunchPadItem item={item} query={query} />
+        <TabLaunchPadItem item={item} query={query} />
+        <TabLaunchPadItem item={item} query={query} />
+        <TabLaunchPadItem item={item} query={query} />
+      </ul>
     </div>
   );
 };

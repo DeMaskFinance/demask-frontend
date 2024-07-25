@@ -5,7 +5,7 @@ interface PaginationProps {
   data: any;
   page: number;
   pageNumberInput?: string;
-  isPreviousData: boolean;
+  isPlaceholderData: boolean;
   setPage: any;
   refetch: any;
   isFetching: boolean;
@@ -14,7 +14,7 @@ const Pagination = ({
   data,
   page,
   pageNumberInput,
-  isPreviousData,
+  isPlaceholderData,
   setPage,
 }: PaginationProps) => {
   const goToPage = (pageNum: number) => {
@@ -79,9 +79,9 @@ const Pagination = ({
         <div className="flex gap-x-1">
           <button
             onClick={prevPage}
-            disabled={isPreviousData || page === 1}
+            disabled={isPlaceholderData || page === 1}
             className={`w-8 ${
-              isPreviousData || page === 1
+              isPlaceholderData || page === 1
                 ? "text-primary_400 opacity-30"
                 : "text-primary_400"
             }`}
@@ -146,7 +146,7 @@ const TablePagination: React.FC<PaginationProps> = ({
   setPage,
   isFetching,
   refetch,
-  isPreviousData,
+  isPlaceholderData,
 }) => {
   const prevPage = () => {
     const prevPageNumber = Math.max(page - 1, 1);
@@ -174,9 +174,9 @@ const TablePagination: React.FC<PaginationProps> = ({
         <div className="flex justify-center gap-4 pt-6 text-sm font-semibold">
           <button
             onClick={prevPage}
-            disabled={isPreviousData || page === 1 || isFetching}
+            disabled={isPlaceholderData || page === 1 || isFetching}
             className={`${
-              isPreviousData || page === 1 || isFetching
+              isPlaceholderData || page === 1 || isFetching
                 ? "text-white bg-slate-300"
                 : "hover:text-white hover:bg-primary_500 transition-all"
             } w-8 flex items-center text-center justify-center rounded-full transition-all`}
@@ -197,9 +197,11 @@ const TablePagination: React.FC<PaginationProps> = ({
           </p>
           <button
             onClick={nextPage}
-            disabled={isPreviousData || page === data?.totalPages || isFetching}
+            disabled={
+              isPlaceholderData || page === data?.totalPages || isFetching
+            }
             className={`${
-              isPreviousData || page === data?.totalPages || isFetching
+              isPlaceholderData || page === data?.totalPages || isFetching
                 ? "text-white bg-slate-300"
                 : "hover:text-white hover:bg-primary_500 transition-all"
             } w-8 flex items-center text-center justify-center rounded-full transition-all`}

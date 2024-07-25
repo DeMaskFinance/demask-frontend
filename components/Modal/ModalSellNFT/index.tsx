@@ -124,10 +124,10 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
           setIsOpenError(true);
         }
         setInputNFT("");
-        queryClient.refetchQueries(["collectionNFTBUY"]);
-        queryClient.refetchQueries(["collectionNFTSell"]);
-        queryClient.refetchQueries(["detailCollection"]);
-        queryClient.refetchQueries(["1155TradingSell"]);
+        queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
+        queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
+        queryClient.refetchQueries({ queryKey: ["detailCollection"] });
+        queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
         await updateBalance();
       } catch (error) {
         setIsOpenTransaction(false);

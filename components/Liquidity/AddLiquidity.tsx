@@ -94,7 +94,6 @@ export default function AddLiquidity() {
       );
       return res;
     },
-    keepPreviousData: true,
   });
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {

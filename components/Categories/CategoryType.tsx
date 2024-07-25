@@ -25,21 +25,26 @@ const Category = ({ label }: { label: string }) => {
   const {
     data,
     fetchNextPage,
-    isFetchingNextPage,
+    fetchPreviousPage,
     hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
-  } = useInfiniteQuery(
-    ["CollectionTypeDetail", chainId, label],
-    ({ pageParam = 1 }) => fetchDetailCollection(label, chainId, pageParam),
-    {
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    }
-  );
+  } = useInfiniteQuery({
+    queryKey: ["CollectionTypeDetail", chainId, label],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchDetailCollection(label, chainId, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.currentPage < lastPage.totalPages
+        ? lastPage.currentPage + 1
+        : undefined,
+    getPreviousPageParam: (firstPage, allPages) =>
+      firstPage.currentPage > 1 ? firstPage.currentPage - 1 : undefined,
+  });
   useEffect(() => {
     if (inView) {
       fetchNextPage();
