@@ -12,6 +12,7 @@ import { CgClose } from "react-icons/cg";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { queryClient } from "@/libs/constants";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
   isFetching: boolean;
@@ -53,33 +54,39 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const { demask, account, wallet, slippage, txDeadline, updateBalance } =
-    useContext(AccountContext);
-  const { ROUTER: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
+  const {
+    demask,
+    account,
+    wallet,
+    slippage,
+    txDeadline,
+    updateBalance,
+    chainId,
+  } = useContext(AccountContext);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const addLiquidity = async () => {
     if (!account) {
       return;
     }
 
-    if (!isSufficientToken && Math.floor(amountErcDesired) !== 0) {
+    if (!isSufficientToken && Math.floor(amountErcDesired) !== 0 && contracts) {
       try {
         setIsOpenTransaction(true);
-        const valueToSend =
-          tokenAddress === nativeAddress
-            ? exponentialToDecimal(Math.floor(amountErcDesired))
-            : 0;
         const result = await erc1155Contract.addERC20ERC1155(
           wallet,
           nftAddress,
           tokenAddress,
           idNFT,
-          routerAddress,
+          contracts?.ERC1155_ROUTER_ADDRESS,
           amountErcDesired,
           inputNFT,
           account,
           txDeadline,
-          valueToSend
+          exponentialToDecimal(Math.floor(amountErcDesired))
         );
         const check = await result.wait();
         setHash(result.hash);
@@ -188,7 +195,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                   Insufficient Token balance
                 </p>
               )}
-              <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
+              <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
                 <p className="text-primary_200">Total ETH</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber

@@ -1,30 +1,23 @@
-import abiDML from "@/abi/abiDML.json";
 import { Button } from "@/components/Buttons";
+import NFTGrid from "@/components/Collection/TransactionCollection/NFTsGrids";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
-import NFTGrid from "@/components/Collection/TransactionCollection/NFTsGrids";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
-import useTotalSupply from "@/hooks/useTotalSupply";
-import { getProvider } from "@/libs/connection/getProvider";
+import useCheckApproveToken from "@/hooks/useCheckApproveToken";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import { ercTradingRemove } from "@/libs/service/tradeService";
 import { replaceDot } from "@/libs/utils/formatComon";
-import handleBignumber from "@/libs/utils/handleBignumber";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
 import { useQuery } from "@tanstack/react-query";
-import BigNumber from "bignumber.js";
-import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
-import useCheckApproveToken from "@/hooks/useCheckApproveToken";
-import handleApproveDML from "@/libs/utils/handleApproveDML";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -228,12 +221,12 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               />
             </div>
             {isSufficientLiquidity && (
-              <p className="mb-2 ml-1 mt-1 text-xs text-red" key="liquidity">
+              <p className="mt-1 mb-2 ml-1 text-xs text-red" key="liquidity">
                 Insufficient Liquidity balance
               </p>
             )}
             {showRequiredMessage && (
-              <p className="mx-auto ml-3 mt-2 text-xs text-red" key="emptyNFT">
+              <p className="mx-auto mt-2 ml-3 text-xs text-red" key="emptyNFT">
                 Required
               </p>
             )}

@@ -6,7 +6,6 @@ function MaintenanceError() {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
-  const today = new Date();
   useEffect(() => {
     const countDownDate = new Date("Dec 10, 2023 15:37:25").getTime();
 
@@ -43,11 +42,13 @@ function MaintenanceError() {
   }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-[94vh]">
-      <h2 className="text-2xl font-semibold text-shader_700">Maintenance</h2>
+      <h2 className="text-3xl font-semibold title text-primary_500">
+        Maintenance
+      </h2>
       <div className="my-8">
         <LogoMaintenance width={350} height={288} className="w-full h-full" />
       </div>
-      <h3 className="text-xl font-semibold text-center text-shader_600">
+      <h3 className="text-xl font-semibold text-center text-white">
         {days} days, {hours} hours, {minutes} minutes, {seconds} seconds
       </h3>
       <p className="mt-2 text-sm font-semibold cursor-pointer text-primary_500">

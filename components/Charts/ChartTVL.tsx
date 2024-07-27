@@ -19,10 +19,8 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
   } = useQuery({
     queryKey: ["chart", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(
-        `tvlChart?chainId=${chainId}&intervalDate=30`
-      );
-      return res;
+      const res = await categoryAPI(`tvlChart?chainId=${chainId}`);
+      return res.chartData;
     },
   });
 

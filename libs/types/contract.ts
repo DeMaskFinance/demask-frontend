@@ -1,0 +1,9 @@
+interface ContractAddresses {
+  CREATED_COLLECTION_ADDRESS: string;
+  ERC721_FACTORY_ADDRESS: string;
+  ERC721_ROUTER_ADDRESS: string;
+  ERC1155_FACTORY_ADDRESS: string;
+  ERC1155_ROUTER_ADDRESS: string;
+  FEE_MANAGER_ADDRESS: string;
+  WETH_ADDRESS: string;
+}

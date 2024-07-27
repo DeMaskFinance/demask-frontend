@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
 import Header from "../Header";
-import Maintenance from "../Common/Maintenance";
+import { useQuery } from "@tanstack/react-query";
+import { contractService } from "@/libs/service/contractsService";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
@@ -65,6 +66,14 @@ export default function Layout({ children }: PropsWithChildren) {
 
     initProvider();
   }, [wallet]);
+  const { isLoading, data, isSuccess, refetch, isFetching } =
+    useQuery<ContractAddresses>({
+      queryKey: ["contracts", chainId],
+      queryFn: async () => {
+        const res = await contractService(chainId, "v1");
+        return res.data;
+      },
+    });
   return (
     <div className="box-border w-full overflow-visible">
       <Header />

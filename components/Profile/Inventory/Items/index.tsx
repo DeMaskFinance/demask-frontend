@@ -110,7 +110,7 @@ export const ItemList: React.FC<ItemListProps> = ({
   return (
     <div className="font-semibold">
       {isLoading ? (
-        <div className="grid gap-4 mt-4 grid-cols-2 md:grid-cols-autoFill text-shader_600">
+        <div className="grid grid-cols-2 gap-4 mt-4 md:grid-cols-autoFill text-shader_600">
           <SkeletonSubCategory length={24} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
@@ -122,7 +122,7 @@ export const ItemList: React.FC<ItemListProps> = ({
             </div>
             <p>{data?.pages[0].totalRecords} Items</p>
           </div>
-          <div className="grid gap-4 mt-4 text-white grid-cols-2 md:grid-cols-autoFill">
+          <div className="grid grid-cols-2 gap-4 mt-4 text-white md:grid-cols-autoFill">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.map((item: any, index: number) => (

@@ -45,11 +45,6 @@ export default function Header() {
     balanceToken,
     isLoadingBalance,
   } = useContext(AccountContext);
-  const {
-    ROUTER: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
   const { isLoggedIn, profile } = useSelector(selectProfile);
 
   const dispatch = useDispatch();
@@ -95,9 +90,9 @@ export default function Header() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <div className="block cursor-pointer text-white bg-event-gradient  bg-blend-screen relative overflow-hidden -z-50 h-11">
+            <div className="relative block overflow-hidden text-white cursor-pointer bg-event-gradient bg-blend-screen -z-50 h-11">
               <Marquee autoFill pauseOnHover gradient gradientColor="#7C7FF8">
-                <div className="flex items-center justify-center h-11 mr-20 gap-x-3 font-semibold">
+                <div className="flex items-center justify-center mr-20 font-semibold h-11 gap-x-3">
                   <span>
                     <LightIcon width={24} height={24} />
                   </span>
@@ -126,7 +121,7 @@ export default function Header() {
               <LogoDeMask
                 width={105}
                 height={24}
-                className="fill-white hidden md:block"
+                className="hidden fill-white md:block"
               />
               <Button className="block py-[9px] px-[9px] md:hidden" gradient>
                 <DemaskIcon width={22} height={22} />

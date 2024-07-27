@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
+import { queryClient } from "@/libs/constants";
 const Buy = () => {
   const { account, chainId, demask, slippage, bigNumberBalance } =
     useContext(AccountContext);
@@ -28,7 +29,6 @@ const Buy = () => {
   const [hash, setHash] = useState<string>("");
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
-  const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const debouncedIdNFT = useDebounce(idNFT, 1500);
@@ -40,6 +40,10 @@ const Buy = () => {
       return res;
     },
   });
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,
@@ -136,15 +140,15 @@ const Buy = () => {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="p-0 border-none">
-                  {data721Trading && (
+                  {data721Trading && contracts && (
                     <ModalBuyNFT
                       isOpenBuyNFT={isOpenBuyNFT}
                       isOpenTransaction={isOpenTransaction}
                       setIsOpenTransaction={setIsOpenTransaction}
-                      tokenAddress={nativeAddress}
+                      tokenAddress={contracts.WETH_ADDRESS}
                       nftAddress={collectionAddress}
                       idNFT={debouncedIdNFT}
-                      routerAddress={routerAddress}
+                      routerAddress={contracts.ERC721_ROUTER_ADDRESS}
                       /* 
           // @ts-ignore */
                       data={dataFake}

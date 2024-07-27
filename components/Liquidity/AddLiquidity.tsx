@@ -40,6 +40,7 @@ import { FaAngleDown } from "react-icons/fa";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import Back from "../Common/Back";
 import Actions from "../Trade/Action";
+import { queryClient } from "@/libs/constants";
 
 export default function AddLiquidity() {
   const router = useRouter();
@@ -70,7 +71,10 @@ export default function AddLiquidity() {
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
-  const { ROUTER: routerAddress } = demask;
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   let inputNFTValue = useDebounce(inputNFT, 1000);
   useEffect(() => {
     if (currency) {
@@ -124,7 +128,7 @@ export default function AddLiquidity() {
     account,
     wallet,
     nftAddress,
-    routerAddress,
+    contracts?.ERC1155_ROUTER_ADDRESS || "",
     isOpenTransaction
   );
   const balanceNFT = useNFTBalance(
@@ -274,7 +278,7 @@ export default function AddLiquidity() {
                     </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className=" p-0 border bg-shader_800 border-shader_500">
+                <DialogContent className="p-0 border bg-shader_800 border-shader_500">
                   <ModalSearchToken />
                 </DialogContent>
               </Dialog>
@@ -364,7 +368,7 @@ export default function AddLiquidity() {
                   </div>
                 )}
                 {isSufficientToken && (
-                  <p className="mb-2 ml-3 mt-1 text-xs text-red" key="inputNFT">
+                  <p className="mt-1 mb-2 ml-3 text-xs text-red" key="inputNFT">
                     Insufficient Token balance
                   </p>
                 )}
@@ -381,7 +385,7 @@ export default function AddLiquidity() {
                   <ModalWallet />
                 </DialogContent>
               </Dialog>
-            ) : !isApprovedNFT ? (
+            ) : !isApprovedNFT && contracts ? (
               <Button
                 className="w-full py-3"
                 primary
@@ -391,7 +395,7 @@ export default function AddLiquidity() {
                     wallet,
                     nftAddress,
                     setIsOpenTransaction,
-                    routerAddress
+                    contracts.ERC1155_ROUTER_ADDRESS
                   )
                 }
               >
@@ -423,7 +427,7 @@ export default function AddLiquidity() {
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button
-                      className="absolute flex px-3 h-10 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 "
+                      className="absolute flex h-10 px-3 text-sm font-semibold text-white translate-x-1/2 rounded-lg cursor-pointer bottom-2 whitespace-nowrap right-1/2 gap-x-2 "
                       active
                     >
                       View Detail

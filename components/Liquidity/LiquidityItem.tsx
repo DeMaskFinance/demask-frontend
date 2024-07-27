@@ -12,6 +12,7 @@ import Image from "next/image";
 import getRewardDML from "@/libs/utils/getReward";
 import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
+import { queryClient } from "@/libs/constants";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -21,14 +22,18 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
   type,
 }) => {
-  const { account, wallet, updateBalance, demask } = useContext(AccountContext);
+  const { account, wallet, updateBalance, demask, chainId } =
+    useContext(AccountContext);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [reward, setReward] = useState("");
-
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   useEffect(() => {
     const fetchDataReward = async () => {
       if (account && wallet && liquidity) {
@@ -51,14 +56,14 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (account && wallet) {
+    if (account && wallet && contracts) {
       getRewardDML({
         wallet,
         dmlTokenLiquidity,
         account,
         data: {
           dmlDecimals: liquidity.dmlDecimals,
-          tokenAddress: demask.NATIVE_ADDRESS,
+          tokenAddress: contracts.WETH_ADDRESS,
         },
         setReward,
         setIsOpenTransaction,
@@ -76,7 +81,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
       <div className="flex p-4 border-b bg-shader_600 gap-x-3 border-shader_500">
         <div className="relative w-10 h-10 ">
-          <div className="overflow-hidden rounded-lg w-full h-full">
+          <div className="w-full h-full overflow-hidden rounded-lg">
             {liquidity?.metadata ? (
               <MediaNFT data={liquidity} isControls={false} />
             ) : (

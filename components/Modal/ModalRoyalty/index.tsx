@@ -8,6 +8,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "sonner";
 import * as yup from "yup";
 import { ModalTransation } from "../ModalTransation";
+import { queryClient } from "@/libs/constants";
 interface ModalRoyaltyProps {
   data: any;
   onSuccess: () => void;
@@ -17,8 +18,11 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
   onSuccess,
 }) => {
   const [isProcess, setIsProcess] = useState<boolean>(false);
-  const { chainId, demask, account, wallet } = useContext(AccountContext);
-
+  const { chainId, account, wallet } = useContext(AccountContext);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const initialValues = {
     creatorEarning: data.creatorAddress,
     royalty: data.royalty / 10000,
@@ -38,7 +42,6 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       .min(0, "Royalty must be greater than 0%")
       .max(10, "Royalty must be less than 10%"),
   });
-  const queryClient = useQueryClient();
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
@@ -51,17 +54,19 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
         chainId,
         blockTime
       );
-
-      const trans = await ercContract.setRoyalty(
-        demask.FEE_MANAGER,
-        data.dmlAddress,
-        values.creatorEarning,
-        values.royalty * 10000,
-        blockTime,
-        res.signature,
-        account,
-        wallet
-      );
+      let trans;
+      if (contracts) {
+        trans = await ercContract.setRoyalty(
+          contracts.FEE_MANAGER_ADDRESS,
+          data.dmlAddress,
+          values.creatorEarning,
+          values.royalty * 10000,
+          blockTime,
+          res.signature,
+          account,
+          wallet
+        );
+      }
       await trans.wait();
       setIsProcess(false);
       onSuccess();
@@ -75,7 +80,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
     }
   };
   return (
-    <div className="h-fit rounded-lg relative">
+    <div className="relative rounded-lg h-fit">
       <p className="py-2 text-xl title">Set Royalties</p>
       <Formik
         initialValues={initialValues}

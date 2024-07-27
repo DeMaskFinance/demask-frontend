@@ -44,6 +44,7 @@ import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
 import Back from "../Common/Back";
 import ChartNoTransfers from "../Charts/ChartNoTransfers";
+import { queryClient } from "@/libs/constants";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -66,12 +67,15 @@ const DetailLiquidity = () => {
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
 
   const [page, setPage] = useState(1);
-  const { ROUTER: routerAddress } = demask;
   useEffect(() => {
     if (liquidity) {
       setDmlTokenLiquidity(liquidity[0]);
     }
   }, [liquidity]);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: [
@@ -194,10 +198,10 @@ const DetailLiquidity = () => {
       ) : isSuccess ? (
         <div>
           <Back />
-          <div className="flex flex-col-reverse lg:flex-row gap-4">
+          <div className="flex flex-col-reverse gap-4 lg:flex-row">
             <div className="flex-auto">
               <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
-                <div className="rounded-t-lg overflow-hidden">
+                <div className="overflow-hidden rounded-t-lg">
                   <TabGroups
                     choices={options}
                     activeChoice={activeChoice}
@@ -265,15 +269,19 @@ const DetailLiquidity = () => {
                               <div>{action.icon}</div>
                             </DialogTrigger>
                             <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                              <ModalRemoveLiquidity
-                                data={data}
-                                routerAddress={routerAddress}
-                                type="erc1155"
-                                setHash={setHash}
-                                setIsOpenSuccess={setIsOpenSuccessRemove}
-                                setIsOpenError={setIsOpenErrorRemove}
-                                closeModal={closeModal}
-                              />
+                              {contracts && (
+                                <ModalRemoveLiquidity
+                                  data={data}
+                                  routerAddress={
+                                    contracts.ERC1155_ROUTER_ADDRESS
+                                  }
+                                  type="erc1155"
+                                  setHash={setHash}
+                                  setIsOpenSuccess={setIsOpenSuccessRemove}
+                                  setIsOpenError={setIsOpenErrorRemove}
+                                  closeModal={closeModal}
+                                />
+                              )}
                             </DialogContent>
                           </Dialog>
                         ) : (
@@ -325,7 +333,7 @@ const DetailLiquidity = () => {
                         <EyeIcon width={20} height={20} />
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
+                    <DialogContent className="max-w-6xl p-0 border bg-shader_800 border-shader_500">
                       {data && (
                         <ModalDetail
                           type="erc1155"

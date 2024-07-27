@@ -1,22 +1,21 @@
 import AccountContext from "@/context/AccountContext";
-import { Category } from "@/libs/constants";
+import { Category, queryClient } from "@/libs/constants";
+import * as collectionService from "@/libs/service/collectionService";
 import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import { SEO } from "@/next-seo.config";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import * as yup from "yup";
-import * as collectionService from "@/libs/service/collectionService";
 import { Button } from "../Buttons";
+import Back from "../Common/Back";
 import WithAuth from "../Common/WithAuth";
-import { LeftIcon, MonadIcon, SepoliaIcon } from "../Icons";
+import { MonadIcon, SepoliaIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import Back from "../Common/Back";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -34,7 +33,12 @@ const DeployCollection = () => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [hash, setHash] = useState<string>("");
   const divRef = useRef<HTMLDivElement>(null);
-  const { account, wallet, demask } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (divRef.current && !divRef.current.contains(event.target as Node)) {
@@ -88,15 +92,17 @@ const DeployCollection = () => {
       await collectionService.createCollection(fileIPFS.nonce, {
         category: values.category,
       });
-
-      const res = await ercContract.fillCreate(
-        values.contractName,
-        values.symbol,
-        fileIPFS.nonce,
-        demask.CREATE_COLLECTION,
-        account,
-        wallet
-      );
+      let res;
+      if (contracts) {
+        res = await ercContract.fillCreate(
+          values.contractName,
+          values.symbol,
+          fileIPFS.nonce,
+          contracts.CREATED_COLLECTION_ADDRESS,
+          account,
+          wallet
+        );
+      }
       setHash(res.hash);
       const check = await res.wait();
       setIsProcess(false);
@@ -118,7 +124,7 @@ const DeployCollection = () => {
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
-        <div className="max-w-2xl gap-6 pt-6 mx-auto px-3">
+        <div className="max-w-2xl gap-6 px-3 pt-6 mx-auto">
           {/* UpLoad File */}
           <div className="">
             <div className="sticky top-16">
@@ -180,7 +186,7 @@ const DeployCollection = () => {
                     value={values.contractName}
                     placeholder="Input contract name"
                     className="input_item"
-                    autocomplete="off"
+                    autoComplete="off"
                     onChange={(e: any) => {
                       handleChange(e);
                       const firstLetter = e.target.value.charAt(0);
@@ -237,7 +243,7 @@ const DeployCollection = () => {
                       id="symbol"
                       name="symbol"
                       value={values.symbol}
-                      autocomplete="off"
+                      autoComplete="off"
                       placeholder="Symbol"
                       className="input_item"
                     />

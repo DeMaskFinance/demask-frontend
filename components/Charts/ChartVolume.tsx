@@ -15,16 +15,15 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeChoice, setActiveChoice] = useState<string>("1D");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeData, setActiveData] = useState<number | null>(null);
-  const [test, setTest] = useState<number>(0);
   const [hasInitialSetting, setHasInitialSetting] = useState(false);
   const { chainId } = useContext(AccountContext);
   const { data, isLoading: LoadingVolume } = useQuery({
-    queryKey: ["ChartVolume", chainId],
+    queryKey: ["ChartVolume", chainId, activeChoice],
     queryFn: async () => {
       const res = await categoryAPI(
-        `volumeChart?chainId=${chainId}&intervalDate=30`
+        `volumeChart?chainId=${chainId}&interval=${activeChoice}`
       );
-      return res;
+      return res.chartData;
     },
   });
 
@@ -124,7 +123,6 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                   {chartVolume.map((_: any, index: number) => (
                     <Cell
                       key={`cell-${index}`}
-                      onMouseEnter={() => setTest(index)}
                       fill={index === hoveredIndex ? "#BFACFE" : "#9075FE"}
                       className="transition-all duration-150 ease-linear"
                     />

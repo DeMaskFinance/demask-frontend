@@ -26,6 +26,7 @@ import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { erc721TradingSell } from "@/libs/service/tradeService";
 import { StaticDetailSell } from "@/components/Trade/TradeTransaction/StaticDetail";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import { queryClient } from "@/libs/constants";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -35,7 +36,6 @@ const Sell = () => {
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
-  const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const { data, isSuccess, isLoading, isFetching } = useQuery({
@@ -46,11 +46,15 @@ const Sell = () => {
     },
   });
   const debouncedIdNFT = useDebounce(idNFT, 1000);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const isApprovedNFT = useCheckApproveNFT(
     account,
     wallet,
     collectionAddress,
-    routerAddress,
+    contracts?.ERC721_ROUTER_ADDRESS || "",
     isOpenTransaction
   );
 
@@ -102,7 +106,7 @@ const Sell = () => {
                     isFetching={isFetching721Trading}
                   />
                 )}
-                {!isApprovedNFT ? (
+                {!isApprovedNFT && contracts ? (
                   <Button
                     className="w-full py-4"
                     primary
@@ -112,7 +116,7 @@ const Sell = () => {
                         wallet,
                         collectionAddress,
                         setIsOpenTransaction,
-                        routerAddress
+                        contracts.ERC721_ROUTER_ADDRESS
                       )
                     }
                   >
@@ -142,16 +146,16 @@ const Sell = () => {
                         SELL {idNFT.length} NFTs
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className=" p-0 border-none">
-                      {data721Trading && (
+                    <DialogContent className="p-0 border-none ">
+                      {data721Trading && contracts && (
                         <ModalSellNFT
                           isOpenSellNFT={isOpenSellNFT}
                           isOpenTransaction={isOpenTransaction}
                           setIsOpenTransaction={setIsOpenTransaction}
-                          tokenAddress={nativeAddress}
+                          tokenAddress={contracts.WETH_ADDRESS}
                           nftAddress={collectionAddress}
                           idNFT={debouncedIdNFT}
-                          routerAddress={routerAddress}
+                          routerAddress={contracts.ERC721_ROUTER_ADDRESS}
                           /* 
           // @ts-ignore */
                           data={dataFake}

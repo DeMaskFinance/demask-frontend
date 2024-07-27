@@ -234,7 +234,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <p>Pool Fee</p>
               <p>Royalty Fee</p>
             </div>
-            <div className="flex flex-col gap-y-1 items-end">
+            <div className="flex flex-col items-end gap-y-1">
               {dataBuy.fees.map((fee, index) => (
                 <div
                   className="flex items-center font-bold text-white gap-x-1"
@@ -256,7 +256,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               Insufficient Token balance
             </p>
           )}
-          <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
+          <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
             <p className="text-primary_200">Total Pay</p>
             <div className="flex items-center font-bold text-white gap-x-1">
               <FormatNumber number={dataBuy.totalPay} />

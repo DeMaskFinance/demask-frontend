@@ -17,6 +17,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import { queryClient } from "@/libs/constants";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,10 +44,12 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     bigNumberBalance,
     balanceToken,
   } = useContext(AccountContext);
-  const { ROUTER_721: routerAddress } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
     queryFn: async () => {
@@ -104,7 +107,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     account,
     wallet,
     collectionAddress,
-    routerAddress,
+    contracts?.ERC721_ROUTER_ADDRESS || "",
     isOpenTransaction
   );
 
@@ -145,7 +148,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
               ) : (
                 <div>
                   {data ? (
-                    <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 text-primary_100">
+                    <div className="relative flex items-center justify-between w-full pl-2 mb-4 text-base font-semibold rounded-lg h-11 bg-primary_500 bg-opacity-10 text-primary_100">
                       <div className="">Total Liquidity</div>
                       <div className="flex items-center px-2 py-1 text-white gap-x-1">
                         <FormatNumber number={dataTradingAdd?.amountETH || 0} />{" "}
@@ -233,7 +236,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     wallet,
                     collectionAddress,
                     setIsOpenTransaction,
-                    routerAddress
+                    contracts?.ERC721_ROUTER_ADDRESS || ""
                   )
                 }
               >

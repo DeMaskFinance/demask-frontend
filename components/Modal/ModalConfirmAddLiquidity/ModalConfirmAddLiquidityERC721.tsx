@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "../ModalTransation";
+import { queryClient } from "@/libs/constants";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
@@ -54,10 +55,14 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     txDeadline,
     updateBalance,
     bigNumberBalance,
+    chainId,
   } = useContext(AccountContext);
   const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   useEffect(() => {
@@ -67,9 +72,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       setIsSufficientToken(false);
     }
   }, [bigNumberBalance, dataTradingAdd]);
-  const queryClient = useQueryClient();
   const addLiquidity = async () => {
-    if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0) {
+    if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
       try {
         setIsOpenTransaction(true);
         const result = await erc721Contract.addLiquidity(
@@ -77,7 +81,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           collectionAddress,
           nativeAddress,
           inputNFT,
-          demask.ROUTER_721,
+          contracts.ERC721_ROUTER_ADDRESS,
           dataTradingAdd.amountETHDecimals,
           account,
           txDeadline,
@@ -108,7 +112,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
-      <p className="title_modal pb-4">Create Pool</p>
+      <p className="pb-4 title_modal">Create Pool</p>
       <div className="text-sm text-shader_200">
         <div className="flex items-center pb-4 border-b gap-x-3 border-shader_500">
           <div className="w-[65px] h-[65px] rounded-lg overflow-hidden">
@@ -170,11 +174,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               {slippage}%
             </div>
           </div>
-          <p className="text-primary_300 text-sm">
+          <p className="text-sm text-primary_300">
             Output is estimated. You will receive at least {inputNFT.length}
              NFT or the transaction will revert
           </p>
-          <div className="flex justify-between p-3 rounded-lg bg-primary_500 bg-opacity-10 mt-2 font-semibold">
+          <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
             <p className="text-primary_200">Total ETH</p>
             <div className="flex items-center font-bold text-white gap-x-1">
               <FormatNumber number={dataTradingAdd.amountETH} />

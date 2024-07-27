@@ -10,6 +10,7 @@ import {
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import { queryClient } from "@/libs/constants";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import getRewardDML from "@/libs/utils/getReward";
@@ -18,7 +19,8 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 const PoolItem = ({ liquidity }: any) => {
-  const { account, wallet, demask, updateBalance } = useContext(AccountContext);
+  const { account, wallet, updateBalance, chainId } =
+    useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -32,17 +34,19 @@ const PoolItem = ({ liquidity }: any) => {
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
-  const { ROUTER_721: routerAddress, NATIVE_ADDRESS: nativeAddress } = demask;
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const data = {
     reserveNFT: liquidity?.reserveNFT,
     tokenDecimals: "18",
     dmlAddress: liquidity?.dmlAddress,
     dmlDecimals: "18",
     nftAddress: collectionAddress,
-    tokenAddress: nativeAddress,
+    tokenAddress: contracts?.WETH_ADDRESS,
     reserveTokenDecimals: liquidity?.reserveTokenDecimals,
   };
 
@@ -70,14 +74,14 @@ const PoolItem = ({ liquidity }: any) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (account && dmlTokenLiquidity && wallet) {
+    if (account && dmlTokenLiquidity && wallet && contracts) {
       getRewardDML({
         wallet,
         dmlTokenLiquidity,
         account,
         data: {
           dmlDecimals: data.dmlDecimals,
-          tokenAddress: nativeAddress,
+          tokenAddress: contracts?.WETH_ADDRESS,
         },
         setReward,
         setIsOpenTransaction,
@@ -125,17 +129,19 @@ const PoolItem = ({ liquidity }: any) => {
             </Button>
           </DialogTrigger>
           <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-            <ModalRemoveLiquidity
-              /* 
-          // @ts-ignore */
-              data={data}
-              routerAddress={routerAddress}
-              type="erc721"
-              setHash={setHash}
-              setIsOpenSuccess={setIsOpenSuccessRemove}
-              setIsOpenError={setIsOpenErrorRemove}
-              closeModal={closeModal}
-            />
+            {contracts && (
+              <ModalRemoveLiquidity
+                /* 
+         // @ts-ignore */
+                data={data}
+                routerAddress={contracts.WETH_ADDRESS}
+                type="erc721"
+                setHash={setHash}
+                setIsOpenSuccess={setIsOpenSuccessRemove}
+                setIsOpenError={setIsOpenErrorRemove}
+                closeModal={closeModal}
+              />
+            )}
           </DialogContent>
         </Dialog>
       </div>

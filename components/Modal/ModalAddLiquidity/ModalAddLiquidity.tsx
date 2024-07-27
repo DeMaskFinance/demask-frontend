@@ -19,6 +19,7 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
+import { queryClient } from "@/libs/constants";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -47,10 +48,12 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [inputToken, setInputToken] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { demask, account, wallet, slippage, bigNumberBalance, chainId } =
+  const { account, wallet, slippage, bigNumberBalance, chainId } =
     useContext(AccountContext);
-
-  const { ROUTER: routerAddress } = demask;
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+  ]);
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
       queryKey: [
@@ -134,7 +137,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     account,
     wallet,
     data.nftAddress,
-    routerAddress,
+    contracts?.ERC1155_ROUTER_ADDRESS || "",
     isOpenTransaction
   );
 
@@ -271,7 +274,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       wallet,
                       data.nftAddress,
                       setIsOpenTransaction,
-                      routerAddress
+                      contracts?.ERC1155_ROUTER_ADDRESS || ""
                     )
                   }
                 >

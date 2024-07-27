@@ -1,13 +1,14 @@
 import { Layout } from "@/components/Layouts";
 import { AccountProvider } from "@/context/AccountContext";
+import { metadata, queryClient, titillium } from "@/libs/constants";
 import "@/styles/globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import type { NextPage } from "next";
 import NextAdapterPages from "next-query-params";
 import type { AppProps } from "next/app";
-import { Titillium_Web } from "next/font/google";
 import Head from "next/head";
 import Script from "next/script";
 import { Provider } from "react-redux";
@@ -22,36 +23,13 @@ import MaintenanceError from "./maintenanceError";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
-const titillium = Titillium_Web({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "900", "600", "700"],
-  display: "swap",
-  adjustFontFallback: false,
-});
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-      staleTime: 60000,
-    },
-  },
-});
-const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
-// const chains = [sepolia, mainnet];
-const metadata = {
-  name: "Web3Modal",
-  description: "Web3Modal Example",
-  url: "https://web3modal.com",
-  icons: ["https://avatars.githubusercontent.com/u/37784886"],
-};
 
+const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 const wagmiConfig = defaultWagmiConfig({
   chains: [mainnet, sepolia],
   projectId,
   metadata,
 });
-const chains = [mainnet];
 createWeb3Modal({ wagmiConfig, projectId, defaultChain: sepolia });
 export default function App({
   Component,
@@ -99,27 +77,15 @@ export default function App({
                 }
               `}</style>
               <WagmiProvider config={wagmiConfig}>
-                {isMaintenanceMode ? (
-                  <Layout>
+                <Layout>
+                  {isMaintenanceMode ? (
                     <MaintenanceError />
-                  </Layout>
-                ) : Component.PageLayout ? (
-                  <Component.PageLayout>
+                  ) : (
                     <Component {...pageProps} />
-                  </Component.PageLayout>
-                ) : (
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                )}
+                  )}
+                </Layout>
+                <ReactQueryDevtools initialIsOpen={false} />
               </WagmiProvider>
-              {/* <Web3Modal
-                projectId={projectId}
-                ethereumClient={ethereumClient}
-                themeVariables={{
-                  "--w3m-z-index": "9999",
-                }}
-              /> */}
               <ToastContainer limit={1} />
             </QueryParamProvider>
           </QueryClientProvider>
