@@ -78,7 +78,7 @@ export default function DetailLaunchPad() {
               <RightIcon width={16} height={16} />
             </div>
           </div>
-          {isLoading ? (
+          {/* {isLoading ? (
             <div className="h-[600px]">
               <div className="flex gap-8">
                 <div className="h-[600px] bg-slate-700  lg:w-full animate-pulse rounded-lg"></div>
@@ -157,7 +157,77 @@ export default function DetailLaunchPad() {
                 <SaleLaunchPad />
               </div>
             )
-          )}
+          )} */}
+        </div>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1">
+            <Image
+              src="/images/test.png"
+              width={595}
+              height={595}
+              className="max-w-[595px] max-h-[595px] w-full"
+              alt="img_launchpad"
+            />
+            <div className="mt-4 ">
+              <SwiperCustom slidesPerView="auto">
+                <SwiperSlide className="swiper-item">
+                  <Image
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="w-[136px] h-[136px]"
+                    alt="img_launchpad"
+                  />
+                </SwiperSlide>
+                <SwiperSlide className="swiper-item">
+                  <Image
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="w-[136px] h-[136px]"
+                    alt="img_launchpad"
+                  />
+                </SwiperSlide>
+                <SwiperSlide className="swiper-item">
+                  <Image
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="w-[136px] h-[136px]"
+                    alt="img_launchpad"
+                  />
+                </SwiperSlide>
+                <SwiperSlide className="swiper-item">
+                  <Image
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="w-[136px] h-[136px]"
+                    alt="img_launchpad"
+                  />
+                </SwiperSlide>
+                <SwiperSlide className="swiper-item">
+                  <Image
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="w-[136px] h-[136px]"
+                    alt="img_launchpad"
+                  />
+                </SwiperSlide>
+                <SwiperSlide className="swiper-item">
+                  <Image
+                    src="/images/test.png"
+                    width={595}
+                    height={595}
+                    className="w-[136px] h-[136px]"
+                    alt="img_launchpad"
+                  />
+                </SwiperSlide>
+              </SwiperCustom>
+            </div>
+          </div>
+          <SaleLaunchPad />
         </div>
         <ModalSuccess
           isOpenSuccess={isOpenSuccess}

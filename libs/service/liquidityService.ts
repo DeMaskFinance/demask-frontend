@@ -1,6 +1,6 @@
 import request from "../utils/httpRequest";
 
-const liquidityListAPI = async (
+const liquidityUserListAPI = async (
   accountUser: string,
   page: number,
   type: string,
@@ -9,6 +9,22 @@ const liquidityListAPI = async (
   try {
     const res = await request.get(
       `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&type=${type}&page=${page}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const liquidityListAPI = async (
+  page: number,
+  type: string,
+  chainId: string | string[]
+) => {
+  try {
+    console.log(page);
+
+    const res = await request.get(
+      `all-pool-list?chainId=${chainId}&type=${type}&page=${page}&limit=20`
     );
     return res.data;
   } catch (error) {
@@ -59,8 +75,9 @@ const liquidityUserERC721 = async (
   }
 };
 export {
-  liquidityListAPI,
+  liquidityUserListAPI,
   liquidityHistory,
   liquidityUser,
   liquidityUserERC721,
+  liquidityListAPI,
 };

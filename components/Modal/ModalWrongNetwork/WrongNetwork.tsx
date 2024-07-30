@@ -40,7 +40,6 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
         const networkId = await provider.request({ method: "net_version" });
         if (networkId !== chainId) {
           setIsWrongNetwork(true);
-          document.body.style.overflowY = "hidden";
         } else {
           setIsWrongNetwork(false);
           document.body.style.overflowY = "auto";

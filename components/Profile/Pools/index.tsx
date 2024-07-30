@@ -1,7 +1,7 @@
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
-import { liquidityListAPI } from "@/libs/service/liquidityService";
+import { liquidityUserListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 export default function Pools() {
@@ -13,7 +13,7 @@ export default function Pools() {
     chainId: string | string[],
     type: string
   ) => {
-    const data = await liquidityListAPI(
+    const data = await liquidityUserListAPI(
       accountUser.toLowerCase(),
       pageParam,
       type,

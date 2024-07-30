@@ -38,7 +38,7 @@ export default function Launchpad() {
     <section className="launchpad">
       <NextSeo {...updateMeta} />
       <SliderLaunchPad />
-      <div className="px-3 md:px-10">
+      <div className="px-3 md:px-10 mb-4">
         <TabQuery
           TABS={listTab}
           initialItem={tab}

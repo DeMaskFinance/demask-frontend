@@ -149,7 +149,6 @@ export default function Header() {
               active
               onClick={() => {
                 setShowSearch(!showSearch);
-                document.body.style.overflowY = "hidden";
               }}
             >
               <SearchIcon width={20} height={20} />

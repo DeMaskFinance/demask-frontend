@@ -151,7 +151,6 @@ const DetailLiquidity = () => {
 
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
-    document.body.style.overflowY = "hidden";
   };
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
