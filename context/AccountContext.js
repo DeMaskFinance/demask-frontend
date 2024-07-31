@@ -1,6 +1,5 @@
 import { getProvider } from "@/libs/connection/getProvider";
 import {
-  BLAST_DEMASK,
   network,
   SEPOLIA_DEMASK,
   tokenBlast,
@@ -37,10 +36,7 @@ export const AccountProvider = ({ children }) => {
     }
   }, [account]);
   useEffect(() => {
-     if (chainId === "168587773") {
-      setDemask(BLAST_DEMASK);
-      setTokenDefault(tokenBlast);
-    }  else if (chainId === "11155111") {
+      if (chainId === "11155111") {
       setDemask(SEPOLIA_DEMASK);
       setTokenDefault(tokenSepolia);
     } 
