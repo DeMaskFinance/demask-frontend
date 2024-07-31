@@ -33,6 +33,7 @@
     "@types/node": "20.1.4",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "@types/recharts": "^1.8.29",
     "@walletconnect/ethereum-provider": "^2.10.1",
     "@web3modal/wagmi": "^5.0.8",
     "autoprefixer": "10.4.14",
