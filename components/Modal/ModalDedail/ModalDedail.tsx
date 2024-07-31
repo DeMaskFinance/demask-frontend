@@ -3,17 +3,19 @@ import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { RefetchIcon, ShareIcon, TwitterIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { refreshNFTService } from "@/libs/service/nftService";
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@headlessui/react";
+
 import { useQuery } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react/headless";
 import React, { memo, useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { HiChevronDown } from "react-icons/hi2";
 import ModalDocument from "../ModalLength/ModalDocument";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -110,118 +112,112 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                   <MediaNFT data={data} isControls />
                 </div>
                 <div className="w-full max-w-lg mx-auto flex-1">
-                  <Disclosure
-                    as="div"
-                    className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
-                    defaultOpen={true}
+                  <Accordion
+                    type="multiple"
+                    className="w-full"
+                    defaultValue={["item-1", "item-2", "item-3"]}
                   >
-                    <DisclosureButton className="flex items-center justify-between w-full group">
-                      <span className="title">Description</span>
-                      <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
-                    </DisclosureButton>
-                    <DisclosurePanel className="mt-2 text-sm text-shader_200">
-                      {data?.metadata?.description ? (
-                        <p>{formattedDescription}</p>
-                      ) : (
-                        <p>No data</p>
-                      )}
-                    </DisclosurePanel>
-                  </Disclosure>
-                  <Disclosure
-                    as="div"
-                    className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
-                    defaultOpen={true}
-                  >
-                    <DisclosureButton className="flex items-center justify-between w-full group">
-                      <span className="title">Attributes</span>
-                      <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
-                    </DisclosureButton>
-                    <DisclosurePanel className="mt-2 text-sm ">
-                      {data.metadata?.attributes.length > 0 ? (
-                        <div className="grid grid-cols-3 gap-4 ">
-                          {data.metadata?.attributes.map(
-                            (item: any, index: number) => (
-                              <ul
-                                className="p-3 rounded-lg bg-primary_500 bg-opacity-10"
-                                key={index}
-                              >
-                                <li className="text-primary_200">
-                                  <ModalDocument data={item.trait_type} />
-                                </li>
-                                <li className="font-bold text-white">
-                                  {item.value}
-                                </li>
-                              </ul>
-                            )
-                          )}
-                        </div>
-                      ) : (
-                        <p className="text-shader_200">No data</p>
-                      )}
-                    </DisclosurePanel>
-                  </Disclosure>
-                  <Disclosure
-                    as="div"
-                    className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700"
-                    defaultOpen={true}
-                  >
-                    <DisclosureButton className="flex items-center justify-between w-full group">
-                      <span className="title">Detail</span>
-                      <HiChevronDown className="size-5 fill-white  group-data-[open]:rotate-180" />
-                    </DisclosureButton>
-                    <DisclosurePanel className="text-sm text-shader_200">
-                      <ul>
-                        <li className="flex justify-between py-2 border-b border-shader_500">
-                          <p>Name</p>
-                          <p className="font-semibold text-shader_100">
-                            {data?.metadata?.name}
-                          </p>
-                        </li>
-                        <li className="flex justify-between py-2 border-b border-shader_500">
-                          <p>Type</p>
-                          <p className="font-semibold text-shader_100">Art</p>
-                        </li>
-                        <li className="flex justify-between py-2 border-b border-shader_500">
-                          <p>Token Standard</p>
-                          <p className="font-semibold uppercase text-shader_100">
-                            {type}
-                          </p>
-                        </li>
-                        <li className="flex justify-between py-2 border-b border-shader_500">
-                          <p>ID</p>
-                          <a
-                            href={data?.uri}
-                            target="_blank"
-                            className="flex items-center font-semibold text-primary_400 gap-x-1"
-                          >
-                            {data?.nftID}
-                            <Copy content={data?.nftID} />
-                          </a>
-                        </li>
-                        <li className="flex justify-between py-2 border-b border-shader_500">
-                          <p>Contract</p>
-                          <div className="flex items-center font-semibold text-primary_400 gap-x-1">
-                            <a
-                              href={`${demask.urltxHash}address/${nftAddress}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {`${nftAddress.slice(0, 6)}...${nftAddress.slice(
-                                -8
-                              )}`}
-                            </a>
-                            <Copy content={nftAddress} />
+                    <AccordionItem value="item-1" className=" border-none">
+                      <AccordionTrigger className="p-3 mb-2 rounded-lg  bg-shader_700">
+                        <span className="title">Description</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="mt-2 text-sm text-shader_200 px-2">
+                        {data?.metadata?.description ? (
+                          <p>{formattedDescription}</p>
+                        ) : (
+                          <p>No data</p>
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="item-2" className=" border-none">
+                      <AccordionTrigger className="p-3 mb-2 rounded-lg bg-shader_700">
+                        <span className="title">Attributes</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="mt-2 text-sm px-2">
+                        {data.metadata?.attributes.length > 0 ? (
+                          <div className="grid grid-cols-3 gap-4">
+                            {data.metadata?.attributes.map(
+                              (item: any, index: number) => (
+                                <ul
+                                  className="p-3 rounded-lg bg-primary_500 bg-opacity-10"
+                                  key={index}
+                                >
+                                  <li className="text-primary_200">
+                                    <ModalDocument data={item.trait_type} />
+                                  </li>
+                                  <li className="font-bold text-white">
+                                    {item.value}
+                                  </li>
+                                </ul>
+                              )
+                            )}
                           </div>
-                        </li>
-                        <li className="flex justify-between pt-2">
-                          <p>Last Update</p>
-                          <p className="font-semibold text-shader_100">
-                            {data?.updatedTime}
-                          </p>
-                        </li>
-                      </ul>
-                    </DisclosurePanel>
-                  </Disclosure>
+                        ) : (
+                          <p className="text-shader_200">No data</p>
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="item-3" className=" border-none">
+                      <AccordionTrigger className="p-3 mb-2 border rounded-lg border-shader_600 bg-shader_700">
+                        <span className="title">Detail</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="text-sm text-shader_200 px-2">
+                        <ul>
+                          <li className="flex justify-between py-2 border-b border-shader_500">
+                            <p>Name</p>
+                            <p className="font-semibold text-shader_100">
+                              {data?.metadata?.name}
+                            </p>
+                          </li>
+                          <li className="flex justify-between py-2 border-b border-shader_500">
+                            <p>Type</p>
+                            <p className="font-semibold text-shader_100">Art</p>
+                          </li>
+                          <li className="flex justify-between py-2 border-b border-shader_500">
+                            <p>Token Standard</p>
+                            <p className="font-semibold uppercase text-shader_100">
+                              {type}
+                            </p>
+                          </li>
+                          <li className="flex justify-between py-2 border-b border-shader_500">
+                            <p>ID</p>
+                            <a
+                              href={data?.uri}
+                              target="_blank"
+                              className="flex items-center font-semibold text-primary_400 gap-x-1"
+                            >
+                              {data?.nftID}
+                              <Copy content={data?.nftID} />
+                            </a>
+                          </li>
+                          <li className="flex justify-between py-2 border-b border-shader_500">
+                            <p>Contract</p>
+                            <div className="flex items-center font-semibold text-primary_400 gap-x-1">
+                              <a
+                                href={`${demask.urltxHash}address/${nftAddress}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {`${nftAddress.slice(
+                                  0,
+                                  6
+                                )}...${nftAddress.slice(-8)}`}
+                              </a>
+                              <Copy content={nftAddress} />
+                            </div>
+                          </li>
+                          <li className="flex justify-between pt-2">
+                            <p>Last Update</p>
+                            <p className="font-semibold text-shader_100">
+                              {data?.updatedTime}
+                            </p>
+                          </li>
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 </div>
               </div>
             </div>
