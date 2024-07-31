@@ -18,6 +18,7 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -55,7 +56,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     setActiveChoice(choice);
     setIdNFT([]);
   };
-  console.log(data);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
   const { data: dataTradingRemove, isFetching: isFetchingRemove } =
     useQuery<DataRemove>({
@@ -145,15 +146,10 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     }
   };
 
-  const {
-    isLoading,
-    data: data721,
-    isSuccess,
-    isFetching,
-  } = useQuery({
-    queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+  const { data: data721, isSuccess } = useQuery({
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
       return res;
     },
   });

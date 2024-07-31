@@ -14,6 +14,7 @@ import Sell from "./Sell";
 import { Button } from "@/components/Buttons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import VersionTrade from "@/components/Common/VersionTrade";
 
 const TransactionCollection = () => {
   const [tab] = useQueryParam("tab", withDefault(StringParam, "buy"));
@@ -92,7 +93,7 @@ const TransactionCollection = () => {
       }`}
     >
       <div className="flex justify-between gap-4 mb-2">
-        <p className="text-xl font-bold text-white">Demask Swaps</p>
+        <VersionTrade />
         <div className="flex items-center gap-x-2">
           {actions.map((action, index) => (
             <Tippy

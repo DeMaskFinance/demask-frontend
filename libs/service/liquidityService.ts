@@ -18,13 +18,14 @@ const liquidityUserListAPI = async (
 const liquidityListAPI = async (
   page: number,
   type: string,
-  chainId: string | string[]
+  chainId: string | string[],
+  version: string
 ) => {
   try {
     console.log(page);
 
     const res = await request.get(
-      `all-pool-list?chainId=${chainId}&type=${type}&page=${page}&limit=20`
+      `all-pool-list?chainId=${chainId}&type=${type}&page=${page}&version=${version}&limit=20`
     );
     return res.data;
   } catch (error) {

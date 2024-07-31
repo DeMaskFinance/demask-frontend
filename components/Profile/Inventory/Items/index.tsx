@@ -30,6 +30,7 @@ import Classify from "../Classify";
 import FilterItems from "./FilterItems";
 import SearchNotFound from "@/components/Search/SearchNotFound";
 import { useRouter } from "next/router";
+import { queryClient } from "@/libs/constants";
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -52,9 +53,17 @@ interface NFTItem {
 }
 interface TradeProps {
   item: NFTItem;
-  nativeAddress: string;
 }
-const Trade: React.FC<TradeProps> = ({ item, nativeAddress }) => {
+const Trade: React.FC<TradeProps> = ({ item }) => {
+  const { chainId } = useContext(AccountContext);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    "v2",
+  ]);
+  console.log(contracts);
+
+  const nativeAddress = contracts?.WETH_ADDRESS;
   return (
     <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
       <Link
@@ -94,11 +103,10 @@ export const ItemList: React.FC<ItemListProps> = ({
   fetchNextPage,
   hasNextPage,
 }) => {
-  const { demask } = useContext(AccountContext);
-  const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
+
   const collectionAddress = useRouter().query.collection as string;
   const { ref, inView } = useInView();
   useEffect(() => {
@@ -179,15 +187,10 @@ export const ItemList: React.FC<ItemListProps> = ({
                         </div>
                         {collectionAddress ? (
                           <Fragment>
-                            {item.type === "erc1155" && (
-                              <Trade
-                                nativeAddress={nativeAddress}
-                                item={item}
-                              />
-                            )}
+                            {item.type === "erc1155" && <Trade item={item} />}
                           </Fragment>
                         ) : (
-                          <Trade nativeAddress={nativeAddress} item={item} />
+                          <Trade item={item} />
                         )}
                       </div>
                       <div className="absolute flex items-center justify-between w-full px-2 transition-all duration-150 top-1 opacity-60 group-hover:opacity-100">

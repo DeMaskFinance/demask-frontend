@@ -1,6 +1,7 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
+import VersionTrade from "@/components/Common/VersionTrade";
 import {
   EtherIcon,
   EyeIcon,
@@ -25,7 +26,7 @@ import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import useDebounce from "@/hooks/useDebounce";
-import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import { queryClient } from "@/libs/constants";
 import {
   erc1155TradingBuy,
   erc1155TradingSell,
@@ -36,6 +37,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Actions from "../Action";
 import { StaticDetailBuy, StaticDetailSell } from "./StaticDetail";
 interface SwapTransactionProps {
@@ -68,18 +70,16 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
 
-  const {
-    account,
-    wallet,
-    bigNumberBalance,
-    demask,
-    slippage,
-    balanceToken,
-    chainId,
-  } = useContext(AccountContext);
-  const [checkExit, setCheckExit] = useState<boolean>(false);
-  const { ROUTER: routerAddress } = demask;
+  const { account, wallet, bigNumberBalance, slippage, balanceToken, chainId } =
+    useContext(AccountContext);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    version,
+  ]);
+  const routerAddress = contracts?.ERC1155_ROUTER_ADDRESS || "";
   let inputNFTValue = useDebounce(inputNFT, 1000);
   const balanceNFT = useNFTBalance(
     account,
@@ -88,7 +88,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     wallet,
     isOpenTransaction
   );
-  usePreventUserFromErasingContent(checkExit);
   const {
     data: dataBuy,
     isLoading,
@@ -103,6 +102,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       idNFT,
       inputNFTValue,
       slippage,
+      version,
     ],
     queryFn: async () => {
       const res = await erc1155TradingBuy(
@@ -111,11 +111,14 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         nftAddress,
         idNFT,
         inputNFTValue,
-        slippage
+        slippage,
+        version
       );
       return res.data;
     },
+    enabled: data.dmlAddress !== null && activeChoice === "Buy",
   });
+
   const { data: dataSell, isFetching: isFetchingSell } = useQuery<DataSell>({
     queryKey: [
       "1155TradingSell",
@@ -125,6 +128,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       idNFT,
       inputNFTValue,
       slippage,
+      version,
     ],
     queryFn: async () => {
       const res = await erc1155TradingSell(
@@ -133,10 +137,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         nftAddress,
         idNFT,
         inputNFTValue,
-        slippage
+        slippage,
+        version
       );
       return res.data;
     },
+    enabled: data.dmlAddress !== null && activeChoice === "Sell",
   });
   const isApprovedNFT = useCheckApproveNFT(
     account,
@@ -145,13 +151,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     routerAddress,
     isOpenTransaction
   );
-  useEffect(() => {
-    if (inputNFTValue) {
-      setCheckExit(true);
-    } else {
-      setCheckExit(false);
-    }
-  }, [inputNFTValue]);
   useEffect(() => {
     const checkReservesNFT = () => {
       if (activeChoice === "Buy") {
@@ -219,7 +218,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
       <div className="w-full p-4">
         <div className="flex justify-between gap-4 mb-2">
-          <p className="text-xl font-bold text-white">Demask Swaps</p>
+          <VersionTrade />
           <Actions
             IconSwap={
               <PoolIcon

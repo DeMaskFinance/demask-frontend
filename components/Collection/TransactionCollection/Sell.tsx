@@ -27,6 +27,7 @@ import { erc721TradingSell } from "@/libs/service/tradeService";
 import { StaticDetailSell } from "@/components/Trade/TradeTransaction/StaticDetail";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -38,10 +39,22 @@ const Sell = () => {
   const [hash, setHash] = useState<string>("");
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const { data, isSuccess, isLoading, isFetching } = useQuery({
-    queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
+    queryKey: [
+      "collectionNFTSell",
+      chainId,
+      collectionAddress,
+      account,
+      version,
+    ],
     queryFn: async () => {
-      const res = await fetchDataSellNFTs(collectionAddress, chainId, account);
+      const res = await fetchDataSellNFTs(
+        collectionAddress,
+        chainId,
+        account,
+        version
+      );
       return res;
     },
   });
@@ -49,6 +62,7 @@ const Sell = () => {
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const isApprovedNFT = useCheckApproveNFT(
     account,
@@ -69,13 +83,15 @@ const Sell = () => {
       collectionAddress,
       slippage,
       debouncedIdNFT,
+      version,
     ],
     queryFn: async () => {
       const res = await erc721TradingSell(
         collectionAddress,
         chainId,
         debouncedIdNFT.length,
-        slippage
+        slippage,
+        version
       );
       return res.data;
     },

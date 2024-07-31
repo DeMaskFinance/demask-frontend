@@ -14,6 +14,7 @@ import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "../ModalTransation";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
@@ -57,11 +58,12 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     bigNumberBalance,
     chainId,
   } = useContext(AccountContext);
-  const { NATIVE_ADDRESS: nativeAddress } = demask;
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
@@ -79,7 +81,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         const result = await erc721Contract.addLiquidity(
           wallet,
           collectionAddress,
-          nativeAddress,
+          contracts.WETH_ADDRESS,
           inputNFT,
           contracts.ERC721_ROUTER_ADDRESS,
           dataTradingAdd.amountETHDecimals,

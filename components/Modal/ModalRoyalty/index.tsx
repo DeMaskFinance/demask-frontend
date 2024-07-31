@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import * as yup from "yup";
 import { ModalTransation } from "../ModalTransation";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalRoyaltyProps {
   data: any;
   onSuccess: () => void;
@@ -18,10 +19,12 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
   onSuccess,
 }) => {
   const [isProcess, setIsProcess] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const { chainId, account, wallet } = useContext(AccountContext);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const initialValues = {
     creatorEarning: data.creatorAddress,

@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Buy = () => {
   const { account, chainId, demask, slippage, bigNumberBalance } =
     useContext(AccountContext);
@@ -32,18 +33,21 @@ const Buy = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const debouncedIdNFT = useDebounce(idNFT, 1500);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
   const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
-    queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
       return res;
     },
   });
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
+
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,
@@ -55,13 +59,15 @@ const Buy = () => {
       collectionAddress,
       slippage,
       debouncedIdNFT,
+      version,
     ],
     queryFn: async () => {
       const res = await erc721TradingBuy(
         collectionAddress,
         chainId,
         debouncedIdNFT.length,
-        slippage
+        slippage,
+        version
       );
       return res.data;
     },

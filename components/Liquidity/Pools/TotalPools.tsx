@@ -9,38 +9,33 @@ import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const TotalPools = () => {
-  const { account, chainId } = useContext(AccountContext);
+  const { chainId } = useContext(AccountContext);
   const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
   const [type, setType] = useState<string>("erc1155");
   const { ref, inView } = useInView();
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["allPool", chainId, type],
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ["allPool", chainId, type, version],
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
-      console.log("Fetching page:", pageParam);
-      return liquidityListAPI(pageParam, type, chainId);
+      return liquidityListAPI(pageParam, type, chainId, version);
     },
     getNextPageParam: (page) => {
-      console.log("Last Page:", page);
       return page?.data?.currentPage === page?.data?.totalPages
         ? undefined
         : page?.data?.currentPage + 1;
     },
   });
+  console.log(data);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -54,37 +49,36 @@ const TotalPools = () => {
         onChoiceChange={handleChoiceChange}
         isDefault
       />
-      <p onClick={() => fetchNextPage()}>Click</p>
-      <>
-        <div className="overflow-auto text-sm ">
-          <table className="w-full text-left border-collapse ">
-            <thead className=" bg-shader_600 text-shader_200 uppercase sticky top-0 z-10">
-              <tr className="flex px-4 py-3">
-                <th className="flex justify-start lg:w-full md:w-full w-[200px]">
-                  Name
-                </th>
-                <th className="flex justify-end lg:w-full md:w-full w-[140px]">
-                  TVL
-                </th>
-                <th className="flex justify-end lg:w-full md:w-full w-[140px]  items-center">
-                  VOLUME(24H)
-                </th>
-                <th className="flex justify-end lg:w-full md:w-full w-[140px]  items-center">
-                  FEES(24H)
-                </th>
-              </tr>
-            </thead>
+      <div className="overflow-auto text-sm ">
+        <table className="w-full text-left border-collapse ">
+          <thead className=" bg-shader_600 text-shader_200 uppercase sticky top-0 z-10">
+            <tr className="flex px-4 py-3">
+              <th className="flex justify-start lg:w-full md:w-full w-[200px]">
+                Name
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]">
+                TVL
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]  items-center">
+                VOLUME(24H)
+              </th>
+              <th className="flex justify-end lg:w-full md:w-full w-[140px]  items-center">
+                FEES(24H)
+              </th>
+            </tr>
+          </thead>
 
-            <tbody className="flex flex-col flex-auto text-base">
-              {data?.pages.map((page: any, pageIndex: number) => (
-                <Fragment key={pageIndex}>
-                  {page?.data?.poolList?.length > 0 ? (
-                    page.data.poolList.map((item: any, index: number) => (
+          <tbody className="flex flex-col flex-auto text-base">
+            {data?.pages.map((page: any, pageIndex: number) => (
+              <Fragment key={pageIndex}>
+                {page?.data?.poolList?.length > 0 ? (
+                  page.data.poolList.map((item: any, index: number) => (
+                    <Fragment>
                       <tr
                         className="flex px-4 py-3 text-white border-b border-shader_500 hover:bg-shader_700 cursor-pointer font-bold"
                         key={index}
                       >
-                        <th className="flex justify-start lg:w-full md:w-full w-[200px] gap-x-3 items-center">
+                        <td className="flex justify-start lg:w-full md:w-full w-[200px] gap-x-3 items-center">
                           <div className="relative w-[52px] ">
                             <EtherIcon width={32} height={32} />
 
@@ -99,7 +93,7 @@ const TotalPools = () => {
                               )}
                             </div>
                           </div>
-                          <p className="font-semibold flex">
+                          <div className="font-semibold flex">
                             ETH/
                             {item.type === "erc721" ? (
                               item.symbol
@@ -108,68 +102,59 @@ const TotalPools = () => {
                                 <ModalDocument data={item.metadata.symbol} />
                               </div>
                             )}
-                          </p>
-                        </th>
-                        <th className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
+                          </div>
+                        </td>
+                        <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
                           <FormatNumber number={item.tvl} />
                           <EtherIcon width={16} height={16} />
-                        </th>
-                        <th className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
+                        </td>
+                        <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
                           <FormatNumber number={item.totalVolume24h} />
                           <EtherIcon width={16} height={16} />
-                        </th>
-                        <th className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
+                        </td>
+                        <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
                           {/* <FormatNumber number={item.price} /> */}
                           --
                           <EtherIcon width={16} height={16} />
-                        </th>
+                        </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan={4}
-                        className="text-center py-4 text-gray-500"
-                      >
-                        <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200">
-                          <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
-                            <SearchIcon
-                              width={20}
-                              height={20}
-                              className="text-primary_400"
-                            />
-                          </div>
-                          <p>
-                            Your active liquidity positions will appear here.{" "}
-                          </p>
-                          <a
-                            href="https://docs.demask.finance/products/dex/how-to-add-remove-lp"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-semibold text-primary_400"
-                          >
-                            How to add Liquidity?
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                  {isFetching && (
-                    <div className="w-full h-full flex-auto justify-center items-center flex">
-                      <LoadingIcon
+                      <div ref={ref} style={{ height: "1px" }}></div>
+                    </Fragment>
+                  ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200 mt-10">
+                    <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
+                      <SearchIcon
                         width={20}
                         height={20}
-                        className="animate-spin"
+                        className="text-primary_400"
                       />
                     </div>
-                  )}
-                  <div ref={ref} style={{ height: "1px" }}></div>
-                </Fragment>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </>
+                    <p>Your active liquidity positions will appear here. </p>
+                    <a
+                      href="https://docs.demask.finance/products/dex/how-to-add-remove-lp"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-primary_400"
+                    >
+                      How to add Liquidity?
+                    </a>
+                  </div>
+                )}
+                {isFetching && (
+                  <div className="w-full h-full flex-auto justify-center items-center flex">
+                    <LoadingIcon
+                      width={20}
+                      height={20}
+                      className="animate-spin"
+                    />
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

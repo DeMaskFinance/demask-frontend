@@ -5,33 +5,34 @@ import {
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useAmountInMax from "@/hooks/useAmountInMax";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import { queryClient } from "@/libs/constants";
 import {
   fetchDataBuyNFTs,
   fetchDataSellNFTs,
 } from "@/libs/service/collectionService";
+import { erc721TradingBuy } from "@/libs/service/tradeService";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import NFTGrid from "./NFTsGrids";
-import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 
 const Change = () => {
   const {
     account,
     chainId,
-    demask,
     wallet,
     bigNumberBalance,
     txDeadline,
     updateBalance,
+    slippage,
   } = useContext(AccountContext);
   const [idNFTInput, setIdNFTInput] = useState<number[]>([]);
   const [idNFTOutput, setIdNFTOutput] = useState<number[]>([]);
@@ -42,11 +43,14 @@ const Change = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const {
-    ROUTER_721: routerAddress,
-    RPC: rpc,
-    NATIVE_ADDRESS: nativeAddress,
-  } = demask;
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    version,
+  ]);
+  const nativeAddress = contracts?.WETH_ADDRESS || "";
+  const routerAddress = contracts?.ERC721_ROUTER_ADDRESS || "";
   //data Input
   const {
     data: inputData,
@@ -54,42 +58,64 @@ const Change = () => {
     isLoading: isInputDataLoading,
     isFetching: isInputDataFetching,
   } = useQuery({
-    queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
+    queryKey: [
+      "collectionNFTSell",
+      chainId,
+      collectionAddress,
+      account,
+      version,
+    ],
     queryFn: async () => {
-      const res = await fetchDataSellNFTs(collectionAddress, chainId, account);
+      const res = await fetchDataSellNFTs(
+        collectionAddress,
+        chainId,
+        account,
+        version
+      );
       return res;
     },
   });
 
   //Data output
   const { data, isSuccess, isLoading, isFetching } = useQuery({
-    queryKey: ["collectionNFTBUY", chainId, collectionAddress],
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId);
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
       return res;
     },
   });
-  const dmlToken = data?.dmlAddress;
-  const { amountTokenBuy, isLoadingBuy } = useAmountInMax(
-    "",
-    dmlToken,
-    nativeAddress,
-    collectionAddress,
-    idNFTInput,
-    wallet,
-    account,
-    rpc,
-    routerAddress,
-    true
-  );
+  const {
+    isLoading: isLoading721Trading,
+    data: data721Trading,
+    isFetching: isFetching721Trading,
+  } = useQuery<DataBuy>({
+    queryKey: [
+      "721TradingBuy",
+      chainId,
+      collectionAddress,
+      slippage,
+      idNFTInput,
+      version,
+    ],
+    queryFn: async () => {
+      const res = await erc721TradingBuy(
+        collectionAddress,
+        chainId,
+        idNFTInput.length,
+        slippage,
+        version
+      );
+      return res.data;
+    },
+  });
 
   useEffect(() => {
-    if (Number(amountTokenBuy) > Number(bigNumberBalance)) {
+    if (Number(data721Trading?.maxAmountDecimals) > Number(bigNumberBalance)) {
       setIsSufficientToken(false);
     } else {
       setIsSufficientToken(true);
     }
-  }, [account, amountTokenBuy, data, bigNumberBalance]);
+  }, [account, data721Trading, bigNumberBalance]);
 
   const isApprovedNFT = useCheckApproveNFT(
     account,
@@ -98,7 +124,6 @@ const Change = () => {
     routerAddress,
     isOpenTransaction
   );
-  const queryClient = useQueryClient();
 
   const handleSwap = async () => {
     try {
@@ -112,7 +137,7 @@ const Change = () => {
         routerAddress,
         account,
         txDeadline,
-        exponentialToDecimal(Math.floor(amountTokenBuy))
+        exponentialToDecimal(Math.floor(data721Trading?.maxAmountDecimals || 0))
       );
       const check = await result.wait();
       setHash(result.hash);
@@ -234,27 +259,27 @@ const Change = () => {
                 idNFTOutput.length === 0 ||
                 !isSufficientToken ||
                 idNFTInput.length !== idNFTOutput.length ||
-                Math.floor(amountTokenBuy) === 0 ||
-                isLoadingBuy
+                Math.floor(data721Trading?.maxAmountDecimals ?? 0) === 0 ||
+                isFetching
               }
               primary={
                 idNFTInput.length !== 0 &&
                 idNFTOutput.length !== 0 &&
                 isSufficientToken &&
                 idNFTInput.length === idNFTOutput.length &&
-                Math.floor(amountTokenBuy) !== 0 &&
-                !isLoadingBuy
+                Math.floor(data721Trading?.maxAmountDecimals ?? 0) !== 0 &&
+                !isFetching
               }
               active={
                 idNFTInput.length === 0 ||
                 idNFTOutput.length === 0 ||
                 !isSufficientToken ||
                 idNFTInput.length !== idNFTOutput.length ||
-                Math.floor(amountTokenBuy) === 0 ||
-                isLoadingBuy
+                Math.floor(data721Trading?.maxAmountDecimals ?? 0) === 0 ||
+                isFetching
               }
               className="w-full py-4"
-              isLoadingBtn={isLoadingBuy}
+              isLoadingBtn={isFetching721Trading}
               onClick={handleSwap}
             >
               Swap

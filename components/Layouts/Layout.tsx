@@ -10,10 +10,12 @@ import NavFooter from "../Footer/NavFooter";
 import Header from "../Header";
 import { useQuery } from "@tanstack/react-query";
 import { contractService } from "@/libs/service/contractsService";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent } =
     useContext(AccountContext);
-  const { user, accessToken, isLoggedIn, profile } = useSelector(selectProfile);
+  const { user, accessToken, isLoggedIn } = useSelector(selectProfile);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const dispatch = useDispatch();
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
@@ -66,14 +68,14 @@ export default function Layout({ children }: PropsWithChildren) {
 
     initProvider();
   }, [wallet]);
-  const { isLoading, data, isSuccess, refetch, isFetching } =
-    useQuery<ContractAddresses>({
-      queryKey: ["contracts", chainId],
-      queryFn: async () => {
-        const res = await contractService(chainId, "v1");
-        return res.data;
-      },
-    });
+  const { data } = useQuery<ContractAddresses>({
+    queryKey: ["contracts", chainId, version],
+    queryFn: async () => {
+      const res = await contractService(chainId, version);
+      return res.data;
+    },
+  });
+
   return (
     <div className="box-border w-full overflow-visible">
       <Header />

@@ -45,6 +45,7 @@ import { TabGroups } from "../NavChoice";
 import Back from "../Common/Back";
 import ChartNoTransfers from "../Charts/ChartNoTransfers";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -65,6 +66,7 @@ const DetailLiquidity = () => {
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
   const [page, setPage] = useState(1);
   useEffect(() => {
@@ -75,6 +77,7 @@ const DetailLiquidity = () => {
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({

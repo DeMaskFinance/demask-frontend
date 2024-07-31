@@ -22,11 +22,12 @@ const erc1155TradingBuy = async (
   nftAddress: string,
   idNFT: string,
   amountNFT: string,
-  slippage: number
+  slippage: number,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `erc1155-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}`
+      `erc1155-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -39,11 +40,12 @@ const erc1155TradingSell = async (
   nftAddress: string,
   idNFT: string,
   amountNFT: string,
-  slippage: number
+  slippage: number,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `erc1155-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}`
+      `erc1155-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -56,11 +58,12 @@ const erc1155TradingAdd = async (
   nftAddress: string,
   idNFT: string,
   amountNFT: number,
-  slippage: number
+  slippage: number,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `erc1155-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}`
+      `erc1155-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&nftAddress=${nftAddress}&id=${idNFT}&tokenAddress=${tokenAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -87,11 +90,12 @@ const erc721TradingBuy = async (
   contractAddress: string,
   chainId: string | string[],
   amountNFT: number,
-  slippage: number
+  slippage: number,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `erc721-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}`
+      `erc721-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -102,11 +106,12 @@ const erc721TradingSell = async (
   contractAddress: string,
   chainId: string | string[],
   amountNFT: number,
-  slippage: number
+  slippage: number,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `erc721-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}`
+      `erc721-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -117,11 +122,12 @@ const erc721TradingAdd = async (
   contractAddress: string,
   chainId: string | string[],
   amountNFT: number,
-  slippage: number
+  slippage: number,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `erc721-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}`
+      `erc721-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {

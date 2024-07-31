@@ -20,6 +20,7 @@ import { mainnet, sepolia } from "viem/chains";
 import { WagmiProvider } from "wagmi";
 import store, { persistor } from "../store";
 import MaintenanceError from "./maintenanceError";
+import { StarknetProvider } from "@/components/StarknetProvider";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -69,26 +70,28 @@ export default function App({
               href="/favicon-32x32.png"
             ></link>
           </Head>
-          <QueryClientProvider client={queryClient}>
-            <QueryParamProvider adapter={NextAdapterPages}>
-              <style jsx global>{`
-                html {
-                  font-family: ${titillium.style.fontFamily};
-                }
-              `}</style>
-              <WagmiProvider config={wagmiConfig}>
-                <Layout>
-                  {isMaintenanceMode ? (
-                    <MaintenanceError />
-                  ) : (
-                    <Component {...pageProps} />
-                  )}
-                </Layout>
-                <ReactQueryDevtools initialIsOpen={false} />
-              </WagmiProvider>
-              <ToastContainer limit={1} />
-            </QueryParamProvider>
-          </QueryClientProvider>
+          <StarknetProvider>
+            <QueryClientProvider client={queryClient}>
+              <QueryParamProvider adapter={NextAdapterPages}>
+                <style jsx global>{`
+                  html {
+                    font-family: ${titillium.style.fontFamily};
+                  }
+                `}</style>
+                <WagmiProvider config={wagmiConfig}>
+                  <Layout>
+                    {isMaintenanceMode ? (
+                      <MaintenanceError />
+                    ) : (
+                      <Component {...pageProps} />
+                    )}
+                  </Layout>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </WagmiProvider>
+                <ToastContainer limit={1} />
+              </QueryParamProvider>
+            </QueryClientProvider>
+          </StarknetProvider>
         </AccountProvider>
       </PersistGate>
     </Provider>

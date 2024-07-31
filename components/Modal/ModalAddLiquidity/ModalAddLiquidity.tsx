@@ -20,6 +20,7 @@ import { ModalConfirmAddLiquidity } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -50,9 +51,11 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     useState<boolean>(false);
   const { account, wallet, slippage, bigNumberBalance, chainId } =
     useContext(AccountContext);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
@@ -64,6 +67,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
         data.nftID,
         inputNFT,
         slippage,
+        version,
       ],
       queryFn: async () => {
         const res = await erc1155TradingAdd(
@@ -72,7 +76,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
           data.nftAddress,
           data.nftID,
           +inputNFT,
-          slippage
+          slippage,
+          version
         );
         return res.data;
       },

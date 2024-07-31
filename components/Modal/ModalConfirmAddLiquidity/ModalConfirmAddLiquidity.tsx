@@ -13,6 +13,7 @@ import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
   isFetching: boolean;
@@ -64,9 +65,12 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     chainId,
   } = useContext(AccountContext);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const addLiquidity = async () => {
     if (!account) {

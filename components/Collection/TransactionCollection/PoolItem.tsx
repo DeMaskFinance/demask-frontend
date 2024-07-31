@@ -17,6 +17,7 @@ import getRewardDML from "@/libs/utils/getReward";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const PoolItem = ({ liquidity }: any) => {
   const { account, wallet, updateBalance, chainId } =
@@ -34,11 +35,13 @@ const PoolItem = ({ liquidity }: any) => {
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   const data = {
     reserveNFT: liquidity?.reserveNFT,

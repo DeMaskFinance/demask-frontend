@@ -27,11 +27,12 @@ const getMetadata = async (
   chainId: string | string[],
   nftAddress: string,
   nftID: string,
-  tokenAddress: string
+  tokenAddress: string,
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `metadata?chainId=${chainId}&nftAddress=${nftAddress}&id=${nftID}&tokenAddress=${tokenAddress}`
+      `metadata?chainId=${chainId}&nftAddress=${nftAddress}&id=${nftID}&tokenAddress=${tokenAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {

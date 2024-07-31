@@ -13,6 +13,7 @@ import getRewardDML from "@/libs/utils/getReward";
 import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -29,10 +30,12 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const [reward, setReward] = useState("");
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   useEffect(() => {
     const fetchDataReward = async () => {

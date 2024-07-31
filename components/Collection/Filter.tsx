@@ -57,7 +57,7 @@ const Filter: React.FC<FilterItemsProps> = ({ setIsFilter }) => {
   ];
   return (
     <div className="border-r border-shader_500">
-      <div className="w-[350px]  text-white overflow-y-scroll h-[calc(100vh-200px)] sticky top-8">
+      <div className="w-[350px]  text-white overflow-y-scroll h-[100vh] sticky top-8">
         <div className="flex justify-between items-center sticky top-4 bg-shader_900 z-10 px-4">
           <p className="text-primary_300 text-lg font-bold">Filters</p>
           <CgClose

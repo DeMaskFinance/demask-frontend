@@ -1,3 +1,4 @@
+import { version } from "@/libs/constants";
 import request from "../utils/httpRequest";
 
 const collectionListAllERC = async (
@@ -73,11 +74,12 @@ const collectionTypeCategory = async (
 
 const collectionListBuy = async (
   contractAddress: string | string[],
-  chainId: string | string[]
+  chainId: string | string[],
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?contractAddress=${contractAddress}&chainId=${chainId}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&chainId=${chainId}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -86,19 +88,21 @@ const collectionListBuy = async (
 };
 const fetchDataBuyNFTs = async (
   collectionAddress: string,
-  chain: string | string[]
+  chain: string | string[],
+  version: string
 ) => {
-  const data = await collectionListBuy(collectionAddress, chain);
+  const data = await collectionListBuy(collectionAddress, chain, version);
   return data.data;
 };
 const collectionListSell = async (
   userAddress: string,
   contractAddress: string | string[],
-  chainId: string | string[]
+  chainId: string | string[],
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -108,9 +112,15 @@ const collectionListSell = async (
 const fetchDataSellNFTs = async (
   collectionAddress: string,
   chain: string | string[],
-  account: string
+  account: string,
+  version: string
 ) => {
-  const data = await collectionListSell(account, collectionAddress, chain);
+  const data = await collectionListSell(
+    account,
+    collectionAddress,
+    chain,
+    version
+  );
   return data.data;
 };
 const collectionListUserService = async (

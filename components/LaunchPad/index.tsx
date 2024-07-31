@@ -3,9 +3,6 @@ import { NextSeo } from "next-seo";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SEO } from "../../next-seo.config";
 import TabQuery from "../NavChoice/TabQuery";
-import Image from "next/image";
-import { EtherIcon, RightIcon } from "../Icons";
-import { Button } from "../Buttons";
 import SliderLaunchPad from "./components/SliderLaunchPad";
 
 const updateMeta = {

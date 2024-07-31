@@ -11,6 +11,7 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const updateMeta = {
   ...SEO,
   title: "Trade",
@@ -22,18 +23,22 @@ const Swap: React.FC = () => {
   const [idNFT, setIdNFT] = useState<string>("");
   const { chainId } = useContext(AccountContext);
   const { slug } = router.query;
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress],
+    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress, version],
     queryFn: async () => {
       const res = await getMetadata(
         chainId,
         nftAddress.toLowerCase(),
         idNFT,
-        tokenAddress
+        tokenAddress,
+        version
       );
       return res;
     },
   });
+
   useEffect(() => {
     if (slug) {
       setNftAddress(slug[0]);

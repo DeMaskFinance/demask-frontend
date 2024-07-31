@@ -41,6 +41,8 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import Back from "../Common/Back";
 import Actions from "../Trade/Action";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import VersionTrade from "../Common/VersionTrade";
 
 export default function AddLiquidity() {
   const router = useRouter();
@@ -55,25 +57,19 @@ export default function AddLiquidity() {
     useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const {
-    account,
-    wallet,
-    chainId,
-    demask,
-    slippage,
-    bigNumberBalance,
-    balanceToken,
-  } = useContext(AccountContext);
+  const { account, wallet, chainId, slippage, bigNumberBalance, balanceToken } =
+    useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [checkExit, setCheckExit] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
   let inputNFTValue = useDebounce(inputNFT, 1000);
   useEffect(() => {
@@ -86,15 +82,16 @@ export default function AddLiquidity() {
       setIsSufficientToken(false);
     }
   }, [currency]);
-  usePreventUserFromErasingContent(checkExit);
+
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress],
+    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress, version],
     queryFn: async () => {
       const res = await getMetadata(
         chainId,
         nftAddress.toLowerCase(),
         idNFT,
-        tokenAddress
+        tokenAddress,
+        version
       );
       return res;
     },
@@ -109,6 +106,7 @@ export default function AddLiquidity() {
         idNFT,
         inputNFTValue,
         slippage,
+        version,
       ],
       queryFn: async () => {
         const res = await erc1155TradingAdd(
@@ -117,7 +115,8 @@ export default function AddLiquidity() {
           nftAddress,
           idNFT,
           +inputNFTValue,
-          slippage
+          slippage,
+          version
         );
         return res.data;
       },
@@ -168,7 +167,6 @@ export default function AddLiquidity() {
     } else {
       setIsSufficientNFT(false);
     }
-    // setActiveChoiceNFT("");
   };
   const handleGetToken = (values: NumberFormatValues) => {
     const { value } = values;
@@ -187,13 +185,6 @@ export default function AddLiquidity() {
       setIsInputNFT(true);
     }
   };
-  useEffect(() => {
-    if (inputNFT) {
-      setCheckExit(true);
-    } else {
-      setCheckExit(false);
-    }
-  }, [inputNFT]);
 
   const handleChoicePercent = (item: string) => {
     {
@@ -202,7 +193,6 @@ export default function AddLiquidity() {
           Math.floor((parseFloat(item) / 100) * +balanceNFT).toString()
         );
     }
-    // setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
 
@@ -212,9 +202,12 @@ export default function AddLiquidity() {
         <div className="">
           <div className="sticky top-16">
             <Back />
-            <h2 className="mt-4 text-xl font-bold text-primary_300">
-              Add Liquidity
-            </h2>
+            <div className="flex items-center mt-4 gap-x-2">
+              <h2 className=" text-xl font-bold text-primary_300">
+                Add Liquidity
+              </h2>
+              <VersionTrade />
+            </div>
           </div>
         </div>
         <Actions

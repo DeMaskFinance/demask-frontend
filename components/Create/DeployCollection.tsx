@@ -16,6 +16,7 @@ import { MonadIcon, SepoliaIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -34,9 +35,11 @@ const DeployCollection = () => {
   const [hash, setHash] = useState<string>("");
   const divRef = useRef<HTMLDivElement>(null);
   const { account, wallet, chainId } = useContext(AccountContext);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
 
   useEffect(() => {

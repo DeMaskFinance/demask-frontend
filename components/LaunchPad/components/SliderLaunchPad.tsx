@@ -31,6 +31,7 @@ const SliderLaunchPad = () => {
         pagination={{
           clickable: true,
         }}
+        loop={true}
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         onSlideChange={handleSlideChange}

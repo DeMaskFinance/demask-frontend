@@ -18,6 +18,7 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,37 +36,51 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const {
-    demask,
-    account,
-    wallet,
-    slippage,
-    chainId,
-    bigNumberBalance,
-    balanceToken,
-  } = useContext(AccountContext);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const { account, wallet, slippage, chainId, bigNumberBalance, balanceToken } =
+    useContext(AccountContext);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
+    version,
   ]);
-  const { data, isSuccess, isLoading, isFetching } = useQuery({
-    queryKey: ["collectionNFTSell", chainId, collectionAddress, account],
+  const { data, isSuccess, isLoading } = useQuery({
+    queryKey: [
+      "collectionNFTSell",
+      chainId,
+      collectionAddress,
+      account,
+      version,
+    ],
     queryFn: async () => {
-      const res = await fetchDataSellNFTs(collectionAddress, chainId, account);
+      const res = await fetchDataSellNFTs(
+        collectionAddress,
+        chainId,
+        account,
+        version
+      );
       return res;
     },
   });
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
-      queryKey: ["721TradingAdd", slippage, collectionAddress, chainId, idNFT],
+      queryKey: [
+        "721TradingAdd",
+        slippage,
+        collectionAddress,
+        chainId,
+        idNFT,
+        version,
+      ],
       queryFn: async () => {
         const res = await erc721TradingAdd(
           collectionAddress,
           chainId,
           idNFT.length,
-          slippage
+          slippage,
+          version
         );
         return res.data;
       },
