@@ -8,7 +8,6 @@ import {
   SecondRankIcon,
   ThirdRankIcon,
 } from "../Icons";
-import ModalDocument from "../Modal/ModalLength/ModalDocument";
 export const CardListLoading = () => {
   return (
     <div className="flex animate-pulse flex-col items-center justify-center px-2 h-[372px] border rounded-lg text-shader_700 mb-10  border-primary_400 shadow-[0px_8px_24px_0px_rgba(29,133,232,0.25)]">

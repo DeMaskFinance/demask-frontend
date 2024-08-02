@@ -1,10 +1,9 @@
-import { CgClose } from "react-icons/cg";
-import Wrapper from "../Wrapper";
 import { ErrorIcon, URLTransactionIcon } from "@/components/Icons";
-import { Button } from "@/components/Buttons";
-import { useContext } from "react";
 import AccountContext from "@/context/AccountContext";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { CgClose } from "react-icons/cg";
+import Wrapper from "../Wrapper";
 
 interface ModalErrorProps {
   isOpenError: boolean;

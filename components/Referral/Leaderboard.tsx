@@ -1,11 +1,9 @@
 import AccountContext from "@/context/AccountContext";
 import { referralLeaderboardUser } from "@/libs/service/referralService";
 import { useQuery } from "@tanstack/react-query";
-import React, { Fragment, useContext, useState } from "react";
-import { TableRowSkeleton } from "../Skeleton";
+import { Fragment, useContext, useState } from "react";
 import { AvatarCustom } from "../Avatars";
-import { Pagination, TablePagination } from "../Common/Pagination";
-import { ItemTableRank } from "../LeaderBoard/TableRank";
+import { Pagination } from "../Common/Pagination";
 import {
   LoadingIcon,
   RankGoldIcon,

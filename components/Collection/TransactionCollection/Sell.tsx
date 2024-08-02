@@ -1,6 +1,4 @@
 import { Button } from "@/components/Buttons";
-import FormatNumber from "@/components/Common/FormatNumber";
-import { EtherIcon, NFTIcon } from "@/components/Icons";
 import ModalSellNFT from "@/components/Modal/ModalSellNFT";
 import {
   ModalError,
@@ -9,25 +7,20 @@ import {
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
+import { StaticDetailSell } from "@/components/Trade/TradeTransaction/StaticDetail";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useAmountOutMin from "@/hooks/useAmountOutMin";
-import useDMLToken from "@/hooks/useDMLToken";
-import useFee from "@/hooks/useFee";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import useDebounce from "@/hooks/useDebounce";
+import { queryClient } from "@/libs/constants";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
-import ercContract from "@/libs/utils/erc/erc.contract";
+import { erc721TradingSell } from "@/libs/service/tradeService";
 import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { Fragment, useContext, useEffect, useState } from "react";
-import NFTGrid from "./NFTsGrids";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import useDebounce from "@/hooks/useDebounce";
-import divideByDecimal from "@/libs/utils/divideByDecimal";
-import { erc721TradingSell } from "@/libs/service/tradeService";
-import { StaticDetailSell } from "@/components/Trade/TradeTransaction/StaticDetail";
-import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
-import { queryClient } from "@/libs/constants";
+import { Fragment, useContext, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import NFTGrid from "./NFTsGrids";
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);

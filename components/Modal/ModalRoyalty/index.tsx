@@ -1,15 +1,14 @@
 import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
+import { queryClient } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
 import ercContract from "@/libs/utils/erc/erc.contract";
-import { useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
 import { toast } from "sonner";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import * as yup from "yup";
 import { ModalTransation } from "../ModalTransation";
-import { queryClient } from "@/libs/constants";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface ModalRoyaltyProps {
   data: any;
   onSuccess: () => void;

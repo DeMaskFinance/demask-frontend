@@ -1,17 +1,15 @@
-import React, { useContext, useState } from "react";
-import MyReferral from "./MyReferral";
-import Rewards from "./Rewards";
-import Others from "./Others";
-import Leaderboard from "./Leaderboard";
-import Image from "next/image";
-import TabQuery from "../NavChoice/TabQuery";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import Tippy from "@tippyjs/react/headless";
-import { BsCaretDownFill } from "react-icons/bs";
-import StaticTable from "./StaticTable";
-import ReferralUser from "./ReferralUser";
 import AccountContext from "@/context/AccountContext";
+import Image from "next/image";
+import { useContext, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SendIcon } from "../Icons";
+import TabQuery from "../NavChoice/TabQuery";
+import Leaderboard from "./Leaderboard";
+import MyReferral from "./MyReferral";
+import Others from "./Others";
+import ReferralUser from "./ReferralUser";
+import Rewards from "./Rewards";
+import StaticTable from "./StaticTable";
 const style = {
   btnWallet:
     "flex items-center h-10 hover:border-shader_600  pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",

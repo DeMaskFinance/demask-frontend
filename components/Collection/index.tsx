@@ -3,7 +3,7 @@ import AccountContext from "@/context/AccountContext";
 import * as collectionService from "@/libs/service/collectionService";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Classify from "../Profile/Inventory/Classify";
 import CollectionDetail from "./CollectionDetail";

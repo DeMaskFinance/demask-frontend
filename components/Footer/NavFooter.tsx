@@ -1,13 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
-import {
-  CreateIcon,
-  LaunchpadIcon,
-  PoolIcon,
-} from "../Icons/Mobile/IconMobile";
 import { CgClose } from "react-icons/cg";
+import { DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
+import { LaunchpadIcon, PoolIcon } from "../Icons/Mobile/IconMobile";
 
 const moreNav = [
   { id: 1, name: "Create", url: "/create" },

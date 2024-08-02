@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { SearchIcon } from "../Icons";
+import { useRef, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { SearchIcon } from "../Icons";
 const SearchInventory = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [searchCollection, setSearchCollection] = useQueryParam(

@@ -12,11 +12,7 @@ import {
   useState,
 } from "react";
 import { CgClose } from "react-icons/cg";
-import MediaNFT from "../Common/Media/MediaNFT";
 import { LoadingIcon, SearchIcon } from "../Icons";
-import Link from "next/link";
-import { MediaCollection } from "../Common/Media";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import TopCollection from "../Modal/ModalSearchCollection/TopCollection";
 import SearchResultItem from "./SearchResultItem";
 

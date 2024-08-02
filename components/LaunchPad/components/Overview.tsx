@@ -4,7 +4,6 @@ import {
   TwitterIcon,
   WebsiteIcon,
 } from "@/components/Icons";
-import { FiShare } from "react-icons/fi";
 import ShowMoreText from "react-show-more-text";
 const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
   const options: Intl.DateTimeFormatOptions = {

@@ -4,8 +4,6 @@ import AccountContext from "@/context/AccountContext";
 import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import "react-toastify/dist/ReactToastify.css";
-import "tippy.js/dist/tippy.css";
 
 const ModalSetting = () => {
   const { updateSlippage, updateTxDeadline, txDeadline, slippage } =

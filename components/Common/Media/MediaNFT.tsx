@@ -1,7 +1,6 @@
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
-import images from "@/public/images";
 import Image from "next/image";
-import React, { Fragment, Suspense, useEffect, useState } from "react";
+import React from "react";
 
 interface MediaNFTProps {
   data: any;

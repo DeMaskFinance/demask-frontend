@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-
 import { RightIcon, SortIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";

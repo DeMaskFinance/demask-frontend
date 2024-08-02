@@ -25,7 +25,7 @@ import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import useDebounce from "@/hooks/useDebounce";
-import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import { queryClient } from "@/libs/constants";
 import { getMetadata } from "@/libs/service/nftService";
 import { erc1155TradingAdd } from "@/libs/service/tradeService";
 import { replaceDot } from "@/libs/utils/formatComon";
@@ -38,11 +38,10 @@ import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FaAngleDown } from "react-icons/fa";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import Back from "../Common/Back";
-import Actions from "../Trade/Action";
-import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import Back from "../Common/Back";
 import VersionTrade from "../Common/VersionTrade";
+import Actions from "../Trade/Action";
 
 export default function AddLiquidity() {
   const router = useRouter();

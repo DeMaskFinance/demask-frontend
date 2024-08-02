@@ -75,6 +75,8 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
           </div>
           <div className="h-[212px]">
             <ResponsiveContainer width="100%" height="100%">
+              {/* 
+// @ts-ignore */}
               <BarChart
                 width={500}
                 height={300}
@@ -119,6 +121,8 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                     return "";
                   }}
                 />
+                {/* 
+              // @ts-ignore */}
                 <Bar dataKey="value" radius={[2, 2, 2, 2]}>
                   {chartVolume.map((_: any, index: number) => (
                     <Cell

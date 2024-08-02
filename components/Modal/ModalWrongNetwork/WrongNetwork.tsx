@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { WarningIcon } from "../../Icons";
 import Wrapper from "../Wrapper";
 

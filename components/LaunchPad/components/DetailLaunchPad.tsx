@@ -1,27 +1,22 @@
-import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import { BackgroundDefault } from "@/components/Backgrounds";
 import Back from "@/components/Common/Back";
+import { RightIcon } from "@/components/Icons";
 import { ModalError } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
+import SwiperCustom from "@/components/SwiperCustom";
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
 import { LaunchPadAPI } from "@/libs/service/launchpadService";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import { useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { SwiperSlide } from "swiper/react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Overview from "./Overview";
-import Team from "./Team";
-import SwiperCustom from "@/components/SwiperCustom";
-import { SwiperSlide } from "swiper/react";
-import { EtherIcon, RightIcon } from "@/components/Icons";
-import { Button } from "@/components/Buttons";
 import SaleLaunchPad from "./SaleLaunchPad";
+import Team from "./Team";
 
 export default function DetailLaunchPad() {
   const [tokenAddress, setTokenAddress] = useState<string>("");

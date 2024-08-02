@@ -1,15 +1,12 @@
-import abiDML from "@/abi/abiDML.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
-import { getProvider } from "@/libs/connection/getProvider";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
 import ercContract721 from "@/libs/utils/erc/erc721.contract";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQueryClient } from "@tanstack/react-query";
-import BigNumber from "bignumber.js";
-import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
@@ -17,7 +14,6 @@ import { CgClose } from "react-icons/cg";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
-import handleApproveDML from "@/libs/utils/handleApproveDML";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
   dataTradingRemove: DataRemove;

@@ -16,7 +16,6 @@ import { AvatarCustom } from "../Avatars";
 import BackgroundParticles from "../Backgrounds/BackGroundParticles";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
-import Maintenance from "../Common/Maintenance";
 import {
   EditIcon,
   EtherIcon,

@@ -1,8 +1,7 @@
-import React, { FunctionComponent } from "react";
-import { createAvatar } from "@dicebear/core";
-import { bottts, identicon, pixelArt } from "@dicebear/collection";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { identicon } from "@dicebear/collection";
+import { createAvatar } from "@dicebear/core";
+import { FunctionComponent } from "react";
 
 interface AvatarProps {
   size: number;

@@ -22,6 +22,6 @@ const titillium = Titillium_Web({
   subsets: ["latin"],
   weight: ["200", "300", "400", "900", "600", "700"],
   display: "swap",
-  adjustFontFallback: false,
+  adjustFontFallback: true,
 });
 export { queryClient, metadata, titillium };

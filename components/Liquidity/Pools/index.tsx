@@ -20,7 +20,6 @@ const Pools = () => {
     chainId,
     version,
   ]);
-  console.log(contracts);
 
   const router = useRouter();
 

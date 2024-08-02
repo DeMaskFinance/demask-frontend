@@ -1,14 +1,21 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import { briefDocument } from "@/libs/utils/formatComon";
 import { selectProfile } from "@/store/profileSlice";
-import Tippy from "@tippyjs/react/headless";
-import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { BsCaretDownFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { AvatarCustom } from "../Avatars";
+import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import {
   EditIcon,
@@ -24,23 +31,9 @@ import History from "./Activity";
 import Created from "./Inventory/Created";
 import Items from "./Inventory/Items";
 import Pools from "./Pools";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "../Buttons";
-import { briefDocument } from "@/libs/utils/formatComon";
-const style = {
-  btnWallet:
-    "flex items-center h-10 hover:border-shader_600 pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
-};
+
 const Profile = () => {
-  const { account, chainId } = useContext(AccountContext);
+  const { account } = useContext(AccountContext);
   const [tab, setTab] = useQueryParam("tab", withDefault(StringParam, "items"));
   const [visible, setVisible] = useState(true);
   const { profile } = useSelector(selectProfile);

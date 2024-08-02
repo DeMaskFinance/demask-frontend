@@ -1,12 +1,12 @@
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useQuery } from "@tanstack/react-query";
-import { format, parseISO, subDays } from "date-fns";
-import React, { useState, useEffect, useContext } from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import ChartLoading from "./ChartLoading";
-import formatNumber from "@/libs/utils/formatNumer";
 import AccountContext from "@/context/AccountContext";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import formatNumber from "@/libs/utils/formatNumer";
+import { useQuery } from "@tanstack/react-query";
+import { format, parseISO } from "date-fns";
+import React, { useContext, useEffect, useState } from "react";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { EtherIcon } from "../Icons";
+import ChartLoading from "./ChartLoading";
 
 interface ChartTVLProps {}
 
@@ -85,6 +85,8 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
           </div>
           <div className="h-[212px]">
             <ResponsiveContainer width="100%" height="100%">
+              {/* 
+// @ts-ignore */}
               <AreaChart
                 data={chartData}
                 margin={{
@@ -118,17 +120,15 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
                     return "";
                   }}
                 />
-                {/* <YAxis
-     dataKey="value"
-     tickLine={false}
-     axisLine={false}
-     tickCount={6}
-     tickFormatter={(number) => `$${number.toFixed(2)}`}
-   /> */}
+
+                {/* 
+// @ts-ignore */}
                 <Tooltip
                   content={<CustomTooltip />}
                   cursor={{ strokeDasharray: "4 4" }}
                 />
+                {/* 
+// @ts-ignore */}
                 <Area
                   type="monotone"
                   dataKey="value"

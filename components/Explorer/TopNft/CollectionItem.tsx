@@ -1,18 +1,15 @@
-import { AvatarCustom } from "@/components/Avatars";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { MediaCollection } from "@/components/Common/Media";
 import { EtherIcon, LoadingIcon } from "@/components/Icons";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import ModalNumber from "@/components/Modal/ModalLength/ModalNumber";
-import AccountContext from "@/context/AccountContext";
 import {
   formatLinkIPFS,
   formatPercent,
   formatTypeChain,
 } from "@/libs/utils/formatComon";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React from "react";
 interface CollectionItemProps {
   data: any;
   isFetching: boolean;

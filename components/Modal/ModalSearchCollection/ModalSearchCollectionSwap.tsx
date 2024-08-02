@@ -5,7 +5,6 @@ import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
 import { searchCollectionService } from "@/libs/service/searchService";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { memo, useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import TopCollection from "./TopCollection";

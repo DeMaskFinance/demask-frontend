@@ -4,7 +4,6 @@ import MediaNFT from "@/components/Common/Media/MediaNFT";
 import {
   EtherIcon,
   EyeIcon,
-  LeftIcon,
   PlusIcon,
   RemoveIcon,
   SwapIcon,
@@ -20,15 +19,10 @@ import {
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import SkeletonPoolDetail from "@/components/Skeleton/SkeletonPoolDetail";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
+import { queryClient } from "@/libs/constants";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
@@ -38,14 +32,11 @@ import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import { BsClock } from "react-icons/bs";
-import "react-toastify/dist/ReactToastify.css";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import ChartNoTransfers from "../Charts/ChartNoTransfers";
+import Back from "../Common/Back";
 import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
-import Back from "../Common/Back";
-import ChartNoTransfers from "../Charts/ChartNoTransfers";
-import { queryClient } from "@/libs/constants";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
