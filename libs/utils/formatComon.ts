@@ -45,6 +45,22 @@ const formatDate = (timestamp: number): string => {
 
   return formattedDate;
 };
+function formatTimestamp(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Ho_Chi_Minh", // GMT+7
+    hour12: true,
+  };
+
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+
+  return `${formattedDate} GMT+7`;
+}
 const formatTypeChain = (type: String): String => {
   if (type === "erc1155") {
     return "ERC-1155";
@@ -63,6 +79,7 @@ export {
   formatPercent,
   formatLinkIPFS,
   formatDate,
+  formatTimestamp,
   formatTypeChain,
   briefDocument,
   replaceDot,

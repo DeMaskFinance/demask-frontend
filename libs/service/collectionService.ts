@@ -1,4 +1,3 @@
-import { version } from "@/libs/constants";
 import request from "../utils/httpRequest";
 
 const collectionListAllERC = async (

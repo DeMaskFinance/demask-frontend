@@ -7,12 +7,12 @@ import { ModalTransation } from "../ModalTransation";
 
 interface ModalMintLaunchPadProps {
   inputNFT: number;
-  // data: LaunchpadData;
+  data: LaunchpadData;
 }
 
 const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   inputNFT,
-  // data,
+  data,
 }) => {
   const [isOpenTransation, setIsOpenTransaction] = useState(false);
   return (
@@ -39,7 +39,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       <div className="w-full h-[1px] bg-shader_500 mb-4"></div>
       <div className="flex justify-between items-center">
         <p className="title_modal">Mint Quantity</p>
-        <InputCount />
+        {/* <InputCount /> */}
       </div>
       <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 mt-4">
         <div className="text-primary_100">Total Pay</div>

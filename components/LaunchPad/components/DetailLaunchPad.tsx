@@ -1,27 +1,22 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
 import Back from "@/components/Common/Back";
+import { MediaNFT } from "@/components/Common/Media";
 import { RightIcon } from "@/components/Icons";
 import { ModalError } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
-import SwiperCustom from "@/components/SwiperCustom";
 import AccountContext from "@/context/AccountContext";
+import { LaunchpadService } from "@/libs/service/launchpadService";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { SwiperSlide } from "swiper/react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Overview from "./Overview";
 import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
-import { LaunchpadService } from "@/libs/service/launchpadService";
-import { MediaNFT } from "@/components/Common/Media";
 
 export default function DetailLaunchPad() {
-  const [inputNFT, setInpuNFT] = useState<any>(1);
-  const [amount, setAmount] = useState<string>("");
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
@@ -76,12 +71,18 @@ export default function DetailLaunchPad() {
             isSuccess &&
             data && (
               <>
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col md:flex-row gap-6 mb-14">
                   <div className="flex-1 rounded-lg overflow-hidden h-fit">
                     <MediaNFT data={data} isControls />
                   </div>
                   <SaleLaunchPad data={data} />
                 </div>
+                <TabQuery
+                  TABS={TABS}
+                  initialItem="overview"
+                  indexChoice={indexChoice}
+                  isDefault={false}
+                />
                 <div className="mt-5 lg:pb-0">
                   {selectedTab ? selectedTab.panel() : null}
                 </div>
@@ -102,14 +103,6 @@ export default function DetailLaunchPad() {
           type="Claim NFT Failed"
           setIsOpenError={setIsOpenError}
         />
-        <div className="my-14  ">
-          <TabQuery
-            TABS={TABS}
-            initialItem="overview"
-            indexChoice={indexChoice}
-            isDefault={false}
-          />
-        </div>
       </BackgroundDefault>
     </div>
   );

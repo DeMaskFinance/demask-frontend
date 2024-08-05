@@ -1,8 +1,9 @@
 interface Socials {
-    facebook: string;
-    twitter: string;
-    telegram: string;
-    discord?: string;
-    website: string;
-    github?: string;
-  }
+  facebook?: string;
+  twitter: string;
+  telegram: string;
+  discord?: string;
+  website: string;
+  github?: string;
+  networkLink?: string;
+}

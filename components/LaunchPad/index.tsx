@@ -12,10 +12,7 @@ const updateMeta = {
 };
 
 export default function Launchpad() {
-  const [tab, setTab] = useQueryParam(
-    "tab",
-    withDefault(StringParam, "live_coming")
-  );
+  const [tab] = useQueryParam("tab", withDefault(StringParam, "live"));
   const listTab = [
     {
       key: "live",

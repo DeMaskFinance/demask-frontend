@@ -20,7 +20,7 @@ import NFTGrid from "./NFTsGrids";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Buy = () => {
-  const { account, chainId, demask, slippage, bigNumberBalance } =
+  const { account, chainId, slippage, bigNumberBalance } =
     useContext(AccountContext);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -48,30 +48,27 @@ const Buy = () => {
     version,
   ]);
 
-  const {
-    isLoading: isLoading721Trading,
-    data: data721Trading,
-    isFetching: isFetching721Trading,
-  } = useQuery<DataBuy>({
-    queryKey: [
-      "721TradingBuy",
-      chainId,
-      collectionAddress,
-      slippage,
-      debouncedIdNFT,
-      version,
-    ],
-    queryFn: async () => {
-      const res = await erc721TradingBuy(
-        collectionAddress,
+  const { data: data721Trading, isFetching: isFetching721Trading } =
+    useQuery<DataBuy>({
+      queryKey: [
+        "721TradingBuy",
         chainId,
-        debouncedIdNFT.length,
+        collectionAddress,
         slippage,
-        version
-      );
-      return res.data;
-    },
-  });
+        debouncedIdNFT,
+        version,
+      ],
+      queryFn: async () => {
+        const res = await erc721TradingBuy(
+          collectionAddress,
+          chainId,
+          debouncedIdNFT.length,
+          slippage,
+          version
+        );
+        return res.data;
+      },
+    });
 
   useEffect(() => {
     if (Number(data721Trading?.maxAmountDecimals) > Number(bigNumberBalance)) {
