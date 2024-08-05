@@ -6,6 +6,9 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 interface StageProps {
   keyProp: number;
 }
+interface SaleLaunchPadProps {
+  data: LaunchpadData;
+}
 const Status = () => {
   return (
     <div className="border text-shader_200 bg-shader_400 border-shader_200 h-6 px-2 rounded-lg">
@@ -38,13 +41,13 @@ const Stage: React.FC<StageProps> = ({ keyProp }) => {
     </div>
   );
 };
-const SaleLaunchPad = () => {
+const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
       <div className="p-4 bg_main">
         <div className="flex gap-x-2">
           <Button third>ETH</Button>
-          <p className="text-2xl font-bold">Toshi in Lisbon</p>
+          <p className="text-2xl font-bold">{data.metadata.name}</p>
         </div>
         <div className="h-[1px] w-full bg-shader_500 my-4"></div>
         <div className="relative">

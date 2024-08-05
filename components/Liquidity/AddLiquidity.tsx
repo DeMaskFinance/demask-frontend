@@ -201,14 +201,12 @@ export default function AddLiquidity() {
         <div className="">
           <div className="sticky top-16">
             <Back />
-            <div className="flex items-center mt-4 gap-x-2">
-              <h2 className=" text-xl font-bold text-primary_300">
-                Add Liquidity
-              </h2>
-              <VersionTrade />
-            </div>
+            <h2 className=" text-xl font-bold text-primary_300 mt-4">
+              Add Liquidity
+            </h2>
           </div>
         </div>
+
         <Actions
           IconSwap={
             <SwapIcon
@@ -227,6 +225,9 @@ export default function AddLiquidity() {
       ) : isSuccess ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
           <div className="order-2">
+            <div className="my-4">
+              <VersionTrade width="full" />
+            </div>
             <div>
               <p className="title_label">
                 <span className="">Choose Collection</span>

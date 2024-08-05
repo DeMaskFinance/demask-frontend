@@ -4,29 +4,29 @@ import {
   BgGradient,
   EtherIcon,
   ImgIcon,
-  PoolIcon,
-  RefetchIcon,
-  SettingIcon,
   SwapIcon,
 } from "@/components/Icons";
 import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
-import ModalSetting from "@/components/Modal/ModalSetting";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { TabGroups } from "@/components/NavChoice";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import Tippy from "@tippyjs/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import Actions from "./Action";
+import { queryClient } from "@/libs/constants";
 export default function TradeDefault() {
   const router = useRouter();
-  const { account, demask, slippage } = useContext(AccountContext);
+  const { account, demask, slippage, chainId } = useContext(AccountContext);
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("25%");
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    "v2",
+  ]);
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
@@ -51,7 +51,7 @@ export default function TradeDefault() {
                 />
               }
               contentTrade="Swap"
-              link={`/trade/erc1155/${demask.CREATOR}/${demask.NATIVE_ADDRESS}/${demask.IDNFT}`}
+              link={`/trade/erc1155/${contracts?.CREATED_NFT_ADDRESS}/${contracts?.WETH_ADDRESS}/${demask.IDNFT}`}
               refetch={router.refresh}
             />
           </div>

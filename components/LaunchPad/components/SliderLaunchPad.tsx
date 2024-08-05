@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 const SliderLaunchPad = () => {
   const [animate, setAnimate] = useState(false);
 
-  const handleSlideChange = () => {
+  const handleSlideChange = (swiper: any) => {
     setAnimate(true);
     setTimeout(() => {
       setAnimate(false);
@@ -30,6 +30,10 @@ const SliderLaunchPad = () => {
         }}
         pagination={{
           clickable: true,
+          renderBullet: (index, className) =>
+            `<span class="${className}">
+              <span class="swiper-pagination-bullet-active-progress"></span>
+            </span>`,
         }}
         loop={true}
         navigation={true}

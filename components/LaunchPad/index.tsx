@@ -4,6 +4,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { SEO } from "../../next-seo.config";
 import TabQuery from "../NavChoice/TabQuery";
 import SliderLaunchPad from "./components/SliderLaunchPad";
+import { LaunchpadStatus } from "@/enums/launchpad-status";
 
 const updateMeta = {
   ...SEO,
@@ -17,15 +18,15 @@ export default function Launchpad() {
   );
   const listTab = [
     {
-      key: "live_coming",
+      key: "live",
       title: "Live & Coming Soon",
-      component: <TabLaunchPad query={"Upcoming"} />,
+      component: <TabLaunchPad query={LaunchpadStatus.Live} />,
       index: 0,
     },
     {
-      key: "finished",
+      key: "ended",
       title: "Finished",
-      component: <TabLaunchPad query={"Active"} />,
+      component: <TabLaunchPad query={LaunchpadStatus.Ended} />,
       index: 1,
     },
   ];

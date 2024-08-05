@@ -1,16 +1,21 @@
+import { LaunchpadStatus } from "@/enums/launchpad-status";
 import request from "../utils/httpRequest";
 
-export const LaunchPadAPI = async (
-  tokenAddress: string,
-  chainId:string,
-  account:string,
-) => {
-  try {
+export const LaunchpadService = {
+  LaunchPadInfor: async (launchpadAddress: string, chainId: string) => {
     const res = await request.get(
-      `launchpad-detail?chainId=${chainId}&launchpad=${tokenAddress}&userAddress=${account}`
+      `launchpad-info?chainId=${chainId}&launchpadAddress=${launchpadAddress}&unit=1&page=1&limit=10`
     );
     return res.data;
-  } catch (error) {
-    console.error(error);
-  }
+  },
+  LaunchpadList: async (
+    chainId: string,
+    status: LaunchpadStatus,
+    page: number
+  ) => {
+    const res = await request.get(
+      `launchpad-list?chainId=${chainId}&status=${status}&page=${page}&limit=20`
+    );
+    return res.data;
+  },
 };

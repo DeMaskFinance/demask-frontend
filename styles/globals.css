@@ -185,7 +185,45 @@ body {
   right: -23px;
 }
 .swiper-pagination-bullet-active {
-  background-color: white !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  z-index: 10 !important;
+  overflow: hidden !important;
+}
+.swiper-pagination-bullet {
+  position: relative;
+}
+.swiper-pagination-bullet-active .swiper-pagination-bullet-active-progress {
+  display: block;
+  animation: PaginationAnimation 5s linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 8px;
+  z-index: 0;
+  content: "";
+}
+
+/* .swiper-pagination-bullet .swiper-pagination-bullet-active-progress {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 3px;
+  background: #363c42;
+  content: "";
+} */
+
+@keyframes PaginationAnimation {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
 }
 @media (min-width: 640px) {
   .swiper-pagination-bullet,

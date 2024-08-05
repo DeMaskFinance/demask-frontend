@@ -7,8 +7,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-
-const VersionTrade = () => {
+interface VersionTradeProps {
+  width?: string;
+}
+const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
   const [version, setVersion] = useQueryParam(
     "version",
     withDefault(StringParam, "v2")
@@ -29,8 +31,10 @@ const VersionTrade = () => {
   };
   return (
     <Select value={version} onValueChange={handleValueChange}>
-      <SelectTrigger className="w-[180px] border-shader_400 text-primary_400 font-semibold">
-        <SelectValue placeholder="Select a fruit" />
+      <SelectTrigger
+        className={`border-shader_400 text-primary_400 font-semibold ${width}`}
+      >
+        <SelectValue placeholder="Select a version" />
       </SelectTrigger>
       <SelectContent className="text-white bg_main">
         <SelectGroup>

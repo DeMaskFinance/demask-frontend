@@ -3,7 +3,7 @@ import WithAuth from "@/components/Common/WithAuth";
 import MintNFT from "@/components/Create/MintNFT";
 import { LeftIcon, NoteIcon, PlusIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
-import { Category } from "@/libs/constants";
+import { Category, queryClient } from "@/libs/constants";
 import { collectionListUser } from "@/libs/service/collectionService";
 import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
@@ -53,6 +53,11 @@ export default function Creator() {
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
   const [isOpenCollection, setIsOpenCollection] = useState<boolean>(false);
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    "v2",
+  ]);
   const collectionList = [
     {
       name: "DEMASK COLLECTION",
@@ -63,7 +68,7 @@ export default function Creator() {
           alt="img_collection"
         />
       ),
-      collectionAddress: demask.CREATOR,
+      collectionAddress: contracts?.CREATED_NFT_ADDRESS ?? "",
     },
   ];
   const { data, isLoading, isSuccess } = useQuery({

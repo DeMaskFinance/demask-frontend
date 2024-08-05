@@ -6,7 +6,6 @@ import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import SwiperCustom from "@/components/SwiperCustom";
 import AccountContext from "@/context/AccountContext";
-import { LaunchPadAPI } from "@/libs/service/launchpadService";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -17,9 +16,10 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Overview from "./Overview";
 import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
+import { LaunchpadService } from "@/libs/service/launchpadService";
+import { MediaNFT } from "@/components/Common/Media";
 
 export default function DetailLaunchPad() {
-  const [tokenAddress, setTokenAddress] = useState<string>("");
   const [inputNFT, setInpuNFT] = useState<any>(1);
   const [amount, setAmount] = useState<string>("");
   const [hash, setHash] = useState<string>("");
@@ -28,34 +28,29 @@ export default function DetailLaunchPad() {
   const { account, chainId } = useContext(AccountContext);
   const router = useRouter();
   const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
-  const { detail } = router.query;
+  const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
 
-  useEffect(() => {
-    if (detail) {
-      setTokenAddress(detail[0]);
-    }
-  }, [detail]);
-  const { isLoading, data, isRefetching, isSuccess, refetch } = useQuery({
-    queryKey: ["launchPad", tokenAddress, chainId, account],
+  const { isLoading, data, isSuccess } = useQuery<LaunchpadData>({
+    queryKey: ["launchPad", launchpadAddress, chainId],
     queryFn: async () => {
-      const res = await LaunchPadAPI(
-        tokenAddress.toLocaleLowerCase(),
-        chainId,
-        account
+      const res = await LaunchpadService.LaunchPadInfor(
+        launchpadAddress.toLocaleLowerCase(),
+        chainId
       );
-      return res;
+      return res.data;
     },
   });
+  console.log(data);
 
   const TABS = [
     {
       title: "Overview",
-      panel: () => <Overview data={data} />,
+      panel: () => <Overview data={data!} />,
       key: "overview",
     },
     {
       title: "Team",
-      panel: () => <Team data={data} />,
+      panel: () => <Team data={data!} />,
       key: "team",
     },
   ];
@@ -73,157 +68,28 @@ export default function DetailLaunchPad() {
               <RightIcon width={16} height={16} />
             </div>
           </div>
-          {/* {isLoading ? (
-            <div className="h-[600px]">
-              <div className="flex gap-8">
-                <div className="h-[600px] bg-slate-700  lg:w-full animate-pulse rounded-lg"></div>
-              </div>
+          {isLoading ? (
+            <div>
+              <BiLoaderAlt className="animate-spin text-primary_400" />
             </div>
           ) : (
+            isSuccess &&
             data && (
-              <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex-1">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="max-w-[595px] max-h-[595px] w-full"
-                    alt="img_launchpad"
-                  />
-                  <div className="mt-4 ">
-                    <SwiperCustom slidesPerView="auto">
-                      <SwiperSlide className="swiper-item">
-                        <Image
-                          src="/images/test.png"
-                          width={595}
-                          height={595}
-                          className="w-[136px] h-[136px]"
-                          alt="img_launchpad"
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide className="swiper-item">
-                        <Image
-                          src="/images/test.png"
-                          width={595}
-                          height={595}
-                          className="w-[136px] h-[136px]"
-                          alt="img_launchpad"
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide className="swiper-item">
-                        <Image
-                          src="/images/test.png"
-                          width={595}
-                          height={595}
-                          className="w-[136px] h-[136px]"
-                          alt="img_launchpad"
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide className="swiper-item">
-                        <Image
-                          src="/images/test.png"
-                          width={595}
-                          height={595}
-                          className="w-[136px] h-[136px]"
-                          alt="img_launchpad"
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide className="swiper-item">
-                        <Image
-                          src="/images/test.png"
-                          width={595}
-                          height={595}
-                          className="w-[136px] h-[136px]"
-                          alt="img_launchpad"
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide className="swiper-item">
-                        <Image
-                          src="/images/test.png"
-                          width={595}
-                          height={595}
-                          className="w-[136px] h-[136px]"
-                          alt="img_launchpad"
-                        />
-                      </SwiperSlide>
-                    </SwiperCustom>
+              <>
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-1 rounded-lg overflow-hidden h-fit">
+                    <MediaNFT data={data} isControls />
                   </div>
+                  <SaleLaunchPad data={data} />
                 </div>
-                <SaleLaunchPad />
-              </div>
+                <div className="mt-5 lg:pb-0">
+                  {selectedTab ? selectedTab.panel() : null}
+                </div>
+              </>
             )
-          )} */}
+          )}
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1">
-            <Image
-              src="/images/test.png"
-              width={595}
-              height={595}
-              className="max-w-[595px] max-h-[595px] w-full"
-              alt="img_launchpad"
-            />
-            <div className="mt-4 ">
-              <SwiperCustom slidesPerView="auto">
-                <SwiperSlide className="swiper-item">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="w-[136px] h-[136px]"
-                    alt="img_launchpad"
-                  />
-                </SwiperSlide>
-                <SwiperSlide className="swiper-item">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="w-[136px] h-[136px]"
-                    alt="img_launchpad"
-                  />
-                </SwiperSlide>
-                <SwiperSlide className="swiper-item">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="w-[136px] h-[136px]"
-                    alt="img_launchpad"
-                  />
-                </SwiperSlide>
-                <SwiperSlide className="swiper-item">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="w-[136px] h-[136px]"
-                    alt="img_launchpad"
-                  />
-                </SwiperSlide>
-                <SwiperSlide className="swiper-item">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="w-[136px] h-[136px]"
-                    alt="img_launchpad"
-                  />
-                </SwiperSlide>
-                <SwiperSlide className="swiper-item">
-                  <Image
-                    src="/images/test.png"
-                    width={595}
-                    height={595}
-                    className="w-[136px] h-[136px]"
-                    alt="img_launchpad"
-                  />
-                </SwiperSlide>
-              </SwiperCustom>
-            </div>
-          </div>
-          <SaleLaunchPad />
-        </div>
+
         <ModalSuccess
           isOpenSuccess={isOpenSuccess}
           transactionHash={hash}
@@ -243,18 +109,6 @@ export default function DetailLaunchPad() {
             indexChoice={indexChoice}
             isDefault={false}
           />
-          {isLoading ? (
-            <div>
-              <BiLoaderAlt className="animate-spin text-primary_400" />
-            </div>
-          ) : (
-            isSuccess &&
-            data && (
-              <div className="mt-5 lg:pb-0">
-                {selectedTab ? selectedTab.panel() : null}
-              </div>
-            )
-          )}
         </div>
       </BackgroundDefault>
     </div>

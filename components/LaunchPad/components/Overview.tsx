@@ -28,8 +28,8 @@ const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
     <div>
       {data && (
         <div className="text-sm text-shader_200 ">
-          <p className="text-white text-2xl font-bold">Toshi in Lisbon</p>
-          <div className="flex gap-x-2 my-4">
+          <p className="text-white text-2xl font-bold">{data.metadata.name}</p>
+          {/* <div className="flex gap-x-2 my-4">
             <a
               href={`https://twitter.com/${data?.launchpadInfo?.twitter}`}
               rel="noreferrer noopener"
@@ -58,7 +58,7 @@ const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
             >
               <TeleIcon width={24} height={24} />
             </a>
-          </div>
+          </div> */}
           {/* <p>{data?.metadata?.description}</p> */}
           <ShowMoreText
             lines={4}
