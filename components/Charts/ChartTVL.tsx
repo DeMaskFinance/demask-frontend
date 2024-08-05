@@ -1,27 +1,32 @@
-import { categoryAPI } from "@/libs/service/categoriesChartService";
-import { useQuery } from "@tanstack/react-query";
-import { format, parseISO, subDays } from "date-fns";
-import React, { useState, useEffect, useContext } from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import ChartLoading from "./ChartLoading";
-import formatNumber from "@/libs/utils/formatNumer";
 import AccountContext from "@/context/AccountContext";
+import { categoryAPI } from "@/libs/service/categoriesChartService";
+import formatNumber from "@/libs/utils/formatNumer";
+import { useQuery } from "@tanstack/react-query";
+import { format, parseISO } from "date-fns";
+import React, { useContext, useEffect, useState } from "react";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import { EtherIcon } from "../Icons";
+import ChartLoading from "./ChartLoading";
 
-interface ChartTVLProps { }
+interface ChartTVLProps {}
 
 const ChartTVL: React.FC<ChartTVLProps> = () => {
-  const { chainId } = useContext(AccountContext);;
-  const { data: Chart, isLoading } = useQuery({
+  const { chainId } = useContext(AccountContext);
+  const {
+    data: Chart,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["chart", chainId],
     queryFn: async () => {
-      const res = await categoryAPI(`v2/tvlChart?chainId=${chainId}&intervalDate=30`);
-      return res;
+      const res = await categoryAPI(`tvlChart?chainId=${chainId}`);
+      return res.chartData;
     },
   });
 
   const chartData = Chart?.map((dataPoint: any) => ({
     date: dataPoint.date,
-    value: dataPoint.tvlInDay,
+    value: Number(dataPoint.dailyTVL),
   }));
 
   const lastData = chartData && chartData[chartData.length - 1];
@@ -39,7 +44,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
   }, [lastData, hasInitialSetting, chainId]);
   useEffect(() => {
     setHasInitialSetting(!true);
-  }, [chainId])
+  }, [chainId]);
 
   const handleMouseMove = (event: any) => {
     if (event && event.activePayload && event.activePayload.length) {
@@ -59,83 +64,81 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
   };
 
   return (
-    <div>
-      {
-        Chart && (
-          <div className="h-full p-6 rounded-lg lg:shadow-chart">
-            <div className="mb-2 text-dark1">
-              <p className="font-medium ">TVL</p>
-              {activeData && (
-                <p className="my-2 text-2xl font-medium text-dark0">
-                  ${formatNumber(activeData?.toFixed(2))}
+    <div className="h-[354px] p-6 border rounded-lg bg_main">
+      {isLoading ? (
+        <ChartLoading />
+      ) : (
+        <div>
+          <div className="mb-2 text-dark1 ">
+            <p className="title text-shader_100">Demask TVL</p>
+            {activeData && (
+              <div className="flex items-center text-2xl font-bold text-white gap-x-1">
+                {formatNumber(Number(activeData).toFixed(2))}
+                <p>
+                  <EtherIcon width={18} height={18} />
                 </p>
-              )}
-              <p className="">
-                {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
-              </p>
-            </div>
-            <div className="h-[212px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={chartData}
-                  margin={{
-                    top: 10,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                  }}
-                  onMouseMove={handleMouseMove}
-                  onMouseLeave={() => {
-                    setActiveData(lastData.value);
-                    setActiveDate(lastData.date);
-                  }}
-                >
-                  <defs>
-                    <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="30%" stopColor="#A398FF" stopOpacity={1.0} />
-                      <stop offset="100%" stopColor="#D9D9D9" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    dataKey="date"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#B2B2B2" }}
-                    tickFormatter={(str) => {
-                      const date = parseISO(str);
-                      if (date.getDate() % 3 === 0) {
-                        return format(date, "d");
-                      }
-                      return "";
-                    }}
-                  />
-                  {/* <YAxis
-              dataKey="value"
-              tickLine={false}
-              axisLine={false}
-              tickCount={6}
-              tickFormatter={(number) => `$${number.toFixed(2)}`}
-            /> */}
-                  <Tooltip
-                    content={<CustomTooltip />}
-                    cursor={{ strokeDasharray: "4 4" }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#A398FF"
-                    strokeWidth="2"
-                    fill="url(#color)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+              </div>
+            )}
+            <p className="text-sm text-primary_300">
+              {activeDate && format(parseISO(activeDate), "MMM d, yyyy")} (UTC)
+            </p>
           </div>
-        )
-      }
-      {isLoading && (
-        <div className="h-full rounded-lg shadow-chart">
-          <ChartLoading />
+          <div className="h-[212px]">
+            <ResponsiveContainer width="100%" height="100%">
+              {/* 
+// @ts-ignore */}
+              <AreaChart
+                data={chartData}
+                margin={{
+                  top: 10,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => {
+                  setActiveData(lastData.value);
+                  setActiveDate(lastData.date);
+                }}
+              >
+                <defs>
+                  <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="30%" stopColor="#AD97FE" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#AD97FE" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis
+                  dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#CFD9E9" }}
+                  tickFormatter={(str) => {
+                    const date = parseISO(str);
+                    if (date.getDate() % 3 === 0) {
+                      return format(date, "d");
+                    }
+                    return "";
+                  }}
+                />
+
+                {/* 
+// @ts-ignore */}
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ strokeDasharray: "4 4" }}
+                />
+                {/* 
+// @ts-ignore */}
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#AD97FE"
+                  strokeWidth="2"
+                  fill="url(#color)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       )}
     </div>

@@ -9,13 +9,12 @@ const useAllowanceDML = (
   isApprovedDML: boolean,
   inputLiquidity: string,
   routerAddress: string
-  // rpc: string
 ) => {
   const [currentAllowance, setCurrentAllowance] = useState<string | null>(null);
   useEffect(() => {
     const getAllowance = async () => {
       if (account && dmlAddress && wallet) {
-        const providerChoice = getProvider(wallet);
+        const providerChoice = await getProvider(wallet);
         const provider = new ethers.providers.Web3Provider(providerChoice);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(dmlAddress, abiDML, signer);

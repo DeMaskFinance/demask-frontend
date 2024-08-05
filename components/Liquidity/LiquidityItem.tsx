@@ -1,57 +1,193 @@
 import { useContext, useEffect, useState } from "react";
-
 import AccountContext from "@/context/AccountContext";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import formatNumber from "@/libs/utils/formatNumer";
-import viewReward from "@/libs/utils/viewReward";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import Link from "next/link";
+import { Button } from "../Buttons";
+import FormatNumber from "../Common/FormatNumber";
+import MediaNFT from "../Common/Media/MediaNFT";
+import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
+import Image from "next/image";
+import getRewardDML from "@/libs/utils/getReward";
+import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
+import { ModalError, ModalTransation } from "../Modal/ModalTransation";
+import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface LiquidytiesItemProps {
-  liquidity: any;
+  liquidity: DataBase;
+  type: string;
 }
 
 const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
+  type,
 }) => {
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, updateBalance, demask, chainId } =
+    useContext(AccountContext);
+  const [hash, setHash] = useState<string>("");
+  const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
+    useState<boolean>(false);
+  const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
+  const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const [reward, setReward] = useState("");
-  const [tokenSymbol, setTokenSymbol] = useState("");
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    version,
+  ]);
   useEffect(() => {
     const fetchDataReward = async () => {
-      if (account) {
-        const result = await viewReward(liquidity.dmlAddress, account, wallet);
-        const rewardDec = divideByDecimal(result?.toString(), liquidity.dmlDecimals);
+      if (account && wallet && liquidity) {
+        const result = await ercContract.viewReward(
+          liquidity.dmlAddress,
+          account,
+          wallet
+        );
+        const rewardDec = divideByDecimal(
+          result?.toString(),
+          liquidity.dmlDecimals
+        );
         setReward(rewardDec);
       }
     };
     fetchDataReward();
-  }, []);
-  console.log(reward);
-  console.log(liquidity);
-
-  useEffect(() => {
-    if (account) {
-      if (liquidity.tokenSymbol === "WETH") {
-        setTokenSymbol("MATIC");
-      } else {
-        setTokenSymbol(liquidity.tokenSymbol);
-      }
+  }, [liquidity, account, wallet]);
+  const dmlTokenLiquidity = liquidity.dmlAddress;
+  const handleGetReward = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (account && wallet && contracts) {
+      getRewardDML({
+        wallet,
+        dmlTokenLiquidity,
+        account,
+        data: {
+          dmlDecimals: liquidity.dmlDecimals,
+          tokenAddress: contracts.WETH_ADDRESS,
+        },
+        setReward,
+        setIsOpenTransaction,
+        setIsOpenSuccessCollect,
+        setIsOpenErrorCollect,
+        setHash,
+      });
+      await updateBalance();
+    } else {
+      console.log("No account and DML");
     }
-  }, []);
+  };
+
   return (
-    <Link href={`/details/${liquidity.dmlAddress}`}>
-      <div className="box-border flex justify-between p-2 mb-3 rounded cursor-pointer lg:mb-6 text-dark2 bg-dark4 hover:bg-white hover:outline outline-1 hover:outline-secondary5 hover:text-secondary5 active:bg-dark4">
-        <p className="flex items-center leading-[13px]">
-          <span>{liquidity.nftSymbol}</span>
-          <span className="overflow-hidden">/</span>
-          <span>{tokenSymbol}</span>
-        </p>
-        <div className="flex items-center">
-          Reward:
-          {reward ? (<span className="ml-2">{formatNumber(reward)}</span>) : (<p className="w-10 h-4 rounded-full animate-pulse bg-slate-200"></p>)}
-          <span>{tokenSymbol}</span>
+    <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
+      <div className="flex p-4 border-b bg-shader_600 gap-x-3 border-shader_500">
+        <div className="relative w-10 h-10 ">
+          <div className="w-full h-full overflow-hidden rounded-lg">
+            {liquidity?.metadata ? (
+              <MediaNFT data={liquidity} isControls={false} />
+            ) : (
+              <Image
+                src={liquidity?.avatar!}
+                alt="banner"
+                width={600}
+                height={600}
+                className="object-cover w-full h-full "
+              />
+            )}
+          </div>
+          <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+            <EtherIcon width={16} height={16} />
+          </div>
+        </div>
+        <div>
+          <div className="font-bold text-white truncate">
+            {liquidity?.metadata ? (
+              <p>{liquidity?.metadata?.name}</p>
+            ) : (
+              <p>{liquidity?.name}</p>
+            )}
+          </div>
+
+          <p className="text-sm font-semibold text-primary_300">
+            {liquidity?.metadata?.symbol || liquidity?.symbol}/ETH
+          </p>
         </div>
       </div>
-    </Link>
+      <div className="p-4 font-semibold bg-shader_700">
+        <div className="flex justify-between mb-3 text-shader_200">
+          <p className="text-sm">Reserve NFT</p>
+          <div className="flex items-center font-bold text-white gap-x-1">
+            <FormatNumber number={liquidity.reserveNFT} />
+            <NFTIcon width={16} height={16} />
+          </div>
+        </div>
+        <div className="flex justify-between mb-3 text-shader_200">
+          <p className="text-sm">Liquidity</p>
+          <div className="flex items-center font-bold text-white gap-x-1">
+            <FormatNumber number={liquidity.balanceDml || 0} />
+            <EtherIcon width={16} height={16} />(
+            {(
+              ((liquidity?.balanceDml ?? 0) /
+                (liquidity?.totalSupplyDml ?? 1)) *
+              100
+            ).toFixed(2)}
+            %)
+          </div>
+        </div>
+        <div className="flex justify-between mb-3 text-shader_200">
+          <p className="text-sm">Reward</p>
+          <div className="flex items-center font-bold text-white gap-x-1">
+            {reward ? (
+              <div className="ml-2">
+                <FormatNumber number={reward} />
+              </div>
+            ) : (
+              <p className="w-10 h-4 rounded-full animate-pulse bg-slate-700 "></p>
+            )}
+            <EtherIcon width={16} height={16} />
+          </div>
+        </div>
+        <Button
+          gradient
+          className="flex w-full p-3 mt-5 gap-x-1"
+          onClick={handleGetReward}
+        >
+          Claim
+          <FormatNumber number={reward} />
+          ETH
+        </Button>
+        <Link
+          href={
+            type === "erc1155"
+              ? `/details/${liquidity.dmlAddress}`
+              : `/trade/erc721/${liquidity.nftAddress}?tab=pool`
+          }
+        >
+          <div className="flex justify-center mx-auto mt-3 text-sm gap-x-1 text-primary_300">
+            Pool detail
+            <RightIcon width={20} height={20} className="text-primary_300" />
+          </div>
+        </Link>
+      </div>
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessCollect}
+        transactionHash={hash}
+        type="Collect Reward Success"
+        setIsOpenSuccess={setIsOpenSuccessCollect}
+      />
+      <ModalError
+        isOpenError={isOpenErrorCollect}
+        transactionHash={hash}
+        type="Collect Reward Failed"
+        setIsOpenError={setIsOpenErrorCollect}
+      />
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+      />
+    </div>
   );
 };
 

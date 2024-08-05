@@ -1,2 +1,1 @@
-export {swapAPI} from './swapService'
-export {NFTTopService} from './nftTopService'
+export { NFTTopService } from "./nftService";

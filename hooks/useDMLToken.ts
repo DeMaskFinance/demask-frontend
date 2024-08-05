@@ -1,11 +1,15 @@
-import getDMLToken from "@/libs/utils/getDMLToken";
+import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
+import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import { useEffect, useState } from "react";
 const useDMLToken = (
   account: string,
   nftAddress: string,
-  idNFT: string,
   tokenAddress: string,
-  wallet: string
+  wallet: string,
+  factoryAddress: string,
+  idNFT?: string,
+  isOpenTransaction?: boolean,
+  isOpenConfirmAddLiquidity?: boolean
 ) => {
   const [dmlToken, setDmlToken] = useState<string>("");
 
@@ -13,11 +17,21 @@ const useDMLToken = (
     const fetchDataDML = async () => {
       try {
         let dmlToken;
-        if (tokenAddress === "MATIC") {
-          const tokenWETH = process.env.NEXT_PUBLIC_WETH as string;
-          dmlToken = await getDMLToken(nftAddress, idNFT, tokenWETH, wallet);
+        if (idNFT) {
+          dmlToken = await erc1155Contract.getDMLToken(
+            nftAddress,
+            idNFT,
+            tokenAddress,
+            wallet,
+            factoryAddress
+          );
         } else {
-          dmlToken = await getDMLToken(nftAddress, idNFT, tokenAddress, wallet);
+          dmlToken = await erc721Contract.dmlToken(
+            wallet,
+            nftAddress,
+            tokenAddress,
+            factoryAddress
+          );
         }
         setDmlToken(dmlToken);
       } catch (error) {
@@ -26,7 +40,15 @@ const useDMLToken = (
     };
 
     fetchDataDML();
-  }, [account, nftAddress, idNFT, tokenAddress, wallet]);
+  }, [
+    account,
+    nftAddress,
+    idNFT,
+    tokenAddress,
+    wallet,
+    isOpenTransaction,
+    isOpenConfirmAddLiquidity,
+  ]);
 
   return dmlToken;
 };

@@ -1,39 +1,57 @@
-import getInfor from '@/libs/utils/getInforDML';
-import { useEffect, useState } from 'react';
+import ercContract from "@/libs/utils/erc/erc.contract";
+import { useEffect, useState } from "react";
 
-const useInformationDML = (dmlToken:string|undefined) => {
+const useInformationDML = (
+  dmlToken: string | undefined,
+  wallet: string,
+  account: string,
+  isOpenTransaction?:boolean,
+  isOpenBuyNFT?:boolean,
+  isOpenSellNFT?:boolean,
+  isOpenConfirmAddLiquidity?:boolean,
+  isOpenConfirmRemoveLiquidity?:boolean,
+  updatePrice?:boolean,
+) => {
   const [reserves, setReserves] = useState<any[]>([0]);
-  const [decimals,setDecimals] = useState<string>("18");
-  const [idNFT,setIdNFT] = useState<string>("");
-  const [nftAddress,setNftAddress] = useState<string>("");
-  const [reserveNFT,setReserveNFT] = useState<string>("");
-  const [reserveToken,setReserveToken] = useState<string>("");
-  const [tokenAddress,setTokenAddress] = useState<string>("");
-  const [isLoadingInforDML,setIsLoadingInforDML] = useState<boolean>(false);
+  const [decimals, setDecimals] = useState<string>("18");
+  const [reserveNFT, setReserveNFT] = useState<string>("");
+  const [reserveToken, setReserveToken] = useState<string>("");
+  const [isLoadingInforDML, setIsLoadingInforDML] = useState<boolean>(false);
   useEffect(() => {
     const fetchInforDML = async () => {
-      setIsLoadingInforDML(true)
+      setIsLoadingInforDML(true);
       try {
-        if (dmlToken) {
-          const {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress}:any = await getInfor(dmlToken);
+        if (dmlToken && wallet && account) {
+          const {
+            reserves,
+            decimals,
+            idNFT,
+            nftAddress,
+            reserveNFT,
+            reserveToken,
+            tokenAddress,
+          }: any = await ercContract.getInforDML(dmlToken, wallet);
           setReserves(reserves);
           setDecimals(decimals);
-          setIdNFT(idNFT);
-          setNftAddress(nftAddress);
           setReserveNFT(reserveNFT);
-          setTokenAddress(tokenAddress);
           setReserveToken(reserveToken);
         }
       } catch (error) {
         console.error(error);
       }
-      setIsLoadingInforDML(false)
+      setIsLoadingInforDML(false);
     };
 
     fetchInforDML();
-  }, [dmlToken]);
+  }, [dmlToken, wallet, account,isOpenTransaction,isOpenBuyNFT,isOpenSellNFT,isOpenConfirmAddLiquidity,isOpenConfirmRemoveLiquidity,updatePrice]);
 
-  return {reserves,decimals,idNFT,nftAddress,reserveNFT,reserveToken,tokenAddress,isLoadingInforDML};
+  return {
+    reserves,
+    decimals,
+    reserveNFT,
+    reserveToken,
+    isLoadingInforDML,
+  };
 };
 
 export default useInformationDML;

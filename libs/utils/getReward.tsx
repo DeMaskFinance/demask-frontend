@@ -1,10 +1,6 @@
 import abiDML from "@/abi/abiDML.json";
-import TransitionURL from "@/components/Toast/TransionURL";
-import { ethers } from "ethers";
-import { toast } from "react-toastify";
-import { getProvider } from "../connection/getProvider";
-import viewReward from "./viewReward";
 import divideByDecimal from "./divideByDecimal";
+import ercContract from "./erc/erc.contract";
 interface RewardDMLProps {
   wallet: string;
   dmlTokenLiquidity: string;
@@ -12,36 +8,43 @@ interface RewardDMLProps {
   account: string;
   data: {
     dmlDecimals: string;
-  }
-  setReward: any;
+    tokenAddress: string;
+  };
+  setReward: React.Dispatch<React.SetStateAction<string>>;
+  setIsOpenSuccessCollect: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenErrorCollect: React.Dispatch<React.SetStateAction<boolean>>;
+  setHash: React.Dispatch<React.SetStateAction<string>>;
 }
-const getRewardDML = async ({ wallet, dmlTokenLiquidity, setIsOpenTransaction, account, data, setReward }: RewardDMLProps) => {
-  const providerChoice = getProvider(wallet);
-  const provider = new ethers.providers.Web3Provider(providerChoice);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(dmlTokenLiquidity, abiDML, signer);
-
+const getRewardDML = async ({
+  wallet,
+  dmlTokenLiquidity,
+  setIsOpenTransaction,
+  account,
+  data,
+  setReward,
+  setIsOpenErrorCollect,
+  setIsOpenSuccessCollect,
+  setHash,
+}: RewardDMLProps) => {
+  const contract = await ercContract.erc(wallet, dmlTokenLiquidity, abiDML);
   try {
-    const result = await contract.getReward({ gasLimit: 8000000 });
+    const result = await contract.getReward([data.tokenAddress], account);
     setIsOpenTransaction(true);
-    await provider.waitForTransaction(result.hash);
-    const resultTest = await viewReward(dmlTokenLiquidity, account, wallet);
+    const check = await result.wait();
+    const resultTest = await ercContract.viewReward(
+      dmlTokenLiquidity,
+      account,
+      wallet
+    );
     const rewardDec = divideByDecimal(resultTest.toString(), data.dmlDecimals);
+    setHash(result.hash);
     setReward(rewardDec);
     setIsOpenTransaction(false);
-    toast.success(
-      <TransitionURL type={"Reward"} transactionHash={result.hash} />,
-      {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    if (check.status === 1) {
+      setIsOpenSuccessCollect(true);
+    } else {
+      setIsOpenErrorCollect(true);
+    }
   } catch (error) {
     console.error(error);
     setIsOpenTransaction(false);

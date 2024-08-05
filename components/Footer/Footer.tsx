@@ -1,136 +1,107 @@
-import Image from "next/image";
+import { version } from "@/libs/constants";
 import Link from "next/link";
-import React, { useState } from "react";
-import Icons from "@/public/icons/icon";
-import { TeleIcon, TwitterIcon } from "../Icons";
-import { TabGroups } from "../NavChoice";
-import useSvgComponents from "../Picture/Picture";
-import { LogoDeMaskFooter } from "../Logo/Logo";
+import {
+  BgGradient,
+  DiscordIcon,
+  GithubIcon,
+  GmailIcon,
+  TeleIcon,
+  TwitterIcon,
+} from "../Icons";
+import { LogoDeMask } from "../Logo/Logo";
+const styles = {
+  icon: "cursor-pointer",
+};
 export default function Footer() {
-  const svgComponents = useSvgComponents();
-
-  const [activeChoice, setActiveChoice] = useState<string>("Light");
-
-  const handleChoiceChange = (choice: string) => {
-    setActiveChoice(choice);
-  };
+  const links = [
+    { href: "https://demask.finance/", text: "About" },
+    { href: "https://substack.com/@demaskfi", text: "Blog" },
+    { href: "https://docsend.com/view/nuc8dre4e9vp55s7", text: "Pitch Deck" },
+    { href: "https://demask.finance/", text: "Developer" },
+    { href: "https://docs.demask.finance/", text: "Docs" },
+    { href: "https://demask.finance/media-kit", text: "Branding & Media Kit" },
+  ];
+  const policy = [
+    { href: "https://demask.finance/", text: "Terms" },
+    { href: "https://demask.finance/", text: "Privacy Policy" },
+  ];
   return (
-    <footer className="hidden px-4 pt-8 pb-10 overflow-hidden lg:block md:hidden lg:px-primary md:px-14 bg-dark4">
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 md:grid-cols-3">
-        <div className="order-1 lg:order-none md:order-none">
-          <h2 className="mb-2 text-lg font-medium leading-6">
-            <Link href="/about">About</Link>
-          </h2>
-          <ul>
-            <li className="mb-1 text-dark2">
-              <Link href="/brand">Brand</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/blog">Blog</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/whitepaper">Whitepaper</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/term">Term of Service</Link>
-            </li>
-          </ul>
-        </div>
-        <div className="order-3 lg:order-none md:order-none">
-          <h2 className="mb-2 text-lg font-medium leading-6">
-            <Link href="/brand">Help</Link>
-          </h2>
-          <ul>
-            <li className="mb-1 text-dark2">
-              <Link href="/support">Custumer Support</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/guilders">Guilders</Link>
-            </li>
-          </ul>
-        </div>
-        <div className="order-4 lg:order-none md:order-none">
-          <h2 className="mb-2 text-lg font-medium leading-6">
-            <Link href="/term">Developers</Link>
-          </h2>
-          <ul>
-            <li className="mb-1 text-dark2">
-              <a
-                href="https://github.com/DeMaskFinance"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                Github
-              </a>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/term">Documentation</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/bug">Bug Bounty</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/term">Audits</Link>
-            </li>
-            <li className="mb-1 text-dark2">
-              <Link href="/term">Careers</Link>
-            </li>
-          </ul>
-        </div>
-        <div className="lg:order-none md:order-none order-2 pl-[2%]">
-          <div className="flex items-center p-1 text-base text-center text-white rounded-lg bg-dark3 w-max">
-            <div
-              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex gap-2 items-center ${activeChoice === "Light" ? "bg-secondary5" : ""
-                }`}
-              onClick={() => handleChoiceChange("Light")}
-            >
-              Light
-              <svgComponents.buttonLight />
-            </div>
-
-            <div
-              className={`py-2 cursor-pointer px-6 rounded-lg text-sm flex items-center gap-2 ${activeChoice === "Dark" ? "bg-dark0" : ""
-                }`}
-              onClick={() => handleChoiceChange("Dark")}
-            >
-              Dark
-              <svgComponents.buttonDark />
-            </div>
-          </div>
-          <div className="py-4">
-            <h2 className="flex text-lg font-medium leading-6">
-              <Link href="/">
-                <LogoDeMaskFooter width={212}
-                  height={54} />
-              </Link>
-            </h2>
-            <p className="mt-2 text-dark2">contact@demask.finance</p>
-          </div>
-          <div className="flex gap-[18px]">
+    <footer className="relative hidden overflow-hidden border-t lg:block border-shader_600 bg-shader_900">
+      <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
+        <BgGradient className="w-[905px] h-[218px]" />
+      </div>
+      <div className="flex items-center justify-between pt-8 pb-10  px-4 2xl:px-[150px] md:px-14 z-10 relative">
+        <div>
+          <Link href="https://demask.finance/" target="_blank">
+            <LogoDeMask width={200} height={56} className="fill-white" />
+          </Link>
+          <p className="text-xs font-semibold text-primary_400 mb-[20px]">
+            {version}
+          </p>
+          <div className="flex items-center mt-2 gap-x-4">
+            <a href="mailto:contact@demask.finance">
+              <GmailIcon width={32} height={32} className={styles.icon} />
+            </a>
             <a
               href="https://twitter.com/DemaskFinance"
-              rel="noreferrer noopener"
               target="_blank"
+              rel="noopener noreferrer"
             >
-              <TwitterIcon
-                width={24}
-                height={24}
-                className="fill-dark3 hover:fill-secondary5"
-              />
+              <TwitterIcon width={32} height={32} className={styles.icon} />
             </a>
             <a
-              href="https://web.telegram.org/k/#@DemaskFinance"
-              rel="noreferrer noopener"
+              href="https://t.me/DemaskFinance"
               target="_blank"
+              rel="noopener noreferrer"
             >
-              <TeleIcon
-                width={24}
-                height={24}
-                className="fill-dark3 hover:fill-secondary5"
-              />
+              <TeleIcon width={32} height={32} className={styles.icon} />
+            </a>
+
+            <a
+              href="https://discord.com/invite/demaskfinance"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <DiscordIcon width={32} height={32} className={styles.icon} />
+            </a>
+            <a
+              href="https://github.com/DeMaskFinance"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubIcon width={32} height={32} className={styles.icon} />
             </a>
           </div>
         </div>
+        <div>
+          <ul className="flex font-semibold text-white gap-x-8">
+            {links.map((link, index) => (
+              <li
+                key={index}
+                className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+              >
+                <a href={link.href} rel="noreferrer noopener" target="_blank">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="flex justify-between text-sm px-4 2xl:px-[150px] md:px-14 bg-shader_700 text-shader_200 py-4 font-semibold">
+        <p>Copyright © 2024 Demask. All rights reserved.</p>
+        <ul className="flex gap-x-4">
+          {policy.map((link, index) => (
+            <li
+              key={index}
+              className="transition-all duration-100 hover:text-primary_500 whitespace-nowrap"
+            >
+              <a href={link.href} rel="noreferrer noopener" target="_blank">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

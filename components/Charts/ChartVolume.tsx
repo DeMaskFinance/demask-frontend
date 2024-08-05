@@ -1,80 +1,37 @@
+import AccountContext from "@/context/AccountContext";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
+import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
-import { format, getWeek, parseISO } from "date-fns";
-import React, { useEffect, useState, useContext } from "react";
-import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
+import { format, parseISO } from "date-fns";
+import React, { useContext, useEffect, useState } from "react";
+import { Bar, BarChart, Cell, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
-import { startOfWeek, endOfWeek, addDays } from 'date-fns';
-import formatNumber from "@/libs/utils/formatNumer";
-import AccountContext from "@/context/AccountContext";
-interface ChartVolumnProps { }
-const styles = {
-  btnActive: "rounded-full bg-secondary5",
-};
-interface DataPoint {
-  _id: string;
-  date: string;
-  volumeInDay: number;
-}
+import { EtherIcon } from "../Icons";
+interface ChartVolumnProps {}
 
-interface GroupedData {
-  startDate: string;
-  endDate: string;
-  totalVolume: number;
-}
 const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
-  const [activeChoice, setActiveChoice] = useState<string>("D");
-  const [dailyData, setDailyData] = useState('');
-  const [weeklyData, setWeeklyData] = useState('');
-  const [monthlyData, setMonthlyData] = useState('');
+  const [activeChoice, setActiveChoice] = useState<string>("1D");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeData, setActiveData] = useState<number | null>(null);
+  const [hasInitialSetting, setHasInitialSetting] = useState(false);
   const { chainId } = useContext(AccountContext);
   const { data, isLoading: LoadingVolume } = useQuery({
-    queryKey: ["ChartVolume", chainId],
+    queryKey: ["ChartVolume", chainId, activeChoice],
     queryFn: async () => {
       const res = await categoryAPI(
-        `/v2/volumeChart?chainId=${chainId}&intervalDate=30`
+        `volumeChart?chainId=${chainId}&interval=${activeChoice}`
       );
-      return res;
+      return res.chartData;
     },
   });
-  // const groupDataByWeek = (data: DataPoint[]): GroupedData[] => {
-  //   const groupedData: { [key: string]: GroupedData } = {};
-
-  //   data.forEach((dataPoint) => {
-  //     const date = new Date(dataPoint.date);
-  //     const year = date.getFullYear();
-  //     const weekNumber = getWeek(date);
-  //     const weekKey = `${year}-${weekNumber}`;
-
-  //     if (!groupedData[weekKey]) {
-  //       const startDate = format(startOfWeek(date), 'yyyy-MM-dd');
-  //       const endDate = format(endOfWeek(date), 'yyyy-MM-dd');
-  //       groupedData[weekKey] = {
-  //         startDate,
-  //         endDate,
-  //         totalVolume: 0,
-  //       };
-  //     }
-
-  //     groupedData[weekKey].totalVolume += dataPoint.volumeInDay;
-  //   });
-
-  //   return Object.values(groupedData);
-  // };
-  // const test = groupDataByWeek(data);
-  // console.log(test);
 
   const chartVolume = data?.map((dataPoint: any) => ({
     date: dataPoint.date,
-    value: dataPoint.volumeInDay,
+    value: Number(dataPoint.dailyVolume),
   }));
   const lastData = chartVolume && chartVolume[chartVolume.length - 1];
-
-  const [activeData, setActiveData] = useState<number | null>(null);
-
-  const [hasInitialSetting, setHasInitialSetting] = useState(false);
 
   useEffect(() => {
     if (lastData && !hasInitialSetting) {
@@ -87,53 +44,30 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };
-  useEffect(() => {
-    switch (activeChoice) {
-      case "D":
-        console.log("day hihi");
 
-        // setDailyData(data);
-        break;
-      case "W":
-        // Calculate weekly data by aggregating volumeInDay values for each week
-        // const weeklyData = groupDataByWeek(data);
-        // const weekChart = weeklyData?.map((dataPoint: any) => ({
-        //   date: dataPoint.startDate,
-        //   value: dataPoint.totalVolume,
-        // }))
-        // // setWeeklyData(weeklyData);
-        // console.log(weekChart);
-        break;
-      case "M":
-        // Calculate monthly data by aggregating volumeInDay values for each month
-        // const monthlyData = calculateMonthlyData(data);
-        // setMonthlyData(monthlyData);
-        console.log("m hihi");
-        break;
-      default:
-        break;
-    }
-  }, [activeChoice])
   return (
-    <div className="p-6 rounded-lg lg:shadow-chart lg:block">
-      {chartVolume && (
+    <div className="p-6 bg_main h-[354px]">
+      {LoadingVolume ? (
+        <ChartLoading />
+      ) : (
         <div>
           <div className="flex justify-between mb-2">
             <div className="mb-2 text-dark1">
-              <p className="font-medium ">Volume</p>
-              {activeData && (
-                <p className="my-2 text-2xl font-medium text-dark0">
-                  ${formatNumber(activeData?.toFixed(2))}
+              <p className="title text-shader_100">Demask Volume</p>
+              <div className="flex items-center text-2xl font-bold text-white gap-x-1">
+                {formatNumber(Number(activeData)?.toFixed(2))}
+                <p>
+                  <EtherIcon width={18} height={18} />
                 </p>
-              )}
-              <p className="">
+              </div>
+              <p className="text-sm text-primary_300">
                 {activeDate && format(parseISO(activeDate), "MMM d, yyyy")}{" "}
                 (UTC)
               </p>
             </div>
-            <div className="h-fit">
+            <div className="h-fit w-[136px]">
               <TabGroups
-                choices={["D", "W", "M"]}
+                choices={["1D", "7D", "30D"]}
                 activeChoice={activeChoice}
                 onChoiceChange={handleChoiceChange}
               />
@@ -141,6 +75,8 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
           </div>
           <div className="h-[212px]">
             <ResponsiveContainer width="100%" height="100%">
+              {/* 
+// @ts-ignore */}
               <BarChart
                 width={500}
                 height={300}
@@ -151,10 +87,10 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                   left: 0,
                   bottom: 0,
                 }}
-
                 onMouseLeave={() => {
                   setActiveData(lastData.value);
                   setActiveDate(lastData.date);
+                  setHoveredIndex(null);
                 }}
                 onMouseMove={(event) => {
                   if (event && event.activeLabel && event.activePayload) {
@@ -163,6 +99,12 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                     if (activeDate !== event.activeLabel) {
                       setActiveDate(event.activeLabel);
                     }
+                    const index = chartVolume.findIndex(
+                      (item: any) => item.date === event.activeLabel
+                    );
+                    setHoveredIndex(index);
+                  } else {
+                    setHoveredIndex(null);
                   }
                 }}
               >
@@ -170,7 +112,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                   dataKey="date"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#B2B2B2" }}
+                  tick={{ fill: "#CFD9E9" }}
                   tickFormatter={(str) => {
                     const date = parseISO(str);
                     if (date.getDate() % 3 === 0) {
@@ -179,13 +121,22 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                     return "";
                   }}
                 />
-                <Bar dataKey="value" fill="#A398FF" />
+                {/* 
+              // @ts-ignore */}
+                <Bar dataKey="value" radius={[2, 2, 2, 2]}>
+                  {chartVolume.map((_: any, index: number) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={index === hoveredIndex ? "#BFACFE" : "#9075FE"}
+                      className="transition-all duration-150 ease-linear"
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       )}
-      {LoadingVolume && <ChartLoading />}
     </div>
   );
 };

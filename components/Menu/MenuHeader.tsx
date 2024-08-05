@@ -1,127 +1,99 @@
+import React, { useContext, useState } from "react";
+import { ActiveLink } from "../Link";
+import Search from "../Search/SearchHeader";
+import { DiamondIcon } from "../Icons";
 import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState, useContext } from "react";
-import { ActiveLink } from "../Link";
-import Search from "../Search/SearchHeader";
-import AccountContext from "@/context/AccountContext";
-interface MenuHeaderProps { }
-const styles = {
-  menuSub:
-    "pt-1 pb-1 bg-white border text-base rounded-lg shadow-xl box border-dark4 font-medium",
-  itemSub:
-    "flex items-center justify-between text-base px-2 py-1 my-1 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
-};
-const data = [
-  { id: 1, name: "Overview", url: "/overview" },
-  { id: 2, name: "Trade", subTradeMenu: true },
-  { id: 3, name: "Launchpad", url: "/launchpad" },
-  { id: 4, name: "Category", subCateMenu: true },
-  { id: 5, name: "Create", url: "/create" },
-];
 
-
-const subMenuCateData = [
-  { id: 1, name: "Art", url: "/category/art" },
-  { id: 2, name: "Gaming", url: "/category/gaming" },
-  { id: 3, name: "Memberships", url: "/category/memberships" },
-  { id: 4, name: "Music", url: "/category/music" },
-  { id: 5, name: "Film", url: "/category/film" },
-  { id: 6, name: "Others", url: "/category/others" },
+const subMenuRewards = [
+  { id: 1, name: "Leaderboard", url: "/leaderboard" },
+  { id: 2, name: "Referral", url: "/referral" },
 ];
-const MenuHeader: React.FC<MenuHeaderProps> = () => {
-  const tradeRef = useRef<HTMLAnchorElement | null>(null);
-  const router = useRouter();
+const subMenuOthers = [
+  { id: 1, name: "Create", url: "/create" },
+  { id: 2, name: "Launchpad", url: "/launchpad" },
+  { id: 3, name: "Category", url: "/category" },
+];
+const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const { demask } = useContext(AccountContext);
-  const subMenuTradeData = [
+  const router = useRouter();
+  const data = [
+    { name: "Explorer", url: "/explorer" },
+    { name: "Trade", url: `/trade` },
+    { name: "Pools", url: "/pools" },
     {
-      id: 1,
-      name: "Swap",
-      url: `/swap/${demask.CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
+      name: "Rewards",
+      url: "/leaderboard",
+      subMenu: subMenuRewards,
+      icon: <DiamondIcon width={32} height={32} />,
     },
-    { id: 2, name: "Liquidity", url: "/liquidity" },
+    { name: "Others", url: "/category", subMenu: subMenuOthers },
   ];
+
+  const isMatchingUrl = subMenuRewards.some((menu) =>
+    router.pathname.startsWith(menu.url)
+  );
+
   const handleFocus = () => {
     setIsFocused(true);
   };
-
-  useEffect(() => {
-    if (
-      tradeRef.current &&
-      (router.pathname === "/swap" || router.pathname === "/liquidity")
-    ) {
-      tradeRef.current?.classList.add("text-secondary1");
-    } else {
-      tradeRef.current?.classList.remove("text-secondary1");
-    }
-  }, [router.pathname]);
   return (
-    <ul className="flex items-center text-lg font-medium 3xl:gap-x-8 text-dark2 gap-x-8">
-      {data.map((item) => (
-        <React.Fragment key={item.id}>
-          {item.subTradeMenu ? (
-            <li>
-              <Tippy
-                interactive
-                render={(attrs) => (
-                  <div className={styles.menuSub} tabIndex={-1} {...attrs}>
-                    <ul className="flex flex-col px-2 w-[170px]">
-                      {subMenuTradeData.map((tradeItem) => (
-                        <Link href={tradeItem.url} key={tradeItem.id}>
-                          <li className={styles.itemSub}>{tradeItem.name}</li>
-                        </Link>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              >
-                <button className="flex hover:text-secondary5 active:text-secondary3">
+    <div className="flex gap-x-8">
+      <ul className="flex items-center font-semibold text-shader_100 3xl:gap-x-8 gap-x-8">
+        {data.map((item, index) => (
+          <React.Fragment key={index}>
+            {item.subMenu ? (
+              <li>
+                <Tippy
+                  interactive
+                  render={(attrs) => (
+                    <div className="" tabIndex={-1} {...attrs}>
+                      <ul className="w-40 menu">
+                        {item.subMenu.map((item) => (
+                          <ActiveLink href={item.url} key={item.id}>
+                            <li
+                              className={`item_menu ${
+                                router.asPath.startsWith(item.url)
+                                  ? "bg-shader_500"
+                                  : ""
+                              }`}
+                            >
+                              {item.name}
+                            </li>
+                          </ActiveLink>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                >
                   <Link
-                    className="text-base "
-                    ref={tradeRef}
-                    href={
-                      `/swap/${demask.CREATOR}/MATIC/${process.env.NEXT_PUBLIC_IDNFT}`
-                    }
+                    href={`${item.url}`}
+                    className={`flex items-center gap-x-1  ${
+                      isMatchingUrl &&
+                      item.subMenu === subMenuRewards &&
+                      "text-primary_400 hover:text-primary_400  active:text-primary_400"
+                    }`}
                   >
-                    Trade
+                    {item.icon}
+                    {item.name}
                   </Link>
-                </button>
-              </Tippy>
-            </li>
-          ) : item.subCateMenu ? (
-            <li>
-              <Tippy
-                interactive
-                render={(attrs) => (
-                  <div className={styles.menuSub} tabIndex={-1} {...attrs}>
-                    <ul className="flex flex-col text-base px-2 w-[170px]">
-                      {subMenuCateData.map((cateItem) => (
-                        <ActiveLink href={cateItem.url} key={cateItem.id}>
-                          <li className={styles.itemSub}>{cateItem.name}</li>
-                        </ActiveLink>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              >
-                <button className="flex text-base hover:text-secondary5 active:text-secondary3">
-                  <Link href="/category">Category</Link>
-                </button>
-              </Tippy>
-            </li>
-          ) : (
-            <li className="relative text-base hover:text-secondary5 active:text-secondary3">
-              <ActiveLink href={item?.url as string}>
-                <p>{item.name}</p>
-              </ActiveLink>
-            </li>
-          )}
-        </React.Fragment>
-      ))}
-
-      <Search isFocused={isFocused} handleFocus={handleFocus} />
-    </ul>
+                </Tippy>
+              </li>
+            ) : (
+              <React.Fragment key={index}>
+                <li className="hover:text-primary_500">
+                  <ActiveLink href={`${item?.url}`}>
+                    <p className="">{item.name}</p>
+                  </ActiveLink>
+                </li>
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        ))}
+      </ul>
+      <Search handleFocus={handleFocus} />
+    </div>
   );
 };
 

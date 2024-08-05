@@ -2,21 +2,6 @@
     {
         "inputs": [
             {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-            },
-            {
-                "internalType": "address",
-                "name": "_tokenReward",
-                "type": "address"
-            },
-            {
                 "internalType": "address",
                 "name": "_router",
                 "type": "address"
@@ -28,27 +13,40 @@
             },
             {
                 "internalType": "address",
-                "name": "_nft",
+                "name": "_NFT",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "_id",
+                "name": "_tokenId",
                 "type": "uint256"
             },
             {
                 "internalType": "address",
-                "name": "_feeToProtocol",
+                "name": "_feeManager",
                 "type": "address"
             },
             {
-                "internalType": "uint256",
-                "name": "_fee",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "_weth",
+                "type": "address"
             }
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "Add",
+        "type": "event"
     },
     {
         "anonymous": false,
@@ -87,13 +85,13 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amounterc",
+                "name": "amountERC",
                 "type": "uint256"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amountnft",
+                "name": "amountNFT",
                 "type": "uint256"
             },
             {
@@ -113,6 +111,12 @@
                 "indexed": true,
                 "internalType": "address",
                 "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
                 "type": "address"
             },
             {
@@ -137,13 +141,13 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amounterc",
+                "name": "amountERC",
                 "type": "uint256"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amountnft",
+                "name": "amountNFT",
                 "type": "uint256"
             }
         ],
@@ -199,13 +203,13 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "reservetoken",
+                "name": "reserveToken",
                 "type": "uint256"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "reservenft",
+                "name": "reserveNFT",
                 "type": "uint256"
             }
         ],
@@ -255,6 +259,45 @@
         ],
         "name": "UpdateReward",
         "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "MAX",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "NFT",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "WETH",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [
@@ -335,12 +378,12 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "amounterc",
+                "name": "amountERC",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "amountnft",
+                "name": "amountNFT",
                 "type": "uint256"
             }
         ],
@@ -385,13 +428,32 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "feeOfExchange",
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "existsTokenReward",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "bool",
                 "name": "",
-                "type": "uint256"
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeManager",
+        "outputs": [
+            {
+                "internalType": "contract IFeeManager",
+                "name": "",
+                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -405,19 +467,6 @@
                 "internalType": "address",
                 "name": "",
                 "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getFeeOfExchange",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -442,12 +491,12 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "_reservetoken",
+                "name": "_reserveToken",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_reservenft",
+                "name": "_reserveNFT",
                 "type": "uint256"
             }
         ],
@@ -455,21 +504,32 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "getReward",
-        "outputs": [
+        "inputs": [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "internalType": "address[]",
+                "name": "_token",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
             }
         ],
+        "name": "getReward",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "id",
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "getRewardPerShare",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -508,6 +568,11 @@
         "inputs": [
             {
                 "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
                 "name": "account",
                 "type": "address"
             }
@@ -532,7 +597,7 @@
                         "type": "uint256"
                     }
                 ],
-                "internalType": "struct IERC2410.UserInformation",
+                "internalType": "struct ERC7254.UserInformation",
                 "name": "",
                 "type": "tuple"
             }
@@ -541,8 +606,57 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "informationOfBatch",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "inReward",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "outReward",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "withdraw",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ERC7254.UserInformation[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "kLast",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "maxTokenReward",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -580,19 +694,6 @@
                 "internalType": "string",
                 "name": "",
                 "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "nft",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -678,7 +779,7 @@
     },
     {
         "inputs": [],
-        "name": "reservenft",
+        "name": "reserveNFT",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -691,20 +792,7 @@
     },
     {
         "inputs": [],
-        "name": "reservetoken",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "rewardPerShare",
+        "name": "reserveToken",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -751,23 +839,18 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "amounttokenOut",
+                "name": "amountTokenOut",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "amountnftOut",
+                "name": "amountNFTOut",
                 "type": "uint256"
             },
             {
                 "internalType": "address",
                 "name": "to",
                 "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "amountFee",
-                "type": "uint256"
             },
             {
                 "internalType": "address",
@@ -808,12 +891,25 @@
     },
     {
         "inputs": [],
+        "name": "tokenId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "tokenReward",
         "outputs": [
             {
-                "internalType": "address",
+                "internalType": "address[]",
                 "name": "",
-                "type": "address"
+                "type": "address[]"
             }
         ],
         "stateMutability": "view",
@@ -888,19 +984,18 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
+                "internalType": "address[]",
+                "name": "_token",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_amount",
+                "type": "uint256[]"
             }
         ],
         "name": "updateReward",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -915,12 +1010,16 @@
         "name": "viewReward",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint256[]",
                 "name": "",
-                "type": "uint256"
+                "type": "uint256[]"
             }
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
     }
 ]

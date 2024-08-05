@@ -1,80 +1,108 @@
-import { useState, useEffect, useContext } from 'react';
-import { BscIcon, EtherIcon, PolygonIcon } from "@/components/Icons";
+import { DownIcon } from "@/components/Icons";
+import AccountContext from "@/context/AccountContext";
 import { network } from "@/libs/constants";
+import { changeNetwork } from "@/libs/utils/changeNetwork";
+import { selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { BsCaretDownFill } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
-import AccountContext from '@/context/AccountContext';
-interface MenuNetworkProps {
-
-}
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+interface MenuNetworkProps {}
 const style = {
-    itemSub:
-        "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer border hover:border-secondary5 border-white hover:text-secondary5 active:text-secondary3",
-    btnWallet:
-        "flex items-center justify-center py-1 pl-2 lg:pl-4 pr-2 text-sm font-medium transition duration-150 ease-out border rounded-lg group hover:bg-white bg-secondary2 active:bg-secondary3 text-white hover:text-secondary2 gap-x-2 border-secondary5",
+  itemSub:
+    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-semibold",
+  btnWallet: " ",
 };
 interface networkProps {
-    name: string;
-    logo: React.FC;
-    chain: string;
+  name: string;
+  logo: React.FC;
+  chain: string;
 }
 const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
-    const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(network[1]);
-    const { updateChainId, chainId } = useContext(AccountContext);
-    const handleChangeNetwork = (chain: string) => {
-        updateChainId(chain);
-    };
-    useEffect(() => {
-        if (chainId) {
-            const foundNetwork = network.find((item) => item.chain === chainId);
-            setFilterNetwork(foundNetwork);
-        } else {
-            setFilterNetwork(network[1]);
-        }
-    }, [chainId]);
+  const [filterNetwork, setFilterNetwork] = useState<networkProps | undefined>(
+    network[0]
+  );
+  const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+  const { updateChainId, chainId, wallet, demask, account } =
+    useContext(AccountContext);
+  const router = useRouter();
+  const { isLoggedIn } = useSelector(selectProfile);
+  const handleChangeNetwork = async (chain: string) => {
+    if (account && wallet && isLoggedIn) {
+      const check = await changeNetwork(
+        chain,
+        wallet,
+        demask,
+        setIsWrongNetwork,
+        updateChainId
+      );
+      if (check) {
+        router.replace(`/trade`);
+      }
+    } else {
+      updateChainId(chain);
+      router.replace(`/trade`);
+    }
+  };
+  useEffect(() => {
+    const foundNetwork = network.find((item) => item.chain === chainId);
+    if (foundNetwork) {
+      setFilterNetwork(foundNetwork);
+    } else {
+      updateChainId(network[0].chain);
+      setFilterNetwork(network[0]);
+    }
+  }, [chainId]);
 
-    const LogoComponent: any = filterNetwork?.logo;
-    return (
-        <Tippy
-            className=""
-            interactive
-            render={(attrs) => (
+  const LogoComponent: any = filterNetwork?.logo;
+  return (
+    <Tippy
+      className=""
+      interactive
+      render={(attrs) => (
+        <div className="w-[234px] menu " tabIndex={-1} {...attrs}>
+          <ul className="flex flex-col gap-y-[6px]">
+            {network.map((item, index) => (
+              <li
+                key={index}
+                className={`item_menu gap-x-2 group justify-between  items-center  ${
+                  item.disable ? "hover:cursor-no-drop" : ""
+                } `}
+                onClick={() => !item.disable && handleChangeNetwork(item.chain)}
+              >
                 <div
-                    className="w-[280px] px-2 pt-1 pb-1 bg-white border text-sm rounded-lg shadow-xl box border-dark4 font-medium"
-                    tabIndex={-1}
-                    {...attrs}
+                  className={`flex items-center gap-x-2 font-semibold ${
+                    item.disable && "opacity-30"
+                  }`}
                 >
-                    <p className="p-2 text-base border-b-[1px] border-dark3">
-                        Select a network
-                    </p>
-                    <ul className="flex flex-col mt-2 font-normal gap-y-3">
-                        {network.map((item, index) => (
-                            <li key={index} className={`${style.itemSub} gap-x-2 group`} onClick={() => handleChangeNetwork(item.chain)}>
-                                <item.logo width={24}
-                                    height={24}
-                                    className={`fill-dark2 group-hover:fill-secondary4 ${filterNetwork?.chain === item.chain && "fill-secondary4"}`} />
-                                <p className={`${filterNetwork?.chain === item.chain && "text-secondary2 font-medium"}`}>{item.name}</p>
-                            </li>
-                        ))}
-                    </ul>
+                  <item.logo width={24} height={24} />
+                  <p>{item.name}</p>
                 </div>
-            )}
-        >
-            <button className={`${style.btnWallet} flex`}>
-                <p className="hidden lg:block">{filterNetwork?.name}</p>
-                <LogoComponent
-                    width={24}
-                    height={24}
-                    className=" fill-white group-hover:fill-secondary5"
-                />
-                <span className="lg:hidden">
-                    <BsCaretDownFill />
-                </span>
-            </button>
-        </Tippy>
-    );
-}
+                {item.disable && (
+                  <p className="right-0 text-xs text-primary_300">Upcoming</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    >
+      <button
+        className={`flex items-center px-[10px] md:px-3 h-10 py-2  justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
+      >
+        <LogoComponent width={20} height={20} className="" />
+        <p className="hidden 2xl:block whitespace-nowrap">
+          {filterNetwork?.name}
+        </p>
+        <span className="text-shader_100 2xl:hidden">
+          <DownIcon width={20} height={20} />
+        </span>
+      </button>
+    </Tippy>
+  );
+};
 
 export default MenuNetwork;

@@ -1,0 +1,116 @@
+import AccountContext from "@/context/AccountContext";
+import Image from "next/image";
+import { useContext, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { SendIcon } from "../Icons";
+import TabQuery from "../NavChoice/TabQuery";
+import Leaderboard from "./Leaderboard";
+import MyReferral from "./MyReferral";
+import Others from "./Others";
+import ReferralUser from "./ReferralUser";
+import Rewards from "./Rewards";
+import StaticTable from "./StaticTable";
+const style = {
+  btnWallet:
+    "flex items-center h-10 hover:border-shader_600  pl-2 lg:px-4 pr-2 justify-center text-sm font-medium transition duration-150 ease-out rounded-lg group hover:bg-shader_500 bg-shader_600 active:bg-shader_500 text-shader_600 gap-x-2 ",
+};
+const Referral = () => {
+  const [tab, setTab] = useQueryParam(
+    "tab",
+    withDefault(StringParam, "referrals")
+  );
+  const [visible, setVisible] = useState(true);
+  const { chainId, account } = useContext(AccountContext);
+  const TABS = [
+    {
+      title: "My Referrals",
+      panel: () => <MyReferral />,
+      key: "referrals",
+    },
+    {
+      title: "My Rewards",
+      panel: () => <Rewards />,
+      key: "rewards",
+    },
+    {
+      title: "Refer Others",
+      panel: () => <Others />,
+      key: "others",
+    },
+    {
+      title: "Leaderboard",
+      panel: () => <Leaderboard />,
+      key: "leaderboard",
+    },
+  ];
+  const selectedTab = TABS.find((item) => item.key === tab);
+  const indexChoice = TABS.findIndex((item) => item.key === tab);
+  return (
+    <div>
+      <div className="mx-auto">
+        <div className="flex flex-col justify-between mb-6 md:flex-row gap-y-6 text-shader_100">
+          <div className="flex flex-col gap-y-3">
+            <Image
+              width={72}
+              height={72}
+              src="/images/referralDemask.png"
+              alt="referral"
+              className=""
+            />
+            <h1 className=" text-2xl font-bold text-white">
+              REFER AND EARN TOGETHER!
+            </h1>
+
+            <div className="referral_send referral_active">
+              <div className="overlay">
+                <div className="flex items-center gap-x-2 pl-4 pr-1 z-10 rounded-full  text-sm  font-semibold bg-shader_800 relative w-full">
+                  Share your referral link with friends
+                  <SendIcon width={30} height={30} />
+                </div>
+              </div>
+            </div>
+
+            <div className="">
+              <p>
+                Accepting a referral boosts your DM Points by 
+                <span className="text-primary_400">5%</span>.
+              </p>
+              <p>
+                Recieve<span className="text-primary_400"> 5% </span>
+                 trading fee rebate.
+              </p>
+              <p>
+                Receive DM Points.<span className="text-primary_400">+10%</span>{" "}
+                forever!
+              </p>
+            </div>
+            <a
+              href="https://docs.demask.finance/programs/refer-friends-to-earn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-primary_400 font-semibold cursor-pointer`}
+            >
+              How is referral working?
+            </a>
+          </div>
+          <ReferralUser />
+        </div>
+        {account && <StaticTable />}
+        <div className=" mt-6 ">
+          <div className="flex items-center w-full whitespace-nowrap">
+            {/* PC */}
+            <TabQuery
+              TABS={TABS}
+              initialItem="items"
+              indexChoice={indexChoice}
+              isDefault={false}
+            />
+          </div>
+          <div className="">{selectedTab ? selectedTab.panel() : null}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Referral;

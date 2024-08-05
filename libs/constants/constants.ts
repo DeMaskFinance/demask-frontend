@@ -1,94 +1,85 @@
 import {
-  MaticIcon,
-  USDCIcon,
-  USDTIcon,
-  PolygonIcon,
-  BscIcon,
+  BlastIcon,
   EtherIcon,
+  MonadIcon,
+  SepoliaIcon,
 } from "../../components/Icons";
-const tokenMatic = [
+interface NetworkItem {
+  name: string;
+  logo: any;
+  chain: string;
+  disable?: boolean;
+}
+const version = "Version 0.2.0";
+const tokenGoerli = [
   {
-    name: "Polygon",
-    symbol: "MATIC",
-    address: "MATIC",
-    logo: MaticIcon,
-  },
-  {
-    name: "Tether",
-    symbol: "USDT",
-    address: "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096",
-    logo: USDTIcon,
-  },
-  {
-    name: "USD Coin",
-    symbol: "USDC",
-    address: "0x8d03ae448B76C089EAEDa30aAABC9D2A9C55d2A1",
-    logo: USDCIcon,
-  },
-];
-const tokenBsc = [
-  {
-    name: "Polygon",
-    symbol: "MATIC",
-    address: "MATIC",
-    logo: MaticIcon,
-  },
-  {
-    name: "Tether",
-    symbol: "USDT",
-    address: "0x4A90D5aE01F03B650cdc8D3A94358F364D98d096",
-    logo: USDTIcon,
-  },
-  {
-    name: "USD Coin",
-    symbol: "USDC",
-    address: "0x8d03ae448B76C089EAEDa30aAABC9D2A9C55d2A1",
-    logo: USDCIcon,
-  },
-];
-const BSC_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC_BSC,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL_BSC,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY_BSC,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER_BSC,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR_BSC,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN_BSC,
-  WETH: process.env.NEXT_PUBLIC_WETH_BSC,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BSC,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_BSC,
-  USDT: process.env.NEXT_PUBLIC_USDT_BSC,
-  USDC: process.env.NEXT_PUBLIC_USDC_BSC,
-};
-const MUMBAI_DEMASK = {
-  RPC: process.env.NEXT_PUBLIC_RPC,
-  REFERRAL: process.env.NEXT_PUBLIC_REFERRAL,
-  FACTORY: process.env.NEXT_PUBLIC_FACTORY,
-  ROUTER: process.env.NEXT_PUBLIC_ROUTER,
-  CREATOR: process.env.NEXT_PUBLIC_CREATOR,
-  DEMASKTOKEN: process.env.NEXT_PUBLIC_DEMASKTOKEN,
-  WETH: process.env.NEXT_PUBLIC_WETH,
-  NATIVE_ADDRESS: process.env.NEXT_PUBLIC_NATIVE_ADDRESS,
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT,
-  USDT: process.env.NEXT_PUBLIC_USDT,
-  USDC: process.env.NEXT_PUBLIC_USDC,
-};
-const network = [
-  {
-    name: "Ethereum",
+    name: "Goerli",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
     logo: EtherIcon,
-    chain: "1",
-  },
-  {
-    name: "Polygon",
-    logo: PolygonIcon,
-    chain: "80001",
-  },
-  {
-    name: "BNB Smart Chain",
-    logo: BscIcon,
-    chain: "97",
+    symbolNative: "ETH",
   },
 ];
+
+const tokenBlast = [
+  {
+    name: "Blast Testnet",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
+    logo: BlastIcon,
+    symbolNative: "WETH",
+  },
+];
+const tokenSepolia = [
+  {
+    name: "Sepolia Testnet",
+    symbol: "ETH",
+    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
+    logo: EtherIcon,
+    symbolNative: "ETH",
+  },
+];
+const activeNFTPercent = [
+  { text: "25%", percent: 0.25 },
+  { text: "50%", percent: 0.5 },
+  { text: "75%", percent: 0.75 },
+  { text: "MAX", percent: 1 },
+];
+const SEPOLIA_DEMASK = {
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
+  urltxHash: "https://sepolia.etherscan.io/",
+  chainName: "Sepolia Testnet",
+  NAME: "Sepolia Testnet",
+  CURRENCY: "ETH",
+};
+
+const PORT = process.env.NEXT_PUBLIC_APP_PORT;
+
+let network: NetworkItem[] = [];
+
+if (PORT === "3000") {
+  network = [
+    {
+      name: "Sepolia Testnet",
+      logo: SepoliaIcon,
+      chain: "11155111",
+    },
+    {
+      name: "Monad Devnet",
+      logo: MonadIcon,
+      chain: "1",
+      disable: true,
+    },
+  ];
+} else if (PORT === "1307") {
+  network = [
+    {
+      name: "Blast Testnet",
+      logo: BlastIcon,
+      chain: "168587773",
+    },
+  ];
+}
 const amountNFT = [
   {
     id: 1,
@@ -111,24 +102,75 @@ const amountNFT = [
     value: "CUSTOM",
   },
 ];
-const rpcMumbai = [
-  {
-    id: 1,
-    url: "https://polygon-mumbai-bor.publicnode.com",
-  },
-];
 const mediaType = {
   image: [".png", ".jpg", ".jpeg", ".svg", ".gif", ".tiff", ".xml", ".webp"],
-  video: [".mp4", ".quicktime"],
+  video: [".mp4", ".quicktime", ".m4v"],
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
+let validNFTsInput = [
+  "video/mp4",
+  "video/x-msvideo",
+  "video/x-matroska",
+  "video/quicktime",
+  "video/x-ms-wmv",
+  "video/x-flv",
+  "video/webm",
+  "audio/mpeg",
+  "audio/wav",
+  "audio/ogg",
+  "audio/aac",
+  "audio/flac",
+  "audio/x-ms-wma",
+  "application/pdf",
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/bmp",
+  "image/svg+xml",
+  "image/tiff",
+];
+let validCollectionInput = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/svg+xml",
+];
+const Category = [
+  {
+    id: 1,
+    value: "Art",
+  },
+  {
+    id: 2,
+    value: "Film",
+  },
+  {
+    id: 3,
+    value: "Music",
+  },
+  {
+    id: 4,
+    value: "Gaming",
+  },
+  {
+    id: 5,
+    value: "Memberships",
+  },
+];
 export {
-  tokenMatic,
+  activeNFTPercent,
   amountNFT,
-  rpcMumbai,
+  Category,
   mediaType,
   network,
-  BSC_DEMASK,
-  MUMBAI_DEMASK,
+  SEPOLIA_DEMASK,
+  tokenBlast,
+  tokenGoerli,
+  tokenSepolia,
+  validCollectionInput,
+  validNFTsInput,
+  version,
 };
