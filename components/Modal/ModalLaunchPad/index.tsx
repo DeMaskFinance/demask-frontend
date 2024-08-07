@@ -2,7 +2,7 @@ import { Button } from "@/components/Buttons";
 import InputCount from "@/components/Common/InputCount";
 import { MediaNFT } from "@/components/Common/Media";
 import { EtherIcon } from "@/components/Icons";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalTransation } from "../ModalTransation";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
 import AccountContext from "@/context/AccountContext";
@@ -12,6 +12,8 @@ import dataWhitelist from "@/libs/utils/data.json";
 import { useRouter } from "next/router";
 import { queryClient } from "@/libs/constants";
 import { run } from "@/libs/validation/veryfy";
+import { useFetchAmountSold } from "@/hooks/useFetchAmountSold";
+import ButtonCondition from "./ButtonCondition";
 
 interface ModalMintLaunchPadProps {
   inputAmount: number;
@@ -37,57 +39,66 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   const [isOpenTransation, setIsOpenTransaction] = useState(false);
   const router = useRouter();
   const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
-  const { account, wallet, balanceToken } = useContext(AccountContext);
-  const unit = router.query.detail ? +router.query.detail[1] : 0;
-  console.log(data);
+  const { account, wallet } = useContext(AccountContext);
+  const isPublic = checkLaunchpad.isPublic(data.merkleRoot);
+  const listProof = run();
+  const addressOfWhitelist = listProof.find(
+    (item) => item.address.toLowerCase() === account.toLowerCase()
+  );
+  // useEffect(() => {
+  //   const checkConditions = async () => {
+  //     setError("");
+  //     setIsDisabled(true);
 
+  //     const requiredTokenAmount = inputAmount * data.price;
+  //     if (balanceToken < requiredTokenAmount) {
+  //       setError("Insufficient Token");
+  //       return;
+  //     }
+
+  //     if (isPublic) {
+  //       if (data.limit < inputAmount + Number(amountSold)) {
+  //         setError("Insufficient Limit");
+  //         return;
+  //       }
+  //     } else {
+  //       if (!addressOfWhitelist) {
+  //         setError("You are not on the Whitelist");
+  //         return;
+  //       }
+
+  //       const whitelistAmount = parseInt(addressOfWhitelist.amount, 16);
+  //       const remainingAllocation = data.max_allocation - whitelistAmount;
+  //       const allowedAmount = Math.min(
+  //         whitelistAmount - Number(amountSold),
+  //         remainingAllocation
+  //       );
+  //       if (inputAmount > allowedAmount) {
+  //         setError("You do not meet the conditions to buy");
+  //         return;
+  //       }
+  //     }
+
+  //     setIsDisabled(false);
+  //   };
+
+  //   checkConditions();
+  // }, [
+  //   inputAmount,
+  //   balanceToken,
+  //   data,
+  //   isPublic,
+  //   addressOfWhitelist,
+  //   amountSold,
+  // ]);
   const handleBuyLaunchpad = async () => {
-    const isPublic = checkLaunchpad.isPublic(data.merkleRoot);
-    let proof: string[] = [];
-    if (balanceToken < inputAmount * data.price) {
-      return toast.error("Insufficient Token");
-    }
-
     let limit = "";
-    const amountSold = await ercContract.mintedCountPerWallet(
-      account,
-      wallet,
-      launchpadAddress,
-      unit
-    );
-    console.log(+amountSold);
-
-    if (isPublic && data.limit < inputAmount + Number(amountSold)) {
-      return toast.error("Insufficient Limit");
-    }
-    if (!isPublic) {
-      const listProof: DataWhiteList[] = run();
-      const addressOfWhitelist = listProof.find(
-        (item) => item.address.toLowerCase() === account.toLowerCase()
-      );
-
-      if (!addressOfWhitelist) {
-        return toast.error("You are not on the Whitelist");
-      }
-      const amount = parseInt(addressOfWhitelist.amount, 16);
-      limit = addressOfWhitelist.amount;
-      console.log(addressOfWhitelist.proof);
-
-      const remainingAllocation = data.max_allocation - amount;
-      const isEligible =
-        inputAmount <= amount - Number(amountSold) &&
-        inputAmount <= remainingAllocation;
-
-      if (!isEligible) {
-        return toast.error("You do not meet the conditions to buy");
-      }
-
+    let proof: string[] = [];
+    if (!isPublic && addressOfWhitelist) {
       proof = addressOfWhitelist.proof || [];
     }
-
     try {
       setIsOpenTransaction(true);
-
       const result = await ercContract.buyLaunchpad(
         wallet,
         proof,
@@ -140,9 +151,11 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
           <EtherIcon width={16} height={16} />
         </div>
       </div>
-      <Button className="w-full h-10" primary onClick={handleBuyLaunchpad}>
-        Confirm
-      </Button>
+      <ButtonCondition
+        data={data}
+        inputAmount={inputAmount}
+        onClick={handleBuyLaunchpad}
+      />
       <ModalTransation
         isOpenTransation={isOpenTransation}
         setIsOpenTransaction={setIsOpenTransaction}

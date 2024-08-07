@@ -16,6 +16,7 @@ import { LaunchpadStatus } from "@/enums/launchpad-status";
 import SearchNotFound from "@/components/Search/SearchNotFound";
 import { formatDate } from "@/libs/utils/formatComon";
 import { MediaNFT } from "@/components/Common/Media";
+import Link from "next/link";
 
 const SliderLaunchPad = () => {
   const [animate, setAnimate] = useState(false);
@@ -116,13 +117,17 @@ const SliderLaunchPad = () => {
                                 </p>
                               </div>
                             </div>
-                            <Button
-                              primary
-                              className="px-3 h-10 whitespace-nowrap gap-x-2 w-fit"
+                            <Link
+                              href={`launchpad/${item.launchpadAddress}/${item.unit}`}
                             >
-                              Mint now
-                              <RightIcon width={20} height={20} />
-                            </Button>
+                              <Button
+                                primary
+                                className="px-3 h-10 whitespace-nowrap gap-x-2 w-fit"
+                              >
+                                Mint now
+                                <RightIcon width={20} height={20} />
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </div>

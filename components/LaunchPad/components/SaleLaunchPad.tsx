@@ -13,6 +13,9 @@ import { run } from "@/libs/validation/veryfy";
 import { useContext, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { useFetchAmountSold } from "@/hooks/useFetchAmountSold";
+import { useRouter } from "next/router";
+import ButtonCondition from "@/components/Modal/ModalLaunchPad/ButtonCondition";
 interface StageProps {
   stage: LaunchpadItem;
   countStage: number;
@@ -90,15 +93,21 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
   );
 };
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
-  const { account, balanceToken } = useContext(AccountContext);
-  const currentTime = (Date.now() / 1000) | 0;
-  const isValidTime =
-    data.startTime <= currentTime && currentTime <= data.endTime;
+  const { account, balanceToken, wallet } = useContext(AccountContext);
   const [inputAmount, setInputAmount] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
-  console.log(balanceToken < inputAmount * data.price);
+  const router = useRouter();
+  const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
+  const unit = router.query.detail ? +router.query.detail[1] : 0;
+  const amount = useFetchAmountSold({
+    account,
+    wallet,
+    launchpadAddress,
+    unit,
+  });
+  console.log(amount);
 
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
@@ -107,7 +116,6 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           <Button third>ETH</Button>
           <p className="text-2xl font-bold">{data.metadata.name}</p>
         </div>
-        <p onClick={() => run}>TEST</p>
         <div className="h-[1px] w-full bg-shader_500 my-4"></div>
         <div className="relative">
           <div className="flex justify-between ">
@@ -137,7 +145,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           </p>
           <p className="text-shader_200">Price</p>
           <div className="flex gap-x-1 items-center">
-            <p>{inputAmount ? data.price * inputAmount : data.price}</p>
+            <p>{data.price}</p>
             <EtherIcon width={20} height={20} />
           </div>
         </div>
@@ -160,15 +168,11 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           ) : (
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <Button
-                  disabled={
-                    !isValidTime || balanceToken < inputAmount * data.price
-                  }
-                  gradient
-                  className={`w-full h-10 ${!isValidTime && "opacity-60"}`}
-                >
-                  Mint now
-                </Button>
+                <ButtonCondition
+                  data={data}
+                  inputAmount={inputAmount}
+                  onClick={() => setOpen(true)}
+                />
               </DialogTrigger>
               <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                 <ModalMintLaunchPad
