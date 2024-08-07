@@ -15,24 +15,17 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
 
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["LaunchpadList", chainId, query],
-    initialPageParam: 1,
-    queryFn: ({ pageParam = 1 }) =>
-      LaunchpadService.LaunchpadList(chainId, query, pageParam),
-    getNextPageParam: (page) =>
-      page?.currentPage === page?.totalPages
-        ? undefined
-        : page?.currentPage + 1,
-  });
+  const { data, fetchNextPage, isSuccess, isLoading, isFetching } =
+    useInfiniteQuery({
+      queryKey: ["LaunchpadList", chainId, query],
+      initialPageParam: 1,
+      queryFn: ({ pageParam = 1 }) =>
+        LaunchpadService.LaunchpadList(chainId, query, pageParam, 20),
+      getNextPageParam: (page) =>
+        page?.currentPage === page?.totalPages
+          ? undefined
+          : page?.currentPage + 1,
+    });
 
   useEffect(() => {
     if (inView) {

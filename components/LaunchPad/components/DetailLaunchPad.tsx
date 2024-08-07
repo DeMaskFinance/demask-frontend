@@ -20,17 +20,18 @@ export default function DetailLaunchPad() {
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
-  const { account, chainId } = useContext(AccountContext);
+  const { chainId } = useContext(AccountContext);
   const router = useRouter();
   const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
   const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
-
+  const unit = router.query.detail ? +router.query.detail[1] : 0;
   const { isLoading, data, isSuccess } = useQuery<LaunchpadData>({
     queryKey: ["launchPad", launchpadAddress, chainId],
     queryFn: async () => {
       const res = await LaunchpadService.LaunchPadInfor(
         launchpadAddress.toLocaleLowerCase(),
-        chainId
+        chainId,
+        unit
       );
       return res.data;
     },

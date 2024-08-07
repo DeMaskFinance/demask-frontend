@@ -30,20 +30,18 @@ const formatLinkIPFS = (link: string) => {
   return link?.replace("ipfs://", ipfsGateway);
 };
 const formatDate = (timestamp: number): string => {
-  const date = new Date(timestamp * 1000);
-  const formattedDate =
-    [
-      ("0" + date.getDate()).slice(-2), // Day
-      ("0" + (date.getMonth() + 1)).slice(-2), // Month
-      date.getFullYear(), // Year
-    ].join("/") +
-    " " +
-    [
-      ("0" + date.getHours()).slice(-2), // Hours
-      ("0" + date.getMinutes()).slice(-2), // Minutes
-    ].join(":");
+  const secondsInDay = 86400; // 24 * 60 * 60
+  const secondsInHour = 3600; // 60 * 60
+  const secondsInMinute = 60;
 
-  return formattedDate;
+  const days = Math.floor(timestamp / secondsInDay);
+  const hours = Math.floor((timestamp % secondsInDay) / secondsInHour);
+  const minutes = Math.floor((timestamp % secondsInHour) / secondsInMinute);
+  const seconds = timestamp % secondsInMinute;
+
+  return `${days}d ${hours.toString().padStart(2, "0")}h ${minutes
+    .toString()
+    .padStart(2, "0")}m ${seconds.toString().padStart(2, "0")}s`;
 };
 function formatTimestamp(timestamp: number): string {
   const date = new Date(timestamp * 1000);

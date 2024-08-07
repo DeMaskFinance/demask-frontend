@@ -1,4 +1,4 @@
-type StatusType = "Live" | "Upcoming" | "Ended";
+type StatusType = "Live" | "Coming Soon" | "Ended";
 type LaunchpadItem = {
   endTime: number;
   limit: number;

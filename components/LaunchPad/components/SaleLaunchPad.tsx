@@ -7,11 +7,12 @@ import ModalMintLaunchPad from "@/components/Modal/ModalLaunchPad";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import useBuyConditions from "@/hooks/useBuyLaunchPad";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
 import { formatTimestamp } from "@/libs/utils/formatComon";
-import { useContext, useMemo, useState } from "react";
-
+import { run } from "@/libs/validation/veryfy";
+import { useContext, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 interface StageProps {
   stage: LaunchpadItem;
   countStage: number;
@@ -32,7 +33,7 @@ const Status: React.FC<StatusProps> = ({ status }) => {
     );
   }
 
-  if (status === "Upcoming") {
+  if (status === "Coming Soon") {
     return (
       <div className="border text-primary_300 bg-primary_500 border-primary_500 h-6 px-2 rounded-full bg-opacity-15 font-semibold">
         Upcoming
@@ -72,7 +73,11 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
           </div>
           {stage.status === "Live" && (
             <div className="mt-4">
-              <StatusBadge status={"Live"} />
+              <StatusBadge
+                status={"Live"}
+                startTime={stage.startTime}
+                endTime={stage.endTime}
+              />
             </div>
           )}
         </div>
@@ -85,23 +90,15 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
   );
 };
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
-  const { account } = useContext(AccountContext);
+  const { account, balanceToken } = useContext(AccountContext);
   const currentTime = (Date.now() / 1000) | 0;
   const isValidTime =
     data.startTime <= currentTime && currentTime <= data.endTime;
   const [inputAmount, setInputAmount] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
-  const isValidBuy = useBuyConditions(account, inputAmount, data);
-  console.log(isValidBuy);
-
-  console.log(
-    data,
-    checkLaunchpad.publicBuyConditions(
-      "0x4F91a27324Bf6298F855819960F19e2CC1627724",
-      1,
-      data
-    )
-  );
+  const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
+  const [hash, setHash] = useState<string>("");
+  console.log(balanceToken < inputAmount * data.price);
 
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
@@ -110,6 +107,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           <Button third>ETH</Button>
           <p className="text-2xl font-bold">{data.metadata.name}</p>
         </div>
+        <p onClick={() => run}>TEST</p>
         <div className="h-[1px] w-full bg-shader_500 my-4"></div>
         <div className="relative">
           <div className="flex justify-between ">
@@ -163,7 +161,9 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button
-                  disabled={!isValidTime}
+                  disabled={
+                    !isValidTime || balanceToken < inputAmount * data.price
+                  }
                   gradient
                   className={`w-full h-10 ${!isValidTime && "opacity-60"}`}
                 >
@@ -171,7 +171,14 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                <ModalMintLaunchPad inputNFT={1} data={data} />
+                <ModalMintLaunchPad
+                  inputAmount={inputAmount}
+                  data={data}
+                  setInputAmount={setInputAmount}
+                  setHash={setHash}
+                  setOpen={setOpen}
+                  setIsOpenSuccess={setIsOpenSuccessBuy}
+                />
               </DialogContent>
             </Dialog>
           )}
@@ -189,6 +196,12 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           ))}
         </div>
       </div>
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessBuy}
+        transactionHash={hash}
+        type="Buy Launchpad Success"
+        setIsOpenSuccess={setIsOpenSuccessBuy}
+      />
     </div>
   );
 };

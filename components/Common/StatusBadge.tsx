@@ -1,7 +1,15 @@
+import { formatDate } from "@/libs/utils/formatComon";
+
 interface StatusBadgeProps {
   status: StatusType;
+  endTime: number;
+  startTime: number;
 }
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+const StatusBadge: React.FC<StatusBadgeProps> = ({
+  status,
+  endTime,
+  startTime,
+}) => {
   const renderBadge = () => {
     switch (status) {
       case "Live":
@@ -14,10 +22,10 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
               </div>
               LIVE
             </div>
-            <div className="text-white">12d 05h 45m 23s</div>
+            <div className="text-white">{formatDate(endTime - startTime)}</div>
           </div>
         );
-      case "Upcoming":
+      case "Coming Soon":
         return (
           <div className="relative hidden md:flex items-center justify-between w-full h-10 px-3 font-semibold rounded-lg bg-yellow bg-opacity-10 text-yellow text-sm">
             <div className="flex items-center gap-x-1 font-bold">
@@ -27,7 +35,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
               </div>
               UPCOMING
             </div>
-            <div className="text-white">12d 05h 45m 23s</div>
+            <div className="text-white">
+              {formatDate(startTime - Math.floor(Date.now() / 1000))}
+            </div>
           </div>
         );
       case "Ended":

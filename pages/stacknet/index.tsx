@@ -44,7 +44,7 @@ const TestPage = () => {
     calls,
   });
   const { data: dataRead } = useContractRead({
-    functionName: "balance_of",
+    functionName: "name",
     args: [],
     abi: abiCreate721Stacknet,
     address: testAddress,
@@ -59,11 +59,10 @@ const TestPage = () => {
     isPending: isPendingSign,
     signTypedData,
   } = useSignTypedData(exampleData);
-  console.log(dataBalance);
+  console.log(dataBalance, dataRead);
 
   if (isLoading) return <div>Loading ...</div>;
   if (isError || !data) return <div>{error?.message}</div>;
-  console.log(dataRead);
 
   return (
     <div className="text-white">

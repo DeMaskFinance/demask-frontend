@@ -4,6 +4,8 @@ import abiErc1155 from "@/abi/abiErc1155.json";
 import abiDML from "@/abi/abiDML.json";
 import abiCollection from "@/abi/abiCreateCollection.json";
 import abiFeeManager from "@/abi/abiFeeManager.json";
+import abiLaunchPad from "@/abi/abiLaunchPad.json";
+import { exponentialToDecimal } from "../convertExponential";
 const erc = async (wallet: string, address: string, abi: any) => {
   const providerChoice = await getProvider(wallet);
   const provider = new ethers.providers.Web3Provider(providerChoice);
@@ -179,6 +181,57 @@ const getSellArrays = async (
     }
   }
 };
+const mintedCountPerWallet = async (
+  account: string,
+  wallet: string,
+  launchpadAddress: string,
+  unit: number
+) => {
+  console.log(account, wallet, launchpadAddress, unit);
+
+  if (account) {
+    const contract = await ercContract.erc(
+      wallet,
+      launchpadAddress,
+      abiLaunchPad
+    );
+    try {
+      const result = await contract.mintedCountPerWallet(account, unit);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+const buyLaunchpad = async (
+  wallet: string,
+  proof: any,
+  launchpadAddress: string,
+  inputAmount: number,
+  limit: number | string,
+  value: number
+) => {
+  const contract = await ercContract.erc(
+    wallet,
+    launchpadAddress,
+    abiLaunchPad
+  );
+  const estimatedGas = await contract.estimateGas.buy(
+    proof,
+    limit,
+    inputAmount,
+    {
+      value: exponentialToDecimal(value),
+    }
+  );
+  console.log(estimatedGas);
+
+  const result = await contract.buy(proof, limit, inputAmount, {
+    gasLimit: estimatedGas,
+    value: exponentialToDecimal(value),
+  });
+  return result;
+};
 const ercContract = {
   erc,
   approveNFT,
@@ -190,5 +243,7 @@ const ercContract = {
   getFeeManager,
   getBuyArrays,
   getSellArrays,
+  mintedCountPerWallet,
+  buyLaunchpad,
 };
 export default ercContract;

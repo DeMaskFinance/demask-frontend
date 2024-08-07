@@ -17,7 +17,14 @@ const InputCount: React.FC<InputCountProps> = ({
   };
   return (
     <div className="flex h-10 items-center  transition-all duration-200 font-normal text-white   bg-shader_600 outline-none border-shader_400 border rounded-lg">
-      <div className="w-10 flex justify-center">
+      <div
+        className="w-10 flex justify-center cursor-pointer"
+        onClick={() => {
+          if (inputAmount > 1) {
+            setInputAmount(inputAmount - 1);
+          }
+        }}
+      >
         <MinusIcon />
       </div>
       <NumericFormat
@@ -33,7 +40,12 @@ const InputCount: React.FC<InputCountProps> = ({
         value={inputAmount}
         onValueChange={handleChange}
       />
-      <div className="w-10 flex justify-center">
+      <div
+        className="w-10 flex justify-center cursor-pointer"
+        onClick={() => {
+          setInputAmount(inputAmount + 1);
+        }}
+      >
         <PlusIcon width={16} height={16} className="text-primary_400" />
       </div>
     </div>
