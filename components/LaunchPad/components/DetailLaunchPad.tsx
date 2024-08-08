@@ -2,14 +2,12 @@ import { BackgroundDefault } from "@/components/Backgrounds";
 import Back from "@/components/Common/Back";
 import { MediaNFT } from "@/components/Common/Media";
 import { RightIcon } from "@/components/Icons";
-import { ModalError } from "@/components/Modal/ModalTransation";
-import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import AccountContext from "@/context/AccountContext";
 import { LaunchpadService } from "@/libs/service/launchpadService";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Overview from "./Overview";
@@ -17,9 +15,6 @@ import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
 
 export default function DetailLaunchPad() {
-  const [hash, setHash] = useState<string>("");
-  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
-  const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const { chainId } = useContext(AccountContext);
   const router = useRouter();
   const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
@@ -91,19 +86,6 @@ export default function DetailLaunchPad() {
             )
           )}
         </div>
-
-        <ModalSuccess
-          isOpenSuccess={isOpenSuccess}
-          transactionHash={hash}
-          type="Claim NFT Success"
-          setIsOpenSuccess={setIsOpenSuccess}
-        />
-        <ModalError
-          isOpenError={isOpenError}
-          transactionHash={hash}
-          type="Claim NFT Failed"
-          setIsOpenError={setIsOpenError}
-        />
       </BackgroundDefault>
     </div>
   );

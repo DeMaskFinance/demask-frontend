@@ -4,18 +4,14 @@ import InputCount from "@/components/Common/InputCount";
 import StatusBadge from "@/components/Common/StatusBadge";
 import { DoneIcon, EtherIcon } from "@/components/Icons";
 import ModalMintLaunchPad from "@/components/Modal/ModalLaunchPad";
+import ButtonCondition from "@/components/Modal/ModalLaunchPad/ButtonCondition";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
-import { formatTimestamp } from "@/libs/utils/formatComon";
-import { run } from "@/libs/validation/veryfy";
+import { formatPercent, formatTimestamp } from "@/libs/utils/formatComon";
 import { useContext, useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
-import { useFetchAmountSold } from "@/hooks/useFetchAmountSold";
-import { useRouter } from "next/router";
-import ButtonCondition from "@/components/Modal/ModalLaunchPad/ButtonCondition";
 interface StageProps {
   stage: LaunchpadItem;
   countStage: number;
@@ -93,21 +89,11 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
   );
 };
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
-  const { account, balanceToken, wallet } = useContext(AccountContext);
+  const { account } = useContext(AccountContext);
   const [inputAmount, setInputAmount] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
-  const router = useRouter();
-  const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
-  const unit = router.query.detail ? +router.query.detail[1] : 0;
-  const amount = useFetchAmountSold({
-    account,
-    wallet,
-    launchpadAddress,
-    unit,
-  });
-  console.log(amount);
 
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
@@ -121,7 +107,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           <div className="flex justify-between ">
             <p className="font-bold">Total Minted</p>
             <div className="flex gap-x-1 ">
-              <p>{data.mintPercent}%</p>
+              <p>{formatPercent(data.mintPercent)}%</p>
               <p className="text-shader_200">
                 ({data.totalSoldOut}/{data.max_allocation})
               </p>

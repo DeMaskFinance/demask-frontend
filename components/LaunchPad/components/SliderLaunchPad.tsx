@@ -79,7 +79,7 @@ const SliderLaunchPad = () => {
                         className={` object-cover h-[346px] relative`}
                         key={itemIndex}
                         style={{
-                          backgroundImage: `url(${item.metadata.image})`,
+                          backgroundImage: `url(${item.metadata.banner})`,
                         }}
                       >
                         <div

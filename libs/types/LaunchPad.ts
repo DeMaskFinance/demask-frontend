@@ -10,11 +10,14 @@ type LaunchpadItem = {
   status: string;
   unit: number;
 };
+interface MetadataLaunchpad extends Metadata {
+  banner: string;
+}
 interface LaunchpadData extends Socials {
   blockNumber: number;
   launchpadAddress: string;
   detailLaunchpad: string;
-  metadata: Metadata;
+  metadata: MetadataLaunchpad;
   unit: number;
   endTime: number;
   limit: number;

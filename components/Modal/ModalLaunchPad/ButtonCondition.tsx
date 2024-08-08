@@ -32,6 +32,8 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({
     launchpadAddress,
     unit,
   });
+  console.log(amountSold);
+
   const currentTime = (Date.now() / 1000) | 0;
   useEffect(() => {
     const checkConditions = async () => {
@@ -48,7 +50,10 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({
         setError("Insufficient Token");
         return;
       }
-
+      if (data.max_allocation === data.totalSoldOut) {
+        setError("Max allocation");
+        return;
+      }
       if (isPublic) {
         if (data.limit < inputAmount + Number(amountSold)) {
           setError("Insufficient Limit");

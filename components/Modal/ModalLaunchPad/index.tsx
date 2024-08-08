@@ -45,58 +45,25 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   const addressOfWhitelist = listProof.find(
     (item) => item.address.toLowerCase() === account.toLowerCase()
   );
-  // useEffect(() => {
-  //   const checkConditions = async () => {
-  //     setError("");
-  //     setIsDisabled(true);
+  console.log(data);
 
-  //     const requiredTokenAmount = inputAmount * data.price;
-  //     if (balanceToken < requiredTokenAmount) {
-  //       setError("Insufficient Token");
-  //       return;
-  //     }
-
-  //     if (isPublic) {
-  //       if (data.limit < inputAmount + Number(amountSold)) {
-  //         setError("Insufficient Limit");
-  //         return;
-  //       }
-  //     } else {
-  //       if (!addressOfWhitelist) {
-  //         setError("You are not on the Whitelist");
-  //         return;
-  //       }
-
-  //       const whitelistAmount = parseInt(addressOfWhitelist.amount, 16);
-  //       const remainingAllocation = data.max_allocation - whitelistAmount;
-  //       const allowedAmount = Math.min(
-  //         whitelistAmount - Number(amountSold),
-  //         remainingAllocation
-  //       );
-  //       if (inputAmount > allowedAmount) {
-  //         setError("You do not meet the conditions to buy");
-  //         return;
-  //       }
-  //     }
-
-  //     setIsDisabled(false);
-  //   };
-
-  //   checkConditions();
-  // }, [
-  //   inputAmount,
-  //   balanceToken,
-  //   data,
-  //   isPublic,
-  //   addressOfWhitelist,
-  //   amountSold,
-  // ]);
   const handleBuyLaunchpad = async () => {
     let limit = "";
     let proof: string[] = [];
+
     if (!isPublic && addressOfWhitelist) {
       proof = addressOfWhitelist.proof || [];
+      limit = addressOfWhitelist.amount;
     }
+    console.log({
+      wallet,
+      proof,
+      launchpadAddress,
+      inputAmount,
+      limit: isPublic ? data.limit : limit,
+      value: inputAmount * data.priceDecimals,
+    });
+
     try {
       setIsOpenTransaction(true);
       const result = await ercContract.buyLaunchpad(
@@ -115,6 +82,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       }
       setOpen(false);
       queryClient.refetchQueries({ queryKey: ["launchPad"] });
+      queryClient.refetchQueries({ queryKey: ["amountSold"] });
     } catch (error) {
       console.error(error);
       toast.error("Transaction failed. Please try again.");
