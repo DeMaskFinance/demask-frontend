@@ -20,6 +20,8 @@ const fetchAmountSold = async ({
     launchpadAddress,
     unit
   );
+  console.log(amountSold, account);
+
   return amountSold;
 };
 

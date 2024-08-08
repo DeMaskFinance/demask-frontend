@@ -4,10 +4,14 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { replaceDot } from "@/libs/utils/formatComon";
 interface InputCountProps {
   inputAmount: number;
+  isDisabled: boolean;
+  isLoading: boolean;
   setInputAmount: React.Dispatch<React.SetStateAction<number>>;
 }
 const InputCount: React.FC<InputCountProps> = ({
   inputAmount,
+  isDisabled,
+  isLoading,
   setInputAmount,
 }) => {
   const handleChange = (values: NumberFormatValues) => {
@@ -15,6 +19,7 @@ const InputCount: React.FC<InputCountProps> = ({
     const inputValue = replaceDot(value);
     setInputAmount(+inputValue);
   };
+
   return (
     <div className="flex h-10 items-center  transition-all duration-200 font-normal text-white   bg-shader_600 outline-none border-shader_400 border rounded-lg">
       <div
@@ -40,14 +45,15 @@ const InputCount: React.FC<InputCountProps> = ({
         value={inputAmount}
         onValueChange={handleChange}
       />
-      <div
+      <button
         className="w-10 flex justify-center cursor-pointer"
+        disabled={isDisabled || isLoading}
         onClick={() => {
           setInputAmount(inputAmount + 1);
         }}
       >
         <PlusIcon width={16} height={16} className="text-primary_400" />
-      </div>
+      </button>
     </div>
   );
 };

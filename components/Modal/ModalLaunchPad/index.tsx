@@ -2,35 +2,34 @@ import { Button } from "@/components/Buttons";
 import InputCount from "@/components/Common/InputCount";
 import { MediaNFT } from "@/components/Common/Media";
 import { EtherIcon } from "@/components/Icons";
-import { useContext, useEffect, useState } from "react";
-import { ModalTransation } from "../ModalTransation";
-import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
 import AccountContext from "@/context/AccountContext";
-import { toast } from "sonner";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import dataWhitelist from "@/libs/utils/data.json";
-import { useRouter } from "next/router";
 import { queryClient } from "@/libs/constants";
+import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
+import ercContract from "@/libs/utils/erc/erc.contract";
 import { run } from "@/libs/validation/veryfy";
-import { useFetchAmountSold } from "@/hooks/useFetchAmountSold";
-import ButtonCondition from "./ButtonCondition";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import { toast } from "sonner";
+import { ModalTransation } from "../ModalTransation";
 
 interface ModalMintLaunchPadProps {
   inputAmount: number;
   data: LaunchpadData;
+  isDisabled: boolean;
+  isLoading: boolean;
+  error: string;
   setInputAmount: React.Dispatch<React.SetStateAction<number>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
-interface DataWhiteList {
-  address: string;
-  amount: string;
-  proof?: string[];
-}
+
 const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   inputAmount,
   data,
+  isDisabled,
+  isLoading,
+  error,
   setInputAmount,
   setHash,
   setOpen,
@@ -45,7 +44,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   const addressOfWhitelist = listProof.find(
     (item) => item.address.toLowerCase() === account.toLowerCase()
   );
-  console.log(data);
+  console.log(isLoading, isDisabled);
 
   const handleBuyLaunchpad = async () => {
     let limit = "";
@@ -110,7 +109,12 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       <div className="w-full h-[1px] bg-shader_500 mb-4"></div>
       <div className="flex justify-between items-center">
         <p className="title_modal">Mint Quantity</p>
-        <InputCount inputAmount={inputAmount} setInputAmount={setInputAmount} />
+        <InputCount
+          inputAmount={inputAmount}
+          setInputAmount={setInputAmount}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+        />
       </div>
       <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 mt-4">
         <div className="text-primary_100">Total Pay</div>
@@ -119,11 +123,14 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
           <EtherIcon width={16} height={16} />
         </div>
       </div>
-      <ButtonCondition
-        data={data}
-        inputAmount={inputAmount}
+      <Button
+        className={`w-full h-10 ${isDisabled || isLoading ? "opacity-50" : ""}`}
+        primary
+        disabled={isDisabled || isLoading}
         onClick={handleBuyLaunchpad}
-      />
+      >
+        {error || "Confirm"}
+      </Button>
       <ModalTransation
         isOpenTransation={isOpenTransation}
         setIsOpenTransaction={setIsOpenTransaction}

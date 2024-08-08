@@ -1,17 +1,14 @@
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
-import InputCount from "@/components/Common/InputCount";
 import StatusBadge from "@/components/Common/StatusBadge";
 import { DoneIcon, EtherIcon } from "@/components/Icons";
-import ModalMintLaunchPad from "@/components/Modal/ModalLaunchPad";
 import ButtonCondition from "@/components/Modal/ModalLaunchPad/ButtonCondition";
-import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
 import { formatPercent, formatTimestamp } from "@/libs/utils/formatComon";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 interface StageProps {
   stage: LaunchpadItem;
   countStage: number;
@@ -90,10 +87,7 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
 };
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
   const { account } = useContext(AccountContext);
-  const [inputAmount, setInputAmount] = useState<number>(1);
-  const [open, setOpen] = useState<boolean>(false);
-  const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
-  const [hash, setHash] = useState<string>("");
+  console.log(data);
 
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
@@ -136,10 +130,6 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           </div>
         </div>
         <div className="flex gap-x-3 mt-4">
-          <InputCount
-            inputAmount={inputAmount}
-            setInputAmount={setInputAmount}
-          />
           {!account ? (
             <Dialog>
               <DialogTrigger asChild>
@@ -152,25 +142,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
               </DialogContent>
             </Dialog>
           ) : (
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <ButtonCondition
-                  data={data}
-                  inputAmount={inputAmount}
-                  onClick={() => setOpen(true)}
-                />
-              </DialogTrigger>
-              <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                <ModalMintLaunchPad
-                  inputAmount={inputAmount}
-                  data={data}
-                  setInputAmount={setInputAmount}
-                  setHash={setHash}
-                  setOpen={setOpen}
-                  setIsOpenSuccess={setIsOpenSuccessBuy}
-                />
-              </DialogContent>
-            </Dialog>
+            <ButtonCondition data={data} />
           )}
         </div>
       </div>
@@ -186,12 +158,6 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           ))}
         </div>
       </div>
-      <ModalSuccess
-        isOpenSuccess={isOpenSuccessBuy}
-        transactionHash={hash}
-        type="Buy Launchpad Success"
-        setIsOpenSuccess={setIsOpenSuccessBuy}
-      />
     </div>
   );
 };
