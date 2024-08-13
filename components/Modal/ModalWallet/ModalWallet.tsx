@@ -26,11 +26,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
       case "EVM":
         return <EVMWallet />;
       case "Stacknet":
-        return (
-          <div>
-            <StacknetWallet />
-          </div>
-        );
+        return <StacknetWallet />;
       default:
         return null;
     }
