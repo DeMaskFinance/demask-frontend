@@ -12,5 +12,8 @@ declare global {
     starzwallet: any;
     coinbaseWalletExtension: any;
     okxwallet?: EthereumProvider;
+    starknet_bitkeep: any;
+    starknet_argentX: any;
+    starknet_braavos: any;
   }
 }

@@ -3,21 +3,27 @@ import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
 import { liquidityUserListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 export default function Pools() {
   const { account, chainId } = useContext(AccountContext);
   const type = "erc1155";
+  const { ref, inView } = useInView();
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const fetchDataListLiquidity = async (
     accountUser: string,
     pageParam = 1,
     chainId: string | string[],
-    type: string
+    type: string,
+    version: string
   ) => {
     const data = await liquidityUserListAPI(
       accountUser.toLowerCase(),
       pageParam,
       type,
-      chainId
+      chainId,
+      version
     );
     return data;
   };
@@ -28,20 +34,24 @@ export default function Pools() {
     hasNextPage,
     hasPreviousPage,
     isFetchingNextPage,
-    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ["LiquidityList", account, chainId, type],
+    queryKey: ["LiquidityList", account, chainId, type, version],
     queryFn: ({ pageParam = 1 }) =>
-      fetchDataListLiquidity(account, pageParam, chainId, type),
+      fetchDataListLiquidity(account, pageParam, chainId, type, version),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.currentPage < lastPage.totalPages
         ? lastPage.currentPage + 1
         : undefined,
   });
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   return (
     <div>
@@ -71,6 +81,7 @@ export default function Pools() {
                 ))}
               </div>
             ))}
+          <div ref={ref} style={{ height: "1px" }}></div>
         </div>
       ) : (
         <p className="text-shader_200">No data available.</p>

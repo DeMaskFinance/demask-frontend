@@ -4,11 +4,12 @@ const liquidityUserListAPI = async (
   accountUser: string,
   page: number,
   type: string,
-  chainId: string | string[]
+  chainId: string | string[],
+  version: string
 ) => {
   try {
     const res = await request.get(
-      `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&type=${type}&page=${page}`
+      `liquidity-list?chainId=${chainId}&userAddress=${accountUser.toLowerCase()}&type=${type}&version=${version}&page=${page}`
     );
     return res.data;
   } catch (error) {
@@ -62,6 +63,20 @@ const liquidityUser = async (
     console.error(error);
   }
 };
+const poolUserInfor = async (
+  chainId: string | string[],
+  accountUser: string,
+  version: string
+) => {
+  try {
+    const res = await request.get(
+      `user-total-pool-info?chainId=${chainId}&userAddress=${accountUser}&version=${version}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 const liquidityUserERC721 = async (
   collectionAddress: string,
   chainId: string | string[]
@@ -81,4 +96,5 @@ export {
   liquidityUser,
   liquidityUserERC721,
   liquidityListAPI,
+  poolUserInfor,
 };

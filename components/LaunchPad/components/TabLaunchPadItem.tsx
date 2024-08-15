@@ -10,8 +10,6 @@ interface TabLaunchPadProps {
 }
 
 const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item }) => {
-  console.log(item);
-
   return (
     <div className="h-full group">
       <Link
@@ -51,7 +49,9 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item }) => {
                 <div>
                   <p>Items</p>
                   <div className="flex items-center gap-x-1 text-white font-bold justify-end">
-                    <FormatNumber number={item.unit} />
+                    <FormatNumber
+                      number={item.max_allocation - item.totalSoldOut}
+                    />
                   </div>
                 </div>
               </div>

@@ -4,26 +4,33 @@ import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
 import { liquidityUserListAPI } from "@/libs/service/liquidityService";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const UserPools = () => {
   const { account, chainId } = useContext(AccountContext);
+  const { ref, inView } = useInView();
   const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
   const [type, setType] = useState<string>("erc1155");
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+
   const fetchDataListLiquidity = async (
     accountUser: string,
     pageParam = 1,
     chainId: string | string[],
-    type: string
+    type: string,
+    version: string
   ) => {
     const data = await liquidityUserListAPI(
       accountUser.toLowerCase(),
       pageParam,
       type,
-      chainId
+      chainId,
+      version
     );
     return data;
   };
@@ -34,22 +41,26 @@ const UserPools = () => {
     hasNextPage,
     hasPreviousPage,
     isFetchingNextPage,
-    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ["LiquidityList", account, chainId, type],
+    queryKey: ["LiquidityList", account, chainId, type, version],
     queryFn: ({ pageParam = 1 }) =>
-      fetchDataListLiquidity(account, pageParam, chainId, type),
+      fetchDataListLiquidity(account, pageParam, chainId, type, version),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.currentPage < lastPage.totalPages
         ? lastPage.currentPage + 1
         : undefined,
   });
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
   return (
-    <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden min-h-[550px] max-h-[650px]">
+    <div className="rounded-lg bg-shader_800 flex flex-col overflow-y-auto min-h-[550px] max-h-[650px]">
       <TabGroups
         choices={["ERC-1155", "ERC-721"]}
         activeChoice={activeChoice}
@@ -89,6 +100,7 @@ const UserPools = () => {
                   )}
                 </div>
               ))}
+            <div ref={ref} style={{ height: "1px" }}></div>
           </div>
           {isFetchingNextPage && (
             <div className="flex items-center justify-center w-full h-full grow">

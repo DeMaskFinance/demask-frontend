@@ -37,7 +37,6 @@ const SliderLaunchPad = () => {
           ? undefined
           : page?.currentPage + 1,
     });
-  console.log(data);
 
   const handleSlideChange = () => {
     setAnimate(true);
@@ -138,7 +137,13 @@ const SliderLaunchPad = () => {
             </Fragment>
           ))
         ) : (
-          <SearchNotFound />
+          <Image
+            src="/images/BannerLaunchpad.png"
+            width={1000}
+            height={500}
+            className=" w-full object-cover aspect-[5/1] px-10 mb-4"
+            alt="banner_launchpad"
+          />
         )}
       </Swiper>
     </>

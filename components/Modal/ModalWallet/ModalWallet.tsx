@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import EVMWallet from "./EVMWallet";
-import StacknetWallet from "./StacknetWallet";
+import StarknetWallet from "./StarknetWallet";
 
 interface ModalWalletProps {
   isAuthen?: true;
@@ -20,13 +20,13 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
         return (
           <div>
             <EVMWallet />
-            <StacknetWallet />
+            <StarknetWallet />
           </div>
         );
       case "EVM":
         return <EVMWallet />;
-      case "Stacknet":
-        return <StacknetWallet />;
+      case "Starknet":
+        return <StarknetWallet />;
       default:
         return null;
     }
@@ -42,7 +42,7 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
       </p>
       <div className="my-4">
         <TabGroups
-          choices={["All", "EVM", "Stacknet"]}
+          choices={["All", "EVM", "Starknet"]}
           activeChoice={activeChoice}
           onChoiceChange={handleChoiceChange}
         />

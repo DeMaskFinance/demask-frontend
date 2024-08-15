@@ -1,3 +1,4 @@
+import { constants, TypedData } from "starknet";
 import {
   BlastIcon,
   EtherIcon,
@@ -160,6 +161,23 @@ const Category = [
     value: "Memberships",
   },
 ];
+const myTypedData: TypedData = {
+  domain: {
+    name: "Demask Finance",
+    chainId: constants.StarknetChainId.SN_SEPOLIA,
+    version: "0.2.0",
+  },
+  types: {
+    StarkNetDomain: [
+      { name: "name", type: "string" },
+      { name: "chainId", type: "felt" },
+      { name: "version", type: "string" },
+    ],
+    Message: [{ name: "message", type: "felt" }],
+  },
+  primaryType: "Message",
+  message: { message: 1234 },
+};
 export {
   activeNFTPercent,
   amountNFT,
@@ -173,4 +191,5 @@ export {
   validCollectionInput,
   validNFTsInput,
   version,
+  myTypedData,
 };

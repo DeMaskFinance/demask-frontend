@@ -63,21 +63,22 @@ export default function Header() {
   const provider = getProvider(wallet);
   useEffect(() => {
     const getAddress = async () => {
+      console.log(wallet);
+
       const provider = await getProvider(wallet);
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
-        // console.log("name:", provider.selectedAddress);
-        // console.log("test1", test.provider.selectedAddress);
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
         const selectedAddress = accounts[0];
-        // console.log("selectedADD", selectedAddress);
         if (provider && test.provider.selectedAddress === null) {
           disconnectWallet();
         }
       }
     };
-    getAddress();
+    if (wallet !== "argentX" && wallet !== "braavos") {
+      getAddress();
+    }
   }, [provider, wallet]);
 
   return (

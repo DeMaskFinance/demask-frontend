@@ -10,8 +10,8 @@ import {
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
   const connectors = [
-    new InjectedConnector({ options: { id: "argentX" } }),
-    new InjectedConnector({ options: { id: "braavos" } }),
+    new InjectedConnector({ options: { id: "argentX", name: "Argent X" } }),
+    new InjectedConnector({ options: { id: "braavos", name: "Braavos" } }),
   ];
   return (
     <StarknetConfig

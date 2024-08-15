@@ -32,7 +32,9 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
       router.isReady &&
       isLoggedIn &&
       chainId &&
-      wallet !== "WalletConnect"
+      wallet !== "WalletConnect" &&
+      wallet !== "argentX" &&
+      wallet !== "braavos"
     ) {
       const checkNetwork = async () => {
         const provider = await getProvider(wallet);

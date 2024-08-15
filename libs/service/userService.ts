@@ -40,7 +40,7 @@ const uploadFile = async (params: any) => {
     if (params.avatar) {
       formData.append("avatar", params.avatar);
     }
-    
+
     if (params.banner) {
       formData.append("banner", params.banner);
     }
@@ -48,4 +48,33 @@ const uploadFile = async (params: any) => {
     return res.data;
   } catch (error) {}
 };
-export { getNonce, loginAuthen, profileInfor, updateUserInfor, uploadFile };
+const getStarknetMessage = async (account: string, chainStarknet: string) => {
+  try {
+    const res = await request.get(
+      `user/starknet-message?chainId=${chainStarknet}&userAddress=${account}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const authenStarknet = async (chainStarknet: string, body: any) => {
+  try {
+    const res = await request.post(
+      `authentication/starknet?chainId=${chainStarknet}`,
+      body
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export {
+  getNonce,
+  loginAuthen,
+  profileInfor,
+  updateUserInfor,
+  uploadFile,
+  getStarknetMessage,
+  authenStarknet,
+};
