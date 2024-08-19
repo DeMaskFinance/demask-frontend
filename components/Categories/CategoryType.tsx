@@ -22,18 +22,7 @@ const Category = ({ label }: { label: string }) => {
     const data = await collectionTypeCategory(label, chain, pageParam, 20);
     return data;
   };
-  const {
-    data,
-    fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
-    isSuccess,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
     queryKey: ["CollectionTypeDetail", chainId, label],
     queryFn: ({ pageParam = 1 }) =>
       fetchDetailCollection(label, chainId, pageParam),

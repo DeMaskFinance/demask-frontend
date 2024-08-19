@@ -1,11 +1,11 @@
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
-import { myTypedData } from "@/libs/constants";
+import { starknet } from "@/libs/constants";
 import { authenStarknet, getStarknetMessage } from "@/libs/service/userService";
 import { login } from "@/store/profileSlice";
-import { Connector, useConnect, useContract } from "@starknet-react/core";
+import { Connector, useConnect } from "@starknet-react/core";
 import Image from "next/image";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { ArraySignatureType, ec } from "starknet";
 const styles = {
@@ -22,13 +22,11 @@ const StarknetWallet = () => {
       const accounts = await provider.enable({
         starknetVersion: "v5",
       });
-      console.log(accounts);
 
       const data = await getStarknetMessage(
         accounts[0],
-        "0x534e5f5345504f4c4941"
+        starknet.StarknetChainId.SN_SEPOLIA
       );
-      console.log(data.data.typedData.message.message, myTypedData, data);
 
       // sign message
       const signature = (await provider.account.signMessage(
@@ -42,11 +40,14 @@ const StarknetWallet = () => {
         BigInt(signature[r]),
         BigInt(signature[s])
       );
-      const loginData = await authenStarknet("0x534e5f5345504f4c4941", {
-        message: data.data.typedData.message.message,
-        userAddress: accounts[0],
-        signature: signatureCurve.toCompactHex(),
-      });
+      const loginData = await authenStarknet(
+        starknet.StarknetChainId.SN_SEPOLIA,
+        {
+          message: data.data.typedData.message.message,
+          userAddress: accounts[0],
+          signature: signatureCurve.toCompactHex(),
+        }
+      );
       dispatch(
         login({ accessToken: loginData.accessToken, user: accounts[0] })
       );

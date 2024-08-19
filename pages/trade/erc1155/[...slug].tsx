@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const updateMeta = {
   ...SEO,

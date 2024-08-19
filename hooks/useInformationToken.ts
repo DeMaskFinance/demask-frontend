@@ -1,61 +1,119 @@
 import { getProvider } from "@/libs/connection/getProvider";
+import { starknet } from "@/libs/constants";
+import { starknetContract } from "@/libs/utils/starknet/contract";
+import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
 
+interface EVMResult {
+  balanceToken: string;
+  bigNumberBalance: string;
+}
+
+interface StarknetResult extends EVMResult {
+  balanceTokenStarknet: string;
+  bigNumberBalanceStarknet: string;
+}
 const useInformationToken = (
   account: string,
-  tokenAddress: string,
   wallet: string,
-  routerAddress: string,
-  rpc: string,
-  nativeAddress: string,
-  chainId: string,
-  isOpenTransaction?: boolean,
-  isOpenBuyNFT?: boolean,
-  isOpenSellNFT?: boolean
+  chainId: string
 ) => {
-  const [balanceToken, setBalanceToken] = useState("0");
-  const [bigNumberBalance, setBigNumberBalance] = useState("0");
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
-  useEffect(() => {
-    const getInformationToken = async () => {
-      if (tokenAddress && account) {
-        const providerChoice = await getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
-        try {
-          const balance = await provider.getBalance(account);
-          const balanceInMatic = parseFloat(
-            ethers.utils.formatEther(balance)
-          ).toFixed(4);
-          setBalanceToken(balanceInMatic);
-          setBigNumberBalance(balance.toString());
-          setIsLoadingBalance(false);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        setBalanceToken("0"); // No Account
-      }
-    };
+  const fetchTokenBalanceEVM = async (): Promise<EVMResult> => {
+    console.log({
+      account,
+      wallet,
+      chainId,
+    });
 
-    getInformationToken();
-  }, [
-    tokenAddress,
-    account,
-    wallet,
-    isOpenTransaction,
-    isOpenBuyNFT,
-    isOpenSellNFT,
-    routerAddress,
-    rpc,
-    chainId,
-  ]);
+    if (!account) return { balanceToken: "0", bigNumberBalance: "0" };
 
-  return {
-    balanceToken,
-    bigNumberBalance,
-    isLoadingBalance,
+    try {
+      const providerChoice = await getProvider(wallet);
+      const provider = new ethers.providers.Web3Provider(providerChoice);
+      const balance = await provider.getBalance(account);
+      const balanceInEth = ethers.utils.formatEther(balance);
+      return {
+        balanceToken: parseFloat(balanceInEth).toFixed(4),
+        bigNumberBalance: balance.toString(),
+      };
+    } catch (error) {
+      console.error("Error fetching EVM balance:", error);
+      return { balanceToken: "0", bigNumberBalance: "0" };
+    }
   };
-};
 
+  const fetchTokenBalanceStarknet = async (): Promise<StarknetResult> => {
+    if (!account)
+      return {
+        balanceToken: "0",
+        bigNumberBalance: "0",
+        balanceTokenStarknet: "0",
+        bigNumberBalanceStarknet: "0",
+      };
+
+    try {
+      const contractETH = await starknetContract.getContract(starknet.addrETH);
+      console.log(contractETH);
+
+      const contractStarknet = await starknetContract.getContract(
+        starknet.addrStarknet
+      );
+
+      const balanceETH = await contractETH.getBalance(account);
+      const balanceStarknet = await contractStarknet.getBalance(account);
+
+      const balanceInEthETH = ethers.utils.formatEther(balanceETH);
+      const balanceInEthStarknet = ethers.utils.formatEther(balanceStarknet);
+
+      return {
+        balanceToken: parseFloat(balanceInEthETH).toFixed(4),
+        bigNumberBalance: balanceETH.toString(),
+        balanceTokenStarknet: parseFloat(balanceInEthStarknet).toFixed(4),
+        bigNumberBalanceStarknet: balanceStarknet.toString(),
+      };
+    } catch (error) {
+      console.error("Error fetching Starknet balance:", error);
+      return {
+        balanceToken: "0",
+        bigNumberBalance: "0",
+        balanceTokenStarknet: "0",
+        bigNumberBalanceStarknet: "0",
+      };
+    }
+  };
+
+  const { data, isLoading } = useQuery<EVMResult | StarknetResult>({
+    queryKey: ["useBalanceToken", account, wallet, chainId],
+    queryFn: async () => {
+      if (chainId === starknet.StarknetChainId.SN_SEPOLIA) {
+        return fetchTokenBalanceStarknet();
+      } else {
+        return fetchTokenBalanceEVM();
+      }
+    },
+    enabled: !!account && !!chainId,
+  });
+
+  const result = {
+    isLoadingBalance: isLoading,
+  };
+
+  if (chainId === starknet.StarknetChainId.SN_SEPOLIA) {
+    return {
+      ...result,
+      balanceToken: data?.balanceToken || "0",
+      bigNumberBalance: data?.bigNumberBalance || "0",
+      balanceTokenStarknet:
+        (data as StarknetResult)?.balanceTokenStarknet || "0",
+      bigNumberBalanceStarknet:
+        (data as StarknetResult)?.bigNumberBalanceStarknet || "0",
+    };
+  } else {
+    return {
+      ...result,
+      balanceToken: data?.balanceToken || "0",
+      bigNumberBalance: data?.bigNumberBalance || "0",
+    };
+  }
+};
 export default useInformationToken;

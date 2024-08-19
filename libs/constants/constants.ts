@@ -1,4 +1,3 @@
-import { constants, TypedData } from "starknet";
 import {
   BlastIcon,
   EtherIcon,
@@ -22,15 +21,6 @@ const tokenGoerli = [
   },
 ];
 
-const tokenBlast = [
-  {
-    name: "Blast Testnet",
-    symbol: "ETH",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_BLAST,
-    logo: BlastIcon,
-    symbolNative: "WETH",
-  },
-];
 const tokenSepolia = [
   {
     name: "Sepolia Testnet",
@@ -81,6 +71,7 @@ if (PORT === "3000") {
     },
   ];
 }
+
 const amountNFT = [
   {
     id: 1,
@@ -161,23 +152,25 @@ const Category = [
     value: "Memberships",
   },
 ];
-const myTypedData: TypedData = {
-  domain: {
-    name: "Demask Finance",
-    chainId: constants.StarknetChainId.SN_SEPOLIA,
-    version: "0.2.0",
+
+export const starknet = {
+  addrETH: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+  addrStarknet:
+    "0x04718f5a0Fc34cC1AF16A1cdee98fFB20C31f5cD61D6Ab07201858f4287c938D",
+  addrxASTR:
+    "0x005EF67D8c38B82ba699F206Bf0dB59f1828087A710Bad48Cc4d51A2B0dA4C29", // xAstraly
+  addrTESTCONTRACT:
+    "0x6a109c64aefc6f0e337f8996baec2db09e209d12fd329843327a0f442e04d84", // sepolia testnet
+  StarknetChainId: {
+    SN_SEPOLIA: "0x534e5f5345504f4c4941",
+    SN_MAIN: "0x534e5f4d41494e",
   },
-  types: {
-    StarkNetDomain: [
-      { name: "name", type: "string" },
-      { name: "chainId", type: "felt" },
-      { name: "version", type: "string" },
-    ],
-    Message: [{ name: "message", type: "felt" }],
-  },
-  primaryType: "Message",
-  message: { message: 1234 },
 };
+export enum CommandWallet {
+  wallet_watchAsset = "wallet_watchAsset",
+  wallet_addStarknetChain = "wallet_addStarknetChain",
+  wallet_switchStarknetChain = "wallet_switchStarknetChain",
+}
 export {
   activeNFTPercent,
   amountNFT,
@@ -185,11 +178,9 @@ export {
   mediaType,
   network,
   SEPOLIA_DEMASK,
-  tokenBlast,
   tokenGoerli,
   tokenSepolia,
   validCollectionInput,
   validNFTsInput,
   version,
-  myTypedData,
 };

@@ -7,6 +7,7 @@ import AccountContext from "@/context/AccountContext";
 import { liquidityListAPI } from "@/libs/service/liquidityService";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
@@ -17,7 +18,7 @@ const TotalPools = () => {
   const [type, setType] = useState<string>("erc1155");
   const { ref, inView } = useInView();
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
-
+  const router = useRouter();
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
@@ -77,6 +78,13 @@ const TotalPools = () => {
                       <tr
                         className="flex px-4 py-3 text-white border-b border-shader_500 hover:bg-shader_700 cursor-pointer font-bold"
                         key={index}
+                        onClick={() => {
+                          router.push(
+                            item.type === "erc1155"
+                              ? `/details/${item.dmlAddress}`
+                              : `/trade/erc721/${item.nftAddress}?tab=pool`
+                          );
+                        }}
                       >
                         <td className="flex justify-start lg:w-full md:w-full w-[200px] gap-x-3 items-center">
                           <div className="relative w-[52px] ">

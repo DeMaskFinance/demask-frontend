@@ -12,8 +12,6 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { QueryParamProvider } from "use-query-params";
 import { mainnet, sepolia } from "viem/chains";
@@ -88,7 +86,6 @@ export default function App({
                   </Layout>
                   <ReactQueryDevtools initialIsOpen={false} />
                 </WagmiProvider>
-                <ToastContainer limit={1} />
               </QueryParamProvider>
             </QueryClientProvider>
           </StarknetProvider>

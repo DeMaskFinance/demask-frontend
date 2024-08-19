@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
-import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 interface ModalConfirmRemoveLiquidityProps {

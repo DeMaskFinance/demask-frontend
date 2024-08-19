@@ -2,7 +2,6 @@ import { getProvider } from "@/libs/connection/getProvider";
 import {
   network,
   SEPOLIA_DEMASK,
-  tokenBlast,
   tokenSepolia
 } from "@/libs/constants";
 import { ethers } from "ethers";

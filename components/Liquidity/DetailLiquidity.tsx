@@ -37,6 +37,7 @@ import ChartNoTransfers from "../Charts/ChartNoTransfers";
 import Back from "../Common/Back";
 import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
+import ModalDocument from "../Modal/ModalLength/ModalDocument";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -235,7 +236,9 @@ const DetailLiquidity = () => {
             <div className="w-full lg:w-[400px] lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-x-1">
-                  <p className="text-lg font-bold">{data?.metadata?.name}</p>
+                  <div className="text-lg font-bold max-w-[180px]">
+                    <ModalDocument data={data?.metadata?.name} />
+                  </div>
                   <p className="text-sm text-primary_400">
                     ({data?.metadata?.symbol}/ETH)
                   </p>

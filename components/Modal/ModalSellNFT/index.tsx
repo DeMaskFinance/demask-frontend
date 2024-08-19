@@ -11,7 +11,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
 import { ModalTransation } from "../ModalTransation";
 interface ModalSellNFTProps {
   tokenAddress: string;

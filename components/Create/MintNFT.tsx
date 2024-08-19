@@ -6,11 +6,10 @@ import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import getMetadataUrl from "@/libs/utils/getMetadata";
 import React, { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Button from "../Buttons/Button";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
+import { toast } from "sonner";
 interface mintProps {
   amount: number;
   url: string;
@@ -120,16 +119,7 @@ export default function MintNFT({
     }
     if (fileIPFS === null) {
       emptyInputFields.push("fileIPFS");
-      toast.error("File not found.Try again!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("File not found.Try again!");
     }
 
     setEmptyInputs(emptyInputFields);

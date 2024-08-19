@@ -3,12 +3,6 @@ import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EyeIcon, ImgIcon } from "@/components/Icons";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
 import { ModalSearchCollectionSwap } from "@/components/Modal/ModalSearchCollection";
-import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
-import showToast, { ToastType } from "@/components/Toast/ToastCustom";
-import { Slider } from "@/components/ui/slider";
-import AccountContext from "@/context/AccountContext";
-import { refreshNFTService } from "@/libs/service/nftService";
-import React, { Fragment, MouseEvent, useContext, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +10,9 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Slider } from "@/components/ui/slider";
+import AccountContext from "@/context/AccountContext";
+import React, { useContext, useState } from "react";
 interface NFTGridProps {
   data: any;
   idNFT: number[];
@@ -35,18 +32,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
-  const handleReset = async (e: MouseEvent<HTMLDivElement>, item: any) => {
-    e.stopPropagation();
-
-    try {
-      showToast("Please wait a moment!", ToastType.Success);
-
-      await refreshNFTService(chainId, item.nftAddress, item.nftID, item.type);
-    } catch (error) {
-      console.error("Error occurred while refreshing NFT:", error);
-      showToast("An error occurred. Please try again later.", ToastType.Error);
-    }
-  };
 
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));

@@ -15,7 +15,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import "react-toastify/dist/ReactToastify.css";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";

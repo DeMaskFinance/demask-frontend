@@ -141,7 +141,7 @@ const SliderLaunchPad = () => {
             src="/images/BannerLaunchpad.png"
             width={1000}
             height={500}
-            className=" w-full object-cover aspect-[5/1] px-10 mb-4"
+            className=" w-full object-cover px-10 mb-4 rounded-xl block"
             alt="banner_launchpad"
           />
         )}

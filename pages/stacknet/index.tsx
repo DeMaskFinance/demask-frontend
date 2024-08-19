@@ -1,101 +1,86 @@
-import abiCreate721Starknet from "@/abi/starknet/abiCreate721Stacknet.json";
-import { Button } from "@/components/Buttons";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
-import { Pencil1Icon } from "@radix-ui/react-icons";
-import {
-  Connector,
-  useAccount,
-  useBalance,
-  useConnect,
-  useContract,
-  useContractFactory,
-  useContractWrite,
-  useDisconnect,
-  useSignTypedData,
-} from "@starknet-react/core";
-import Image from "next/image";
-import { useContext, useMemo } from "react";
-import { BiLoader } from "react-icons/bi";
-import {
-  CallData,
-  constants,
-  Contract,
-  ec,
-  hash,
-  RpcProvider,
-  TypedData,
-} from "starknet";
+import useContractWrite from "@/hooks/useContractWrite";
+import useInformationToken from "@/hooks/useInformationToken";
+import { starknetContract } from "@/libs/utils/starknet/contract";
+import { useNetwork } from "@starknet-react/core";
+import { useContext } from "react";
+import { CallData } from "starknet";
 const TestPage = () => {
-  const { account, wallet } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
+  const { chain, chains } = useNetwork();
+  console.log(chains);
 
-  // const { isLoading, isError, error, data } = useBalance({
-  //   address:
-  //     "0x052789eCea341395848b554BB14BE7116a4503bE1f8B7a02f8c05DD7902bEc4f",
-  //   watch: true,
-  // });
-  // console.log(data);
+  const ETHaddress =
+    "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
 
   const testAddress =
     "0x07091a681ff4de9bd830573448c8605ff777999666aaf329fcb294717baeafb9";
   const testRead = async () => {
-    const provider = new RpcProvider({
-      nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
-    });
-    const { abi: testAbi } = await provider.getClassAt(testAddress);
-    console.log(testAbi);
-
-    if (testAbi === undefined) {
-      throw new Error("no abi.");
-    }
-    const myTestContract = new Contract(testAbi, testAddress, provider);
-    const bal1 = await myTestContract.name();
+    const contract = await starknetContract.getContract(testAddress);
+    const bal1 = await contract.symbol();
     console.log(bal1);
   };
+  const testClassHash =
+    "0x047d48afafa3385a0310e6e52da873cc58cb1a56a8a93754f2a8bfc726e282d3";
+  const { writeAsync, data, isPending } = useContractWrite(
+    wallet,
+    testAddress,
+    "transfer_from",
+    [
+      account,
+      "0x07bdFE5cCdaE97EC118aa02953570C16243E972CEF09557698E15278A34b1c87",
+      86,
+    ]
+  );
+  const fetchBalance = async () => {
+    try {
+      const contract = await starknetContract.getContract(ETHaddress);
+      console.log(contract, account);
 
-  // const { data: dataBalance } = useBalance({
-  //   account,
-  //   watch: true,
-  // });
-  // const msgHash = hash.computeHashOnElements(dataSign);
-  // console.log(msgHash);
-  // const testClassHash =
-  //   "0x047d48afafa3385a0310e6e52da873cc58cb1a56a8a93754f2a8bfc726e282d3";
-  // const contractConstructor = CallData.compile({
-  //   owner: "0x042b0820435bf27be9bd967e6c71ab5e6b62575c04ac085780907b341c6225a1",
-  // });
-  // console.log(contractConstructor);
-  // const { contractFactory } = useContractFactory({
-  //   compiledContract: contractConstructor,
-  //   classHash: testClassHash,
-  //   abi: contractConstructor.abi,
-  // });
-  const safe = async () => {
-    const providerTest = await getProvider(wallet);
-    const provider = new RpcProvider({
-      nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
-    });
-    console.log(providerTest, provider);
-
-    const { abi: testAbi } = await providerTest.getClassAt(testAddress);
-    if (testAbi === undefined) {
-      throw new Error("no abi.");
+      const balance = await contract.balanceOf(account);
+      console.log(balance);
+    } catch (error) {
+      console.log(error);
+    } finally {
     }
-    const myTestContract = new Contract(testAbi, testAddress, provider);
-    // myTestContract.connect(account);
-    const bal1 = await myTestContract.name();
-    console.log(bal1);
   };
+  const deployContract = async () => {
+    try {
+      const contractConstructor = CallData.compile({
+        owner: account,
+      });
+      console.log(contractConstructor);
+      const contractWallet = await starknetContract.getWalletAccount(wallet);
+      const deployResponse = await contractWallet.deployContract({
+        classHash: testClassHash,
+        constructorCalldata: contractConstructor,
+      });
+      const data = await contractWallet.waitForTransaction(
+        deployResponse.transaction_hash
+      );
+      console.log(deployResponse, data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const { isLoadingBalance, balanceToken, bigNumberBalance } =
+    useInformationToken(account, wallet, chainId);
+  console.log({
+    account,
+    wallet,
+    chainId,
+    isLoadingBalance,
+    balanceToken,
+    bigNumberBalance,
+  });
+
   return (
     <div className="text-white">
       <p onClick={testRead}>TEST</p>
-      <p onClick={safe}>Test</p>
+      {/* <p onClick={getTransaction}>Write</p> */}
+      <p onClick={writeAsync}>Write hook</p>
+      <p onClick={fetchBalance}>Balance</p>
+      <p onClick={deployContract}>deployContract</p>
     </div>
   );
 };
