@@ -6,16 +6,9 @@ import { selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { BsCaretDownFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface MenuNetworkProps {}
-const style = {
-  itemSub:
-    "flex items-center p-2 transition-all duration-150 ease-in rounded-lg cursor-pointer hover:bg-shader_600 text-shader_600 font-semibold",
-  btnWallet: " ",
-};
 interface networkProps {
   name: string;
   logo: React.FC;
