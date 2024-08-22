@@ -9,12 +9,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ModalMintLaunchPad from ".";
 import InputCount from "@/components/Common/InputCount";
 import { ModalSuccess } from "../ModalTransation/ModalSuccess";
+import useInformationToken from "@/hooks/useInformationToken";
 
 interface ButtonConditionProps {
   data: LaunchpadData;
 }
 const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
-  const { account, wallet, balanceToken } = useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
   const [isDisabled, setIsDisabled] = useState(true);
   const [inputAmount, setInputAmount] = useState<number>(1);
@@ -23,7 +24,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
-
+  const { balanceToken } = useInformationToken(account, wallet, chainId);
   const unit = router.query.detail ? +router.query.detail[1] : 0;
   const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
   const listProof = run();

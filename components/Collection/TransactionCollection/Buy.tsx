@@ -19,9 +19,9 @@ import { useContext, useEffect, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import useInformationToken from "@/hooks/useInformationToken";
 const Buy = () => {
-  const { account, chainId, slippage, bigNumberBalance } =
-    useContext(AccountContext);
+  const { account, chainId, slippage, wallet } = useContext(AccountContext);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [idNFT, setIdNFT] = useState<number[]>([]);
@@ -34,7 +34,7 @@ const Buy = () => {
   const collectionAddress = (router.query.erc as string) || "";
   const debouncedIdNFT = useDebounce(idNFT, 1500);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
-
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
     queryFn: async () => {

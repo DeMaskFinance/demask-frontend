@@ -11,6 +11,7 @@ import Tippy from "@tippyjs/react";
 import { useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
+import useInformationToken from "@/hooks/useInformationToken";
 interface ModalBuyNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -50,16 +51,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const {
-    demask,
-    account,
-    wallet,
-    slippage,
-    txDeadline,
-    bigNumberBalance,
-    updateBalance,
-  } = useContext(AccountContext);
-
+  const { demask, account, wallet, slippage, txDeadline, chainId } =
+    useContext(AccountContext);
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   useEffect(() => {
     if (Number(inputNFT) < Number(dataBuy?.reserveNFT)) {
       setIsSufficientNFT(true);
@@ -127,7 +121,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
         queryClient.refetchQueries({ queryKey: ["detailCollection"] });
         queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
-        await updateBalance();
+        queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

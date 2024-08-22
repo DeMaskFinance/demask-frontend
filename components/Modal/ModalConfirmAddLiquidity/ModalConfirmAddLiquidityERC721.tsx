@@ -15,6 +15,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { ModalTransation } from "../ModalTransation";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import useInformationToken from "@/hooks/useInformationToken";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
@@ -48,16 +49,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setIsOpenAddLiquidity,
   setIsOpenConfirmAddLiquidity,
 }) => {
-  const {
-    demask,
-    account,
-    wallet,
-    slippage,
-    txDeadline,
-    updateBalance,
-    bigNumberBalance,
-    chainId,
-  } = useContext(AccountContext);
+  const { demask, account, wallet, slippage, txDeadline, chainId } =
+    useContext(AccountContext);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
@@ -65,6 +58,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     chainId,
     version,
   ]);
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   useEffect(() => {
@@ -104,7 +98,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
         queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
         queryClient.refetchQueries({ queryKey: ["detailCollection"] });
-        await updateBalance();
+        queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

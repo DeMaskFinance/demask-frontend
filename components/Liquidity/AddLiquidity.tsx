@@ -42,6 +42,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Back from "../Common/Back";
 import VersionTrade from "../Common/VersionTrade";
 import Actions from "../Trade/Action";
+import useInformationToken from "@/hooks/useInformationToken";
 
 export default function AddLiquidity() {
   const router = useRouter();
@@ -56,8 +57,7 @@ export default function AddLiquidity() {
     useState<boolean>(false);
   const [amountErcDesired, setAmountErcDesired] = useState<any>();
   const { currency } = router.query;
-  const { account, wallet, chainId, slippage, bigNumberBalance, balanceToken } =
-    useContext(AccountContext);
+  const { account, wallet, chainId, slippage } = useContext(AccountContext);
   const [isInputNFT, setIsInputNFT] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
@@ -70,6 +70,11 @@ export default function AddLiquidity() {
     chainId,
     version,
   ]);
+  const { balanceToken, bigNumberBalance } = useInformationToken(
+    account,
+    wallet,
+    chainId
+  );
   let inputNFTValue = useDebounce(inputNFT, 1000);
   useEffect(() => {
     if (currency) {

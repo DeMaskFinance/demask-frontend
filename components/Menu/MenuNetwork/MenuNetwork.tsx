@@ -2,11 +2,11 @@ import { DownIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import { network } from "@/libs/constants";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
-import { selectProfile } from "@/store/profileSlice";
+import { logout, selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
 interface MenuNetworkProps {}
 interface networkProps {
@@ -19,22 +19,42 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
     network[0]
   );
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
-  const { updateChainId, chainId, wallet, demask, account } =
+  const { updateChainId, chainId, wallet, demask, account, updateAccount } =
     useContext(AccountContext);
+  const dispatch = useDispatch();
   const router = useRouter();
   const { isLoggedIn } = useSelector(selectProfile);
+  const disconnectWallet = () => {
+    localStorage.removeItem("ACCOUNT_DEMASK");
+    updateAccount("");
+    dispatch(logout());
+  };
   const handleChangeNetwork = async (chain: string) => {
+    const targetNetwork = network.find((net) => net.chain === chain);
+    const currentNetwork = network.find((net) => net.chain === chainId);
+
+    if (!targetNetwork || !currentNetwork) return;
+
+    const isDifferentChainType = targetNetwork.type !== currentNetwork.type;
+
     if (account && wallet && isLoggedIn) {
-      const check = await changeNetwork(
-        chain,
-        wallet,
-        demask,
-        setIsWrongNetwork,
-        updateChainId
-      );
-      if (check) {
-        router.replace(`/trade`);
+      if (isDifferentChainType) {
+        disconnectWallet();
+        updateChainId(chain);
       }
+
+      if (targetNetwork.type === "EVM" && currentNetwork.type === "EVM") {
+        await changeNetwork(
+          chain,
+          wallet,
+          demask,
+          setIsWrongNetwork,
+          updateChainId
+        );
+      }
+
+      updateChainId(chain);
+      router.replace(`/trade`);
     } else {
       updateChainId(chain);
       router.replace(`/trade`);

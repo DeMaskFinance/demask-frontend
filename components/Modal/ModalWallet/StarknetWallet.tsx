@@ -15,7 +15,8 @@ const styles = {
 const StarknetWallet = () => {
   const { connectors } = useConnect();
   const dispatch = useDispatch();
-  const { updateAccount, updateWallet } = useContext(AccountContext);
+  const { updateAccount, updateWallet, updateChainId } =
+    useContext(AccountContext);
   const handleConnect = async (connector: Connector) => {
     try {
       const provider = await getProvider(connector.id);
@@ -52,6 +53,7 @@ const StarknetWallet = () => {
         login({ accessToken: loginData.accessToken, user: accounts[0] })
       );
       updateAccount(accounts[0]);
+      updateChainId(starknet.StarknetChainId.SN_SEPOLIA);
       updateWallet(connector.id);
     } catch (error) {
       console.error(error);

@@ -9,6 +9,7 @@ interface NetworkItem {
   name: string;
   logo: any;
   chain: string;
+  type: string;
   disable?: boolean;
 }
 const version = "Version 0.2.0";
@@ -67,16 +68,19 @@ if (PORT === "3000") {
       name: "Sepolia Testnet",
       logo: SepoliaIcon,
       chain: "11155111",
+      type: "EVM",
     },
     {
       name: "Starknet Devnet",
       logo: StarknetIcon,
       chain: starknet.StarknetChainId.SN_SEPOLIA,
+      type: "Starknet",
     },
     {
       name: "Monad Devnet",
       logo: MonadIcon,
       chain: "1",
+      type: "EVM",
       disable: true,
     },
   ];
@@ -86,6 +90,7 @@ if (PORT === "3000") {
       name: "Blast Testnet",
       logo: BlastIcon,
       chain: "168587773",
+      type: "EVM",
     },
   ];
 }

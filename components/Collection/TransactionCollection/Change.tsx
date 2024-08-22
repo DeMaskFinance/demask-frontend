@@ -23,17 +23,11 @@ import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import NFTGrid from "./NFTsGrids";
+import useInformationToken from "@/hooks/useInformationToken";
 
 const Change = () => {
-  const {
-    account,
-    chainId,
-    wallet,
-    bigNumberBalance,
-    txDeadline,
-    updateBalance,
-    slippage,
-  } = useContext(AccountContext);
+  const { account, chainId, wallet, txDeadline, slippage } =
+    useContext(AccountContext);
   const [idNFTInput, setIdNFTInput] = useState<number[]>([]);
   const [idNFTOutput, setIdNFTOutput] = useState<number[]>([]);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
@@ -49,6 +43,7 @@ const Change = () => {
     chainId,
     version,
   ]);
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const nativeAddress = contracts?.WETH_ADDRESS || "";
   const routerAddress = contracts?.ERC721_ROUTER_ADDRESS || "";
   //data Input
@@ -151,7 +146,7 @@ const Change = () => {
       }
       queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
       queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
-      await updateBalance();
+      queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
     } catch (error) {
       setIsOpenTransaction(false);
       console.error(error);

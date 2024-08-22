@@ -1,5 +1,5 @@
 // format number if <1 0.0000..., >1 1000->1,000
-const formatNumber = (number: string) => {
+const formatNumber = (number: string | number) => {
   const roundedNumber = Number(number);
   if (roundedNumber === 0) {
     return 0;

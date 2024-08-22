@@ -31,21 +31,17 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
+import useInformationToken from "@/hooks/useInformationToken";
 
 export default function Header() {
-  const {
-    account,
-    updateAccount,
-    wallet,
-    chainId,
-    demask,
-    isEvent,
-    setIsEvent,
-    balanceToken,
-    isLoadingBalance,
-  } = useContext(AccountContext);
+  const { account, updateAccount, wallet, isEvent, setIsEvent, chainId } =
+    useContext(AccountContext);
   const { isLoggedIn, profile } = useSelector(selectProfile);
-
+  const { isLoadingBalance, balanceToken } = useInformationToken(
+    account,
+    wallet,
+    chainId
+  );
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);
 

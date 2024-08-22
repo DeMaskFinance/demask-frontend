@@ -19,6 +19,7 @@ import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import useInformationToken from "@/hooks/useInformationToken";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,8 +38,12 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
-  const { account, wallet, slippage, chainId, bigNumberBalance, balanceToken } =
-    useContext(AccountContext);
+  const { account, wallet, slippage, chainId } = useContext(AccountContext);
+  const { balanceToken, bigNumberBalance } = useInformationToken(
+    account,
+    wallet,
+    chainId
+  );
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const contracts = queryClient.getQueryData<ContractAddresses>([

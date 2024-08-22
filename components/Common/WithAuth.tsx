@@ -9,7 +9,7 @@ function WithAuth({ children }: any) {
   const { isLoggedIn } = useSelector(selectProfile);
   return (
     <div>
-      <div className="mx-auto min-h-[94vh] relative">
+      <div className="mx-auto pb-6 relative">
         {isLoggedIn ? (
           <div>{children}</div>
         ) : (

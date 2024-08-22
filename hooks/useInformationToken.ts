@@ -5,13 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 
 interface EVMResult {
-  balanceToken: string;
-  bigNumberBalance: string;
+  balanceToken: number;
+  bigNumberBalance: number;
 }
 
 interface StarknetResult extends EVMResult {
-  balanceTokenStarknet: string;
-  bigNumberBalanceStarknet: string;
+  balanceTokenStarknet: number;
+  bigNumberBalanceStarknet: number;
 }
 const useInformationToken = (
   account: string,
@@ -25,7 +25,7 @@ const useInformationToken = (
       chainId,
     });
 
-    if (!account) return { balanceToken: "0", bigNumberBalance: "0" };
+    if (!account) return { balanceToken: 0, bigNumberBalance: 0 };
 
     try {
       const providerChoice = await getProvider(wallet);
@@ -33,51 +33,51 @@ const useInformationToken = (
       const balance = await provider.getBalance(account);
       const balanceInEth = ethers.utils.formatEther(balance);
       return {
-        balanceToken: parseFloat(balanceInEth).toFixed(4),
-        bigNumberBalance: balance.toString(),
+        balanceToken: Number(parseFloat(balanceInEth).toFixed(4)),
+        bigNumberBalance: Number(balance.toString()),
       };
     } catch (error) {
       console.error("Error fetching EVM balance:", error);
-      return { balanceToken: "0", bigNumberBalance: "0" };
+      return { balanceToken: 0, bigNumberBalance: 0 };
     }
   };
 
   const fetchTokenBalanceStarknet = async (): Promise<StarknetResult> => {
     if (!account)
       return {
-        balanceToken: "0",
-        bigNumberBalance: "0",
-        balanceTokenStarknet: "0",
-        bigNumberBalanceStarknet: "0",
+        balanceToken: 0,
+        bigNumberBalance: 0,
+        balanceTokenStarknet: 0,
+        bigNumberBalanceStarknet: 0,
       };
 
     try {
       const contractETH = await starknetContract.getContract(starknet.addrETH);
-      console.log(contractETH);
-
       const contractStarknet = await starknetContract.getContract(
         starknet.addrStarknet
       );
 
-      const balanceETH = await contractETH.getBalance(account);
-      const balanceStarknet = await contractStarknet.getBalance(account);
+      const balanceETH = await contractETH.balanceOf(account);
+      const balanceStarknet = await contractStarknet.balanceOf(account);
 
       const balanceInEthETH = ethers.utils.formatEther(balanceETH);
       const balanceInEthStarknet = ethers.utils.formatEther(balanceStarknet);
 
       return {
-        balanceToken: parseFloat(balanceInEthETH).toFixed(4),
+        balanceToken: Number(parseFloat(balanceInEthETH).toFixed(4)),
         bigNumberBalance: balanceETH.toString(),
-        balanceTokenStarknet: parseFloat(balanceInEthStarknet).toFixed(4),
+        balanceTokenStarknet: Number(
+          parseFloat(balanceInEthStarknet).toFixed(4)
+        ),
         bigNumberBalanceStarknet: balanceStarknet.toString(),
       };
     } catch (error) {
       console.error("Error fetching Starknet balance:", error);
       return {
-        balanceToken: "0",
-        bigNumberBalance: "0",
-        balanceTokenStarknet: "0",
-        bigNumberBalanceStarknet: "0",
+        balanceToken: 0,
+        bigNumberBalance: 0,
+        balanceTokenStarknet: 0,
+        bigNumberBalanceStarknet: 0,
       };
     }
   };
@@ -86,9 +86,9 @@ const useInformationToken = (
     queryKey: ["useBalanceToken", account, wallet, chainId],
     queryFn: async () => {
       if (chainId === starknet.StarknetChainId.SN_SEPOLIA) {
-        return fetchTokenBalanceStarknet();
+        return await fetchTokenBalanceStarknet();
       } else {
-        return fetchTokenBalanceEVM();
+        return await fetchTokenBalanceEVM();
       }
     },
     enabled: !!account && !!chainId,
@@ -101,18 +101,17 @@ const useInformationToken = (
   if (chainId === starknet.StarknetChainId.SN_SEPOLIA) {
     return {
       ...result,
-      balanceToken: data?.balanceToken || "0",
-      bigNumberBalance: data?.bigNumberBalance || "0",
-      balanceTokenStarknet:
-        (data as StarknetResult)?.balanceTokenStarknet || "0",
+      balanceToken: data?.balanceToken || 0,
+      bigNumberBalance: data?.bigNumberBalance || 0,
+      balanceTokenStarknet: (data as StarknetResult)?.balanceTokenStarknet || 0,
       bigNumberBalanceStarknet:
-        (data as StarknetResult)?.bigNumberBalanceStarknet || "0",
+        (data as StarknetResult)?.bigNumberBalanceStarknet || 0,
     };
   } else {
     return {
       ...result,
-      balanceToken: data?.balanceToken || "0",
-      bigNumberBalance: data?.bigNumberBalance || "0",
+      balanceToken: data?.balanceToken || 0,
+      bigNumberBalance: data?.bigNumberBalance || 0,
     };
   }
 };

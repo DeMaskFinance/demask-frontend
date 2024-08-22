@@ -7,7 +7,7 @@ const Back = () => {
 
   return (
     <div
-      className="flex items-center cursor-pointer gap-x-2 py-4 md:py-6"
+      className="flex items-center cursor-pointer gap-x-2 py-4"
       onClick={() => router.back()}
     >
       <LeftIcon width={20} height={20} />

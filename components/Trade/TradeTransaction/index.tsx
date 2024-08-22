@@ -40,6 +40,7 @@ import { NumericFormat } from "react-number-format";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Actions from "../Action";
 import { StaticDetailBuy, StaticDetailSell } from "./StaticDetail";
+import useInformationToken from "@/hooks/useInformationToken";
 interface SwapTransactionProps {
   data: DataBase;
   tokenAddress: string;
@@ -70,8 +71,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [activeChoice, setActiveChoice] = useState<string>("Buy");
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
 
-  const { account, wallet, bigNumberBalance, slippage, balanceToken, chainId } =
-    useContext(AccountContext);
+  const { account, wallet, slippage, chainId } = useContext(AccountContext);
+  const { balanceToken, bigNumberBalance } = useInformationToken(
+    account,
+    wallet,
+    chainId
+  );
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
   const contracts = queryClient.getQueryData<ContractAddresses>([

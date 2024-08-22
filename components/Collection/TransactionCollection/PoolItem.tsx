@@ -20,8 +20,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const PoolItem = ({ liquidity }: any) => {
-  const { account, wallet, updateBalance, chainId } =
-    useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -92,7 +91,7 @@ const PoolItem = ({ liquidity }: any) => {
         setIsOpenErrorCollect,
         setHash,
       });
-      await updateBalance();
+      queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
     } else {
       console.log("No account and DML");
     }

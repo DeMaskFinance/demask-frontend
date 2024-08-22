@@ -23,8 +23,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
   type,
 }) => {
-  const { account, wallet, updateBalance, demask, chainId } =
-    useContext(AccountContext);
+  const { account, wallet, chainId } = useContext(AccountContext);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
@@ -74,7 +73,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         setIsOpenErrorCollect,
         setHash,
       });
-      await updateBalance();
+      queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
     } else {
       console.log("No account and DML");
     }

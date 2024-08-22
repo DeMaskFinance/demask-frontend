@@ -1,16 +1,26 @@
 import { TabGroups } from "@/components/NavChoice";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import EVMWallet from "./EVMWallet";
 import StarknetWallet from "./StarknetWallet";
+import { network } from "@/libs/constants";
+import AccountContext from "@/context/AccountContext";
 
 interface ModalWalletProps {
   isAuthen?: true;
 }
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
-  const [activeChoice, setActiveChoice] = useState<string>("All");
+  const { chainId } = useContext(AccountContext);
+  const currentNetwork = useMemo(() => {
+    return network.find((net) => net.chain === chainId);
+  }, [chainId, network]);
+  console.log(currentNetwork);
+
+  const [activeChoice, setActiveChoice] = useState<string>(
+    currentNetwork?.type || "All"
+  );
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
   };

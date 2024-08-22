@@ -127,12 +127,12 @@ const DeployCollection = () => {
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
-        <div className="max-w-2xl gap-6 px-3 pt-6 mx-auto">
+        <div className="max-w-2xl gap-6 px-3 mx-auto">
           {/* UpLoad File */}
           <div className="">
             <div className="sticky top-16">
               <Back />
-              <h2 className="mt-4 text-xl font-bold text-primary_300">
+              <h2 className="text-xl font-bold text-primary_300">
                 Create an Collection
               </h2>
               <h3 className="my-2 text-sm font-normal text-shader_200">

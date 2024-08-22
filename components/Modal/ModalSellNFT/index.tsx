@@ -47,7 +47,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
   setIsOpenSuccess,
   setHash,
 }) => {
-  const { demask, account, wallet, slippage, txDeadline, updateBalance } =
+  const { demask, account, wallet, slippage, txDeadline } =
     useContext(AccountContext);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
@@ -127,7 +127,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
         queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
         queryClient.refetchQueries({ queryKey: ["detailCollection"] });
         queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
-        await updateBalance();
+        queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

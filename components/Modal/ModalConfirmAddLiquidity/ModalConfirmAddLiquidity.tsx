@@ -55,15 +55,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
 }) => {
-  const {
-    demask,
-    account,
-    wallet,
-    slippage,
-    txDeadline,
-    updateBalance,
-    chainId,
-  } = useContext(AccountContext);
+  const { demask, account, wallet, slippage, txDeadline, chainId } =
+    useContext(AccountContext);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
@@ -98,7 +91,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         setInputNFT("");
         setInputToken("");
         setIsOpenConfirmAddLiquidity(false);
-        await updateBalance();
+        queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
         if (setIsOpenLiquidity) {
           setIsOpenLiquidity(false);
         }

@@ -21,6 +21,7 @@ import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import useInformationToken from "@/hooks/useInformationToken";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -49,14 +50,14 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [inputToken, setInputToken] = useState<string>("");
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const { account, wallet, slippage, bigNumberBalance, chainId } =
-    useContext(AccountContext);
+  const { account, wallet, slippage, chainId } = useContext(AccountContext);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
     version,
   ]);
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
       queryKey: [

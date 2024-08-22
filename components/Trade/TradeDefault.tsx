@@ -34,7 +34,7 @@ export default function TradeDefault() {
     setActiveChoiceNFT(choice);
   };
   return (
-    <div className="relative px-4 h-[95vh] md:h-[88vh] flex flex-col mx-auto items-center justify-center overflow-hidden">
+    <div className="relative px-4 h-[95vh] sm:h-[88vh] flex flex-col mx-auto items-center justify-center overflow-hidden">
       <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
         <BgGradient className="w-[1000px] md:w-screen h-[350px]" />
       </div>
