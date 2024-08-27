@@ -13,12 +13,12 @@ interface NetworkItem {
   disable?: boolean;
 }
 const version = "Version 0.2.0";
-const tokenGoerli = [
+const tokenStarknet = [
   {
-    name: "Goerli",
-    symbol: "ETH",
+    name: "Starknet",
+    symbol: "STRK",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
-    logo: EtherIcon,
+    logo: StarknetIcon,
     symbolNative: "ETH",
   },
 ];
@@ -43,6 +43,13 @@ const SEPOLIA_DEMASK = {
   urltxHash: "https://sepolia.etherscan.io/",
   chainName: "Sepolia Testnet",
   NAME: "Sepolia Testnet",
+  CURRENCY: "ETH",
+};
+const STARKNET_DEMASK = {
+  IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
+  urltxHash: "https://sepolia.voyager.online/",
+  chainName: "Starknet Devnet",
+  NAME: "Starknet Devnet",
   CURRENCY: "ETH",
 };
 export const starknet = {
@@ -188,9 +195,10 @@ export {
   mediaType,
   network,
   SEPOLIA_DEMASK,
-  tokenGoerli,
+  tokenStarknet,
   tokenSepolia,
   validCollectionInput,
   validNFTsInput,
   version,
+  STARKNET_DEMASK,
 };

@@ -24,11 +24,11 @@ interface CollectionInterface {
   royalty?: string;
 }
 interface UploadFileProps {
-  setFileIPFS: React.Dispatch<React.SetStateAction<string | null>>;
-  fileType: string | null;
+  setFileIPFS: React.Dispatch<React.SetStateAction<string>>;
+  fileType: string;
   selectedFile: string | null;
-  setFileType: React.Dispatch<React.SetStateAction<string | null>>;
-  setSelectedFile: React.Dispatch<React.SetStateAction<string | null>>;
+  setFileType: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<string>>;
   uploadFile: (file: File) => Promise<string>;
 }
 interface ModalDetailProps {

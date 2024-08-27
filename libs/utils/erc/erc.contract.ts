@@ -187,8 +187,6 @@ const mintedCountPerWallet = async (
   launchpadAddress: string,
   unit: number
 ) => {
-  console.log(account, wallet, launchpadAddress, unit);
-
   if (account) {
     const contract = await ercContract.erc(
       wallet,
@@ -224,7 +222,6 @@ const buyLaunchpad = async (
       value: exponentialToDecimal(value),
     }
   );
-  console.log(estimatedGas);
 
   const result = await contract.buy(proof, limit, inputAmount, {
     gasLimit: estimatedGas,

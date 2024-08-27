@@ -35,6 +35,7 @@ import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
+import { toast } from "sonner";
 interface CollectionDetailProps {
   collectionAddress: string;
 }
@@ -135,7 +136,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                     if (file && file.size < 10485760) {
                       handleUploadAvatar(file);
                     } else {
-                      console.log("Oversize");
+                      toast.error("Oversize");
                     }
                   }
                 }}

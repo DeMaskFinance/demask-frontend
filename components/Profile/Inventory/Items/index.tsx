@@ -61,7 +61,6 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
     chainId,
     "v2",
   ]);
-  console.log(contracts);
 
   const nativeAddress = contracts?.WETH_ADDRESS;
   return (

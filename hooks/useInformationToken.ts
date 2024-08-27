@@ -19,12 +19,6 @@ const useInformationToken = (
   chainId: string
 ) => {
   const fetchTokenBalanceEVM = async (): Promise<EVMResult> => {
-    console.log({
-      account,
-      wallet,
-      chainId,
-    });
-
     if (!account) return { balanceToken: 0, bigNumberBalance: 0 };
 
     try {

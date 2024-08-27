@@ -134,6 +134,9 @@ body {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
+textarea {
+  field-sizing: content;
+}
 .active {
   color: black;
 }

@@ -37,7 +37,6 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
     launchpadAddress,
     unit,
   });
-  console.log(amountSold);
 
   const currentTime = (Date.now() / 1000) | 0;
   useEffect(() => {
@@ -94,7 +93,6 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
     addressOfWhitelist,
     amountSold,
   ]);
-  console.log(isDisabled, isLoading, error);
 
   return (
     <>

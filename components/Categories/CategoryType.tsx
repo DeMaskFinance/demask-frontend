@@ -39,7 +39,6 @@ const Category = ({ label }: { label: string }) => {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data, inView);
 
   return (
     <section className="mb-10">

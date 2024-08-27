@@ -34,7 +34,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const imgCollection = useRef(null);
   const { account, chainId } = useContext(AccountContext);
   const [fileIPFS, setFileIPFS] = useState<any>(null);
-  const [fileType, setFileType] = useState<string | null>("");
+  const [fileType, setFileType] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const collectionAddress = useRouter().query.edit as string;
 

@@ -56,7 +56,7 @@ const useFileHandler = ({
         toast.error("File format error");
       }
     } else {
-      console.log("No file");
+      toast.error("No file");
     }
   }, [file, validInput, uploadFile]);
 

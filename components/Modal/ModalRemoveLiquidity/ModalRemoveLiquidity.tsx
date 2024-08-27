@@ -152,7 +152,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       return res;
     },
   });
-  console.log(dataTradingRemove);
 
   return (
     <Fragment>

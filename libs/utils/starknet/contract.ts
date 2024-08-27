@@ -27,6 +27,12 @@ const getWalletAccount = async (wallet: string) => {
 
   return new WalletAccount(RpcProvider, provider as never);
 };
+const deployContractCollection = async (wallet: string) => {
+  const provider = await getProvider(wallet);
+  const { RpcProvider } = starknetContract.getRPCProvider();
+
+  return new WalletAccount(RpcProvider, provider as never);
+};
 export const starknetContract = {
   getRPCProvider,
   getContract,

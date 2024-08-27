@@ -17,8 +17,8 @@ function PoolUser() {
       const res = await poolUserInfor(chainId, account, version);
       return res.data;
     },
+    enabled: !!account,
   });
-  console.log(data, version);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4  text-white font-semibold bg_main p-5">

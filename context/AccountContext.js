@@ -1,10 +1,10 @@
-import { getProvider } from "@/libs/connection/getProvider";
 import {
   network,
   SEPOLIA_DEMASK,
-  tokenSepolia
+  STARKNET_DEMASK,
+  tokenSepolia,
+  tokenStarknet
 } from "@/libs/constants";
-import { ethers } from "ethers";
 import { createContext, useEffect, useState } from "react";
 const AccountContext = createContext();
 
@@ -35,7 +35,10 @@ export const AccountProvider = ({ children }) => {
       if (chainId === "11155111") {
       setDemask(SEPOLIA_DEMASK);
       setTokenDefault(tokenSepolia);
-    } 
+    } else {
+      setDemask(STARKNET_DEMASK);
+      setTokenDefault(tokenStarknet);
+    }
   }, [chainId]);
   useEffect(() => {
     let storedSlippage = localStorage.getItem("SLIPPAGE_DEMASK");

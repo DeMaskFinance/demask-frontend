@@ -31,8 +31,8 @@ function TopCollection() {
     isLoading: isLoadingNewest,
     data: dataNewest,
     isFetching: isFetchingNewest,
+    isPlaceholderData: isPlaceholderNewest,
     refetch: refetchNewest,
-    isPlaceholderData: isPlaceholderDataNewest,
   } = useQuery({
     queryKey: ["newestNft", chainId, pageNewest],
     queryFn: async () => {
@@ -222,7 +222,7 @@ function TopCollection() {
           </tbody>
         </table>
       </div>
-      {isSuccess && (
+      {activeChoice === "Trending" ? (
         <Pagination
           data={data}
           isPlaceholderData={isPlaceholderData}
@@ -230,6 +230,15 @@ function TopCollection() {
           setPage={setPage}
           refetch={refetch}
           isFetching={isFetching}
+        />
+      ) : (
+        <Pagination
+          data={dataNewest}
+          isPlaceholderData={isPlaceholderNewest}
+          page={pageNewest}
+          setPage={setPageNewest}
+          refetch={refetchNewest}
+          isFetching={isFetchingNewest}
         />
       )}
     </div>

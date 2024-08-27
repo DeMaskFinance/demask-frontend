@@ -12,7 +12,7 @@ import UserPools from "./UserPools";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const Pools = () => {
   const [index, setIndex] = useState<number>(0);
-  const { chainId, demask } = useContext(AccountContext);
+  const { chainId, demask, account } = useContext(AccountContext);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
   const contracts = queryClient.getQueryData<ContractAddresses>([
@@ -54,7 +54,7 @@ const Pools = () => {
           + Add Liquidity
         </Button>
       </div>
-      <PoolUser />
+      {account && <PoolUser />}
       <div className="flex gap-x-2">
         <Button
           primary={index === 0}

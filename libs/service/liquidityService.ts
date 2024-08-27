@@ -23,8 +23,6 @@ const liquidityListAPI = async (
   version: string
 ) => {
   try {
-    console.log(page);
-
     const res = await request.get(
       `all-pool-list?chainId=${chainId}&type=${type}&page=${page}&version=${version}&limit=20`
     );

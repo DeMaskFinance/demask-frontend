@@ -48,7 +48,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
     const newList = data.data.slice(0, val);
     setIdNFT(newList.map((item: any) => +item.nftID));
   };
-  console.log(idNFT, selectedItem);
 
   return (
     <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">

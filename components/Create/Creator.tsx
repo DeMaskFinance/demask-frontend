@@ -1,13 +1,10 @@
-import AccountContext from "@/context/AccountContext";
-import { useContext } from "react";
+import { BackgroundDefault } from "../Backgrounds";
 import { Button } from "../Buttons";
 import WithAuth from "../Common/WithAuth";
 import { CreateIcon, DeployIcon, RightIcon } from "../Icons";
 import { ActiveLink } from "../Link";
-import { BackgroundDefault } from "../Backgrounds";
 
 const Creator = () => {
-  const { chainId } = useContext(AccountContext);
   return (
     <WithAuth>
       <BackgroundDefault>

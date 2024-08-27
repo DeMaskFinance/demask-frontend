@@ -16,7 +16,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
   const currentNetwork = useMemo(() => {
     return network.find((net) => net.chain === chainId);
   }, [chainId, network]);
-  console.log(currentNetwork);
 
   const [activeChoice, setActiveChoice] = useState<string>(
     currentNetwork?.type || "All"

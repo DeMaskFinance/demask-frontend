@@ -15,7 +15,6 @@ const handleApproveDML = async (
     const inputLiquidityBN = new BigNumber(inputLiquidity)
       .times(new BigNumber(10).pow(18))
       .toFixed(0);
-    console.log(inputLiquidityBN);
 
     try {
       const result = await contract.approve(routerAddress, inputLiquidityBN);

@@ -1,13 +1,16 @@
 import AccountContext from "@/context/AccountContext";
-import { Category, queryClient } from "@/libs/constants";
+import { Category, queryClient, starknet } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
 import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import { InitialValues } from "@/libs/types/Collection";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { deployContract } from "@/libs/utils/starknet/deployContract";
 import { SEO } from "@/next-seo.config";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { NextSeo } from "next-seo";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import Back from "../Common/Back";
@@ -16,19 +19,17 @@ import { MonadIcon, SepoliaIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
 };
-
 const validationSchema = yup.object().shape({
   contractName: yup.string().required("Contract name is a required").max(50),
   symbol: yup.string().required("Symbol is a required").max(10),
 });
 const DeployCollection = () => {
-  const [fileIPFS, setFileIPFS] = useState<any>(null);
-  const [fileType, setFileType] = useState<string | null>("");
+  const [fileIPFS, setFileIPFS] = useState<any>();
+  const [fileType, setFileType] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -89,31 +90,64 @@ const DeployCollection = () => {
     }
     setFieldValue("category", updatedCategories);
   };
-  const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
+  const handleEVMTransaction = async (values: any) => {
+    if (!contracts) return null;
+
+    const res = await ercContract.fillCreate(
+      values.contractName,
+      values.symbol,
+      fileIPFS.nonce,
+      contracts.CREATED_COLLECTION_ADDRESS,
+      account,
+      wallet
+    );
+
+    setHash(res.hash);
+    await res.wait();
+
+    return res;
+  };
+  const handleStarknetTransaction = async (values: InitialValues) => {
+    const res = await deployContract.deployContractCollection(
+      account,
+      wallet,
+      values,
+      fileIPFS.nonce
+    );
+    if (res) {
+      // @ts-ignore
+      setHash(res.value.transaction_hash);
+    }
+
+    return res;
+  };
+  const checkTransactionStatus = async (res: any) => {
+    if (!res) return;
+
+    const status =
+      chainId !== starknet.StarknetChainId.SN_SEPOLIA
+        ? (await res.wait()).status
+        : res.value.execution_status;
+
+    setIsOpenSuccess(status === "SUCCEEDED" || status === 1);
+  };
+  const onSubmit = async (
+    values: InitialValues,
+    { resetForm }: FormikHelpers<any>
+  ) => {
     try {
       setIsProcess(true);
       await collectionService.createCollection(fileIPFS.nonce, {
         category: values.category,
       });
       let res;
-      if (contracts) {
-        res = await ercContract.fillCreate(
-          values.contractName,
-          values.symbol,
-          fileIPFS.nonce,
-          contracts.CREATED_COLLECTION_ADDRESS,
-          account,
-          wallet
-        );
-      }
-      setHash(res.hash);
-      const check = await res.wait();
-      setIsProcess(false);
-      if (check.status === 1) {
-        setIsOpenSuccess(true);
+      if (chainId !== starknet.StarknetChainId.SN_SEPOLIA) {
+        res = await handleEVMTransaction(values);
       } else {
-        setIsOpenSuccess(false);
+        res = await handleStarknetTransaction(values);
       }
+      await checkTransactionStatus(res);
+      setIsProcess(false);
       resetForm();
       setSelectedFile(null);
     } catch (error) {

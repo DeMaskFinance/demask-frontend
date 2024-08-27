@@ -1,2 +1,2 @@
-export { default as MintNFT } from "./MintNFT";
+export { default as MintNFTEVM } from "./MintNFTEVM";
 export { default as Creator } from "./Creator";

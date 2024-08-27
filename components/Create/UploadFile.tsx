@@ -245,10 +245,6 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
             <p>Recommended size: 300 x 300px.</p>
             <p>File types: JPG, PNG, SVG, or GIF</p>
           </div>
-          {/* <Button className="flex gap-x-2 px-3 h-10 text-white" active>
-            <UploadIcon width={20} height={20} className="text-white" />
-            Upload Image
-          </Button> */}
         </div>
       </div>
       ;

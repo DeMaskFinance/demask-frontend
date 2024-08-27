@@ -33,7 +33,6 @@ const StarknetWallet = () => {
       const signature = (await provider.account.signMessage(
         data.data.typedData
       )) as ArraySignatureType;
-      console.log(signature);
       // convert ArraySignatureType to SignatureType
       const [r, s] = [signature.length - 2, signature.length - 1];
 

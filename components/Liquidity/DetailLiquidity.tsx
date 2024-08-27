@@ -38,6 +38,7 @@ import Back from "../Common/Back";
 import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
+import { toast } from "sonner";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -140,7 +141,7 @@ const DetailLiquidity = () => {
         setHash,
       });
     } else {
-      console.log("No account and DML");
+      toast.error("No account and DML");
     }
   };
 

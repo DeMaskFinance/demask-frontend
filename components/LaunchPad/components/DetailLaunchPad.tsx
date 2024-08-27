@@ -31,7 +31,6 @@ export default function DetailLaunchPad() {
       return res.data;
     },
   });
-  console.log(data);
 
   const TABS = [
     {

@@ -1,50 +1,116 @@
 import { uploadFileIPFSMint, uploadMetadataIPFS } from "../service/IPFSService";
 
 interface MetadataProps {
-  attributeItems: object[];
-  fileType: any;
+  attributeItems?: object[];
+  fileType: string;
   fileIPFS: any;
   name: string;
   symbol: string;
   description: string;
 }
-const getMetadataUrl = async ({
-  attributeItems,
+
+const createInitialMetadata = (
+  name: string,
+  symbol: string,
+  description: string,
+  fileIPFS: string,
+  fileType: string
+) => {
+  const metadata: {
+    name: string;
+    symbol: string;
+    description: string;
+    image: string;
+    animation_url: string;
+    attributes?: object[];
+  } = {
+    name,
+    symbol,
+    description,
+    image: "",
+    animation_url: "",
+  };
+
+  if (fileType.startsWith("video/")) {
+    metadata.animation_url = fileIPFS;
+  } else if (fileType.startsWith("audio/")) {
+    metadata.image = ""; // This will be set later in audio case
+    metadata.animation_url = fileIPFS;
+  } else {
+    metadata.image = fileIPFS;
+  }
+
+  return metadata;
+};
+
+const handleAudioFile = async () => {
+  const imagePath = "/images/audio.svg";
+  const response = await fetch(imagePath);
+  const blob = await response.blob();
+  const file = new File([blob], "audio.svg", { type: "image/svg+xml" });
+  const audioImage = await uploadFileIPFSMint(file);
+  return audioImage || "";
+};
+
+const getMetadataUrlEVM = async ({
+  attributeItems = [],
   fileType,
   fileIPFS,
   name,
   symbol,
   description,
 }: MetadataProps) => {
-  const simplifiedAttributes = attributeItems.map(
-    ({ trait_type, value }: any) => ({ trait_type, value })
-  );
-  const attributesMetadata = simplifiedAttributes.filter((attribute) => {
-    return attribute.trait_type !== "" || attribute.value !== "";
-  });
-  const initialMetadata = {
-    name: name,
-    symbol: symbol,
-    description: description,
-    image: "",
-    animation_url: "",
-    attributes: attributesMetadata,
-  };
-  if (fileType.startsWith("video/")) {
-    initialMetadata.animation_url = await fileIPFS; // use fileIPFS for animation_url
-  } else if (fileType.startsWith("audio/")) {
-    const imagePath = "/images/audio.svg";
-    const response = await fetch(imagePath);
-    const blob = await response.blob();
-    const file = new File([blob], "audio.svg", { type: "image/svg" });
-    const audioImage = await uploadFileIPFSMint(file);
-    initialMetadata.image = audioImage || "";
-    initialMetadata.animation_url = await fileIPFS;
-  } else {
-    initialMetadata.image = await fileIPFS;
-  }
-  const urlMetadata = await uploadMetadataIPFS(initialMetadata);
+  const attributesMetadata = attributeItems
+    .map(({ trait_type, value }: any) => ({ trait_type, value }))
+    .filter(
+      (attribute) => attribute.trait_type !== "" || attribute.value !== ""
+    );
 
-  return urlMetadata;
+  const initialMetadata = createInitialMetadata(
+    name,
+    symbol,
+    description,
+    fileIPFS,
+    fileType
+  );
+
+  // Only add the 'attributes' property for EVM
+  if (attributesMetadata.length > 0) {
+    initialMetadata.attributes = attributesMetadata;
+  }
+
+  if (fileType.startsWith("audio/")) {
+    initialMetadata.image = await handleAudioFile();
+  }
+
+  return await uploadMetadataIPFS(initialMetadata);
 };
-export default getMetadataUrl;
+
+const getMetadataUrlStarknet = async ({
+  fileType,
+  fileIPFS,
+  name,
+  symbol,
+  description,
+}: MetadataProps) => {
+  const initialMetadata = createInitialMetadata(
+    name,
+    symbol,
+    description,
+    fileIPFS,
+    fileType
+  );
+
+  if (fileType.startsWith("audio/")) {
+    initialMetadata.image = await handleAudioFile();
+  }
+
+  return await uploadMetadataIPFS(initialMetadata);
+};
+
+const metadataURL = {
+  getMetadataUrlStarknet,
+  getMetadataUrlEVM,
+};
+
+export default metadataURL;

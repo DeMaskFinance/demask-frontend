@@ -49,7 +49,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                       <MediaCollection avatar={formatLinkIPFS(item?.avatar)} />
                     </div>
 
-                    <span className="line-clamp-1 truncate  max-w-[133px] block">
+                    <span className="line-clamp-1 truncate  max-w-[100px] block">
                       {isFetching ? (
                         skeleton
                       ) : (

@@ -44,7 +44,6 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   const addressOfWhitelist = listProof.find(
     (item) => item.address.toLowerCase() === account.toLowerCase()
   );
-  console.log(isLoading, isDisabled);
 
   const handleBuyLaunchpad = async () => {
     let limit = "";
@@ -54,14 +53,6 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       proof = addressOfWhitelist.proof || [];
       limit = addressOfWhitelist.amount;
     }
-    console.log({
-      wallet,
-      proof,
-      launchpadAddress,
-      inputAmount,
-      limit: isPublic ? data.limit : limit,
-      value: inputAmount * data.priceDecimals,
-    });
 
     try {
       setIsOpenTransaction(true);

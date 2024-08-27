@@ -1,0 +1,285 @@
+import React, { useContext, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { queryClient } from "@/libs/constants";
+import { useQuery } from "@tanstack/react-query";
+import { collectionListUser } from "@/libs/service/collectionService";
+import AccountContext from "@/context/AccountContext";
+import { PlusIcon } from "../Icons";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import * as yup from "yup";
+import Link from "next/link";
+import { Button } from "../Buttons";
+import getMetadataUrl from "@/libs/utils/getMetadata";
+import useContractWrite from "@/hooks/useContractWrite";
+import { starknetContract } from "@/libs/utils/starknet/contract";
+import { ModalTransation } from "../Modal/ModalTransation";
+import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
+interface MintNFTStarknetProps {
+  fileIPFS: string;
+  setFileIPFS: any;
+  setSelectedFile: any;
+  fileType: string;
+}
+interface CollectionProps {
+  img: JSX.Element;
+  name: String;
+  collectionAddress: string;
+}
+const validationSchema = yup.object().shape({
+  name: yup.string().required("Name is a required").max(50),
+  symbol: yup.string().required("Symbol is a required").max(50),
+  description: yup.string().max(1000).nullable(),
+});
+const initialValues = {
+  name: "",
+  symbol: "",
+  description: "",
+};
+const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
+  fileIPFS,
+  setFileIPFS,
+  setSelectedFile,
+  fileType,
+}) => {
+  const { account, chainId, wallet } = useContext(AccountContext);
+  const [hash, setHash] = useState<string>("");
+  const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+  const [metadataIPFS, setMetadataIPFS] = useState<string>("");
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    "v2",
+  ]);
+  const collectionAddressTest =
+    "0x182bea1a712d21009c471974666edbb5cf6d04acab71c8cd6d4892472d9c3fe"; //hash code -> test
+  const collectionList = [
+    {
+      name: "DEMASK COLLECTION",
+      img: (
+        <img
+          src="/logoDefault.png"
+          className="w-8 h-8 rounded-lg"
+          alt="img_collection"
+        />
+      ),
+      collectionAddress: collectionAddressTest,
+    },
+  ];
+  const [collection, setCollection] = useState<CollectionProps>(
+    collectionList[0]
+  );
+  // const { data, isSuccess } = useQuery({
+  //   queryKey: ["listCollectionUser", chainId, account],
+  //   queryFn: async () => {
+  //     const res = await collectionListUser(account, chainId);
+  //     return res.data;
+  //   },
+  //   enabled: !!account,
+  // });
+  const handleSelectChange = (index: string) => {
+    setCollection(collectionList[parseInt(index, 10)]);
+  };
+  const { writeAsync, data, isPending } = useContractWrite(
+    wallet,
+    collectionAddressTest,
+    "safeMint"
+  );
+  console.log(isPending);
+
+  const isExistId = async (idNFT: number) => {
+    const contract = await starknetContract.getContract(collectionAddressTest);
+    const res = await contract.exists_id(idNFT);
+    return res;
+  };
+  const generateRandomId = () => {
+    return Math.floor(Math.random() * 1000000);
+  };
+  const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
+    let randomId: number;
+    let exists: boolean;
+
+    do {
+      randomId = generateRandomId();
+      exists = await isExistId(randomId);
+    } while (exists);
+    const urlMetadata = await getMetadataUrl.getMetadataUrlStarknet({
+      fileType,
+      fileIPFS,
+      name: values.name,
+      symbol: values.symbol,
+      description: values.description,
+    });
+    setMetadataIPFS(urlMetadata);
+    const receipt = await writeAsync([account, randomId, urlMetadata]);
+    setHash(receipt!.transaction_hash);
+
+    if (receipt?.statusReceipt === "success") {
+      setIsOpenSuccess(true);
+    }
+    resetForm();
+    setSelectedFile(null);
+    setFileIPFS(null);
+  };
+  return (
+    <div>
+      {/* <p onClick={writeAsync}>Write hook</p> */}
+      <label htmlFor="collection" className="block mb-4 font-semibold">
+        <span className="">Collection</span>
+        <span className="text-primary_400">*</span>
+      </label>
+      <Select onValueChange={handleSelectChange}>
+        <SelectTrigger className="relative flex items-center pr-3 cursor-pointer input_item h-12 w-full">
+          <div className="flex items-center gap-x-2">
+            {collection.img}
+            <SelectValue placeholder={collection.name}>
+              {collection.name}
+            </SelectValue>
+          </div>
+        </SelectTrigger>
+        <SelectContent className="bg_main">
+          <SelectGroup>
+            <Link
+              href={`/create/deploy-contract`}
+              className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500"
+            >
+              <div className="flex font-semibold gap-x-[10px] items-center text-white">
+                <div className=" bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg text-center text-2xl text-primary_400 flex items-center justify-center">
+                  <PlusIcon />
+                </div>
+                Create Collection
+              </div>
+            </Link>
+            {collectionList.map((item, index) => (
+              <SelectItem
+                key={index}
+                value={index.toString()}
+                className="p-0 block"
+              >
+                <div className="flex items-center cursor-pointer gap-x-2 hover:bg-shader_500 w-full p-2 text-white">
+                  {item.img}
+                  <p className="font-semibold">{item.name}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        enableReinitialize
+      >
+        {({
+          values,
+          handleChange,
+          isSubmitting,
+          dirty,
+          setFieldValue,
+          isValid,
+        }) => {
+          return (
+            <Form className="font-semibold">
+              <div className="flex flex-col">
+                <label htmlFor="name" className="title_label mt-5">
+                  Name
+                  <p className="text-primary_400">*</p>
+                </label>
+                <Field
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  placeholder="Name"
+                  className="input_item"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-xs text-red"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <label htmlFor="symbol" className={`title_label`}>
+                  <div className="flex">Symbol</div>
+                  <p className="text-primary_400">*</p>
+                </label>
+                <Field
+                  type="text"
+                  id="symbol"
+                  name="symbol"
+                  value={values.symbol}
+                  autoComplete="off"
+                  placeholder="Symbol"
+                  className="input_item"
+                />
+                <ErrorMessage
+                  name="symbol"
+                  component="div"
+                  className="text-xs text-red"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="description" className={`title_label`}>
+                  <div className="flex">Description</div>
+                </label>
+                <Field
+                  as="textarea"
+                  type="text"
+                  id="description"
+                  name="description"
+                  value={values.description}
+                  autoComplete="off"
+                  placeholder="Description"
+                  className="input_item min-h-[3lh]"
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-xs text-red"
+                />
+              </div>
+              <Button
+                type="submit"
+                primary={dirty && !isSubmitting}
+                active={!dirty || isSubmitting || !isValid}
+                disabled={!dirty || isSubmitting || !isValid}
+                className="px-6 py-2 cursor-pointer mt-4"
+                isLoadingBtn={isSubmitting}
+              >
+                Create NFT
+              </Button>
+            </Form>
+          );
+        }}
+      </Formik>
+      <ModalTransation
+        isOpenTransation={isPending}
+        setIsOpenTransaction={setIsOpenSuccess}
+      />
+      {isOpenSuccess && (
+        <ModalSuccessCreate
+          isOpenSuccess={isOpenSuccess}
+          type=""
+          setIsOpenSuccess={setIsOpenSuccess}
+          transactionHash={hash}
+          isMint
+          metadataLink={metadataIPFS}
+        />
+      )}
+    </div>
+  );
+};
+
+export default MintNFTStarknet;

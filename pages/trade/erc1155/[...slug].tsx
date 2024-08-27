@@ -45,7 +45,6 @@ const Swap: React.FC = () => {
       setIdNFT(slug[2]);
     }
   }, [slug]);
-  console.log(data);
 
   return (
     <div className="">

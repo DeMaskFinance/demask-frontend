@@ -59,8 +59,6 @@ export default function Header() {
   const provider = getProvider(wallet);
   useEffect(() => {
     const getAddress = async () => {
-      console.log(wallet);
-
       const provider = await getProvider(wallet);
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;

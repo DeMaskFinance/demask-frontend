@@ -73,7 +73,7 @@ export default function EditProfile() {
                   if (file && file.size < 10485760) {
                     handleUploadAvatar(file);
                   } else {
-                    console.log("Oversize");
+                    toast.error("Oversize");
                   }
                 }
               }}

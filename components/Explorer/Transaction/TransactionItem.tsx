@@ -74,7 +74,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
                     </div>
                   </Tippy>
                 </div>
-                <span className="line-clamp-1 truncate  max-w-[133px] block">
+                <span className="line-clamp-1 truncate  max-w-[100px] block">
                   {isFetching ? skeleton : item?.collectionName}
                 </span>
               </div>

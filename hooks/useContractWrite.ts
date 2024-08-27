@@ -5,32 +5,30 @@ import { GetTransactionReceiptResponse } from "starknet";
 const useContractWrite = (
   wallet: string,
   contractAddress: string,
-  funtionName: string,
-  params: any[]
+  functionName: string
 ) => {
   const [isPending, setIsPending] = useState(false);
   const [data, setData] = useState<GetTransactionReceiptResponse>();
+  const [error, setError] = useState<Error | null>(null);
 
-  const writeAsync = async () => {
+  const writeAsync = async (params: any[]) => {
     setIsPending(true);
+    setError(null);
 
     try {
       const contract = await starknetContract.getContract(contractAddress);
       const account = await starknetContract.getWalletAccount(wallet);
-      const myCall = contract.populate(funtionName, params);
+      const myCall = contract.populate(functionName, params);
       const res = await account.execute(myCall);
-      console.log(res);
 
-      const data = (await account.waitForTransaction(
+      const receipt = (await account.waitForTransaction(
         res.transaction_hash
-      )) as GetTransactionReceiptResponse & {
-        transaction_hash: string;
-      };
-      setData(data);
+      )) as GetTransactionReceiptResponse & { transaction_hash: string };
+      setData(receipt);
+      return receipt;
     } catch (error) {
       console.error("Error writing to contract:", error);
-      setIsPending(false);
-      // Handle error
+      setError(error as Error);
     } finally {
       setIsPending(false);
     }
@@ -40,6 +38,7 @@ const useContractWrite = (
     writeAsync,
     data,
     isPending,
+    error,
   };
 };
 

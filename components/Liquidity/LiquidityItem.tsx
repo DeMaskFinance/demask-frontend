@@ -14,6 +14,7 @@ import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { toast } from "sonner";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -75,7 +76,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
       });
       queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
     } else {
-      console.log("No account and DML");
+      toast.error("No account and DML");
     }
   };
 
