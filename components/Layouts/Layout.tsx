@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { contractService } from "@/libs/service/contractsService";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 export default function Layout({ children }: PropsWithChildren) {
-  const { chainId, updateChainId, updateAccount, wallet, isEvent } =
+  const { chainId, updateChainId, updateAccount, wallet, isEvent, account } =
     useContext(AccountContext);
   const { user, accessToken, isLoggedIn } = useSelector(selectProfile);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
@@ -29,45 +29,43 @@ export default function Layout({ children }: PropsWithChildren) {
       dispatch(logout());
     }
   }, [user, accessToken, isLoggedIn]);
-  const PORT = process.env.NEXT_PUBLIC_APP_PORT;
-  useEffect(() => {
-    const initProvider = async () => {
-      if (window.ethereum) {
-        try {
-          const provider = await getProvider(wallet);
+  console.log(wallet);
 
-          const handleAccountsChanged = (account: []) => {
-            localStorage.removeItem("ACCOUNT_DEMASK");
-            localStorage.removeItem("WALLET_DEMASK");
-            updateAccount("");
-            dispatch(logout());
-          };
+  // useEffect(() => {
+  //   const initProvider = async () => {
+  //     if (window.ethereum) {
+  //       try {
+  //         const provider = await getProvider(wallet);
 
-          const handleChainChanged = (networkId: string) => {
-            if (
-              (PORT === "3000" &&
-                (networkId === "11155111" || networkId === "5")) ||
-              (PORT === "1307" && networkId === "168587773")
-            ) {
-              updateChainId(networkId);
-            }
-          };
+  //         const handleAccountsChanged = (account: []) => {
+  //           console.log(account);
 
-          provider.on("accountsChanged", handleAccountsChanged);
-          provider.on("chainChanged", handleChainChanged);
+  //           localStorage.removeItem("WALLET_DEMASK");
+  //           updateAccount("");
+  //           dispatch(logout());
+  //         };
 
-          return () => {
-            provider.removeListener("accountsChanged", handleAccountsChanged);
-            provider.removeListener("chainChanged", handleChainChanged);
-          };
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-    };
+  //         const handleChainChanged = (networkId: string) => {
+  //           if (networkId === "11155111" || networkId === "5") {
+  //             updateChainId(networkId);
+  //           }
+  //         };
 
-    initProvider();
-  }, [wallet]);
+  //         provider.on("accountsChanged", handleAccountsChanged);
+  //         provider.on("chainChanged", handleChainChanged);
+
+  //         return () => {
+  //           provider.off("accountsChanged", handleAccountsChanged);
+  //           provider.off("chainChanged", handleChainChanged);
+  //         };
+  //       } catch (error) {
+  //         console.error("Error:", error);
+  //       }
+  //     }
+  //   };
+
+  //   initProvider();
+  // }, [wallet]);
   const { data } = useQuery<ContractAddresses>({
     queryKey: ["contracts", chainId, version],
     queryFn: async () => {

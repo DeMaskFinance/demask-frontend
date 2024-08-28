@@ -1,6 +1,5 @@
 import WithAuth from "@/components/Common/WithAuth";
 import Profile from "@/components/Profile/Profile";
-import "tippy.js/dist/tippy.css";
 import { SEO } from "@/next-seo.config";
 import { NextSeo } from "next-seo";
 const updateMeta = {

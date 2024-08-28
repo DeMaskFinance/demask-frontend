@@ -1,6 +1,3 @@
-import "tippy.js/dist/tippy.css";
-import "tippy.js/themes/light.css";
-import { number } from "yup";
 const FormatNumber = ({ number }: { number: string | number }) => {
   const roundedNumber = Number(number);
   const decimalPlaces = Math.max(

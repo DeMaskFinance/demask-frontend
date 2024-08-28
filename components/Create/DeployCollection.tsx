@@ -2,23 +2,22 @@ import AccountContext from "@/context/AccountContext";
 import { Category, queryClient, starknet } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
 import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
-import { InitialValues } from "@/libs/types/Collection";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { deployContract } from "@/libs/utils/starknet/deployContract";
 import { SEO } from "@/next-seo.config";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { NextSeo } from "next-seo";
-import { useContext, useEffect, useRef, useState } from "react";
-import { FaAngleDown } from "react-icons/fa";
+import { useContext, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import Back from "../Common/Back";
 import WithAuth from "../Common/WithAuth";
-import { MonadIcon, SepoliaIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
+import { starknetContract } from "@/libs/utils/starknet/contract";
+import { RpcProvider, WalletAccount } from "starknet";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -26,6 +25,7 @@ const updateMeta = {
 const validationSchema = yup.object().shape({
   contractName: yup.string().required("Contract name is a required").max(50),
   symbol: yup.string().required("Symbol is a required").max(10),
+  description: yup.string().max(1000).nullable(),
 });
 const DeployCollection = () => {
   const [fileIPFS, setFileIPFS] = useState<any>();
@@ -34,7 +34,6 @@ const DeployCollection = () => {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [hash, setHash] = useState<string>("");
-  const divRef = useRef<HTMLDivElement>(null);
   const { account, wallet, chainId } = useContext(AccountContext);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
@@ -43,38 +42,12 @@ const DeployCollection = () => {
     version,
   ]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (divRef.current && !divRef.current.contains(event.target as Node)) {
-        setIsOpenChain(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-  const [isOpenChain, setIsOpenChain] = useState<boolean>(false);
-  const chainList = [
-    {
-      name: "Monad",
-      icon: <MonadIcon width={20} height={20} />,
-    },
-    {
-      name: "Sepolia",
-      icon: <SepoliaIcon width={20} height={20} />,
-    },
-  ];
   const initialValues = {
     avatar: "",
     contractName: "",
     category: [] as string[],
     symbol: "",
-    chain: {
-      name: "Monad",
-      icon: <MonadIcon width={20} height={20} />,
-    },
+    description: "",
   };
   const selectCategory = (
     value: string,
@@ -131,6 +104,30 @@ const DeployCollection = () => {
 
     setIsOpenSuccess(status === "SUCCEEDED" || status === 1);
   };
+  const testBravos = async () => {
+    console.log(wallet, 123);
+
+    // const swo = window.starknet_braavos;
+    // console.log("swo", swo);
+    // const myProvider = new RpcProvider({
+    //   nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
+    // });
+    // const wa = new WalletAccount(myProvider, swo);
+    // console.log("wa", wa);
+    // console.log(await wa.getChainId());
+
+    // const res = await starknetContract.getWalletAccount(wallet);
+    // const res1 = await deployContract.deployContractCollection(
+    //   account,
+    //   wallet,
+    //   [{}],
+    //   123
+    // );
+    // console.log({
+    //   res,
+    //   res1,
+    // });
+  };
   const onSubmit = async (
     values: InitialValues,
     { resetForm }: FormikHelpers<any>
@@ -139,6 +136,7 @@ const DeployCollection = () => {
       setIsProcess(true);
       await collectionService.createCollection(fileIPFS.nonce, {
         category: values.category,
+        description: values.description,
       });
       let res;
       if (chainId !== starknet.StarknetChainId.SN_SEPOLIA) {
@@ -170,7 +168,11 @@ const DeployCollection = () => {
                 Create an Collection
               </h2>
               <h3 className="my-2 text-sm font-normal text-shader_200">
-                Deploy an ERC-1155 contract to create your NFT collection
+                Deploy an{" "}
+                {chainId === starknet.StarknetChainId.SN_SEPOLIA
+                  ? "ERC-721"
+                  : "ERC-1155"}{" "}
+                contract to create your NFT collection
               </h3>
               <p className="mt-2 mb-4 text-xs text-primary_400">
                 * Required fields
@@ -182,8 +184,11 @@ const DeployCollection = () => {
               🚨 You’ll need to deploy a contract
             </h3>
             <h4 className="mt-1 text-sm text-white">
-              You’ll need to deploy an ERC-1155 contract onto the Blockchain
-              before you can create a Collection
+              You’ll need to deploy an{" "}
+              {chainId === starknet.StarknetChainId.SN_SEPOLIA
+                ? "ERC-721"
+                : "ERC-1155"}{" "}
+              contract onto the Blockchain before you can create a Collection
             </h4>
           </div>
 
@@ -270,7 +275,7 @@ const DeployCollection = () => {
                   </div>
                 </div>
                 <div className="flex mb-5 gap-x-4">
-                  <div className="flex flex-col basis-1/2">
+                  <div className="flex flex-col w-full">
                     <label htmlFor="symbol" className="title_label">
                       Symbol
                       <p className="text-primary_400">*</p>
@@ -290,43 +295,26 @@ const DeployCollection = () => {
                       className="mt-1 text-xs text-red"
                     />
                   </div>
-                  <div className="flex flex-col basis-1/2">
-                    <label htmlFor="name" className="title_label">
-                      Chain
-                      <p className="text-primary_400">*</p>
-                    </label>
-                    <div
-                      ref={divRef}
-                      className="relative flex items-center justify-between pr-3 cursor-pointer input_item"
-                      onClick={() => setIsOpenChain(!isOpenChain)}
-                    >
-                      <div className="flex items-center gap-x-2">
-                        {values.chain.icon}
-                        <p>{values.chain.name}</p>
-                      </div>
-                      <FaAngleDown
-                        className={`text-white transition-all duration-150 ${
-                          isOpenChain ? "rotate-180" : "rotate-0"
-                        }`}
-                      />
-                      <ul
-                        className={` rounded-lg absolute w-full left-0 top-12  transition-all duration-500 max-h-40 overflow-y-scroll bg-shader_700 border-shader_700 ${
-                          isOpenChain ? "block opacity-100" : "hidden opacity-0"
-                        }`}
-                      >
-                        {chainList.map((item, index) => (
-                          <li
-                            className="flex items-center p-3 cursor-pointer gap-x-2 hover:bg-shader_500 "
-                            onClick={() => setFieldValue("chain", item)}
-                            key={index}
-                          >
-                            {item.icon}
-                            {item.name}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="description" className={`title_label`}>
+                    <div className="flex">Description</div>
+                  </label>
+                  <Field
+                    as="textarea"
+                    type="text"
+                    id="description"
+                    name="description"
+                    value={values.description}
+                    autoComplete="off"
+                    placeholder="Description"
+                    className="input_item min-h-[3lh]"
+                  />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="text-xs text-red"
+                  />
                 </div>
                 <Button
                   type="submit"
@@ -351,7 +339,7 @@ const DeployCollection = () => {
                     !selectedFile ||
                     values.category.length === 0
                   }
-                  className="w-full py-3"
+                  className="w-full py-3 mt-4"
                   isLoadingBtn={isSubmitting}
                 >
                   Create

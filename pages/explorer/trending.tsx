@@ -1,10 +1,8 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
-import TopNft from "@/components/Explorer/TopNft/TopCollection";
-import { LeftIcon } from "@/components/Icons";
-import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
-import { SEO } from "../../next-seo.config";
 import Back from "@/components/Common/Back";
+import TopNft from "@/components/Explorer/TopNft/TopCollection";
+import { NextSeo } from "next-seo";
+import { SEO } from "../../next-seo.config";
 const updateMeta = {
   ...SEO,
   title: "Trending",

@@ -53,13 +53,14 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
+  const [isProcess, setIsProcess] = useState<boolean>(false);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
     "v2",
   ]);
   const collectionAddressTest =
-    "0x182bea1a712d21009c471974666edbb5cf6d04acab71c8cd6d4892472d9c3fe"; //hash code -> test
+    "0x16deaeca5e773e3a1f475fbe60ea23b64bdc465f6d57bf5c309e6da93696b5f"; //hash code -> test
   const collectionList = [
     {
       name: "DEMASK COLLECTION",
@@ -76,23 +77,22 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   const [collection, setCollection] = useState<CollectionProps>(
     collectionList[0]
   );
-  // const { data, isSuccess } = useQuery({
-  //   queryKey: ["listCollectionUser", chainId, account],
-  //   queryFn: async () => {
-  //     const res = await collectionListUser(account, chainId);
-  //     return res.data;
-  //   },
-  //   enabled: !!account,
-  // });
+  const { data, isSuccess } = useQuery({
+    queryKey: ["listCollectionUser", chainId, account],
+    queryFn: async () => {
+      const res = await collectionListUser(account, chainId);
+      return res.data;
+    },
+    enabled: !!account,
+  });
   const handleSelectChange = (index: string) => {
     setCollection(collectionList[parseInt(index, 10)]);
   };
-  const { writeAsync, data, isPending } = useContractWrite(
+  const { writeAsync, isPending } = useContractWrite(
     wallet,
     collectionAddressTest,
     "safeMint"
   );
-  console.log(isPending);
 
   const isExistId = async (idNFT: number) => {
     const contract = await starknetContract.getContract(collectionAddressTest);
@@ -105,7 +105,7 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
     let randomId: number;
     let exists: boolean;
-
+    setIsProcess(true);
     do {
       randomId = generateRandomId();
       exists = await isExistId(randomId);
@@ -127,6 +127,7 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
     resetForm();
     setSelectedFile(null);
     setFileIPFS(null);
+    setIsProcess(false);
   };
   return (
     <div>
@@ -265,8 +266,8 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
         }}
       </Formik>
       <ModalTransation
-        isOpenTransation={isPending}
-        setIsOpenTransaction={setIsOpenSuccess}
+        isOpenTransation={isProcess}
+        setIsOpenTransaction={setIsProcess}
       />
       {isOpenSuccess && (
         <ModalSuccessCreate

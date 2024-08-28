@@ -3,7 +3,7 @@ import useContractWrite from "@/hooks/useContractWrite";
 import useInformationToken from "@/hooks/useInformationToken";
 import { starknetContract } from "@/libs/utils/starknet/contract";
 import { useContext } from "react";
-import { CallData } from "starknet";
+import { CallData, RpcProvider, WalletAccount } from "starknet";
 import { default as compiledTestSierra } from "@/abi/starknet/contract_erc721_NFT.contract_class.json";
 import { deployContract } from "@/libs/utils/starknet/deployContract";
 const TestPage = () => {
@@ -98,10 +98,34 @@ const TestPage = () => {
     balanceToken,
     bigNumberBalance,
   });
+  const testBravos = async () => {
+    const swo = window.starknet_braavos;
+    console.log("swo", swo);
+    const myProvider = new RpcProvider({
+      nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
+    });
+    const wa = new WalletAccount(myProvider, swo);
+    console.log("wa", wa);
+    console.log(await wa.getChainId());
+    // console.log(wallet);
 
+    // const res = await starknetContract.getWalletAccount(wallet);
+    // const res1 = await deployContract.deployContractCollection(
+    //   account,
+    //   wallet,
+    //   [{}],
+    //   123
+    // );
+    // console.log({
+    //   res,
+    //   res1,
+    // });
+  };
   return (
     <div className="text-white">
       <p onClick={testRead}>TEST</p>
+      <p onClick={testBravos}>TEST BRA</p>
+
       {/* <p onClick={getTransaction}>Write</p> */}
       {/* <p onClick={writeAsync}>Write hook</p> */}
       <p onClick={fetchBalance}>Balance</p>

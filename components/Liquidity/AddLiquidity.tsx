@@ -43,6 +43,7 @@ import Back from "../Common/Back";
 import VersionTrade from "../Common/VersionTrade";
 import Actions from "../Trade/Action";
 import useInformationToken from "@/hooks/useInformationToken";
+import { RpcProvider, WalletAccount } from "starknet";
 
 export default function AddLiquidity() {
   const router = useRouter();
@@ -199,7 +200,27 @@ export default function AddLiquidity() {
     }
     setActiveChoiceNFT(item);
   };
-
+  const testBravos = async () => {
+    const swo = window.starknet_braavos;
+    console.log("swo", swo);
+    const myProvider = new RpcProvider({
+      nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
+    });
+    const wa = new WalletAccount(myProvider, swo);
+    console.log("wa", wa);
+    console.log(await wa.getChainId());
+    // const res = await starknetContract.getWalletAccount(wallet);
+    // const res1 = await deployContract.deployContractCollection(
+    //   account,
+    //   wallet,
+    //   [{}],
+    //   123
+    // );
+    // console.log({
+    //   res,
+    //   res1,
+    // });
+  };
   return (
     <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 px-4">
       <div className="flex items-center justify-between ">
@@ -209,6 +230,7 @@ export default function AddLiquidity() {
             <h2 className=" text-xl font-bold text-primary_300 mt-4">
               Add Liquidity
             </h2>
+            <p onClick={testBravos}>TEST BRA</p>
           </div>
         </div>
 

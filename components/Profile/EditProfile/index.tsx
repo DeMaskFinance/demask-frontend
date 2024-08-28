@@ -13,7 +13,7 @@ import EditProfileForm from "./EditProfileForm";
 export default function EditProfile() {
   const inputAvatar = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
-  const { user, profile } = useSelector(selectProfile);
+  const { profile } = useSelector(selectProfile);
   const dispatch = useDispatch();
   const handleUploadAvatar = async (file: any) => {
     try {

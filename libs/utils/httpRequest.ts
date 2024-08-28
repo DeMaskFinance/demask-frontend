@@ -5,27 +5,27 @@ import axios from "axios";
 const request = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
-const onError = (error: any) => {
-  const { response } = error;
-  if (response) {
-    const { data, status } = response;
-    if (status === 404) {
-      return Promise.reject(response);
-    }
-    if (status === 401) {
-      store.dispatch(logout());
-    } else {
-      const msg = data.errors?.message || data.message;
-      console.log(`${status} - ${msg}`);
-    }
-  } else {
-    console.log(`Cannot connect to Server. ${error.code}`);
-  }
-  return Promise.reject(response);
-};
+// const onError = (error: any) => {
+//   const { response } = error;
+//   if (response) {
+//     const { data, status } = response;
+//     if (status === 404) {
+//       return Promise.reject(response);
+//     }
+//     if (status === 401) {
+//       store.dispatch(logout());
+//     } else {
+//       const msg = data.errors?.message || data.message;
+//       console.log(`${status} - ${msg}`);
+//     }
+//   } else {
+//     console.log(`Cannot connect to Server. ${error.code}`);
+//   }
+//   return Promise.reject(response);
+// };
 request.interceptors.request.use(
   (config) => {
-    const { isLoggedIn, accessToken } = store.getState().profile;   
+    const { isLoggedIn, accessToken } = store.getState().profile;
     if (isLoggedIn) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -47,10 +47,10 @@ request.interceptors.response.use(
   async (error) => {
     if (error.response.status === 401) {
       store.dispatch(logout());
-    }else {
+    } else {
       console.error("FAILED RESPONSE!");
     }
-    if(error.response.status === 404){
+    if (error.response.status === 404) {
       return Promise.reject(error);
     }
     return Promise.reject(error);

@@ -1,5 +1,5 @@
 import { Button } from "@/components/Buttons";
-import { DownIcon, FilterIcon, SearchIcon } from "@/components/Icons";
+import { FilterIcon, SearchIcon } from "@/components/Icons";
 import Tippy from "@tippyjs/react/headless";
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";

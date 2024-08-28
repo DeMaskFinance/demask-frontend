@@ -43,6 +43,7 @@ const createCollection = async (
   nonce: string,
   body: {
     category: string[];
+    description?: string;
   }
 ) => {
   try {
