@@ -1,5 +1,4 @@
 import {
-  BlastIcon,
   EtherIcon,
   MonadIcon,
   SepoliaIcon,
@@ -67,40 +66,27 @@ export const starknet = {
 };
 const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
-let network: NetworkItem[] = [];
-
-if (PORT === "3000") {
-  network = [
-    {
-      name: "Sepolia Testnet",
-      logo: SepoliaIcon,
-      chain: "11155111",
-      type: "EVM",
-    },
-    {
-      name: "Starknet Devnet",
-      logo: StarknetIcon,
-      chain: starknet.StarknetChainId.SN_SEPOLIA,
-      type: "Starknet",
-    },
-    {
-      name: "Monad Devnet",
-      logo: MonadIcon,
-      chain: "1",
-      type: "EVM",
-      disable: true,
-    },
-  ];
-} else if (PORT === "1307") {
-  network = [
-    {
-      name: "Blast Testnet",
-      logo: BlastIcon,
-      chain: "168587773",
-      type: "EVM",
-    },
-  ];
-}
+let network: NetworkItem[] = [
+  {
+    name: "Sepolia Testnet",
+    logo: SepoliaIcon,
+    chain: "11155111",
+    type: "EVM",
+  },
+  {
+    name: "Starknet Devnet",
+    logo: StarknetIcon,
+    chain: starknet.StarknetChainId.SN_SEPOLIA,
+    type: "Starknet",
+  },
+  {
+    name: "Monad Devnet",
+    logo: MonadIcon,
+    chain: "1",
+    type: "EVM",
+    disable: true,
+  },
+];
 
 const amountNFT = [
   {

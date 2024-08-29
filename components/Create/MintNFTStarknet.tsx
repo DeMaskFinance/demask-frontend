@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { queryClient } from "@/libs/constants";
 import { useQuery } from "@tanstack/react-query";
 import { collectionListUser } from "@/libs/service/collectionService";
 import AccountContext from "@/context/AccountContext";
@@ -22,16 +21,12 @@ import useContractWrite from "@/hooks/useContractWrite";
 import { starknetContract } from "@/libs/utils/starknet/contract";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-interface MintNFTStarknetProps {
+export interface MintNFTStarknetProps {
   fileIPFS: string;
   setFileIPFS: any;
   setSelectedFile: any;
   fileType: string;
-}
-interface CollectionProps {
-  img: JSX.Element;
-  name: String;
-  collectionAddress: string;
+  data: CollectionProps[];
 }
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is a required").max(50),
@@ -44,6 +39,7 @@ const initialValues = {
   description: "",
 };
 const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
+  data,
   fileIPFS,
   setFileIPFS,
   setSelectedFile,
@@ -54,48 +50,21 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
   const [isProcess, setIsProcess] = useState<boolean>(false);
-  const contracts = queryClient.getQueryData<ContractAddresses>([
-    "contracts",
-    chainId,
-    "v2",
-  ]);
-  const collectionAddressTest =
-    "0x16deaeca5e773e3a1f475fbe60ea23b64bdc465f6d57bf5c309e6da93696b5f"; //hash code -> test
-  const collectionList = [
-    {
-      name: "DEMASK COLLECTION",
-      img: (
-        <img
-          src="/logoDefault.png"
-          className="w-8 h-8 rounded-lg"
-          alt="img_collection"
-        />
-      ),
-      collectionAddress: collectionAddressTest,
-    },
-  ];
-  const [collection, setCollection] = useState<CollectionProps>(
-    collectionList[0]
-  );
-  const { data, isSuccess } = useQuery({
-    queryKey: ["listCollectionUser", chainId, account],
-    queryFn: async () => {
-      const res = await collectionListUser(account, chainId);
-      return res.data;
-    },
-    enabled: !!account,
-  });
+
+  const [collection, setCollection] = useState<CollectionProps>(data[0]);
   const handleSelectChange = (index: string) => {
-    setCollection(collectionList[parseInt(index, 10)]);
+    setCollection(data[parseInt(index, 10)]);
   };
   const { writeAsync, isPending } = useContractWrite(
     wallet,
-    collectionAddressTest,
+    collection.collectionAddress,
     "safeMint"
   );
 
   const isExistId = async (idNFT: number) => {
-    const contract = await starknetContract.getContract(collectionAddressTest);
+    const contract = await starknetContract.getContract(
+      collection.collectionAddress
+    );
     const res = await contract.exists_id(idNFT);
     return res;
   };
@@ -131,7 +100,6 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   };
   return (
     <div>
-      {/* <p onClick={writeAsync}>Write hook</p> */}
       <label htmlFor="collection" className="block mb-4 font-semibold">
         <span className="">Collection</span>
         <span className="text-primary_400">*</span>
@@ -139,7 +107,11 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
       <Select onValueChange={handleSelectChange}>
         <SelectTrigger className="relative flex items-center pr-3 cursor-pointer input_item h-12 w-full">
           <div className="flex items-center gap-x-2">
-            {collection.img}
+            <img
+              src={formatLinkIPFS(collection.url)}
+              alt="list_collection"
+              className="object-cover w-8 h-8 rounded-lg"
+            />
             <SelectValue placeholder={collection.name}>
               {collection.name}
             </SelectValue>
@@ -158,14 +130,18 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
                 Create Collection
               </div>
             </Link>
-            {collectionList.map((item, index) => (
+            {data.map((item: CollectionProps, index: number) => (
               <SelectItem
                 key={index}
                 value={index.toString()}
                 className="p-0 block"
               >
                 <div className="flex items-center cursor-pointer gap-x-2 hover:bg-shader_500 w-full p-2 text-white">
-                  {item.img}
+                  <img
+                    src={formatLinkIPFS(item.url)}
+                    alt="list_collection"
+                    className="object-cover w-8 h-8 rounded-lg"
+                  />
                   <p className="font-semibold">{item.name}</p>
                 </div>
               </SelectItem>
@@ -179,14 +155,7 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
         onSubmit={onSubmit}
         enableReinitialize
       >
-        {({
-          values,
-          handleChange,
-          isSubmitting,
-          dirty,
-          setFieldValue,
-          isValid,
-        }) => {
+        {({ values, handleChange, isSubmitting, dirty, isValid }) => {
           return (
             <Form className="font-semibold">
               <div className="flex flex-col">

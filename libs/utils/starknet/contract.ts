@@ -2,7 +2,7 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { constants, Contract, RpcProvider, WalletAccount } from "starknet";
 const getRPCProvider = () => {
   const RPC_Provider = new RpcProvider({
-    nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
+    nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_6",
     chainId: constants.StarknetChainId.SN_SEPOLIA,
   });
 
@@ -26,10 +26,7 @@ const getWalletAccount = async (wallet: string) => {
     const provider = await getProvider(wallet);
     const { RpcProvider } = starknetContract.getRPCProvider();
 
-    const walletAccount = new WalletAccount(RpcProvider, provider as never);
-    console.log(walletAccount);
-
-    return walletAccount;
+    return new WalletAccount(RpcProvider, provider);
   } catch (error) {
     console.error("Error creating WalletAccount:", error);
     throw error;

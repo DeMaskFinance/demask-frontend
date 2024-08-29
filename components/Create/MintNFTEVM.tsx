@@ -1,43 +1,51 @@
 import { default as abiDemask } from "@/abi/abiCreator.json";
 import { NoteIcon, PlusIcon } from "@/components/Icons";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
+import { queryClient } from "@/libs/constants";
+import { collectionListUser } from "@/libs/service/collectionService";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import metadataURL from "@/libs/utils/getMetadata";
+import { useQuery } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import React, {
   ChangeEvent,
-  Fragment,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { CgClose } from "react-icons/cg";
-import { FaAngleDown } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
 import Button from "../Buttons/Button";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import { queryClient } from "@/libs/constants";
-import { collectionListUser } from "@/libs/service/collectionService";
-import { useQuery } from "@tanstack/react-query";
-import metadataURL from "@/libs/utils/getMetadata";
+import { MintNFTStarknetProps } from "./MintNFTStarknet";
 interface mintProps {
   amount: number;
   url: string;
 }
 
 export default function MintNFTEVM({
+  data,
   fileIPFS,
   setFileIPFS,
   setSelectedFile,
   fileType,
-}: any) {
+}: MintNFTStarknetProps) {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
@@ -52,55 +60,11 @@ export default function MintNFTEVM({
   ]);
   const [totalSupply, setTotalSupply] = useState<number | null>();
   const [isValidBtn, setIsValidBtn] = useState<boolean>(true);
-  const divRef = useRef<HTMLDivElement>(null);
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
   const { account, wallet, demask, chainId, updateChainId } =
     useContext(AccountContext);
-  const [isOpenCollection, setIsOpenCollection] = useState<boolean>(false);
-  const contracts = queryClient.getQueryData<ContractAddresses>([
-    "contracts",
-    chainId,
-    "v2",
-  ]);
-  const collectionList = [
-    {
-      name: "DEMASK COLLECTION",
-      img: (
-        <img
-          src="/logoDefault.png"
-          className="w-8 h-8 rounded-lg"
-          alt="img_collection"
-        />
-      ),
-      collectionAddress: contracts?.CREATED_NFT_ADDRESS ?? "",
-    },
-  ];
-  const { data, isSuccess } = useQuery({
-    queryKey: ["listCollectionUser", chainId, account],
-    queryFn: async () => {
-      const res = await collectionListUser(account, chainId);
-      return res.data;
-    },
-    enabled: !!account,
-  });
 
-  const [collection, setCollection] = useState<{
-    img: JSX.Element;
-    name: String;
-    collectionAddress: string;
-  }>(collectionList[0]);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (divRef.current && !divRef.current.contains(event.target as Node)) {
-        setIsOpenCollection(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  const [collection, setCollection] = useState<CollectionProps>(data[0]);
   useEffect(() => {
     if (name || symbol || description || fileIPFS || totalSupply) {
       setCheckExit(true);
@@ -122,6 +86,9 @@ export default function MintNFTEVM({
     );
     setIsValidBtn(!hasEmptyValues);
     setAttributeItems(updatedItems);
+  };
+  const handleSelectChange = (index: string) => {
+    setCollection(data[parseInt(index, 10)]);
   };
   const handleChangeAttributeValue = (
     e: ChangeEvent<HTMLInputElement>,
@@ -253,84 +220,51 @@ export default function MintNFTEVM({
             <span className="">Collection</span>
             <span className="text-primary_400">*</span>
           </label>
-          <div
-            ref={divRef}
-            className="relative flex items-center justify-between pr-3 cursor-pointer input_item"
-            onClick={() => setIsOpenCollection(!isOpenCollection)}
-          >
-            <div className="flex items-center gap-x-2">
-              {collection.img}
-              <p className="font-semibold text-white">{collection.name}</p>
-            </div>
-            <FaAngleDown
-              className={`text-white transition-all duration-150 ${
-                isOpenCollection ? "rotate-180" : "rotate-0"
-              }`}
-            />
-            <ul
-              className={` rounded-lg absolute w-full left-0 top-14 z-10 border bg-shader_700 transition-all duration-500 max-h-60 overflow-y-scroll border-shader_500 ${
-                isOpenCollection ? "block opacity-100" : "hidden opacity-0"
-              }`}
-            >
-              <li>
+          <Select onValueChange={handleSelectChange}>
+            <SelectTrigger className="relative flex items-center pr-3 cursor-pointer input_item h-12 w-full">
+              <div className="flex items-center gap-x-2">
+                <img
+                  src={formatLinkIPFS(collection.url)}
+                  alt="list_collection"
+                  className="object-cover w-8 h-8 rounded-lg"
+                />
+                <SelectValue placeholder={collection.name}>
+                  {collection.name}
+                </SelectValue>
+              </div>
+            </SelectTrigger>
+            <SelectContent className="bg_main">
+              <SelectGroup>
                 <Link
                   href={`/create/deploy-contract`}
-                  className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
+                  className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500"
                 >
-                  <div className="flex font-semibold gap-x-[10px] items-center">
+                  <div className="flex font-semibold gap-x-[10px] items-center text-white">
                     <div className=" bg-primary_500 bg-opacity-[0.15] w-10 h-10 rounded-lg text-center text-2xl text-primary_400 flex items-center justify-center">
                       <PlusIcon />
                     </div>
                     Create Collection
                   </div>
                 </Link>
-              </li>
-              {collectionList.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
-                  onClick={() => setCollection(item)}
-                >
-                  {item.img}
-                  <div>
-                    <p className="font-semibold ">{item.name}</p>
-                  </div>
-                </li>
-              ))}
-              {isSuccess && (
-                <Fragment>
-                  {data.map((item: any, index: number) => (
-                    <li
-                      key={index}
-                      className="flex items-center p-2 cursor-pointer gap-x-2 hover:bg-shader_500 "
-                      onClick={() =>
-                        setCollection({
-                          img: (
-                            <img
-                              src={formatLinkIPFS(item.url)}
-                              alt="list_collection"
-                              className="object-cover w-8 h-8 rounded-lg"
-                            />
-                          ),
-                          name: item.name,
-                          collectionAddress: item.collectionAddress,
-                        })
-                      }
-                    >
+                {data.map((item: CollectionProps, index: number) => (
+                  <SelectItem
+                    key={index}
+                    value={index.toString()}
+                    className="p-0 block"
+                  >
+                    <div className="flex items-center cursor-pointer gap-x-2 hover:bg-shader_500 w-full p-2 text-white">
                       <img
                         src={formatLinkIPFS(item.url)}
                         alt="list_collection"
                         className="object-cover w-8 h-8 rounded-lg"
                       />
-                      <div>
-                        <p className="font-semibold text-white">{item.name}</p>
-                      </div>
-                    </li>
-                  ))}
-                </Fragment>
-              )}
-            </ul>
-          </div>
+                      <p className="font-semibold">{item.name}</p>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <label htmlFor="name" className="title_label">

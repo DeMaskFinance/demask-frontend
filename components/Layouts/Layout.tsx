@@ -29,43 +29,42 @@ export default function Layout({ children }: PropsWithChildren) {
       dispatch(logout());
     }
   }, [user, accessToken, isLoggedIn]);
-  console.log(wallet);
 
-  // useEffect(() => {
-  //   const initProvider = async () => {
-  //     if (window.ethereum) {
-  //       try {
-  //         const provider = await getProvider(wallet);
+  useEffect(() => {
+    const initProvider = async () => {
+      if (window.ethereum) {
+        try {
+          const provider = await getProvider(wallet);
 
-  //         const handleAccountsChanged = (account: []) => {
-  //           console.log(account);
+          const handleAccountsChanged = (account: []) => {
+            console.log(account);
 
-  //           localStorage.removeItem("WALLET_DEMASK");
-  //           updateAccount("");
-  //           dispatch(logout());
-  //         };
+            localStorage.removeItem("WALLET_DEMASK");
+            updateAccount("");
+            dispatch(logout());
+          };
 
-  //         const handleChainChanged = (networkId: string) => {
-  //           if (networkId === "11155111" || networkId === "5") {
-  //             updateChainId(networkId);
-  //           }
-  //         };
+          const handleChainChanged = (networkId: string) => {
+            if (networkId === "11155111" || networkId === "5") {
+              updateChainId(networkId);
+            }
+          };
 
-  //         provider.on("accountsChanged", handleAccountsChanged);
-  //         provider.on("chainChanged", handleChainChanged);
+          provider.on("accountsChanged", handleAccountsChanged);
+          provider.on("chainChanged", handleChainChanged);
 
-  //         return () => {
-  //           provider.off("accountsChanged", handleAccountsChanged);
-  //           provider.off("chainChanged", handleChainChanged);
-  //         };
-  //       } catch (error) {
-  //         console.error("Error:", error);
-  //       }
-  //     }
-  //   };
+          return () => {
+            provider.off("accountsChanged", handleAccountsChanged);
+            provider.off("chainChanged", handleChainChanged);
+          };
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    };
 
-  //   initProvider();
-  // }, [wallet]);
+    initProvider();
+  }, [wallet]);
   const { data } = useQuery<ContractAddresses>({
     queryKey: ["contracts", chainId, version],
     queryFn: async () => {

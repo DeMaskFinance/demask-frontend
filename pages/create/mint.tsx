@@ -9,6 +9,8 @@ import AccountContext from "@/context/AccountContext";
 import { starknet } from "@/libs/constants";
 import { MintNFTEVM } from "@/components/Create";
 import MintNFTStarknet from "@/components/Create/MintNFTStarknet";
+import { useQuery } from "@tanstack/react-query";
+import { collectionListUser } from "@/libs/service/collectionService";
 
 const updateMeta = {
   ...SEO,
@@ -19,7 +21,16 @@ export default function Creator() {
   const [fileType, setFileType] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<string>("");
-  const { chainId } = useContext(AccountContext);
+  const { chainId, account } = useContext(AccountContext);
+  const { data, isSuccess } = useQuery({
+    queryKey: ["listCollectionUser", chainId, account],
+    queryFn: async () => {
+      const res = await collectionListUser(account, chainId);
+      return res.data;
+    },
+    enabled: !!account,
+  });
+
   return (
     <>
       <NextSeo {...updateMeta} />
@@ -47,23 +58,27 @@ export default function Creator() {
                 />
               </div>
             </div>
-            <div className="w-full lg:w-2/4 md:w-2/4">
-              {chainId === starknet.StarknetChainId.SN_SEPOLIA ? (
-                <MintNFTStarknet
-                  fileIPFS={fileIPFS}
-                  setFileIPFS={setFileIPFS}
-                  fileType={fileType}
-                  setSelectedFile={setSelectedFile}
-                />
-              ) : (
-                <MintNFTEVM
-                  fileIPFS={fileIPFS}
-                  setFileIPFS={setFileIPFS}
-                  fileType={fileType}
-                  setSelectedFile={setSelectedFile}
-                />
-              )}
-            </div>
+            {isSuccess && (
+              <div className="w-full lg:w-2/4 md:w-2/4">
+                {chainId === starknet.StarknetChainId.SN_SEPOLIA ? (
+                  <MintNFTStarknet
+                    data={data}
+                    fileIPFS={fileIPFS}
+                    setFileIPFS={setFileIPFS}
+                    fileType={fileType}
+                    setSelectedFile={setSelectedFile}
+                  />
+                ) : (
+                  <MintNFTEVM
+                    data={data}
+                    fileIPFS={fileIPFS}
+                    setFileIPFS={setFileIPFS}
+                    fileType={fileType}
+                    setSelectedFile={setSelectedFile}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
       </WithAuth>

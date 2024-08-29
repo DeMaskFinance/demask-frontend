@@ -17,9 +17,6 @@ const nextConfig = {
     ],
     unoptimized: true,
   }, 
-  env: {
-    NEXT_PUBLIC_APP_PORT: process.env.NEXT_PUBLIC_APP_PORT,
-  },
   async redirects() {
     return [
       {

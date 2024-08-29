@@ -1,4 +1,4 @@
-import { BlastIcon, GoerliIcon, SepoliaIcon, ZkSyncIcon } from "../Icons";
+import { SepoliaIcon, StarknetIcon } from "../Icons";
 
 interface LogoProps {
   className?: string;
@@ -1000,15 +1000,10 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
           <SepoliaIcon className={className} width={width} height={height} />
           <span>Sepolia</span>
         </>
-      ) : chainId === "5" ? (
-        <>
-          <GoerliIcon className={className} width={width} height={height} />
-          <span>Goerli</span>
-        </>
       ) : (
         <>
-          <BlastIcon className={className} width={width} height={height} />
-          <span>Blast</span>
+          <StarknetIcon className={className} width={width} height={height} />
+          <span>Starknet</span>
         </>
       )}
     </div>
@@ -1027,17 +1022,10 @@ export const LogoIconCard: React.FunctionComponent<LogoProps> = ({
           <SepoliaIcon width={width} height={height} />
           {/* <p className="italic font-semibold text-primary_300">SEPOLIA</p> */}
         </div>
-      ) : chainId === "5" ? (
-        <div className="flex items-center gap-x-1">
-          <GoerliIcon width={18} height={12} className="fill-primary_400" />
-          <p className="text-[12px] font-semibold text-primary_400 whitespace-nowrap">
-            Goerli Testnet
-          </p>
-        </div>
       ) : (
         <div className="flex items-center gap-x-1">
-          <BlastIcon width={18} height={12} className="fill-primary_400" />
-          <p className="text-[12px] font-semibold text-primary_400">Blast</p>
+          <StarknetIcon width={18} height={12} className="fill-primary_400" />
+          {/* <p className="text-[12px] font-semibold text-primary_400">Starknet</p> */}
         </div>
       )}
     </div>
