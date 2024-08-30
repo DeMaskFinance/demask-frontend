@@ -21,6 +21,7 @@ import useContractWrite from "@/hooks/useContractWrite";
 import { starknetContract } from "@/libs/utils/starknet/contract";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
+import { toast } from "sonner";
 export interface MintNFTStarknetProps {
   fileIPFS: string;
   setFileIPFS: any;
@@ -72,6 +73,10 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
     return Math.floor(Math.random() * 1000000);
   };
   const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
+    if (!fileIPFS) {
+      toast.error("File not found.Try again!");
+      return;
+    }
     let randomId: number;
     let exists: boolean;
     setIsProcess(true);

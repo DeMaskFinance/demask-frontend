@@ -189,7 +189,7 @@ export default function MintNFTEVM({
     if (totalSupply === 0 || totalSupply === undefined) {
       emptyInputFields.push("totalSupply");
     }
-    if (fileIPFS === null) {
+    if (fileIPFS === "") {
       emptyInputFields.push("fileIPFS");
       toast.error("File not found.Try again!");
     }
