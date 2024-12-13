@@ -200,10 +200,10 @@ const ModalDetail: React.FunctionComponent<ModalDetailProps> = ({
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                {`${nftAddress.slice(
+                                {`${nftAddress?.slice(
                                   0,
                                   6
-                                )}...${nftAddress.slice(-8)}`}
+                                )}...${nftAddress?.slice(-8)}`}
                               </a>
                               <Copy content={nftAddress} />
                             </div>

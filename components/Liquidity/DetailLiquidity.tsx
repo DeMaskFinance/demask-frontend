@@ -103,7 +103,7 @@ const DetailLiquidity = () => {
           account,
           wallet
         );
-        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+        const rewardDec = divideByDecimal(result?.toString(), data.dmlDecimals);
         setReward(rewardDec);
       } else {
         setReward("0");
@@ -272,6 +272,9 @@ const DetailLiquidity = () => {
                                   routerAddress={
                                     contracts.ERC1155_ROUTER_ADDRESS
                                   }
+                                  routerAddress721={
+                                    contracts.ERC721_ROUTER_ADDRESS
+                                  }
                                   type="erc1155"
                                   setHash={setHash}
                                   setIsOpenSuccess={setIsOpenSuccessRemove}
@@ -333,7 +336,7 @@ const DetailLiquidity = () => {
                     <DialogContent className="max-w-6xl p-0 border bg-shader_800 border-shader_500">
                       {data && (
                         <ModalDetail
-                          type="erc1155"
+                          type="erc721"
                           idNFT={data.nftID}
                           nftAddress={data.nftAddress}
                         />
@@ -341,7 +344,7 @@ const DetailLiquidity = () => {
                     </DialogContent>
                   </Dialog>
 
-                  {account ? (
+                  {/* {account ? (
                     <Button
                       gradient
                       className="flex w-full p-3 gap-x-1"
@@ -362,7 +365,7 @@ const DetailLiquidity = () => {
                         <ModalWallet />
                       </DialogContent>
                     </Dialog>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

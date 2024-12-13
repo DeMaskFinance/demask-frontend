@@ -16,6 +16,7 @@ import { ModalTransation } from "../ModalTransation";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
+import utilsStarknet from "@/utils/utils.starknet";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
@@ -30,6 +31,7 @@ interface ModalConfirmAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
+  inputToken: string;
 }
 
 const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
@@ -41,6 +43,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   inputNFT,
   isFetching,
   setIsOpenTransaction,
+  inputToken,
   setIdNFT,
   setInputToken,
   setHash,
@@ -49,6 +52,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setIsOpenAddLiquidity,
   setIsOpenConfirmAddLiquidity,
 }) => {
+  console.log(dataTradingAdd);
   const { demask, account, wallet, slippage, txDeadline, chainId } =
     useContext(AccountContext);
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
@@ -68,37 +72,65 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       setIsSufficientToken(false);
     }
   }, [bigNumberBalance, dataTradingAdd]);
+  const [allowce, setAllowce] = useState<number>(0);
+
+  useEffect(() => {
+    const checkApproveNFT = async () => {
+      try {
+        const balanceApprove = await utilsStarknet.getAllowance({
+          account: account,
+          contractAddress: contracts?.WETH_ADDRESS || "",
+          target: contracts?.ERC721_ROUTER_ADDRESS || "",
+        });
+
+        setAllowce(balanceApprove);
+      } catch (error) {}
+    };
+    if (account && wallet) {
+      checkApproveNFT();
+    }
+  }, [account, wallet]);
+
   const addLiquidity = async () => {
+    console.log(dataTradingAdd.amountETHDecimals);
     if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
       try {
         setIsOpenTransaction(true);
-        const result = await erc721Contract.addLiquidity(
-          wallet,
-          collectionAddress,
-          contracts.WETH_ADDRESS,
-          inputNFT,
-          contracts.ERC721_ROUTER_ADDRESS,
-          dataTradingAdd.amountETHDecimals,
-          account,
-          txDeadline,
-          exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals))
-        );
-        setHash(result.hash);
-        const check = await result.wait();
-        setIsOpenTransaction(false);
-        setInputToken("");
-        setIdNFT([]);
-        setIsOpenConfirmAddLiquidity(false);
-        setIsOpenAddLiquidity(false);
-        if (check.status === 1) {
+
+        if (allowce > dataTradingAdd.amountETHDecimals || Number(inputToken)) {
+          const result = await utilsStarknet.addLiquidity({
+            contractAddress: contracts.ERC721_ROUTER_ADDRESS,
+            token: contracts.WETH_ADDRESS,
+            nft: collectionAddress,
+            tokenId: inputNFT,
+            amountTokenDesired: dataTradingAdd.amountETHDecimals
+              ? dataTradingAdd.amountETHDecimals
+              : Number(inputToken) * 1e18,
+            amountTokenMin: 0,
+            to: account,
+            deadline: 1734085786,
+          });
+
+          // setHash(result);
+          setIsOpenTransaction(false);
+          setInputToken("");
+          setIdNFT([]);
+          setIsOpenConfirmAddLiquidity(false);
+          setIsOpenAddLiquidity(false);
+
           setIsOpenSuccess(true);
+
+          queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
+          queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
+          queryClient.refetchQueries({ queryKey: ["detailCollection"] });
+          queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
         } else {
-          setIsOpenError(true);
+          const result = await utilsStarknet.approve({
+            contractAddress: contracts.WETH_ADDRESS,
+            balance: String(1 * 1e18),
+            target: contracts?.ERC721_ROUTER_ADDRESS,
+          });
         }
-        queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
-        queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
-        queryClient.refetchQueries({ queryKey: ["detailCollection"] });
-        queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
@@ -144,7 +176,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             <p>Liquidity</p>
             <div className="flex gap-x-1">
               <div className="flex items-center font-bold text-white gap-x-1">
-                <FormatNumber number={dataTradingAdd.amountETH} />
+                <FormatNumber number={dataTradingAdd.amountETH || 0} />
                 <EtherIcon width={14} height={14} />
               </div>
             </div>
@@ -177,7 +209,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
             <p className="text-primary_200">Total ETH</p>
             <div className="flex items-center font-bold text-white gap-x-1">
-              <FormatNumber number={dataTradingAdd.amountETH} />
+              <FormatNumber number={dataTradingAdd.amountETH || 0} />
               <EtherIcon width={14} height={14} />
             </div>
           </div>
@@ -202,7 +234,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             }
             onClick={addLiquidity}
           >
-            Create pool
+            {allowce > Number(inputToken) * 1e18
+              ? "Create pool"
+              : "Approve token"}
             {isFetching && (
               <BiLoaderAlt className="ml-1 text-white animate-spin" />
             )}

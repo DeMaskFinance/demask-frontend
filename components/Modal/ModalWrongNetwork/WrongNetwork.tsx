@@ -1,5 +1,4 @@
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { logout, selectProfile } from "@/store/profileSlice";
 import { useRouter } from "next/router";
@@ -18,12 +17,21 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     chainId,
     demask,
     tokenDefault,
+    providers,
     updateAccount,
     updateChainId,
   } = useContext(AccountContext);
   const { isLoggedIn } = useSelector(selectProfile);
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const getProviders = async (walletName: string) => {
+    const getInject = providers?.find(
+      (meta: any) => meta.info.name === walletName
+    );
+    if (!getInject?.provider) throw "Not found provider";
+    return getInject.provider;
+  };
 
   useEffect(() => {
     if (
@@ -37,7 +45,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
       wallet !== "braavos"
     ) {
       const checkNetwork = async () => {
-        const provider = await getProvider(wallet);
+        const provider = await getProviders(wallet);
         const networkId = await provider.request({ method: "net_version" });
         if (networkId !== chainId) {
           setIsWrongNetwork(true);

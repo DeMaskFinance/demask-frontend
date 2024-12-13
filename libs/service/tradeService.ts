@@ -129,6 +129,8 @@ const erc721TradingAdd = async (
     const res = await request.get(
       `erc721-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
     );
+
+    console.log(res);
     return res.data;
   } catch (error) {
     console.error(error);

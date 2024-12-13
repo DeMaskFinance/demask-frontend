@@ -3,14 +3,15 @@ import Web3 from "web3";
 
 export const changeNetwork = async (
   chainId: string,
-  wallet: string,
+  provider: any,
   demask: any,
   setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
   updateChainId: any
 ) => {
   try {
-    const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
+
+    console.log(networkId);
 
     if (networkId !== chainId) {
       try {
@@ -23,7 +24,6 @@ export const changeNetwork = async (
         updateChainId(chainId);
         document.body.style.overflowY = "auto";
       } catch (errors: any) {
-        // This error code indicates that the chain has not been added to MetaMask
         if (errors.code === 4902) {
           await provider.request({
             method: "wallet_addEthereumChain",

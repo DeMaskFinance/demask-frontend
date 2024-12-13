@@ -12,6 +12,7 @@ import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
+import utilsStarknet from "@/utils/utils.starknet";
 interface ModalSellNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -102,16 +103,17 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             txDeadline
           );
         } else {
-          result = await ercContract721.sellERC20ERC721(
-            wallet,
-            nftAddress,
-            tokenAddress,
-            idNFT,
-            routerAddress,
-            dataSell.minAmountDecimals,
-            account,
-            txDeadline
-          );
+          result = await utilsStarknet.matchSell({
+            token: tokenAddress,
+            amountOutMin: BigInt(dataSell.minAmountDecimals),
+            contractAddress: routerAddress,
+            deadline: Math.floor(
+              (new Date().getTime() + txDeadline * 60000) / 1000
+            ),
+            nft: nftAddress,
+            to: account,
+            tokenId: idNFT,
+          });
         }
         setHash(result.hash);
         const check = await result.wait();

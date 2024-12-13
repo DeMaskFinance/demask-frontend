@@ -1,16 +1,20 @@
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
-import abiErc1155 from "@/abi/abiErc1155.json";
-import abiDML from "@/abi/abiDML.json";
 import abiCollection from "@/abi/abiCreateCollection.json";
+import abiDML from "@/abi/abiDML.json";
+import abiErc1155 from "@/abi/abiErc1155.json";
 import abiFeeManager from "@/abi/abiFeeManager.json";
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
+import { getProvider } from "@/libs/connection/getProvider";
+import { ethers } from "ethers";
 import { exponentialToDecimal } from "../convertExponential";
 const erc = async (wallet: string, address: string, abi: any) => {
   const providerChoice = await getProvider(wallet);
+
+  console.log(providerChoice);
   const provider = new ethers.providers.Web3Provider(providerChoice);
+
   const signer = provider.getSigner();
   const contract = new ethers.Contract(address, abi, signer);
+
   return contract;
 };
 const approveNFT = async (
@@ -21,6 +25,7 @@ const approveNFT = async (
 ) => {
   if (account && nftAddress && wallet) {
     const contract = await erc(wallet, nftAddress, abiErc1155);
+
     try {
       const isApprovedNFT = await contract.isApprovedForAll(
         account,

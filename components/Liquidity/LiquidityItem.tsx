@@ -15,6 +15,8 @@ import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { toast } from "sonner";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import { MediaCollection } from "../Common/Media";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -88,13 +90,17 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             {liquidity?.metadata ? (
               <MediaNFT data={liquidity} isControls={false} />
             ) : (
-              <Image
-                src={liquidity?.avatar!}
-                alt="banner"
-                width={600}
-                height={600}
-                className="object-cover w-full h-full "
+              <MediaCollection
+                avatar={formatLinkIPFS(liquidity?.avatar || "")}
+                zoom
               />
+              // <Image
+              //   src={|| "")}
+              //   alt="banner"
+              //   width={600}
+              //   height={600}
+              //   className="object-cover w-full h-full "
+              // />
             )}
           </div>
           <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
@@ -136,7 +142,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             %)
           </div>
         </div>
-        <div className="flex justify-between mb-3 text-shader_200">
+        {/* <div className="flex justify-between mb-3 text-shader_200">
           <p className="text-sm">Reward</p>
           <div className="flex items-center font-bold text-white gap-x-1">
             {reward ? (
@@ -148,17 +154,29 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             )}
             <EtherIcon width={16} height={16} />
           </div>
-        </div>
+        </div> */}
         <Button
           gradient
           className="flex w-full p-3 mt-5 gap-x-1"
-          onClick={handleGetReward}
+          // onClick={handleGetReward}
         >
-          Claim
+          {/* Claim
           <FormatNumber number={reward} />
-          ETH
+          ETH */}
+          <Link
+            href={
+              type === "erc1155"
+                ? `/details/${liquidity.dmlAddress}`
+                : `/trade/erc721/${liquidity.nftAddress}?tab=pool`
+            }
+          >
+            <div className="flex justify-center mx-auto  gap-x-1">
+              Pool detail
+              <RightIcon width={20} height={20} />
+            </div>
+          </Link>
         </Button>
-        <Link
+        {/* <Link
           href={
             type === "erc1155"
               ? `/details/${liquidity.dmlAddress}`
@@ -169,7 +187,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             Pool detail
             <RightIcon width={20} height={20} className="text-primary_300" />
           </div>
-        </Link>
+        </Link> */}
       </div>
       <ModalSuccess
         isOpenSuccess={isOpenSuccessCollect}

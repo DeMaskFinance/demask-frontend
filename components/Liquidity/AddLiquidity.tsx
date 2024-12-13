@@ -128,6 +128,8 @@ export default function AddLiquidity() {
       refetchInterval: 20000,
     }
   );
+
+  console.log(dataTradingAdd);
   const isApprovedNFT = useCheckApproveNFT(
     account,
     wallet,

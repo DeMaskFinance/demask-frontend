@@ -6,6 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AccountContext from "@/context/AccountContext";
+import { useContext } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface VersionTradeProps {
   width?: string;
@@ -15,6 +17,7 @@ const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
     "version",
     withDefault(StringParam, "v2")
   );
+  const { chainId } = useContext(AccountContext);
 
   const versionList = [
     {
@@ -29,7 +32,8 @@ const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
   const handleValueChange = (value: string) => {
     setVersion(value);
   };
-  return (
+
+  return chainId === "11155111" ? (
     <Select value={version} onValueChange={handleValueChange}>
       <SelectTrigger
         className={`border-shader_400 text-primary_400 font-semibold ${width}`}
@@ -46,6 +50,8 @@ const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
         </SelectGroup>
       </SelectContent>
     </Select>
+  ) : (
+    <></>
   );
 };
 

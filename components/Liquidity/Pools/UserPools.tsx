@@ -10,12 +10,16 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const UserPools = () => {
   const { account, chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
+  const [activeChoice, setActiveChoice] = useState<string>("ERC-721");
+
   const [type, setType] = useState<string>("erc1155");
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
+
+  const choices =
+    chainId === "11155111" ? ["ERC-1155", "ERC-721"] : ["ERC-721"];
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
 
   const fetchDataListLiquidity = async (
@@ -28,7 +32,7 @@ const UserPools = () => {
     const data = await liquidityUserListAPI(
       accountUser.toLowerCase(),
       pageParam,
-      type,
+      "erc721",
       chainId,
       version
     );
@@ -59,10 +63,12 @@ const UserPools = () => {
       fetchNextPage();
     }
   }, [inView]);
+
+  console.log(data);
   return (
     <div className="rounded-lg bg-shader_800 flex flex-col overflow-y-auto min-h-[550px] max-h-[650px]">
       <TabGroups
-        choices={["ERC-1155", "ERC-721"]}
+        choices={choices}
         activeChoice={activeChoice}
         onChoiceChange={handleChoiceChange}
         isDefault
@@ -86,20 +92,22 @@ const UserPools = () => {
         <>
           <div className="border-t border-shader_500 ">
             {isSuccess &&
-              data.pages.map((page: any, index: number) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-1 gap-3 p-3 overflow-y-scroll lg:grid-cols-3 md:grid-cols-2"
-                >
-                  {page?.combinedRecords.map(
-                    (liquidity: any, index: number) => (
-                      <div key={index} className="w-full mx-auto">
-                        <LiquidytiesItem liquidity={liquidity} type={type} />
-                      </div>
-                    )
-                  )}
-                </div>
-              ))}
+              data?.pages.map((page: any, index: number) => {
+                return (
+                  <div
+                    key={index}
+                    className="grid grid-cols-1 gap-3 p-3 overflow-y-scroll lg:grid-cols-3 md:grid-cols-2"
+                  >
+                    {page?.combinedRecords?.map(
+                      (liquidity: any, index: number) => (
+                        <div key={index} className="w-full mx-auto">
+                          <LiquidytiesItem liquidity={liquidity} type={type} />
+                        </div>
+                      )
+                    )}
+                  </div>
+                );
+              })}
             <div ref={ref} style={{ height: "1px" }}></div>
           </div>
           {isFetchingNextPage && (

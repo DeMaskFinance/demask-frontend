@@ -139,7 +139,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {`${nftAddress.slice(0, 8)}...${nftAddress.slice(-8)}`}
+                    {`${nftAddress?.slice(0, 8)}...${nftAddress?.slice(-8)}`}
                   </a>
                   <Copy content={nftAddress} />
                 </div>

@@ -3,11 +3,14 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { starknet } from "@/libs/constants";
 import { authenStarknet, getStarknetMessage } from "@/libs/service/userService";
 import { login } from "@/store/profileSlice";
+import { setCookie } from "@/utils/utilts.cookie";
 import { Connector, useConnect } from "@starknet-react/core";
 import Image from "next/image";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { ArraySignatureType, ec } from "starknet";
+import utilsConstants from "@/utils/utilts.contants";
+
 const styles = {
   walletItem:
     "items-center p-2 gap-x-4 text-white hidden lg:flex  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
@@ -54,6 +57,10 @@ const StarknetWallet = () => {
       updateAccount(accounts[0]);
       updateChainId(starknet.StarknetChainId.SN_SEPOLIA);
       updateWallet(connector.id);
+      setCookie({
+        key: utilsConstants.WALLET_CONNECT,
+        value: connector.name,
+      });
     } catch (error) {
       console.error(error);
     }

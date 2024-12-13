@@ -64,7 +64,7 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
 
   const nativeAddress = contracts?.WETH_ADDRESS;
   return (
-    <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
+    <div className="absolute left-0 z-10 bg-shader_600 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
       <Link
         href={`${
           item.type === "erc1155"

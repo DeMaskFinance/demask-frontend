@@ -21,6 +21,8 @@ const Pools = () => {
     version,
   ]);
 
+  console.log(contracts);
+
   const router = useRouter();
 
   const handleAddLiquidity = () => {
@@ -45,14 +47,14 @@ const Pools = () => {
           </div>
           <p className="mt-2 text-shader_200">Add liquidity and earn rewards</p>
         </div>
-        <Button
+        {/* <Button
           type="button"
           primary
           className="h-[34px] w-[130px] text-sm font-semibold"
           onClick={handleAddLiquidity}
         >
           + Add Liquidity
-        </Button>
+        </Button> */}
       </div>
       {account && <PoolUser />}
       <div className="flex gap-x-2">

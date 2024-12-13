@@ -8,7 +8,7 @@ import { useInView } from "react-intersection-observer";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 export default function Pools() {
   const { account, chainId } = useContext(AccountContext);
-  const type = "erc1155";
+  const type = "erc721";
   const { ref, inView } = useInView();
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const fetchDataListLiquidity = async (

@@ -60,6 +60,8 @@ export default function EditProfileForm() {
   const { profile } = useSelector(selectProfile);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  console.log(profile);
   const dispatch = useDispatch();
   const socialList = [
     {
@@ -100,7 +102,7 @@ export default function EditProfileForm() {
     {
       icon: <FacebookIcon width={20} height={20} />,
       title: "Facebook",
-      name: "facbook",
+      name: "facebook",
       placeHolder: "https://facebook.com/",
       value: profile?.socials?.facebook,
     },
@@ -111,12 +113,13 @@ export default function EditProfileForm() {
     about: profile?.about,
     twitter: profile?.socials?.twitter,
     facebook: profile?.socials?.facebook,
+    github: profile?.socials?.github,
     discord: profile?.socials?.discord,
     telegram: profile?.socials?.telegram,
     website: profile?.socials?.website,
   };
+
   const onSubmit = async (values: any) => {
-    // Handle form submission
     try {
       setLoading(true);
       const newUserData = await userService.updateUserInfor({
@@ -148,14 +151,7 @@ export default function EditProfileForm() {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          dirty,
-        }) => (
+        {({ values, handleChange, dirty }) => (
           <Form className="">
             <div className="flex flex-col ">
               <label htmlFor="name" className="title_label">

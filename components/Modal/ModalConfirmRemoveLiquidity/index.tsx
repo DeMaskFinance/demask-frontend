@@ -13,6 +13,8 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
+import utilsStarknet from "@/utils/utils.starknet";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
   dataTradingRemove: DataRemove;
@@ -56,13 +58,14 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     useState<boolean>(false);
   const [isApprovedLiquidity, setIsApprovedLiquidity] =
     useState<boolean>(false);
-  const { account, wallet, slippage } = useContext(AccountContext);
+  const { account, wallet, slippage, providers } = useContext(AccountContext);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const currentAllowance = useAllowanceDML(
     account,
     data.dmlAddress,
     wallet,
+    providers,
     isOpenTransaction,
     inputLiquidity,
     routerAddress
@@ -115,18 +118,47 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             slippage
           );
         } else {
-          result = await ercContract721.removeERC20ERC721(
-            wallet,
-            collectionAddress,
-            data.tokenAddress,
-            idNFT,
-            routerAddress,
-            liquidity,
-            dataTradingRemove.amountETHDecimals,
-            dataTradingRemove.amountNFT,
-            account,
-            slippage
-          );
+          // result = await ercContract721.removeERC20ERC721(
+          //   wallet,
+          //   collectionAddress,
+          //   data.tokenAddress,
+          //   idNFT,
+          //   routerAddress,
+          //   liquidity,
+          //   dataTradingRemove.amountETHDecimals,
+          //   dataTradingRemove.amountNFT,
+          //   account,
+          //   slippage
+          // );
+
+          console.log({
+            contractAddress: routerAddress,
+            token: data.tokenAddress,
+            nft: collectionAddress,
+            tokenId: idNFT,
+            liquidity: liquidity,
+            amountTokenMin: Number(dataTradingRemove.amountETHDecimals),
+            amountNftMin: Number(dataTradingRemove.amountNFT),
+            to: account,
+            deadline: Math.floor(
+              (new Date().getTime() + slippage * 60000) / 1000
+            ),
+          });
+
+          result = await utilsStarknet.removeLiquidity({
+            contractAddress: routerAddress,
+            token: data.tokenAddress,
+            nft: collectionAddress,
+            tokenId: idNFT,
+            liquidity: liquidity,
+            amountTokenMin: Number(dataTradingRemove.amountETHDecimals),
+            amountNftMin: Number(dataTradingRemove.amountNFT),
+
+            to: account,
+            deadline: Math.floor(
+              (new Date().getTime() + slippage * 60000) / 1000
+            ),
+          });
         }
         const check = await result.wait();
         setHash(result.hash);

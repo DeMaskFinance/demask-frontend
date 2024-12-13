@@ -12,6 +12,8 @@ import { useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
 import useInformationToken from "@/hooks/useInformationToken";
+import utilsStarknet from "@/utils/utils.starknet";
+import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 interface ModalBuyNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -68,6 +70,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   }, [inputNFT, account, dataBuy, bigNumberBalance]);
 
   const queryClient = useQueryClient();
+
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
@@ -96,16 +99,17 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             txDeadline
           );
         } else {
-          result = await ercContract721.buyERC20ERC721(
-            wallet,
-            nftAddress,
-            tokenAddress,
-            idNFT,
-            routerAddress,
-            dataBuy.maxAmountDecimals,
-            account,
-            txDeadline
-          );
+          result = await utilsStarknet.batchBuy({
+            token: tokenAddress,
+            amountTokenDesired: BigInt(dataBuy.maxAmountDecimals),
+            contractAddress: routerAddress,
+            deadline: Math.floor(
+              (new Date().getTime() + txDeadline * 60000) / 1000
+            ),
+            nft: nftAddress,
+            to: account,
+            tokenId: idNFT,
+          });
         }
         setHash(result.hash);
         const check = await result.wait();

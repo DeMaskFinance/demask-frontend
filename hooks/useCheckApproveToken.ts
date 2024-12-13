@@ -9,6 +9,10 @@ const useCheckApproveToken = (
   const [isApprovedLiquidity, setIsApprovedLiquidity] =
     useState<boolean>(false);
 
+  console.log(
+    currentAllowance,
+    Number(Number(handleBignumber(Number(inputLiquidity), 18)).toFixed(0))
+  );
   useEffect(() => {
     const checkApproveToken = async () => {
       try {

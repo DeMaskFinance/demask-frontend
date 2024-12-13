@@ -64,7 +64,6 @@ export const starknet = {
     SN_MAIN: "0x534e5f4d41494e",
   },
 };
-const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [
   {

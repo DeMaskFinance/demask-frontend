@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const PoolItem = ({ liquidity }: any) => {
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, chainId, providers } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
@@ -62,7 +62,7 @@ const PoolItem = ({ liquidity }: any) => {
           account,
           wallet
         );
-        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+        const rewardDec = divideByDecimal(result?.toString(), data.dmlDecimals);
         setReward(rewardDec);
       } else {
         setReward("0");
@@ -138,6 +138,7 @@ const PoolItem = ({ liquidity }: any) => {
          // @ts-ignore */
                 data={data}
                 routerAddress={contracts.WETH_ADDRESS}
+                routerAddress721={contracts.ERC721_ROUTER_ADDRESS}
                 type="erc721"
                 setHash={setHash}
                 setIsOpenSuccess={setIsOpenSuccessRemove}
@@ -161,20 +162,7 @@ const PoolItem = ({ liquidity }: any) => {
           </div>
         </div>
       </div>
-      <div className="bg_main p-4 mt-4">
-        <p className="text-shader_100 text-base">Your Reward</p>
-        <div className="flex gap-x-2 text-xl items-center font-bold">
-          <FormatNumber number={reward} />
-          <EtherIcon width={18} height={18} />
-        </div>
-        <Button
-          className=" w-full py-2 mt-4"
-          gradient
-          onClick={handleGetReward}
-        >
-          Claim Reward
-        </Button>
-      </div>
+
       <ModalTransation
         isOpenTransation={isOpenTransaction}
         setIsOpenTransaction={setIsOpenTransaction}

@@ -3,9 +3,9 @@ import {
   SEPOLIA_DEMASK,
   STARKNET_DEMASK,
   tokenSepolia,
-  tokenStarknet
+  tokenStarknet,
 } from "@/libs/constants";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
@@ -17,6 +17,9 @@ export const AccountProvider = ({ children }) => {
   const [slippage, setSlippage] = useState(5);
   const [txDeadline, setTxDeadline] = useState(20);
   const [isEvent, setIsEvent] = useState(true);
+
+  const [providers, setProviders] = useState();
+
   useEffect(() => {
     const storedAccount = localStorage.getItem("ACCOUNT_DEMASK");
     const storedWallet = localStorage.getItem("WALLET_DEMASK");
@@ -32,7 +35,7 @@ export const AccountProvider = ({ children }) => {
     }
   }, [account]);
   useEffect(() => {
-      if (chainId === "11155111") {
+    if (chainId === "11155111") {
       setDemask(SEPOLIA_DEMASK);
       setTokenDefault(tokenSepolia);
     } else {
@@ -74,6 +77,40 @@ export const AccountProvider = ({ children }) => {
     setTxDeadline(newTime);
     localStorage.setItem("TXDEADLINE_DEMASK", newTime);
   };
+
+  useEffect(() => {
+    const onAnnounceProvider = async (event) => {
+      setProviders((prev) => {
+        const instance = [
+          {
+            accounts: [],
+            info: event.detail.info,
+            provider: event.detail.provider,
+          },
+        ];
+
+        return [
+          ...(prev || []),
+          ...instance.filter(
+            (meta) => !prev?.some((prev) => prev.info.name === meta.info.name)
+          ),
+        ];
+      });
+    };
+
+    window.addEventListener("eip6963:announceProvider", onAnnounceProvider);
+
+    window.dispatchEvent(new Event("eip6963:requestProvider"));
+
+    return () => {
+      window.removeEventListener(
+        "eip6963:announceProvider",
+        onAnnounceProvider
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <AccountContext.Provider
       value={{
@@ -83,6 +120,7 @@ export const AccountProvider = ({ children }) => {
         wallet,
         updateChainId,
         chainId,
+        providers,
         demask,
         tokenDefault,
         txDeadline,
@@ -96,6 +134,22 @@ export const AccountProvider = ({ children }) => {
       {children}
     </AccountContext.Provider>
   );
+};
+
+export const useAccountContext = () => {
+  const getContext = useContext(AccountContext);
+  const getProviders = async (walletName) => {
+    try {
+      const getInject = getContext.providers?.find(
+        (meta) => meta.info.name === walletName
+      );
+      return getInject.provider;
+    } catch (error) {
+      throw "Not found provider";
+    }
+  };
+
+  return { ...getContext, getProviders };
 };
 
 export default AccountContext;

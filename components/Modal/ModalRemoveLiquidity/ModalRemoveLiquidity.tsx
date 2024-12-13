@@ -26,6 +26,7 @@ interface ModalRemoveLiquidityProps {
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
   closeModal: () => void;
+  routerAddress721: string;
 }
 
 const ModalRemoveLiquidity: React.FunctionComponent<
@@ -38,6 +39,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   setIsOpenSuccess,
   setIsOpenError,
   closeModal,
+  routerAddress721,
 }) => {
   const [inputLiquidity, setInputLiquidity] = useState<any>("");
   const [activeChoice, setActiveChoice] = useState<string>("");
@@ -48,7 +50,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmRemoveLiquidity, setIsOpenConfirmRemoveLiquidity] =
     useState<boolean>(false);
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, chainId, providers } = useContext(AccountContext);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const handleChoiceChange = (choice: string) => {
@@ -83,9 +85,10 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     account,
     data.dmlAddress,
     wallet,
+    providers,
     isOpenTransaction,
     inputLiquidity,
-    routerAddress
+    routerAddress721
   );
   const handleGetLiquidity = (values: NumberFormatValues) => {
     const { value } = values;
@@ -105,6 +108,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     inputLiquidity,
     isOpenTransaction
   );
+
   useEffect(() => {
     if (
       dataTradingRemove?.balanceDml &&
@@ -152,6 +156,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       return res;
     },
   });
+
+  console.log(dataTradingRemove, idNFT);
 
   return (
     <Fragment>
@@ -257,7 +263,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                       data.dmlAddress,
                       inputLiquidity,
                       setIsOpenTransaction,
-                      routerAddress
+                      routerAddress721
                     );
                   }}
                 >
@@ -294,7 +300,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       </div>
       {dataTradingRemove && (
         <ModalConfirmRemoveLiquidity
-          routerAddress={routerAddress}
+          routerAddress={routerAddress721}
           isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity}
           setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity}
           isOpenTransaction={isOpenTransaction}

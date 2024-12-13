@@ -1,8 +1,11 @@
+import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
 import { starknet } from "@/libs/constants";
 import { starknetContract } from "@/libs/utils/starknet/contract";
+import { getProviders } from "@/utils/utils.starknet";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
+import { useContext } from "react";
 
 interface EVMResult {
   balanceToken: number;
@@ -18,11 +21,12 @@ const useInformationToken = (
   wallet: string,
   chainId: string
 ) => {
+  const { providers } = useContext(AccountContext);
   const fetchTokenBalanceEVM = async (): Promise<EVMResult> => {
     if (!account) return { balanceToken: 0, bigNumberBalance: 0 };
 
     try {
-      const providerChoice = await getProvider(wallet);
+      const providerChoice = await getProviders(wallet, providers);
       const provider = new ethers.providers.Web3Provider(providerChoice);
       const balance = await provider.getBalance(account);
       const balanceInEth = ethers.utils.formatEther(balance);

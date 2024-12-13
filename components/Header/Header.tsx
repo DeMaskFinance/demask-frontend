@@ -32,9 +32,10 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import useInformationToken from "@/hooks/useInformationToken";
+import { getProviders } from "@/utils/utils.starknet";
 
 export default function Header() {
-  const { account, updateAccount, wallet, isEvent, setIsEvent, chainId } =
+  const { account, updateAccount, wallet, providers, chainId } =
     useContext(AccountContext);
   const { isLoggedIn, profile } = useSelector(selectProfile);
   const { isLoadingBalance, balanceToken } = useInformationToken(
@@ -56,15 +57,11 @@ export default function Header() {
     dispatch(logout());
   };
 
-  const provider = getProvider(wallet);
   useEffect(() => {
     const getAddress = async () => {
-      const provider = await getProvider(wallet);
+      const provider = await getProviders(wallet, providers);
       if (provider) {
         const test = new ethers.providers.Web3Provider(provider) as any;
-        const web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        const selectedAddress = accounts[0];
         if (provider && test.provider.selectedAddress === null) {
           disconnectWallet();
         }
@@ -73,11 +70,11 @@ export default function Header() {
     if (wallet !== "argentX" && wallet !== "braavos") {
       getAddress();
     }
-  }, [provider, wallet]);
+  }, [wallet]);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
-      {isEvent && (
+      {/* {isEvent && (
         <div className="relative">
           <a
             href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
@@ -106,7 +103,7 @@ export default function Header() {
             <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-      )}
+      )} */}
 
       <header className="text-shader_200 w-screen h-header flex md:gap-x-28 3xl:gap-x-[500px] border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">

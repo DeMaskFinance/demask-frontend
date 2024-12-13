@@ -51,6 +51,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     chainId,
     version,
   ]);
+
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: [
       "collectionNFTSell",
@@ -130,6 +131,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     contracts?.ERC721_ROUTER_ADDRESS || "",
     isOpenTransaction
   );
+
+  console.log(isApprovedNFT);
 
   return (
     <Fragment>
@@ -234,6 +237,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       setIsOpenConfirmAddLiquidity={
                         setIsOpenConfirmAddLiquidity
                       }
+                      inputToken={inputToken}
                       inputNFT={idNFT}
                       dataTradingAdd={dataTradingAdd}
                       isFetching={isFetchingAdd}

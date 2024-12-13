@@ -71,6 +71,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
   }, [chainId]);
 
   const LogoComponent: any = filterNetwork?.logo;
+
   return (
     <Tippy
       className=""

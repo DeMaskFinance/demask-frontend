@@ -1,5 +1,4 @@
-import abiErc1155 from "@/abi/abiErc1155.json";
-import ercContract from "./erc/erc.contract";
+import utilsStarknet from "@/utils/utils.starknet";
 
 const handleApproveNFT = async (
   account: string,
@@ -9,11 +8,14 @@ const handleApproveNFT = async (
   routerAddress: string
 ) => {
   if (account && wallet) {
-    const contract = await ercContract.erc(wallet, nftAddress, abiErc1155);
     try {
       setIsOpenTransaction(true);
-      const result = await contract.setApprovalForAll(routerAddress, true);
-      await result.wait();
+      const result = await utilsStarknet.setApproveForAll({
+        target: nftAddress,
+        operator: routerAddress,
+      });
+
+      console.log(result);
       setIsOpenTransaction(false);
     } catch (error) {
       console.error(error);

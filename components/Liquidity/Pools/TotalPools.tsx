@@ -14,8 +14,8 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const TotalPools = () => {
   const { chainId } = useContext(AccountContext);
-  const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
-  const [type, setType] = useState<string>("erc1155");
+  const [activeChoice, setActiveChoice] = useState<string>("ERC-721");
+  const [type, setType] = useState<string>("erc721");
   const { ref, inView } = useInView();
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const router = useRouter();
@@ -23,6 +23,9 @@ const TotalPools = () => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
+
+  const choices =
+    chainId === "11155111" ? ["ERC-1155", "ERC-721"] : ["ERC-721"];
   const { data, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["allPool", chainId, type, version],
     initialPageParam: 1,
@@ -41,10 +44,16 @@ const TotalPools = () => {
       fetchNextPage();
     }
   }, [inView]);
+
+  useEffect(() => {
+    if (chainId !== "11155111") {
+      setActiveChoice("ERC-721");
+    }
+  }, [chainId]);
   return (
     <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden mb-8 min-h-[550px] max-h-[650px]">
       <TabGroups
-        choices={["ERC-1155", "ERC-721"]}
+        choices={choices}
         activeChoice={activeChoice}
         onChoiceChange={handleChoiceChange}
         isDefault

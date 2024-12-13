@@ -47,6 +47,7 @@ const addLiquidity = async (
   );
   return result;
 };
+
 const buyERC20ERC721 = async (
   wallet: string,
   collectionAddress: string,

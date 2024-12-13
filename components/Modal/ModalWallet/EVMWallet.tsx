@@ -1,5 +1,4 @@
-import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
+import AccountContext, { useAccountContext } from "@/context/AccountContext";
 import { getNonce, loginAuthen } from "@/libs/service/userService";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import images from "@/public/images";
@@ -14,23 +13,33 @@ const styles = {
     "items-center p-2 gap-x-4 text-white hidden lg:flex  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
 };
 const EVMWallet = () => {
-  const { chainId, demask, updateAccount, updateWallet, updateChainId } =
-    useContext(AccountContext);
+  const {
+    getProviders,
+    account,
+    chainId,
+    demask,
+    updateChainId,
+    updateAccount,
+    updateWallet,
+  } = useAccountContext();
+
   const dispatch = useDispatch();
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+
   const connectWallet = async (walletName: string) => {
     try {
-      let provider;
       let accounts;
+      const provider = await getProviders(walletName);
       if (walletName === "Binance") {
         if (!window.BinanceChain) {
           toast.error("Binance Wallet not found");
           return false;
         }
-        provider = new Web3(window.BinanceChain);
+
         accounts = await provider.eth.getAccounts();
       } else {
-        provider = await getProvider(walletName);
+        const provider = await getProviders(walletName);
+
         if (walletName !== "WalletConnect") {
           if (!window.ethereum) {
             walletName === "Metamask"
@@ -48,7 +57,7 @@ const EVMWallet = () => {
           } else {
             const networkSwitched = await changeNetwork(
               chainId,
-              walletName,
+              provider,
               demask,
               setIsWrongNetwork,
               updateChainId
@@ -56,6 +65,7 @@ const EVMWallet = () => {
             if (!networkSwitched) {
               return;
             }
+
             accounts = await provider
               .request({
                 method: "eth_requestAccounts",
@@ -74,6 +84,9 @@ const EVMWallet = () => {
         const msg = `${Buffer.from(String(sign.nonce), "utf8").toString(
           "hex"
         )}`;
+
+        console.log(provider);
+
         const signedData = await provider?.request({
           method: "personal_sign",
           params: [msg, accounts[0]],
@@ -97,7 +110,7 @@ const EVMWallet = () => {
     <div className="mt-4 font-semibold flex flex-col gap-y-2">
       <div
         className={styles.walletItem}
-        onClick={() => connectWallet("Metamask")}
+        onClick={() => connectWallet("MetaMask")}
       >
         <Image src={images.metamaskWallet} alt="Metamask" className="w-9" />
         <p>MetaMask</p>

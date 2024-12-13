@@ -31,11 +31,11 @@ const TransactionCollection = () => {
       panel: () => <Sell />,
       key: "sell",
     },
-    {
-      title: "Change",
-      panel: () => <Change />,
-      key: "change",
-    },
+    // {
+    //   title: "Change",
+    //   panel: () => <Change />,
+    //   key: "change",
+    // },
     {
       title: "Pools",
       panel: () => <Pool />,

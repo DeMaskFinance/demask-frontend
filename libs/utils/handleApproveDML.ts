@@ -1,6 +1,7 @@
 import abiDML from "@/abi/abiDML.json";
 import ercContract from "./erc/erc.contract";
 import BigNumber from "bignumber.js";
+import utilsStarknet from "@/utils/utils.starknet";
 
 const handleApproveDML = async (
   account: string,
@@ -8,7 +9,7 @@ const handleApproveDML = async (
   dmlAddress: string,
   inputLiquidity: string,
   setIsOpenTransaction: any,
-  routerAddress: string
+  routerAddress721: string
 ) => {
   if (account && wallet) {
     const contract = await ercContract.erc(wallet, dmlAddress, abiDML);
@@ -17,9 +18,20 @@ const handleApproveDML = async (
       .toFixed(0);
 
     try {
-      const result = await contract.approve(routerAddress, inputLiquidityBN);
+      // const result = await contract.approve(routerAddress, inputLiquidityBN);
       setIsOpenTransaction(true);
-      await result.wait();
+
+      console.log({
+        contractAddress: dmlAddress,
+        balance: String(1 * 1e18),
+        target: routerAddress721,
+      });
+
+      const result = await utilsStarknet.approve({
+        contractAddress: dmlAddress,
+        balance: String(1 * 1e18),
+        target: routerAddress721,
+      });
       setIsOpenTransaction(false);
     } catch (error) {
       setIsOpenTransaction(false);

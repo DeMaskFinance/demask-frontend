@@ -57,6 +57,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     chainId,
     version,
   ]);
+
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {

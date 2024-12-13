@@ -1,19 +1,24 @@
 import { Toaster } from "@/components/ui/sonner";
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
+import { contractService } from "@/libs/service/contractsService";
 import * as userService from "@/libs/service/userService";
 import { logout, selectProfile, userData } from "@/store/profileSlice";
+import { useQuery } from "@tanstack/react-query";
 import { PropsWithChildren, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
 import Header from "../Header";
-import { useQuery } from "@tanstack/react-query";
-import { contractService } from "@/libs/service/contractsService";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 export default function Layout({ children }: PropsWithChildren) {
-  const { chainId, updateChainId, updateAccount, wallet, isEvent, account } =
-    useContext(AccountContext);
+  const {
+    chainId,
+    updateChainId,
+    updateAccount,
+    wallet,
+    isEvent,
+    getProviders,
+  } = useContext(AccountContext);
   const { user, accessToken, isLoggedIn } = useSelector(selectProfile);
   const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const dispatch = useDispatch();
@@ -34,7 +39,7 @@ export default function Layout({ children }: PropsWithChildren) {
     const initProvider = async () => {
       if (window.ethereum) {
         try {
-          const provider = await getProvider(wallet);
+          const provider = await getProviders(wallet);
 
           const handleAccountsChanged = (account: []) => {
             console.log(account);
