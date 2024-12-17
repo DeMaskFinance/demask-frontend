@@ -111,15 +111,11 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             tokenId: idNFT,
           });
         }
-        setHash(result.hash);
-        const check = await result.wait();
+        setHash(result);
         setIsOpenTransaction(false);
         setIsOpenBuyNFT(false);
-        if (check.status === 1) {
-          setIsOpenSuccess(true);
-        } else {
-          setIsOpenError(false);
-        }
+        setIsOpenSuccess(true);
+
         setInputNFT("");
         queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
         queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
@@ -230,10 +226,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <p>Protocol Fee</p>
               <p>Referral Fee</p>
               <p>Pool Fee</p>
-              <p>Royalty Fee</p>
             </div>
             <div className="flex flex-col items-end gap-y-1">
-              {dataBuy.fees.map((fee, index) => (
+              {dataBuy.fees.slice(0, 3).map((fee, index) => (
                 <div
                   className="flex items-center font-bold text-white gap-x-1"
                   key={index}

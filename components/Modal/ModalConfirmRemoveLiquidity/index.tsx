@@ -138,7 +138,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             tokenId: idNFT,
             liquidity: liquidity,
             amountTokenMin: Number(dataTradingRemove.amountETHDecimals),
-            amountNftMin: Number(dataTradingRemove.amountNFT),
+            amountNftMin: 0,
             to: account,
             deadline: Math.floor(
               (new Date().getTime() + slippage * 60000) / 1000
@@ -151,8 +151,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             nft: collectionAddress,
             tokenId: idNFT,
             liquidity: liquidity,
-            amountTokenMin: Number(dataTradingRemove.amountETHDecimals),
-            amountNftMin: Number(dataTradingRemove.amountNFT),
+            amountTokenMin: 0,
+            // amountNftMin: Number(dataTradingRemove.amountNFT),
+            amountNftMin: 0,
 
             to: account,
             deadline: Math.floor(

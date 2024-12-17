@@ -72,6 +72,8 @@ const DetailLiquidity = () => {
     chainId,
     version,
   ]);
+
+  const type = "erc721";
   const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: [
@@ -86,6 +88,7 @@ const DetailLiquidity = () => {
           const res = await liquidityHistory(
             account,
             dmlTokenLiquidity,
+            type,
             page,
             chainId,
             activeChoice
@@ -118,32 +121,6 @@ const DetailLiquidity = () => {
     wallet
   );
   const options = ["All", "Add", "Remove"];
-  const handleGetReward = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    if (!account) {
-      return;
-    }
-    if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({
-        wallet,
-        dmlTokenLiquidity,
-        account,
-        data: {
-          dmlDecimals: data.dmlDecimals,
-          tokenAddress: data.tokenAddress,
-        },
-        setReward,
-        setIsOpenTransaction,
-        setIsOpenSuccessCollect,
-        setIsOpenErrorCollect,
-        setHash,
-      });
-    } else {
-      toast.error("No account and DML");
-    }
-  };
 
   const handleAddLiquidity = () => {
     setIsOpenAddLiquidity(true);
@@ -180,12 +157,14 @@ const DetailLiquidity = () => {
         />
       ),
       content: "Swap",
-      link: `/trade/erc1155/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
+      link: `/trade/erc721/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
     },
   ];
   const closeModal = () => {
     setIsOpenRemoveLiquididy(false);
   };
+
+  console.log(data);
   return (
     <div className="px-3">
       {isLoading ? (
@@ -234,16 +213,17 @@ const DetailLiquidity = () => {
                 />
               )}
             </div>
-            <div className="w-full lg:w-[400px] lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
+            <div className="w-full lg:w-[400px] flex flex-col justify-between lg:mb-0 bg-shader_800 border border-shader_500 rounded-lg p-4 text-white font-semibold flex-shrink-0">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-x-1">
                   <div className="text-lg font-bold max-w-[180px]">
                     <ModalDocument data={data?.metadata?.name} />
                   </div>
                   <p className="text-sm text-primary_400">
-                    ({data?.metadata?.symbol}/ETH)
+                    {data?.collectionSymbol}/ETH
                   </p>
                 </div>
+
                 <div className="flex items-center gap-x-2">
                   {actions.map((action, index) => (
                     <Tippy
@@ -275,7 +255,7 @@ const DetailLiquidity = () => {
                                   routerAddress721={
                                     contracts.ERC721_ROUTER_ADDRESS
                                   }
-                                  type="erc1155"
+                                  type="erc721"
                                   setHash={setHash}
                                   setIsOpenSuccess={setIsOpenSuccessRemove}
                                   setIsOpenError={setIsOpenErrorRemove}
@@ -294,6 +274,9 @@ const DetailLiquidity = () => {
                   ))}
                 </div>
               </div>
+              <div className="overflow-hidden rounded-xl">
+                <MediaNFT data={data?.collectionAvatar} isControls={true} />
+              </div>
               <div className="w-full font-medium rounded-lg shadow-swiper gap-y-4">
                 {account && data?.metadata && (
                   <div className="justify-end mx-auto mb-6">
@@ -305,28 +288,14 @@ const DetailLiquidity = () => {
                 <div className="flex justify-between mb-3 text-shader_200">
                   <p className="text-sm">Liquidity</p>
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber number={(+balanceDML / 1e18).toString()} />
-                    <EtherIcon width={16} height={16} />(
-                    {((Number(balanceDML) / Number(totalSupply)) * 100).toFixed(
-                      2
-                    )}
-                    %)
+                    <FormatNumber
+                      number={(data?.balanceDml / 1e18).toString()}
+                    />
+                    <EtherIcon width={16} height={16} />({data?.dmlPercent}%)
                   </div>
                 </div>
-                <div className="flex justify-between mb-3 text-shader_200">
-                  <p className="text-sm">Reward</p>
-                  <div className="flex items-center font-bold text-white gap-x-1">
-                    {reward ? (
-                      <div className="ml-2">
-                        <FormatNumber number={reward} />
-                      </div>
-                    ) : (
-                      <p className="w-10 h-4 rounded-full animate-pulse bg-slate-700 "></p>
-                    )}
-                    <EtherIcon width={16} height={16} />
-                  </div>
-                </div>
-                <div className="flex gap-x-2">
+
+                {/* <div className="flex gap-x-2">
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button active className="p-3">
@@ -343,30 +312,7 @@ const DetailLiquidity = () => {
                       )}
                     </DialogContent>
                   </Dialog>
-
-                  {/* {account ? (
-                    <Button
-                      gradient
-                      className="flex w-full p-3 gap-x-1"
-                      onClick={handleGetReward}
-                    >
-                      Claim
-                      <FormatNumber number={reward} />
-                      ETH
-                    </Button>
-                  ) : (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button gradient className="flex w-full p-3 gap-x-1">
-                          Connect Wallet
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="w-[350px] p-0 border-none">
-                        <ModalWallet />
-                      </DialogContent>
-                    </Dialog>
-                  )} */}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -12,12 +12,6 @@ import {
   WebsiteIcon,
 } from "@/components/Icons";
 import { LogoIconCard } from "@/components/Logo/Logo";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import * as collectionService from "@/libs/service/collectionService";
 import {
@@ -25,17 +19,15 @@ import {
   formatLinkIPFS,
   formatTypeChain,
 } from "@/libs/utils/formatComon";
-import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { Fragment, useContext, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import ShowMoreText from "react-show-more-text";
+import { toast } from "sonner";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import { MediaCollection } from "../Common/Media";
-import ModalRoyalty from "../Modal/ModalRoyalty";
-import { toast } from "sonner";
 interface CollectionDetailProps {
   collectionAddress: string;
 }
@@ -150,14 +142,14 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                   {data?.isVerified && (
                     <TickSuccessIcon width={20} height={19} />
                   )}
-                  <Button
+                  {/* <Button
                     third
                     className="flex items-center px-3 h-[28px] text-sm gap-x-1"
                   >
                     Royalties {formatNumber((data?.royalty / 10000).toString())}
                     %
-                  </Button>
-                  {data?.collaborators.includes(account) &&
+                  </Button> */}
+                  {/* {data?.collaborators.includes(account) &&
                     data?.dmlAddress && (
                       <Dialog
                         open={isDialogOpen}
@@ -181,7 +173,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                           </DialogDescription>
                         </DialogContent>
                       </Dialog>
-                    )}
+                    )} */}
                 </div>
               </div>
               <div className="flex items-center gap-x-1 my-2 font-semibold">
@@ -200,7 +192,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             </div>
           </div>
           <div className="">
-            <ShowMoreText
+            {/* <ShowMoreText
               lines={1}
               more="See more"
               less="See less"
@@ -210,7 +202,10 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               truncatedEndingComponent={"... "}
             >
               {data?.description}
-            </ShowMoreText>
+            </ShowMoreText> */}
+            <p className="text-white text-sm font-normal w-full my-2">
+              {data?.description}
+            </p>
             <div className="flex items-center gap-x-2 mb-2">
               {data?.collaborators.includes(account) && (
                 <Link href={`/edit/${collectionAddress}`}>

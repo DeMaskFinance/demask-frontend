@@ -157,8 +157,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     },
   });
 
-  console.log(dataTradingRemove, idNFT);
-
   return (
     <Fragment>
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">

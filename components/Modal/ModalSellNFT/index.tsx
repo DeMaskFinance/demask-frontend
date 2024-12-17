@@ -230,10 +230,10 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
               <p>Protocol Fee</p>
               <p>Referral Fee</p>
               <p>Pool Fee</p>
-              <p>Royalty Fee</p>
+              {/* <p>Royalty Fee</p> */}
             </div>
             <div className="flex flex-col gap-y-1 items-end">
-              {dataSell.fees.slice(0, 4).map((fee, index) => (
+              {dataSell.fees.slice(0, 3).map((fee, index) => (
                 <div
                   className="flex items-center font-bold text-white gap-x-1"
                   key={index}

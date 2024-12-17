@@ -1,10 +1,27 @@
 import FormatNumber from "@/components/Common/FormatNumber";
+import { MediaCollection } from "@/components/Common/Media";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { LogoIconTable } from "@/components/Logo/Logo";
 import AccountContext from "@/context/AccountContext";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { getColorType } from "@/libs/utils/getColorType";
+import Tippy from "@tippyjs/react";
 import { useContext } from "react";
 
+const ListNFT: React.FC<any> = ({ item }) => {
+  return (
+    <div className="grid grid-cols-3 gap-1 w-max bg-shader_400 p-1 rounded-lg max-h-32 overflow-y-auto">
+      {item.map((nft: any, index: number) => (
+        <div
+          className="rounded-lg overflow-hidden aspect-square w-8 h-8"
+          key={index}
+        >
+          <MediaNFT data={nft} isControls={false} zoom />
+        </div>
+      ))}
+    </div>
+  );
+};
 const HistoryItem = ({ item }: any) => {
   const { demask, chainId } = useContext(AccountContext);
 
@@ -23,8 +40,28 @@ const HistoryItem = ({ item }: any) => {
       </td>
 
       <td className="flex items-center justify-start py-2 md:basis-1/7 w-[200px] gap-x-2">
-        <div className="w-8 h-8 mr-1 overflow-hidden rounded-lg">
-          <MediaNFT data={item} isControls={false} />
+        <div className="flex items-center gap-x-2 ">
+          <div className="flex-shrink-0 block relative ">
+            {/* <Tippy
+              interactive
+              render={(attrs) => (
+                <div
+                  className=" p-1 w-fit block rounded-md"
+                  tabIndex={-1}
+                  {...attrs}
+                >
+                  <ListNFT item={item.metadataList} />
+                </div>
+              )}
+            > */}
+            <div className="flex-shrink-0 rounded-md overflow-hidden w-8 h-8 flex items-center">
+              <MediaCollection avatar={formatLinkIPFS(item?.avatar)} zoom />
+            </div>
+            {/* </Tippy> */}
+          </div>
+          <span className="line-clamp-1 truncate  max-w-[100px] block">
+            {item?.collectionName}
+          </span>
         </div>
         <div className="max-w-[120px] truncate">
           {item?.tokenSymbol ? (
@@ -34,7 +71,7 @@ const HistoryItem = ({ item }: any) => {
               </span>
             </>
           ) : (
-            <span>{item?.metadata?.symbol}</span>
+            <span>{item?.collectionName}</span>
           )}
         </div>
       </td>

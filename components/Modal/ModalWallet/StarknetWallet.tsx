@@ -73,11 +73,20 @@ const StarknetWallet = () => {
           key={connector.id}
           type="submit"
           onClick={() => handleConnect(connector)}
-          disabled={!connector.available()}
-          className={`${styles.walletItem} justify-start`}
+          disabled={connector.name === "Braavos"}
+          className={`${styles.walletItem} justify-start ${
+            connector.name === "Braavos"
+              ? "hover:bg-inherit cursor-not-allowed opacity-60"
+              : ""
+          }`}
         >
           <Image src={connector.icon.dark!} alt="img" width={34} height={34} />
-          {connector.name}
+          <div className="flex items-center justify-between w-full">
+            <p className="">{connector.name}</p>
+            {connector.name !== "Braavos" && (
+              <p className="text-xs font-semibold text-slate-300">Normally</p>
+            )}
+          </div>
         </button>
       ))}
     </div>

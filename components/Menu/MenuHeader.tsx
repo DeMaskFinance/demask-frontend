@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 const subMenuRewards = [
   { id: 1, name: "Leaderboard", url: "/leaderboard" },
-  { id: 2, name: "Referral", url: "/referral" },
+  // { id: 2, name: "Referral", url: "/referral" },
 ];
 const subMenuOthers = [
   { id: 1, name: "Create", url: "/create" },

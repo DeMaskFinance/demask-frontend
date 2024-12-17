@@ -67,24 +67,26 @@ export const starknet = {
 
 let network: NetworkItem[] = [
   {
-    name: "Sepolia Testnet",
-    logo: SepoliaIcon,
-    chain: "11155111",
-    type: "EVM",
-  },
-  {
     name: "Starknet Devnet",
     logo: StarknetIcon,
     chain: starknet.StarknetChainId.SN_SEPOLIA,
     type: "Starknet",
   },
-  {
-    name: "Monad Devnet",
-    logo: MonadIcon,
-    chain: "1",
-    type: "EVM",
-    disable: true,
-  },
+  // {
+  //   name: "Sepolia Testnet",
+  //   logo: SepoliaIcon,
+  //   chain: "11155111",
+  //   type: "EVM",
+  //   disable: true,
+  // },
+
+  // {
+  //   name: "Monad Devnet",
+  //   logo: MonadIcon,
+  //   chain: "1",
+  //   type: "EVM",
+  //   disable: true,
+  // },
 ];
 
 const amountNFT = [

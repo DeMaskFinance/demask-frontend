@@ -108,7 +108,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               : Number(inputToken) * 1e18,
             amountTokenMin: 0,
             to: account,
-            deadline: 1734085786,
+            deadline: Math.floor(
+              (new Date().getTime() + txDeadline * 60000) / 1000
+            ),
           });
 
           // setHash(result);

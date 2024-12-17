@@ -13,20 +13,22 @@ export default function History() {
     useQuery({
       queryKey: ["historyUser", chainId, page],
       queryFn: async () => {
-        const res = await historyUserService(
+        const { data } = await historyUserService(
           account.toLowerCase(),
           chainId,
           page
         );
-        return res;
+        return data;
       },
     });
+
+  console.log(data);
 
   return (
     <div>
       {isLoading || isFetching ? (
         <SkeletonTable length={10} />
-      ) : isSuccess && data.userTransactionList.length > 0 ? (
+      ) : isSuccess && data?.length > 0 ? (
         <>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-h-[550px]">
@@ -56,7 +58,7 @@ export default function History() {
                 </tr>
               </thead>
               <tbody className="flex flex-col min-h-[620px]">
-                {data?.userTransactionList.map((item: any, index: number) => (
+                {data?.map((item: any, index: number) => (
                   <HistoryItem key={index} item={item} />
                 ))}
               </tbody>

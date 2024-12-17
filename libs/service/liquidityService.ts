@@ -34,13 +34,14 @@ const liquidityListAPI = async (
 const liquidityHistory = async (
   accountUser: string,
   dmlToken: string,
+  type: string,
   page: number,
   chainId: string | string[],
   action: string
 ) => {
   try {
     const res = await request.get(
-      `liquidity-history?chainId=${chainId}&userAddress=${accountUser.toLocaleLowerCase()}&dmlAddress=${dmlToken.toLocaleLowerCase()}&page=${page}&action=${action}`
+      `liquidity-history?chainId=${chainId}&userAddress=${accountUser.toLocaleLowerCase()}&dmlAddress=${dmlToken.toLocaleLowerCase()}&page=${page}&action=${action}&type=${type}`
     );
     return res.data;
   } catch (error) {

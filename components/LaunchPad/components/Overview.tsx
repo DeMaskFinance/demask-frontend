@@ -29,7 +29,8 @@ const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
                 )
             )}
           </div>
-          <ShowMoreText
+          <p>{data.detailLaunchpad}</p>
+          {/* <ShowMoreText
             lines={4}
             more="See more"
             less="See less"
@@ -39,7 +40,7 @@ const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
             truncatedEndingComponent={"... "}
           >
             {data.detailLaunchpad}
-          </ShowMoreText>
+          </ShowMoreText> */}
         </div>
       )}
     </div>
