@@ -12,22 +12,10 @@ const handleApproveDML = async (
   routerAddress721: string
 ) => {
   if (account && wallet) {
-    const contract = await ercContract.erc(wallet, dmlAddress, abiDML);
-    const inputLiquidityBN = new BigNumber(inputLiquidity)
-      .times(new BigNumber(10).pow(18))
-      .toFixed(0);
-
     try {
-      // const result = await contract.approve(routerAddress, inputLiquidityBN);
       setIsOpenTransaction(true);
 
-      console.log({
-        contractAddress: dmlAddress,
-        balance: String(1 * 1e18),
-        target: routerAddress721,
-      });
-
-      const result = await utilsStarknet.approve({
+      await utilsStarknet.approve({
         contractAddress: dmlAddress,
         balance: String(1 * 1e18),
         target: routerAddress721,

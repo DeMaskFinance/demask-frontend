@@ -104,73 +104,32 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       try {
         setIsOpenTransaction(true);
         let result;
-        if (data.nftID) {
-          result = await erc1155Contract.removeERC20ERC1155(
-            wallet,
-            data.nftAddress,
-            data.tokenAddress,
-            data.nftID,
-            routerAddress,
-            liquidity,
-            dataTradingRemove.amountETHDecimals,
-            dataTradingRemove.amountNFT,
-            account,
-            slippage
-          );
-        } else {
-          // result = await ercContract721.removeERC20ERC721(
-          //   wallet,
-          //   collectionAddress,
-          //   data.tokenAddress,
-          //   idNFT,
-          //   routerAddress,
-          //   liquidity,
-          //   dataTradingRemove.amountETHDecimals,
-          //   dataTradingRemove.amountNFT,
-          //   account,
-          //   slippage
-          // );
 
-          console.log({
-            contractAddress: routerAddress,
-            token: data.tokenAddress,
-            nft: collectionAddress,
-            tokenId: idNFT,
-            liquidity: liquidity,
-            amountTokenMin: Number(dataTradingRemove.amountETHDecimals),
-            amountNftMin: 0,
-            to: account,
-            deadline: Math.floor(
-              (new Date().getTime() + slippage * 60000) / 1000
-            ),
-          });
+        result = await utilsStarknet.removeLiquidity({
+          contractAddress: routerAddress,
+          token: data.tokenAddress,
+          nft: collectionAddress,
+          tokenId: idNFT,
+          liquidity: liquidity,
+          amountTokenMin: 0,
+          amountNftMin: 0,
 
-          result = await utilsStarknet.removeLiquidity({
-            contractAddress: routerAddress,
-            token: data.tokenAddress,
-            nft: collectionAddress,
-            tokenId: idNFT,
-            liquidity: liquidity,
-            amountTokenMin: 0,
-            // amountNftMin: Number(dataTradingRemove.amountNFT),
-            amountNftMin: 0,
+          to: account,
+          deadline: Math.floor(
+            (new Date().getTime() + slippage * 60000) / 1000
+          ),
+        });
 
-            to: account,
-            deadline: Math.floor(
-              (new Date().getTime() + slippage * 60000) / 1000
-            ),
-          });
-        }
-        const check = await result.wait();
-        setHash(result.hash);
+        setHash(result?.transaction_hash as string);
+
         setIsOpenTransaction(false);
         setInputLiquidity("");
         closeModal();
         setIsOpenConfirmRemoveLiquidity(false);
-        if (check.status === 1) {
+        if (result?.statusReceipt === "success") {
           setIsOpenSuccess(true);
         } else {
-          setIsOpenError(true);
+          setIsOpenError(false);
         }
         queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
         queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
@@ -179,8 +138,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
         setIsOpenTransaction(false);
         console.error(error);
       }
-    } else {
-      //   setShowRequiredMessage(true);
     }
   };
 

@@ -1,16 +1,14 @@
 import Back from "@/components/Common/Back";
 import WithAuth from "@/components/Common/WithAuth";
+import MintNFTStarknet from "@/components/Create/MintNFTStarknet";
 import { UploadFileNFT } from "@/components/Create/UploadFile";
+import AccountContext from "@/context/AccountContext";
+import { collectionListUser } from "@/libs/service/collectionService";
 import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
+import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useContext, useState } from "react";
 import { SEO } from "../../next-seo.config";
-import AccountContext from "@/context/AccountContext";
-import { starknet } from "@/libs/constants";
-import { MintNFTEVM } from "@/components/Create";
-import MintNFTStarknet from "@/components/Create/MintNFTStarknet";
-import { useQuery } from "@tanstack/react-query";
-import { collectionListUser } from "@/libs/service/collectionService";
 
 const updateMeta = {
   ...SEO,
@@ -22,7 +20,7 @@ export default function Creator() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<string>("");
   const { chainId, account } = useContext(AccountContext);
-  const { data, isSuccess } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["listCollectionUser", chainId, account],
     queryFn: async () => {
       const res = await collectionListUser(account, chainId);
@@ -58,7 +56,22 @@ export default function Creator() {
                 />
               </div>
             </div>
-            {isSuccess && (
+
+            <div className="w-full lg:w-2/4 md:w-2/4">
+              {!isLoading && data ? (
+                <MintNFTStarknet
+                  data={data}
+                  fileIPFS={fileIPFS}
+                  setFileIPFS={setFileIPFS}
+                  fileType={fileType}
+                  setSelectedFile={setSelectedFile}
+                />
+              ) : (
+                <div className="h-[500px] w-full rounded-xl bg-slate-300/20 animate-pulse"></div>
+              )}
+            </div>
+
+            {/* {isSuccess && (
               <div className="w-full lg:w-2/4 md:w-2/4">
                 {chainId === starknet.StarknetChainId.SN_SEPOLIA ? (
                   <MintNFTStarknet
@@ -78,7 +91,7 @@ export default function Creator() {
                   />
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </WithAuth>

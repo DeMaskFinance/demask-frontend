@@ -1,11 +1,9 @@
-import { TabGroups } from "@/components/NavChoice";
+import AccountContext from "@/context/AccountContext";
+import { network } from "@/libs/constants";
 import Link from "next/link";
 import React, { useContext, useMemo, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import EVMWallet from "./EVMWallet";
 import StarknetWallet from "./StarknetWallet";
-import { network } from "@/libs/constants";
-import AccountContext from "@/context/AccountContext";
 
 interface ModalWalletProps {
   isAuthen?: true;

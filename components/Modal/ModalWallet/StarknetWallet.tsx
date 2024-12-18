@@ -76,7 +76,7 @@ const StarknetWallet = () => {
           disabled={connector.name === "Braavos"}
           className={`${styles.walletItem} justify-start ${
             connector.name === "Braavos"
-              ? "hover:bg-inherit cursor-not-allowed opacity-60"
+              ? "!hover:bg-none hover:cursor-not-allowed opacity-60"
               : ""
           }`}
         >

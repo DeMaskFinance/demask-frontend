@@ -1,11 +1,11 @@
 import useFileHandler from "@/hooks/useFileHandler";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import Image from "next/image";
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { Button } from "../Buttons";
 import { CreateIcon, DeployIcon, UploadIcon } from "../Icons";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
 
 const UploadFileNFT: React.FC<UploadFileProps> = ({
   setFileIPFS,
@@ -260,4 +260,4 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
     </div>
   );
 };
-export { UploadFileNFT, UploadFileCollection };
+export { UploadFileCollection, UploadFileNFT };

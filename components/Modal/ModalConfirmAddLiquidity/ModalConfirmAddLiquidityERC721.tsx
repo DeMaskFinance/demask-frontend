@@ -113,14 +113,19 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             ),
           });
 
-          // setHash(result);
+          setHash(result?.transaction_hash as string);
+
           setIsOpenTransaction(false);
           setInputToken("");
           setIdNFT([]);
           setIsOpenConfirmAddLiquidity(false);
           setIsOpenAddLiquidity(false);
 
-          setIsOpenSuccess(true);
+          if (result?.statusReceipt === "success") {
+            setIsOpenSuccess(true);
+          } else {
+            setIsOpenSuccess(false);
+          }
 
           queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
           queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
@@ -132,6 +137,13 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             balance: String(1 * 1e18),
             target: contracts?.ERC721_ROUTER_ADDRESS,
           });
+          setHash(result?.transaction_hash as string);
+
+          if (result?.statusReceipt === "success") {
+            setIsOpenSuccess(true);
+          } else {
+            setIsOpenSuccess(false);
+          }
         }
       } catch (error) {
         setIsOpenTransaction(false);

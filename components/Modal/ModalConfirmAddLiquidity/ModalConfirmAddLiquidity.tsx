@@ -85,8 +85,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           txDeadline,
           exponentialToDecimal(Math.floor(amountErcDesired))
         );
-        const check = await result.wait();
-        setHash(result.hash);
+
+        setHash(result);
         setIsOpenTransaction(false);
         setInputNFT("");
         setInputToken("");
@@ -95,12 +95,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         if (setIsOpenLiquidity) {
           setIsOpenLiquidity(false);
         }
-        if (check.status === 1) {
-          setIsOpenSuccess(true);
-        } else {
-          setIsOpenError(true);
-        }
+        setIsOpenSuccess(true);
       } catch (error) {
+        setIsOpenError(true);
         setIsOpenTransaction(false);
         console.error(error);
       }

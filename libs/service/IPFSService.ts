@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import request from "../utils/httpRequest";
 const uploadFileIPFSMint = async (file: any) => {
   try {
@@ -16,6 +17,7 @@ const uploadFileIPFSCollection = async (file: any) => {
     const res = await request.postForm("upload-file-collection", formData);
     return res.data;
   } catch (error) {
+    toast.error("Error upload file!");
     console.error(error);
   }
 };

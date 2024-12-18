@@ -271,7 +271,7 @@ const matchSell = async (params: {
     deadline: params.deadline,
   });
 
-  await getTransaction(result);
+  return await getTransaction(result);
 };
 
 const createCollection = async (params: {
@@ -345,7 +345,7 @@ const addLiquidity = async (params: {
       params.deadline,
     ]);
 
-    await getTransaction(result);
+    return await getTransaction(result);
   } catch (error) {
     console.log(error);
   }
@@ -391,7 +391,7 @@ const removeLiquidity = async (params: {
       params.deadline,
     ]);
 
-    await getTransaction(result);
+    return await getTransaction(result);
   } catch (error) {
     console.log(error);
   }
@@ -409,7 +409,7 @@ const approve = async (params: {
     params.balance
   );
 
-  await getTransaction(approve);
+  return await getTransaction(approve);
 };
 
 const isApproveForAll = async (params: {
@@ -453,7 +453,7 @@ const setApproveForAll = async (params: {
     approved: true,
   });
 
-  await getTransaction(result);
+  return await getTransaction(result);
 };
 
 export default {

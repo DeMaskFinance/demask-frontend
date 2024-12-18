@@ -5,14 +5,12 @@ import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
 import useNFTBalance from "@/hooks/useBalanceNFT";
-import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
-import ercContract721 from "@/libs/utils/erc/erc721.contract";
+import utilsStarknet from "@/utils/utils.starknet";
 import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
-import utilsStarknet from "@/utils/utils.starknet";
 interface ModalSellNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -90,36 +88,24 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       try {
         let result;
         setIsOpenTransaction(true);
-        if (inputNFT) {
-          result = await erc1155Contract.sellERC20ERC1155(
-            wallet,
-            nftAddress,
-            tokenAddress,
-            idNFT,
-            routerAddress,
-            dataSell.minAmountDecimals,
-            inputNFT,
-            account,
-            txDeadline
-          );
-        } else {
-          result = await utilsStarknet.matchSell({
-            token: tokenAddress,
-            amountOutMin: BigInt(dataSell.minAmountDecimals),
-            contractAddress: routerAddress,
-            deadline: Math.floor(
-              (new Date().getTime() + txDeadline * 60000) / 1000
-            ),
-            nft: nftAddress,
-            to: account,
-            tokenId: idNFT,
-          });
-        }
-        setHash(result.hash);
-        const check = await result.wait();
+
+        result = await utilsStarknet.matchSell({
+          token: tokenAddress,
+          amountOutMin: BigInt(dataSell.minAmountDecimals),
+          contractAddress: routerAddress,
+          deadline: Math.floor(
+            (new Date().getTime() + txDeadline * 60000) / 1000
+          ),
+          nft: nftAddress,
+          to: account,
+          tokenId: idNFT,
+        });
+
+        setHash(result?.transaction_hash as string);
+
         setIsOpenTransaction(false);
         setIsOpenSellNFT(false);
-        if (check.status === 1) {
+        if (result?.statusReceipt === "success") {
           setIsOpenSuccess(true);
         } else {
           setIsOpenError(true);
