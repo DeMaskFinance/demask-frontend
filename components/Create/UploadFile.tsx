@@ -199,7 +199,7 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
               quality={100}
               className="object-cover w-full h-full rounded-2xl aspect-square"
             />
-            {selectedFile && (
+            {/* {selectedFile && (
               <button
                 className="absolute right-2 z-100 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
                 onClick={(e) => {
@@ -210,7 +210,7 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
               >
                 <CgClose />
               </button>
-            )}
+            )} */}
           </div>
         ) : values.avatar ? (
           <div className="relative w-40 h-40">

@@ -4,16 +4,16 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
+import useInformationToken from "@/hooks/useInformationToken";
 import erc1155Contract from "@/libs/utils/erc/erc1155.contract";
-import ercContract721 from "@/libs/utils/erc/erc721.contract";
+import utilsStarknet from "@/utils/utils.starknet";
 import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import { useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
-import useInformationToken from "@/hooks/useInformationToken";
-import utilsStarknet from "@/utils/utils.starknet";
-import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
 interface ModalBuyNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -53,7 +53,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const { demask, account, wallet, slippage, txDeadline, chainId } =
+  const { demask, account, wallet, slippage, txDeadline, chainId, providers } =
     useContext(AccountContext);
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   useEffect(() => {
@@ -70,6 +70,20 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   }, [inputNFT, account, dataBuy, bigNumberBalance]);
 
   const queryClient = useQueryClient();
+
+  const contracts = queryClient.getQueryData<ContractAddresses>([
+    "contracts",
+    chainId,
+    "v2",
+  ]);
+
+  const currentAllowance = useAllowanceDML(
+    account,
+    contracts?.WETH_ADDRESS || "",
+    wallet,
+    isOpenTransaction,
+    routerAddress
+  );
 
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -258,15 +272,32 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <Button
-            disabled={isFetching}
-            primary={!isFetching}
-            className="px-8 py-3"
-            isLoadingBtn={isFetching}
-            onClick={handleBuyNFT}
-          >
-            Confirm
-          </Button>
+          {currentAllowance && Number(currentAllowance) > 0 ? (
+            <Button
+              disabled={isFetching}
+              primary={!isFetching}
+              className="px-8 py-3"
+              isLoadingBtn={isFetching}
+              onClick={handleBuyNFT}
+            >
+              Confirm
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                handleApproveDML(
+                  account,
+                  wallet,
+                  contracts?.WETH_ADDRESS || "",
+                  setIsOpenTransaction,
+                  routerAddress
+                );
+              }}
+              primary
+            >
+              Approve ETH
+            </Button>
+          )}
         </div>
       </div>
       <ModalTransation

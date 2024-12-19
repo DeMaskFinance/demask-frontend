@@ -6,10 +6,11 @@ import { login } from "@/store/profileSlice";
 import { setCookie } from "@/utils/utilts.cookie";
 import { Connector, useConnect } from "@starknet-react/core";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ArraySignatureType, ec } from "starknet";
 import utilsConstants from "@/utils/utilts.contants";
+import { LoadingIcon } from "@/components/Icons";
 
 const styles = {
   walletItem:
@@ -20,8 +21,11 @@ const StarknetWallet = () => {
   const dispatch = useDispatch();
   const { updateAccount, updateWallet, updateChainId } =
     useContext(AccountContext);
+
+  const [loading, setLoading] = useState<boolean>(false);
   const handleConnect = async (connector: Connector) => {
     try {
+      setLoading(true);
       const provider = await getProvider(connector.id);
       const accounts = await provider.enable({
         starknetVersion: "v5",
@@ -61,7 +65,10 @@ const StarknetWallet = () => {
         key: utilsConstants.WALLET_CONNECT,
         value: connector.name,
       });
+
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -75,7 +82,7 @@ const StarknetWallet = () => {
           onClick={() => handleConnect(connector)}
           disabled={connector.name === "Braavos"}
           className={`${styles.walletItem} justify-start ${
-            connector.name === "Braavos"
+            connector.name === "Braavos" || loading
               ? "!hover:bg-none hover:cursor-not-allowed opacity-60"
               : ""
           }`}
@@ -83,8 +90,19 @@ const StarknetWallet = () => {
           <Image src={connector.icon.dark!} alt="img" width={34} height={34} />
           <div className="flex items-center justify-between w-full">
             <p className="">{connector.name}</p>
+
             {connector.name !== "Braavos" && (
-              <p className="text-xs font-semibold text-slate-300">Normally</p>
+              <p className="text-xs font-semibold text-slate-300">
+                {loading ? (
+                  <LoadingIcon
+                    width={20}
+                    height={20}
+                    className="animate-spin"
+                  />
+                ) : (
+                  "Normally"
+                )}
+              </p>
             )}
           </div>
         </button>

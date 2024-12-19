@@ -43,8 +43,6 @@ const getProvider = () => {
     getCookie(utilsConstants.WALLET_CONNECT) as WalletType
   );
 
-  console.log(provider);
-
   if (!provider) throw new Error("Provider not found");
 
   return provider;
@@ -419,7 +417,7 @@ const isApproveForAll = async (params: {
 }) => {
   const contract = await getAbiContract(params.target);
 
-  const isApprove: boolean = await contract.isApprovedForAll(
+  const isApprove: boolean = await contract.is_approved_for_all(
     params.account,
     params.operator
   );
@@ -448,7 +446,9 @@ const setApproveForAll = async (params: {
 }) => {
   const contract = await getAbiContract(params.target);
 
-  const result = contract.populate("setApprovalForAll", {
+  console.log(contract);
+
+  const result = contract.populate("set_approval_for_all", {
     operator: params.operator,
     approved: true,
   });

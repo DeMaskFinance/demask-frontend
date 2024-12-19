@@ -63,7 +63,7 @@ const HistoryItem = ({ item }: any) => {
             {item?.collectionName}
           </span>
         </div>
-        <div className="max-w-[120px] truncate">
+        {/* <div className="max-w-[120px] truncate">
           {item?.tokenSymbol ? (
             <>
               <span>
@@ -73,7 +73,7 @@ const HistoryItem = ({ item }: any) => {
           ) : (
             <span>{item?.collectionName}</span>
           )}
-        </div>
+        </div> */}
       </td>
 
       <td className="flex items-center justify-start py-2 md:basis-1/7 w-[140px]">

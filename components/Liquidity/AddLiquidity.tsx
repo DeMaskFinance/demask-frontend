@@ -129,7 +129,6 @@ export default function AddLiquidity() {
     }
   );
 
-  console.log(dataTradingAdd);
   const isApprovedNFT = useCheckApproveNFT(
     account,
     wallet,

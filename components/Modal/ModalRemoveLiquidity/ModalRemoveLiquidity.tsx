@@ -85,9 +85,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     account,
     data.dmlAddress,
     wallet,
-    providers,
     isOpenTransaction,
-    inputLiquidity,
     routerAddress721
   );
   const handleGetLiquidity = (values: NumberFormatValues) => {
@@ -108,6 +106,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     inputLiquidity,
     isOpenTransaction
   );
+
+  console.log(isApprovedLiquidity);
 
   useEffect(() => {
     if (
@@ -250,47 +250,62 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               </p>
             )}
             <div className="flex justify-center">
-              {!isApprovedLiquidity ? (
-                <Button
-                  className="w-[126px] py-2 mx-auto"
-                  primary
-                  onClick={() => {
-                    handleApproveDML(
-                      account,
-                      wallet,
-                      data.dmlAddress,
-                      inputLiquidity,
-                      setIsOpenTransaction,
-                      routerAddress721
-                    );
-                  }}
-                >
-                  Approve
-                </Button>
-              ) : (
+              {dataTradingRemove && dataTradingRemove?.balanceDml > 0 ? (
                 <>
-                  {type === "erc721" ? (
+                  {!isApprovedLiquidity ? (
                     <Button
-                      className="p-2 mx-auto"
-                      primary={dataTradingRemove?.amountNFT === idNFT.length}
-                      active={dataTradingRemove?.amountNFT !== idNFT.length}
-                      disabled={dataTradingRemove?.amountNFT !== idNFT.length}
-                      onClick={handleRemoveLiquidity}
+                      className="w-[126px] py-2 mx-auto"
+                      primary
+                      onClick={() => {
+                        handleApproveDML(
+                          account,
+                          wallet,
+                          data.dmlAddress,
+                          setIsOpenTransaction,
+                          routerAddress721
+                        );
+                      }}
                     >
-                      Remove Liquidity
+                      Approve
                     </Button>
                   ) : (
-                    <Button
-                      className="p-2 mx-auto"
-                      primary={inputLiquidity}
-                      active={!inputLiquidity}
-                      disabled={!inputLiquidity}
-                      onClick={handleRemoveLiquidity}
-                    >
-                      Remove Liquidity
-                    </Button>
+                    <>
+                      {type === "erc721" ? (
+                        <Button
+                          className="p-2 mx-auto"
+                          primary={
+                            dataTradingRemove?.amountNFT === idNFT.length
+                          }
+                          active={dataTradingRemove?.amountNFT !== idNFT.length}
+                          disabled={
+                            dataTradingRemove?.amountNFT !== idNFT.length
+                          }
+                          onClick={handleRemoveLiquidity}
+                        >
+                          Remove Liquidity
+                        </Button>
+                      ) : (
+                        <Button
+                          className="p-2 mx-auto"
+                          primary={inputLiquidity}
+                          active={!inputLiquidity}
+                          disabled={!inputLiquidity}
+                          onClick={handleRemoveLiquidity}
+                        >
+                          Remove Liquidity
+                        </Button>
+                      )}
+                    </>
                   )}
                 </>
+              ) : (
+                <Button
+                  className=" py-2 mx-auto opacity-60 cursor-not-allowed"
+                  disabled={false}
+                  secondary
+                >
+                  Insufficient liquidity
+                </Button>
               )}
             </div>
           </div>

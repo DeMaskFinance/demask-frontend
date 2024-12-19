@@ -52,59 +52,60 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   return (
     <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
       <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[260px] ">
-        {data?.data?.map((item: any, index: number) => (
-          <div
-            key={index}
-            className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
-          >
+        {data &&
+          data?.data?.map((item: any, index: number) => (
             <div
-              className={`relative items-center text-sm  border-[2px]  rounded-lg cursor-pointer lg:text-base ${
-                idNFT.includes(Number(item.nftID))
-                  ? "border-primary_400 border-opacity-100 border-[2px]"
-                  : "border-shader_400"
-              }`}
+              key={index}
+              className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
             >
               <div
-                className="relative h-[98px] group rounded-t-lg overflow-hidden"
-                onClick={() => handleChoiceNFT(item)}
+                className={`relative items-center text-sm  border-[2px]  rounded-lg cursor-pointer lg:text-base ${
+                  idNFT.includes(Number(item.nftID))
+                    ? "border-primary_400 border-opacity-100 border-[2px]"
+                    : "border-shader_400"
+                }`}
               >
-                <MediaNFT data={item} isControls={false} hover zoom />
-              </div>
-              <div className="flex justify-between w-full px-2 py-1 text-xs font-semibold text-white">
-                <p>#{item.nftID}</p>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedItem(item);
-                      }}
-                    >
-                      <EyeIcon
-                        width={16}
-                        height={16}
-                        className="text-primary_300"
-                      />
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
-                    <DialogHeader>
-                      <DialogDescription>
-                        {selectedItem && (
-                          <ModalDetail
-                            type="erc721"
-                            idNFT={selectedItem.nftID}
-                            nftAddress={selectedItem.nftAddress}
-                          />
-                        )}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
+                <div
+                  className="relative h-[98px] group rounded-t-lg overflow-hidden"
+                  onClick={() => handleChoiceNFT(item)}
+                >
+                  <MediaNFT data={item} isControls={false} hover zoom />
+                </div>
+                <div className="flex justify-between w-full px-2 py-1 text-xs font-semibold text-white">
+                  <p>#{item.nftID}</p>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedItem(item);
+                        }}
+                      >
+                        <EyeIcon
+                          width={16}
+                          height={16}
+                          className="text-primary_300"
+                        />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-6xl bg-shader_800 border border-shader_500 p-0">
+                      <DialogHeader>
+                        <DialogDescription>
+                          {selectedItem && (
+                            <ModalDetail
+                              type="erc721"
+                              idNFT={selectedItem.nftID}
+                              nftAddress={selectedItem.nftAddress}
+                            />
+                          )}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
         {/* {isFetching && <SkeletonItemTransaction />} */}
       </div>
       <div className="flex items-center h-10 my-4 border rounded-lg border-shader_400">

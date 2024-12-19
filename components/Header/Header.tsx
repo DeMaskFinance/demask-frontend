@@ -32,7 +32,7 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import useInformationToken from "@/hooks/useInformationToken";
-import { getProviders } from "@/utils/utils.starknet";
+import utilsStarknet, { getProviders } from "@/utils/utils.starknet";
 
 export default function Header() {
   const { account, updateAccount, wallet, providers, chainId } =
@@ -57,20 +57,20 @@ export default function Header() {
     dispatch(logout());
   };
 
-  useEffect(() => {
-    const getAddress = async () => {
-      const provider = await getProviders(wallet, providers);
-      if (provider) {
-        const test = new ethers.providers.Web3Provider(provider) as any;
-        if (provider && test.provider.selectedAddress === null) {
-          disconnectWallet();
-        }
-      }
-    };
-    if (wallet !== "argentX" && wallet !== "braavos") {
-      getAddress();
-    }
-  }, [wallet]);
+  // useEffect(() => {
+  //   const getAddress = async () => {
+  //     const provider = await utilsStarknet.getProvider();
+  //     if (provider) {
+  //       const test = new ethers.providers.Web3Provider(provider) as any;
+  //       if (provider && test.provider.selectedAddress === null) {
+  //         disconnectWallet();
+  //       }
+  //     }
+  //   };
+  //   if (wallet !== "argentX" && wallet !== "braavos") {
+  //     getAddress();
+  //   }
+  // }, [wallet]);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">

@@ -65,9 +65,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     account,
     data.dmlAddress,
     wallet,
-    providers,
     isOpenTransaction,
-    inputLiquidity,
     routerAddress
   );
 
@@ -202,7 +200,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                     account,
                     wallet,
                     data.dmlAddress,
-                    inputLiquidity,
                     setIsOpenTransaction,
                     routerAddress
                   );

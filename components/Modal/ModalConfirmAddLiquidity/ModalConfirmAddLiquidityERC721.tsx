@@ -249,7 +249,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             onClick={addLiquidity}
           >
             {allowce > Number(inputToken) * 1e18
-              ? "Create pool"
+              ? "Add Liduidity"
               : "Approve token"}
             {isFetching && (
               <BiLoaderAlt className="ml-1 text-white animate-spin" />

@@ -11,6 +11,8 @@ import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import handleApproveNFT from "@/libs/utils/handleApproveNFT";
 interface ModalSellNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -122,6 +124,16 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       }
     }
   };
+
+  const isApprovedNFT = useCheckApproveNFT(
+    account,
+    wallet,
+    nftAddress,
+    routerAddress,
+    isOpenTransaction
+  );
+
+  console.log(isApprovedNFT);
 
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative bg_main">
@@ -244,16 +256,37 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <Button
-            disabled={isFetching}
-            primary={!isFetching}
-            className="px-8 py-3"
-            active={isFetching}
-            isLoadingBtn={isFetching}
-            onClick={handleSellNFT}
-          >
-            Confirm
-          </Button>
+          {isApprovedNFT ? (
+            <Button
+              disabled={isFetching}
+              primary={!isFetching}
+              className="px-8 py-3"
+              active={isFetching}
+              isLoadingBtn={isFetching}
+              onClick={handleSellNFT}
+            >
+              Confirm
+            </Button>
+          ) : (
+            <Button
+              disabled={isFetching}
+              primary={!isFetching}
+              className="px-8 py-3"
+              active={isFetching}
+              isLoadingBtn={isFetching}
+              onClick={() => {
+                handleApproveNFT(
+                  account,
+                  wallet,
+                  nftAddress,
+                  setIsOpenTransaction,
+                  routerAddress
+                );
+              }}
+            >
+              Approve
+            </Button>
+          )}
         </div>
       </div>
       <ModalTransation

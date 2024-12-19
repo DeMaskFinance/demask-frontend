@@ -15,27 +15,27 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
 
-  const { data, fetchNextPage, isSuccess, isLoading, isFetching } =
-    useInfiniteQuery({
-      queryKey: ["LaunchpadList", chainId, query],
-      initialPageParam: 1,
-      queryFn: ({ pageParam = 1 }) =>
-        LaunchpadService.LaunchpadList(chainId, query, pageParam, 20),
-      getNextPageParam: (page) =>
-        page?.currentPage === page?.totalPages
-          ? undefined
-          : page?.currentPage + 1,
-    });
+  // const { data, fetchNextPage, isSuccess, isLoading, isFetching } =
+  //   useInfiniteQuery({
+  //     queryKey: ["LaunchpadList", chainId, query],
+  //     initialPageParam: 1,
+  //     queryFn: ({ pageParam = 1 }) =>
+  //       LaunchpadService.LaunchpadList(chainId, query, pageParam, 20),
+  //     getNextPageParam: (page) =>
+  //       page?.currentPage === page?.totalPages
+  //         ? undefined
+  //         : page?.currentPage + 1,
+  //   });
 
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  // useEffect(() => {
+  //   if (inView) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView]);
 
   return (
     <div className="mb-8 px-3 lg:px-10">
-      {isLoading ? (
+      {/* {isLoading ? (
         <div className="grid gap-4 mt-8 grid-cols-2 md:grid-cols-autoFill text-shader_600">
           <SkeletonSubCategory length={24} />
         </div>
@@ -60,7 +60,8 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
           </div>
           <div ref={ref} style={{ height: "1px" }}></div>
         </>
-      )}
+      )} */}
+      <p className="text-white">Comming soon</p>
     </div>
   );
 };
