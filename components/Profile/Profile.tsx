@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import { briefDocument } from "@/libs/utils/formatComon";
+import { briefDocument, formatLinkIPFS } from "@/libs/utils/formatComon";
 import { selectProfile } from "@/store/profileSlice";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -99,7 +99,7 @@ const Profile = () => {
           <div className="w-[120px] h-[120px] overflow-hidden rounded-full">
             {profile?.avatar ? (
               <Image
-                src={profile?.avatar}
+                src={formatLinkIPFS(profile?.avatar)}
                 width={120}
                 height={120}
                 alt="avatar"

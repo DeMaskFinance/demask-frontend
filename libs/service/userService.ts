@@ -1,4 +1,5 @@
 import request from "../utils/httpRequest";
+import { uploadToIpfs } from "./IPFSService";
 
 const getNonce = async (account: string) => {
   try {
@@ -34,20 +35,7 @@ const updateUserInfor = async (body: UserInterface) => {
     console.error(error);
   }
 };
-const uploadFile = async (params: any) => {
-  try {
-    const formData = new FormData();
-    if (params.avatar) {
-      formData.append("avatar", params.avatar);
-    }
 
-    if (params.banner) {
-      formData.append("banner", params.banner);
-    }
-    const res = await request.postForm("upload", formData);
-    return res.data;
-  } catch (error) {}
-};
 const getStarknetMessage = async (account: string, chainStarknet: string) => {
   try {
     const res = await request.get(
@@ -74,7 +62,6 @@ export {
   loginAuthen,
   profileInfor,
   updateUserInfor,
-  uploadFile,
   getStarknetMessage,
   authenStarknet,
 };

@@ -56,12 +56,11 @@ const validationSchema = yup.object().shape({
   website: yup.string().url().nullable(),
 });
 
-export default function EditProfileForm() {
+export default function EditProfileForm({ image }: any) {
   const { profile } = useSelector(selectProfile);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  console.log(profile);
   const dispatch = useDispatch();
   const socialList = [
     {
@@ -123,6 +122,7 @@ export default function EditProfileForm() {
     try {
       setLoading(true);
       const newUserData = await userService.updateUserInfor({
+        avatar: image,
         userName: values.userName,
         name: values.name,
         about: values.about,
@@ -236,9 +236,9 @@ export default function EditProfileForm() {
             <div className=" my-4">
               <Button
                 type="submit"
-                primary={dirty}
-                active={!dirty}
-                disabled={!dirty}
+                primary={dirty || image}
+                active={!dirty || !image}
+                disabled={!dirty || !image}
                 className="px-6 py-2"
                 isLoadingBtn={loading}
               >

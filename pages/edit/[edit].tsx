@@ -17,7 +17,7 @@ const EditCollection = () => {
   const collectionAddress = (useRouter().query.edit as string) || "";
   const { chainId } = useContext(AccountContext);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => {
       if (collectionAddress) {

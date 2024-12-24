@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { Button } from "../Buttons";
 import { CreateIcon, DeployIcon, UploadIcon } from "../Icons";
-
 const UploadFileNFT: React.FC<UploadFileProps> = ({
   setFileIPFS,
   setFileType,
