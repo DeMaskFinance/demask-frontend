@@ -22,6 +22,7 @@ interface CollectionInterface {
   creatorEarning?: string;
   featureImage?: string;
   royalty?: string;
+  avatar?: string;
 }
 interface UploadFileProps {
   setFileIPFS: React.Dispatch<React.SetStateAction<string>>;

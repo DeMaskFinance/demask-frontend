@@ -14,7 +14,7 @@ const Pool = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
 
-  const { isLoading, data, isSuccess } = useQuery({
+  const { isLoading, isFetching, data, isSuccess } = useQuery({
     queryKey: ["poolERC721", collectionAddress, chainId],
     queryFn: async () => {
       const res = await liquidityUserERC721(collectionAddress, chainId);
@@ -56,7 +56,7 @@ const Pool = () => {
                   </div>
                 ) : (
                   <div className="w-full mx-auto">
-                    <PoolItem liquidity={data} />
+                    <PoolItem liquidity={data} isFetching={isFetching} />
                   </div>
                 )}
               </>

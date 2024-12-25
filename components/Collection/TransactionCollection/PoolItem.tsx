@@ -20,7 +20,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
-const PoolItem = ({ liquidity }: any) => {
+const PoolItem = ({ liquidity, isFetching }: any) => {
   const { account, wallet, chainId, providers } = useContext(AccountContext);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
@@ -98,6 +98,8 @@ const PoolItem = ({ liquidity }: any) => {
     }
   };
 
+  console.log(liquidity);
+
   return (
     <div className="mb-4 text-white font-semibold text-sm">
       <p className="text-primary_400">Liquidity Pool:</p>
@@ -152,12 +154,20 @@ const PoolItem = ({ liquidity }: any) => {
       <div className="flex gap-x-2 whitespace-nowrap mt-4">
         <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
           <p className="font-normal text-primary_200">Reserve NFT</p>
-          <FormatNumber number={liquidity?.reserveNFT} />
+          {isFetching ? (
+            <div className="w-24 h-3 bg-slate-400/40 animate-pulse mt-2" />
+          ) : (
+            <FormatNumber number={liquidity?.reserveNFT} />
+          )}
         </div>
         <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">
           <p className="font-normal text-primary_200">Reserve Token</p>
           <div className="flex items-center gap-x-1">
-            <FormatNumber number={liquidity?.reserveToken} />
+            {isFetching ? (
+              <div className="w-20 h-3 bg-slate-400/40 animate-pulse mt-2" />
+            ) : (
+              <FormatNumber number={liquidity?.reserveToken} />
+            )}
             <EtherIcon width={16} height={16} />
           </div>
         </div>

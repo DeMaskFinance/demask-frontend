@@ -235,11 +235,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               Math.floor(dataTradingAdd.amountETHDecimals) === 0 ||
               isSufficientToken
             }
-            primary={
-              !isFetching &&
-              Math.floor(dataTradingAdd.amountETHDecimals) > 0 &&
-              !isSufficientToken
-            }
+            primary={!isFetching && !isSufficientToken}
             className="w-[144px] py-2"
             active={
               isFetching ||

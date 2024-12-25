@@ -18,7 +18,7 @@ import VersionTrade from "@/components/Common/VersionTrade";
 
 const TransactionCollection = () => {
   const [tab] = useQueryParam("tab", withDefault(StringParam, "buy"));
-  const { isEvent } = useContext(AccountContext);
+  const { isEvent, chainId } = useContext(AccountContext);
   const collectionAddress = (useRouter().query.erc as string) || "";
   const TABS = [
     {
@@ -61,6 +61,9 @@ const TransactionCollection = () => {
         queryClient.refetchQueries({ queryKey: ["detailCollection"] });
         queryClient.refetchQueries({ queryKey: ["historySwap"] });
         queryClient.refetchQueries({ queryKey: ["chart"] });
+        queryClient.refetchQueries({
+          queryKey: ["poolERC721", collectionAddress, chainId],
+        });
       },
     },
     {

@@ -33,6 +33,9 @@ export default function TradeDefault() {
   const handleChoicePercent = (choice: string) => {
     setActiveChoiceNFT(choice);
   };
+
+  console.log(contracts);
+
   return (
     <div className="relative px-4 h-[95vh] sm:h-[88vh] flex flex-col mx-auto items-center justify-center overflow-hidden">
       <div className="absolute top-0 -translate-x-1/2 left-1/2 -z-10">
@@ -51,7 +54,7 @@ export default function TradeDefault() {
                 />
               }
               contentTrade="Swap"
-              link={`/trade/erc1155/${contracts?.CREATED_NFT_ADDRESS}/${contracts?.WETH_ADDRESS}/${demask.IDNFT}`}
+              link={`/trade/erc721/${contracts?.CREATED_NFT_ADDRESS}`}
               refetch={router.refresh}
             />
           </div>

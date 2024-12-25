@@ -63,9 +63,9 @@ export default function Categories() {
       icon: <MusicIcon width={24} height={24} />,
     },
     {
-      key: "membership",
-      title: "MEMBERSHIP",
-      panel: () => <CategoryDetail label="Membership" />,
+      key: "memberships",
+      title: "MEMBERSHIPS",
+      panel: () => <CategoryDetail label="Memberships" />,
       icon: <MembershipIcon width={24} height={24} />,
     },
     {

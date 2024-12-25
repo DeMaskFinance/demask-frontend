@@ -96,6 +96,8 @@ const Sell = () => {
       image: data?.avatar,
     },
   };
+
+  console.log(data721Trading);
   return (
     <Fragment>
       {account ? (
@@ -115,70 +117,77 @@ const Sell = () => {
                     isFetching={isFetching721Trading}
                   />
                 )}
-                {!isApprovedNFT && contracts ? (
-                  <Button
-                    className="w-full py-4"
-                    primary
-                    onClick={() =>
-                      handleApproveNFT(
-                        account,
-                        wallet,
-                        collectionAddress,
-                        setIsOpenTransaction,
-                        contracts.ERC721_ROUTER_ADDRESS
-                      )
-                    }
-                  >
-                    Approve NFT
-                  </Button>
-                ) : (
-                  <Dialog open={isOpenSellNFT} onOpenChange={setIsOpenSellNFT}>
-                    <DialogTrigger asChild>
+                {data721Trading && data721Trading?.reserveToken > 0 && (
+                  <>
+                    {!isApprovedNFT && contracts ? (
                       <Button
-                        disabled={
-                          idNFT.length === 0 ||
-                          data721Trading?.minAmount === 0 ||
-                          isFetching721Trading
-                        }
-                        primary={
-                          idNFT.length !== 0 &&
-                          data721Trading?.minAmount !== 0 &&
-                          !isFetching721Trading
-                        }
                         className="w-full py-4"
-                        active={
-                          idNFT.length === 0 ||
-                          data721Trading?.minAmount === 0 ||
-                          isFetching721Trading
+                        primary
+                        onClick={() =>
+                          handleApproveNFT(
+                            account,
+                            wallet,
+                            collectionAddress,
+                            setIsOpenTransaction,
+                            contracts.ERC721_ROUTER_ADDRESS
+                          )
                         }
                       >
-                        SELL {idNFT.length} NFTs
+                        Approve NFT
                       </Button>
-                    </DialogTrigger>
-                    <DialogContent className="p-0 border-none ">
-                      {data721Trading && contracts && (
-                        <ModalSellNFT
-                          isOpenSellNFT={isOpenSellNFT}
-                          isOpenTransaction={isOpenTransaction}
-                          setIsOpenTransaction={setIsOpenTransaction}
-                          tokenAddress={contracts.WETH_ADDRESS}
-                          nftAddress={collectionAddress}
-                          idNFT={debouncedIdNFT}
-                          routerAddress={contracts.ERC721_ROUTER_ADDRESS}
-                          /* 
-          // @ts-ignore */
-                          data={dataFake}
-                          dataSell={data721Trading}
-                          setIsOpenSellNFT={setIsOpenSellNFT}
-                          inputNFT={""}
-                          setInputNFT={setIdNFT}
-                          setHash={setHash}
-                          setIsOpenSuccess={setIsOpenSuccessSell}
-                          setIsOpenError={setIsOpenErrorSell}
-                        />
-                      )}
-                    </DialogContent>
-                  </Dialog>
+                    ) : (
+                      <Dialog
+                        open={isOpenSellNFT}
+                        onOpenChange={setIsOpenSellNFT}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            disabled={
+                              idNFT.length === 0 ||
+                              data721Trading?.minAmount === 0 ||
+                              isFetching721Trading
+                            }
+                            primary={
+                              idNFT.length !== 0 &&
+                              data721Trading?.minAmount !== 0 &&
+                              !isFetching721Trading
+                            }
+                            className="w-full py-4"
+                            active={
+                              idNFT.length === 0 ||
+                              data721Trading?.minAmount === 0 ||
+                              isFetching721Trading
+                            }
+                          >
+                            SELL {idNFT.length} NFTs
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="p-0 border-none ">
+                          {data721Trading && contracts && (
+                            <ModalSellNFT
+                              isOpenSellNFT={isOpenSellNFT}
+                              isOpenTransaction={isOpenTransaction}
+                              setIsOpenTransaction={setIsOpenTransaction}
+                              tokenAddress={contracts.WETH_ADDRESS}
+                              nftAddress={collectionAddress}
+                              idNFT={debouncedIdNFT}
+                              routerAddress={contracts.ERC721_ROUTER_ADDRESS}
+                              /* 
+              // @ts-ignore */
+                              data={dataFake}
+                              dataSell={data721Trading}
+                              setIsOpenSellNFT={setIsOpenSellNFT}
+                              inputNFT={""}
+                              setInputNFT={setIdNFT}
+                              setHash={setHash}
+                              setIsOpenSuccess={setIsOpenSuccessSell}
+                              setIsOpenError={setIsOpenErrorSell}
+                            />
+                          )}
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                  </>
                 )}
               </div>
             </div>

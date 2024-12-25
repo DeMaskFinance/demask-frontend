@@ -25,7 +25,7 @@ const formatPercent = (number: string | number) => {
   }
 };
 // const ipfsGateway = "https://cf-ipfs.com/ipfs/";
-const ipfsGateway = "https://75312fa288680e10bcb38104802bf677.ipfscdn.io/ipfs/";
+const ipfsGateway = "https://ipfs-gw.demask.finance/ipfs/";
 const formatLinkIPFS = (link: string) => {
   return link?.replace("ipfs://", ipfsGateway);
 };

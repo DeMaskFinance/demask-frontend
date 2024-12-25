@@ -209,11 +209,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                       {dataTradingAdd && (
                         <Button
                           className="w-[126px] py-2 mx-auto whitespace-nowrap"
-                          primary={
-                            idNFT.length > 0 &&
-                            dataTradingAdd?.amountETHDecimals > 0 &&
-                            !isSufficientToken
-                          }
+                          primary={idNFT.length > 0 && !isSufficientToken}
                           active={
                             idNFT.length === 0 ||
                             dataTradingAdd?.amountETHDecimals === 0 ||

@@ -1,7 +1,10 @@
 import AccountContext from "@/context/AccountContext";
 import { Category } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
-import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import {
+  uploadFileIPFSCollection,
+  uploadFileIPFSMint,
+} from "@/libs/service/IPFSService";
 import { useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
@@ -20,6 +23,7 @@ import {
   UploadIcon,
   WebsiteIcon,
 } from "../Icons";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 
 interface EditCollectionProps {
   data: any;
@@ -34,6 +38,8 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   const imgCollection = useRef(null);
   const { account, chainId } = useContext(AccountContext);
   const [fileIPFS, setFileIPFS] = useState<any>(null);
+  const [fileIPFSFeature, setFileIPFSFeature] = useState<any>(null);
+
   const [fileType, setFileType] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const collectionAddress = useRouter().query.edit as string;
@@ -162,11 +168,14 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   };
   const queryClient = useQueryClient();
 
+  console.log(formatLinkIPFS(fileIPFSFeature));
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
       await collectionService.updateCollection(
         {
+          avatar: formatLinkIPFS(fileIPFS?.url),
+          featureImage: formatLinkIPFS(fileIPFSFeature),
           name: values.name,
           description: values.description,
           url: values.url,
@@ -185,20 +194,20 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
         collectionAddress,
         chainId
       );
-      if (selectedImage) {
-        await collectionService.uploadFileCollection({
-          featureImage: values.featureImage,
-          chainId,
-          collectionAddress,
-        });
-      }
-      if (selectedFile) {
-        await collectionService.uploadFileCollection({
-          avatar: values.avatar,
-          chainId,
-          collectionAddress,
-        });
-      }
+      // if (selectedImage) {
+      //   await collectionService.uploadFileCollection({
+      //     featureImage: values.featureImage,
+      //     chainId,
+      //     collectionAddress,
+      //   });
+      // }
+      // if (selectedFile) {
+      //   await collectionService.uploadFileCollection({
+      //     avatar: values.avatar,
+      //     chainId,
+      //     collectionAddress,
+      //   });
+      // }
       toast.success("Update Successed");
       queryClient.refetchQueries({ queryKey: ["detailCollection"] });
       setSelectedImage("");
@@ -359,12 +368,16 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   id="featureImage"
                   name="featureImage"
                   // value={values.featureImage}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     if (
                       event.target.files &&
                       event.target.files[0].size < 10485760
                     ) {
                       const file = event.target.files[0];
+                      const uriImage = await uploadFileIPFSMint(file);
+
+                      console.log(uriImage);
+                      setFileIPFSFeature(uriImage);
                       setSelectedImage(file);
                       setFieldValue("featureImage", file);
                     }
@@ -389,7 +402,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                           alt="selected image"
                           width={360}
                           height={360}
-                          className="object-cover w-40 rounded-lg mx-auto h-40 mb-4"
+                          className="object-cover w-full rounded-lg mx-auto h-40 mb-4"
                         />
                         <div
                           className="text-white absolute top-1 right-1 bg-shader_400 rounded-full p-1 text-xs font-bold cursor-pointer"
@@ -448,7 +461,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
 
                 {checkCollaborator ? (
                   <div>
-                    <div className="flex items-center">
+                    <div className="flex items-center relative">
                       <Field
                         type="text"
                         id="collaborator"
@@ -459,7 +472,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                         className="input_item"
                       />
                       <CgClose
-                        className="mb-4 text-xl transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
+                        className="mb-2 mx-2 text-xl text-white transition-colors duration-100 ease-linear cursor-pointer hover:text-red"
                         onClick={() => setCheckCollaborator(false)}
                       />
                     </div>

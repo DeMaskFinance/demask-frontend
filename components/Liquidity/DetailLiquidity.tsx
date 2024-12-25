@@ -39,6 +39,8 @@ import { Pagination } from "../Common/Pagination";
 import { TabGroups } from "../NavChoice";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
 import { toast } from "sonner";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import { MediaCollection } from "../Common/Media";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -172,6 +174,8 @@ const DetailLiquidity = () => {
       ) : isSuccess ? (
         <div>
           <Back />
+          <p className="text-white font-bold mb-4">{data?.collectionName}</p>
+
           <div className="flex flex-col-reverse gap-4 lg:flex-row">
             <div className="flex-auto">
               <div className="w-full overflow-x-scroll flex flex-col rounded-lg border border-shader_500 lg:overflow-visible bg-shader_800 min-h-[400px]">
@@ -223,7 +227,6 @@ const DetailLiquidity = () => {
                     {data?.collectionSymbol}/ETH
                   </p>
                 </div>
-
                 <div className="flex items-center gap-x-2">
                   {actions.map((action, index) => (
                     <Tippy
@@ -274,8 +277,11 @@ const DetailLiquidity = () => {
                   ))}
                 </div>
               </div>
+
               <div className="overflow-hidden rounded-xl">
-                <MediaNFT data={data?.collectionAvatar} isControls={true} />
+                <MediaCollection
+                  avatar={formatLinkIPFS(data?.collectionAvatar)}
+                />
               </div>
               <div className="w-full font-medium rounded-lg shadow-swiper gap-y-4">
                 {account && data?.metadata && (
@@ -285,7 +291,7 @@ const DetailLiquidity = () => {
                     </div>
                   </div>
                 )}
-                <div className="flex justify-between mb-3 text-shader_200">
+                <div className="flex justify-between mt-3 text-shader_200">
                   <p className="text-sm">Liquidity</p>
                   <div className="flex items-center font-bold text-white gap-x-1">
                     <FormatNumber

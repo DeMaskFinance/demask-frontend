@@ -144,6 +144,8 @@ export default function EditProfileForm({ image }: any) {
     }
   };
 
+  console.log(image.length > 0);
+
   return (
     <div>
       <Formik
@@ -236,9 +238,8 @@ export default function EditProfileForm({ image }: any) {
             <div className=" my-4">
               <Button
                 type="submit"
-                primary={dirty || image}
-                active={!dirty || !image}
-                disabled={!dirty || !image}
+                primary={dirty || image.length > 0}
+                disabled={!dirty && image.length < 0}
                 className="px-6 py-2"
                 isLoadingBtn={loading}
               >
