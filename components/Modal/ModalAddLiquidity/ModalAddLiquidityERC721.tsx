@@ -134,6 +134,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction
   );
 
+  console.log(inputToken.length <= 0);
+
   return (
     <Fragment>
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
@@ -205,26 +207,51 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     open={isOpenConfirmAddLiquidity}
                     onOpenChange={setIsOpenConfirmAddLiquidity}
                   >
-                    <DialogTrigger asChild>
-                      {dataTradingAdd && (
-                        <Button
-                          className="w-[126px] py-2 mx-auto whitespace-nowrap"
-                          primary={idNFT.length > 0 && !isSufficientToken}
-                          active={
-                            idNFT.length === 0 ||
-                            dataTradingAdd?.amountETHDecimals === 0 ||
-                            isSufficientToken
-                          }
-                          disabled={
-                            idNFT.length === 0 ||
-                            dataTradingAdd?.amountETHDecimals === 0 ||
-                            isSufficientToken
-                          }
-                        >
-                          Add Liquidity
-                        </Button>
-                      )}
-                    </DialogTrigger>
+                    {data?.dmlAddress === null ? (
+                      <DialogTrigger asChild>
+                        {dataTradingAdd && (
+                          <Button
+                            className="w-[126px] py-2 mx-auto whitespace-nowrap"
+                            primary={idNFT.length > 0 && !isSufficientToken}
+                            active={
+                              idNFT.length === 0 ||
+                              Math.floor(amountErcDesired) === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                            disabled={
+                              idNFT.length === 0 ||
+                              Math.floor(amountErcDesired) === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                          >
+                            Create pool
+                          </Button>
+                        )}
+                      </DialogTrigger>
+                    ) : (
+                      <DialogTrigger asChild>
+                        {dataTradingAdd && (
+                          <Button
+                            className="w-[126px] py-2 mx-auto whitespace-nowrap"
+                            primary={idNFT.length > 0 && !isSufficientToken}
+                            active={
+                              idNFT.length === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                            disabled={
+                              idNFT.length === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                          >
+                            Add Liquidity
+                          </Button>
+                        )}
+                      </DialogTrigger>
+                    )}
                     <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
                       {data && dataTradingAdd && (
                         <ModalConfirmAddLiquidityERC721

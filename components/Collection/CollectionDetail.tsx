@@ -83,7 +83,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
           <div className="flex gap-x-1">
             <div
               className={`relative rounded-full w-fit h-fit group ${
-                data?.collaborators.includes(account) && "cursor-pointer"
+                data?.collaborators.includes(account) && ""
               }`}
             >
               <div
@@ -94,7 +94,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               >
                 <MediaCollection avatar={formatLinkIPFS(data?.avatar)} />
               </div>
-              {data?.collaborators.includes(account) && (
+              {/* {data?.collaborators.includes(account) && (
                 <div>
                   {avatarLoading ? (
                     <div className="absolute top-0 bottom-0 z-10 flex items-center justify-center w-full h-full rounded-xl bg-slate-600/[.7]">
@@ -114,7 +114,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
             <div>
               <input

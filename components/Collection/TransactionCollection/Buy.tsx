@@ -120,20 +120,20 @@ const Buy = () => {
                 <DialogTrigger asChild>
                   <Button
                     disabled={
-                      idNFT.length === 0 ||
+                      idNFT.length <= 1 ||
                       isFetching ||
                       !isSufficientTokenBuy ||
                       data721Trading?.maxAmountDecimals === 0
                     }
                     primary={
-                      idNFT.length !== 0 &&
+                      idNFT.length > 1 &&
                       isSufficientTokenBuy &&
                       data721Trading?.maxAmountDecimals !== 0 &&
                       !isFetching
                     }
                     className="w-full py-4"
                     active={
-                      idNFT.length === 0 ||
+                      idNFT.length <= 1 ||
                       isFetching ||
                       !isSufficientTokenBuy ||
                       data721Trading?.maxAmountDecimals === 0

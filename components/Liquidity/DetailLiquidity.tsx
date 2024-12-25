@@ -132,24 +132,24 @@ const DetailLiquidity = () => {
   };
 
   const actions = [
-    {
-      icon: (
-        <PlusIcon
-          width={18}
-          height={18}
-          className="cursor-pointer text-primary_200"
-        />
-      ),
-      content: "Add Pool",
-      onClick: () => {
-        handleAddLiquidity();
-      },
-    },
-    {
-      icon: <RemoveIcon width={18} height={18} className="cursor-pointer " />,
-      content: "Remove Pool",
-      modal: true,
-    },
+    // {
+    //   icon: (
+    //     <PlusIcon
+    //       width={18}
+    //       height={18}
+    //       className="cursor-pointer text-primary_200"
+    //     />
+    //   ),
+    //   content: "Add Pool",
+    //   onClick: () => {
+    //     handleAddLiquidity();
+    //   },
+    // },
+    // {
+    //   icon: <RemoveIcon width={18} height={18} className="cursor-pointer " />,
+    //   content: "Remove Pool",
+    //   modal: true,
+    // },
     {
       icon: (
         <SwapIcon
@@ -159,7 +159,7 @@ const DetailLiquidity = () => {
         />
       ),
       content: "Swap",
-      link: `/trade/erc721/${data?.nftAddress}/${data?.tokenAddress}/${data?.nftID}`,
+      link: `/trade/erc721/${data?.nftAddress}`,
     },
   ];
   const closeModal = () => {
@@ -174,7 +174,16 @@ const DetailLiquidity = () => {
       ) : isSuccess ? (
         <div>
           <Back />
-          <p className="text-white font-bold mb-4">{data?.collectionName}</p>
+          <div className="flex mb-4 gap-2 justify-start items-center">
+            <div className="w-6 h-6 rounded-full">
+              <MediaCollection
+                avatar={formatLinkIPFS(data?.collectionAvatar)}
+              />
+            </div>
+            <p className="text-white text-2xl font-bold">
+              {data?.collectionName}
+            </p>
+          </div>
 
           <div className="flex flex-col-reverse gap-4 lg:flex-row">
             <div className="flex-auto">
@@ -228,7 +237,7 @@ const DetailLiquidity = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-x-2">
-                  {actions.map((action, index) => (
+                  {actions.map((action: any, index) => (
                     <Tippy
                       key={index}
                       content={<div className="text-xs">{action.content}</div>}
@@ -294,31 +303,10 @@ const DetailLiquidity = () => {
                 <div className="flex justify-between mt-3 text-shader_200">
                   <p className="text-sm">Liquidity</p>
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    <FormatNumber
-                      number={(data?.balanceDml / 1e18).toString()}
-                    />
+                    <FormatNumber number={(data?.balanceDml).toString()} />
                     <EtherIcon width={16} height={16} />({data?.dmlPercent}%)
                   </div>
                 </div>
-
-                {/* <div className="flex gap-x-2">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button active className="p-3">
-                        <EyeIcon width={20} height={20} />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-6xl p-0 border bg-shader_800 border-shader_500">
-                      {data && (
-                        <ModalDetail
-                          type="erc721"
-                          idNFT={data.nftID}
-                          nftAddress={data.nftAddress}
-                        />
-                      )}
-                    </DialogContent>
-                  </Dialog>
-                </div> */}
               </div>
             </div>
           </div>

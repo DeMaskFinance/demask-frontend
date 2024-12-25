@@ -98,8 +98,6 @@ const PoolItem = ({ liquidity, isFetching }: any) => {
     }
   };
 
-  console.log(liquidity);
-
   return (
     <div className="mb-4 text-white font-semibold text-sm">
       <p className="text-primary_400">Liquidity Pool:</p>
@@ -123,33 +121,36 @@ const PoolItem = ({ liquidity, isFetching }: any) => {
             />
           </DialogContent>
         </Dialog>
-        <Dialog
-          open={isOpenRemoveLiquididy}
-          onOpenChange={setIsOpenRemoveLiquididy}
-        >
-          <DialogTrigger asChild>
-            <Button red_2 className="w-full py-3 px-3 flex gap-x-2">
-              <TrashIcon className="text-red" width={20} height={20} />
-              Remove Liquidity
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-            {contracts && (
-              <ModalRemoveLiquidity
-                /* 
+
+        {liquidity?.reserveNFT > 0 && (
+          <Dialog
+            open={isOpenRemoveLiquididy}
+            onOpenChange={setIsOpenRemoveLiquididy}
+          >
+            <DialogTrigger asChild>
+              <Button red_2 className="w-full py-3 px-3 flex gap-x-2">
+                <TrashIcon className="text-red" width={20} height={20} />
+                Remove Liquidity
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+              {contracts && (
+                <ModalRemoveLiquidity
+                  /* 
          // @ts-ignore */
-                data={data}
-                routerAddress={contracts.WETH_ADDRESS}
-                routerAddress721={contracts.ERC721_ROUTER_ADDRESS}
-                type="erc721"
-                setHash={setHash}
-                setIsOpenSuccess={setIsOpenSuccessRemove}
-                setIsOpenError={setIsOpenErrorRemove}
-                closeModal={closeModal}
-              />
-            )}
-          </DialogContent>
-        </Dialog>
+                  data={data}
+                  routerAddress={contracts.WETH_ADDRESS}
+                  routerAddress721={contracts.ERC721_ROUTER_ADDRESS}
+                  type="erc721"
+                  setHash={setHash}
+                  setIsOpenSuccess={setIsOpenSuccessRemove}
+                  setIsOpenError={setIsOpenErrorRemove}
+                  closeModal={closeModal}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
       <div className="flex gap-x-2 whitespace-nowrap mt-4">
         <div className="p-3 font-semibold text-white rounded-lg bg-primary_500 bg-opacity-10 basis-1/2">

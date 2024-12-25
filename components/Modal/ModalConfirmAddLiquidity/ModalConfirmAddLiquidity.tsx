@@ -65,6 +65,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     chainId,
     version,
   ]);
+
   const addLiquidity = async () => {
     if (!account) {
       return;
@@ -208,7 +209,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                 isLoadingBtn={isFetching}
                 onClick={addLiquidity}
               >
-                Create Pool
+                Create Pool2
               </Button>
             </div>
           </div>

@@ -54,7 +54,7 @@ const Category = ({ label }: { label: string }) => {
                 ? "text-yellow"
                 : label === "Music"
                 ? "text-blue"
-                : label === "Membership"
+                : label === "Memberships"
                 ? "text-red"
                 : "text-white"
             } text-lg font-bold mb-3`}

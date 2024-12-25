@@ -33,7 +33,7 @@ export default function Categories() {
           <CategoryType label={"Gaming"} />
           <CategoryType label={"Film"} />
           <CategoryType label={"Music"} />
-          <CategoryType label={"Membership"} />
+          <CategoryType label={"Memberships"} />
           <CategoryType label={"Others"} />
         </div>
       ),

@@ -97,7 +97,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       try {
         setIsOpenTransaction(true);
 
-        if (allowce > dataTradingAdd.amountETHDecimals || Number(inputToken)) {
+        if (
+          allowce > (dataTradingAdd.amountETHDecimals || Number(inputToken))
+        ) {
           const result = await utilsStarknet.addLiquidity({
             contractAddress: contracts.ERC721_ROUTER_ADDRESS,
             token: contracts.WETH_ADDRESS,
@@ -223,7 +225,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
             <p className="text-primary_200">Total ETH</p>
             <div className="flex items-center font-bold text-white gap-x-1">
-              <FormatNumber number={dataTradingAdd.amountETH || 0} />
+              <FormatNumber number={dataTradingAdd.amountETH || inputToken} />
               <EtherIcon width={14} height={14} />
             </div>
           </div>
