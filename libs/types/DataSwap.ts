@@ -19,6 +19,7 @@ interface DataBase {
   symbol?: string;
   balanceDml?: number;
   totalSupplyDml?: number;
+  dmlPercent?: any;
 }
 interface BaseDataTrade {
   reserveToken: number;

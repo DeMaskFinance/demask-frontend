@@ -17,6 +17,7 @@ import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
 import utilsStarknet from "@/utils/utils.starknet";
+import { toast } from "sonner";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
@@ -140,16 +141,13 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             target: contracts?.ERC721_ROUTER_ADDRESS,
           });
           setHash(result?.transaction_hash as string);
-
-          if (result?.statusReceipt === "success") {
-            setIsOpenSuccess(true);
-          } else {
-            setIsOpenSuccess(false);
-          }
+          toast.success("Approve token successfully!");
         }
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);
+      } finally {
+        setIsOpenTransaction(false);
       }
     }
   };
