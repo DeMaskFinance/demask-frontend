@@ -283,7 +283,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                         wallet,
                         collectionAddress,
                         setIsOpenTransaction,
-                        contracts?.ERC721_ROUTER_ADDRESS || ""
+                        contracts?.ERC721_ROUTER_ADDRESS || "",
+                        setIsOpenAddLiquidity
                       )
                     }
                   >

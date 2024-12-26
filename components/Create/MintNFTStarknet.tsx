@@ -227,9 +227,13 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
               </div>
               <Button
                 type="submit"
-                primary={dirty && !isSubmitting}
-                active={!dirty || isSubmitting || !isValid}
-                disabled={!dirty || isSubmitting || !isValid}
+                primary={dirty && !isSubmitting && fileIPFS.length > 0}
+                active={
+                  !dirty || isSubmitting || !isValid || fileIPFS.length <= 0
+                }
+                disabled={
+                  !dirty || isSubmitting || !isValid || fileIPFS.length <= 0
+                }
                 className="px-6 py-2 cursor-pointer mt-4"
                 isLoadingBtn={isSubmitting}
               >

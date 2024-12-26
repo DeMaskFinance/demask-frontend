@@ -5,7 +5,8 @@ const handleApproveNFT = async (
   wallet: string,
   nftAddress: string,
   setIsOpenTransaction: any,
-  routerAddress: string
+  routerAddress: string,
+  setIsOpenAddLiquidity?: any
 ) => {
   if (account && wallet) {
     try {
@@ -15,8 +16,8 @@ const handleApproveNFT = async (
         operator: routerAddress,
       });
 
-      console.log(result);
       setIsOpenTransaction(false);
+      setIsOpenAddLiquidity(false);
     } catch (error) {
       console.error(error);
       setIsOpenTransaction(false);

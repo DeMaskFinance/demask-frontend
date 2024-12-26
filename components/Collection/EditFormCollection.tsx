@@ -361,7 +361,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                 <p className="mb-4 text-shader_200 text-sm font-normal">
                   This image will be used for featuring your collection on the
                   homepage, category pages, or other display areas of Demask.
-                  Recommended size: 500 x500px - Type: Png, Jpeg, Gif ( 50 MB)
+                  Recommended size: 500 x500px - Type: Png, Jpeg, Gif ( 5 MB)
                 </p>
                 <input
                   type="file"
@@ -371,7 +371,7 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                   onChange={async (event) => {
                     if (
                       event.target.files &&
-                      event.target.files[0].size < 10485760
+                      event.target.files[0].size < 1024 * 1024 * 5
                     ) {
                       const file = event.target.files[0];
                       const uriImage = await uploadFileIPFSMint(file);

@@ -134,6 +134,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
           className="absolute right-2 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
           onClick={() => {
             setSelectedFile("");
+            setFileIPFS("");
             itemRef.current?.classList.add("border");
           }}
         >
