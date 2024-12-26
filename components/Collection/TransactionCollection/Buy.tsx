@@ -42,6 +42,8 @@ const Buy = () => {
       return res;
     },
   });
+
+  console.log(data);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -120,20 +122,22 @@ const Buy = () => {
                 <DialogTrigger asChild>
                   <Button
                     disabled={
-                      idNFT.length <= 1 ||
+                      data?.reserveNFT === idNFT.length ||
+                      idNFT.length === 0 ||
                       isFetching ||
                       !isSufficientTokenBuy ||
                       data721Trading?.maxAmountDecimals === 0
                     }
                     primary={
-                      idNFT.length > 1 &&
+                      data?.reserveNFT !== idNFT.length &&
                       isSufficientTokenBuy &&
                       data721Trading?.maxAmountDecimals !== 0 &&
                       !isFetching
                     }
                     className="w-full py-4"
                     active={
-                      idNFT.length <= 1 ||
+                      data?.reserveNFT === idNFT.length ||
+                      idNFT.length === 0 ||
                       isFetching ||
                       !isSufficientTokenBuy ||
                       data721Trading?.maxAmountDecimals === 0
