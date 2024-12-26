@@ -5,14 +5,15 @@ const handleApproveDML = async (
   wallet: string,
   dmlAddress: string,
   setIsOpenTransaction: any,
-  routerAddress721: string
+  routerAddress721: string,
+  bigNumberBalance: any
 ) => {
   if (account && wallet) {
     try {
       setIsOpenTransaction(true);
       await utilsStarknet.approve({
         contractAddress: dmlAddress,
-        balance: String(1 * 1e18),
+        balance: bigNumberBalance || 1 * 1e18,
         target: routerAddress721,
       });
       setIsOpenTransaction(false);

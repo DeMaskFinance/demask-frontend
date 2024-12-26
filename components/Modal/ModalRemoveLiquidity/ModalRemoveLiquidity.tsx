@@ -18,6 +18,7 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import useInformationToken from "@/hooks/useInformationToken";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -107,8 +108,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     isOpenTransaction
   );
 
-  console.log(isApprovedLiquidity);
-
   useEffect(() => {
     if (
       dataTradingRemove?.balanceDml &&
@@ -148,6 +147,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setIsOpenConfirmRemoveLiquidity(true);
     }
   };
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
 
   const { data: data721, isSuccess } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
@@ -262,7 +262,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                           wallet,
                           data.dmlAddress,
                           setIsOpenTransaction,
-                          routerAddress721
+                          routerAddress721,
+                          bigNumberBalance
                         );
                       }}
                     >

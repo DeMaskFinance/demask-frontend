@@ -45,7 +45,6 @@ const useFileHandler = ({
       if (validInput.includes(fileType)) {
         try {
           if (file.size < 52428800) {
-            console.log(123);
             const fileURL = URL.createObjectURL(file);
             setFileType(fileType);
             setSelectedFile(fileURL);

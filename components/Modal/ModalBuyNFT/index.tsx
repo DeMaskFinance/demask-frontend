@@ -290,7 +290,8 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                   wallet,
                   contracts?.WETH_ADDRESS || "",
                   setIsOpenTransaction,
-                  routerAddress
+                  routerAddress,
+                  bigNumberBalance
                 );
               }}
               primary

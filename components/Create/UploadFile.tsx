@@ -120,7 +120,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
             />
             <div className="text-sm w-[254px] text-shader_200 mb-6 transition-all duration-200 mt-2">
               File types: JPG,PNG,SVG or GIF
-              <p className="">Max size: 50MB.</p>
+              <p className="">Max size: 5MB.</p>
             </div>
             <Button active>
               <UploadIcon />

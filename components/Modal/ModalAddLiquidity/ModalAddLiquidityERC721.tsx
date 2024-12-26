@@ -134,8 +134,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     isOpenTransaction
   );
 
-  console.log(inputToken.length <= 0);
-
   return (
     <Fragment>
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">

@@ -15,6 +15,7 @@ import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
 import utilsStarknet from "@/utils/utils.starknet";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
+import useInformationToken from "@/hooks/useInformationToken";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
   dataTradingRemove: DataRemove;
@@ -58,7 +59,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     useState<boolean>(false);
   const [isApprovedLiquidity, setIsApprovedLiquidity] =
     useState<boolean>(false);
-  const { account, wallet, slippage, providers } = useContext(AccountContext);
+  const { account, wallet, slippage, providers, chainId } =
+    useContext(AccountContext);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const currentAllowance = useAllowanceDML(
@@ -146,6 +148,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     document.body.style.overflowY = "auto";
     setIsOpenConfirmRemoveLiquidity(false);
   };
+
+  const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
+
   return (
     <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
       <div className="container_modal">
@@ -201,7 +206,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                     wallet,
                     data.dmlAddress,
                     setIsOpenTransaction,
-                    routerAddress
+                    routerAddress,
+                    bigNumberBalance
                   );
                 }}
               >
