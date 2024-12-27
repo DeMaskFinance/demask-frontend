@@ -22,43 +22,6 @@ const NONE_NAME = "Untitled";
 
 const PREVENT_ANCHOR = "preventAnchor";
 
-const ENVINROMENTS = {
-  main_openmark: {
-    API: "https://api.openmark.io",
-    ASSETS: "https://assets.openmark.io",
-    rpcUrls: "https://fraa-flashbox-2787-rpc.a.stagenet.tanssi.network",
-    STUDIO: "https://studio.openmark.io",
-  },
-
-  dev_openmark: {
-    API: "https://test-api.openmark.io",
-    ASSETS: "https://test-assets.openmark.io",
-    rpcUrls: "https://fraa-flashbox-2787-rpc.a.stagenet.tanssi.network",
-    STUDIO: "https://test-api.openmark.io",
-  },
-
-  main_starknet: {
-    API: "https://starknet-sepolia-api.openmark.io",
-    ASSETS: "https://starknet-sepolia-assets.openmark.io",
-    rpcUrls: "https://starknet-sepolia.public.blastapi.io/rpc/v0_7",
-    STUDIO: "https://test-api.openmark.io",
-  },
-
-  testnet_nibiru: {
-    API: "https://nibiru-testnet-api.openmark.io",
-    ASSETS: "https://nibiru-testnet-assets.openmark.io",
-    rpcUrls: "https://evm-rpc.testnet-1.nibiru.fi",
-    STUDIO: "https://studio.openmark.io",
-  },
-
-  dev_nibiru: {
-    API: "https://test-api.openmark.io",
-    ASSETS: "https://test-assets.openmark.io",
-    rpcUrls: "https://evm-rpc.testnet-1.nibiru.fi",
-    STUDIO: "https://test-api.openmark.io",
-  },
-};
-
 const NFT_NAME = (name?: string, tokenId?: string) => {
   return name || `#${tokenId}`;
 };
@@ -105,7 +68,6 @@ export default {
   FAILED_PLACEHOLDER,
   NONE_NAME,
   PREVENT_ANCHOR,
-  ENVINROMENTS,
 
   // callback
   NFT_NAME,

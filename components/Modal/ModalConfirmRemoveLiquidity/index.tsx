@@ -207,7 +207,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                     data.dmlAddress,
                     setIsOpenTransaction,
                     routerAddress,
-                    bigNumberBalance
+                    bigNumberBalance,
+                    () => closeModal()
                   );
                 }}
               >

@@ -17,7 +17,6 @@ const handleApproveNFT = async (
       });
 
       setIsOpenTransaction(false);
-      setIsOpenAddLiquidity(false);
     } catch (error) {
       console.error(error);
       setIsOpenTransaction(false);

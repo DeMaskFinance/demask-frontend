@@ -140,6 +140,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             balance: String(1 * 1e18),
             target: contracts?.ERC721_ROUTER_ADDRESS,
           });
+
+          setIsOpenConfirmAddLiquidity(false);
           setHash(result?.transaction_hash as string);
           toast.success("Approve token successfully!");
         }
@@ -245,7 +247,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             onClick={addLiquidity}
           >
             {allowce > Number(inputToken) * 1e18
-              ? "Add Liduidity"
+              ? "Add Liquidity"
               : "Approve token"}
             {isFetching && (
               <BiLoaderAlt className="ml-1 text-white animate-spin" />
