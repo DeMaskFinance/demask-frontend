@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { WarningIcon } from "../../Icons";
 import Wrapper from "../Wrapper";
 
-interface WrongNetworkProps {}
+interface WrongNetworkProps { }
 const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
   const {

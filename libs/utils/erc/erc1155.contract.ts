@@ -4,6 +4,7 @@ import ercContract from "./erc.contract";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiFactory from "@/abi/abiFactory.json";
 import { exponentialToDecimal } from "../convertExponential";
+import BigNumber from "bignumber.js";
 //DML ADDRESS
 const allowanceDML = async (
   account: string,
@@ -175,31 +176,54 @@ const addERC20ERC1155 = async (
   txDeadline: number,
   valueToSend: string | 0
 ) => {
-  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-  const estimatedGas = await contract.estimateGas.addERC20ERC1155(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    exponentialToDecimal(Math.floor(amountErcDesired)),
-    inputNFT,
-    0,
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { value: valueToSend }
-  );
-  const result = await contract.addERC20ERC1155(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    exponentialToDecimal(Math.floor(amountErcDesired)),
-    inputNFT,
-    0,
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { gasLimit: estimatedGas, value: valueToSend }
-  );
-  return result;
+  try {
+    const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
+
+    console.log(
+      "Converted Amount:",
+      exponentialToDecimal(Math.floor(amountErcDesired))
+    );
+
+    // const estimatedGas = await contract.estimateGas.addERC20ERC1155(
+    //   tokenAddress,
+    //   nftAddress,
+    //   idNFT,
+    //   exponentialToDecimal(Math.floor(amountErcDesired)),
+    //   inputNFT,
+    //   0,
+    //   account,
+    //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    //   { value: valueToSend }
+    // );
+
+    console.log(
+      tokenAddress,
+      nftAddress,
+      idNFT,
+      exponentialToDecimal(Math.floor(amountErcDesired)),
+      inputNFT,
+      0,
+      account,
+      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
+    );
+
+    const result = await contract.addERC20ERC1155(
+      tokenAddress,
+      nftAddress,
+      idNFT,
+      BigNumber(exponentialToDecimal(Math.floor(amountErcDesired))).toFixed(),
+      inputNFT,
+      0,
+      account,
+      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+      { gasLimit: 50000000, value: BigNumber(valueToSend || 0).toFixed() }
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 };
+
 const erc1155Contract = {
   allowanceDML,
   getBalanceNFT,
@@ -209,4 +233,5 @@ const erc1155Contract = {
   addERC20ERC1155,
   sellERC20ERC1155,
 };
+
 export default erc1155Contract;

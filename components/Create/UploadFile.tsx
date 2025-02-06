@@ -1,12 +1,11 @@
 import useFileHandler from "@/hooks/useFileHandler";
 import { validCollectionInput, validNFTsInput } from "@/libs/constants";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import Image from "next/image";
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { Button } from "../Buttons";
 import { CreateIcon, DeployIcon, UploadIcon } from "../Icons";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
-
 const UploadFileNFT: React.FC<UploadFileProps> = ({
   setFileIPFS,
   setFileType,
@@ -121,7 +120,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
             />
             <div className="text-sm w-[254px] text-shader_200 mb-6 transition-all duration-200 mt-2">
               File types: JPG,PNG,SVG or GIF
-              <p className="">Max size: 50MB.</p>
+              <p className="">Max size: 5MB.</p>
             </div>
             <Button active>
               <UploadIcon />
@@ -135,6 +134,7 @@ const UploadFileNFT: React.FC<UploadFileProps> = ({
           className="absolute right-2 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
           onClick={() => {
             setSelectedFile("");
+            setFileIPFS("");
             itemRef.current?.classList.add("border");
           }}
         >
@@ -199,7 +199,7 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
               quality={100}
               className="object-cover w-full h-full rounded-2xl aspect-square"
             />
-            {selectedFile && (
+            {/* {selectedFile && (
               <button
                 className="absolute right-2 z-100 top-2 w-[28px] h-[28px] rounded-full text-white bg-black flex items-center justify-center cursor-pointer"
                 onClick={(e) => {
@@ -210,7 +210,7 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
               >
                 <CgClose />
               </button>
-            )}
+            )} */}
           </div>
         ) : values.avatar ? (
           <div className="relative w-40 h-40">
@@ -260,4 +260,4 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
     </div>
   );
 };
-export { UploadFileNFT, UploadFileCollection };
+export { UploadFileCollection, UploadFileNFT };

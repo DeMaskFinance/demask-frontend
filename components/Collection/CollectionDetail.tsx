@@ -90,15 +90,13 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
         <div className="text-xs ">
           <div className="flex gap-x-1">
             <div
-              className={`relative rounded-full w-fit h-fit group ${
-                data?.collaborators.includes(account) && "cursor-pointer"
-              }`}
+              className={`relative rounded-full w-fit h-fit group ${data?.collaborators.includes(account) && "cursor-pointer"
+                }`}
             >
               <div
-                className={` w-16 h-16 rounded-xl overflow-hidden ${
-                  data?.collaborators.includes(account) &&
+                className={` w-16 h-16 rounded-xl overflow-hidden ${data?.collaborators.includes(account) &&
                   "group-hover:brightness-[0.8]"
-                }`}
+                  }`}
               >
                 <MediaCollection avatar={formatLinkIPFS(data?.avatar)} />
               </div>
@@ -200,7 +198,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             </div>
           </div>
           <div className="">
-            <ShowMoreText
+            {/* <ShowMoreText
               lines={1}
               more="See more"
               less="See less"
@@ -210,7 +208,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               truncatedEndingComponent={"... "}
             >
               {data?.description}
-            </ShowMoreText>
+            </ShowMoreText> */}
             <div className="flex items-center gap-x-2 mb-2">
               {data?.collaborators.includes(account) && (
                 <Link href={`/edit/${collectionAddress}`}>

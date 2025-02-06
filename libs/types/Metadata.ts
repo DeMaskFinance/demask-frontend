@@ -29,7 +29,7 @@ interface UploadFileProps {
   selectedFile: string | null;
   setFileType: React.Dispatch<React.SetStateAction<string>>;
   setSelectedFile: React.Dispatch<React.SetStateAction<string>>;
-  uploadFile: (file: File) => Promise<string>;
+  uploadFile: (file: File) => Promise<string> | any;
 }
 interface ModalDetailProps {
   type: string;

@@ -1,16 +1,14 @@
 import Back from "@/components/Common/Back";
 import WithAuth from "@/components/Common/WithAuth";
+import { MintNFTEVM } from "@/components/Create";
 import { UploadFileNFT } from "@/components/Create/UploadFile";
+import AccountContext from "@/context/AccountContext";
+import { collectionListUser } from "@/libs/service/collectionService";
 import { uploadFileIPFSMint } from "@/libs/service/IPFSService";
+import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useContext, useState } from "react";
 import { SEO } from "../../next-seo.config";
-import AccountContext from "@/context/AccountContext";
-import { starknet } from "@/libs/constants";
-import { MintNFTEVM } from "@/components/Create";
-import MintNFTStarknet from "@/components/Create/MintNFTStarknet";
-import { useQuery } from "@tanstack/react-query";
-import { collectionListUser } from "@/libs/service/collectionService";
 
 const updateMeta = {
   ...SEO,
@@ -30,6 +28,7 @@ export default function Creator() {
     },
     enabled: !!account,
   });
+
 
   return (
     <>
@@ -60,23 +59,13 @@ export default function Creator() {
             </div>
             {isSuccess && (
               <div className="w-full lg:w-2/4 md:w-2/4">
-                {chainId === starknet.StarknetChainId.SN_SEPOLIA ? (
-                  <MintNFTStarknet
-                    data={data}
-                    fileIPFS={fileIPFS}
-                    setFileIPFS={setFileIPFS}
-                    fileType={fileType}
-                    setSelectedFile={setSelectedFile}
-                  />
-                ) : (
-                  <MintNFTEVM
-                    data={data}
-                    fileIPFS={fileIPFS}
-                    setFileIPFS={setFileIPFS}
-                    fileType={fileType}
-                    setSelectedFile={setSelectedFile}
-                  />
-                )}
+                <MintNFTEVM
+                  data={data}
+                  fileIPFS={fileIPFS}
+                  setFileIPFS={setFileIPFS}
+                  fileType={fileType}
+                  setSelectedFile={setSelectedFile}
+                />
               </div>
             )}
           </div>

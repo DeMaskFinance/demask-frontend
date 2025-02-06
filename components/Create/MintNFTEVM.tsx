@@ -72,6 +72,7 @@ export default function MintNFTEVM({
       setCheckExit(false);
     }
   }, [name, symbol, description, fileIPFS, totalSupply]);
+  console.log(collection)
 
   usePreventUserFromErasingContent(checkExit);
   const handleChangeAttributeType = (
@@ -122,6 +123,7 @@ export default function MintNFTEVM({
     const updatedItems = attributeItems.filter((item) => item.id !== id);
     setAttributeItems(updatedItems);
   };
+
   async function mintNFT({ amount, url }: mintProps) {
     const ethereum = (window as any).ethereum;
     let transactionHash = "";

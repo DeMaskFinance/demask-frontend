@@ -1,46 +1,13 @@
-import { TabGroups } from "@/components/NavChoice";
 import Link from "next/link";
-import React, { useContext, useMemo, useState } from "react";
+import React from "react";
 import { CgClose } from "react-icons/cg";
 import EVMWallet from "./EVMWallet";
-import StarknetWallet from "./StarknetWallet";
-import { network } from "@/libs/constants";
-import AccountContext from "@/context/AccountContext";
 
 interface ModalWalletProps {
   isAuthen?: true;
 }
 
 const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
-  const { chainId } = useContext(AccountContext);
-  const currentNetwork = useMemo(() => {
-    return network.find((net) => net.chain === chainId);
-  }, [chainId, network]);
-
-  const [activeChoice, setActiveChoice] = useState<string>(
-    currentNetwork?.type || "All"
-  );
-  const handleChoiceChange = (choice: string) => {
-    setActiveChoice(choice);
-  };
-  const WalletOption = () => {
-    switch (activeChoice) {
-      case "All":
-        return (
-          <div>
-            <EVMWallet />
-            <StarknetWallet />
-          </div>
-        );
-      case "EVM":
-        return <EVMWallet />;
-      case "Starknet":
-        return <StarknetWallet />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className=" h-fit bg_main w-[350px]  text-shader_200  rounded-lg relative p-4">
       <div className="flex items-center justify-between">
@@ -49,14 +16,9 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
       <p className="mt-1 text-sm">
         If you don't have a wallet, you can create one now.
       </p>
-      <div className="my-4">
-        <TabGroups
-          choices={["All", "EVM", "Starknet"]}
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-        />
-      </div>
-      {WalletOption()}
+
+      <EVMWallet />
+
 
       {isAuthen && (
         <Link href="/trade" className="text-white absolute top-4 right-4">

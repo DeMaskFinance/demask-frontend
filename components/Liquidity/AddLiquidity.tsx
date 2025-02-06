@@ -76,6 +76,8 @@ export default function AddLiquidity() {
     wallet,
     chainId
   );
+
+  console.log(currency)
   let inputNFTValue = useDebounce(inputNFT, 1000);
   useEffect(() => {
     if (currency) {
@@ -101,6 +103,7 @@ export default function AddLiquidity() {
       return res;
     },
   });
+
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
       queryKey: [
@@ -142,6 +145,7 @@ export default function AddLiquidity() {
     wallet,
     isOpenTransaction
   );
+
 
   useEffect(() => {
     let amountErcDesired;

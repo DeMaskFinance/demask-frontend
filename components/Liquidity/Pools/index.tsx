@@ -6,10 +6,10 @@ import AccountContext from "@/context/AccountContext";
 import { queryClient } from "@/libs/constants";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import SwipeableViews from "react-swipeable-views";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import TotalPools from "./TotalPools";
 import UserPools from "./UserPools";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+
 const Pools = () => {
   const [index, setIndex] = useState<number>(0);
   const { chainId, demask, account } = useContext(AccountContext);
@@ -21,6 +21,8 @@ const Pools = () => {
     version,
   ]);
 
+  console.log(contracts);
+
   const router = useRouter();
 
   const handleAddLiquidity = () => {
@@ -29,6 +31,7 @@ const Pools = () => {
     const idNFT = demask.IDNFT;
     router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
   };
+
   const handleChangeIndex = (index: number) => {
     setIndex(index);
   };
@@ -45,14 +48,14 @@ const Pools = () => {
           </div>
           <p className="mt-2 text-shader_200">Add liquidity and earn rewards</p>
         </div>
-        <Button
+        {/* <Button
           type="button"
           primary
           className="h-[34px] w-[130px] text-sm font-semibold"
           onClick={handleAddLiquidity}
         >
           + Add Liquidity
-        </Button>
+        </Button> */}
       </div>
       {account && <PoolUser />}
       <div className="flex gap-x-2">
@@ -75,10 +78,8 @@ const Pools = () => {
           My Positions
         </Button>
       </div>
-      <SwipeableViews index={index} onChangeIndex={handleChangeIndex}>
-        <TotalPools />
-        <UserPools />
-      </SwipeableViews>
+
+      {index === 0 ? <TotalPools /> : <UserPools />}
     </div>
   );
 };

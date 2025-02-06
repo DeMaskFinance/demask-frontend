@@ -34,7 +34,7 @@ import Search from "../Search/SearchHeader";
 import useInformationToken from "@/hooks/useInformationToken";
 
 export default function Header() {
-  const { account, updateAccount, wallet, isEvent, setIsEvent, chainId } =
+  const { account, updateAccount, wallet, isEvent, setIsEvent, chainId, demask } =
     useContext(AccountContext);
   const { isLoggedIn, profile } = useSelector(selectProfile);
   const { isLoadingBalance, balanceToken } = useInformationToken(
@@ -42,6 +42,8 @@ export default function Header() {
     wallet,
     chainId
   );
+
+  console.log(demask)
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);
 
@@ -77,7 +79,7 @@ export default function Header() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
-      {isEvent && (
+      {/* {isEvent && (
         <div className="relative">
           <a
             href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
@@ -106,7 +108,7 @@ export default function Header() {
             <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
           </button>
         </div>
-      )}
+      )} */}
 
       <header className="text-shader_200 w-screen h-header flex md:gap-x-28 3xl:gap-x-[500px] border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
@@ -133,9 +135,8 @@ export default function Header() {
               setShowSearch(false);
               document.body.style.overflowY = "auto";
             }}
-            className={`${
-              showSearch ? "block" : "hidden"
-            } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
+            className={`${showSearch ? "block" : "hidden"
+              } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
           <div className="flex items-center gap-x-2">
             <Button
@@ -149,9 +150,8 @@ export default function Header() {
             </Button>
 
             <div
-              className={`${
-                showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
-              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
+              className={`${showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
+                } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
                 <Search handleFocus={handleFocus} />

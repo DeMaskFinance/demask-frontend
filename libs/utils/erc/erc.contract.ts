@@ -91,7 +91,9 @@ const fillCreate = async (
   if (account && wallet) {
     const contract = await ercContract.erc(wallet, collection, abiCollection);
     try {
-      const result = await contract.fillCreate(id, name, symbol);
+      const result = await contract.fillCreate(id, name, symbol, {
+        gasLimit: 5000000,
+      });
       return result;
     } catch (error) {
       console.error(error);

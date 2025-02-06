@@ -44,6 +44,14 @@ const SEPOLIA_DEMASK = {
   NAME: "Sepolia Testnet",
   CURRENCY: "ETH",
 };
+
+const MONAD_DEMASK = {
+  urltxHash: "https://explorer.monad-testnet.category.xyz/",
+  chainName: "Monad Testnet",
+  NAME: "Monad Testnet",
+  CURRENCY: "MON",
+};
+
 const STARKNET_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
   urltxHash: "https://sepolia.voyager.online/",
@@ -64,7 +72,6 @@ export const starknet = {
     SN_MAIN: "0x534e5f4d41494e",
   },
 };
-const PORT = process.env.NEXT_PUBLIC_APP_PORT;
 
 let network: NetworkItem[] = [
   {
@@ -73,18 +80,12 @@ let network: NetworkItem[] = [
     chain: "11155111",
     type: "EVM",
   },
+
   {
-    name: "Starknet Devnet",
-    logo: StarknetIcon,
-    chain: starknet.StarknetChainId.SN_SEPOLIA,
-    type: "Starknet",
-  },
-  {
-    name: "Monad Devnet",
+    name: "Monad Testnet",
     logo: MonadIcon,
-    chain: "1",
+    chain: "10143",
     type: "EVM",
-    disable: true,
   },
 ];
 
@@ -116,6 +117,7 @@ const mediaType = {
   audio: [".mp3", ".mpeg", ".aiff", ".x-m4a", ".vnd.wav", ".vnd.wave", "mpga"],
   pdf: [".application/pdf"],
 };
+
 let validNFTsInput = [
   "video/mp4",
   "video/x-msvideo",
@@ -139,6 +141,7 @@ let validNFTsInput = [
   "image/svg+xml",
   "image/tiff",
 ];
+
 let validCollectionInput = [
   "image/jpg",
   "image/jpeg",
@@ -187,4 +190,5 @@ export {
   validNFTsInput,
   version,
   STARKNET_DEMASK,
+  MONAD_DEMASK,
 };

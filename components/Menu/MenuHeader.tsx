@@ -53,11 +53,10 @@ const MenuHeader = () => {
                         {item.subMenu.map((item) => (
                           <ActiveLink href={item.url} key={item.id}>
                             <li
-                              className={`item_menu ${
-                                router.asPath.startsWith(item.url)
+                              className={`item_menu ${router.asPath.startsWith(item.url)
                                   ? "bg-shader_500"
                                   : ""
-                              }`}
+                                }`}
                             >
                               {item.name}
                             </li>
@@ -69,11 +68,10 @@ const MenuHeader = () => {
                 >
                   <Link
                     href={`${item.url}`}
-                    className={`flex items-center gap-x-1  ${
-                      isMatchingUrl &&
+                    className={`flex items-center gap-x-1  ${isMatchingUrl &&
                       item.subMenu === subMenuRewards &&
                       "text-primary_400 hover:text-primary_400  active:text-primary_400"
-                    }`}
+                      }`}
                   >
                     {item.icon}
                     {item.name}

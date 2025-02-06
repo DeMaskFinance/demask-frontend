@@ -3,7 +3,6 @@ import { Category, queryClient, starknet } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
 import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
 import ercContract from "@/libs/utils/erc/erc.contract";
-import { deployContract } from "@/libs/utils/starknet/deployContract";
 import { SEO } from "@/next-seo.config";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { NextSeo } from "next-seo";
@@ -16,8 +15,6 @@ import WithAuth from "../Common/WithAuth";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
-import { starknetContract } from "@/libs/utils/starknet/contract";
-import { RpcProvider, WalletAccount } from "starknet";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -63,8 +60,10 @@ const DeployCollection = () => {
     }
     setFieldValue("category", updatedCategories);
   };
+
   const handleEVMTransaction = async (values: any) => {
     if (!contracts) return null;
+
 
     const res = await ercContract.fillCreate(
       values.contractName,
@@ -75,25 +74,12 @@ const DeployCollection = () => {
       wallet
     );
 
-    setHash(res.hash);
+    setHash(res?.hash);
     await res.wait();
 
     return res;
   };
-  const handleStarknetTransaction = async (values: InitialValues) => {
-    const res = await deployContract.deployContractCollection(
-      account,
-      wallet,
-      values,
-      fileIPFS.nonce
-    );
-    if (res) {
-      // @ts-ignore
-      setHash(res.value.transaction_hash);
-    }
 
-    return res;
-  };
   const checkTransactionStatus = async (res: any) => {
     if (!res) return;
 
@@ -104,30 +90,7 @@ const DeployCollection = () => {
 
     setIsOpenSuccess(status === "SUCCEEDED" || status === 1);
   };
-  const testBravos = async () => {
-    console.log(wallet, 123);
 
-    // const swo = window.starknet_braavos;
-    // console.log("swo", swo);
-    // const myProvider = new RpcProvider({
-    //   nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
-    // });
-    // const wa = new WalletAccount(myProvider, swo);
-    // console.log("wa", wa);
-    // console.log(await wa.getChainId());
-
-    // const res = await starknetContract.getWalletAccount(wallet);
-    // const res1 = await deployContract.deployContractCollection(
-    //   account,
-    //   wallet,
-    //   [{}],
-    //   123
-    // );
-    // console.log({
-    //   res,
-    //   res1,
-    // });
-  };
   const onSubmit = async (
     values: InitialValues,
     { resetForm }: FormikHelpers<any>
@@ -139,11 +102,8 @@ const DeployCollection = () => {
         description: values.description,
       });
       let res;
-      if (chainId !== starknet.StarknetChainId.SN_SEPOLIA) {
-        res = await handleEVMTransaction(values);
-      } else {
-        res = await handleStarknetTransaction(values);
-      }
+      res = await handleEVMTransaction(values);
+
       await checkTransactionStatus(res);
       setIsProcess(false);
       resetForm();
@@ -174,6 +134,10 @@ const DeployCollection = () => {
                   : "ERC-1155"}{" "}
                 contract to create your NFT collection
               </h3>
+
+              <div>123
+
+              </div>
               <p className="mt-2 mb-4 text-xs text-primary_400">
                 * Required fields
               </p>
@@ -255,11 +219,10 @@ const DeployCollection = () => {
                           type="button"
                           name="category"
                           id="category"
-                          className={`px-2 py-1 mb-4 mr-4 text-sm h-[34px] font-semibold text-white border-shader_500  border rounded-lg cursor-pointer ${
-                            values.category.includes(item.value)
-                              ? "bg-primary_500 "
-                              : "bg-shader_700"
-                          }`}
+                          className={`px-2 py-1 mb-4 mr-4 text-sm h-[34px] font-semibold text-white border-shader_500  border rounded-lg cursor-pointer ${values.category.includes(item.value)
+                            ? "bg-primary_500 "
+                            : "bg-shader_700"
+                            }`}
                           key={item.id}
                           value={item.value}
                           onClick={() =>
