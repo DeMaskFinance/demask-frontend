@@ -58,7 +58,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     const { demask, account, wallet, slippage, txDeadline, chainId } =
       useContext(AccountContext);
     const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-    const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+    const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
     const contracts = queryClient.getQueryData<ContractAddresses>([
       "contracts",
@@ -197,7 +197,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                   </p>
                 )}
                 <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-                  <p className="text-primary_200">Total ETH</p>
+                  <p className="text-primary_200">Total MON</p>
                   <div className="flex items-center font-bold text-white gap-x-1">
                     <FormatNumber
                       number={divideByDecimal(amountErcDesired, "18")}

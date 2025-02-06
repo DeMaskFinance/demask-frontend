@@ -32,7 +32,7 @@ const Sell = () => {
   const [hash, setHash] = useState<string>("");
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: [
       "collectionNFTSell",

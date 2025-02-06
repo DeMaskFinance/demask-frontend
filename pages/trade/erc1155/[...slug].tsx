@@ -22,21 +22,25 @@ const Swap: React.FC = () => {
   const [idNFT, setIdNFT] = useState<string>("");
   const { chainId } = useContext(AccountContext);
   const { slug } = router.query;
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
     queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress, version],
     queryFn: async () => {
-      const res = await getMetadata(
-        chainId,
-        nftAddress.toLowerCase(),
-        idNFT,
-        tokenAddress,
-        version
-      );
-      return res;
+      if (slug) {
+        const res = await getMetadata(
+          chainId,
+          slug[0]?.toLowerCase(),
+          idNFT,
+          tokenAddress,
+          version
+        );
+        return res;
+      }
     },
   });
+
+
 
   useEffect(() => {
     if (slug) {

@@ -33,7 +33,7 @@ const Buy = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const debouncedIdNFT = useDebounce(idNFT, 1500);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],

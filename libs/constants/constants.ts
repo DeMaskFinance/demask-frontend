@@ -18,17 +18,17 @@ const tokenStarknet = [
     symbol: "STRK",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
     logo: StarknetIcon,
-    symbolNative: "ETH",
+    symbolNative: "MON",
   },
 ];
 
 const tokenSepolia = [
   {
     name: "Sepolia Testnet",
-    symbol: "ETH",
+    symbol: "MON",
     address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_SEPOLIA,
     logo: EtherIcon,
-    symbolNative: "ETH",
+    symbolNative: "MON",
   },
 ];
 const activeNFTPercent = [
@@ -42,7 +42,7 @@ const SEPOLIA_DEMASK = {
   urltxHash: "https://sepolia.etherscan.io/",
   chainName: "Sepolia Testnet",
   NAME: "Sepolia Testnet",
-  CURRENCY: "ETH",
+  CURRENCY: "MON",
 };
 
 const MONAD_DEMASK = {
@@ -57,7 +57,7 @@ const STARKNET_DEMASK = {
   urltxHash: "https://sepolia.voyager.online/",
   chainName: "Starknet Devnet",
   NAME: "Starknet Devnet",
-  CURRENCY: "ETH",
+  CURRENCY: "MON",
 };
 export const starknet = {
   addrETH: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",

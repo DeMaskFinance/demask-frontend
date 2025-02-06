@@ -4,6 +4,20 @@ export const EtherIcon: React.FunctionComponent<IconProps> = ({
   height,
 }) => {
   return (
+    // <svg
+    //   xmlns="http://www.w3.org/2000/svg"
+    //   className={className}
+    //   width={width}
+    //   height={height}
+    //   viewBox="0 0 24 24"
+    //   fill="none"
+    // >
+    //   <circle cx="12" cy="12" r="12" fill="#7583FE" />
+    //   <path
+    //     d="M11.9547 16.4775L6 13.215L11.9539 21L17.9135 13.215L11.9523 16.4775H11.9547ZM12.0453 3L6.08895 12.1672L12.0445 15.4327L18 12.1702L12.0453 3Z"
+    //     fill="white"
+    //   />
+    // </svg>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
@@ -12,10 +26,9 @@ export const EtherIcon: React.FunctionComponent<IconProps> = ({
       viewBox="0 0 24 24"
       fill="none"
     >
-      <circle cx="12" cy="12" r="12" fill="#7583FE" />
       <path
-        d="M11.9547 16.4775L6 13.215L11.9539 21L17.9135 13.215L11.9523 16.4775H11.9547ZM12.0453 3L6.08895 12.1672L12.0445 15.4327L18 12.1702L12.0453 3Z"
-        fill="white"
+        d="M11.9999 0C8.53462 0 0 8.53443 0 11.9999C0 15.4654 8.53462 24 11.9999 24C15.4652 24 24 15.4653 24 11.9999C24 8.53457 15.4654 0 11.9999 0ZM10.1299 18.8619C8.66865 18.4637 4.73985 11.5912 5.13811 10.1299C5.53637 8.66855 12.4087 4.73983 13.87 5.1381C15.3313 5.5363 19.2601 12.4087 18.8619 13.87C18.4636 15.3314 11.5912 19.2602 10.1299 18.8619Z"
+        fill="#A398FF"
       />
     </svg>
   );

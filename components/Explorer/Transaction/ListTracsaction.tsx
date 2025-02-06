@@ -39,7 +39,7 @@ function ListTracsaction() {
         <TabGroups
           choices={["Transactions"]}
           activeChoice="Transactions"
-          onChoiceChange={() => {}}
+          onChoiceChange={() => { }}
           isDefault
         />
         {router.pathname === "/collections" && (
@@ -86,7 +86,7 @@ function ListTracsaction() {
               </th>
 
               <th className="flex justify-end lg:w-full md:w-full w-[140px] gap-x-1 items-center">
-                Total ETH
+                Total MON
                 <div
                   className="cursor-pointer"
                   onClick={() => handleSort("amountToken")}

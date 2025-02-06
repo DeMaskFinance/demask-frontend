@@ -35,7 +35,7 @@ const PoolItem = ({ liquidity }: any) => {
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const contracts = queryClient.getQueryData<ContractAddresses>([

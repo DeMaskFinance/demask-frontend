@@ -13,17 +13,13 @@ interface VersionTradeProps {
 const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
   const [version, setVersion] = useQueryParam(
     "version",
-    withDefault(StringParam, "v2")
+    withDefault(StringParam, "v1")
   );
 
   const versionList = [
     {
       slug: "v1",
       title: "Version 1",
-    },
-    {
-      slug: "v2",
-      title: "Version 2",
     },
   ];
   const handleValueChange = (value: string) => {

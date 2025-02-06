@@ -195,7 +195,7 @@ const FilterItems: React.FC<FilterItemsProps> = ({ setIsFilter }) => {
                         value="eth"
                         className="item_menu text-white cursor-pointer"
                       >
-                        ETH
+                        MON
                       </SelectItem>
                       <SelectItem
                         value="weth"

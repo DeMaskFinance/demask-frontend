@@ -25,7 +25,7 @@ export default function TradeDefault() {
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
-    "v2",
+    "v1",
   ]);
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);

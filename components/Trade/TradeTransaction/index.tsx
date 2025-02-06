@@ -77,7 +77,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     wallet,
     chainId
   );
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -123,6 +123,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     },
     enabled: data.dmlAddress !== null && activeChoice === "Buy",
   });
+
+  console.log(data)
 
   const { data: dataSell, isFetching: isFetchingSell } = useQuery<DataSell>({
     queryKey: [
@@ -201,15 +203,15 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     if (activeChoice === "Buy" && dataBuy) {
       item === "100%"
         ? setInputNFT(
-            Math.floor(
-              (parseFloat(item) / 100) * (+dataBuy.reserveNFT - 1)
-            ).toString()
-          )
+          Math.floor(
+            (parseFloat(item) / 100) * (+dataBuy.reserveNFT - 1)
+          ).toString()
+        )
         : setInputNFT(
-            Math.floor(
-              (parseFloat(item) / 100) * +dataBuy.reserveNFT
-            ).toString()
-          );
+          Math.floor(
+            (parseFloat(item) / 100) * +dataBuy.reserveNFT
+          ).toString()
+        );
     } else {
       setInputNFT(
         Math.floor((parseFloat(item) / 100) * Number(balanceNFT)).toString()
@@ -315,7 +317,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 <div className="w-full font-semibold text-primary_300">
                   {activeChoice === "Buy" ? (
                     <div className="flex items-center justify-between">
-                      <p>Your balance (ETH)</p>
+                      <p>Your balance (MON)</p>
                       <div className="flex items-center font-bold text-white gap-x-1">
                         {formatNumber(balanceToken)}
                         <EtherIcon width={16} height={16} />

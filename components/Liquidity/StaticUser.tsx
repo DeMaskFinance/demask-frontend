@@ -9,7 +9,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 function PoolUser() {
   const { chainId, account } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const { isLoading, data, isFetching } = useQuery({
     queryKey: ["total-infor-pool", chainId, account, version],

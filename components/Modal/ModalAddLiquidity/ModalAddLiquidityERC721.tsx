@@ -37,7 +37,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
   const { balanceToken, bigNumberBalance } = useInformationToken(
     account,

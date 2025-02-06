@@ -16,7 +16,7 @@ const UserPools = () => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
   };
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const fetchDataListLiquidity = async (
     accountUser: string,

@@ -17,7 +17,7 @@ const TotalPools = () => {
   const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
   const [type, setType] = useState<string>("erc1155");
   const { ref, inView } = useInView();
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const router = useRouter();
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -101,7 +101,7 @@ const TotalPools = () => {
                             </div>
                           </div>
                           <div className="font-semibold flex">
-                            ETH/
+                            MON/
                             {item.type === "erc721" ? (
                               item.symbol
                             ) : (

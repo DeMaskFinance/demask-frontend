@@ -32,7 +32,7 @@ const DeployCollection = () => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [hash, setHash] = useState<string>("");
   const { account, wallet, chainId } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -135,9 +135,7 @@ const DeployCollection = () => {
                 contract to create your NFT collection
               </h3>
 
-              <div>123
 
-              </div>
               <p className="mt-2 mb-4 text-xs text-primary_400">
                 * Required fields
               </p>

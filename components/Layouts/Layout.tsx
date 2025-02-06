@@ -15,7 +15,7 @@ export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent, account } =
     useContext(AccountContext);
   const { user, accessToken, isLoggedIn } = useSelector(selectProfile);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const dispatch = useDispatch();
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {

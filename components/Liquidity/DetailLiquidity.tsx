@@ -59,7 +59,7 @@ const DetailLiquidity = () => {
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const [page, setPage] = useState(1);
   useEffect(() => {
@@ -241,7 +241,7 @@ const DetailLiquidity = () => {
                     <ModalDocument data={data?.metadata?.name} />
                   </div>
                   <p className="text-sm text-primary_400">
-                    ({data?.metadata?.symbol}/ETH)
+                    ({data?.metadata?.symbol}/MON)
                   </p>
                 </div>
                 <div className="flex items-center gap-x-2">
@@ -349,7 +349,7 @@ const DetailLiquidity = () => {
                     >
                       Claim
                       <FormatNumber number={reward} />
-                      ETH
+                      MON
                     </Button>
                   ) : (
                     <Dialog>

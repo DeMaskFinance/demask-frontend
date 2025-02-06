@@ -92,7 +92,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
       <div className="p-4 bg_main">
         <div className="flex gap-x-2">
-          <Button third>ETH</Button>
+          <Button third>MON</Button>
           <p className="text-2xl font-bold">{data.metadata.name}</p>
         </div>
         <div className="h-[1px] w-full bg-shader_500 my-4"></div>

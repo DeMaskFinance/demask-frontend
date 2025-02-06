@@ -101,7 +101,7 @@ const Filter: React.FC<FilterItemsProps> = ({ setIsFilter }) => {
                 </div>
                 <Select>
                   <SelectTrigger className="w-full mt-2 bg-primary_500 bg-opacity-15 border-none text-white font-semibold ">
-                    <SelectValue placeholder="ETH" defaultValue="eth" />
+                    <SelectValue placeholder="MON" defaultValue="eth" />
                   </SelectTrigger>
                   <SelectContent className="menu border-none w-[95%]">
                     <SelectGroup>
@@ -109,7 +109,7 @@ const Filter: React.FC<FilterItemsProps> = ({ setIsFilter }) => {
                         value="eth"
                         className="item_menu text-white cursor-pointer"
                       >
-                        ETH
+                        MON
                       </SelectItem>
                       <SelectItem
                         value="weth"

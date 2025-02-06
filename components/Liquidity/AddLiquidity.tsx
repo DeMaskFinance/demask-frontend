@@ -65,7 +65,7 @@ export default function AddLiquidity() {
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -274,7 +274,7 @@ export default function AddLiquidity() {
                     <div className="flex items-center justify-between cursor-pointer text-shader_500">
                       <div className="flex items-center gap-x-2 title">
                         <EtherIcon width={18} height={18} />
-                        ETH
+                        MON
                       </div>
                       <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
                     </div>

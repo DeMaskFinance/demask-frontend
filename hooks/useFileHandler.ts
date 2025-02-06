@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect, DragEvent } from "react";
+import { DragEvent, useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 interface UseFileHandlerProps extends UploadFileProps {
@@ -43,14 +43,18 @@ const useFileHandler = ({
     if (file) {
       let fileType = file.type;
       if (validInput.includes(fileType)) {
-        if (file.size < 52428800) {
-          const fileURL = URL.createObjectURL(file);
-          setFileType(fileType);
-          setSelectedFile(fileURL);
-          setFileIPFS(await uploadFile(file));
-          setFieldValue("avatar", file);
-        } else {
-          toast.warning("Please choose a file smaller than 1GB");
+        try {
+          if (file.size < 1024 * 1024 * 5) {
+            const fileURL = URL.createObjectURL(file);
+            setFileType(fileType);
+            setSelectedFile(fileURL);
+            setFileIPFS(await uploadFile(file));
+            setFieldValue("avatar", file);
+          } else {
+            toast.warning("Please choose a file smaller than 5MB");
+          }
+        } catch (error) {
+          toast.error("Upload file error!");
         }
       } else {
         toast.error("File format error");

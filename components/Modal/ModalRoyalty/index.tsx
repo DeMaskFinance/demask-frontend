@@ -18,7 +18,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
   onSuccess,
 }) => {
   const [isProcess, setIsProcess] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { chainId, account, wallet } = useContext(AccountContext);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",

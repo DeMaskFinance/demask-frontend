@@ -13,7 +13,7 @@ import UserPools from "./UserPools";
 const Pools = () => {
   const [index, setIndex] = useState<number>(0);
   const { chainId, demask, account } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",

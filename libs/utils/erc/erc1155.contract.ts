@@ -140,16 +140,18 @@ const removeERC20ERC1155 = async (
   txDeadline: number
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-  const estimatedGas = await contract.estimateGas.removeERC20ERC1155(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    Math.floor(Number(liquidity)).toString(),
-    exponentialToDecimal(Number(amountTokenMin)),
-    exponentialToDecimal(Number(amountNFTMin)),
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
-  );
+  // const estimatedGas = await contract.estimateGas.removeERC20ERC1155(
+  //   tokenAddress,
+  //   nftAddress,
+  //   idNFT,
+  //   Math.floor(Number(liquidity)).toString(),
+  //   exponentialToDecimal(Number(amountTokenMin)),
+  //   exponentialToDecimal(Number(amountNFTMin)),
+  //   account,
+  //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
+  // );
+
+  console.log(tokenAddress, nftAddress, idNFT);
   const result = await contract.removeERC20ERC1155(
     tokenAddress,
     nftAddress,
@@ -159,7 +161,7 @@ const removeERC20ERC1155 = async (
     exponentialToDecimal(Number(amountNFTMin)),
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { gasLimit: estimatedGas }
+    { gasLimit: 500000 }
   );
   return result;
 };
