@@ -77,7 +77,6 @@ export default function AddLiquidity() {
     chainId
   );
 
-  console.log(currency)
   let inputNFTValue = useDebounce(inputNFT, 1000);
   useEffect(() => {
     if (currency) {

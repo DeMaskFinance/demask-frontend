@@ -70,11 +70,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         return;
       }
 
-      console.log(Math.floor(amountErcDesired))
 
       if (Math.floor(amountErcDesired) !== 0 && contracts) {
         try {
-          console.log(123)
 
           setIsOpenTransaction(true);
           const result = await erc1155Contract.addERC20ERC1155(

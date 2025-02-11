@@ -37,7 +37,6 @@ export default function Layout({ children }: PropsWithChildren) {
           const provider = await getProvider(wallet);
 
           const handleAccountsChanged = (account: []) => {
-            console.log(account);
 
             localStorage.removeItem("WALLET_DEMASK");
             updateAccount("");

@@ -70,7 +70,6 @@ export default function MintNFTEVM({
       setCheckExit(false);
     }
   }, [name, symbol, description, fileIPFS, totalSupply]);
-  console.log(collection)
 
   usePreventUserFromErasingContent(checkExit);
   const handleChangeAttributeType = (
@@ -121,9 +120,6 @@ export default function MintNFTEVM({
     const updatedItems = attributeItems.filter((item) => item.id !== id);
     setAttributeItems(updatedItems);
   };
-
-  const [type] = useQueryParam("typeErc", withDefault(StringParam, "erc721"));
-
 
   async function mintNFT({ amount, url }: mintProps) {
     const ethereum = (window as any).ethereum;
@@ -225,8 +221,6 @@ export default function MintNFTEVM({
               <span className="">Collection</span>
               <span className="text-primary_400">*</span>
             </label>
-
-            <TypeErc />
           </div>
           <Select onValueChange={handleSelectChange}>
             <SelectTrigger className="relative flex items-center pr-3 cursor-pointer input_item h-12 w-full">

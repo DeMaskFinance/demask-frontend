@@ -129,7 +129,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       }
     };
 
-    console.log(dataTradingAdd)
 
     return (
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">

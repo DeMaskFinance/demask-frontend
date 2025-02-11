@@ -85,7 +85,6 @@ const MintErc721: React.FC<MintErc721Props> = ({
         abiMint721
       );
 
-      console.log(contract)
       setMetadataIPFS(urlMetadata);
       const rs = await contract.safeMint(account, 1, urlMetadata, {
         gasLimit: 200000

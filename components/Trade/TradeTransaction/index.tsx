@@ -124,7 +124,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     enabled: data.dmlAddress !== null && activeChoice === "Buy",
   });
 
-  console.log(data)
 
   const { data: dataSell, isFetching: isFetchingSell } = useQuery<DataSell>({
     queryKey: [

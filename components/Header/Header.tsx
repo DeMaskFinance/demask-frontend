@@ -43,7 +43,6 @@ export default function Header() {
     chainId
   );
 
-  console.log(demask)
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);
 
