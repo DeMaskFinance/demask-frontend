@@ -10,6 +10,8 @@ interface NFTCategoryProps {
 }
 
 const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
+
+
   return (
     <Link href={`/collection/${item.contractAddress}`}>
       <div className="relative overflow-hidden transition-all duration-200 border rounded-lg border-shader_500 hover:border-shader_400">

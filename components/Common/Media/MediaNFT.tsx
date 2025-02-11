@@ -18,11 +18,13 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
 }) => {
 
   const isVideo = data?.metadata?.image?.includes("mp4");
+
+  console.log(data)
   return (
     <>
       {data?.metadata ? (
         <div className="relative h-[inherit] w-full">
-          {data.metadata?.image && !isVideo && (
+          {data.metadata?.image && !isVideo && !data?.metadata?.animation_url && (
             <div className="w-full h-full overflow-hidden ">
               <Image
                 src={formatLinkIPFS(data.metadata.image)}
@@ -48,7 +50,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
             <source src={data.metadata?.image} />
           </video>}
 
-          {!data.metadata?.image && data.metadata?.animation_url && (
+          {data.metadata?.animation_url && (
             <video
               src={formatLinkIPFS(data.metadata.animation_url)}
               autoPlay
@@ -56,12 +58,12 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               loop
               muted
               controls={isControls}
-              {...(hover
-                ? {
-                  onMouseOver: (event) => (event.target as any).play(),
-                  onMouseOut: (event) => (event.target as any).pause(),
-                }
-                : {})}
+              // {...(hover
+              //   ? {
+              //     onMouseOver: (event) => (event.target as any).play(),
+              //     onMouseOut: (event) => (event.target as any).pause(),
+              //   }
+              //   : {})}
               className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
               poster="/placeHolderIMG.png"
             />

@@ -11,6 +11,8 @@ const MediaCollection: React.FC<MediaCollectionProps> = ({ avatar, zoom }) => {
 
   const isVideo = avatar?.includes("mp4");
 
+  console.log(avatar)
+
   return (
     <div className="w-full h-full">
       {avatar && !isVideo &&

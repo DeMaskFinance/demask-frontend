@@ -40,24 +40,24 @@ const Category = ({ label }: { label: string }) => {
     }
   }, [inView]);
 
+
   return (
     <section className="mb-10">
       {data && data?.pages[0].totalRecords > 0 && (
         <div className="flex flex-col">
           <h2
-            className={`uppercase ${
-              label === "Art"
-                ? "text-primary_300"
-                : label === "Gaming"
+            className={`uppercase ${label === "Art"
+              ? "text-primary_300"
+              : label === "Gaming"
                 ? "text-green"
                 : label === "Film"
-                ? "text-yellow"
-                : label === "Music"
-                ? "text-blue"
-                : label === "Membership"
-                ? "text-red"
-                : "text-white"
-            } text-lg font-bold mb-3`}
+                  ? "text-yellow"
+                  : label === "Music"
+                    ? "text-blue"
+                    : label === "Membership"
+                      ? "text-red"
+                      : "text-white"
+              } text-lg font-bold mb-3`}
           >
             {label}
           </h2>

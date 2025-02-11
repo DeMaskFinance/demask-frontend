@@ -63,9 +63,9 @@ export default function Categories() {
       icon: <MusicIcon width={24} height={24} />,
     },
     {
-      key: "membership",
+      key: "memberships",
       title: "MEMBERSHIP",
-      panel: () => <CategoryDetail label="Membership" />,
+      panel: () => <CategoryDetail label="Memberships" />,
       icon: <MembershipIcon width={24} height={24} />,
     },
     {
@@ -92,9 +92,8 @@ export default function Categories() {
               onClick={() => {
                 setOption(type);
               }}
-              className={`${
-                option.key === type.key ? "bg-shader_400" : "bg-shader_700"
-              } flex gap-x-1 border whitespace-nowrap border-shader_400 rounded-lg h-11 px-3 text-white font-semibold text-lg items-center hover:bg-shader_400 transition-all duration-300 cursor-pointer `}
+              className={`${option.key === type.key ? "bg-shader_400" : "bg-shader_700"
+                } flex gap-x-1 border whitespace-nowrap border-shader_400 rounded-lg h-11 px-3 text-white font-semibold text-lg items-center hover:bg-shader_400 transition-all duration-300 cursor-pointer `}
             >
               {type.icon}
               {type.title}

@@ -42,6 +42,8 @@ const CategoryDetail = ({ label }: { label: string }) => {
     }
   }, [inView]);
 
+
+
   return (
     <div>
       {isLoading ? (
