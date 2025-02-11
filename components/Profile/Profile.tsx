@@ -7,20 +7,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import { briefDocument } from "@/libs/utils/formatComon";
+import { briefDocument, formatLinkIPFS } from "@/libs/utils/formatComon";
 import { selectProfile } from "@/store/profileSlice";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import "tippy.js/dist/tippy.css"; // optional
+import "tippy.js/dist/tippy.css";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { AvatarCustom } from "../Avatars";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import {
+  DiscordIcon,
   EditIcon,
   EyeIcon,
   FacebookIcon,
+  GithubIcon,
   SeeMoreIcon,
   TeleIcon,
   TwitterIcon,
@@ -31,6 +33,7 @@ import History from "./Activity";
 import Created from "./Inventory/Created";
 import Items from "./Inventory/Items";
 import Pools from "./Pools";
+import Image from "next/image";
 
 const Profile = () => {
   const { account } = useContext(AccountContext);
@@ -86,17 +89,30 @@ const Profile = () => {
     { url: profile?.socials?.twitter, Icon: TwitterIcon },
     { url: profile?.socials?.facebook, Icon: FacebookIcon },
     { url: profile?.socials?.telegram, Icon: TeleIcon },
+    { url: profile?.socials?.discord, Icon: DiscordIcon },
+    { url: profile?.socials?.github, Icon: GithubIcon },
   ];
   return (
     <div className="">
       <section>
         <div className="flex gap-x-3 text-sm p-4 bg-shader_700">
-          <AvatarCustom
-            avatarUrl={profile?.avatar}
-            size={120}
-            userAddress={profile?.userAddress!}
-            className="w-16 h-16 rounded-full"
-          />
+          <div className="w-[120px] h-[120px] overflow-hidden rounded-full">
+            {profile?.avatar ? (
+              <Image
+                src={formatLinkIPFS(profile?.avatar)}
+                width={120}
+                height={120}
+                alt="avatar"
+              />
+            ) : (
+              <AvatarCustom
+                avatarUrl={profile?.avatar}
+                size={120}
+                userAddress={profile?.userAddress!}
+                className="rounded-full overflow-hidden"
+              />
+            )}
+          </div>
           <div>
             <div className="flex items-center gap-x-2">
               <p className="text-lg title">{profile?.name}</p>
@@ -129,7 +145,7 @@ const Profile = () => {
                     <DialogTitle className="text-base font-bold text-white">
                       Description
                     </DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="min-w-[400px]">
                       <div className="flex gap-x-2 mb-2"></div>
                       <p className="font-semibold text-primary_400">
                         Joined {monthName} {yearName}

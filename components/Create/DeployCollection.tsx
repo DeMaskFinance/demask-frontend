@@ -1,5 +1,5 @@
 import AccountContext from "@/context/AccountContext";
-import { Category, queryClient, starknet } from "@/libs/constants";
+import { Category, queryClient } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
 import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
 import ercContract from "@/libs/utils/erc/erc.contract";
@@ -11,6 +11,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import * as yup from "yup";
 import { Button } from "../Buttons";
 import Back from "../Common/Back";
+import TypeErc from "../Common/TypeErc";
 import WithAuth from "../Common/WithAuth";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
@@ -38,6 +39,7 @@ const DeployCollection = () => {
     chainId,
     version,
   ]);
+  const [type] = useQueryParam("typeErc", withDefault(StringParam, "erc721"));
 
   const initialValues = {
     avatar: "",
@@ -64,12 +66,15 @@ const DeployCollection = () => {
   const handleEVMTransaction = async (values: any) => {
     if (!contracts) return null;
 
+    const contractAddress = type === "erc721"
+      ? contracts.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS
+      : contracts.CREATED_COLLECTION_ERC1155_CONTRACT_ADDRESS;
 
     const res = await ercContract.fillCreate(
       values.contractName,
       values.symbol,
       fileIPFS.nonce,
-      contracts.CREATED_COLLECTION_ADDRESS,
+      contractAddress,
       account,
       wallet
     );
@@ -83,10 +88,7 @@ const DeployCollection = () => {
   const checkTransactionStatus = async (res: any) => {
     if (!res) return;
 
-    const status =
-      chainId !== starknet.StarknetChainId.SN_SEPOLIA
-        ? (await res.wait()).status
-        : res.value.execution_status;
+    const status = (await res.wait()).status
 
     setIsOpenSuccess(status === "SUCCEEDED" || status === 1);
   };
@@ -101,6 +103,7 @@ const DeployCollection = () => {
         category: values.category,
         description: values.description,
       });
+
       let res;
       res = await handleEVMTransaction(values);
 
@@ -115,21 +118,27 @@ const DeployCollection = () => {
     }
   };
 
+
+
   return (
     <>
       <NextSeo {...updateMeta} />
       <WithAuth>
         <div className="max-w-2xl gap-6 px-3 mx-auto">
-          {/* UpLoad File */}
           <div className="">
             <div className="sticky top-16">
               <Back />
-              <h2 className="text-xl font-bold text-primary_300">
-                Create an Collection
-              </h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-primary_300">
+                  Create an Collection
+                </h2>
+
+                <TypeErc />
+              </div>
+
               <h3 className="my-2 text-sm font-normal text-shader_200">
                 Deploy an{" "}
-                {chainId === starknet.StarknetChainId.SN_SEPOLIA
+                {type === "erc721"
                   ? "ERC-721"
                   : "ERC-1155"}{" "}
                 contract to create your NFT collection
@@ -147,12 +156,13 @@ const DeployCollection = () => {
             </h3>
             <h4 className="mt-1 text-sm text-white">
               You’ll need to deploy an{" "}
-              {chainId === starknet.StarknetChainId.SN_SEPOLIA
+              {type === "erc721"
                 ? "ERC-721"
                 : "ERC-1155"}{" "}
               contract onto the Blockchain before you can create a Collection
             </h4>
           </div>
+
 
           <Formik
             initialValues={initialValues}

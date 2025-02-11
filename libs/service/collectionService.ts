@@ -180,11 +180,12 @@ const uploadFileCollection = async (params: any) => {
 };
 const collectionListUser = async (
   account: string,
-  chainId: string | string[]
+  chainId: string | string[],
+  type: string
 ) => {
   try {
     const res = await request.get(
-      `get-owner-collection?chainId=${chainId}&userAddress=${account}`
+      `get-owner-collection?chainId=${chainId}&userAddress=${account}&type=${type}`
     );
     return res.data;
   } catch (error) {

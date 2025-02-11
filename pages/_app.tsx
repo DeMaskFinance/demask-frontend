@@ -45,8 +45,8 @@ const monad = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.monad-testnet.category.xyz/rpc/SPa4TbSgMJxz5ywmzYvvc9O5nkAVGTgOcsi7yErG'],
-      webSocket: ['wss://rpc.monad-testnet.category.xyz/rpc/SPa4TbSgMJxz5ywmzYvvc9O5nkAVGTgOcsi7yErG'],
+      http: ['https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6'],
+      webSocket: ['wss://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6'],
     },
   },
   blockExplorers: {

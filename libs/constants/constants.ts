@@ -46,40 +46,19 @@ const SEPOLIA_DEMASK = {
 };
 
 const MONAD_DEMASK = {
-  urltxHash: "https://explorer.monad-testnet.category.xyz/",
+  urltxHash: "https://testnet.monadexplorer.com/",
   chainName: "Monad Testnet",
   NAME: "Monad Testnet",
   CURRENCY: "MON",
 };
 
-const STARKNET_DEMASK = {
-  IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
-  urltxHash: "https://sepolia.voyager.online/",
-  chainName: "Starknet Devnet",
-  NAME: "Starknet Devnet",
-  CURRENCY: "MON",
-};
-export const starknet = {
-  addrETH: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-  addrStarknet:
-    "0x04718f5a0Fc34cC1AF16A1cdee98fFB20C31f5cD61D6Ab07201858f4287c938D",
-  addrxASTR:
-    "0x005EF67D8c38B82ba699F206Bf0dB59f1828087A710Bad48Cc4d51A2B0dA4C29", // xAstraly
-  addrTESTCONTRACT:
-    "0x6a109c64aefc6f0e337f8996baec2db09e209d12fd329843327a0f442e04d84", // sepolia testnet
-  StarknetChainId: {
-    SN_SEPOLIA: "0x534e5f5345504f4c4941",
-    SN_MAIN: "0x534e5f4d41494e",
-  },
-};
-
 let network: NetworkItem[] = [
-  {
-    name: "Sepolia Testnet",
-    logo: SepoliaIcon,
-    chain: "11155111",
-    type: "EVM",
-  },
+  // {
+  //   name: "Sepolia Testnet",
+  //   logo: SepoliaIcon,
+  //   chain: "11155111",
+  //   type: "EVM",
+  // },
 
   {
     name: "Monad Testnet",
@@ -189,6 +168,5 @@ export {
   validCollectionInput,
   validNFTsInput,
   version,
-  STARKNET_DEMASK,
   MONAD_DEMASK,
 };

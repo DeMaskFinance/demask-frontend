@@ -16,6 +16,7 @@ import { ModalTransation } from "../ModalTransation";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
@@ -30,6 +31,7 @@ interface ModalConfirmAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
   setHash: React.Dispatch<React.SetStateAction<string>>;
+  inputToken: any,
 }
 
 const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
@@ -37,6 +39,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 > = ({
   data,
   dataTradingAdd,
+  inputToken,
   isOpenTransaction,
   inputNFT,
   isFetching,
@@ -68,8 +71,26 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         setIsSufficientToken(false);
       }
     }, [bigNumberBalance, dataTradingAdd]);
+
+
+
+
+
     const addLiquidity = async () => {
       if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
+
+        console.log(wallet,
+          collectionAddress,
+          contracts.WETH_ADDRESS,
+          inputNFT,
+          contracts.ERC721_ROUTER_ADDRESS,
+          dataTradingAdd.amountETHDecimals
+            ? dataTradingAdd.amountETHDecimals
+            : Number(inputToken) * 1e18,
+          account,
+          txDeadline,
+          exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals)))
+
         try {
           setIsOpenTransaction(true);
           const result = await erc721Contract.addLiquidity(
@@ -78,7 +99,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             contracts.WETH_ADDRESS,
             inputNFT,
             contracts.ERC721_ROUTER_ADDRESS,
-            dataTradingAdd.amountETHDecimals,
+            dataTradingAdd.amountETHDecimals
+              ? dataTradingAdd.amountETHDecimals
+              : Number(inputToken) * 1e18,
             account,
             txDeadline,
             exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals))
@@ -105,6 +128,8 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
         }
       }
     };
+
+    console.log(dataTradingAdd)
 
     return (
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">

@@ -8,20 +8,22 @@ interface MediaCollectionProps {
   zoom?: boolean;
 }
 const MediaCollection: React.FC<MediaCollectionProps> = ({ avatar, zoom }) => {
+
+  const isVideo = avatar?.includes("mp4");
+
   return (
     <div className="w-full h-full">
-      {avatar ? (
+      {avatar && !isVideo &&
         <Avatar className="w-full h-full rounded-none">
           <AvatarImage
             src={avatar}
             alt="user avatar"
-            className={`object-cover transition-transform duration-150 w-full h-full ${
-              zoom ? "group-hover:scale-[1.05]" : ""
-            }`}
+            className={`object-cover transition-transform duration-150 w-full h-full ${zoom ? "group-hover:scale-[1.05]" : ""
+              }`}
           />
           <AvatarFallback className="bg-slate-700 rounded-none"></AvatarFallback>
-        </Avatar>
-      ) : (
+        </Avatar>}
+      {!avatar && !isVideo &&
         <Image
           src="/placeHolderIMG.png"
           alt="placeholder"
@@ -31,7 +33,11 @@ const MediaCollection: React.FC<MediaCollectionProps> = ({ avatar, zoom }) => {
           className="w-full h-full object-cover"
           unoptimized
         />
-      )}
+      }
+
+      {isVideo && <video className="w-full h-full" playsInline muted loop autoPlay>
+        <source src={avatar} />
+      </video>}
     </div>
   );
 };

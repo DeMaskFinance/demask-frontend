@@ -25,17 +25,15 @@ import {
   formatLinkIPFS,
   formatTypeChain,
 } from "@/libs/utils/formatComon";
-import formatNumber from "@/libs/utils/formatNumer";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React, { Fragment, useContext, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import ShowMoreText from "react-show-more-text";
+import { toast } from "sonner";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
-import { toast } from "sonner";
 interface CollectionDetailProps {
   collectionAddress: string;
 }
@@ -116,7 +114,6 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                       }}
                     >
                       <EditIcon width={16} height={16} />
-                      <p className="text-xs">64px x 64px</p>
                     </div>
                   )}
                 </div>
@@ -143,18 +140,18 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             <div className="flex flex-col mt-4 font-bold lg:mt-0 ">
               <div className="flex items-center ">
                 <div className="flex items-center text-lg font-bold title whitespace-nowrap gap-x-1">
-                  <LogoIconCard chainId={chainId} />
+                  {/* <LogoIconCard chainId={chainId} /> */}
                   {data?.name}
                   {data?.isVerified && (
                     <TickSuccessIcon width={20} height={19} />
                   )}
-                  <Button
+                  {/* <Button
                     third
                     className="flex items-center px-3 h-[28px] text-sm gap-x-1"
                   >
                     Royalties {formatNumber((data?.royalty / 10000).toString())}
                     %
-                  </Button>
+                  </Button> */}
                   {data?.collaborators.includes(account) &&
                     data?.dmlAddress && (
                       <Dialog

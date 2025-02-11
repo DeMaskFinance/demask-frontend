@@ -65,34 +65,40 @@ const buyERC20ERC1155 = async (
   amountInMax: number,
   inputNFT: string,
   account: string,
-  txDeadline: number
+  txDeadline: number,
+  totalBuy: number
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-  const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    inputNFT,
-    exponentialToDecimal(Math.floor(amountInMax)),
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { value: exponentialToDecimal(Math.floor(amountInMax)) }
-  );
+  try {
+    // const estimatedGas = await contract.estimateGas.buyERC20ERC1155(
+    //   tokenAddress,
+    //   nftAddress,
+    //   idNFT,
+    //   inputNFT,
+    //   exponentialToDecimal(Math.floor(amountInMax)),
+    //   account,
+    //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    //   { value: exponentialToDecimal(Math.floor(amountInMax)) }
+    // );
 
-  const result = await contract.buyERC20ERC1155(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    inputNFT,
-    exponentialToDecimal(Math.floor(amountInMax)),
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    {
-      gasLimit: estimatedGas,
-      value: exponentialToDecimal(Math.floor(amountInMax)),
-    }
-  );
-  return result;
+    const result = await contract.buyERC20ERC1155(
+      tokenAddress,
+      nftAddress,
+      idNFT,
+      inputNFT,
+      exponentialToDecimal(Math.floor(amountInMax)),
+      account,
+      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+      {
+        gasLimit: 300000,
+        value: exponentialToDecimal(Math.floor(amountInMax)),
+      }
+    );
+
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 };
 const sellERC20ERC1155 = async (
   wallet: string,
@@ -151,7 +157,6 @@ const removeERC20ERC1155 = async (
   //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
   // );
 
-  console.log(tokenAddress, nftAddress, idNFT);
   const result = await contract.removeERC20ERC1155(
     tokenAddress,
     nftAddress,

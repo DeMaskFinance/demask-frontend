@@ -2,7 +2,6 @@ import { BackgroundDefault } from "@/components/Backgrounds";
 import Pools from "@/components/Liquidity/Pools";
 import { NextSeo } from "next-seo";
 import { SEO } from "../../next-seo.config";
-import { RpcProvider, WalletAccount } from "starknet";
 const updateMeta = {
   ...SEO,
   title: "Liquidity",

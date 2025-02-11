@@ -16,11 +16,13 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
   hideAudio,
   zoom,
 }) => {
+
+  const isVideo = data?.metadata?.image?.includes("mp4");
   return (
     <>
       {data?.metadata ? (
         <div className="relative h-[inherit] w-full">
-          {data.metadata?.image && (
+          {data.metadata?.image && !isVideo && (
             <div className="w-full h-full overflow-hidden ">
               <Image
                 src={formatLinkIPFS(data.metadata.image)}
@@ -28,9 +30,8 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 width={680}
                 height={576}
                 sizes="(max-width: 770px) 100vw"
-                className={`w-full h-full transition-transform duration-150 overflow-hidden  object-cover aspect-square ${
-                  zoom ? "group-hover:scale-[1.05]" : ""
-                } `}
+                className={`w-full h-full transition-transform duration-150 overflow-hidden  object-cover aspect-square ${zoom ? "group-hover:scale-[1.05]" : ""
+                  } `}
                 blurDataURL="/placeHolderIMG.png"
                 onError={(event: any) => {
                   event.target.srcset =
@@ -42,6 +43,11 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               />
             </div>
           )}
+
+          {isVideo && <video className="w-full h-full" playsInline muted loop autoPlay>
+            <source src={data.metadata?.image} />
+          </video>}
+
           {!data.metadata?.image && data.metadata?.animation_url && (
             <video
               src={formatLinkIPFS(data.metadata.animation_url)}
@@ -52,9 +58,9 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               controls={isControls}
               {...(hover
                 ? {
-                    onMouseOver: (event) => (event.target as any).play(),
-                    onMouseOut: (event) => (event.target as any).pause(),
-                  }
+                  onMouseOver: (event) => (event.target as any).play(),
+                  onMouseOut: (event) => (event.target as any).pause(),
+                }
                 : {})}
               className="w-full rounded-lg lg:max-h-[calc(100vh-326px)] object-cover h-full"
               poster="/placeHolderIMG.png"
@@ -69,9 +75,8 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 muted
                 controls
                 src={formatLinkIPFS(data.metadata.animation_url)}
-                className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg  object-cover ${
-                  isControls ? "" : "hidden"
-                }`}
+                className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg  object-cover ${isControls ? "" : "hidden"
+                  }`}
               >
                 Your browser does not support the
                 <code>audio</code> element.

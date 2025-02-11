@@ -1,4 +1,3 @@
-import React, { useContext, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -7,22 +6,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
-import { collectionListUser } from "@/libs/service/collectionService";
 import AccountContext from "@/context/AccountContext";
-import { PlusIcon } from "../Icons";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import * as yup from "yup";
-import Link from "next/link";
-import { Button } from "../Buttons";
-import getMetadataUrl from "@/libs/utils/getMetadata";
 import useContractWrite from "@/hooks/useContractWrite";
-import { starknetContract } from "@/libs/utils/starknet/contract";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
+import getMetadataUrl from "@/libs/utils/getMetadata";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import Link from "next/link";
+import React, { useContext, useState } from "react";
+import { toast } from "sonner";
+import * as yup from "yup";
+import { Button } from "../Buttons";
+import { PlusIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import { toast } from "sonner";
-export interface MintNFTStarknetProps {
+import abiMint721 from "../../abi/erc721/abiDefault721.json"
+import ercContract from "@/libs/utils/erc/erc.contract";
+export interface MintErc721Props {
   fileIPFS: string;
   setFileIPFS: any;
   setSelectedFile: any;
@@ -39,7 +38,7 @@ const initialValues = {
   symbol: "",
   description: "",
 };
-const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
+const MintErc721: React.FC<MintErc721Props> = ({
   data,
   fileIPFS,
   setFileIPFS,
@@ -52,6 +51,7 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
   const [isProcess, setIsProcess] = useState<boolean>(false);
 
+
   const [collection, setCollection] = useState<CollectionProps>(data[0]);
   const handleSelectChange = (index: string) => {
     setCollection(data[parseInt(index, 10)]);
@@ -62,46 +62,51 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
     "safeMint"
   );
 
-  const isExistId = async (idNFT: number) => {
-    const contract = await starknetContract.getContract(
-      collection.collectionAddress
-    );
-    const res = await contract.exists_id(idNFT);
-    return res;
-  };
-  const generateRandomId = () => {
-    return Math.floor(Math.random() * 1000000);
-  };
-  const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
-    if (!fileIPFS) {
-      toast.error("File not found.Try again!");
-      return;
-    }
-    let randomId: number;
-    let exists: boolean;
-    setIsProcess(true);
-    do {
-      randomId = generateRandomId();
-      exists = await isExistId(randomId);
-    } while (exists);
-    const urlMetadata = await getMetadataUrl.getMetadataUrlStarknet({
-      fileType,
-      fileIPFS,
-      name: values.name,
-      symbol: values.symbol,
-      description: values.description,
-    });
-    setMetadataIPFS(urlMetadata);
-    const receipt = await writeAsync([account, randomId, urlMetadata]);
-    setHash(receipt!.transaction_hash);
 
-    if (receipt?.statusReceipt === "success") {
-      setIsOpenSuccess(true);
+  const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
+    try {
+      if (!fileIPFS) {
+        toast.error("File not found.Try again!");
+        return;
+      }
+      setIsProcess(true);
+
+      const urlMetadata = await getMetadataUrl.getMetadataUrlStarknet({
+        fileType,
+        fileIPFS,
+        name: values.name,
+        symbol: values.symbol,
+        description: values.description,
+      });
+
+      const contract = await ercContract.erc(
+        wallet,
+        collection.collectionAddress,
+        abiMint721
+      );
+
+      console.log(contract)
+      setMetadataIPFS(urlMetadata);
+      const rs = await contract.safeMint(account, 1, urlMetadata, {
+        gasLimit: 200000
+      })
+
+      const tx = await rs.wait();
+
+      if (tx) {
+        setHash(rs.hash);
+        setIsOpenSuccess(true);
+      }
+
+
+      resetForm();
+      setSelectedFile(null);
+      setFileIPFS(null);
+      setIsProcess(false);
+    } catch (error) {
+      setIsProcess(false);
+      console.log(error)
     }
-    resetForm();
-    setSelectedFile(null);
-    setFileIPFS(null);
-    setIsProcess(false);
   };
   return (
     <div>
@@ -227,9 +232,13 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
               </div>
               <Button
                 type="submit"
-                primary={dirty && !isSubmitting}
-                active={!dirty || isSubmitting || !isValid}
-                disabled={!dirty || isSubmitting || !isValid}
+                primary={dirty && !isSubmitting && fileIPFS.length > 0}
+                active={
+                  !dirty || isSubmitting || !isValid || fileIPFS.length <= 0
+                }
+                disabled={
+                  !dirty || isSubmitting || !isValid || fileIPFS.length <= 0
+                }
                 className="px-6 py-2 cursor-pointer mt-4"
                 isLoadingBtn={isSubmitting}
               >
@@ -257,4 +266,4 @@ const MintNFTStarknet: React.FC<MintNFTStarknetProps> = ({
   );
 };
 
-export default MintNFTStarknet;
+export default MintErc721;

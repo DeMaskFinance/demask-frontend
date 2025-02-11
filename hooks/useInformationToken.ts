@@ -1,6 +1,4 @@
 import { getProvider } from "@/libs/connection/getProvider";
-import { starknet } from "@/libs/constants";
-import { starknetContract } from "@/libs/utils/starknet/contract";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 
@@ -36,54 +34,10 @@ const useInformationToken = (
     }
   };
 
-  const fetchTokenBalanceStarknet = async (): Promise<StarknetResult> => {
-    if (!account)
-      return {
-        balanceToken: 0,
-        bigNumberBalance: 0,
-        balanceTokenStarknet: 0,
-        bigNumberBalanceStarknet: 0,
-      };
-
-    try {
-      const contractETH = await starknetContract.getContract(starknet.addrETH);
-      const contractStarknet = await starknetContract.getContract(
-        starknet.addrStarknet
-      );
-
-      const balanceETH = await contractETH.balanceOf(account);
-      const balanceStarknet = await contractStarknet.balanceOf(account);
-
-      const balanceInEthETH = ethers.utils.formatEther(balanceETH);
-      const balanceInEthStarknet = ethers.utils.formatEther(balanceStarknet);
-
-      return {
-        balanceToken: Number(parseFloat(balanceInEthETH).toFixed(4)),
-        bigNumberBalance: balanceETH.toString(),
-        balanceTokenStarknet: Number(
-          parseFloat(balanceInEthStarknet).toFixed(4)
-        ),
-        bigNumberBalanceStarknet: balanceStarknet.toString(),
-      };
-    } catch (error) {
-      console.error("Error fetching Starknet balance:", error);
-      return {
-        balanceToken: 0,
-        bigNumberBalance: 0,
-        balanceTokenStarknet: 0,
-        bigNumberBalanceStarknet: 0,
-      };
-    }
-  };
-
   const { data, isLoading } = useQuery<EVMResult | StarknetResult>({
     queryKey: ["useBalanceToken", account, wallet, chainId],
     queryFn: async () => {
-      if (chainId === starknet.StarknetChainId.SN_SEPOLIA) {
-        return await fetchTokenBalanceStarknet();
-      } else {
-        return await fetchTokenBalanceEVM();
-      }
+      return await fetchTokenBalanceEVM();
     },
     enabled: !!account && !!chainId,
   });
@@ -92,21 +46,10 @@ const useInformationToken = (
     isLoadingBalance: isLoading,
   };
 
-  if (chainId === starknet.StarknetChainId.SN_SEPOLIA) {
-    return {
-      ...result,
-      balanceToken: data?.balanceToken || 0,
-      bigNumberBalance: data?.bigNumberBalance || 0,
-      balanceTokenStarknet: (data as StarknetResult)?.balanceTokenStarknet || 0,
-      bigNumberBalanceStarknet:
-        (data as StarknetResult)?.bigNumberBalanceStarknet || 0,
-    };
-  } else {
-    return {
-      ...result,
-      balanceToken: data?.balanceToken || 0,
-      bigNumberBalance: data?.bigNumberBalance || 0,
-    };
-  }
+  return {
+    ...result,
+    balanceToken: data?.balanceToken || 0,
+    bigNumberBalance: data?.bigNumberBalance || 0,
+  };
 };
 export default useInformationToken;

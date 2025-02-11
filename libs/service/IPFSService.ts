@@ -22,27 +22,13 @@ const uploadFileIPFSCollection = async (file: any) => {
   }
 };
 
-const uploadMetadataIPFS = async (metadata: any) => {
-  const ipfsApiUrl = "https://ipfs-rpc.demask.finance/api/v0/add";
-  const formData = new FormData();
-
-  formData.append(
-    "file",
-    new Blob([JSON.stringify(metadata)], { type: "application/json" })
-  );
-  const response = await fetch(ipfsApiUrl, {
-    method: "POST",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Failed to upload metadata to IPFS: ${response.statusText}`
-    );
+const uploadMetadataIPFS = async (body: any) => {
+  try {
+    const res = await request.post("upload-uri-thirdweb", body);
+    return res.data.uri;
+  } catch (error) {
+    console.error(error);
   }
-
-  const data = await response.json();
-  return `ipfs://${data.Hash}`;
 };
 
 export const uploadToIpfs = async (file: File): Promise<string> => {

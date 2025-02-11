@@ -235,6 +235,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                         setIsOpenConfirmAddLiquidity
                       }
                       inputNFT={idNFT}
+                      inputToken={inputToken}
                       dataTradingAdd={dataTradingAdd}
                       isFetching={isFetchingAdd}
                       setIdNFT={setIdNFT}

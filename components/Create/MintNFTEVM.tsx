@@ -10,30 +10,28 @@ import {
 } from "@/components/ui/select";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
-import { queryClient } from "@/libs/constants";
-import { collectionListUser } from "@/libs/service/collectionService";
 import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import metadataURL from "@/libs/utils/getMetadata";
-import { useQuery } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import React, {
   ChangeEvent,
   useContext,
   useEffect,
-  useRef,
-  useState,
+  useState
 } from "react";
 import { CgClose } from "react-icons/cg";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Button from "../Buttons/Button";
+import TypeErc from "../Common/TypeErc";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import { MintNFTStarknetProps } from "./MintNFTStarknet";
+import { MintErc721Props } from "./MintNFTStarknet";
 interface mintProps {
   amount: number;
   url: string;
@@ -45,7 +43,7 @@ export default function MintNFTEVM({
   setFileIPFS,
   setSelectedFile,
   fileType,
-}: MintNFTStarknetProps) {
+}: MintErc721Props) {
   const [isProcess, setIsProcess] = useState<boolean>(false);
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [checkExit, setCheckExit] = useState<boolean>(false);
@@ -123,6 +121,9 @@ export default function MintNFTEVM({
     const updatedItems = attributeItems.filter((item) => item.id !== id);
     setAttributeItems(updatedItems);
   };
+
+  const [type] = useQueryParam("typeErc", withDefault(StringParam, "erc721"));
+
 
   async function mintNFT({ amount, url }: mintProps) {
     const ethereum = (window as any).ethereum;
@@ -214,14 +215,19 @@ export default function MintNFTEVM({
       setIsProcess(false);
     }
   };
+
   return (
     <div className="relative">
       <form id="creator">
         <div>
-          <label htmlFor="collection" className="block mb-4 font-semibold">
-            <span className="">Collection</span>
-            <span className="text-primary_400">*</span>
-          </label>
+          <div className="flex items-center justify-between mb-4">
+            <label htmlFor="collection" className="block font-semibold">
+              <span className="">Collection</span>
+              <span className="text-primary_400">*</span>
+            </label>
+
+            <TypeErc />
+          </div>
           <Select onValueChange={handleSelectChange}>
             <SelectTrigger className="relative flex items-center pr-3 cursor-pointer input_item h-12 w-full">
               <div className="flex items-center gap-x-2">

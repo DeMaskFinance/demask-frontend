@@ -3,6 +3,9 @@ import { ethers } from "ethers";
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiDML from "@/abi/abiDML.json";
 import abiCollection from "@/abi/abiCreateCollection.json";
+
+import abiCollection721 from "@/abi/erc721/abiErc721Create.json";
+
 import abiFeeManager from "@/abi/abiFeeManager.json";
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import { exponentialToDecimal } from "../convertExponential";
@@ -89,7 +92,11 @@ const fillCreate = async (
   wallet: string
 ) => {
   if (account && wallet) {
-    const contract = await ercContract.erc(wallet, collection, abiCollection);
+    const contract = await ercContract.erc(
+      wallet,
+      collection,
+      abiCollection721
+    );
     try {
       const result = await contract.fillCreate(id, name, symbol, {
         gasLimit: 5000000,
@@ -100,6 +107,7 @@ const fillCreate = async (
     }
   }
 };
+
 const setRoyalty = async (
   feeManager: string,
   dmlToken: string,

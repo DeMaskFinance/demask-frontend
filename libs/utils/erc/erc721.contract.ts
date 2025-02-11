@@ -25,16 +25,16 @@ const addLiquidity = async (
   valueToSend: string | 0
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-  const estimatedGas = await contract.estimateGas.addERC20ERC721(
-    tokenAddress,
-    collectionAddress,
-    idNFT,
-    exponentialToDecimal(Math.floor(amountErcDesired)),
-    0,
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { value: valueToSend }
-  );
+  // const estimatedGas = await contract.estimateGas.addERC20ERC721(
+  //   tokenAddress,
+  //   collectionAddress,
+  //   idNFT,
+  //   exponentialToDecimal(Math.floor(amountErcDesired)),
+  //   0,
+  //   account,
+  //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+  //   { value: valueToSend }
+  // );
   const result = await contract.addERC20ERC721(
     tokenAddress,
     collectionAddress,
@@ -43,7 +43,7 @@ const addLiquidity = async (
     0,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { gasLimit: estimatedGas, value: valueToSend }
+    { gasLimit: 500000, value: valueToSend }
   );
   return result;
 };

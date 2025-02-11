@@ -34,11 +34,7 @@ export default function DetailCollection() {
   const {
     data,
     fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
