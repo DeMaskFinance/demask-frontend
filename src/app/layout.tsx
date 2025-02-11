@@ -15,7 +15,7 @@ const titillium = Titillium_Web({
 });
 
 export const metadata: Metadata = {
-  title: "Demask",
+  title: "Demask - NFT.Fi on Monad",
   description:
     "Trading crypto collectibles is easier than ever and monetizes the liquidity and referral program",
   twitter: {
