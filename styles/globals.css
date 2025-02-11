@@ -349,3 +349,8 @@ html *::-webkit-scrollbar-track {
   line-height: normal;
   color: var(--Primary-A300, #bfacfe);
 }
+
+#nprogress .bar {
+  background: linear-gradient(to top, #ba8de6, #7b54e8) !important;
+  height: 4px !important;
+}
