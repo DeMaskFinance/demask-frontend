@@ -44,7 +44,7 @@ const About = () => {
           <div className="btn_animation btn_active mt-8">
             <div className="overlay">
               <a
-                href="https://app.demask.finance/explorer"
+                href="https://app.demask.finance/category"
                 target="_blank"
                 rel="noopener noreferrer"
               >
