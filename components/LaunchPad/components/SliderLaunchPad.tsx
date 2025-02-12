@@ -75,7 +75,7 @@ const SliderLaunchPad = () => {
                   (item: LaunchpadData, itemIndex: number) => (
                     <SwiperSlide>
                       <div
-                        className={` object-cover h-[346px] relative`}
+                        className={` object-cover max-h-[346px] min-h-[346px] relative`}
                         key={itemIndex}
                         style={{
                           backgroundImage: `url(${item.metadata.banner})`,
@@ -85,9 +85,7 @@ const SliderLaunchPad = () => {
                           className={`absolute text-white font-bold top-0 pl-3 md:pl-10 flex items-center w-full md:w-1/2 h-full bg-launchpad `}
                         >
                           <div
-                            className={`flex gap-y-4 flex-col ${
-                              animate ? "animate-slide-up-800" : ""
-                            }`}
+                            className={`flex gap-y-4 flex-col `}
                           >
                             <div className="w-12 h-12 rounded-lg overflow-hidden">
                               <MediaNFT data={item} isControls />
@@ -98,8 +96,8 @@ const SliderLaunchPad = () => {
                                 {item.metadata.description}
                               </p>
                               <div className="flex font-bold gap-x-2 items-center my-2">
-                                <span>{item.limit} Items</span>
-                                <span className="h-4 w-[1px] bg-shader_400"></span>
+                                {/* <span>{item.limit} Items</span>
+                                <span className="h-4 w-[1px] bg-shader_400"></span> */}
                                 <div className="flex items-center gap-x-1">
                                   <span>{item.price}</span>
                                   <EtherIcon width={16} height={16} />
@@ -110,10 +108,12 @@ const SliderLaunchPad = () => {
                                   <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-green"></span>
                                   <span className="relative inline-flex w-2 h-2 rounded-full bg-green2"></span>
                                 </div>
-                                <p className="text-shader_200 ">End in:</p>
-                                <p className="text-green2">
+                                <p className="text-shader_200 ">Live</p>
+                                {/* <p className="text-shader_200 ">End in:</p> */}
+
+                                {/* <p className="text-green2">
                                   {formatDate(item.endTime - item.startTime)}
-                                </p>
+                                </p> */}
                               </div>
                             </div>
                             <Link

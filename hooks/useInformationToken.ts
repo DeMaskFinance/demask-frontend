@@ -7,7 +7,7 @@ interface EVMResult {
   bigNumberBalance: number;
 }
 
-interface StarknetResult extends EVMResult {
+interface ERC721_TYPE extends EVMResult {
   balanceTokenStarknet: number;
   bigNumberBalanceStarknet: number;
 }
@@ -21,8 +21,14 @@ const useInformationToken = (
 
     try {
       const providerChoice = await getProvider(wallet);
-      const provider = new ethers.providers.Web3Provider(providerChoice);
+
+      // const provider = new ethers.providers.Web3Provider(providerChoice);
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6"
+      );
+
       const balance = await provider.getBalance(account);
+
       const balanceInEth = ethers.utils.formatEther(balance);
       return {
         balanceToken: Number(parseFloat(balanceInEth).toFixed(4)),
@@ -34,7 +40,7 @@ const useInformationToken = (
     }
   };
 
-  const { data, isLoading } = useQuery<EVMResult | StarknetResult>({
+  const { data, isLoading } = useQuery<EVMResult | ERC721_TYPE>({
     queryKey: ["useBalanceToken", account, wallet, chainId],
     queryFn: async () => {
       return await fetchTokenBalanceEVM();

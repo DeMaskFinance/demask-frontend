@@ -10,10 +10,12 @@ import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import Web3 from "web3";
+
 const styles = {
   walletItem:
     "items-center p-2 gap-x-4 text-white hidden lg:flex  hover:bg-shader_600  rounded-lg cursor-pointer text-sm font-semibold",
 };
+
 const EVMWallet = () => {
   const { chainId, demask, updateAccount, updateWallet, updateChainId } =
     useContext(AccountContext);
@@ -21,8 +23,10 @@ const EVMWallet = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+
   const connectWallet = async (walletName: string) => {
     try {
+
       setLoading(true);
       let provider;
       let accounts;
@@ -34,7 +38,11 @@ const EVMWallet = () => {
         provider = new Web3(window.BinanceChain);
         accounts = await provider.eth.getAccounts();
       } else {
+
+
         provider = await getProvider(walletName);
+
+
         if (walletName !== "WalletConnect") {
           if (!window.ethereum) {
             walletName === "Metamask"
@@ -50,16 +58,18 @@ const EVMWallet = () => {
               );
             return;
           } else {
-            const networkSwitched = await changeNetwork(
-              chainId,
-              walletName,
-              demask,
-              setIsWrongNetwork,
-              updateChainId
-            );
-            if (!networkSwitched) {
-              return;
-            }
+            // const networkSwitched = await changeNetwork(
+            //   chainId,
+            //   walletName,
+            //   demask,
+            //   setIsWrongNetwork,
+            //   updateChainId
+            // );
+            // if (!networkSwitched) {
+            //   return;
+            // }
+
+            console.log(provider)
             accounts = await provider
               .request({
                 method: "eth_requestAccounts",
@@ -69,6 +79,8 @@ const EVMWallet = () => {
               });
           }
         } else {
+
+
           await provider.connect();
           accounts = await provider.accounts;
         }
@@ -93,6 +105,7 @@ const EVMWallet = () => {
         updateAccount(accounts[0]);
         updateWallet(walletName);
       }
+
 
       setLoading(false);
 

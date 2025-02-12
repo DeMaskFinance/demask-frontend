@@ -46,14 +46,14 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item }) => {
                     <EtherIcon width={16} height={16} />
                   </div>
                 </div>
-                <div>
+                {/* <div>
                   <p>Items</p>
                   <div className="flex items-center gap-x-1 text-white font-bold justify-end">
                     <FormatNumber
                       number={item.max_allocation - item.totalSoldOut}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <StatusBadge
                 status={item.status}

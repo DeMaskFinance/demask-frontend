@@ -1,50 +1,84 @@
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import detectEthereumProvider from "@metamask/detect-provider";
+
+declare global {
+  interface Window {
+    ethereum: any;
+    okxwallet?: any;
+  }
+}
 
 export const getProvider = async (wallet: string) => {
   let provider = null;
-  if (wallet === "Metamask") {
-    if (window.ethereum?.providers) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const p of window.ethereum?.providers) {
-        if (p.isMetaMask) {
-          provider = p;
-          break;
-        }
+
+  if (window.ethereum) {
+    const availableProviders = new Map<string, any>();
+
+    const handleProviderAnnounce = (event: any) => {
+      const { info, provider } = event.detail;
+      if (info?.uuid && !availableProviders.has(info.uuid)) {
+        availableProviders.set(info.uuid, { name: info.name, provider });
       }
-    } else if (window.ethereum?.isMetaMask) {
-      provider = window.ethereum;
+    };
+
+    window.addEventListener("eip6963:announceProvider", handleProviderAnnounce);
+    window.dispatchEvent(new Event("eip6963:requestProvider"));
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const providerEntry = Array.from(availableProviders.values()).find(
+      (p) => p.name?.toLowerCase() === wallet.toLowerCase()
+    );
+
+    provider = providerEntry ? providerEntry.provider : null;
+
+    window.removeEventListener(
+      "eip6963:announceProvider",
+      handleProviderAnnounce
+    );
+  }
+
+  if (!provider && wallet === "Metamask") {
+    const provider2 = await detectEthereumProvider();
+    if (provider2 && provider2 === window.ethereum) {
+      provider = provider2;
     }
   }
-  if (wallet === "Coinbase") {
-    if (window.ethereum?.providers)
-      // eslint-disable-next-line no-restricted-syntax
-      for (const p of window.ethereum?.providers) {
+
+  if (!provider && wallet === "Coinbase") {
+    if (Array.isArray(window.ethereum?.providers)) {
+      for (const p of window.ethereum.providers) {
         if (p.isCoinbaseWallet) {
           provider = p;
           break;
         }
       }
-    else provider = window.coinbaseWalletExtension;
+    } else {
+      provider = window.coinbaseWalletExtension;
+    }
   }
-  if (wallet === "OKX") {
-    if (window.ethereum?.providers) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const p of window.ethereum?.providers) {
+
+  // OKX fallback
+  if (!provider && wallet === "OKX") {
+    if (Array.isArray(window.ethereum?.providers)) {
+      for (const p of window.ethereum.providers) {
         if (p.isOkxWallet) {
           provider = p;
           break;
         }
       }
-    } else if (window?.okxwallet) {
+    } else if (window.okxwallet) {
       provider = window.okxwallet;
     }
   }
+
+  // WalletConnect
   if (wallet === "WalletConnect") {
     provider = await EthereumProvider.init({
-      projectId: "1af0159e7a959f2fff3f96c541aef2cb", // REQUIRED your projectId
-      chains: [11155111], // REQUIRED chain ids
+      projectId: "1af0159e7a959f2fff3f96c541aef2cb",
+      chains: [11155111],
       optionalChains: [11155111],
-      showQrModal: true, // REQUIRED set to "true" to use @walletconnect/modal
+      showQrModal: true,
       methods: ["eth_sendTransaction"],
       optionalMethods: [
         "personal_sign",
@@ -65,22 +99,11 @@ export const getProvider = async (wallet: string) => {
         "accountsChanged",
         "disconnect",
       ],
-      // optionalEvents, // OPTIONAL ethereum events
       rpcMap: {
         11155111: "https://ethereum-sepolia-rpc.publicnode.com",
       },
     });
   }
-  if (wallet === "bitkeep") {
-    return window.starknet_bitkeep;
-  }
 
-  if (wallet === "argentX") {
-    return window.starknet_argentX;
-  }
-
-  if (wallet === "braavos") {
-    return window.starknet_braavos;
-  }
   return provider;
 };

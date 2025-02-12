@@ -23,7 +23,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
               LIVE
             </div>
             <div className="text-white">
-              {formatDate(endTime - Math.floor(Date.now() / 1000))}
+              {/* {formatDate(endTime - Math.floor(Date.now() / 1000))} */}
             </div>
           </div>
         );

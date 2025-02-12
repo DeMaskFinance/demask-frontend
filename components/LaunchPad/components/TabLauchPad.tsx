@@ -33,6 +33,8 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
     }
   }, [inView]);
 
+  console.log(data)
+
   return (
     <div className="mb-8 px-3 lg:px-10">
       {isLoading ? (

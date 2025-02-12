@@ -60,8 +60,8 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
           </p>
           <p className="text-shader_200">{formatTimestamp(stage.endTime)}</p>
           <div className="flex gap-x-2 items-center mt-2 text-base">
-            <p className="text-primary_300">{stage.limit} per wallet</p>
-            <p className="h-3 w-[1px] bg-shader_400"></p>
+            {/* <p className="text-primary_300">{stage.limit} per wallet</p>
+            <p className="h-3 w-[1px] bg-shader_400"></p> */}
             <div className="flex gap-x-1 items-center">
               <FormatNumber number={stage.price} />
               <EtherIcon width={16} height={16} />
@@ -101,9 +101,9 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
             <p className="font-bold">Total Minted</p>
             <div className="flex gap-x-1 ">
               <p>{formatPercent(data.mintPercent)}%</p>
-              <p className="text-shader_200">
+              {/* <p className="text-shader_200">
                 ({data.totalSoldOut}/{data.max_allocation})
-              </p>
+              </p> */}
             </div>
           </div>
           <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">

@@ -23,7 +23,6 @@ export const changeNetwork = async (
         updateChainId(chainId);
         document.body.style.overflowY = "auto";
       } catch (errors: any) {
-        // This error code indicates that the chain has not been added to MetaMask
         if (errors.code === 4902) {
           await provider.request({
             method: "wallet_addEthereumChain",
