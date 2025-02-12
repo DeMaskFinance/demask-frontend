@@ -67,8 +67,8 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
     <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
       <Link
         href={`${item.type === "erc1155"
-            ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-            : `/trade/erc721/${item.nftAddress}?tab=pool`
+          ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+          : `/trade/erc721/${item.nftAddress}?tab=pool`
           }`}
         className="basis-1/2"
       >
@@ -79,8 +79,8 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
       </Link>
       <Link
         href={`${item.type === "erc1155"
-            ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-            : `/trade/erc721/${item.nftAddress}`
+          ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+          : `/trade/erc721/${item.nftAddress}`
           }`}
         className="basis-1/2"
       >

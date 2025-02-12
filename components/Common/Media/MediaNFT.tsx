@@ -19,13 +19,12 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
 
   const isVideo = data?.metadata?.image?.includes("mp4");
 
-  console.log(data.metadata.image)
 
   return (
     <>
       {data?.metadata ? (
         <div className="relative h-[inherit] w-full">
-          {data.metadata?.image || data.metadata?.avatar && !isVideo && !data?.metadata?.animation_url && (
+          {(data.metadata?.image || data.metadata?.avatar) && !isVideo && !data?.metadata?.animation_url && (
             <div className="w-full h-full overflow-hidden ">
               <Image
                 src={formatLinkIPFS(data.metadata.image || data.metadata.avatar)}
@@ -85,7 +84,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 <code>audio</code> element.
               </audio>
             )}
-          {!data.metadata?.image || !data.metadata?.avatar && !data.metadata?.animation_url && (
+          {(!data.metadata?.image || !data.metadata?.avatar) && !data.metadata?.animation_url && (
             <img
               src="/placeHolderIMG.png"
               alt="noDataIMG"
