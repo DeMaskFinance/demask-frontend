@@ -56,10 +56,11 @@ const validationSchema = yup.object().shape({
   website: yup.string().url().nullable(),
 });
 
-export default function EditProfileForm() {
+export default function EditProfileForm({ image }: any) {
   const { profile } = useSelector(selectProfile);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   const dispatch = useDispatch();
   const socialList = [
     {
@@ -100,7 +101,7 @@ export default function EditProfileForm() {
     {
       icon: <FacebookIcon width={20} height={20} />,
       title: "Facebook",
-      name: "facbook",
+      name: "facebook",
       placeHolder: "https://facebook.com/",
       value: profile?.socials?.facebook,
     },
@@ -111,15 +112,17 @@ export default function EditProfileForm() {
     about: profile?.about,
     twitter: profile?.socials?.twitter,
     facebook: profile?.socials?.facebook,
+    github: profile?.socials?.github,
     discord: profile?.socials?.discord,
     telegram: profile?.socials?.telegram,
     website: profile?.socials?.website,
   };
+
   const onSubmit = async (values: any) => {
-    // Handle form submission
     try {
       setLoading(true);
       const newUserData = await userService.updateUserInfor({
+        avatar: image,
         userName: values.userName,
         name: values.name,
         about: values.about,
@@ -141,6 +144,8 @@ export default function EditProfileForm() {
     }
   };
 
+  console.log(image.length > 0);
+
   return (
     <div>
       <Formik
@@ -148,14 +153,7 @@ export default function EditProfileForm() {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          dirty,
-        }) => (
+        {({ values, handleChange, dirty }) => (
           <Form className="">
             <div className="flex flex-col ">
               <label htmlFor="name" className="title_label">
@@ -240,9 +238,8 @@ export default function EditProfileForm() {
             <div className=" my-4">
               <Button
                 type="submit"
-                primary={dirty}
-                active={!dirty}
-                disabled={!dirty}
+                primary={dirty || image.length > 0}
+                disabled={!dirty && image.length < 0}
                 className="px-6 py-2"
                 isLoadingBtn={loading}
               >

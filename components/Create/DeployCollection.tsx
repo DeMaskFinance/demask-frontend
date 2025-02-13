@@ -293,22 +293,19 @@ const DeployCollection = () => {
                     !isSubmitting &&
                     fileIPFS &&
                     isValid &&
-                    selectedFile &&
-                    values.category.length > 0
+                    selectedFile
                   }
                   active={
                     isSubmitting ||
                     !fileIPFS ||
                     !isValid ||
-                    !selectedFile ||
-                    values.category.length === 0
+                    !selectedFile
                   }
                   disabled={
                     isSubmitting ||
                     !fileIPFS ||
                     !isValid ||
-                    !selectedFile ||
-                    values.category.length === 0
+                    !selectedFile
                   }
                   className="w-full py-3 mt-4"
                   isLoadingBtn={isSubmitting}

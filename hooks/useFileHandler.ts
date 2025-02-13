@@ -19,12 +19,10 @@ const useFileHandler = ({
   const uploadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
-  let file: File | null = null;
 
-  const handleDragOver = async (e: DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     itemRef.current?.classList.add("item-active-drap");
-    await displayFile();
   };
 
   const handleLeave = (e: DragEvent<HTMLDivElement>) => {
@@ -33,44 +31,54 @@ const useFileHandler = ({
 
   const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    file = e.dataTransfer.files[0];
-    itemRef.current?.classList.remove("item-active-drap");
-    itemRef.current?.classList.remove("border");
-    await displayFile();
+
+    if (e.dataTransfer.files.length > 0) {
+      const droppedFile = e.dataTransfer.files[0];
+      itemRef.current?.classList.remove("item-active-drap");
+      itemRef.current?.classList.remove("border");
+      await displayFile(droppedFile);
+    }
   };
 
-  const displayFile = useCallback(async () => {
-    if (file) {
-      let fileType = file.type;
-      if (validInput.includes(fileType)) {
-        try {
-          if (file.size < 1024 * 1024 * 5) {
-            const fileURL = URL.createObjectURL(file);
-            setFileType(fileType);
-            setSelectedFile(fileURL);
-            setFileIPFS(await uploadFile(file));
-            setFieldValue("avatar", file);
-          } else {
-            toast.warning("Please choose a file smaller than 5MB");
-          }
-        } catch (error) {
-          toast.error("Upload file error!");
-        }
-      } else {
-        toast.error("File format error");
+  const displayFile = useCallback(
+    async (file: File) => {
+      if (!file) {
+        toast.error("No file selected");
+        return;
       }
-    } else {
-      toast.error("No file");
-    }
-  }, [file, validInput, uploadFile]);
+
+      let fileType = file.type;
+      if (!validInput.includes(fileType)) {
+        toast.error("Invalid file format");
+        return;
+      }
+
+      if (file.size >= 1024 * 1024 * 5) {
+        toast.warning("Please choose a file smaller than 5MB");
+        return;
+      }
+
+      try {
+        const fileURL = URL.createObjectURL(file);
+        setFileType(fileType);
+        setSelectedFile(fileURL);
+        const ipfsHash = await uploadFile(file);
+        setFileIPFS(ipfsHash);
+        setFieldValue("avatar", file);
+      } catch (error) {
+        toast.error("Upload file error!");
+      }
+    },
+    [validInput, uploadFile]
+  );
 
   const handleChangeFile = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        file = e.target.files[0];
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const selectedFile = e.target.files[0];
         itemRef.current?.classList.remove("item-active-drap");
         itemRef.current?.classList.remove("border");
-        displayFile();
+        await displayFile(selectedFile);
       }
     },
     [displayFile]
@@ -81,7 +89,7 @@ const useFileHandler = ({
   }, []);
 
   useEffect(() => {
-    if (selectedFile === null) {
+    if (!selectedFile) {
       itemRef.current?.classList.add("border");
     }
   }, [selectedFile]);

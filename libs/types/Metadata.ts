@@ -22,6 +22,7 @@ interface CollectionInterface {
   creatorEarning?: string;
   featureImage?: string;
   royalty?: string;
+  avatar?: string;
 }
 interface UploadFileProps {
   setFileIPFS: React.Dispatch<React.SetStateAction<string>>;
@@ -29,7 +30,8 @@ interface UploadFileProps {
   selectedFile: string | null;
   setFileType: React.Dispatch<React.SetStateAction<string>>;
   setSelectedFile: React.Dispatch<React.SetStateAction<string>>;
-  uploadFile: (file: File) => Promise<string> | any;
+  // uploadFile: (file: File) => Promise<string>;
+  uploadFile: any;
 }
 interface ModalDetailProps {
   type: string;

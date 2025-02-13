@@ -2,25 +2,34 @@ import { AvatarCustom } from "@/components/Avatars";
 import { BackgroundDefault } from "@/components/Backgrounds";
 import Back from "@/components/Common/Back";
 import { UploadIcon } from "@/components/Icons";
-import { uploadFile } from "@/libs/service/userService";
-import { selectProfile, userData } from "@/store/profileSlice";
+import { uploadFileIPFSMint, uploadToIpfs } from "@/libs/service/IPFSService";
+import { selectProfile } from "@/store/profileSlice";
 import { useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import EditProfileForm from "./EditProfileForm";
 
 export default function EditProfile() {
   const inputAvatar = useRef(null);
   const [avatarLoading, setAvatarLoading] = useState(false);
+  const [image, setImage] = useState("");
   const { profile } = useSelector(selectProfile);
-  const dispatch = useDispatch();
+  const [file, setFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreviewImage(URL.createObjectURL(selectedFile));
+    }
+  };
+
   const handleUploadAvatar = async (file: any) => {
     try {
-      setAvatarLoading(true);
-      const res = await uploadFile({ avatar: file });
-      toast.success("Update Successed");
-      dispatch(userData({ profile: res }));
+      const uri = await uploadFileIPFSMint(file);
+      setImage(uri || "");
     } catch (error) {
       toast.error("Update Error");
       console.error(error);
@@ -38,7 +47,7 @@ export default function EditProfile() {
           <div className="relative rounded-full cursor-pointer w-fit h-fit group ">
             <div className="group-hover:brightness-50 transition-all duration-200 ease-in">
               <AvatarCustom
-                avatarUrl={profile?.avatar}
+                avatarUrl={previewImage || profile?.avatar}
                 size={120}
                 userAddress={profile?.userAddress!}
                 className="md:w-36 md:h-36 h-20 w-20 rounded-full"
@@ -72,6 +81,7 @@ export default function EditProfile() {
                   const file = e.target.files[0];
                   if (file && file.size < 10485760) {
                     handleUploadAvatar(file);
+                    handleFileChange(e);
                   } else {
                     toast.error("Oversize");
                   }
@@ -81,7 +91,7 @@ export default function EditProfile() {
             />
           </div>
         </div>
-        <EditProfileForm />
+        <EditProfileForm image={image} />
       </div>
     </BackgroundDefault>
   );

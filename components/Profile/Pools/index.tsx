@@ -53,6 +53,7 @@ export default function Pools() {
     }
   }, [inView]);
 
+
   return (
     <div>
       {isLoading || isFetching ? (

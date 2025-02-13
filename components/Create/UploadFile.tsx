@@ -247,7 +247,6 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
           </div>
         </div>
       </div>
-      ;
       <input
         ref={inputRef}
         type="file"
