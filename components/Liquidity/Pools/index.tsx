@@ -38,51 +38,50 @@ const Pools = () => {
   };
 
   return (
-    // <div>
-    //   <div className="flex flex-wrap justify-between w-full gap-y-2">
-    //     <div>
-    //       <div>
-    //         <h2 className="text-lg font-bold text-primary_300 mb-2">
-    //           Liquidity Pools
-    //         </h2>
-    //         <VersionTrade />
-    //       </div>
-    //       <p className="mt-2 text-shader_200">Add liquidity and earn rewards</p>
-    //     </div>
-    //     {/* <Button
-    //       type="button"
-    //       primary
-    //       className="h-[34px] w-[130px] text-sm font-semibold"
-    //       onClick={handleAddLiquidity}
-    //     >
-    //       + Add Liquidity
-    //     </Button> */}
-    //   </div>
-    //   {account && <PoolUser />}
-    //   <div className="flex gap-x-2">
-    //     <Button
-    //       primary={index === 0}
-    //       active={index === 1}
-    //       className="px-6 h-10 my-4 flex gap-x-2"
-    //       onClick={() => setIndex(0)}
-    //     >
-    //       <PoolIcon width={16} height={16} />
-    //       All Pools
-    //     </Button>
-    //     <Button
-    //       primary={index === 1}
-    //       active={index === 0}
-    //       className="px-6 h-10 my-4 flex gap-x-2"
-    //       onClick={() => setIndex(1)}
-    //     >
-    //       <UserIcon width={16} height={16} />
-    //       My Positions
-    //     </Button>
-    //   </div>
+    <div>
+      <div className="flex flex-wrap justify-between w-full gap-y-2">
+        <div>
+          <div>
+            <h2 className="text-lg font-bold text-primary_300 mb-2">
+              Liquidity Pools
+            </h2>
+            <VersionTrade />
+          </div>
+          <p className="mt-2 text-shader_200">Add liquidity and earn rewards</p>
+        </div>
+        {/* <Button
+          type="button"
+          primary
+          className="h-[34px] w-[130px] text-sm font-semibold"
+          onClick={handleAddLiquidity}
+        >
+          + Add Liquidity
+        </Button> */}
+      </div>
+      {account && <PoolUser />}
+      <div className="flex gap-x-2">
+        <Button
+          primary={index === 0}
+          active={index === 1}
+          className="px-6 h-10 my-4 flex gap-x-2"
+          onClick={() => setIndex(0)}
+        >
+          <PoolIcon width={16} height={16} />
+          All Pools
+        </Button>
+        <Button
+          primary={index === 1}
+          active={index === 0}
+          className="px-6 h-10 my-4 flex gap-x-2"
+          onClick={() => setIndex(1)}
+        >
+          <UserIcon width={16} height={16} />
+          My Positions
+        </Button>
+      </div>
 
-    //   {index === 0 ? <TotalPools /> : <UserPools />}
-    // </div>
-    <ComingSoonPage />
+      {index === 0 ? <TotalPools /> : <UserPools />}
+    </div>
   );
 };
 

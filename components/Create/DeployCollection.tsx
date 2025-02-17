@@ -76,7 +76,8 @@ const DeployCollection = () => {
       fileIPFS.nonce,
       contractAddress,
       account,
-      wallet
+      wallet,
+      type
     );
 
     setHash(res?.hash);
@@ -105,6 +106,8 @@ const DeployCollection = () => {
       });
 
       let res;
+
+      console.log(123)
       res = await handleEVMTransaction(values);
 
       await checkTransactionStatus(res);

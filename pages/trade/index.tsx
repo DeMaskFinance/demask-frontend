@@ -10,8 +10,7 @@ export default function Swap() {
   return (
     <>
       <NextSeo {...updateMeta} />
-      {/* <SwapDefault /> */}
-      <ComingSoonPage />
+      <SwapDefault />
     </>
   );
 }

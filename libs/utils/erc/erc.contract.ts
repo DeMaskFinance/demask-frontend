@@ -89,14 +89,16 @@ const fillCreate = async (
   id: number,
   collection: string,
   account: string,
-  wallet: string
+  wallet: string,
+  type: string
 ) => {
   if (account && wallet) {
     const contract = await ercContract.erc(
       wallet,
       collection,
-      abiCollection721
+      type === "erc721" ? abiCollection721 : abiCollection
     );
+
     try {
       const result = await contract.fillCreate(id, name, symbol, {
         gasLimit: 5000000,
