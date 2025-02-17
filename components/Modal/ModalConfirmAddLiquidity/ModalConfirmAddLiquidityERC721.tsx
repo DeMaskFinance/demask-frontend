@@ -74,6 +74,21 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
 
 
+    const [allowance, setAllowance] = useState<number>(0);
+    const balanceApprove = useAllowanceDML(
+      account,
+      data.dmlAddress,
+      wallet,
+      isOpenTransaction,
+      "",
+      contracts?.ERC721_ROUTER_ADDRESS || ""
+    );
+
+    useEffect(() => {
+      if (balanceApprove) {
+        setAllowance(Number(balanceApprove));
+      }
+    }, [balanceApprove]);
 
 
     const addLiquidity = async () => {
@@ -89,7 +104,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             : Number(inputToken) * 1e18,
           account,
           txDeadline,
-          exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals)))
+          exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || inputToken)))
 
         try {
           setIsOpenTransaction(true);
@@ -104,7 +119,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               : Number(inputToken) * 1e18,
             account,
             txDeadline,
-            exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals))
+            exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || inputToken))
           );
           setHash(result.hash);
           const check = await result.wait();
@@ -168,7 +183,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               <p>Liquidity</p>
               <div className="flex gap-x-1">
                 <div className="flex items-center font-bold text-white gap-x-1">
-                  <FormatNumber number={dataTradingAdd.amountETH} />
+                  <FormatNumber number={dataTradingAdd.amountETH || 0} />
                   <EtherIcon width={14} height={14} />
                 </div>
               </div>
@@ -201,23 +216,20 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
               <p className="text-primary_200">Total MON</p>
               <div className="flex items-center font-bold text-white gap-x-1">
-                <FormatNumber number={dataTradingAdd.amountETH} />
+                <FormatNumber number={dataTradingAdd.amountETH || 0} />
                 <EtherIcon width={14} height={14} />
               </div>
             </div>
           </div>
           <div className="flex flex-col items-center mt-6">
+
             <Button
               disabled={
                 isFetching ||
                 Math.floor(dataTradingAdd.amountETHDecimals) === 0 ||
                 isSufficientToken
               }
-              primary={
-                !isFetching &&
-                Math.floor(dataTradingAdd.amountETHDecimals) > 0 &&
-                !isSufficientToken
-              }
+              primary={!isFetching && !isSufficientToken}
               className="w-[144px] py-2"
               active={
                 isFetching ||
@@ -226,7 +238,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               }
               onClick={addLiquidity}
             >
-              Create pool
+              Add Liquidity
               {isFetching && (
                 <BiLoaderAlt className="ml-1 text-white animate-spin" />
               )}

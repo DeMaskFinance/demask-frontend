@@ -64,12 +64,22 @@ const DeployCollection = () => {
   };
 
   const handleEVMTransaction = async (values: any) => {
+
     if (!contracts) return null;
 
     const contractAddress = type === "erc721"
       ? contracts.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS
       : contracts.CREATED_COLLECTION_ERC1155_CONTRACT_ADDRESS;
 
+
+    console.log(fileIPFS)
+    console.log(values.contractName,
+      values.symbol,
+      fileIPFS.nonce,
+      contractAddress,
+      account,
+      wallet,
+      type)
     const res = await ercContract.fillCreate(
       values.contractName,
       values.symbol,
@@ -107,7 +117,6 @@ const DeployCollection = () => {
 
       let res;
 
-      console.log(123)
       res = await handleEVMTransaction(values);
 
       await checkTransactionStatus(res);

@@ -20,6 +20,7 @@ import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
+import { ModalTransation } from "../ModalTransation";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,6 +52,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     chainId,
     version,
   ]);
+
+
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: [
       "collectionNFTSell",
@@ -123,6 +126,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       }
     }
   }, [idNFT, inputToken, dataTradingAdd, bigNumberBalance, data]);
+
   const isApprovedNFT = useCheckApproveNFT(
     account,
     wallet,
@@ -130,6 +134,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     contracts?.ERC721_ROUTER_ADDRESS || "",
     isOpenTransaction
   );
+
 
   return (
     <Fragment>
@@ -195,76 +200,107 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
             )}
           </div>
           <div className="flex justify-center">
-            {isApprovedNFT ? (
-              <Dialog
-                open={isOpenConfirmAddLiquidity}
-                onOpenChange={setIsOpenConfirmAddLiquidity}
-              >
-                <DialogTrigger asChild>
-                  {dataTradingAdd && (
-                    <Button
-                      className="w-[126px] py-2 mx-auto whitespace-nowrap"
-                      primary={
-                        idNFT.length > 0 &&
-                        dataTradingAdd?.amountETHDecimals > 0 &&
-                        !isSufficientToken
-                      }
-                      active={
-                        idNFT.length === 0 ||
-                        dataTradingAdd?.amountETHDecimals === 0 ||
-                        isSufficientToken
-                      }
-                      disabled={
-                        idNFT.length === 0 ||
-                        dataTradingAdd?.amountETHDecimals === 0 ||
-                        isSufficientToken
-                      }
-                    >
-                      Add Liquidity
-                    </Button>
-                  )}
-                </DialogTrigger>
-                <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                  {data && dataTradingAdd && (
-                    <ModalConfirmAddLiquidityERC721
-                      data={data}
-                      isOpenTransaction={isOpenTransaction}
-                      setIsOpenTransaction={setIsOpenTransaction}
-                      setIsOpenAddLiquidity={setIsOpenAddLiquidity}
-                      setIsOpenConfirmAddLiquidity={
-                        setIsOpenConfirmAddLiquidity
-                      }
-                      inputNFT={idNFT}
-                      inputToken={inputToken}
-                      dataTradingAdd={dataTradingAdd}
-                      isFetching={isFetchingAdd}
-                      setIdNFT={setIdNFT}
-                      setInputToken={setInputToken}
-                      setHash={setHash}
-                      setIsOpenSuccess={setIsOpenSuccess}
-                      setIsOpenError={setIsOpenError}
-                    />
-                  )}
-                </DialogContent>
-              </Dialog>
-            ) : (
-              <Button
-                className="w-[126px] py-2 mx-auto"
-                primary
-                onClick={() =>
-                  handleApproveNFT(
-                    account,
-                    wallet,
-                    collectionAddress,
-                    setIsOpenTransaction,
-                    contracts?.ERC721_ROUTER_ADDRESS || ""
-                  )
-                }
-              >
-                Approve NFT
-              </Button>
+            {idNFT.length > 0 && (
+              <>
+                {isApprovedNFT ? (
+                  <Dialog
+                    open={isOpenConfirmAddLiquidity}
+                    onOpenChange={setIsOpenConfirmAddLiquidity}
+                  >
+                    {data?.dmlAddress === null ? (
+                      <DialogTrigger asChild>
+                        {dataTradingAdd && (
+                          <Button
+                            className="w-[126px] py-2 mx-auto whitespace-nowrap"
+                            primary={idNFT.length > 0 && !isSufficientToken}
+                            active={
+                              idNFT.length === 0 ||
+                              Math.floor(amountErcDesired) === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                            disabled={
+                              idNFT.length === 0 ||
+                              Math.floor(amountErcDesired) === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                          >
+                            Create pool
+                          </Button>
+                        )}
+                      </DialogTrigger>
+                    ) : (
+                      <DialogTrigger asChild>
+                        {dataTradingAdd && (
+                          <Button
+                            className="w-[126px] py-2 mx-auto whitespace-nowrap"
+                            primary={idNFT.length > 0 && !isSufficientToken}
+                            active={
+                              idNFT.length === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                            disabled={
+                              idNFT.length === 0 ||
+                              dataTradingAdd?.amountETHDecimals === 0 ||
+                              isSufficientToken
+                            }
+                          >
+                            Add Liquidity
+                          </Button>
+                        )}
+                      </DialogTrigger>
+                    )}
+                    <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                      {data && dataTradingAdd && (
+                        <ModalConfirmAddLiquidityERC721
+                          data={data}
+                          isOpenTransaction={isOpenTransaction}
+                          setIsOpenTransaction={setIsOpenTransaction}
+                          setIsOpenAddLiquidity={setIsOpenAddLiquidity}
+                          setIsOpenConfirmAddLiquidity={
+                            setIsOpenConfirmAddLiquidity
+                          }
+                          inputToken={inputToken}
+                          inputNFT={idNFT}
+                          dataTradingAdd={dataTradingAdd}
+                          isFetching={isFetchingAdd}
+                          setIdNFT={setIdNFT}
+                          setInputToken={setInputToken}
+                          setHash={setHash}
+                          setIsOpenSuccess={setIsOpenSuccess}
+                          setIsOpenError={setIsOpenError}
+                        />
+                      )}
+                    </DialogContent>
+                  </Dialog>
+                ) : (
+                  <Button
+                    className="w-[126px] py-2 mx-auto"
+                    primary
+                    onClick={() =>
+                      handleApproveNFT(
+                        account,
+                        wallet,
+                        collectionAddress,
+                        setIsOpenTransaction,
+                        contracts?.ERC721_ROUTER_ADDRESS || "",
+                        'erc721',
+                      )
+                    }
+                  >
+                    Approve NFT
+                  </Button>
+                )}
+              </>
             )}
           </div>
+
+          <ModalTransation
+            isOpenTransation={isOpenTransaction}
+            setIsOpenTransaction={setIsOpenTransaction}
+          />
         </div>
       </div>
     </Fragment>

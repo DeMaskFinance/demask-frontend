@@ -13,7 +13,7 @@ const useAllowanceDML = (
   const [currentAllowance, setCurrentAllowance] = useState<string | null>(null);
   useEffect(() => {
     const getAllowance = async () => {
-      console.log(account && dmlAddress && wallet);
+      console.log(account, dmlAddress, wallet);
       if (account && dmlAddress && wallet) {
         console.log(123);
         const providerChoice = await getProvider(wallet);

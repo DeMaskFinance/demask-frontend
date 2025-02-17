@@ -57,6 +57,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     chainId,
     version,
   ]);
+
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
@@ -178,7 +179,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                 {data?.metadata?.name}
               </div>
 
-              <p className="text-sm font-semibold text-primary_300">ABU/MON</p>
+              <p className="text-sm font-semibold text-primary_300">ABU/ETH</p>
             </div>
           </div>
           <div>

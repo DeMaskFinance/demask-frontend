@@ -1,4 +1,5 @@
 import abiErc1155 from "@/abi/abiErc1155.json";
+import abiErc721 from "@/abi/erc721/abiErc721.json";
 import ercContract from "./erc/erc.contract";
 
 const handleApproveNFT = async (
@@ -6,10 +7,17 @@ const handleApproveNFT = async (
   wallet: string,
   nftAddress: string,
   setIsOpenTransaction: any,
-  routerAddress: string
+  routerAddress: string,
+  type?: "erc721" | "erc1155"
 ) => {
   if (account && wallet) {
-    const contract = await ercContract.erc(wallet, nftAddress, abiErc1155);
+    const contract = await ercContract.erc(
+      wallet,
+      nftAddress,
+      type === "erc721" ? abiErc721 : abiErc1155
+    );
+
+    console.log(routerAddress);
     try {
       setIsOpenTransaction(true);
       const result = await contract.setApprovalForAll(routerAddress, true);
