@@ -84,7 +84,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 <code>audio</code> element.
               </audio>
             )}
-          {(!data.metadata?.image || !data.metadata?.avatar) && !data.metadata?.animation_url && (
+          {(!data.metadata?.image && !data.metadata?.avatar) && !data.metadata?.animation_url && (
             <img
               src="/placeHolderIMG.png"
               alt="noDataIMG"

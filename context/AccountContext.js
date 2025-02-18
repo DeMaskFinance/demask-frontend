@@ -2,9 +2,7 @@ import {
   MONAD_DEMASK,
   network,
   SEPOLIA_DEMASK,
-  STARKNET_DEMASK,
   tokenSepolia,
-  tokenStarknet,
 } from "@/libs/constants";
 import { createContext, useEffect, useState } from "react";
 const AccountContext = createContext();
@@ -38,7 +36,6 @@ export const AccountProvider = ({ children }) => {
       setTokenDefault(tokenSepolia);
     } else {
       setDemask(MONAD_DEMASK);
-      setTokenDefault(tokenStarknet);
     }
   }, [chainId]);
   useEffect(() => {

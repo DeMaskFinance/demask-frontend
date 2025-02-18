@@ -2,7 +2,6 @@ import abiFactory from "@/abi/erc721/abiFactory.json";
 import abiRouter from "@/abi/erc721/abiRouter.json";
 import { exponentialToDecimal } from "../convertExponential";
 import ercContract from "./erc.contract";
-import BigNumber from "bignumber.js";
 
 const dmlToken = async (
   wallet: string,
@@ -26,9 +25,6 @@ const addLiquidity = async (
   valueToSend: string | 0
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-
-  console.log(exponentialToDecimal(Number(valueToSend) * 1e18));
-
   const result = await contract.addERC20ERC721(
     tokenAddress,
     collectionAddress,
@@ -36,14 +32,15 @@ const addLiquidity = async (
     exponentialToDecimal(Math.floor(amountErcDesired)),
     0,
     account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    Math.floor((new Date().getTime() + txDeadline * 60_000) / 1_000),
     {
-      gasLimit: 50000000,
-      value: exponentialToDecimal(Number(valueToSend) * 1e18),
+      gasLimit: 50_000,
+      value: exponentialToDecimal(Number(valueToSend)),
     }
   );
   return result;
 };
+
 const buyERC20ERC721 = async (
   wallet: string,
   collectionAddress: string,
@@ -93,6 +90,17 @@ const removeERC20ERC721 = async (
 ) => {
   const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
   const estimatedGas = await contract.estimateGas.removeERC20ERC721(
+    tokenAddress,
+    nftAddress,
+    idNFT,
+    Math.floor(Number(liquidity)).toString(),
+    exponentialToDecimal(Number(amountTokenMin)),
+    exponentialToDecimal(Number(amountNFTMin)),
+    account,
+    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
+  );
+
+  console.log(
     tokenAddress,
     nftAddress,
     idNFT,

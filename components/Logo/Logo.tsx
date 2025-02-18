@@ -995,7 +995,7 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
 }) => {
   return (
     <div className="flex items-center justify-center float-right px-2 py-1 text-sm rounded-lg gap-x-1 bg-shader_400 text-white font-semibold">
-      {chainId === "11155111" ? (
+      {/* {chainId === "11155111" ? (
         <>
           <SepoliaIcon className={className} width={width} height={height} />
           <span>Sepolia</span>
@@ -1005,7 +1005,7 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
           <StarknetIcon className={className} width={width} height={height} />
           <span>Starknet</span>
         </>
-      )}
+      )} */}
     </div>
   );
 };

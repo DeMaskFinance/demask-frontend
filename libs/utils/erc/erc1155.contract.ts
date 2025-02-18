@@ -223,7 +223,7 @@ const addERC20ERC1155 = async (
       0,
       account,
       Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-      { gasLimit: 50000000, value: BigNumber(valueToSend || 0).toFixed() }
+      { gasLimit: 50_000, value: BigNumber(valueToSend || 0).toFixed() }
     );
     return result;
   } catch (error) {

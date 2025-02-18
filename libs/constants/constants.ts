@@ -1,9 +1,4 @@
-import {
-  EtherIcon,
-  MonadIcon,
-  SepoliaIcon,
-  StarknetIcon,
-} from "../../components/Icons";
+import { EtherIcon, MonadIcon } from "../../components/Icons";
 interface NetworkItem {
   name: string;
   logo: any;
@@ -12,15 +7,6 @@ interface NetworkItem {
   disable?: boolean;
 }
 const version = "Version 0.2.0";
-const tokenStarknet = [
-  {
-    name: "Starknet",
-    symbol: "STRK",
-    address: process.env.NEXT_PUBLIC_NATIVE_ADDRESS_Goerli,
-    logo: StarknetIcon,
-    symbolNative: "MON",
-  },
-];
 
 const tokenSepolia = [
   {
@@ -161,12 +147,11 @@ export {
   amountNFT,
   Category,
   mediaType,
+  MONAD_DEMASK,
   network,
   SEPOLIA_DEMASK,
-  tokenStarknet,
   tokenSepolia,
   validCollectionInput,
   validNFTsInput,
   version,
-  MONAD_DEMASK,
 };

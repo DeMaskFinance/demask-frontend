@@ -185,7 +185,7 @@ const collectionListUser = async (
 ) => {
   try {
     const res = await request.get(
-      `get-owner-collection?chainId=${chainId}&userAddress=${account}&type=${type}`
+      `get-owner-collection?chainId=${chainId}&userAddress=${account}&type=${type}&page=1&limit=10`
     );
     return res.data;
   } catch (error) {

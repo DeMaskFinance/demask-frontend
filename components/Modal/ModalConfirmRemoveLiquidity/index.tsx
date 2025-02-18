@@ -115,6 +115,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               slippage
             );
           } else {
+            console.log(123)
             result = await ercContract721.removeERC20ERC721(
               wallet,
               collectionAddress,

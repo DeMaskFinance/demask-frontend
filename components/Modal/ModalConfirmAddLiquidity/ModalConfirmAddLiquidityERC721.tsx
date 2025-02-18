@@ -119,7 +119,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               : Number(inputToken) * 1e18,
             account,
             txDeadline,
-            exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || inputToken))
+            exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || (Number(inputToken) * 1e18)))
           );
           setHash(result.hash);
           const check = await result.wait();
@@ -136,6 +136,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
           queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
           queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
           queryClient.refetchQueries({ queryKey: ["detailCollection"] });
+          queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
           queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
         } catch (error) {
           setIsOpenTransaction(false);
