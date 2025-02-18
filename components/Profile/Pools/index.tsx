@@ -27,13 +27,10 @@ export default function Pools() {
     );
     return data;
   };
+
   const {
     data,
     fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
     isSuccess,
     isLoading,
     isFetching,

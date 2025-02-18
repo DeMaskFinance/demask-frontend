@@ -10,15 +10,16 @@ const subMenuRewards = [
   { id: 1, name: "Leaderboard", url: "/leaderboard" },
   { id: 2, name: "Referral", url: "/referral" },
 ];
+
 const subMenuOthers = [
-  { id: 1, name: "Explorer", url: "/explorer" },
-  { id: 2, name: "Trade", url: `/trade` },
-  { id: 3, name: "Pools", url: "/pools" },
+  { id: 1, name: "Trade", url: `/trade` },
+  { id: 2, name: "Pools", url: "/pools" },
 ];
 const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
+    { name: "Explorer", url: "/explorer" },
     { name: "Category", url: "/category" },
     { name: "Create", url: "/create" },
     { name: "Launchpad", url: "/launchpad" },
