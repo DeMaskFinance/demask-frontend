@@ -101,7 +101,7 @@ const fillCreate = async (
 
     try {
       const result = await contract.fillCreate(id.toString(), name, symbol, {
-        gasLimit: 50_000,
+        gasLimit: 5_000_000,
       });
       return result;
     } catch (error) {

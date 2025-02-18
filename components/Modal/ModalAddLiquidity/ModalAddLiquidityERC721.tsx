@@ -156,20 +156,27 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           <div>
             <div className="my-4">
               {data?.dmlAddress === null ? (
-                <NumericFormat
-                  name="amountToken721"
-                  id="amountToken721"
-                  autoComplete="off"
-                  placeholder="Input amount Token"
-                  className="input_item"
-                  value={inputToken}
-                  inputMode="decimal"
-                  onValueChange={handleGetToken}
-                  decimalSeparator=","
-                  thousandSeparator="."
-                  minLength={1}
-                  maxLength={30}
-                />
+                <div className="relative">
+                  <NumericFormat
+                    name="amountToken721"
+                    id="amountToken721"
+                    autoComplete="off"
+                    placeholder="Input amount Token"
+                    className="input_item"
+                    value={inputToken}
+                    inputMode="decimal"
+                    onValueChange={handleGetToken}
+                    decimalSeparator=","
+                    thousandSeparator="."
+                    minLength={1}
+                    maxLength={30}
+                  />
+
+                  <div className="absolute top-3 right-3">
+                    <EtherIcon width={16} height={16} />
+                  </div>
+
+                </div>
               ) : (
                 <div>
                   {data ? (

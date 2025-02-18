@@ -217,7 +217,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
               <p className="text-primary_200">Total MON</p>
               <div className="flex items-center font-bold text-white gap-x-1">
-                <FormatNumber number={dataTradingAdd.amountETH || 0} />
+                <FormatNumber number={dataTradingAdd.amountETH || inputToken || 0} />
                 <EtherIcon width={14} height={14} />
               </div>
             </div>

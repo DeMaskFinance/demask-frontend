@@ -34,7 +34,7 @@ const addLiquidity = async (
     account,
     Math.floor((new Date().getTime() + txDeadline * 60_000) / 1_000),
     {
-      gasLimit: 50_000,
+      gasLimit: 5_000_000,
       value: exponentialToDecimal(Number(valueToSend)),
     }
   );
