@@ -65,12 +65,13 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     <Wrapper isOpen={isWrongNetwork}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
-          <h2 className="text-xl font-semibold text-white">
-            Check your network
-          </h2>
+         
           <h3 className="my-4 font-medium text-shader_100">
             Currently Demask only supported in Monad Testnet
           </h3>
+
+
+
           <h2 className="font-medium text-yellow">Warning</h2>
           <div className="flex my-4 gap-x-3">
             <WarningIcon />
@@ -79,20 +80,20 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             </p>
           </div>
           <div className="flex justify-between px-0 lg:px-6">
-            <button
+            <a href="https://monad-networks-testnet.vercel.app/" target="_blank"
               className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
-              onClick={() =>
-                changeNetwork(
-                  chainId,
-                  wallet,
-                  demask,
-                  setIsWrongNetwork,
-                  updateChainId
-                )
-              }
+              // onClick={() =>
+              //   changeNetwork(
+              //     chainId,
+              //     wallet,
+              //     demask,
+              //     setIsWrongNetwork,
+              //     updateChainId
+              //   )
+              // }
             >
               Switch Network
-            </button>
+            </a>
             <button
               className="p-2 text-sm font-medium text-white rounded-lg bg-red"
               onClick={disconnectWallet}

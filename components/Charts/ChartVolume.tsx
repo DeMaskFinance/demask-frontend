@@ -124,7 +124,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
                 {/* 
               // @ts-ignore */}
                 <Bar dataKey="value" radius={[2, 2, 2, 2]}>
-                  {chartVolume.map((_: any, index: number) => (
+                  {chartVolume?.map((_: any, index: number) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={index === hoveredIndex ? "#BFACFE" : "#9075FE"}
