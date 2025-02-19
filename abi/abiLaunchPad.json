@@ -1,13 +1,40 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_collection", "type": "address" },
-      { "internalType": "string", "name": "_launchpadUri", "type": "string" }
+      {
+        "internalType": "address",
+        "name": "_collection",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_launchpadUri",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_feeReceive",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_ownerCollection",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
-  { "inputs": [], "name": "InvalidStage", "type": "error" },
+  {
+    "inputs": [],
+    "name": "InvalidStage",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -28,15 +55,34 @@
         "internalType": "uint256",
         "name": "price",
         "type": "uint256"
+      }
+    ],
+    "name": "Buy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collection",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "launchpadUri",
+        "type": "string"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "activeStage",
+        "name": "blockTime",
         "type": "uint256"
       }
     ],
-    "name": "Buy",
+    "name": "LaunchpadQuaiMark",
     "type": "event"
   },
   {
@@ -128,6 +174,12 @@
         "internalType": "bytes32",
         "name": "merkleRoot",
         "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "label",
+        "type": "string"
       }
     ],
     "name": "SetStages",
@@ -135,9 +187,21 @@
   },
   {
     "inputs": [
-      { "internalType": "bytes32[]", "name": "proof", "type": "bytes32[]" },
-      { "internalType": "uint256", "name": "limit", "type": "uint256" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+      {
+        "internalType": "bytes32[]",
+        "name": "proof",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
     "name": "buy",
     "outputs": [],
@@ -147,16 +211,58 @@
   {
     "inputs": [],
     "name": "collection",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "feeReceive",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
     ],
     "name": "getActiveStage",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -166,16 +272,41 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "price", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "max_allocation",
             "type": "uint256"
           },
-          { "internalType": "uint256", "name": "limit", "type": "uint256" },
-          { "internalType": "uint256", "name": "startTime", "type": "uint256" },
-          { "internalType": "uint256", "name": "endTime", "type": "uint256" },
-          { "internalType": "bytes32", "name": "merkleRoot", "type": "bytes32" }
+          {
+            "internalType": "uint256",
+            "name": "limit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "merkleRoot",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "label",
+            "type": "string"
+          }
         ],
         "internalType": "struct Launchpad.LaunchpadStages[]",
         "name": "",
@@ -188,24 +319,63 @@
   {
     "inputs": [],
     "name": "launchpadUri",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
     "name": "mintedCountPerWallet",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ownerCollection",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -218,7 +388,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_collection", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_collection",
+        "type": "address"
+      }
     ],
     "name": "setCollection",
     "outputs": [],
@@ -226,7 +400,26 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "string", "name": "_uri", "type": "string" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_uri",
+        "type": "string"
+      }
+    ],
     "name": "setLaunchpadUri",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -235,17 +428,60 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_feeReceive",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_ownerCollection",
+        "type": "address"
+      }
+    ],
+    "name": "setReceive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
-          { "internalType": "uint256", "name": "price", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "max_allocation",
             "type": "uint256"
           },
-          { "internalType": "uint256", "name": "limit", "type": "uint256" },
-          { "internalType": "uint256", "name": "startTime", "type": "uint256" },
-          { "internalType": "uint256", "name": "endTime", "type": "uint256" },
-          { "internalType": "bytes32", "name": "merkleRoot", "type": "bytes32" }
+          {
+            "internalType": "uint256",
+            "name": "limit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "merkleRoot",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "label",
+            "type": "string"
+          }
         ],
         "internalType": "struct Launchpad.LaunchpadStages[]",
         "name": "newStages",
@@ -258,15 +494,31 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "soldout",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -275,7 +527,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "value", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
     "name": "withdraw",
     "outputs": [],

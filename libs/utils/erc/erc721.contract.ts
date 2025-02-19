@@ -88,41 +88,50 @@ const removeERC20ERC721 = async (
   account: string,
   txDeadline: number
 ) => {
-  const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-  const estimatedGas = await contract.estimateGas.removeERC20ERC721(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    Math.floor(Number(liquidity)).toString(),
-    exponentialToDecimal(Number(amountTokenMin)),
-    exponentialToDecimal(Number(amountNFTMin)),
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
-  );
+  try {
+    console.log(routerAddress);
+    const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
+    const estimatedGas = await contract.estimateGas.removeERC20ERC721(
+      tokenAddress,
+      nftAddress,
+      idNFT,
+      Math.floor(Number(liquidity)).toString(),
+      exponentialToDecimal(Number(amountTokenMin)),
+      exponentialToDecimal(Number(amountNFTMin)),
+      account,
+      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
+    );
 
-  console.log(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    Math.floor(Number(liquidity)).toString(),
-    exponentialToDecimal(Number(amountTokenMin)),
-    exponentialToDecimal(Number(amountNFTMin)),
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
-  );
+    console.log({
+      tokenAddress: tokenAddress,
+      nftAddress: nftAddress,
+      idNFT: idNFT,
+      liquidity: Math.floor(Number(liquidity)).toString(),
+      amountTokenMin: exponentialToDecimal(Number(amountTokenMin)),
+      amountNFTMin: exponentialToDecimal(Number(amountNFTMin)),
+      account,
+      deadline: Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+    });
 
-  const result = await contract.removeERC20ERC721(
-    tokenAddress,
-    nftAddress,
-    idNFT,
-    Math.floor(Number(liquidity)).toString(),
-    exponentialToDecimal(Number(amountTokenMin)),
-    exponentialToDecimal(Number(amountNFTMin)),
-    account,
-    Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-    { gasLimit: estimatedGas }
-  );
-  return result;
+    console.log(contract);
+
+    const result = await contract.removeERC20ERC721(
+      tokenAddress,
+      nftAddress,
+      idNFT,
+      Math.floor(Number(liquidity)).toString(),
+      exponentialToDecimal(Number(amountTokenMin)),
+      exponentialToDecimal(Number(amountNFTMin)),
+      account,
+      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+      { gasLimit: estimatedGas }
+    );
+
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 };
 const sellERC20ERC721 = async (
   wallet: string,

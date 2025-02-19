@@ -14,6 +14,7 @@ import Overview from "./Overview";
 import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
 
+
 export default function DetailLaunchPad() {
   const { chainId } = useContext(AccountContext);
   const router = useRouter();

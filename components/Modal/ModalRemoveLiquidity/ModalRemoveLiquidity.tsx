@@ -39,6 +39,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   setIsOpenError,
   closeModal,
 }) => {
+
+    console.log(routerAddress)
     const [inputLiquidity, setInputLiquidity] = useState<any>("");
     const [activeChoice, setActiveChoice] = useState<string>("");
     const [isSufficientLiquidity, setIsSufficientLiquidity] =
@@ -171,7 +173,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 <div className="font-bold text-white truncate">
                   {data?.metadata?.name}
                 </div>
-                <p className="text-sm font-semibold text-primary_300">ABU/MON</p>
+                {/* <p className="text-sm font-semibold text-primary_300">ABU/MON</p> */}
               </div>
             </div>
           )}

@@ -137,7 +137,7 @@ const PoolItem = ({ liquidity }: any) => {
                 /* 
          // @ts-ignore */
                 data={data}
-                routerAddress={contracts.WETH_ADDRESS}
+                routerAddress={contracts.ERC721_ROUTER_ADDRESS}
                 type="erc721"
                 setHash={setHash}
                 setIsOpenSuccess={setIsOpenSuccessRemove}

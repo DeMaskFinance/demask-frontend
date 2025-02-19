@@ -69,7 +69,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
             Check your network
           </h2>
           <h3 className="my-4 font-medium text-shader_100">
-            Currently Demask only supported in Sepolia Testnet
+            Currently Demask only supported in Monad Testnet
           </h3>
           <h2 className="font-medium text-yellow">Warning</h2>
           <div className="flex my-4 gap-x-3">

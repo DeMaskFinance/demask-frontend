@@ -7,6 +7,9 @@ import {
 } from "@/components/Icons";
 import Link from "next/link";
 import ShowMoreText from "react-show-more-text";
+
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
   const socialIcons = [
     { url: data?.networkLink, Icon: EtherIcon },
@@ -14,6 +17,7 @@ const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
     { url: data?.twitter, Icon: TwitterIcon },
     { url: data?.telegram, Icon: TeleIcon },
   ];
+
   return (
     <div>
       {data && (
@@ -29,6 +33,12 @@ const Overview: React.FC<{ data: LaunchpadData }> = ({ data }) => {
                 )
             )}
           </div>
+
+
+          <p className="text-md pb-8">
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{data?.metadata?.description}</ReactMarkdown>
+          </p>
+
           {/* <ShowMoreText
             lines={4}
             more="See more"

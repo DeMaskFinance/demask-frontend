@@ -157,13 +157,24 @@ const removeERC20ERC1155 = async (
   //   Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
   // );
 
+  console.log({
+    tokenAddress: tokenAddress,
+    nftAddress: nftAddress,
+    idNFT: idNFT,
+    liquidity: Math.floor(Number(liquidity)).toString(),
+    amountTokenMin: exponentialToDecimal(Number(amountTokenMin)),
+    amountNFTMin: exponentialToDecimal(Number(amountNFTMin)),
+    account,
+    deadline: Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+  });
+
   const result = await contract.removeERC20ERC1155(
     tokenAddress,
     nftAddress,
     idNFT,
     Math.floor(Number(liquidity)).toString(),
-    exponentialToDecimal(Number(amountTokenMin)),
-    exponentialToDecimal(Number(amountNFTMin)),
+    0,
+    0,
     account,
     Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
     { gasLimit: 500000 }

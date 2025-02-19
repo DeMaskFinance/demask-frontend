@@ -17,8 +17,10 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
   zoom,
 }) => {
 
-  const isVideo = data?.metadata?.image?.includes("mp4");
+  console.log(data)
 
+  const isVideo = data?.metadata?.image?.includes("mp4") || data?.metadata?.avatar?.includes("mp4");
+  console.log(isVideo)
 
   return (
     <>
@@ -46,13 +48,17 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
             </div>
           )}
 
-          {isVideo && <video className="w-full h-full" playsInline muted loop autoPlay>
-            <source src={data.metadata?.image} />
+          {isVideo && data?.metadata.avatar && <video className="w-full h-full" playsInline muted loop autoPlay>
+            <source src={data?.metadata.avatar} />
+          </video>}
+
+          {isVideo && data?.metadata.image && <video className="w-full h-full" playsInline muted loop autoPlay>
+            <source src={data?.metadata.image} />
           </video>}
 
           {data.metadata?.animation_url && (
             <video
-              src={formatLinkIPFS(data.metadata.animation_url)}
+              src={formatLinkIPFS(data.metadata.animation_url || data.metadata.avatar)}
               autoPlay
               playsInline
               loop
@@ -94,7 +100,7 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               className="w-full h-full lg:max-h-[calc(100vh-326px)] object-cover"
             />
           )}
-        </div>
+        </div >
       ) : (
         <img
           src="/placeHolderIMG.png"

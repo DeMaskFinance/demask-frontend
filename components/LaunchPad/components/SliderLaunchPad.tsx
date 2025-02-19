@@ -17,6 +17,8 @@ import SearchNotFound from "@/components/Search/SearchNotFound";
 import { formatDate } from "@/libs/utils/formatComon";
 import { MediaNFT } from "@/components/Common/Media";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const SliderLaunchPad = () => {
   const [animate, setAnimate] = useState(false);
@@ -93,7 +95,8 @@ const SliderLaunchPad = () => {
                             <div>
                               <h5 className="text-2xl">{item.metadata.name}</h5>
                               <p className="text-shader_200 font-semibold line-clamp-2">
-                                {item.metadata.description}
+                                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{item?.metadata?.description}</ReactMarkdown>
+
                               </p>
                               <div className="flex font-bold gap-x-2 items-center my-2">
                                 {/* <span>{item.limit} Items</span>

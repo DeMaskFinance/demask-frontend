@@ -206,7 +206,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             >
               {data?.description}
             </ShowMoreText> */}
-            <div className="flex items-center gap-x-2 mb-2">
+            <div className="flex items-center gap-x-2 my-2">
               {data?.collaborators.includes(account) && (
                 <Link href={`/edit/${collectionAddress}`}>
                   <Button
@@ -254,7 +254,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                     href={`${demask.urltxHash}address/${data.dmlAddress}`}
                     target="_blank"
                   >
-                    <LogoIconCard chainId={chainId} width={18} height={18} />
+                    <EtherIcon width={18} height={18} />
                   </Link>
                 )}
                 {socialIcons.map(
@@ -343,7 +343,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
             <p className="mb-1 text-sm whitespace-nowrap text-shader_200">
               Chain
             </p>
-            <div className="flex items-center text-lg font-bold ">Ethereum</div>
+            <div className="flex items-center text-lg font-bold ">Monad</div>
           </div>
         </div>
       </div>
