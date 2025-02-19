@@ -88,6 +88,8 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
   const { account } = useContext(AccountContext);
 
+  console.log(data)
+
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
       <div className="p-4 bg_main">
@@ -100,7 +102,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           <div className="flex justify-between ">
             <p className="font-bold">Total Minted</p>
             <div className="flex gap-x-1 ">
-              <p>{formatPercent(data.mintPercent)}%</p>
+              <p>{(data.mintPercent)}%</p>
               {/* <p className="text-shader_200">
                 ({data.totalSoldOut}/{data.max_allocation})
               </p> */}

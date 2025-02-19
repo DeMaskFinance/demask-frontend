@@ -92,7 +92,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
               //   )
               // }
             >
-              Switch Network
+              Add Network
             </a>
             <button
               className="p-2 text-sm font-medium text-white rounded-lg bg-red"
