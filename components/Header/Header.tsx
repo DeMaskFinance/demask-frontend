@@ -198,7 +198,7 @@ export default function Header() {
                           <EditIcon width={18} height={18} />
                           Edit profile
                         </Link>
-                        <Link href={`/profile/edit`} className="text-sm item_menu gap-x-2">
+                        <Link href={`/referral`} className="text-sm item_menu gap-x-2">
                           <CubeIcon width={18} height={18} />
                           Referrals
                         </Link>

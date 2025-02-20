@@ -60,7 +60,7 @@ const wagmiConfig = defaultWagmiConfig({
 });
 
 
-createWeb3Modal({ wagmiConfig, projectId, defaultChain: sepolia });
+createWeb3Modal({ wagmiConfig, projectId, defaultChain: monad });
 export default function App({
   Component,
   pageProps,
