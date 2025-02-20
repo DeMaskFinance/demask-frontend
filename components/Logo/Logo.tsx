@@ -1,4 +1,4 @@
-import { SepoliaIcon, StarknetIcon } from "../Icons";
+import { EtherIcon, SepoliaIcon, StarknetIcon } from "../Icons";
 
 interface LogoProps {
   className?: string;
@@ -1006,6 +1006,9 @@ export const LogoIconTable: React.FunctionComponent<LogoProps> = ({
           <span>Starknet</span>
         </>
       )} */}
+      <EtherIcon className={className} width={width} height={height} />
+      <span>MON Testnet</span>
+
     </div>
   );
 };

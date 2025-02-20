@@ -32,6 +32,7 @@ import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import useInformationToken from "@/hooks/useInformationToken";
+import { CubeIcon } from "@radix-ui/react-icons";
 
 export default function Header() {
   const { account, updateAccount, wallet, isEvent, setIsEvent, chainId, demask } =
@@ -180,6 +181,8 @@ export default function Header() {
                 </div>
                 <Tippy
                   interactive
+                  trigger="click"
+                  hideOnClick={true}
                   render={(attrs) => (
                     <div className="" tabIndex={-1} {...attrs}>
                       <ul className="pb-2 w-[173px] menu font-semibold">
@@ -187,24 +190,19 @@ export default function Header() {
                           {`${account.slice(0, 8)}...${account.slice(-6)}`}
                           <Copy content={account} />
                         </li>
-                        <Link
-                          href={`/profile`}
-                          className="text-sm item_menu gap-x-2"
-                        >
+                        <Link href={`/profile`} className="text-sm item_menu gap-x-2">
                           <UserIcon width={18} height={18} />
                           My Profile
                         </Link>
-                        <Link
-                          href={`/profile/edit`}
-                          className="text-sm item_menu gap-x-2"
-                        >
+                        <Link href={`/profile/edit`} className="text-sm item_menu gap-x-2">
                           <EditIcon width={18} height={18} />
                           Edit profile
                         </Link>
-                        <li
-                          className={`text-sm item_menu gap-x-2 mb-2`}
-                          onClick={disconnectWallet}
-                        >
+                        <Link href={`/profile/edit`} className="text-sm item_menu gap-x-2">
+                          <CubeIcon width={18} height={18} />
+                          Referrals
+                        </Link>
+                        <li className={`text-sm item_menu gap-x-2 mb-2`} onClick={disconnectWallet}>
                           <LogoutIcon width={18} height={18} />
                           <div>Disconnect</div>
                         </li>
@@ -212,7 +210,7 @@ export default function Header() {
                     </div>
                   )}
                 >
-                  <div className="flex items-center justify-center border-2 rounded-full cursor-pointer border-primary_400 h-9 w-9">
+                  <div className="flex items-center justify-center hover:opacity-80 transition border-2 rounded-full cursor-pointer border-primary_400 h-9 w-9">
                     <AvatarCustom
                       avatarUrl={profile?.avatar}
                       size={20}
@@ -221,6 +219,7 @@ export default function Header() {
                     />
                   </div>
                 </Tippy>
+
               </div>
             ) : (
               <Dialog>

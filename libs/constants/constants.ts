@@ -36,16 +36,10 @@ const MONAD_DEMASK = {
   chainName: "Monad Testnet",
   NAME: "Monad Testnet",
   CURRENCY: "MON",
+  RPC: "https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6",
 };
 
 let network: NetworkItem[] = [
-  // {
-  //   name: "Sepolia Testnet",
-  //   logo: SepoliaIcon,
-  //   chain: "11155111",
-  //   type: "EVM",
-  // },
-
   {
     name: "Monad Testnet",
     logo: MonadIcon,

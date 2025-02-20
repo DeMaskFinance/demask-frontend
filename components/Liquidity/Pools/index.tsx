@@ -9,8 +9,6 @@ import { useContext, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import TotalPools from "./TotalPools";
 import UserPools from "./UserPools";
-import MaintenanceError from "@/pages/maintenanceError";
-import ComingSoonPage from "@/components/ComingSoonPage";
 
 const Pools = () => {
   const [index, setIndex] = useState<number>(0);

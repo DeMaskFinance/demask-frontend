@@ -1,6 +1,8 @@
+import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
+import { useContext } from "react";
 
 interface EVMResult {
   balanceToken: number;
@@ -16,6 +18,8 @@ const useInformationToken = (
   wallet: string,
   chainId: string
 ) => {
+  const { demask } = useContext(AccountContext);
+
   const fetchTokenBalanceEVM = async (): Promise<EVMResult> => {
     if (!account) return { balanceToken: 0, bigNumberBalance: 0 };
 
@@ -23,9 +27,7 @@ const useInformationToken = (
       const providerChoice = await getProvider(wallet);
 
       // const provider = new ethers.providers.Web3Provider(providerChoice);
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6"
-      );
+      const provider = new ethers.providers.JsonRpcProvider(demask.RPC);
 
       const balance = await provider.getBalance(account);
 

@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { getProvider } from "./../connection/getProvider";
 import Web3 from "web3";
 
@@ -6,11 +7,13 @@ export const changeNetwork = async (
   wallet: string,
   demask: any,
   setIsWrongNetwork: React.Dispatch<React.SetStateAction<boolean>>,
-  updateChainId: any
+  updateChainId: any,
+  setLoading?: any
 ) => {
   try {
     const provider = await getProvider(wallet);
     const networkId = await provider.request({ method: "net_version" });
+    setLoading(true);
 
     if (networkId !== chainId) {
       try {
@@ -21,9 +24,20 @@ export const changeNetwork = async (
 
         setIsWrongNetwork(false);
         updateChainId(chainId);
+        toast.success("Chain switched successfully.");
         document.body.style.overflowY = "auto";
       } catch (errors: any) {
         if (errors.code === 4902) {
+          console.log({
+            chainName: demask.chainName,
+            chainId: Web3.utils.toHex(chainId),
+            nativeCurrency: {
+              name: demask.NAME,
+              decimals: 18,
+              symbol: demask.CURRENCY,
+            },
+            rpcUrls: [demask.RPC],
+          });
           await provider.request({
             method: "wallet_addEthereumChain",
             params: [
@@ -50,6 +64,8 @@ export const changeNetwork = async (
   } catch (error) {
     console.error("Failed to switch network:", error);
     return;
+  } finally {
+    setLoading(false);
   }
   return true;
 };

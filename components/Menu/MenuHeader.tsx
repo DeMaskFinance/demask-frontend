@@ -8,25 +8,25 @@ import { useRouter } from "next/router";
 
 const subMenuRewards = [
   { id: 1, name: "Leaderboard", url: "/leaderboard" },
-  { id: 2, name: "Referral", url: "/referral" },
+  // { id: 2, name: "Referral", url: "/referral" },
 ];
 
 const subMenuOthers = [
   { id: 1, name: "Trade", url: `/trade` },
-  { id: 2, name: "Pools", url: "/pools" },
+  { id: 2, name: "Category", url: "/category" },
+
 ];
 const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
     { name: "Explorer", url: "/explorer" },
-    { name: "Category", url: "/category" },
+    { name: "Pools", url: "/pools" },
     { name: "Create", url: "/create" },
     { name: "Launchpad", url: "/launchpad" },
     {
-      name: "Rewards",
+      name: "Leaderboard",
       url: "/leaderboard",
-      subMenu: subMenuRewards,
       icon: <DiamondIcon width={32} height={32} />,
     },
     { name: "Others", url: "/category", subMenu: subMenuOthers },

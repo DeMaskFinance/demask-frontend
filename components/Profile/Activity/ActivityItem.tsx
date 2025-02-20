@@ -8,6 +8,8 @@ import { useContext } from "react";
 const HistoryItem = ({ item }: any) => {
   const { demask, chainId } = useContext(AccountContext);
 
+  console.log(item)
+
   return (
     <tr className="flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500">
       <td className="py-2 flex items-center justify-start  md:basis-1/7 w-[140px]">

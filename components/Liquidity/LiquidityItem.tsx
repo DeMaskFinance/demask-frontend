@@ -14,7 +14,6 @@ import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { toast } from "sonner";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -24,13 +23,14 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
   type,
 }) => {
-  const { account, wallet, chainId } = useContext(AccountContext);
+  const { account, wallet, updateBalance, demask, chainId } =
+    useContext(AccountContext);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
   const [reward, setReward] = useState("");
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -74,13 +74,12 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         setIsOpenErrorCollect,
         setHash,
       });
-      queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
+      await updateBalance();
     } else {
-      toast.error("No account and DML");
+      console.log("No account and DML");
     }
   };
 
-  console.log(liquidity)
 
   return (
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
@@ -91,7 +90,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
               <MediaNFT data={liquidity} isControls={false} />
             ) : (
               <Image
-                src={liquidity?.avatar!}
+                src={liquidity?.avatar || "/placeHolderIMG.png"}
                 alt="banner"
                 width={600}
                 height={600}

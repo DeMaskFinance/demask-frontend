@@ -58,9 +58,8 @@ export default function NavFooter() {
         onClick={() => {
           setActive(false);
         }}
-        className={`bgshader_900 ${
-          active ? "block" : "hidden"
-        } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
+        className={`bgshader_900 ${active ? "block" : "hidden"
+          } opacity-40 fixed overflow-hidden lg:hidden top-0 right-0 left-0 bottom-0 w-full h-full z-20`}
       ></div>
       <footer
         ref={footerRef}

@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
-import { WarningIcon } from "../../Icons";
+import { LoadingIcon, WarningIcon } from "../../Icons";
 import Wrapper from "../Wrapper";
+import { addNetwork } from "@/libs/utils/addNetwork";
 
 interface WrongNetworkProps { }
 const WrongNetwork: React.FC<WrongNetworkProps> = () => {
@@ -24,6 +25,7 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   const { isLoggedIn } = useSelector(selectProfile);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [isNetworkMissing, setIsNetworkMissing] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -37,18 +39,30 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
       wallet !== "braavos"
     ) {
       const checkNetwork = async () => {
-        const provider = await getProvider(wallet);
-        const networkId = await provider.request({ method: "net_version" });
-        if (networkId !== chainId) {
-          setIsWrongNetwork(true);
-        } else {
-          setIsWrongNetwork(false);
-          document.body.style.overflowY = "auto";
+        try {
+          const provider = await getProvider(wallet);
+          const networkId = await provider.request({ method: "net_version" });
+
+          if (!networkId) {
+            setIsNetworkMissing(true);
+          } else if (networkId !== chainId) {
+            setIsWrongNetwork(true);
+            setIsNetworkMissing(false);
+          } else {
+            setIsWrongNetwork(false);
+            setIsNetworkMissing(false);
+            document.body.style.overflowY = "auto";
+          }
+        } catch (error) {
+          console.error("Error detecting network:", error);
+          setIsNetworkMissing(true);
         }
       };
+
       checkNetwork();
     } else {
       setIsWrongNetwork(false);
+      setIsNetworkMissing(false);
     }
   }, [chainId, account, wallet, router.isReady]);
 
@@ -61,46 +75,67 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     document.body.style.overflowY = "auto";
   };
 
+  const [loading, setLoading] = useState(false)
+
   return (
-    <Wrapper isOpen={isWrongNetwork}>
+    <Wrapper isOpen={isWrongNetwork || isNetworkMissing}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
-         
-          <h3 className="my-4 font-medium text-shader_100">
-            Currently Demask only supported in Monad Testnet
-          </h3>
-
-
-
-          <h2 className="font-medium text-yellow">Warning</h2>
-          <div className="flex my-4 gap-x-3">
-            <WarningIcon />
-            <p className=" text-yellow">
-              Please switch your network to continue
-            </p>
-          </div>
-          <div className="flex justify-between px-0 lg:px-6">
-            <a href="https://monad-networks-testnet.vercel.app/" target="_blank"
-              className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
-              // onClick={() =>
-              //   changeNetwork(
-              //     chainId,
-              //     wallet,
-              //     demask,
-              //     setIsWrongNetwork,
-              //     updateChainId
-              //   )
-              // }
-            >
-              Add Network
-            </a>
-            <button
-              className="p-2 text-sm font-medium text-white rounded-lg bg-red"
-              onClick={disconnectWallet}
-            >
-              Disconnect wallet
-            </button>
-          </div>
+          {isNetworkMissing ? (
+            <>
+              <h2 className="text-xl font-semibold text-white">
+                Monad Testnet Network Not Found
+              </h2>
+              <h3 className="my-4 font-medium text-shader_100">
+                The required network is missing from your wallet.
+              </h3>
+              <a href="https://monad-networks-testnet.vercel.app/" target="_blank"
+                className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
+              // onClick={() => addNetwork(wallet, demask)}
+              >
+                Add Network
+              </a>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl font-semibold text-white">
+                Check your network
+              </h2>
+              <h3 className="my-4 font-medium text-shader_100">
+                Currently Demask only supports Monad Testnet
+              </h3>
+              <h2 className="font-medium text-yellow">Warning</h2>
+              <div className="flex my-4 gap-x-3">
+                <WarningIcon />
+                <p className="text-yellow">
+                  Please switch your network to continue
+                </p>
+              </div>
+              <div className="flex justify-between px-0 lg:px-6">
+                <button
+                  className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
+                  onClick={() =>
+                    changeNetwork(
+                      chainId,
+                      wallet,
+                      demask,
+                      setIsWrongNetwork,
+                      updateChainId,
+                      setLoading
+                    )
+                  }
+                >
+                  Switch Network
+                </button>
+                <button
+                  className="p-2 text-sm font-medium text-white rounded-lg bg-red"
+                  onClick={disconnectWallet}
+                >
+                  Disconnect wallet
+                </button>
+              </div>
+            </>
+          )}
           <button
             className="absolute top-0 right-0 p-2 text-lg"
             onClick={disconnectWallet}
@@ -109,7 +144,8 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
           </button>
         </div>
       </div>
-    </Wrapper>
+    </Wrapper >
+
   );
 };
 

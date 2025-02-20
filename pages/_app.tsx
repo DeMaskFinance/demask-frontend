@@ -21,20 +21,13 @@ import MaintenanceError from "./maintenanceError";
 import { StarknetProvider } from "@/components/StarknetProvider";
 import { defineChain } from "viem";
 import ProgressBar from "@/components/Layouts/ProviderRouter";
+import NetworkListener from "@/components/NetworkListener";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
 
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
-// DeMask:
-// RPC: https://rpc.monad-testnet.category.xyz/rpc/SPa4TbSgMJxz5ywmzYvvc9O5nkAVGTgOcsi7yErG
-// Explorer: https://monad-foundation.notion.site/Monad-Testnet-Onboarding-Guide-17c6367594f280369b6fddeed24de9db
-// Default Collection: 0xb8eDDD76E9f1c3fd4933781334080b3b26AaC974
-// Create Factory: 0x2AcFd0011bFb63B4bd0c48E5fefb3D0D93FA8A1f
-// Factory ERC1155: 0xA0FD2a9477D37EE9b5F36d0f8103DB6a1B6d8dA8
-// Router ERC1155: 0xd70160709b01d7e5E3CDEfB80eb7807345bB51c2
-// Factory ERC721: 0xFE0383ADB9720690bCD252F5c883517C5516d305
-// Router ERC721: 0x57e9BE10CD225ECaaAfb2128CD7dbA22ea8eef3c
+
 const monad = defineChain({
   id: 10143,
   name: 'Monad Testnet',
@@ -61,10 +54,12 @@ const monad = defineChain({
 })
 
 const wagmiConfig = defaultWagmiConfig({
-  chains: [mainnet, sepolia, monad],
+  chains: [monad],
   projectId,
   metadata,
 });
+
+
 createWeb3Modal({ wagmiConfig, projectId, defaultChain: sepolia });
 export default function App({
   Component,
@@ -113,16 +108,16 @@ export default function App({
                     font-family: ${titillium.style.fontFamily};
                   }
                 `}</style>
-                <WagmiProvider config={wagmiConfig}>
-                  <Layout>
-                    {isMaintenanceMode ? (
-                      <MaintenanceError />
-                    ) : (
-                      <Component {...pageProps} />
-                    )}
-                  </Layout>
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </WagmiProvider>
+                {/* <WagmiProvider config={wagmiConfig}> */}
+                <Layout>
+                  {isMaintenanceMode ? (
+                    <MaintenanceError />
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
+                </Layout>
+                <ReactQueryDevtools initialIsOpen={false} />
+                {/* </WagmiProvider> */}
               </QueryParamProvider>
             </QueryClientProvider>
           </StarknetProvider>

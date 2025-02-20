@@ -138,7 +138,7 @@ const EVMWallet = () => {
           </p>
         </div>
       </div>
-      <div
+      {/* <div
         className={styles.walletItem}
         onClick={() => connectWallet("Coinbase")}
       >
@@ -176,7 +176,7 @@ const EVMWallet = () => {
           className="w-9 h-9 object-cover"
         />
         <p>OKX wallet</p>
-      </div>
+      </div> */}
     </div>
   );
 };

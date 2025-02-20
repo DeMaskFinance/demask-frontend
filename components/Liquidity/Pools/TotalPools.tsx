@@ -14,8 +14,8 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const TotalPools = () => {
   const { chainId } = useContext(AccountContext);
-  const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
-  const [type, setType] = useState<string>("erc1155");
+  const [activeChoice, setActiveChoice] = useState<string>("ERC-721");
+  const [type, setType] = useState<string>("erc721");
   const { ref, inView } = useInView();
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const router = useRouter();
@@ -44,7 +44,7 @@ const TotalPools = () => {
   return (
     <div className="rounded-lg bg-shader_800 flex flex-col overflow-hidden mb-8 min-h-[550px] max-h-[650px]">
       <TabGroups
-        choices={["ERC-1155", "ERC-721"]}
+        choices={["ERC-721", "ERC-1155"]}
         activeChoice={activeChoice}
         onChoiceChange={handleChoiceChange}
         isDefault
