@@ -78,25 +78,9 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   const [loading, setLoading] = useState(false)
 
   return (
-    <Wrapper isOpen={isWrongNetwork || isNetworkMissing}>
+    <Wrapper isOpen={isWrongNetwork}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
-          {isNetworkMissing ? (
-            <>
-              <h2 className="text-xl font-semibold text-white">
-                Monad Testnet Network Not Found
-              </h2>
-              <h3 className="my-4 font-medium text-shader_100">
-                The required network is missing from your wallet.
-              </h3>
-              <a href="https://monad-networks-testnet.vercel.app/" target="_blank"
-                className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
-              // onClick={() => addNetwork(wallet, demask)}
-              >
-                Add Network
-              </a>
-            </>
-          ) : (
             <>
               <h2 className="text-xl font-semibold text-white">
                 Check your network
@@ -135,7 +119,6 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
                 </button>
               </div>
             </>
-          )}
           <button
             className="absolute top-0 right-0 p-2 text-lg"
             onClick={disconnectWallet}
