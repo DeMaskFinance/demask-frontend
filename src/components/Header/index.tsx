@@ -77,19 +77,20 @@ const Header = () => {
             </a>
           ))}
         </ul>
-        <a
+        {/* <a
           href="https://app.demask.finance/explorer"
           target="_blank"
           rel="noopener noreferrer"
-        >
+        > */}
           <Button
             variant="gradient"
+            disabled={true}
             className="flex items-center gap-x-2 pl-4 pr-2 h-10"
           >
             <p>Launch app</p>
             <RightIcon width={20} height={20} />
           </Button>
-        </a>
+        {/* </a> */}
       </header>
     </div>
   );

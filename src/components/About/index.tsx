@@ -43,19 +43,20 @@ const About = () => {
 
           <div className="btn_animation btn_active mt-8">
             <div className="overlay">
-              <a
+              {/* <a
                 href="https://app.demask.finance/explorer"
                 target="_blank"
                 rel="noopener noreferrer"
-              >
+              > */}
                 <Button
                   variant="gradient"
+                  disabled={true}
                   className="flex rounded-3xl gap-x-2 px-7"
                 >
                   <DemaskIcon width={20} height={20} />
                   <p>Launch app</p>
                 </Button>
-              </a>
+              {/* </a> */}
             </div>
           </div>
         </div>
