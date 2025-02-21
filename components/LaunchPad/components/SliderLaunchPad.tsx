@@ -77,10 +77,13 @@ const SliderLaunchPad = () => {
                   (item: LaunchpadData, itemIndex: number) => (
                     <SwiperSlide>
                       <div
-                        className={` object-cover max-h-[346px] min-h-[346px] relative`}
+                        className={` object-cover min-h-[300px] relative`}
                         key={itemIndex}
                         style={{
                           backgroundImage: `url(${item.metadata.banner})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          aspectRatio: "5 / 1", // Tỷ lệ 5:1
                         }}
                       >
                         <div
