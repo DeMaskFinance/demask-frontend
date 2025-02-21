@@ -100,7 +100,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
         inputAmount={inputAmount}
         setInputAmount={setInputAmount}
         isLoading={isLoading}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || inputAmount >= data?.max_allocation}
       />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
