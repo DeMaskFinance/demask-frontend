@@ -28,6 +28,7 @@ interface LaunchpadData extends Socials {
   startTime: number;
   totalSoldOut: number;
   mintPercent: number;
+  isProgress: boolean;
   launchpadList: {
     data: [LaunchpadItem];
   };

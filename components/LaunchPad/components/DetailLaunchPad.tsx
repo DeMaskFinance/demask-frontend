@@ -13,6 +13,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Overview from "./Overview";
 import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
+import Link from "next/link";
 
 
 export default function DetailLaunchPad() {
@@ -54,10 +55,10 @@ export default function DetailLaunchPad() {
         <div className="">
           <div className="flex justify-between">
             <Back />
-            <div className="text-primary_300 flex items-center gap-x-1 text-sm">
+            {/* <Link href={`/colection/${data?.launchpadAddress}`} className="text-primary_300 flex items-center gap-x-1 text-sm">
               View Collection
               <RightIcon width={16} height={16} />
-            </div>
+            </Link> */}
           </div>
           {isLoading ? (
             <div>
