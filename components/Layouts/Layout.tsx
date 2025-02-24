@@ -11,6 +11,7 @@ import Header from "../Header";
 import { useQuery } from "@tanstack/react-query";
 import { contractService } from "@/libs/service/contractsService";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { useAppKitAccount } from "@reown/appkit/react";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent, account } =
     useContext(AccountContext);
@@ -30,8 +31,15 @@ export default function Layout({ children }: PropsWithChildren) {
     }
   }, [user, accessToken, isLoggedIn]);
 
+
+  const { address, isConnected } = useAppKitAccount();
+
+
   useEffect(() => {
+
     const initProvider = async () => {
+
+
       if (window.ethereum) {
         try {
           const provider = await getProvider(wallet);
@@ -63,7 +71,8 @@ export default function Layout({ children }: PropsWithChildren) {
     };
 
     initProvider();
-  }, [wallet]);
+  }, [wallet, address]);
+
   const { data } = useQuery<ContractAddresses>({
     queryKey: ["contracts", chainId, version],
     queryFn: async () => {
