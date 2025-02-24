@@ -3,6 +3,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 
 declare global {
   interface Window {
+    //@ts-expect-error:error
     ethereum: any;
     okxwallet?: any;
   }

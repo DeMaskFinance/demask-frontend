@@ -7,20 +7,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AccountContext from "@/context/AccountContext";
-import useContractWrite from "@/hooks/useContractWrite";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import getMetadataUrl from "@/libs/utils/getMetadata";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { toast } from "sonner";
+import { useWriteContract } from 'wagmi';
 import * as yup from "yup";
+import abiMint721 from "../../abi/erc721/abiDefault721.json";
 import { Button } from "../Buttons";
 import { PlusIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import abiMint721 from "../../abi/erc721/abiDefault721.json"
-import ercContract from "@/libs/utils/erc/erc.contract";
+
 export interface MintErc721Props {
   fileIPFS: string;
   setFileIPFS: any;
@@ -56,12 +56,9 @@ const MintErc721: React.FC<MintErc721Props> = ({
   const handleSelectChange = (index: string) => {
     setCollection(data[parseInt(index, 10)]);
   };
-  const { writeAsync, isPending } = useContractWrite(
-    wallet,
-    collection.collectionAddress,
-    "safeMint"
-  );
 
+
+  const { writeContractAsync } = useWriteContract()
 
   const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
     try {
@@ -69,6 +66,7 @@ const MintErc721: React.FC<MintErc721Props> = ({
         toast.error("File not found.Try again!");
         return;
       }
+
       setIsProcess(true);
 
       const urlMetadata = await getMetadataUrl.getMetadataUrlStarknet({
@@ -79,34 +77,32 @@ const MintErc721: React.FC<MintErc721Props> = ({
         description: values.description,
       });
 
-      const contract = await ercContract.erc(
-        wallet,
-        collection.collectionAddress,
-        abiMint721
-      );
+      const result = await writeContractAsync({
+        account,
+        abi: abiMint721,
+        address: collection.collectionAddress as `0x${string}`,
+        functionName: "safeMint",
+        args: [account, 1, urlMetadata],
+        gas: BigInt(200000),
+      });
 
       setMetadataIPFS(urlMetadata);
-      const rs = await contract.safeMint(account, 1, urlMetadata, {
-        gasLimit: 200000
-      })
+      setHash(result);
+      setIsOpenSuccess(true);
 
-      const tx = await rs.wait();
-
-      if (tx) {
-        setHash(rs.hash);
-        setIsOpenSuccess(true);
-      }
-
+      toast.success("NFT minted successfully!");
 
       resetForm();
       setSelectedFile(null);
       setFileIPFS(null);
-      setIsProcess(false);
     } catch (error) {
+      toast.error("Minting failed. Please try again!");
+      console.error(error);
+    } finally {
       setIsProcess(false);
-      console.log(error)
     }
   };
+
   return (
     <div>
       <label htmlFor="collection" className="block mb-4 font-semibold">

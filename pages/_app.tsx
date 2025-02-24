@@ -22,6 +22,8 @@ import { StarknetProvider } from "@/components/StarknetProvider";
 import { defineChain } from "viem";
 import ProgressBar from "@/components/Layouts/ProviderRouter";
 import NetworkListener from "@/components/NetworkListener";
+import { networks, wagmiAdapter } from "@/config";
+import { createAppKit } from '@reown/appkit/react';
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -53,14 +55,29 @@ const monad = defineChain({
   },
 })
 
-const wagmiConfig = defaultWagmiConfig({
-  chains: [monad],
+// const wagmiConfig = defaultWagmiConfig({
+//   chains: [monad],
+//   projectId,
+//   metadata,
+// });
+
+
+const generalConfig = {
   projectId,
+  networks,
   metadata,
-});
+  themeMode: 'dark' as const,
+}
 
+createAppKit({
+  adapters: [wagmiAdapter],
+  ...generalConfig,
+  features: {
+    analytics: true
+  }
+})
 
-createWeb3Modal({ wagmiConfig, projectId, defaultChain: monad });
+// createWeb3Modal({ wagmiConfig, projectId, defaultChain: monad });
 export default function App({
   Component,
   pageProps,
@@ -108,16 +125,16 @@ export default function App({
                     font-family: ${titillium.style.fontFamily};
                   }
                 `}</style>
-                {/* <WagmiProvider config={wagmiConfig}> */}
-                <Layout>
-                  {isMaintenanceMode ? (
-                    <MaintenanceError />
-                  ) : (
-                    <Component {...pageProps} />
-                  )}
-                </Layout>
-                <ReactQueryDevtools initialIsOpen={false} />
-                {/* </WagmiProvider> */}
+                <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+                  <Layout>
+                    {isMaintenanceMode ? (
+                      <MaintenanceError />
+                    ) : (
+                      <Component {...pageProps} />
+                    )}
+                  </Layout>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </WagmiProvider>
               </QueryParamProvider>
             </QueryClientProvider>
           </StarknetProvider>

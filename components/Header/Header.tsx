@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import { getProvider } from "@/libs/connection/getProvider";
 import formatNumber from "@/libs/utils/formatNumer";
-import { logout, selectProfile } from "@/store/profileSlice";
+import { login, logout, selectProfile } from "@/store/profileSlice";
 import Tippy from "@tippyjs/react/headless";
 import { ethers } from "ethers";
 import Link from "next/link";
@@ -33,10 +33,16 @@ import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import useInformationToken from "@/hooks/useInformationToken";
 import { CubeIcon } from "@radix-ui/react-icons";
+import { useAppKit, useAppKitAccount, useDisconnect } from '@reown/appkit/react';
+import { useSignMessage } from "wagmi";
+import { getNonce, loginAuthen } from "@/libs/service/userService";
 
 export default function Header() {
+
   const { account, updateAccount, wallet, isEvent, setIsEvent, chainId, demask } =
     useContext(AccountContext);
+
+
   const { isLoggedIn, profile } = useSelector(selectProfile);
   const { isLoadingBalance, balanceToken } = useInformationToken(
     account,
@@ -51,31 +57,70 @@ export default function Header() {
     setShowSearch(false);
     document.body.style.overflowY = "auto";
   };
+
+
+  const { open } = useAppKit();
+  const { address, isConnected } = useAppKitAccount();
+  const { signMessageAsync } = useSignMessage();
+  const { disconnect } = useDisconnect()
+  const [isSigning, setIsSigning] = useState(false);
+
+  const handleLogin = async () => {
+    if (!isConnected) {
+      await open();
+      return;
+    }
+    if (address && !isSigning) {
+      setIsSigning(true);
+      await signAndAuthenticate();
+    }
+  };
+
+  const signAndAuthenticate = async () => {
+    try {
+      if (!address) return;
+
+      const { data: sign } = await getNonce(address);
+      const signedData = await signMessageAsync({ message: String(sign.nonce) });
+
+      if (!signedData) {
+        disconnect();
+        return;
+      }
+
+      const loginData = await loginAuthen({
+        userAddress: address,
+        signature: signedData,
+      });
+
+      dispatch(login({ accessToken: loginData.accessToken, user: address }));
+      updateAccount(address);
+    } catch (error) {
+      disconnect();
+      console.error(error);
+    } finally {
+      setIsSigning(false);
+    }
+  };
+
+  useEffect(() => {
+    if (address && isConnected && !isSigning) {
+      signAndAuthenticate();
+    }
+  }, [address, isConnected]);
+
+
+
+  const hanldeDisconnect = () => {
+
+  }
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
     // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
+    disconnect();
     dispatch(logout());
   };
-
-  const provider = getProvider(wallet);
-  useEffect(() => {
-    const getAddress = async () => {
-      const provider = await getProvider(wallet);
-      if (provider) {
-        const test = new ethers.providers.Web3Provider(provider) as any;
-        const web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        const selectedAddress = accounts[0];
-        if (provider && test.provider.selectedAddress === null) {
-          disconnectWallet();
-        }
-      }
-    };
-    if (wallet !== "argentX" && wallet !== "braavos") {
-      getAddress();
-    }
-  }, [provider, wallet]);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
@@ -169,7 +214,7 @@ export default function Header() {
             </div>
             <MenuNetwork />
 
-            {isLoggedIn && account ? (
+            {isConnected && account ? (
               <div className="flex items-center gap-x-2">
                 <div className="flex items-center px-3 py-2 font-bold text-white rounded-lg gap-x-2 bg-shader_700">
                   {isLoadingBalance ? (
@@ -202,7 +247,9 @@ export default function Header() {
                           <CubeIcon width={18} height={18} />
                           Referrals
                         </Link>
-                        <li className={`text-sm item_menu gap-x-2 mb-2`} onClick={disconnectWallet}>
+                        <li className={`text-sm text-rose-500 item_menu gap-x-2 mb-2`} onClick={() => {
+                          disconnectWallet()
+                        }}>
                           <LogoutIcon width={18} height={18} />
                           <div>Disconnect</div>
                         </li>
@@ -222,20 +269,14 @@ export default function Header() {
 
               </div>
             ) : (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    gradient
-                    className=" h-10 px-[10px] md:px-3 flex gap-x-2"
-                  >
-                    <WalletIcon width={20} height={20} />
-                    <p className="hidden md:block">Connect Wallet</p>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-[350px] p-0 border-none">
-                  <ModalWallet />
-                </DialogContent>
-              </Dialog>
+              <Button
+                gradient
+                className=" h-10 px-[10px] md:px-3 flex gap-x-2"
+                onClick={handleLogin}
+              >
+                <WalletIcon width={20} height={20} />
+                <p className="hidden md:block">Connect Wallet</p>
+              </Button>
             )}
           </div>
         </div>
