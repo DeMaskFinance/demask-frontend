@@ -98,23 +98,23 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           <p className="text-2xl font-bold">{data.metadata.name}</p>
         </div>
         <div className="h-[1px] w-full bg-shader_500 my-4"></div>
-        {data?.isProgress && 
-        <div className="relative">
-        <div className="flex justify-between ">
-          <p className="font-bold">Total Minted</p>
-          <div className="flex gap-x-1 ">
-            <p>{(data.mintPercent)}%</p>
+        {data?.isProgress &&
+          <div className="relative">
+            <div className="flex justify-between ">
+              <p className="font-bold">Total Minted</p>
+              <div className="flex gap-x-1 ">
+                <p>{(data.mintPercent)}%</p>
+              </div>
+            </div>
+            <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">
+              <div
+                className="h-[10px] bg-primary_400 rounded-lg absolute top-0 left-0 w-2/3"
+                style={{
+                  width: `${(data.totalSoldOut / data.limit) * 100}%`,
+                }}
+              ></div>
+            </div>
           </div>
-        </div>
-        <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">
-          <div
-            className="h-[10px] bg-primary_400 rounded-lg absolute top-0 left-0 w-2/3"
-            style={{
-              width: `${(data.totalSoldOut / data.max_allocation) * 100}%`,
-            }}
-          ></div>
-        </div>
-      </div>
         }
         <div className="p-3 bg-shader_500 rounded-lg">
           <p className="mb-2">

@@ -54,8 +54,8 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
         setError("Insufficient Token");
         return;
       }
-      if (data.max_allocation === data.totalSoldOut) {
-        setError("Max allocation");
+      if (data.limit === data.totalSoldOut) {
+        setError("Sold out");
         return;
       }
       if (isPublic) {
@@ -105,9 +105,8 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
-            className={`w-full h-10 ${
-              isDisabled || isLoading ? "opacity-50" : ""
-            }`}
+            className={`w-full h-10 ${isDisabled || isLoading ? "opacity-50" : ""
+              }`}
             primary
             disabled={isDisabled || isLoading}
           >
