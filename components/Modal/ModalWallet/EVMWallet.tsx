@@ -90,6 +90,8 @@ const EVMWallet = () => {
         const msg = `${Buffer.from(String(sign.nonce), "utf8").toString(
           "hex"
         )}`;
+
+        console.log(sign.nonce, msg)
         const signedData = await provider?.request({
           method: "personal_sign",
           params: [msg, accounts[0]],

@@ -1,0 +1,27 @@
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import type { AppKitNetwork } from "@reown/appkit/networks";
+import { monadTestnet } from "@reown/appkit/networks";
+
+export const projectId = "c00998d2cdc140a2fb0fc47599957079";
+
+if (!projectId) {
+  throw new Error("Project ID is not defined");
+}
+
+export const metadata = {
+  name: "AppKit",
+  description: "AppKit Example",
+  url: "https://reown.com", // origin must match your domain & subdomain
+  icons: ["https://avatars.githubusercontent.com/u/179229932"],
+};
+
+// for custom networks visit -> https://docs.reown.com/appkit/react/core/custom-networks
+export const networks = [monadTestnet] as [AppKitNetwork, ...AppKitNetwork[]];
+
+//Set up the Wagmi Adapter (Config)
+export const wagmiAdapter = new WagmiAdapter({
+  projectId,
+  networks,
+});
+
+export const config = wagmiAdapter.wagmiConfig;

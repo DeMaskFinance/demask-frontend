@@ -32,6 +32,7 @@ import TypeErc from "../Common/TypeErc";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { MintErc721Props } from "./MintNFTStarknet";
+import { useWriteContract } from "wagmi";
 interface mintProps {
   amount: number;
   url: string;
@@ -121,45 +122,32 @@ export default function MintNFTEVM({
     setAttributeItems(updatedItems);
   };
 
+  const { writeContractAsync } = useWriteContract();
+
   async function mintNFT({ amount, url }: mintProps) {
-    const ethereum = (window as any).ethereum;
     let transactionHash = "";
-    if (typeof ethereum === "undefined") {
-      return;
-    }
+
     try {
       setMetadataIPFS(url);
-      const contract = await ercContract.erc(
-        wallet,
-        collection.collectionAddress,
-        abiDemask
-      );
-      // const networkSwitched = await changeNetwork(
-      //   chainId,
-      //   wallet,
-      //   demask,
-      //   setIsWrongNetwork,
-      //   updateChainId
-      // );
-      // if (!networkSwitched) {
-      //   return;
-      // }
 
-      const tx = await contract.mint(
+      const result = await writeContractAsync({
         account,
-        exponentialToDecimal(amount),
-        "0x",
-        url
-      );
+        abi: abiDemask,
+        address: collection.collectionAddress as `0x${string}`,
+        functionName: "mint",
+        args: [account,
+          exponentialToDecimal(amount),
+          "0x",
+          url],
+        gas: BigInt(200000),
+      });
 
-      transactionHash = tx.hash;
+
+      transactionHash = result;
       setHash(transactionHash);
-      const check = await tx.wait();
-      if (check.status === 1) {
-        setIsOpenSuccess(true);
-      } else {
-        setIsOpenSuccess(false);
-      }
+
+      setIsOpenSuccess(true);
+
 
       setTotalSupply(null);
       setName("");
