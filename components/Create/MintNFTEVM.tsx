@@ -134,22 +134,24 @@ export default function MintNFTEVM({
         collection.collectionAddress,
         abiDemask
       );
-      const networkSwitched = await changeNetwork(
-        chainId,
-        wallet,
-        demask,
-        setIsWrongNetwork,
-        updateChainId
-      );
-      if (!networkSwitched) {
-        return;
-      }
+      // const networkSwitched = await changeNetwork(
+      //   chainId,
+      //   wallet,
+      //   demask,
+      //   setIsWrongNetwork,
+      //   updateChainId
+      // );
+      // if (!networkSwitched) {
+      //   return;
+      // }
+
       const tx = await contract.mint(
         account,
         exponentialToDecimal(amount),
         "0x",
         url
       );
+
       transactionHash = tx.hash;
       setHash(transactionHash);
       const check = await tx.wait();
