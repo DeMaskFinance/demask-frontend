@@ -27,7 +27,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
   return (
     <>
       {isLoading || isFetching ? (
-        <div className="w-full h-full flex-auto justify-center items-center flex">
+        <div className="w-full h-full flex-auto min-h-[300px] justify-center items-center flex">
           <LoadingIcon width={30} height={30} className="animate-spin" />
         </div>
       ) : (
@@ -70,13 +70,12 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 </td>
                 <td className="py-2 flex items-center justify-end lg:w-full md:w-full w-[140px]">
                   <div
-                    className={`flex items-center ${
-                      item.changePrice24h > 0
-                        ? "text-green"
-                        : item.changePrice24h === 0
+                    className={`flex items-center ${item.changePrice24h > 0
+                      ? "text-green"
+                      : item.changePrice24h === 0
                         ? "text-dark2"
                         : "text-red"
-                    } `}
+                      } `}
                   >
                     {isFetching ? (
                       skeleton

@@ -140,7 +140,7 @@ function ListTracsaction() {
 
           <tbody className="flex flex-col flex-auto">
             {isLoading || isFetching ? (
-              <div className="w-full h-full flex-auto justify-center items-center flex">
+              <div className="w-full h-full min-h-[300px] flex-auto justify-center items-center flex">
                 <LoadingIcon width={30} height={30} className="animate-spin" />
               </div>
             ) : (
