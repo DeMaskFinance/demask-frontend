@@ -104,6 +104,11 @@ export default function Header() {
   };
 
   useEffect(() => {
+
+    if (address && isConnected && !isSigning && account) {
+      return;
+    }
+
     if (address && isConnected && !isSigning) {
       signAndAuthenticate();
     }
@@ -111,12 +116,9 @@ export default function Header() {
 
 
 
-  const hanldeDisconnect = () => {
 
-  }
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
-    // localStorage.removeItem("WALLET_DEMASK");
     updateAccount("");
     disconnect();
     dispatch(logout());
