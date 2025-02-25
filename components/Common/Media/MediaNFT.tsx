@@ -22,9 +22,9 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const isVideo =
-  data?.metadata?.animation_url?.includes("mp4") ||
-  data?.metadata?.avatar?.includes("mp4") ||
-  data?.avatar?.includes("mp4");
+    data?.metadata?.animation_url?.includes("mp4") ||
+    data?.metadata?.avatar?.includes("mp4") ||
+    data?.avatar?.includes("mp4");
 
   const videoUri =
     data?.metadata?.animation_url ||
@@ -55,16 +55,15 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 <Image
                   src={formatLinkIPFS(
                     data?.metadata?.image ||
-                      data?.metadata?.avatar ||
-                      data?.avatar
+                    data?.metadata?.avatar ||
+                    data?.avatar
                   )}
                   alt="imgNFT"
                   width={680}
                   height={576}
                   sizes="(max-width: 770px) 100vw"
-                  className={`w-full h-full transition-transform duration-150 object-cover aspect-square ${
-                    zoom ? "group-hover:scale-[1.05]" : ""
-                  }`}
+                  className={`w-full h-full transition-transform duration-150 object-cover aspect-square ${zoom ? "group-hover:scale-[1.05]" : ""
+                    }`}
                   blurDataURL="/placeHolderIMG.png"
                   onError={(event: any) => {
                     event.target.srcset =
@@ -82,8 +81,8 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               <Image
                 src={formatLinkIPFS(
                   data.metadata?.image ||
-                    data.metadata?.avatar ||
-                    "/placeHolderIMG.png"
+                  data.metadata?.avatar ||
+                  "/placeHolderIMG.png"
                 )}
                 alt="defaultImage"
                 width={680}
@@ -98,18 +97,18 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 p-2 bg-white/30 backdrop-blur-lg rounded-full"
               >
                 {isVideoPlaying ? (
-                  <BiPause className="text-white text-3xl" />
+                  <BiPause className="text-white text-md" />
                 ) : (
-                  <BiPlay className="text-white text-3xl" />
+                  <BiPlay className="text-white text-md" />
                 )}
 
               </button>
             </div>
           )}
 
-          
 
-          {(data.metadata?.animation_url ) && (
+
+          {(data.metadata?.animation_url) && (
             <video
               ref={videoRef}
               src={formatLinkIPFS(data.metadata?.animation_url || data?.metadata?.avatar)}
@@ -118,22 +117,21 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               loop
               muted
               controls={isControls}
-              className={`w-full h-full object-cover z-0 rounded-lg ${
-                isVideoPlaying ? "block" : "hidden"
-              }`}
+              className={`w-full h-full object-cover z-0 rounded-lg ${isVideoPlaying ? "block" : "hidden"
+                }`}
             />
           )}
 
 
 
-{(data.metadata?.avatar?.includes("mp4") ) && (
+          {(data.metadata?.avatar?.includes("mp4")) && (
             <video
               src={formatLinkIPFS(data?.metadata?.avatar)}
               autoPlay={true}
               playsInline
               loop
               muted
-            
+
             />
           )}
 
@@ -148,9 +146,8 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
                 muted
                 controls
                 src={formatLinkIPFS(data.metadata.animation_url)}
-                className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg object-cover ${
-                  isControls ? "" : "hidden"
-                }`}
+                className={`absolute top-[83%] h-10 translate-x-1/2 right-2/4 w-[65%] py-1 rounded-lg object-cover ${isControls ? "" : "hidden"
+                  }`}
               >
                 Your browser does not support the <code>audio</code> element.
               </audio>

@@ -15,12 +15,13 @@ import useDebounce from "@/hooks/useDebounce";
 import { queryClient } from "@/libs/constants";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
 import { erc721TradingSell } from "@/libs/service/tradeService";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import NFTGrid from "./NFTsGrids";
+
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
     useContext(AccountContext);
@@ -57,14 +58,14 @@ const Sell = () => {
     chainId,
     version,
   ]);
-  const isApprovedNFT = useCheckApproveNFT(
+
+
+  const { isApprovedNFT, loading, refetch } = useCheckApproveNFT(
     account,
-    wallet,
     collectionAddress,
     contracts?.ERC721_ROUTER_ADDRESS || "",
-    isOpenTransaction
+    "erc721"
   );
-
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,
@@ -96,6 +97,9 @@ const Sell = () => {
       image: data?.avatar,
     },
   };
+
+  const { handleApproveNFT } = useApproveNFT();
+
   return (
     <Fragment>
       {account ? (

@@ -1,32 +1,37 @@
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiErc721 from "@/abi/erc721/abiErc721.json";
-import ercContract from "./erc/erc.contract";
+import { useWriteContract } from "wagmi";
 
-const handleApproveNFT = async (
-  account: string,
-  wallet: string,
-  nftAddress: string,
-  setIsOpenTransaction: any,
-  routerAddress: string,
-  type?: "erc721" | "erc1155"
-) => {
-  if (account && wallet) {
-    const contract = await ercContract.erc(
-      wallet,
-      nftAddress,
-      type === "erc721" ? abiErc721 : abiErc1155
-    );
+const useApproveNFT = () => {
+  const { writeContractAsync } = useWriteContract();
 
-    console.log(routerAddress);
-    try {
-      setIsOpenTransaction(true);
-      const result = await contract.setApprovalForAll(routerAddress, true);
-      await result.wait();
-      setIsOpenTransaction(false);
-    } catch (error) {
-      console.error(error);
-      setIsOpenTransaction(false);
+  const handleApproveNFT = async (
+    account: any,
+    wallet: string,
+    nftAddress: string,
+    setIsOpenTransaction: (open: boolean) => void,
+    routerAddress: string,
+    type?: "erc721" | "erc1155"
+  ) => {
+    if (account) {
+      try {
+        setIsOpenTransaction(true);
+        await writeContractAsync({
+          account,
+          abi: type === "erc721" ? abiErc721 : abiErc1155,
+          address: nftAddress as `0x${string}`,
+          functionName: "setApprovalForAll",
+          args: [routerAddress, true],
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsOpenTransaction(false);
+      }
     }
-  }
+  };
+
+  return { handleApproveNFT };
 };
-export default handleApproveNFT;
+
+export default useApproveNFT;

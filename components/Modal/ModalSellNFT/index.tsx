@@ -55,9 +55,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     account,
     nftAddress,
     idNFT,
-    wallet,
-    isOpenTransaction
   );
+
   useEffect(() => {
     const checkReservesNFT = () => {
       if (inputNFT === "") {
@@ -75,22 +74,30 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
 
   const queryClient = useQueryClient();
 
+  const { sellERC20ERC1155 } = erc1155Contract();
+  const { sellERC20ERC721 } = ercContract721()
+
+
   const handleSellNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
       return;
     }
+
     if (
       isSufficientNFT &&
       Number(dataSell?.reserveNFT) > 0 &&
       Number(dataSell?.reserveToken) > 0 &&
       Math.floor(dataSell.minAmountDecimals) > 0
     ) {
+
+
+      console.log(inputNFT)
       try {
         let result;
         setIsOpenTransaction(true);
         if (inputNFT) {
-          result = await erc1155Contract.sellERC20ERC1155(
+          result = await sellERC20ERC1155(
             wallet,
             nftAddress,
             tokenAddress,
@@ -102,7 +109,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             txDeadline
           );
         } else {
-          result = await ercContract721.sellERC20ERC721(
+          result = await sellERC20ERC721(
             wallet,
             nftAddress,
             tokenAddress,
@@ -207,9 +214,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             <div className="flex items-center gap-x-1">
               <p>Total fee</p>
               <div
-                className={`p-1  rounded-lg transition-all duration-100 ease-linear ${
-                  seeDetail ? "rotate-90" : ""
-                }`}
+                className={`p-1  rounded-lg transition-all duration-100 ease-linear ${seeDetail ? "rotate-90" : ""
+                  }`}
               >
                 <FaChevronRight />
               </div>
@@ -220,9 +226,8 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             </div>
           </div>
           <div
-            className={`overflow-hidden flex justify-between will-change-[height] ${
-              seeDetail ? "h-[100px] opacity-100" : "h-0 opacity-0"
-            } transition-all duration-100 ease-linear`}
+            className={`overflow-hidden flex justify-between will-change-[height] ${seeDetail ? "h-[100px] opacity-100" : "h-0 opacity-0"
+              } transition-all duration-100 ease-linear`}
           >
             <div className="flex flex-col gap-y-[6px]">
               <p>Protocol Fee</p>
