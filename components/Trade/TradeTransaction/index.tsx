@@ -258,7 +258,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 {data?.collectionName}
               </Link>
               <div className="flex gap-x-1 justify-center md:justify-start">
-                <h4>{data?.metadata?.name}</h4>
+                <h4>{data?.metadata?.name?.includes("0x") ? data?.metadata?.name.slice(0, 8) + "..." + data?.metadata?.name.slice(-6) : data?.metadata?.name}</h4>
                 <p>#{idNFT}</p>
               </div>
               <p className="mb-2 mt-3 text-shader_200 text-sm">

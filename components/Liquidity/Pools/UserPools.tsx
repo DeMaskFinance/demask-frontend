@@ -10,8 +10,8 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 const UserPools = () => {
   const { account, chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
-  const [activeChoice, setActiveChoice] = useState<string>("ERC-1155");
-  const [type, setType] = useState<string>("erc1155");
+  const [activeChoice, setActiveChoice] = useState<string>("ERC-721");
+  const [type, setType] = useState<string>("erc721");
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
     choice === "ERC-1155" ? setType("erc1155") : setType("erc721");
@@ -62,7 +62,7 @@ const UserPools = () => {
   return (
     <div className="rounded-lg bg-shader_800 flex flex-col overflow-y-auto min-h-[550px] max-h-[650px]">
       <TabGroups
-        choices={["ERC-1155", "ERC-721"]}
+        choices={["ERC-721", "ERC-1155"]}
         activeChoice={activeChoice}
         onChoiceChange={handleChoiceChange}
         isDefault

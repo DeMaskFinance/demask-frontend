@@ -12,28 +12,7 @@ import UserPools from "./UserPools";
 
 const Pools = () => {
   const [index, setIndex] = useState<number>(0);
-  const { chainId, demask, account } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
-
-  const contracts = queryClient.getQueryData<ContractAddresses>([
-    "contracts",
-    chainId,
-    version,
-  ]);
-
-
-  const router = useRouter();
-
-  const handleAddLiquidity = () => {
-    const nftAddress = contracts?.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS;
-    const tokenAddress = contracts?.WETH_ADDRESS;
-    const idNFT = demask.IDNFT;
-    router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
-  };
-
-  const handleChangeIndex = (index: number) => {
-    setIndex(index);
-  };
+  const { account } = useContext(AccountContext);
 
   return (
     <div>
@@ -47,14 +26,6 @@ const Pools = () => {
           </div>
           <p className="mt-2 text-shader_200">Add liquidity and earn rewards</p>
         </div>
-        {/* <Button
-          type="button"
-          primary
-          className="h-[34px] w-[130px] text-sm font-semibold"
-          onClick={handleAddLiquidity}
-        >
-          + Add Liquidity
-        </Button> */}
       </div>
       {account && <PoolUser />}
       <div className="flex gap-x-2">

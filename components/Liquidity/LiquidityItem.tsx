@@ -14,9 +14,8 @@ import FormatNumber from "../Common/FormatNumber";
 import MediaNFT from "../Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
-import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
-
-
+import { queryClient } from "@/libs/constants";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -33,40 +32,37 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const [reward, setReward] = useState("");
+
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
     version,
   ]);
-
-
-
-
-  const { getRewardDML } = useGetRewardDML();
-
-
-  const { data: rewardData } = useReadContract({
-    address: liquidity.dmlAddress as any,
-    abi: abiDML,
-    functionName: "viewReward",
-    args: [account],
-  });
-
   useEffect(() => {
-    if (rewardData && liquidity) {
-      const rewardDec = divideByDecimal(rewardData.toString(), liquidity.dmlDecimals);
-      setReward(rewardDec);
-    } else {
-      setReward("0");
-    }
-  }, [rewardData, liquidity]);
-
+    const fetchDataReward = async () => {
+      if (account && wallet && liquidity) {
+        const result = await ercContract.viewReward(
+          liquidity.dmlAddress,
+          account,
+          wallet
+        );
+        const rewardDec = divideByDecimal(
+          result?.toString(),
+          liquidity.dmlDecimals
+        );
+        setReward(rewardDec);
+      }
+    };
+    fetchDataReward();
+  }, [liquidity, account, wallet]);
   const dmlTokenLiquidity = liquidity.dmlAddress;
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+
+    console.log(account, wallet, contracts)
     e.preventDefault();
     if (account && wallet && contracts) {
       getRewardDML(
@@ -86,6 +82,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     }
   };
 
+  console.log(liquidity)
+
 
   return (
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
@@ -96,7 +94,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
               <MediaNFT data={liquidity} isControls={false} />
             ) : (
               <Image
-                src={liquidity?.avatar || "/placeHolderIMG.png"}
+                src={formatLinkIPFS(liquidity?.avatar || "") || "/placeHolderIMG.png"}
                 alt="banner"
                 width={600}
                 height={600}
