@@ -1,49 +1,85 @@
-import ercContract from "@/libs/utils/erc/erc.contract";
 import { useEffect, useState } from "react";
+import { useReadContract } from "wagmi";
+import abiDML from "@/abi/abiDML.json";
 
-const useInformationDML = (
-  dmlToken: string | undefined,
-  wallet: string,
-  account: string,
-  isOpenTransaction?:boolean,
-  isOpenBuyNFT?:boolean,
-  isOpenSellNFT?:boolean,
-  isOpenConfirmAddLiquidity?:boolean,
-  isOpenConfirmRemoveLiquidity?:boolean,
-  updatePrice?:boolean,
-) => {
+type Address = `0x${string}`;
+
+type UseInformationDMLProps = {
+  dmlToken?: Address;
+  wallet: Address;
+  account: Address;
+  isOpenTransaction?: boolean;
+  isOpenBuyNFT?: boolean;
+  isOpenSellNFT?: boolean;
+  isOpenConfirmAddLiquidity?: boolean;
+  isOpenConfirmRemoveLiquidity?: boolean;
+  updatePrice?: boolean;
+};
+
+const useInformationDML = ({
+  dmlToken,
+  wallet,
+  account,
+  isOpenTransaction,
+  isOpenBuyNFT,
+  isOpenSellNFT,
+  isOpenConfirmAddLiquidity,
+  isOpenConfirmRemoveLiquidity,
+  updatePrice,
+}: UseInformationDMLProps) => {
   const [reserves, setReserves] = useState<any[]>([0]);
   const [decimals, setDecimals] = useState<string>("18");
   const [reserveNFT, setReserveNFT] = useState<string>("");
   const [reserveToken, setReserveToken] = useState<string>("");
   const [isLoadingInforDML, setIsLoadingInforDML] = useState<boolean>(false);
-  useEffect(() => {
-    const fetchInforDML = async () => {
-      setIsLoadingInforDML(true);
-      try {
-        if (dmlToken && wallet && account) {
-          const {
-            reserves,
-            decimals,
-            idNFT,
-            nftAddress,
-            reserveNFT,
-            reserveToken,
-            tokenAddress,
-          }: any = await ercContract.getInforDML(dmlToken, wallet);
-          setReserves(reserves);
-          setDecimals(decimals);
-          setReserveNFT(reserveNFT);
-          setReserveToken(reserveToken);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      setIsLoadingInforDML(false);
-    };
 
-    fetchInforDML();
-  }, [dmlToken, wallet, account,isOpenTransaction,isOpenBuyNFT,isOpenSellNFT,isOpenConfirmAddLiquidity,isOpenConfirmRemoveLiquidity,updatePrice]);
+  const { data: reservesData } = useReadContract({
+    address: dmlToken,
+    abi: abiDML,
+    functionName: "getReserves",
+  });
+
+  const { data: decimalsData } = useReadContract({
+    address: dmlToken,
+    abi: abiDML,
+    functionName: "decimals",
+  });
+
+  const { data: reserveNFTData } = useReadContract({
+    address: dmlToken,
+    abi: abiDML,
+    functionName: "reserveNFT",
+  });
+
+  const { data: reserveTokenData } = useReadContract({
+    address: dmlToken,
+    abi: abiDML,
+    functionName: "reserveToken",
+  });
+
+  useEffect(() => {
+    setIsLoadingInforDML(true);
+    try {
+      if (reservesData) setReserves(reservesData as any[]);
+      if (decimalsData) setDecimals(decimalsData.toString());
+      if (reserveNFTData) setReserveNFT(reserveNFTData.toString());
+      if (reserveTokenData) setReserveToken(reserveTokenData.toString());
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoadingInforDML(false);
+  }, [
+    reservesData,
+    decimalsData,
+    reserveNFTData,
+    reserveTokenData,
+    isOpenTransaction,
+    isOpenBuyNFT,
+    isOpenSellNFT,
+    isOpenConfirmAddLiquidity,
+    isOpenConfirmRemoveLiquidity,
+    updatePrice,
+  ]);
 
   return {
     reserves,

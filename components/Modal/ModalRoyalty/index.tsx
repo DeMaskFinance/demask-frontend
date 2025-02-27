@@ -44,6 +44,8 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       .min(0, "Royalty must be greater than 0%")
       .max(10, "Royalty must be less than 10%"),
   });
+
+  const { setRoyalty } = ercContract();
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
@@ -58,18 +60,15 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       );
       let trans;
       if (contracts) {
-        trans = await ercContract.setRoyalty(
+        trans = await setRoyalty(
           "contracts.FEE_MANAGER_ADDRESS",
           data.dmlAddress,
           values.creatorEarning,
           values.royalty * 10000,
           blockTime,
           res.signature,
-          account,
-          wallet
         );
       }
-      await trans.wait();
       setIsProcess(false);
       onSuccess();
       queryClient.refetchQueries({ queryKey: ["detailCollection"] });

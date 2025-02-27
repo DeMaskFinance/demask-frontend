@@ -36,7 +36,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
   return (
     <Wrapper isOpen={isOpenSuccess} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
+        <div className="h-fit w-full md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           <div>
             <div className="flex justify-between">
               <h2 className="title_modal">{type}</h2>
@@ -101,7 +101,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   return (
     <Wrapper isOpen={isOpenSuccess} onClick={handleClose}>
       <div className="container_modal">
-        <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
+        <div className="h-fit  md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           {isMint ? (
             <Fragment>
               <div className="flex flex-col items-center">

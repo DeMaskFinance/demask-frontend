@@ -104,7 +104,7 @@ export default function MintNFTEVM({
   };
   const handleAddAttribute = () => {
     const newItem = {
-      id: attributeItems.length,
+      id: attributeItems?.length,
       trait_type: "",
       value: "",
     };
@@ -184,7 +184,7 @@ export default function MintNFTEVM({
     }
 
     setEmptyInputs(emptyInputFields);
-    if (emptyInputFields.length === 0) {
+    if (emptyInputFields?.length === 0) {
       const urlMetadata = metadataURL.getMetadataUrlEVM({
         attributeItems,
         fileType,

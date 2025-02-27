@@ -1,19 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import abiDML from "@/abi/abiDML.json";
 import AccountContext from "@/context/AccountContext";
-import useBananceOfDML from "@/hooks/useBalanceOfDML";
+import { queryClient } from "@/libs/constants";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
+import { useGetRewardDML } from "@/libs/utils/getReward";
+import Image from "next/image";
 import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { useReadContract } from "wagmi";
 import { Button } from "../Buttons";
 import FormatNumber from "../Common/FormatNumber";
 import MediaNFT from "../Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
-import Image from "next/image";
-import getRewardDML from "@/libs/utils/getReward";
-import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
-import { queryClient } from "@/libs/constants";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
+
+
 interface LiquidytiesItemProps {
   liquidity: DataBase;
   type: string;
@@ -37,43 +40,46 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     chainId,
     version,
   ]);
+
+
+
+
+  const { getRewardDML } = useGetRewardDML();
+
+
+  const { data: rewardData } = useReadContract({
+    address: liquidity.dmlAddress as any,
+    abi: abiDML,
+    functionName: "viewReward",
+    args: [account],
+  });
+
   useEffect(() => {
-    const fetchDataReward = async () => {
-      if (account && wallet && liquidity) {
-        const result = await ercContract.viewReward(
-          liquidity.dmlAddress,
-          account,
-          wallet
-        );
-        const rewardDec = divideByDecimal(
-          result?.toString(),
-          liquidity.dmlDecimals
-        );
-        setReward(rewardDec);
-      }
-    };
-    fetchDataReward();
-  }, [liquidity, account, wallet]);
+    if (rewardData && liquidity) {
+      const rewardDec = divideByDecimal(rewardData.toString(), liquidity.dmlDecimals);
+      setReward(rewardDec);
+    } else {
+      setReward("0");
+    }
+  }, [rewardData, liquidity]);
+
   const dmlTokenLiquidity = liquidity.dmlAddress;
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (account && wallet && contracts) {
-      getRewardDML({
-        wallet,
+      getRewardDML(
         dmlTokenLiquidity,
         account,
-        data: {
-          dmlDecimals: liquidity.dmlDecimals,
-          tokenAddress: contracts.WETH_ADDRESS,
-        },
-        setReward,
+        liquidity.dmlDecimals,
+        contracts.WETH_ADDRESS,
         setIsOpenTransaction,
+        setReward,
         setIsOpenSuccessCollect,
         setIsOpenErrorCollect,
         setHash,
-      });
+      );
       await updateBalance();
     } else {
       console.log("No account and DML");
