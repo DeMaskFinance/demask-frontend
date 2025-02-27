@@ -26,19 +26,21 @@ import { queryClient } from "@/libs/constants";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import ercContract from "@/libs/utils/erc/erc.contract";
-import getRewardDML from "@/libs/utils/getReward";
+import { useGetRewardDML } from "@/libs/utils/getReward";
 import { useQuery } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import ChartNoTransfers from "../Charts/ChartNoTransfers";
 import Back from "../Common/Back";
 import { Pagination } from "../Common/Pagination";
-import { TabGroups } from "../NavChoice";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
-import { toast } from "sonner";
+import { TabGroups } from "../NavChoice";
+import { useReadContract } from "wagmi";
+import abiDML from "@/abi/abiDML.json";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -95,22 +97,23 @@ const DetailLiquidity = () => {
       },
     });
 
+
+
+  const { data: rewardData } = useReadContract({
+    address: dmlTokenLiquidity as any,
+    abi: abiDML,
+    functionName: "viewReward",
+    args: [account],
+  });
+
   useEffect(() => {
-    const fetchDataReward = async () => {
-      if (account && dmlTokenLiquidity && data) {
-        const result = await ercContract.viewReward(
-          dmlTokenLiquidity,
-          account,
-          wallet
-        );
-        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
-        setReward(rewardDec);
-      } else {
-        setReward("0");
-      }
-    };
-    fetchDataReward();
-  }, [dmlTokenLiquidity, account, data]);
+    if (rewardData && data) {
+      const rewardDec = divideByDecimal(rewardData.toString(), data.dmlDecimals);
+      setReward(rewardDec);
+    } else {
+      setReward("0");
+    }
+  }, [rewardData, data]);
 
   const { balanceDML, totalSupply } = useBananceOfDML(
     account,
@@ -118,6 +121,9 @@ const DetailLiquidity = () => {
     wallet
   );
   const options = ["All", "Add", "Remove"];
+
+  const { getRewardDML } = useGetRewardDML();
+
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -126,20 +132,17 @@ const DetailLiquidity = () => {
       return;
     }
     if (account && dmlTokenLiquidity && wallet) {
-      getRewardDML({
-        wallet,
+      getRewardDML(
         dmlTokenLiquidity,
         account,
-        data: {
-          dmlDecimals: data.dmlDecimals,
-          tokenAddress: data.tokenAddress,
-        },
-        setReward,
+        data.dmlDecimals,
+        data.tokenAddress,
         setIsOpenTransaction,
+        setReward,
         setIsOpenSuccessCollect,
         setIsOpenErrorCollect,
         setHash,
-      });
+      );
     } else {
       toast.error("No account and DML");
     }

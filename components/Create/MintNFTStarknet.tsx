@@ -227,12 +227,12 @@ const MintErc721: React.FC<MintErc721Props> = ({
               </div>
               <Button
                 type="submit"
-                primary={dirty && !isSubmitting && fileIPFS.length > 0}
+                primary={dirty && !isSubmitting && fileIPFS?.length > 0}
                 active={
-                  !dirty || isSubmitting || !isValid || fileIPFS.length <= 0
+                  !dirty || isSubmitting || !isValid || fileIPFS?.length <= 0
                 }
                 disabled={
-                  !dirty || isSubmitting || !isValid || fileIPFS.length <= 0
+                  !dirty || isSubmitting || !isValid || fileIPFS?.length <= 0
                 }
                 className="px-6 py-2 cursor-pointer mt-4"
                 isLoadingBtn={isSubmitting}

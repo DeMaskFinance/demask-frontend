@@ -88,8 +88,6 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
   const { account } = useContext(AccountContext);
 
-  console.log(data)
-
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
       <div className="p-4 bg_main">

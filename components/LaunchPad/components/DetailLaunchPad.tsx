@@ -1,7 +1,6 @@
 import { BackgroundDefault } from "@/components/Backgrounds";
 import Back from "@/components/Common/Back";
 import { MediaNFT } from "@/components/Common/Media";
-import { RightIcon } from "@/components/Icons";
 import TabQuery from "@/components/NavChoice/TabQuery";
 import AccountContext from "@/context/AccountContext";
 import { LaunchpadService } from "@/libs/service/launchpadService";
@@ -13,7 +12,6 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Overview from "./Overview";
 import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
-import Link from "next/link";
 
 
 export default function DetailLaunchPad() {

@@ -44,6 +44,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   const addressOfWhitelist = listProof.find(
     (item) => item.address.toLowerCase() === account.toLowerCase()
   );
+  const { buyLaunchpad } = ercContract();
 
   const handleBuyLaunchpad = async () => {
     let limit = "";
@@ -54,10 +55,10 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       limit = addressOfWhitelist.amount;
     }
 
+
     try {
       setIsOpenTransaction(true);
-      const result = await ercContract.buyLaunchpad(
-        wallet,
+      const result = await buyLaunchpad(
         proof,
         launchpadAddress,
         inputAmount,
@@ -65,9 +66,8 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
         inputAmount * data.priceDecimals
       );
 
-      setHash(result.hash);
-      const check = await result.wait();
-      if (check.status === 1) {
+      setHash(result.transactionHash);
+      if (result.status === "success") {
         setIsOpenSuccess(true);
       }
       setOpen(false);

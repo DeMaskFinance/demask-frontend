@@ -8,20 +8,22 @@ interface FetchAmountSoldParams {
   unit: number;
 }
 
+// const { mintedCountPerWallet } = ercContract();
+
 const fetchAmountSold = async ({
   account,
   wallet,
   launchpadAddress,
   unit,
 }: FetchAmountSoldParams): Promise<number> => {
-  const amountSold = await ercContract.mintedCountPerWallet(
-    account,
-    wallet,
-    launchpadAddress,
-    unit
-  );
+  // const amountSold = await mintedCountPerWallet(
+  //   account,
+  //   launchpadAddress,
+  //   unit
+  // );
+  const amountSold = 0;
 
-  return amountSold;
+  return Number(amountSold);
 };
 
 export const useFetchAmountSold = ({
