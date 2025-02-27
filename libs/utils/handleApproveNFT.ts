@@ -7,7 +7,6 @@ const useApproveNFT = () => {
 
   const handleApproveNFT = async (
     account: any,
-    wallet: string,
     nftAddress: string,
     setIsOpenTransaction: (open: boolean) => void,
     routerAddress: string,

@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
-import { LoadingIcon, WarningIcon } from "../../Icons";
+import { WarningIcon } from "../../Icons";
 import Wrapper from "../Wrapper";
-import { addNetwork } from "@/libs/utils/addNetwork";
 
 interface WrongNetworkProps { }
 const WrongNetwork: React.FC<WrongNetworkProps> = () => {
@@ -81,44 +80,44 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
     <Wrapper isOpen={isWrongNetwork}>
       <div className="container_modal">
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[432px] rounded-lg p-6 relative">
-            <>
-              <h2 className="text-xl font-semibold text-white">
-                Check your network
-              </h2>
-              <h3 className="my-4 font-medium text-shader_100">
-                Currently Demask only supports Monad Testnet
-              </h3>
-              <h2 className="font-medium text-yellow">Warning</h2>
-              <div className="flex my-4 gap-x-3">
-                <WarningIcon />
-                <p className="text-yellow">
-                  Please switch your network to continue
-                </p>
-              </div>
-              <div className="flex justify-between px-0 lg:px-6">
-                <button
-                  className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
-                  onClick={() =>
-                    changeNetwork(
-                      chainId,
-                      wallet,
-                      demask,
-                      setIsWrongNetwork,
-                      updateChainId,
-                      setLoading
-                    )
-                  }
-                >
-                  Switch Network
-                </button>
-                <button
-                  className="p-2 text-sm font-medium text-white rounded-lg bg-red"
-                  onClick={disconnectWallet}
-                >
-                  Disconnect wallet
-                </button>
-              </div>
-            </>
+          <>
+            <h2 className="text-xl font-semibold text-white">
+              Check your network
+            </h2>
+            <h3 className="my-4 font-medium text-shader_100">
+              Currently Demask only supports Monad Testnet
+            </h3>
+            <h2 className="font-medium text-yellow">Warning</h2>
+            <div className="flex my-4 gap-x-3">
+              <WarningIcon />
+              <p className="text-yellow">
+                Please switch your network to continue
+              </p>
+            </div>
+            <div className="flex justify-between px-0 lg:px-6">
+              <button
+                className="p-2 text-sm font-medium text-white rounded-lg bg-primary_500"
+                onClick={() =>
+                  changeNetwork(
+                    chainId,
+                    wallet,
+                    demask,
+                    setIsWrongNetwork,
+                    updateChainId,
+                    setLoading
+                  )
+                }
+              >
+                Switch Network
+              </button>
+              <button
+                className="p-2 text-sm font-medium text-white rounded-lg bg-red"
+                onClick={disconnectWallet}
+              >
+                Disconnect wallet
+              </button>
+            </div>
+          </>
           <button
             className="absolute top-0 right-0 p-2 text-lg"
             onClick={disconnectWallet}

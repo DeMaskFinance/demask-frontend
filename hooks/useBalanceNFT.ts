@@ -13,7 +13,7 @@ const useBalanceNFT = (
     args: [account, idNFT],
   });
 
-  return { balanceNFT: balance ? balance.toString() : "0", isLoading };
+  return { balanceNFT: balance ? Number(balance) : "0", isLoading };
 };
 
 export default useBalanceNFT;

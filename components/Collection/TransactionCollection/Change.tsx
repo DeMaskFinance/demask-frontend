@@ -24,6 +24,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import NFTGrid from "./NFTsGrids";
 import useInformationToken from "@/hooks/useInformationToken";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 
 const Change = () => {
   const { account, chainId, wallet, txDeadline, slippage } =
@@ -114,16 +115,17 @@ const Change = () => {
 
   const isApprovedNFT = useCheckApproveNFT(
     account,
-    wallet,
     collectionAddress,
     routerAddress,
-    isOpenTransaction
+    "erc721"
   );
+
+  const { swapERC20ERC721 } = ercContract721()
 
   const handleSwap = async () => {
     try {
       setIsOpenTransaction(true);
-      const result = await ercContract721.swapERC20ERC721(
+      const result = await swapERC20ERC721(
         wallet,
         collectionAddress,
         nativeAddress,
@@ -134,12 +136,11 @@ const Change = () => {
         txDeadline,
         exponentialToDecimal(Math.floor(data721Trading?.maxAmountDecimals || 0))
       );
-      const check = await result.wait();
-      setHash(result.hash);
+      setHash(result.transactionHash);
       setIsOpenTransaction(false);
       setIdNFTInput([]);
       setIdNFTOutput([]);
-      if (check.status === 1) {
+      if (result.status === "success") {
         setIsOpenSuccessSwap(true);
       } else {
         setIsOpenErrorSwap(true);
@@ -152,6 +153,7 @@ const Change = () => {
       console.error(error);
     }
   };
+  const { handleApproveNFT } = useApproveNFT()
   return (
     <div>
       <div className="mt-4">
@@ -238,7 +240,6 @@ const Change = () => {
               onClick={() =>
                 handleApproveNFT(
                   account,
-                  wallet,
                   collectionAddress,
                   setIsOpenTransaction,
                   routerAddress

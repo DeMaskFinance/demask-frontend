@@ -21,6 +21,7 @@ import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
 import { ModalTransation } from "../ModalTransation";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -129,11 +130,12 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   const isApprovedNFT = useCheckApproveNFT(
     account,
-    wallet,
     collectionAddress,
     contracts?.ERC721_ROUTER_ADDRESS || "",
-    isOpenTransaction
+    "erc721"
   );
+
+  const { handleApproveNFT } = useApproveNFT()
 
 
   return (
@@ -289,7 +291,6 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     onClick={() =>
                       handleApproveNFT(
                         account,
-                        wallet,
                         collectionAddress,
                         setIsOpenTransaction,
                         contracts?.ERC721_ROUTER_ADDRESS || "",

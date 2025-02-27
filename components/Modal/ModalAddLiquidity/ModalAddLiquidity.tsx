@@ -22,6 +22,7 @@ import Wrapper from "../Wrapper";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 interface ModalAddLiquidityProps {
   isOpenAddLiquidity: boolean;
   data: DataBase;
@@ -93,12 +94,10 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     document.body.style.overflowY = "auto";
     setIsOpenLiquidity(false);
   };
-  const balanceNFT = useNFTBalance(
+  const { balanceNFT } = useNFTBalance(
     account,
     data.nftAddress,
     data.nftID,
-    wallet,
-    isOpenTransaction
   );
 
   const handleChoicePercent = (item: string) => {
@@ -142,10 +141,9 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
 
   const isApprovedNFT = useCheckApproveNFT(
     account,
-    wallet,
     data.nftAddress,
     contracts?.ERC1155_ROUTER_ADDRESS || "",
-    isOpenTransaction
+    "erc1155"
   );
 
   const handleAddLiquidity = () => {
@@ -155,6 +153,8 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
       setIsInputNFT(true);
     }
   };
+
+  const { handleApproveNFT } = useApproveNFT();
   return (
     <Wrapper isOpen={isOpenAddLiquidity} onClick={handleClose}>
       <div className="container_modal">
@@ -189,7 +189,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   <div className="flex justify-between mb-1 font-semibold text-primary_300">
                     <p>NFT balance</p>
                     <p className="flex items-center font-bold text-white gap-x-1">
-                      {account ? formatNumber(balanceNFT) : 0}
+                      {account ? formatNumber(Number(balanceNFT)) : 0}
                       <NFTIcon width={12} height={12} />
                     </p>
                   </div>
@@ -278,7 +278,6 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                   onClick={() =>
                     handleApproveNFT(
                       account,
-                      wallet,
                       data.nftAddress,
                       setIsOpenTransaction,
                       contracts?.ERC1155_ROUTER_ADDRESS || ""

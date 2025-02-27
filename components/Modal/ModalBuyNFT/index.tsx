@@ -68,6 +68,11 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   }, [inputNFT, account, dataBuy, bigNumberBalance]);
 
   const queryClient = useQueryClient();
+
+  const { buyERC20ERC1155 } = erc1155Contract();
+  const { buyERC20ERC721 } = ercContract721();
+
+
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
@@ -84,21 +89,18 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
         let result;
         setIsOpenTransaction(true);
         if (inputNFT) {
-          result = await erc1155Contract.buyERC20ERC1155(
-            wallet,
+          result = await buyERC20ERC1155(
+            account,
             nftAddress,
             tokenAddress,
             idNFT,
             routerAddress,
             dataBuy.maxAmountDecimals,
             inputNFT,
-            account,
             txDeadline,
-            dataBuy.totalPay
           );
         } else {
-          result = await ercContract721.buyERC20ERC721(
-            wallet,
+          result = await buyERC20ERC721(
             nftAddress,
             tokenAddress,
             idNFT,
@@ -108,11 +110,10 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             txDeadline
           );
         }
-        setHash(result.hash);
-        const check = await result.wait();
+        setHash(result.transactionHash);
         setIsOpenTransaction(false);
         setIsOpenBuyNFT(false);
-        if (check.status === 1) {
+        if (result.status === "success") {
           setIsOpenSuccess(true);
         } else {
           setIsOpenError(false);

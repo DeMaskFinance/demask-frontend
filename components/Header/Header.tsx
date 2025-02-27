@@ -1,41 +1,34 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
+import useInformationToken from "@/hooks/useInformationToken";
+import { getNonce, loginAuthen } from "@/libs/service/userService";
 import formatNumber from "@/libs/utils/formatNumer";
 import { login, logout, selectProfile } from "@/store/profileSlice";
+import { CubeIcon } from "@radix-ui/react-icons";
+import { useAppKit, useAppKitAccount, useDisconnect } from '@reown/appkit/react';
 import Tippy from "@tippyjs/react/headless";
-import { ethers } from "ethers";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
-import Web3 from "web3";
+import { useSignMessage } from "wagmi";
 import { AvatarCustom } from "../Avatars";
-import BackgroundParticles from "../Backgrounds/BackGroundParticles";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import {
   EditIcon,
   EtherIcon,
-  LightIcon,
   LogoutIcon,
   SearchIcon,
   UserIcon,
-  WalletIcon,
+  WalletIcon
 } from "../Icons";
 import { DemaskIcon, LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
-import { ModalWallet } from "../Modal/ModalWallet";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
-import useInformationToken from "@/hooks/useInformationToken";
-import { CubeIcon } from "@radix-ui/react-icons";
-import { useAppKit, useAppKitAccount, useDisconnect } from '@reown/appkit/react';
-import { useSignMessage } from "wagmi";
-import { getNonce, loginAuthen } from "@/libs/service/userService";
+import ModalWaitingSign from "../Modal/ModalWaitingSign";
 
 export default function Header() {
 
@@ -60,10 +53,11 @@ export default function Header() {
 
 
   const { open } = useAppKit();
-  const { address, isConnected } = useAppKitAccount();
+  const { address, isConnected, allAccounts } = useAppKitAccount();
   const { signMessageAsync } = useSignMessage();
   const { disconnect } = useDisconnect()
   const [isSigning, setIsSigning] = useState(false);
+
 
   const handleLogin = async () => {
     if (!isConnected) {
@@ -79,6 +73,7 @@ export default function Header() {
   const signAndAuthenticate = async () => {
     try {
       if (!address) return;
+      setIsSigning(true);
 
       const { data: sign } = await getNonce(address);
       const signedData = await signMessageAsync({ message: String(sign.nonce) });
@@ -126,37 +121,6 @@ export default function Header() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
-      {/* {isEvent && (
-        <div className="relative">
-          <a
-            href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <div className="relative block overflow-hidden text-white cursor-pointer bg-event-gradient bg-blend-screen -z-50 h-11">
-              <Marquee autoFill pauseOnHover gradient gradientColor="#7C7FF8">
-                <div className="flex items-center justify-center mr-20 font-semibold h-11 gap-x-3">
-                  <span>
-                    <LightIcon width={24} height={24} />
-                  </span>
-                  <span>The Campaigns on Galxe, NOW LIVE!</span>
-                </div>
-              </Marquee>
-              <BackgroundParticles value={1800} id="particles-js" />
-            </div>
-          </a>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsEvent(false);
-            }}
-            className={`absolute top-2 right-4 flex items-center p-1 z-[60]`}
-          >
-            <CgClose className="text-xl text-white transition-colors duration-100 ease-linear hover:text-red" />
-          </button>
-        </div>
-      )} */}
-
       <header className="text-shader_200 w-screen h-header flex md:gap-x-28 3xl:gap-x-[500px] border-b border-shader_500 px-4 bg-opacity-65 bg-shader_900 items-center justify-between font-semibold text-sm backdrop-blur-xl">
         <div className="flex items-center flex-1 flex-shrink-0 gap-x-4 lg:gap-x-8">
           <div className="text-center">
@@ -286,6 +250,8 @@ export default function Header() {
       {/* <Maintenance /> */}
 
       {account && <WrongNetwork />}
+
+      <ModalWaitingSign isOpen={isSigning} />
     </div>
   );
 }
