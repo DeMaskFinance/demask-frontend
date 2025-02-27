@@ -44,6 +44,7 @@ import VersionTrade from "../Common/VersionTrade";
 import Actions from "../Trade/Action";
 import useInformationToken from "@/hooks/useInformationToken";
 import { RpcProvider, WalletAccount } from "starknet";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 
 export default function AddLiquidity() {
   const router = useRouter();
@@ -132,17 +133,14 @@ export default function AddLiquidity() {
   );
   const isApprovedNFT = useCheckApproveNFT(
     account,
-    wallet,
     nftAddress,
     contracts?.ERC1155_ROUTER_ADDRESS || "",
-    isOpenTransaction
+    "erc1155"
   );
-  const balanceNFT = useNFTBalance(
+  const { balanceNFT } = useNFTBalance(
     account,
     nftAddress,
     idNFT,
-    wallet,
-    isOpenTransaction
   );
 
 
@@ -203,6 +201,8 @@ export default function AddLiquidity() {
     }
     setActiveChoiceNFT(item);
   };
+
+  const { handleApproveNFT } = useApproveNFT();
   return (
     <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 px-4">
       <div className="flex items-center justify-between ">
@@ -293,7 +293,7 @@ export default function AddLiquidity() {
                 <div className="flex justify-between mb-1 font-semibold text-primary_300">
                   <p>NFT balance</p>
                   <p className="flex items-center font-bold text-white gap-x-1">
-                    {account ? formatNumber(balanceNFT) : 0}
+                    {account ? formatNumber(Number(balanceNFT)) : 0}
                     <NFTIcon width={12} height={12} />
                   </p>
                 </div>
@@ -393,7 +393,6 @@ export default function AddLiquidity() {
                 onClick={() =>
                   handleApproveNFT(
                     account,
-                    wallet,
                     nftAddress,
                     setIsOpenTransaction,
                     contracts.ERC1155_ROUTER_ADDRESS

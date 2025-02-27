@@ -88,6 +88,13 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     }, [account, wallet, inputLiquidity, currentAllowance, isOpenTransaction]);
 
     const queryClient = useQueryClient();
+
+    const { removeERC20ERC1155 } = erc1155Contract();
+    const { removeERC20ERC721 } = ercContract721();
+
+    const { approveDML } = handleApproveDML()
+
+
     const removeLiquidity = async () => {
       if (
         inputLiquidity &&
@@ -102,8 +109,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           setIsOpenTransaction(true);
           let result;
           if (data.nftID) {
-            result = await erc1155Contract.removeERC20ERC1155(
-              wallet,
+            result = await removeERC20ERC1155(
+              account,
               data.nftAddress,
               data.tokenAddress,
               data.nftID,
@@ -111,12 +118,10 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               liquidity,
               dataTradingRemove.amountETHDecimals,
               dataTradingRemove.amountNFT,
-              account,
               slippage
             );
           } else {
-            console.log(123)
-            result = await ercContract721.removeERC20ERC721(
+            result = await removeERC20ERC721(
               wallet,
               collectionAddress,
               data.tokenAddress,
@@ -129,13 +134,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               slippage
             );
           }
-          const check = await result.wait();
-          setHash(result.hash);
+          setHash(result.transactionHash);
           setIsOpenTransaction(false);
           setInputLiquidity("");
           closeModal();
           setIsOpenConfirmRemoveLiquidity(false);
-          if (check.status === 1) {
+          if (result.status === "success") {
             setIsOpenSuccess(true);
           } else {
             setIsOpenError(true);
@@ -147,8 +151,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           setIsOpenTransaction(false);
           console.error(error);
         }
-      } else {
-        //   setShowRequiredMessage(true);
       }
     };
 
@@ -209,9 +211,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                   className="w-[126px] py-2 mx-auto"
                   primary
                   onClick={() => {
-                    handleApproveDML(
+                    approveDML(
                       account,
-                      wallet,
                       data.dmlAddress,
                       inputLiquidity,
                       setIsOpenTransaction,

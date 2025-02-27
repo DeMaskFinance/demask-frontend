@@ -63,7 +63,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     ]);
     const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
     const router = useRouter();
-    const collectionAddress = (router.query.erc as string) || "";
+    const collectionAddress = (router.query.erc as any) || "";
     useEffect(() => {
       if (Number(dataTradingAdd.amountETHDecimals) > Number(bigNumberBalance)) {
         setIsSufficientToken(true);
@@ -73,6 +73,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     }, [bigNumberBalance, dataTradingAdd]);
 
 
+    const { addLiquidity } = erc721Contract();
 
     const [allowance, setAllowance] = useState<number>(0);
     const balanceApprove = useAllowanceDML(
@@ -91,7 +92,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     }, [balanceApprove]);
 
 
-    const addLiquidity = async () => {
+    const handleAddLiquidity = async () => {
       if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
 
         console.log(wallet,
@@ -108,8 +109,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
         try {
           setIsOpenTransaction(true);
-          const result = await erc721Contract.addLiquidity(
-            wallet,
+          const result = await addLiquidity(
             collectionAddress,
             contracts.WETH_ADDRESS,
             inputNFT,
@@ -121,14 +121,13 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             txDeadline,
             exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || (Number(inputToken) * 1e18)))
           );
-          setHash(result.hash);
-          const check = await result.wait();
+
           setIsOpenTransaction(false);
           setInputToken("");
           setIdNFT([]);
           setIsOpenConfirmAddLiquidity(false);
           setIsOpenAddLiquidity(false);
-          if (check.status === 1) {
+          if (result.status === "success") {
             setIsOpenSuccess(true);
           } else {
             setIsOpenError(true);
@@ -237,7 +236,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
                 Math.floor(dataTradingAdd.amountETHDecimals) === 0 ||
                 isSufficientToken
               }
-              onClick={addLiquidity}
+              onClick={handleAddLiquidity}
             >
               Add Liquidity
               {isFetching && (

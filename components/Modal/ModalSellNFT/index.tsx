@@ -51,7 +51,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     useContext(AccountContext);
   const [isSufficientNFT, setIsSufficientNFT] = useState<boolean>(false);
   const [seeDetail, setSeeDetail] = useState<boolean>(false);
-  const balanceNFT = useNFTBalance(
+  const { balanceNFT } = useNFTBalance(
     account,
     nftAddress,
     idNFT,
@@ -90,22 +90,18 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       Number(dataSell?.reserveToken) > 0 &&
       Math.floor(dataSell.minAmountDecimals) > 0
     ) {
-
-
-      console.log(inputNFT)
       try {
         let result;
         setIsOpenTransaction(true);
         if (inputNFT) {
           result = await sellERC20ERC1155(
-            wallet,
+            account,
             nftAddress,
             tokenAddress,
             idNFT,
             routerAddress,
             dataSell.minAmountDecimals,
             inputNFT,
-            account,
             txDeadline
           );
         } else {
@@ -120,11 +116,10 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             txDeadline
           );
         }
-        setHash(result.hash);
-        const check = await result.wait();
+        setHash(result.transactionHash);
         setIsOpenTransaction(false);
         setIsOpenSellNFT(false);
-        if (check.status === 1) {
+        if (result.status === "success") {
           setIsOpenSuccess(true);
         } else {
           setIsOpenError(true);

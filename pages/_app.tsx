@@ -30,38 +30,6 @@ type NextPageWithLayout<P = any> = NextPage<P> & {
 
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 
-const monad = defineChain({
-  id: 10143,
-  name: 'Monad Testnet',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'Monad',
-    symbol: 'TMON',
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6'],
-      webSocket: ['wss://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6'],
-    },
-  },
-  blockExplorers: {
-    default: { name: 'Explorer', url: 'https://monad-foundation.notion.site/Monad-Testnet-Onboarding-Guide-17c6367594f280369b6fddeed24de9db' },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xd70160709b01d7e5E3CDEfB80eb7807345bB51c2',
-      blockCreated: 5882,
-    },
-  },
-})
-
-// const wagmiConfig = defaultWagmiConfig({
-//   chains: [monad],
-//   projectId,
-//   metadata,
-// });
-
-
 const generalConfig = {
   projectId,
   networks,
@@ -70,14 +38,21 @@ const generalConfig = {
 }
 
 createAppKit({
+  featuredWalletIds: [
+    '719bd888109f5e8dd23419b20e749900ce4d2fc6858cf588395f19c82fd036b3',
+  ],
   adapters: [wagmiAdapter],
   ...generalConfig,
   features: {
-    analytics: true
-  }
+    analytics: true,
+    connectMethodsOrder: ['wallet'],
+    allWallets: false,
+  },
+
+
 })
 
-// createWeb3Modal({ wagmiConfig, projectId, defaultChain: monad });
+
 export default function App({
   Component,
   pageProps,

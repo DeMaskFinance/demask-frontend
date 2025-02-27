@@ -41,6 +41,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Actions from "../Action";
 import { StaticDetailBuy, StaticDetailSell } from "./StaticDetail";
 import useInformationToken from "@/hooks/useInformationToken";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 interface SwapTransactionProps {
   data: DataBase;
   tokenAddress: string;
@@ -86,12 +87,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   ]);
   const routerAddress = contracts?.ERC1155_ROUTER_ADDRESS || "";
   let inputNFTValue = useDebounce(inputNFT, 1000);
-  const balanceNFT = useNFTBalance(
+  const { balanceNFT } = useNFTBalance(
     account,
     nftAddress,
     idNFT,
-    wallet,
-    isOpenTransaction
   );
   const {
     data: dataBuy,
@@ -152,10 +151,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   });
   const isApprovedNFT = useCheckApproveNFT(
     account,
-    wallet,
     nftAddress,
     routerAddress,
-    isOpenTransaction
+    "erc1155"
   );
   useEffect(() => {
     const checkReservesNFT = () => {
@@ -219,6 +217,8 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setShowRequiredMessage(false);
     setActiveChoiceNFT(item);
   };
+
+  const { handleApproveNFT } = useApproveNFT()
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
@@ -326,7 +326,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                     <div className="flex items-center justify-between ">
                       <p>Your NFT balance:</p>
                       <div className="flex items-center font-bold text-white gap-x-1">
-                        <p>{formatNumber(balanceNFT)}</p>
+                        <p>{formatNumber(Number(balanceNFT))}</p>
                         <NFTIcon width={12} height={14} />
                       </div>
                     </div>
@@ -544,7 +544,6 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
               onClick={() =>
                 handleApproveNFT(
                   account,
-                  wallet,
                   nftAddress,
                   setIsOpenTransaction,
                   routerAddress

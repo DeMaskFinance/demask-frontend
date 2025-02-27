@@ -1,204 +1,210 @@
 import abiFactory from "@/abi/erc721/abiFactory.json";
 import abiRouter from "@/abi/erc721/abiRouter.json";
-import { exponentialToDecimal } from "../convertExponential";
-import ercContract from "./erc.contract";
+import { wagmiAdapter } from "@/config";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { useWriteContract } from "wagmi";
+import { exponentialToDecimal } from "../convertExponential";
+
+type Address = `0x${string}` | any;
+
+type BigNumberish = number | string | bigint;
 
 const ercContract721 = () => {
   const { writeContractAsync } = useWriteContract();
 
   const dmlToken = async (
-    wallet: string,
-    collectionAddress: string,
-    tokenAddress: string,
-    factoryAddress: string
+    wallet: Address,
+    collectionAddress: Address,
+    tokenAddress: Address,
+    factoryAddress: Address
   ) => {
-    const contract = await ercContract.erc(wallet, factoryAddress, abiFactory);
-    const dmlToken = await contract.dmlToken(tokenAddress, collectionAddress);
-    return dmlToken;
+    const rs = writeContractAsync({
+      account: wallet,
+      abi: abiFactory,
+      address: factoryAddress,
+      functionName: "dmlToken",
+      args: [tokenAddress, collectionAddress],
+      gas: BigInt(2000000),
+    });
+
+    const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+      hash: rs as any,
+    });
+
+    return receipt;
   };
+
   const addLiquidity = async (
-    wallet: string,
-    collectionAddress: string,
-    tokenAddress: string,
+    collectionAddress: Address,
+    tokenAddress: Address,
     idNFT: number[],
-    routerAddress: string,
-    amountErcDesired: number,
-    account: string,
+    routerAddress: Address,
+    amountErcDesired: BigNumberish,
+    account: Address,
     txDeadline: number,
-    valueToSend: string | 0
+    valueToSend: BigNumberish
   ) => {
-    const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-    const result = await contract.addERC20ERC721(
-      tokenAddress,
-      collectionAddress,
-      idNFT,
-      exponentialToDecimal(Math.floor(amountErcDesired)),
-      0,
+    const rs = await writeContractAsync({
       account,
-      Math.floor((new Date().getTime() + txDeadline * 60_000) / 1_000),
-      {
-        gasLimit: 5_000_000,
-        value: exponentialToDecimal(Number(valueToSend)),
-      }
-    );
-    return result;
+      abi: abiRouter,
+      address: routerAddress,
+      functionName: "addERC20ERC721",
+      args: [
+        tokenAddress,
+        collectionAddress,
+        idNFT,
+        BigInt(exponentialToDecimal(Math.floor(Number(amountErcDesired)))),
+        BigInt(0),
+        account,
+        Math.floor((Date.now() + txDeadline * 60000) / 1000),
+      ],
+      gas: BigInt(5000000),
+      value: BigInt(exponentialToDecimal(Number(valueToSend))),
+    });
+
+    const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+      hash: rs as any,
+    });
+
+    return receipt;
   };
 
   const buyERC20ERC721 = async (
-    wallet: string,
-    collectionAddress: string,
-    tokenAddress: string,
-    idNFT: string | number[],
-    routerAddress: string,
-    amountInMax: number,
-    account: string,
+    collectionAddress: Address,
+    tokenAddress: Address,
+    idNFT: number[] | any,
+    routerAddress: Address,
+    amountInMax: BigNumberish,
+    account: Address,
     txDeadline: number
   ) => {
-    const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-    const estimatedGas = await contract.estimateGas.buyERC20ERC721(
-      tokenAddress,
-      collectionAddress,
-      idNFT,
-      exponentialToDecimal(Math.floor(amountInMax)),
-      account,
-      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-      { value: exponentialToDecimal(Math.floor(amountInMax)) }
-    );
-
-    const result = await contract.buyERC20ERC721(
-      tokenAddress,
-      collectionAddress,
-      idNFT,
-      exponentialToDecimal(Math.floor(amountInMax)),
-      account,
-      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-      {
-        gasLimit: estimatedGas,
-        value: exponentialToDecimal(Math.floor(amountInMax)),
-      }
-    );
-    return result;
-  };
-  const removeERC20ERC721 = async (
-    wallet: string,
-    nftAddress: string,
-    tokenAddress: string,
-    idNFT: string | number[],
-    routerAddress: string,
-    liquidity: number,
-    amountTokenMin: number,
-    amountNFTMin: number,
-    account: string,
-    txDeadline: number
-  ) => {
-    try {
-      console.log(routerAddress);
-      const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-      const estimatedGas = await contract.estimateGas.removeERC20ERC721(
-        tokenAddress,
-        nftAddress,
-        idNFT,
-        Math.floor(Number(liquidity)).toString(),
-        exponentialToDecimal(Number(amountTokenMin)),
-        exponentialToDecimal(Number(amountNFTMin)),
-        account,
-        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000)
-      );
-
-      console.log({
-        tokenAddress: tokenAddress,
-        nftAddress: nftAddress,
-        idNFT: idNFT,
-        liquidity: Math.floor(Number(liquidity)).toString(),
-        amountTokenMin: exponentialToDecimal(Number(amountTokenMin)),
-        amountNFTMin: exponentialToDecimal(Number(amountNFTMin)),
-        account,
-        deadline: Math.floor(
-          (new Date().getTime() + txDeadline * 60000) / 1000
-        ),
-      });
-
-      console.log(contract);
-
-      const result = await contract.removeERC20ERC721(
-        tokenAddress,
-        nftAddress,
-        idNFT,
-        Math.floor(Number(liquidity)).toString(),
-        exponentialToDecimal(Number(amountTokenMin)),
-        exponentialToDecimal(Number(amountNFTMin)),
-        account,
-        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-        { gasLimit: estimatedGas }
-      );
-
-      console.log(result);
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const sellERC20ERC721 = async (
-    wallet: string,
-    nftAddress: string,
-    tokenAddress: string,
-    idNFT: string | number[],
-    routerAddress: string,
-    amountSellDec: number,
-    account: string,
-    txDeadline: number
-  ) => {
-    const result = await writeContractAsync({
-      account: account as `0x${string}`,
+    const rs = writeContractAsync({
+      account: account,
       abi: abiRouter,
-      address: routerAddress as `0x${string}`,
+      address: routerAddress,
+      functionName: "buyERC20ERC721",
+      args: [
+        tokenAddress,
+        collectionAddress,
+        idNFT,
+        BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
+        account,
+        Math.floor((Date.now() + txDeadline * 60000) / 1000),
+      ],
+      gas: BigInt(2000000),
+      value: BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
+    });
+
+    const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+      hash: rs as any,
+    });
+
+    return receipt;
+  };
+
+  const removeERC20ERC721 = async (
+    wallet: Address,
+    nftAddress: Address,
+    tokenAddress: Address,
+    idNFT: number[],
+    routerAddress: Address,
+    liquidity: BigNumberish,
+    amountTokenMin: BigNumberish,
+    amountNFTMin: BigNumberish,
+    account: Address,
+    txDeadline: number
+  ) => {
+    const rs = writeContractAsync({
+      account: wallet,
+      abi: abiRouter,
+      address: routerAddress,
+      functionName: "removeERC20ERC721",
+      args: [
+        tokenAddress,
+        nftAddress,
+        idNFT,
+        BigInt(Math.floor(Number(liquidity))).toString(),
+        BigInt(exponentialToDecimal(Number(amountTokenMin))),
+        BigInt(exponentialToDecimal(Number(amountNFTMin))),
+        account,
+        Math.floor((Date.now() + txDeadline * 60000) / 1000),
+      ],
+      gas: BigInt(2000000),
+    });
+
+    const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+      hash: rs as any,
+    });
+
+    return receipt;
+  };
+
+  const sellERC20ERC721 = async (
+    wallet: Address,
+    nftAddress: Address,
+    tokenAddress: Address,
+    idNFT: number[] | any,
+    routerAddress: Address,
+    amountSellDec: BigNumberish,
+    account: Address,
+    txDeadline: number
+  ) => {
+    const rs = writeContractAsync({
+      account: wallet,
+      abi: abiRouter,
+      address: routerAddress,
       functionName: "sellERC20ERC721",
       args: [
         tokenAddress,
         nftAddress,
         idNFT,
-        exponentialToDecimal(Math.floor(amountSellDec)),
+        BigInt(exponentialToDecimal(Math.floor(Number(amountSellDec)))),
         account,
-        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+        Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
       gas: BigInt(2000000),
     });
 
-    return result;
+    const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+      hash: rs as any,
+    });
+
+    return receipt;
   };
+
   const swapERC20ERC721 = async (
-    wallet: string,
-    collectionAddress: string,
-    tokenAddress: string,
+    wallet: Address,
+    collectionAddress: Address,
+    tokenAddress: Address,
     idFrom: number[],
     idTo: number[],
-    routerAddress: string,
-    account: string,
+    routerAddress: Address,
+    account: Address,
     txDeadline: number,
-    valueToSend: string | 0
+    valueToSend: BigNumberish
   ) => {
-    const contract = await ercContract.erc(wallet, routerAddress, abiRouter);
-    const estimatedGas = await contract.estimateGas.change(
-      tokenAddress,
-      collectionAddress,
-      idFrom,
-      idTo,
-      account,
-      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-      { value: valueToSend }
-    );
+    const rs = writeContractAsync({
+      account: wallet,
+      abi: abiRouter,
+      address: routerAddress,
+      functionName: "change",
+      args: [
+        tokenAddress,
+        collectionAddress,
+        idFrom,
+        idTo,
+        account,
+        Math.floor((Date.now() + txDeadline * 60000) / 1000),
+      ],
+      gas: BigInt(2000000),
+      value: BigInt(exponentialToDecimal(Number(valueToSend))),
+    });
 
-    const result = await contract.change(
-      tokenAddress,
-      collectionAddress,
-      idFrom,
-      idTo,
-      account,
-      Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
-      { gasLimit: estimatedGas, value: valueToSend }
-    );
-    return result;
+    const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+      hash: rs as any,
+    });
+
+    return receipt;
   };
 
   return {
@@ -210,4 +216,5 @@ const ercContract721 = () => {
     swapERC20ERC721,
   };
 };
+
 export default ercContract721;

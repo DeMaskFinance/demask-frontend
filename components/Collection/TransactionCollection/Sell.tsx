@@ -126,7 +126,6 @@ const Sell = () => {
                     onClick={() =>
                       handleApproveNFT(
                         account,
-                        wallet,
                         collectionAddress,
                         setIsOpenTransaction,
                         contracts.ERC721_ROUTER_ADDRESS
