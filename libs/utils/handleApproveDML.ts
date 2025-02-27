@@ -1,30 +1,50 @@
 import abiDML from "@/abi/abiDML.json";
-import ercContract from "./erc/erc.contract";
 import BigNumber from "bignumber.js";
+import { wagmiAdapter } from "@/config";
+import { waitForTransactionReceipt } from "@wagmi/core";
+import { useWriteContract } from "wagmi";
 
-const handleApproveDML = async (
-  account: string,
-  wallet: string,
-  dmlAddress: string,
-  inputLiquidity: string,
-  setIsOpenTransaction: any,
-  routerAddress: string
-) => {
-  if (account && wallet) {
-    const contract = await ercContract.erc(wallet, dmlAddress, abiDML);
-    const inputLiquidityBN = new BigNumber(inputLiquidity)
-      .times(new BigNumber(10).pow(18))
-      .toFixed(0);
+type Address = `0x${string}` | any;
 
-    try {
-      const result = await contract.approve(routerAddress, inputLiquidityBN);
-      setIsOpenTransaction(true);
-      await result.wait();
-      setIsOpenTransaction(false);
-    } catch (error) {
-      setIsOpenTransaction(false);
-      console.error(error);
+const handleApproveDML = () => {
+  const { writeContractAsync } = useWriteContract();
+
+  const approveDML = async (
+    account: Address,
+    dmlAddress: Address,
+    inputLiquidity: string,
+    setIsOpenTransaction: (state: boolean) => void,
+    routerAddress: Address
+  ) => {
+    if (account) {
+      const inputLiquidityBN = new BigNumber(inputLiquidity || 0)
+        .times(new BigNumber(10).pow(18))
+        .toFixed(0);
+
+      try {
+        const result = await writeContractAsync({
+          account,
+          abi: abiDML,
+          address: dmlAddress,
+          functionName: "approve",
+          args: [routerAddress, inputLiquidityBN],
+        });
+        setIsOpenTransaction(true);
+
+        await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
+          hash: result,
+        });
+        setIsOpenTransaction(false);
+      } catch (error) {
+        setIsOpenTransaction(false);
+        console.error(error);
+      }
     }
-  }
+  };
+
+  return {
+    approveDML,
+  };
 };
+
 export default handleApproveDML;

@@ -65,6 +65,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       chainId,
       version,
     ]);
+
+    const { addERC20ERC1155 } = erc1155Contract();
+
     const addLiquidity = async () => {
       if (!account) {
         return;
@@ -75,20 +78,18 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
         try {
 
           setIsOpenTransaction(true);
-          const result = await erc1155Contract.addERC20ERC1155(
-            wallet,
+          const result = await addERC20ERC1155(
+            account,
             nftAddress,
             tokenAddress,
             idNFT,
             contracts?.ERC1155_ROUTER_ADDRESS,
             amountErcDesired,
             inputNFT,
-            account,
             txDeadline,
             exponentialToDecimal(Math.floor(amountErcDesired))
           );
-          const check = await result.wait();
-          setHash(result.hash);
+          setHash(result.transactionHash);
           setIsOpenTransaction(false);
           setInputNFT("");
           setInputToken("");
@@ -97,7 +98,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           if (setIsOpenLiquidity) {
             setIsOpenLiquidity(false);
           }
-          if (check.status === 1) {
+          if (result.status === "success") {
             setIsOpenSuccess(true);
           } else {
             setIsOpenError(true);

@@ -9,9 +9,9 @@ if (!projectId) {
 }
 
 export const metadata = {
-  name: "AppKit",
-  description: "AppKit Example",
-  url: "https://reown.com", // origin must match your domain & subdomain
+  name: "Demask",
+  description: "Demask Example",
+  url: "https://reown.com",
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 

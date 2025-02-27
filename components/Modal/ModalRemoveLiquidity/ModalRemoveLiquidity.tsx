@@ -89,6 +89,9 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       inputLiquidity,
       routerAddress
     );
+
+    console.log(currentAllowance)
+
     const handleGetLiquidity = (values: NumberFormatValues) => {
       const { value } = values;
       const inputValue = replaceDot(value);
@@ -107,6 +110,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       inputLiquidity,
       isOpenTransaction
     );
+
     useEffect(() => {
       if (
         dataTradingRemove?.balanceDml &&
@@ -154,6 +158,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         return res;
       },
     });
+
+    const { approveDML } = handleApproveDML()
 
     return (
       <Fragment>
@@ -253,9 +259,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                     className="w-[126px] py-2 mx-auto"
                     primary
                     onClick={() => {
-                      handleApproveDML(
+                      approveDML(
                         account,
-                        wallet,
                         data.dmlAddress,
                         inputLiquidity,
                         setIsOpenTransaction,

@@ -13,27 +13,29 @@ const useDMLToken = (
 ) => {
   const [dmlToken, setDmlToken] = useState<string>("");
 
+  const { getDMLToken } = erc1155Contract();
+
+  const { dmlToken: dmlTokenFunction } = erc721Contract();
   useEffect(() => {
     const fetchDataDML = async () => {
       try {
         let dmlToken;
         if (idNFT) {
-          dmlToken = await erc1155Contract.getDMLToken(
+          dmlToken = await getDMLToken(
             nftAddress,
             idNFT,
             tokenAddress,
-            wallet,
             factoryAddress
           );
         } else {
-          dmlToken = await erc721Contract.dmlToken(
+          dmlToken = await dmlTokenFunction(
             wallet,
             nftAddress,
             tokenAddress,
             factoryAddress
           );
         }
-        setDmlToken(dmlToken);
+        setDmlToken(dmlToken.toString);
       } catch (error) {
         console.error(error);
       }

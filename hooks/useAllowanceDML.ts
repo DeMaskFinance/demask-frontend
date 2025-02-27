@@ -1,40 +1,38 @@
-import { getProvider } from "@/libs/connection/getProvider";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
 import abiDML from "@/abi/abiDML.json";
+import { useReadContract } from "wagmi";
+import { useEffect, useState } from "react";
+import { wagmiAdapter } from "@/config";
+
+type Address = `0x${string}` | any;
+
 const useAllowanceDML = (
-  account: string,
-  dmlAddress: string,
-  wallet: string,
+  account: Address,
+  dmlAddress: Address,
+  wallet: Address,
   isApprovedDML: boolean,
   inputLiquidity: string,
-  routerAddress: string
+  routerAddress: Address
 ) => {
   const [currentAllowance, setCurrentAllowance] = useState<string | null>(null);
-  useEffect(() => {
-    const getAllowance = async () => {
-      console.log(account, dmlAddress, wallet);
-      if (account && dmlAddress && wallet) {
-        console.log(123);
-        const providerChoice = await getProvider(wallet);
-        const provider = new ethers.providers.Web3Provider(providerChoice);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(dmlAddress, abiDML, signer);
-        try {
-          const dmlAllowance = await contract.allowance(account, routerAddress);
-          const allowanceValue = dmlAllowance.toString();
-          setCurrentAllowance(allowanceValue);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.log("No account");
-      }
-    };
 
-    getAllowance();
-  }, [account, dmlAddress, wallet, isApprovedDML, inputLiquidity]);
+  const { data: allowance, error } = useReadContract({
+    account,
+    abi: abiDML,
+    address: dmlAddress,
+    functionName: "allowance",
+    args: [account, routerAddress],
+  });
+
+  useEffect(() => {
+    if (allowance) {
+      setCurrentAllowance(allowance.toString());
+    }
+    if (error) {
+      console.error("Error fetching allowance:", error);
+    }
+  }, [allowance, error]);
 
   return currentAllowance;
 };
+
 export default useAllowanceDML;

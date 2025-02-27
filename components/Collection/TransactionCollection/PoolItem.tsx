@@ -62,7 +62,7 @@ const PoolItem = ({ liquidity }: any) => {
           account,
           wallet
         );
-        const rewardDec = divideByDecimal(result.toString(), data.dmlDecimals);
+        const rewardDec = divideByDecimal(result?.toString(), data.dmlDecimals);
         setReward(rewardDec);
       } else {
         setReward("0");
