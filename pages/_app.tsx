@@ -40,13 +40,13 @@ const generalConfig = {
 createAppKit({
   featuredWalletIds: [
     '719bd888109f5e8dd23419b20e749900ce4d2fc6858cf588395f19c82fd036b3',
+    '3ed8cc046c6211a798dc5ec70f1302b43e07db9639fd287de44a9aa115a21ed6',
   ],
   adapters: [wagmiAdapter],
   ...generalConfig,
   features: {
     analytics: true,
     connectMethodsOrder: ['wallet'],
-    allWallets: false,
   },
 
 

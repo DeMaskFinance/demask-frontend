@@ -1,3 +1,4 @@
+import abiDML from "@/abi/abiDML.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon, PlusIcon } from "@/components/Icons";
@@ -12,13 +13,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import { queryClient } from "@/libs/constants";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
-import getRewardDML from "@/libs/utils/getReward";
+import { useGetRewardDML } from "@/libs/utils/getReward";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { useReadContract } from "wagmi";
 
 const PoolItem = ({ liquidity }: any) => {
   const { account, wallet, chainId } = useContext(AccountContext);
@@ -54,44 +55,48 @@ const PoolItem = ({ liquidity }: any) => {
   };
 
   const dmlTokenLiquidity = data.dmlAddress;
+
+
+  const { data: rewardData } = useReadContract({
+    address: dmlTokenLiquidity,
+    abi: abiDML,
+    functionName: "viewReward",
+    args: [account],
+  });
+
   useEffect(() => {
-    const fetchDataReward = async () => {
-      if (account && dmlTokenLiquidity && data) {
-        const result = await ercContract.viewReward(
-          dmlTokenLiquidity,
-          account,
-          wallet
-        );
-        const rewardDec = divideByDecimal(result?.toString(), data.dmlDecimals);
-        setReward(rewardDec);
-      } else {
-        setReward("0");
-      }
-    };
-    fetchDataReward();
-  }, [dmlTokenLiquidity, account, data]);
+    if (rewardData && data) {
+      const rewardDec = divideByDecimal(rewardData.toString(), data.dmlDecimals);
+      setReward(rewardDec);
+    } else {
+      setReward("0");
+    }
+  }, [rewardData, data]);
+
   const closeModal = () => {
     setIsOpenRemoveLiquididy(false);
   };
+
+  const { getRewardDML } = useGetRewardDML();
+
+
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (account && dmlTokenLiquidity && wallet && contracts) {
-      getRewardDML({
-        wallet,
+      getRewardDML(
         dmlTokenLiquidity,
         account,
-        data: {
-          dmlDecimals: data.dmlDecimals,
-          tokenAddress: contracts?.WETH_ADDRESS,
-        },
-        setReward,
+        contracts?.WETH_ADDRESS,
+        data.dmlDecimals,
         setIsOpenTransaction,
+        setReward,
         setIsOpenSuccessCollect,
         setIsOpenErrorCollect,
         setHash,
-      });
+
+      );
       queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
     } else {
       toast.error("No account and DML");

@@ -63,6 +63,8 @@ const DeployCollection = () => {
     setFieldValue("category", updatedCategories);
   };
 
+  const { fillCreate } = ercContract()
+
   const handleEVMTransaction = async (values: any) => {
 
     if (!contracts) return null;
@@ -71,27 +73,15 @@ const DeployCollection = () => {
       ? contracts.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS
       : contracts.CREATED_COLLECTION_ERC1155_CONTRACT_ADDRESS;
 
-
-    console.log(fileIPFS)
-    console.log(values.contractName,
-      values.symbol,
-      fileIPFS.nonce,
-      contractAddress,
-      account,
-      wallet,
-      type)
-    const res = await ercContract.fillCreate(
+    const res = await fillCreate(
       values.contractName,
       values.symbol,
       fileIPFS.nonce,
       contractAddress,
-      account,
-      wallet,
-      type
+      type as "erc721" | "erc1155"
     );
 
-    setHash(res?.hash);
-    await res.wait();
+    setHash(res?.transactionHash);
 
     return res;
   };
@@ -99,9 +89,9 @@ const DeployCollection = () => {
   const checkTransactionStatus = async (res: any) => {
     if (!res) return;
 
-    const status = (await res.wait()).status
+    const status = res.status
 
-    setIsOpenSuccess(status === "SUCCEEDED" || status === 1);
+    setIsOpenSuccess(status === "success");
   };
 
   const onSubmit = async (

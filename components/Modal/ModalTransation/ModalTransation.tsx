@@ -21,7 +21,7 @@ const ModalTransation: React.FunctionComponent<ModalTransationProps> = ({
   return (
     <Wrapper isOpen={isOpenTransation} onClick={handleClose}>
       <div className="container_modal ">
-        <div className="h-fit w-[260px] md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
+        <div className="h-fit w-full md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           <div className="flex justify-between">
             <p className="font-bold text-white">Waiting for transaction</p>
             <button onClick={handleClose}>

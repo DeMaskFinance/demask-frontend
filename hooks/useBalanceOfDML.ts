@@ -1,42 +1,48 @@
 import abiDML from "@/abi/abiDML.json";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import { useEffect, useState } from "react";
+import { useReadContract } from "wagmi";
+
 const useBananceOfDML = (
   account: string,
-  dmlToken: string,
-  wallet: string,
+  dmlToken: any,
   isOpenTransaction?: boolean
 ) => {
-  const [balanceOfDML, setBalanceOfDML] = useState("");
-  const [totalSupply, setTotalSupply] = useState("");
-  const [balanceDML, setBalanceDML] = useState("");
+  const [balanceOfDML, setBalanceOfDML] = useState("0");
+  const [totalSupply, setTotalSupply] = useState("0");
+  const [balanceDML, setBalanceDML] = useState("0");
+
+  const { data: balanceData } = useReadContract({
+    address: dmlToken,
+    abi: abiDML,
+    functionName: "balanceOf",
+    args: [account],
+  });
+
+  const { data: totalSupplyData } = useReadContract({
+    address: dmlToken,
+    abi: abiDML,
+    functionName: "totalSupply",
+  });
 
   useEffect(() => {
-    const getBalanceOf = async () => {
-      if (
-        dmlToken !== "0x0000000000000000000000000000000000000000" &&
-        account &&
-        wallet
-      ) {
-        try {
-          const contract = await ercContract.erc(wallet, dmlToken, abiDML);
-          const result = await contract.balanceOf(account);
-          const balanceOfDMLDec = divideByDecimal(result.toString(), "18");
-          setBalanceOfDML(balanceOfDMLDec);
-          setBalanceDML(result);
-          const totalSL = await contract.totalSupply();
-          setTotalSupply(totalSL);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        setBalanceOfDML("0");
-        setTotalSupply("0");
-      }
-    };
-    getBalanceOf();
-  }, [dmlToken, account, isOpenTransaction, wallet]);
+    if (balanceData) {
+      const balanceDec = divideByDecimal(balanceData.toString(), "18");
+      setBalanceOfDML(balanceDec);
+      setBalanceDML(balanceData.toString());
+    } else {
+      setBalanceOfDML("0");
+      setBalanceDML("0");
+    }
+
+    if (totalSupplyData) {
+      setTotalSupply(totalSupplyData.toString());
+    } else {
+      setTotalSupply("0");
+    }
+  }, [balanceData, totalSupplyData, isOpenTransaction]);
+
   return { balanceOfDML, totalSupply, balanceDML };
 };
+
 export default useBananceOfDML;
