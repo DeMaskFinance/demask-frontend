@@ -1,4 +1,7 @@
 "use client";
+
+
+//@ts-expect-error:error
 import { ReactLenis } from "lenis/react";
 
 interface SmoothScrollingProps {

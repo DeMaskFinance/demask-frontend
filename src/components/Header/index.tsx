@@ -5,8 +5,8 @@ import { Button } from "../ui/button";
 import BackgroundParticles from "../Backgrounds/BackgroundParticles";
 import Marquee from "react-fast-marquee";
 import { CgClose } from "react-icons/cg";
-import { useLenis } from "lenis/react";
 import Link from "next/link";
+import { useLenis } from "@studio-freight/react-lenis";
 const Header = () => {
   const [isEvent, setIsEvent] = useState(true);
 
