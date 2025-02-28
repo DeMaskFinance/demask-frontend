@@ -2,7 +2,7 @@ import abiDML from "@/abi/abiDML.json";
 import AccountContext from "@/context/AccountContext";
 import { queryClient } from "@/libs/constants";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
-import ercContract from "@/libs/utils/erc/erc.contract";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { useGetRewardDML } from "@/libs/utils/getReward";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,8 +15,6 @@ import MediaNFT from "../Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
-import { formatLinkIPFS } from "@/libs/utils/formatComon";
-
 
 interface LiquidytiesItemProps {
   liquidity: DataBase;
@@ -27,7 +25,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   liquidity,
   type,
 }) => {
-  const { account, wallet, updateBalance, demask, chainId } =
+  const { account, wallet, updateBalance, chainId } =
     useContext(AccountContext);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =

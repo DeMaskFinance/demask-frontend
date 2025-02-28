@@ -251,7 +251,9 @@ export default function Header() {
 
       {account && <WrongNetwork />}
 
-      <ModalWaitingSign isOpen={isSigning} />
+      <ModalWaitingSign isOpen={isSigning} onClose={() => {
+        setIsSigning(false)
+      }} />
     </div>
   );
 }
