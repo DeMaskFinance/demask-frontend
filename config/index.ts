@@ -9,10 +9,10 @@ if (!projectId) {
 }
 
 export const metadata = {
-  name: "Demask",
-  description: "Demask Example",
-  url: "https://reown.com",
-  icons: ["https://avatars.githubusercontent.com/u/179229932"],
+  name: "Demask Finance",
+  description: "Demask Finance",
+  url: "https://app.demask.finance",
+  icons: ["https://app.demask.finance/favicon.ico"],
 };
 
 // for custom networks visit -> https://docs.reown.com/appkit/react/core/custom-networks
