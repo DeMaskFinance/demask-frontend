@@ -2,21 +2,24 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
+import { CreateIcon, DiamondIcon, SeeMoreIcon, SwapIcon } from "../Icons";
 import { LaunchpadIcon, PoolIcon } from "../Icons/Mobile/IconMobile";
 
 const moreNav = [
   { id: 1, name: "Create", url: "/create" },
   { id: 2, name: "Category", url: "/category" },
   { id: 3, name: "Referral", url: "/referral" },
+  { id: 4, name: "Trade", url: `/trade` },
+  { id: 5, name: "Pools", url: "/pools" },
 ];
 const data = [
-  { id: 2, name: "Explorer", url: "/explorer", icon: LaunchpadIcon },
-  { id: 3, name: "Trade", url: `/trade`, icon: SwapIcon },
-  { id: 4, name: "Pools", url: "/pools", icon: PoolIcon },
-  { id: 5, name: "Rewards", url: `/leaderboard`, icon: DiamondIcon },
+  { id: 1, name: "Explorer", url: "/explorer", icon: PoolIcon },
+  { id: 2, name: "Create", url: "/create", icon: CreateIcon },
+  { id: 3, name: "Launchpad", url: "/launchpad", icon: LaunchpadIcon },
+  { id: 4, name: "Leaderboard", url: `/leaderboard`, icon: DiamondIcon },
+
   {
-    id: 6,
+    id: 5,
     name: "Others",
     icon: SeeMoreIcon,
   },
@@ -113,7 +116,7 @@ export default function NavFooter() {
                 className="top-0 bottom-16 left-0 right-0 bg-[rgba(0,0,0,0.65)] -z-10 fixed"
                 onClick={() => setActive(false)}
               ></div>
-              <div className=" bg-shader_800 text-white h-[40vh] rounded-t-xl z-50">
+              <div className=" bg-shader_800 text-white h-[50vh] rounded-t-xl z-50">
                 <div className="text-sm  items-center font-semibold h-12 flex justify-between px-3">
                   <p>More</p>
                   <button className="text-lg " onClick={() => setActive(false)}>
