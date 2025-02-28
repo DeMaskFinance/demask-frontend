@@ -24,7 +24,7 @@ const ercContract721 = () => {
       address: factoryAddress,
       functionName: "dmlToken",
       args: [tokenAddress, collectionAddress],
-      gas: BigInt(2000000),
+      gas: BigInt(500_000),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -58,7 +58,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(5000000),
+      gas: BigInt(500_000),
       value: BigInt(exponentialToDecimal(Number(valueToSend))),
     });
 
@@ -91,7 +91,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(2000000),
+      gas: BigInt(500_000),
       value: BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
     });
 
@@ -129,7 +129,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(2000000),
+      gas: BigInt(500_000),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -162,7 +162,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(2000000),
+      gas: BigInt(500_000),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -196,7 +196,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(2000000),
+      gas: BigInt(500_000),
       value: BigInt(exponentialToDecimal(Number(valueToSend))),
     });
 
