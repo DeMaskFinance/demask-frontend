@@ -86,7 +86,7 @@ const erc1155Contract = () => {
         account,
         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(300000),
+      gas: BigInt(500_000),
       value: BigInt(exponentialToDecimal(Math.floor(amountInMax))),
     });
 
@@ -123,7 +123,7 @@ const erc1155Contract = () => {
         account,
         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(500000),
+      gas: BigInt(500_000),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -159,7 +159,7 @@ const erc1155Contract = () => {
         account,
         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(5000000),
+      gas: BigInt(500_000),
       value: BigInt(BigNumber(valueToSend || 0).toFixed()),
     });
 
@@ -194,7 +194,7 @@ const erc1155Contract = () => {
         account,
         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(2000000),
+      gas: BigInt(500_000),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
