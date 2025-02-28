@@ -14,7 +14,6 @@ const Static = () => {
       return res.data;
     },
   });
-  console.log(data);
   const amountList = [
     {
       title: "COLLECTIONS",
