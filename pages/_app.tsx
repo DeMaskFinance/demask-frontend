@@ -108,7 +108,7 @@ export default function App({
                       <Component {...pageProps} />
                     )}
                   </Layout>
-                  <ReactQueryDevtools initialIsOpen={false} />
+                  {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                 </WagmiProvider>
               </QueryParamProvider>
             </QueryClientProvider>
