@@ -244,9 +244,10 @@ export default function MintNFTEVM({
                     value={index.toString()}
                     className="p-0 block"
                   >
+
                     <div className="flex items-center cursor-pointer gap-x-2 hover:bg-shader_500 w-full p-2 text-white">
                       <img
-                        src={formatLinkIPFS(item.url)}
+                        src={formatLinkIPFS(item.url || '/placeHolderIMG.png')}
                         alt="list_collection"
                         className="object-cover w-8 h-8 rounded-lg"
                       />

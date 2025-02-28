@@ -58,11 +58,10 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
           >
             <div
-              className={`relative items-center text-sm  border-[2px]  rounded-lg cursor-pointer lg:text-base ${
-                idNFT.includes(Number(item.nftID))
+              className={`relative items-center text-sm  border-[2px]  rounded-lg cursor-pointer lg:text-base ${idNFT.includes(Number(item.nftID))
                   ? "border-primary_400 border-opacity-100 border-[2px]"
                   : "border-shader_400"
-              }`}
+                }`}
             >
               <div
                 className="relative h-[98px] group rounded-t-lg overflow-hidden"
