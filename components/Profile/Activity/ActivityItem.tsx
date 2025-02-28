@@ -8,8 +8,6 @@ import { useContext } from "react";
 const HistoryItem = ({ item }: any) => {
   const { demask, chainId } = useContext(AccountContext);
 
-  console.log(item)
-
   return (
     <tr className="flex px-2 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_700 border-y border-shader_500">
       <td className="py-2 flex items-center justify-start  md:basis-1/7 w-[140px]">
@@ -25,19 +23,11 @@ const HistoryItem = ({ item }: any) => {
       </td>
 
       <td className="flex items-center justify-start py-2 md:basis-1/7 w-[200px] gap-x-2">
-        <div className="w-8 h-8 mr-1 overflow-hidden rounded-lg">
+        <div className="w-8 h-8  overflow-hidden rounded-lg">
           <MediaNFT data={item} isControls={false} />
         </div>
         <div className="max-w-[120px] truncate">
-          {item?.tokenSymbol ? (
-            <>
-              <span>
-                {item?.metadata?.symbol}/{item?.tokenSymbol}
-              </span>
-            </>
-          ) : (
-            <span>{item?.metadata?.symbol}</span>
-          )}
+          <span>{item?.collectionName || "#"}</span>
         </div>
       </td>
 
