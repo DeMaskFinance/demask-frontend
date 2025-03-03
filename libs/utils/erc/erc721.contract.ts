@@ -18,7 +18,7 @@ const ercContract721 = () => {
     tokenAddress: Address,
     factoryAddress: Address
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account: wallet,
       abi: abiFactory,
       address: factoryAddress,
@@ -78,7 +78,7 @@ const ercContract721 = () => {
     account: Address,
     txDeadline: number
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
       address: routerAddress,
@@ -114,7 +114,7 @@ const ercContract721 = () => {
     account: Address,
     txDeadline: number
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
       address: routerAddress,
@@ -149,7 +149,9 @@ const ercContract721 = () => {
     account: Address,
     txDeadline: number
   ) => {
-    const rs = writeContractAsync({
+    console.log(123);
+
+    const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
       address: routerAddress,
@@ -165,9 +167,13 @@ const ercContract721 = () => {
       gas: BigInt(500_000),
     });
 
+    console.log(rs);
+
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
       hash: rs as any,
     });
+
+    console.log(receipt);
 
     return receipt;
   };
@@ -183,7 +189,7 @@ const ercContract721 = () => {
     txDeadline: number,
     valueToSend: BigNumberish
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
       address: routerAddress,

@@ -72,7 +72,7 @@ const erc1155Contract = () => {
     inputNFT: string,
     txDeadline: number
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account,
       abi: abiRouter,
       address: routerAddress,
@@ -108,7 +108,7 @@ const erc1155Contract = () => {
     amountNFTMin: number,
     txDeadline: number
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account,
       abi: abiRouter,
       address: routerAddress,
@@ -144,7 +144,7 @@ const erc1155Contract = () => {
     txDeadline: number,
     valueToSend: string | 0
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account,
       abi: abiRouter,
       address: routerAddress,
@@ -180,7 +180,7 @@ const erc1155Contract = () => {
     inputNFT: string,
     txDeadline: number
   ) => {
-    const rs = writeContractAsync({
+    const rs = await writeContractAsync({
       account,
       abi: abiRouter,
       address: routerAddress,
