@@ -7,7 +7,7 @@ import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
-import { formatPercent, formatTimestamp } from "@/libs/utils/formatComon";
+import { formatPercent, formatTimeFns, formatTimestamp } from "@/libs/utils/formatComon";
 import { useContext } from "react";
 interface StageProps {
   stage: LaunchpadItem;
@@ -40,6 +40,7 @@ const Status: React.FC<StatusProps> = ({ status }) => {
   return null;
 };
 const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
+
   return (
     <div className="relative">
       <div className="bg-shader_500 border-shader_400 border p-3 rounded-lg flex justify-between gap-x-3 text-sm">
@@ -53,12 +54,10 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
 
         <div className="flex-1 ">
           <p>
-            {checkLaunchpad.isPublic(stage.merkleRoot)
-              ? "Public Sale"
-              : "White list"}{" "}
-            {stage.unit}
+            {stage.label}
           </p>
-          <p className="text-shader_200">{formatTimestamp(stage.endTime)}</p>
+
+          <p className="text-shader_200">{((stage.status === "Coming Soon") ? formatTimeFns(String(stage.startTime)) : formatTimeFns(String(stage.endTime)))}</p>
           <div className="flex gap-x-2 items-center mt-2 text-base">
             {/* <p className="text-primary_300">{stage.limit} per wallet</p>
             <p className="h-3 w-[1px] bg-shader_400"></p> */}
@@ -87,6 +86,15 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
 };
 const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
   const { account } = useContext(AccountContext);
+  const getLabel = (launchpadList: any) => {
+    if (!launchpadList?.data?.length) return "";
+
+    //@ts-expect-error:error
+    const liveItem = launchpadList.data.find(item => item.status === "Live");
+    return liveItem ? liveItem.label : launchpadList.data[0].label;
+  };
+
+  const labelToShow = getLabel(data?.launchpadList);
 
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
@@ -116,10 +124,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
         }
         <div className="p-3 bg-shader_500 rounded-lg">
           <p className="mb-2">
-            {checkLaunchpad.isPublic(data.merkleRoot)
-              ? "Public Sale"
-              : "White list"}{" "}
-            {data.unit}
+            {labelToShow}
           </p>
           <p className="text-shader_200">Price</p>
           <div className="flex gap-x-1 items-center">

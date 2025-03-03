@@ -50,8 +50,6 @@ createAppKit({
     analytics: true,
     connectMethodsOrder: ['wallet'],
   },
-
-
 })
 
 
