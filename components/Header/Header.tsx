@@ -91,6 +91,7 @@ export default function Header() {
       dispatch(login({ accessToken: loginData.accessToken, user: address }));
       updateAccount(address);
     } catch (error) {
+      setIsSigning(false);
       disconnect();
       console.error(error);
     } finally {

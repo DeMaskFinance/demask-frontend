@@ -59,6 +59,15 @@ function formatTimestamp(timestamp: number): string {
 
   return `${formattedDate} GMT+7`;
 }
+
+export function formatTimeFns(isoDate?: string) {
+  if (!isoDate) return "";
+
+  const date = new Date(Number(isoDate) * 1000);
+
+  return date.toUTCString().replace(/^.*?, /, "");
+}
+
 const formatTypeChain = (type: String): String => {
   if (type === "erc1155") {
     return "ERC-1155";

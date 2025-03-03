@@ -4,6 +4,7 @@ type LaunchpadItem = {
   limit: number;
   max_allocation: number;
   merkleRoot: string;
+  label: string;
   price: number;
   priceDecimals: number;
   startTime: number;
