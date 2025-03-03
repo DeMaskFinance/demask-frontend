@@ -115,7 +115,7 @@ const ercContract721 = () => {
     txDeadline: number
   ) => {
     const rs = writeContractAsync({
-      account: wallet,
+      account: account,
       abi: abiRouter,
       address: routerAddress,
       functionName: "removeERC20ERC721",
@@ -150,7 +150,7 @@ const ercContract721 = () => {
     txDeadline: number
   ) => {
     const rs = writeContractAsync({
-      account: wallet,
+      account: account,
       abi: abiRouter,
       address: routerAddress,
       functionName: "sellERC20ERC721",
@@ -184,7 +184,7 @@ const ercContract721 = () => {
     valueToSend: BigNumberish
   ) => {
     const rs = writeContractAsync({
-      account: wallet,
+      account: account,
       abi: abiRouter,
       address: routerAddress,
       functionName: "change",
