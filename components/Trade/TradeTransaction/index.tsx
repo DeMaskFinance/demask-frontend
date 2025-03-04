@@ -149,7 +149,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     },
     enabled: data.dmlAddress !== null && activeChoice === "Sell",
   });
-  const isApprovedNFT = useCheckApproveNFT(
+  const { isApprovedNFT, refetch: refetchNFT } = useCheckApproveNFT(
     account,
     nftAddress,
     routerAddress,
@@ -546,7 +546,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   account,
                   nftAddress,
                   setIsOpenTransaction,
-                  routerAddress
+                  routerAddress,
+                  "erc1155",
+                  refetchNFT
                 )
               }
             >

@@ -94,19 +94,6 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
     const handleAddLiquidity = async () => {
       if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
-
-        console.log(wallet,
-          collectionAddress,
-          contracts.WETH_ADDRESS,
-          inputNFT,
-          contracts.ERC721_ROUTER_ADDRESS,
-          dataTradingAdd.amountETHDecimals
-            ? dataTradingAdd.amountETHDecimals
-            : Number(inputToken) * 1e18,
-          account,
-          txDeadline,
-          exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || inputToken)))
-
         try {
           setIsOpenTransaction(true);
           const result = await addLiquidity(
@@ -174,9 +161,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               <p>NFT quantity</p>
               <div className="flex items-center font-bold text-white gap-x-1">
                 {inputNFT.length}
-                <p>
-                  <EtherIcon width={14} height={14} />
-                </p>
+
               </div>
             </div>
             <div className="flex justify-between ">

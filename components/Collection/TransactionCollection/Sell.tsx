@@ -128,7 +128,10 @@ const Sell = () => {
                         account,
                         collectionAddress,
                         setIsOpenTransaction,
-                        contracts.ERC721_ROUTER_ADDRESS
+                        contracts.ERC721_ROUTER_ADDRESS,
+                        "erc721",
+                        refetch
+
                       )
                     }
                   >

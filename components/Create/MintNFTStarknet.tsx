@@ -6,13 +6,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { wagmiAdapter } from "@/config";
 import AccountContext from "@/context/AccountContext";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import getMetadataUrl from "@/libs/utils/getMetadata";
+import { estimateGas } from "@wagmi/core";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { toast } from "sonner";
+import { encodeFunctionData } from "viem";
 import { useWriteContract } from 'wagmi';
 import * as yup from "yup";
 import abiMint721 from "../../abi/erc721/abiDefault721.json";
@@ -77,13 +80,22 @@ const MintErc721: React.FC<MintErc721Props> = ({
         description: values.description,
       });
 
+      const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+        to: collection.collectionAddress as `0x${string}`,
+        data: encodeFunctionData({
+          abi: abiMint721,
+          functionName: "safeMint",
+          args: [account, 1, urlMetadata],
+        }),
+      });
+
       const result = await writeContractAsync({
         account,
         abi: abiMint721,
         address: collection.collectionAddress as `0x${string}`,
         functionName: "safeMint",
         args: [account, 1, urlMetadata],
-        gas: BigInt(200000),
+        gas: gasLimit,
       });
 
       setMetadataIPFS(urlMetadata);

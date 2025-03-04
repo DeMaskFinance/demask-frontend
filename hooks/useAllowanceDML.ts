@@ -13,8 +13,6 @@ const useAllowanceDML = (
   inputLiquidity: string,
   routerAddress: Address
 ) => {
-  const [currentAllowance, setCurrentAllowance] = useState<string | null>(null);
-
   const { data: allowance, error } = useReadContract({
     account,
     abi: abiDML,
@@ -23,16 +21,7 @@ const useAllowanceDML = (
     args: [account, routerAddress],
   });
 
-  useEffect(() => {
-    if (allowance) {
-      setCurrentAllowance(allowance.toString());
-    }
-    if (error) {
-      console.error("Error fetching allowance:", error);
-    }
-  }, [allowance, error]);
-
-  return currentAllowance;
+  return Number(allowance);
 };
 
 export default useAllowanceDML;

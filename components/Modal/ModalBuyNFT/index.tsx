@@ -131,6 +131,10 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     }
   };
 
+
+
+
+
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative bg_main">
       <div className="px-4 pt-4">

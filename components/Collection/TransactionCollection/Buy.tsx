@@ -43,7 +43,7 @@ const Buy = () => {
     },
   });
 
-  console.log(data);
+
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,

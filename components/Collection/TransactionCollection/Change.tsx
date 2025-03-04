@@ -113,7 +113,7 @@ const Change = () => {
     }
   }, [account, data721Trading, bigNumberBalance]);
 
-  const isApprovedNFT = useCheckApproveNFT(
+  const { isApprovedNFT, refetch } = useCheckApproveNFT(
     account,
     collectionAddress,
     routerAddress,
@@ -242,7 +242,9 @@ const Change = () => {
                   account,
                   collectionAddress,
                   setIsOpenTransaction,
-                  routerAddress
+                  routerAddress,
+                  "erc721",
+                  refetch
                 )
               }
             >

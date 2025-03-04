@@ -1,9 +1,10 @@
 import abiFactory from "@/abi/erc721/abiFactory.json";
 import abiRouter from "@/abi/erc721/abiRouter.json";
 import { wagmiAdapter } from "@/config";
-import { waitForTransactionReceipt } from "@wagmi/core";
+import { waitForTransactionReceipt, estimateGas } from "@wagmi/core";
 import { useWriteContract } from "wagmi";
 import { exponentialToDecimal } from "../convertExponential";
+import { encodeFunctionData } from "viem";
 
 type Address = `0x${string}` | any;
 
@@ -18,13 +19,22 @@ const ercContract721 = () => {
     tokenAddress: Address,
     factoryAddress: Address
   ) => {
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: factoryAddress,
+      data: encodeFunctionData({
+        abi: abiRouter,
+        functionName: "dmlToken",
+        args: [tokenAddress, collectionAddress],
+      }),
+    });
+
     const rs = await writeContractAsync({
       account: wallet,
       abi: abiFactory,
       address: factoryAddress,
       functionName: "dmlToken",
       args: [tokenAddress, collectionAddress],
-      gas: BigInt(500_000),
+      gas: gasLimit,
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -44,6 +54,24 @@ const ercContract721 = () => {
     txDeadline: number,
     valueToSend: BigNumberish
   ) => {
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: routerAddress,
+      data: encodeFunctionData({
+        abi: abiRouter,
+        functionName: "addERC20ERC721",
+        args: [
+          tokenAddress,
+          collectionAddress,
+          idNFT,
+          BigInt(exponentialToDecimal(Math.floor(Number(amountErcDesired)))),
+          BigInt(0),
+          account,
+          Math.floor((Date.now() + txDeadline * 60000) / 1000),
+        ],
+      }),
+      value: BigInt(exponentialToDecimal(Number(valueToSend))),
+    });
+
     const rs = await writeContractAsync({
       account,
       abi: abiRouter,
@@ -58,7 +86,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(500_000),
+      gas: gasLimit,
       value: BigInt(exponentialToDecimal(Number(valueToSend))),
     });
 
@@ -78,6 +106,23 @@ const ercContract721 = () => {
     account: Address,
     txDeadline: number
   ) => {
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: routerAddress,
+      data: encodeFunctionData({
+        abi: abiRouter,
+        functionName: "buyERC20ERC721",
+        args: [
+          tokenAddress,
+          collectionAddress,
+          idNFT,
+          BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
+          account,
+          Math.floor((Date.now() + txDeadline * 60000) / 1000),
+        ],
+      }),
+      value: BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
+    });
+
     const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
@@ -91,7 +136,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(500_000),
+      gas: gasLimit,
       value: BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
     });
 
@@ -113,6 +158,24 @@ const ercContract721 = () => {
     account: Address,
     txDeadline: number
   ) => {
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: routerAddress,
+      data: encodeFunctionData({
+        abi: abiRouter,
+        functionName: "removeERC20ERC721",
+        args: [
+          tokenAddress,
+          nftAddress,
+          idNFT,
+          BigInt(Math.floor(Number(liquidity))).toString(),
+          BigInt(exponentialToDecimal(Number(amountTokenMin))),
+          BigInt(exponentialToDecimal(Number(amountNFTMin))),
+          account,
+          Math.floor((Date.now() + txDeadline * 60000) / 1000),
+        ],
+      }),
+    });
+
     const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
@@ -128,7 +191,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(500_000),
+      gas: gasLimit,
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -148,7 +211,21 @@ const ercContract721 = () => {
     account: Address,
     txDeadline: number
   ) => {
-    console.log(123);
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: routerAddress,
+      data: encodeFunctionData({
+        abi: abiRouter,
+        functionName: "sellERC20ERC721",
+        args: [
+          tokenAddress,
+          nftAddress,
+          idNFT,
+          BigInt(exponentialToDecimal(Math.floor(Number(amountSellDec)))),
+          account,
+          Math.floor((Date.now() + txDeadline * 60000) / 1000),
+        ],
+      }),
+    });
 
     const rs = await writeContractAsync({
       account: account,
@@ -163,7 +240,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(500_000),
+      gas: gasLimit,
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -184,6 +261,23 @@ const ercContract721 = () => {
     txDeadline: number,
     valueToSend: BigNumberish
   ) => {
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: routerAddress,
+      data: encodeFunctionData({
+        abi: abiRouter,
+        functionName: "change",
+        args: [
+          tokenAddress,
+          collectionAddress,
+          idFrom,
+          idTo,
+          account,
+          Math.floor((Date.now() + txDeadline * 60000) / 1000),
+        ],
+      }),
+      value: BigInt(exponentialToDecimal(Number(valueToSend))),
+    });
+
     const rs = await writeContractAsync({
       account: account,
       abi: abiRouter,
@@ -197,7 +291,7 @@ const ercContract721 = () => {
         account,
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
-      gas: BigInt(500_000),
+      gas: gasLimit,
       value: BigInt(exponentialToDecimal(Number(valueToSend))),
     });
 
