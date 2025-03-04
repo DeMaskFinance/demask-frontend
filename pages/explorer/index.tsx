@@ -2,17 +2,15 @@ import { BackgroundDefault } from "@/components/Backgrounds";
 import { ChartTVL, ChartVolumn } from "@/components/Charts";
 import TopCollection from "@/components/Explorer/TopNft/TopCollection";
 import ListTracsaction from "@/components/Explorer/Transaction/ListTracsaction";
-import { NextSeo } from "next-seo";
-import { SEO } from "../../next-seo.config";
+import SEOHead from "@/components/SEOHead";
 
-const updateMeta = {
-  ...SEO,
-  title: "Explorer",
-};
+
 export default function ExplorerPage() {
   return (
     <BackgroundDefault>
-      <NextSeo {...updateMeta} />
+      <SEOHead
+        title="Explorer"
+      />
       <section className="max-w-screen-xl px-4 mx-auto lg:px-8">
         <h1 className="title_page">DEMASK INFO & ANALYTICS</h1>
 

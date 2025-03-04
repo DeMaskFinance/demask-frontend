@@ -15,6 +15,7 @@ import MediaNFT from "../Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
+import { shorten } from "@/lib/utils";
 
 interface LiquidytiesItemProps {
   liquidity: DataBase;
@@ -118,7 +119,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           </div>
 
           <p className="text-sm font-semibold text-primary_300">
-            {liquidity?.metadata?.symbol || liquidity?.symbol}/MON
+            {shorten(liquidity?.metadata?.symbol) || shorten(String(liquidity?.symbol))}/MON
           </p>
         </div>
       </div>

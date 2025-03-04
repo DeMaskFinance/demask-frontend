@@ -29,10 +29,11 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
 import ModalWaitingSign from "../Modal/ModalWaitingSign";
+import { modal } from "@/pages/_app";
 
 export default function Header() {
 
-  const { account, updateAccount, wallet, isEvent, setIsEvent, chainId, demask } =
+  const { account, updateAccount, wallet, isEvent, setIsEvent, chainId, demask, updateWallet } =
     useContext(AccountContext);
 
 
@@ -56,6 +57,9 @@ export default function Header() {
   const { address, isConnected, allAccounts } = useAppKitAccount();
   const { signMessageAsync } = useSignMessage();
   const { disconnect } = useDisconnect()
+
+  const walletInfo = modal.getWalletInfo();
+
   const [isSigning, setIsSigning] = useState(false);
 
 
@@ -90,6 +94,7 @@ export default function Header() {
 
       dispatch(login({ accessToken: loginData.accessToken, user: address }));
       updateAccount(address);
+      updateWallet(walletInfo?.name)
     } catch (error) {
       setIsSigning(false);
       disconnect();
