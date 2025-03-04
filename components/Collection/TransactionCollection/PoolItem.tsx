@@ -170,9 +170,10 @@ const PoolItem = ({ liquidity }: any) => {
           <EtherIcon width={18} height={18} />
         </div>
         <Button
-          className=" w-full py-2 mt-4"
           gradient
+          className={`w-full py-2 mt-4 ${Number(reward) === 0 ? "opacity-70 hover:cursor-not-allowed" : ""}`}
           onClick={handleGetReward}
+          disabled={Number(reward) === 0}
         >
           Claim Reward
         </Button>
