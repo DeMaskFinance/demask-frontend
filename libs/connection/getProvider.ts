@@ -41,7 +41,7 @@ export const getProvider = async (wallet: string) => {
 
   if (!provider && wallet === "Metamask") {
     const provider2 = await detectEthereumProvider();
-    if (provider2 && provider2 === window.ethereum) {
+    if (provider2) {
       provider = provider2;
     }
   }
