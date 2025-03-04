@@ -17,7 +17,6 @@ import { useGetRewardDML } from "@/libs/utils/getReward";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import { toast } from "sonner";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { useReadContract } from "wagmi";
 
@@ -84,7 +83,7 @@ const PoolItem = ({ liquidity }: any) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (account && dmlTokenLiquidity && wallet && contracts) {
+    if (account && dmlTokenLiquidity && contracts) {
       getRewardDML(
         dmlTokenLiquidity,
         account,
@@ -98,8 +97,6 @@ const PoolItem = ({ liquidity }: any) => {
 
       );
       queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
-    } else {
-      toast.error("No account and DML");
     }
   };
 
