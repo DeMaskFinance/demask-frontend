@@ -41,6 +41,7 @@ import ModalDocument from "../Modal/ModalLength/ModalDocument";
 import { TabGroups } from "../NavChoice";
 import { useReadContract } from "wagmi";
 import abiDML from "@/abi/abiDML.json";
+import { shorten } from "@/lib/utils";
 
 const DetailLiquidity = () => {
   const { account, wallet, chainId, demask } = useContext(AccountContext);
@@ -246,7 +247,7 @@ const DetailLiquidity = () => {
                     <ModalDocument data={data?.metadata?.name} />
                   </div>
                   <p className="text-sm text-primary_400">
-                    ({data?.metadata?.symbol}/MON)
+                    ({shorten(data?.metadata?.symbol)}/MON)
                   </p>
                 </div>
                 <div className="flex items-center gap-x-2">

@@ -1,12 +1,13 @@
-import React from "react";
-import Wrapper from "../Wrapper";
 import { LoadingIcon } from "@/components/Icons";
+import { modal } from "@/pages/_app";
 import { useDisconnect } from "@reown/appkit/react";
-import { BiCloset } from "react-icons/bi";
+import React from "react";
 import { CgClose } from "react-icons/cg";
+import Wrapper from "../Wrapper";
 
 const ModalWaitingSign: React.FC<any> = ({ isOpen, onClose }) => {
     const { disconnect } = useDisconnect()
+    const walletInfo = modal.getWalletInfo();
 
     return (
         <Wrapper isOpen={isOpen}>
@@ -26,10 +27,11 @@ const ModalWaitingSign: React.FC<any> = ({ isOpen, onClose }) => {
                         <h2 className="text-xl text-center  font-semibold text-white">
                             Waiting for Signature
                         </h2>
-
+                        {walletInfo?.icon && walletInfo?.name && <p className="text-center py-2"><img src={walletInfo?.icon} className="w-5 h-5 rounded-md inline-block mb-1" /> <span className="font-semibold text-md text-white">{walletInfo?.name} Wallet</span> </p>}
                         <p className="text-yellow">
                             Please check wallet for signature request
                         </p>
+
                     </div>
 
                     <LoadingIcon width={32} height={32} className="animate-spin" />
