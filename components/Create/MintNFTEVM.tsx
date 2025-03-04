@@ -10,12 +10,11 @@ import {
 } from "@/components/ui/select";
 import AccountContext from "@/context/AccountContext";
 import { usePreventUserFromErasingContent } from "@/hooks/usePreventUserFromErasingContent";
-import { changeNetwork } from "@/libs/utils/changeNetwork";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
-import ercContract from "@/libs/utils/erc/erc.contract";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import metadataURL from "@/libs/utils/getMetadata";
 import Tippy from "@tippyjs/react";
+import { estimateGas } from "@wagmi/core";
 import Link from "next/link";
 import React, {
   ChangeEvent,
@@ -26,13 +25,14 @@ import React, {
 import { CgClose } from "react-icons/cg";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { useWriteContract } from "wagmi";
 import Button from "../Buttons/Button";
-import TypeErc from "../Common/TypeErc";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { MintErc721Props } from "./MintNFTStarknet";
-import { useWriteContract } from "wagmi";
+import { wagmiAdapter } from "@/config";
+import { encodeFunctionData } from "viem";
+
 interface mintProps {
   amount: number;
   url: string;
@@ -130,6 +130,18 @@ export default function MintNFTEVM({
     try {
       setMetadataIPFS(url);
 
+      const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+        to: collection.collectionAddress as `0x${string}`,
+        data: encodeFunctionData({
+          abi: abiDemask,
+          functionName: "mint",
+          args: [account,
+            exponentialToDecimal(amount),
+            "0x",
+            url],
+        }),
+      });
+
       const result = await writeContractAsync({
         account,
         abi: abiDemask,
@@ -139,7 +151,7 @@ export default function MintNFTEVM({
           exponentialToDecimal(amount),
           "0x",
           url],
-        gas: BigInt(200000),
+        gas: gasLimit,
       });
 
 

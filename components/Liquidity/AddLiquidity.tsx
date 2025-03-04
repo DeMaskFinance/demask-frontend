@@ -131,7 +131,7 @@ export default function AddLiquidity() {
       refetchInterval: 20000,
     }
   );
-  const isApprovedNFT = useCheckApproveNFT(
+  const { isApprovedNFT, refetch: refetchNFT } = useCheckApproveNFT(
     account,
     nftAddress,
     contracts?.ERC1155_ROUTER_ADDRESS || "",
@@ -395,7 +395,9 @@ export default function AddLiquidity() {
                     account,
                     nftAddress,
                     setIsOpenTransaction,
-                    contracts.ERC1155_ROUTER_ADDRESS
+                    contracts.ERC1155_ROUTER_ADDRESS,
+                    "erc1155",
+                    refetchNFT
                   )
                 }
               >

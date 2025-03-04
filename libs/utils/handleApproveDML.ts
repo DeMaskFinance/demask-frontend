@@ -1,7 +1,7 @@
 import abiDML from "@/abi/abiDML.json";
-import BigNumber from "bignumber.js";
 import { wagmiAdapter } from "@/config";
 import { waitForTransactionReceipt } from "@wagmi/core";
+import BigNumber from "bignumber.js";
 import { useWriteContract } from "wagmi";
 
 type Address = `0x${string}` | any;

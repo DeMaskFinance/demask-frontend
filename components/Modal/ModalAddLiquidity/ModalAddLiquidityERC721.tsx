@@ -128,7 +128,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     }
   }, [idNFT, inputToken, dataTradingAdd, bigNumberBalance, data]);
 
-  const isApprovedNFT = useCheckApproveNFT(
+  const { isApprovedNFT, loading, refetch } = useCheckApproveNFT(
     account,
     collectionAddress,
     contracts?.ERC721_ROUTER_ADDRESS || "",
@@ -295,6 +295,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                         setIsOpenTransaction,
                         contracts?.ERC721_ROUTER_ADDRESS || "",
                         'erc721',
+                        refetch
                       )
                     }
                   >

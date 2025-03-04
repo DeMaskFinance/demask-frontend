@@ -10,7 +10,8 @@ const useApproveNFT = () => {
     nftAddress: string,
     setIsOpenTransaction: (open: boolean) => void,
     routerAddress: string,
-    type?: "erc721" | "erc1155"
+    type?: "erc721" | "erc1155",
+    refetch?: () => Promise<any>
   ) => {
     if (account) {
       try {
@@ -22,6 +23,11 @@ const useApproveNFT = () => {
           functionName: "setApprovalForAll",
           args: [routerAddress, true],
         });
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (refetch) {
+          await refetch();
+        }
       } catch (error) {
         console.error(error);
       } finally {

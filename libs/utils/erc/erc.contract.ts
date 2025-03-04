@@ -1,5 +1,5 @@
 import { useWriteContract, useReadContract } from "wagmi";
-import { waitForTransactionReceipt } from "@wagmi/core";
+import { estimateGas, waitForTransactionReceipt } from "@wagmi/core";
 import { wagmiAdapter } from "@/config";
 import { exponentialToDecimal } from "../convertExponential";
 import abiErc1155 from "@/abi/abiErc1155.json";
@@ -8,6 +8,7 @@ import abiCollection from "@/abi/abiCreateCollection.json";
 import abiCollection721 from "@/abi/erc721/abiErc721Create.json";
 import abiFeeManager from "@/abi/abiFeeManager.json";
 import abiLaunchPad from "@/abi/abiLaunchPad.json";
+import { encodeFunctionData } from "viem";
 
 type Address = `0x${string}`;
 
@@ -46,12 +47,21 @@ const useErcContract = (
     collection: Address | any,
     type: "erc721" | "erc1155"
   ) => {
+    const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
+      to: collection,
+      data: encodeFunctionData({
+        abi: type === "erc721" ? abiCollection721 : abiCollection,
+        functionName: "fillCreate",
+        args: [id.toString(), name, symbol],
+      }),
+    });
+
     const rs = await writeContractAsync({
       address: collection,
       abi: type === "erc721" ? abiCollection721 : abiCollection,
       functionName: "fillCreate",
       args: [id.toString(), name, symbol],
-      gas: BigInt(5000000),
+      gas: gasLimit,
     });
     return await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
       hash: rs,

@@ -139,7 +139,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
     }
   }, [inputNFT, data, slippage, bigNumberBalance]);
 
-  const isApprovedNFT = useCheckApproveNFT(
+  const { isApprovedNFT, refetch } = useCheckApproveNFT(
     account,
     data.nftAddress,
     contracts?.ERC1155_ROUTER_ADDRESS || "",
@@ -280,7 +280,9 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
                       account,
                       data.nftAddress,
                       setIsOpenTransaction,
-                      contracts?.ERC1155_ROUTER_ADDRESS || ""
+                      contracts?.ERC1155_ROUTER_ADDRESS || "",
+                      "erc1155",
+                      refetch
                     )
                   }
                 >

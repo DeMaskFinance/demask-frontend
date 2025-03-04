@@ -1,3 +1,4 @@
+import { shorten } from "@/lib/utils";
 import React, { Fragment, memo, useEffect } from "react";
 import { MdNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 
@@ -80,11 +81,10 @@ const Pagination = ({
           <button
             onClick={prevPage}
             disabled={isPlaceholderData || page === 1}
-            className={`w-8 ${
-              isPlaceholderData || page === 1
-                ? "text-primary_400 opacity-30"
-                : "text-primary_400"
-            }`}
+            className={`w-8 ${isPlaceholderData || page === 1
+              ? "text-primary_400 opacity-30"
+              : "text-primary_400"
+              }`}
           >
             <MdNavigateBefore className="mx-auto text-2xl border border-transparent" />
           </button>
@@ -94,9 +94,8 @@ const Pagination = ({
                 <span className="text-shader_200 leading-[30px]">...</span>
               ) : (
                 <button
-                  className={`text-sm w-8 rounded-full text-shader_200 p-1 ${
-                    pageNum === page ? "bg-primary_500 text-white" : ""
-                  }`}
+                  className={`text-sm ${pageNum > 10000 ? "mx-1" : ""} w-8 rounded-full text-shader_200 p-1 ${pageNum === page ? "bg-primary_500 text-white" : ""
+                    }`}
                   onClick={() => goToPage(pageNum)}
                 >
                   {pageNum}
@@ -107,11 +106,10 @@ const Pagination = ({
           <button
             onClick={nextPage}
             disabled={page === data?.totalPages}
-            className={`${
-              page === data?.totalPages
-                ? "text-primary_400 opacity-30"
-                : "text-primary_400"
-            }`}
+            className={`${page === data?.totalPages
+              ? "text-primary_400 opacity-30"
+              : "text-primary_400"
+              }`}
           >
             <MdOutlineNavigateNext className="mx-auto text-2xl " />
           </button>
@@ -175,11 +173,10 @@ const TablePagination: React.FC<PaginationProps> = ({
           <button
             onClick={prevPage}
             disabled={isPlaceholderData || page === 1 || isFetching}
-            className={`${
-              isPlaceholderData || page === 1 || isFetching
-                ? "text-white bg-slate-300"
-                : "hover:text-white hover:bg-primary_500 transition-all"
-            } w-8 flex items-center text-center justify-center rounded-full transition-all`}
+            className={`${isPlaceholderData || page === 1 || isFetching
+              ? "text-white bg-slate-300"
+              : "hover:text-white hover:bg-primary_500 transition-all"
+              } w-8 flex items-center text-center justify-center rounded-full transition-all`}
           >
             <MdNavigateBefore />
           </button>
@@ -200,11 +197,10 @@ const TablePagination: React.FC<PaginationProps> = ({
             disabled={
               isPlaceholderData || page === data?.totalPages || isFetching
             }
-            className={`${
-              isPlaceholderData || page === data?.totalPages || isFetching
-                ? "text-white bg-slate-300"
-                : "hover:text-white hover:bg-primary_500 transition-all"
-            } w-8 flex items-center text-center justify-center rounded-full transition-all`}
+            className={`${isPlaceholderData || page === data?.totalPages || isFetching
+              ? "text-white bg-slate-300"
+              : "hover:text-white hover:bg-primary_500 transition-all"
+              } w-8 flex items-center text-center justify-center rounded-full transition-all`}
           >
             <MdOutlineNavigateNext />
           </button>

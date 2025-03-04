@@ -39,8 +39,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
   setIsOpenError,
   closeModal,
 }) => {
-
-    console.log(routerAddress)
     const [inputLiquidity, setInputLiquidity] = useState<any>("");
     const [activeChoice, setActiveChoice] = useState<string>("");
     const [isSufficientLiquidity, setIsSufficientLiquidity] =
@@ -90,7 +88,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       routerAddress
     );
 
-    console.log(currentAllowance)
 
     const handleGetLiquidity = (values: NumberFormatValues) => {
       const { value } = values;
@@ -110,6 +107,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       inputLiquidity,
       isOpenTransaction
     );
+
 
     useEffect(() => {
       if (

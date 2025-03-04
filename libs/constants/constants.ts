@@ -36,7 +36,7 @@ const MONAD_DEMASK = {
   chainName: "Monad Testnet",
   NAME: "Monad Testnet",
   CURRENCY: "MON",
-  RPC: "https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6",
+  RPC: "https://testnet-rpc.monad.xyz",
 };
 
 let network: NetworkItem[] = [
