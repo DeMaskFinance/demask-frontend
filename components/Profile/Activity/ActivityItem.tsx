@@ -50,7 +50,7 @@ const HistoryItem = ({ item }: any) => {
         )}`}</a>
       </td>
       <td className="flex items-center justify-end py-2 md:basis-1/7 w-[140px]">
-        2 days ago
+        {item.blockTime}
       </td>
     </tr>
   );
