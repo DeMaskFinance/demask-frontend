@@ -1,11 +1,10 @@
+import { Button } from "@/components/Buttons";
+import { WalletIcon } from "@/components/Icons";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
-import EVMWallet from "./EVMWallet";
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { useSignMessage } from "wagmi";
-import { Button } from "@/components/Buttons";
-import { WalletIcon } from "@/components/Icons";
 
 interface ModalWalletProps {
   isAuthen?: true;

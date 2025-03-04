@@ -1,5 +1,4 @@
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { useContext } from "react";
@@ -24,8 +23,6 @@ const useInformationToken = (
     if (!account) return { balanceToken: 0, bigNumberBalance: 0 };
 
     try {
-      const providerChoice = await getProvider(wallet);
-
       // const provider = new ethers.providers.Web3Provider(providerChoice);
       const provider = new ethers.providers.JsonRpcProvider(demask.RPC);
 
