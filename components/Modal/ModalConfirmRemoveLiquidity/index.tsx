@@ -122,7 +122,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             );
           } else {
             result = await removeERC20ERC721(
-              wallet,
               collectionAddress,
               data.tokenAddress,
               idNFT,

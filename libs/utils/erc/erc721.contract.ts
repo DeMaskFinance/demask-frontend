@@ -103,7 +103,6 @@ const ercContract721 = () => {
   };
 
   const removeERC20ERC721 = async (
-    wallet: Address,
     nftAddress: Address,
     tokenAddress: Address,
     idNFT: number[],
@@ -167,13 +166,9 @@ const ercContract721 = () => {
       gas: BigInt(500_000),
     });
 
-    console.log(rs);
-
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
       hash: rs as any,
     });
-
-    console.log(receipt);
 
     return receipt;
   };

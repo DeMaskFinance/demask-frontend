@@ -43,7 +43,7 @@ const useInformationToken = (
   };
 
   const { data, isLoading } = useQuery<EVMResult | ERC721_TYPE>({
-    queryKey: ["useBalanceToken", account, wallet, chainId],
+    queryKey: ["useBalanceToken", account, chainId],
     queryFn: async () => {
       return await fetchTokenBalanceEVM();
     },

@@ -67,22 +67,21 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
   const handleGetReward = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-
-    console.log(account, wallet, contracts)
     e.preventDefault();
-    if (account && wallet && contracts) {
+
+
+    if (account && contracts) {
       getRewardDML(
         dmlTokenLiquidity,
         account,
-        liquidity.dmlDecimals,
         contracts.WETH_ADDRESS,
+        liquidity.dmlDecimals,
         setIsOpenTransaction,
         setReward,
         setIsOpenSuccessCollect,
         setIsOpenErrorCollect,
         setHash,
       );
-      await updateBalance();
     } else {
       console.log("No account and DML");
     }
@@ -159,8 +158,9 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         </div>
         <Button
           gradient
-          className="flex w-full p-3 mt-5 gap-x-1"
+          className={`flex w-full p-3 mt-5 gap-x-1 ${Number(reward) === 0 ? "opacity-70 hover:cursor-not-allowed" : ""}`}
           onClick={handleGetReward}
+          disabled={Number(reward) === 0}
         >
           Claim
           <FormatNumber number={reward} />

@@ -131,12 +131,12 @@ const DetailLiquidity = () => {
     if (!account) {
       return;
     }
-    if (account && dmlTokenLiquidity && wallet) {
+    if (account && dmlTokenLiquidity) {
       getRewardDML(
         dmlTokenLiquidity,
         account,
-        data.dmlDecimals,
         data.tokenAddress,
+        data.dmlDecimals,
         setIsOpenTransaction,
         setReward,
         setIsOpenSuccessCollect,
