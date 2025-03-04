@@ -1,17 +1,15 @@
 import { Toaster } from "@/components/ui/sonner";
 import AccountContext from "@/context/AccountContext";
-import { getProvider } from "@/libs/connection/getProvider";
+import { contractService } from "@/libs/service/contractsService";
 import * as userService from "@/libs/service/userService";
 import { logout, selectProfile, userData } from "@/store/profileSlice";
+import { useQuery } from "@tanstack/react-query";
 import { PropsWithChildren, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
 import Header from "../Header";
-import { useQuery } from "@tanstack/react-query";
-import { contractService } from "@/libs/service/contractsService";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { useAppKitAccount } from "@reown/appkit/react";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent, account } =
     useContext(AccountContext);
@@ -30,48 +28,6 @@ export default function Layout({ children }: PropsWithChildren) {
       dispatch(logout());
     }
   }, [user, accessToken, isLoggedIn]);
-
-
-  const { address, isConnected } = useAppKitAccount();
-
-
-  useEffect(() => {
-
-    const initProvider = async () => {
-
-
-      if (window.ethereum) {
-        try {
-          const provider = await getProvider(wallet);
-
-          const handleAccountsChanged = (account: []) => {
-
-            localStorage.removeItem("WALLET_DEMASK");
-            updateAccount("");
-            dispatch(logout());
-          };
-
-          const handleChainChanged = (networkId: string) => {
-            if (networkId === "11155111" || networkId === "5") {
-              updateChainId(networkId);
-            }
-          };
-
-          provider.on("accountsChanged", handleAccountsChanged);
-          provider.on("chainChanged", handleChainChanged);
-
-          return () => {
-            provider.off("accountsChanged", handleAccountsChanged);
-            provider.off("chainChanged", handleChainChanged);
-          };
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-    };
-
-    initProvider();
-  }, [wallet, address]);
 
   const { data } = useQuery<ContractAddresses>({
     queryKey: ["contracts", chainId, version],
