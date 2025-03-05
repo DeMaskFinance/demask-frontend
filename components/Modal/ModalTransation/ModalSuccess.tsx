@@ -35,7 +35,7 @@ const ModalSuccess: React.FunctionComponent<ModalSuccessProps> = ({
   };
   return (
     <Wrapper isOpen={isOpenSuccess} onClick={handleClose}>
-      <div className="container_modal">
+      <div className="container_modal w-[450px]">
         <div className="h-fit w-full md:w-[300px] lg:w-[450px] rounded-lg p-4 relative">
           <div>
             <div className="flex justify-between">
