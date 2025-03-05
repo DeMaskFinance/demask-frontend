@@ -13,10 +13,10 @@ const queryClient = new QueryClient({
   },
 });
 const metadata = {
-  name: "Web3Modal",
-  description: "Web3Modal Example",
-  url: "https://web3modal.com",
-  icons: ["https://avatars.githubusercontent.com/u/37784886"],
+  name: "Demask",
+  description: "Demask Finance",
+  url: "https://app.demask.finance",
+  icons: ["https://app.demask.finance/bigFavicon.png"],
 };
 const titillium = Titillium_Web({
   subsets: ["latin"],

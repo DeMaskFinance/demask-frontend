@@ -1,6 +1,9 @@
 import { LoadingIcon } from "@/components/Icons";
 import { modal } from "@/pages/_app";
 import { useDisconnect } from "@reown/appkit/react";
+import { disconnect } from '@wagmi/core'
+
+
 import React from "react";
 import { CgClose } from "react-icons/cg";
 import Wrapper from "../Wrapper";

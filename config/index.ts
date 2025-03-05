@@ -12,7 +12,7 @@ export const metadata = {
   name: "Demask Finance",
   description: "Demask Finance",
   url: "https://app.demask.finance",
-  icons: ["https://app.demask.finance/favicon.ico"],
+  icons: ["https://app.demask.finance/bigFavicon.png"],
 };
 
 // for custom networks visit -> https://docs.reown.com/appkit/react/core/custom-networks
