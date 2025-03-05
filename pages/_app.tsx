@@ -1,4 +1,4 @@
-import { Layout } from "@/components/Layouts";
+ import { Layout } from "@/components/Layouts";
 import ProgressBar from "@/components/Layouts/ProviderRouter";
 import { StarknetProvider } from "@/components/StarknetProvider";
 import { networks, wagmiAdapter } from "@/config";
@@ -38,6 +38,12 @@ export const modal = createAppKit({
     '719bd888109f5e8dd23419b20e749900ce4d2fc6858cf588395f19c82fd036b3',
     '3ed8cc046c6211a798dc5ec70f1302b43e07db9639fd287de44a9aa115a21ed6',
   ],
+  excludeWalletIds: [
+    "971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709",
+    "163d2cf19babf05eb8962e9748f9ebe613ed52ebf9c8107c9a0f104bfcf161b3",
+    "e401b54ca287ce5c4c4579a91220e79816cff07cdf18b388fde84449c3be8a51",
+  ],
+
   adapters: [wagmiAdapter],
   ...generalConfig,
   features: {
