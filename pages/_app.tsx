@@ -1,4 +1,4 @@
- import { Layout } from "@/components/Layouts";
+import { Layout } from "@/components/Layouts";
 import ProgressBar from "@/components/Layouts/ProviderRouter";
 import { StarknetProvider } from "@/components/StarknetProvider";
 import { networks, wagmiAdapter } from "@/config";
@@ -18,10 +18,20 @@ import { WagmiProvider } from "wagmi";
 import store, { persistor } from "../store";
 import MaintenanceError from "./maintenanceError";
 import SEOHead from "@/components/SEOHead";
+import WalletIds from "@/libs/constants/walletIds";
+import { useEffect } from "react";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
 
+const STORAGE_KEY = "@appkit/recent_wallets";
+
+interface Wallet {
+  id: string;
+  name: string;
+  homepage?: string;
+  [key: string]: any;
+}
 const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
 
 const generalConfig = {
@@ -33,15 +43,16 @@ const generalConfig = {
 
 export const modal = createAppKit({
   featuredWalletIds: [
-    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
-    '2bd8c14e035c2d48f184aaa168559e86b0e3433228d3c4075900a221785019b0',
-    '719bd888109f5e8dd23419b20e749900ce4d2fc6858cf588395f19c82fd036b3',
-    '3ed8cc046c6211a798dc5ec70f1302b43e07db9639fd287de44a9aa115a21ed6',
+    WalletIds.MetamaskId,
+    WalletIds.BackpackId,
+    WalletIds.HaHaId,
+    WalletIds.LeapId,
+    WalletIds.PhantomId,
   ],
   excludeWalletIds: [
-    "971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709",
-    "163d2cf19babf05eb8962e9748f9ebe613ed52ebf9c8107c9a0f104bfcf161b3",
-    "e401b54ca287ce5c4c4579a91220e79816cff07cdf18b388fde84449c3be8a51",
+    WalletIds.OKXId,
+    WalletIds.KoalaId,
+    WalletIds.BraveId,
   ],
 
   adapters: [wagmiAdapter],
@@ -50,6 +61,7 @@ export const modal = createAppKit({
     analytics: true,
     connectMethodsOrder: ['wallet'],
   },
+  allWallets: "HIDE",
 })
 
 
@@ -58,6 +70,25 @@ export default function App({
   pageProps,
 }: AppProps & { Component: NextPageWithLayout }) {
   const isMaintenanceMode = false;
+
+  const removeRecentWallet = (walletId: string): void => {
+    const storedData = localStorage.getItem(STORAGE_KEY);
+    if (!storedData) return;
+
+    try {
+      const recentWallets: Wallet[] = JSON.parse(storedData);
+      const updatedWallets = recentWallets.filter(wallet => wallet.id !== walletId);
+
+      if (updatedWallets.length !== recentWallets.length) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedWallets));
+      }
+    } catch (error) {
+      console.error("Error parsing recent wallets from localStorage:", error);
+    }
+  };
+  useEffect(() => {
+    removeRecentWallet(WalletIds.OKXId);
+  }, []);
 
   return (
     <Provider store={store}>
