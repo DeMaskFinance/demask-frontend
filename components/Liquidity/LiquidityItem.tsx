@@ -119,7 +119,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           </div>
 
           <p className="text-sm font-semibold text-primary_300">
-            {shorten(liquidity?.metadata?.symbol) || shorten(String(liquidity?.symbol))}/MON
+            {shorten((liquidity?.metadata?.symbol)) || shorten(String(liquidity?.symbol))}/MON
           </p>
         </div>
       </div>

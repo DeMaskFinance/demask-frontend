@@ -7,5 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export const shorten = (hash: string, head?: number, tail?: number) => {
   const n = hash?.length;
-  return hash?.slice(0, head || 10) + "..." + hash?.slice(n - (tail || 6));
+
+  if (n > 10) {
+    return hash?.slice(0, head || 10) + "..." + hash?.slice(n - (tail || 6));
+  }
+
+  return hash;
 };

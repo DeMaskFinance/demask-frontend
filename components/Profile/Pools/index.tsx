@@ -1,3 +1,4 @@
+import TypeErc from "@/components/Common/TypeErc";
 import LiquidytiesItem from "@/components/Liquidity/LiquidityItem";
 import { SkeletonSubCategory } from "@/components/Skeleton/SkeletonCategory";
 import AccountContext from "@/context/AccountContext";
@@ -8,8 +9,9 @@ import { useInView } from "react-intersection-observer";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 export default function Pools() {
   const { account, chainId } = useContext(AccountContext);
-  const type = "erc1155";
   const { ref, inView } = useInView();
+  const [type] = useQueryParam("typeErc", withDefault(StringParam, "erc721"));
+
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const fetchDataListLiquidity = async (
     accountUser: string,
@@ -59,6 +61,10 @@ export default function Pools() {
         </div>
       ) : isSuccess && data?.pages[0]?.combinedRecords.length !== 0 ? (
         <div>
+          <div className="mb-2">
+            <TypeErc />
+          </div>
+
           <div className="flex text-primary_300 text-sm items-center gap-x-2 mb-4">
             <div className="relative flex w-2 h-2">
               <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary_300"></span>
@@ -66,6 +72,7 @@ export default function Pools() {
             </div>
             <p>{data?.pages[0].totalRecords} Items</p>
           </div>
+
           {isSuccess &&
             data.pages.map((page: any, index: number) => (
               <div
