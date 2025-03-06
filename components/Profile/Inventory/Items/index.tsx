@@ -302,6 +302,7 @@ const Items = () => {
         ? lastPage.currentPage + 1
         : undefined,
   });
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   return (
     <div className="flex">
@@ -311,6 +312,7 @@ const Items = () => {
           setSearchCollection={setSearchCollection}
           setIsFilter={setIsFilter}
           isFilter={isFilter}
+          setSortOrder={setSortOrder}
         />
         <ItemList
           isLoading={isLoading}

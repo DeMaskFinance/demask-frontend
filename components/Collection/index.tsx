@@ -13,6 +13,7 @@ export default function DetailCollection() {
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
   const [typeERC] = useQueryParam("typeERC", withDefault(StringParam, ""));
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const collectionAddress = useRouter().query.collection as string;
   //Data ERC1155
   const fetchDataNFTs = async (
@@ -26,7 +27,8 @@ export default function DetailCollection() {
       collectionAddress,
       chain,
       pageParam,
-      20
+      20,
+      sortOrder
     );
     return data.data;
   };
@@ -39,7 +41,7 @@ export default function DetailCollection() {
     isLoading,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ["NFTsAllERC", chainId, collectionAddress, typeERC],
+    queryKey: ["NFTsAllERC", chainId, collectionAddress, typeERC, sortOrder],
     queryFn: ({ pageParam = 1 }) =>
       fetchDataNFTs(typeERC, collectionAddress, chainId, pageParam),
     initialPageParam: 1,
@@ -59,6 +61,7 @@ export default function DetailCollection() {
             setIsFilter={setIsFilter}
             isFilter={isFilter}
             setSearchCollection={setSearchCollection}
+            setSortOrder={setSortOrder}
           />
           <ItemList
             isLoading={isLoading}

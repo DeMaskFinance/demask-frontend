@@ -5,11 +5,12 @@ const collectionListAllERC = async (
   contractAddress: string | string[],
   chainId: string | string[],
   page: number,
-  limit: number
+  limit: number,
+  sort: "asc" | "desc"
 ) => {
   try {
     const res = await request.get(
-      `all-nft-list-from-collection?chainId=${chainId}&contractAddress=${contractAddress}&page=${page}&limit=${limit}`
+      `all-nft-list-from-collection?chainId=${chainId}&contractAddress=${contractAddress}&page=${page}&limit=${limit}&sortPrice=${sort}`
     );
     return res.data;
   } catch (error) {

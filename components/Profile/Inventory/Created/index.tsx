@@ -85,6 +85,7 @@ const Created = () => {
       fetchNextPage();
     }
   }, [inView]);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   return (
     <Fragment>
@@ -92,6 +93,7 @@ const Created = () => {
         setIsFilter={setIsFilter}
         isFilter={isFilter}
         setSearchCollection={setSearchCollection}
+        setSortOrder={setSortOrder}
       />
       <div className="mt-4">
         <div>
