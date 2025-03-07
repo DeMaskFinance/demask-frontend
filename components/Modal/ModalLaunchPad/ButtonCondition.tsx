@@ -33,7 +33,6 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
   );
   const { data: amountSold, isLoading } = useFetchAmountSold({
     account,
-    wallet,
     launchpadAddress,
     unit,
   });

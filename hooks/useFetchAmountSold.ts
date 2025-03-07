@@ -1,39 +1,21 @@
-import ercContract from "@/libs/utils/erc/erc.contract";
-import { useQuery } from "@tanstack/react-query";
+import abiLaunchPad from "@/abi/abiLaunchPad.json";
+import { useReadContract } from "wagmi";
 
 interface FetchAmountSoldParams {
   account: string;
-  wallet: string;
-  launchpadAddress: string;
+  launchpadAddress: `0x${string}` | any;
   unit: number;
 }
 
-// const { mintedCountPerWallet } = ercContract();
-
-const fetchAmountSold = async ({
-  account,
-  wallet,
-  launchpadAddress,
-  unit,
-}: FetchAmountSoldParams): Promise<number> => {
-  // const amountSold = await mintedCountPerWallet(
-  //   account,
-  //   launchpadAddress,
-  //   unit
-  // );
-  const amountSold = 0;
-
-  return Number(amountSold);
-};
-
 export const useFetchAmountSold = ({
   account,
-  wallet,
   launchpadAddress,
   unit,
 }: FetchAmountSoldParams) => {
-  return useQuery({
-    queryKey: ["amountSold", account, wallet, launchpadAddress, unit],
-    queryFn: () => fetchAmountSold({ account, wallet, launchpadAddress, unit }),
+  return useReadContract({
+    address: launchpadAddress,
+    abi: abiLaunchPad,
+    functionName: "mintedCountPerWallet",
+    args: account ? [account, unit] : undefined,
   });
 };
