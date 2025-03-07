@@ -60,7 +60,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   const [volume, setVolume] = useState<BarData[]>([]);
   const [intervalTime, setIntervalTime] = useQueryParam(
     "intervalTime",
-    withDefault(StringParam, "1d")
+    withDefault(StringParam, "1h")
   );
   const [legendData, setLegendData] = useState<any>(
     newData[newData.length - 1]
@@ -352,10 +352,9 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <ul className="flex items-center h-full gap-x-3">
               {optionTime.map((item, index) => (
                 <li
-                  className={`cursor-pointer w-11 text-center leading-10 h-full ${
-                    item.key === intervalTime &&
+                  className={`cursor-pointer w-11 text-center leading-10 h-full ${item.key === intervalTime &&
                     " text-primary_400 bg-primary_500 bg-opacity-10  "
-                  }`}
+                    }`}
                   key={index}
                   onClick={() => setIntervalTime(item.key)}
                 >

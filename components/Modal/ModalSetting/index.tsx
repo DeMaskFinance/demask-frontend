@@ -8,12 +8,12 @@ import { NumericFormat } from "react-number-format";
 const ModalSetting = () => {
   const { updateSlippage, updateTxDeadline, txDeadline, slippage } =
     useContext(AccountContext);
-  const [slippageTo, setSlippageTo] = useState<number>(0.5);
+  const [slippageTo, setSlippageTo] = useState<number>(5);
   const [time, setTime] = useState<number>(txDeadline);
   useEffect(() => {
     let storedSlippage = localStorage.getItem("SLIPPAGE_DEMASK");
     if (storedSlippage) {
-      setSlippageTo(Number(storedSlippage));
+      setSlippageTo(Number(5));
     }
   }, [slippage]);
   useEffect(() => {
