@@ -37,6 +37,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
     unit,
   });
 
+
   const currentTime = (Date.now() / 1000) | 0;
   useEffect(() => {
     const checkConditions = async () => {
@@ -58,8 +59,8 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
         return;
       }
       if (isPublic) {
-        if (data.limit < inputAmount + Number(amountSold)) {
-          setError("Insufficient Limit");
+        if (data.max_allocation < inputAmount + Number(amountSold)) {
+          setError("Minted");
           return;
         }
       } else {
@@ -99,7 +100,8 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
         inputAmount={inputAmount}
         setInputAmount={setInputAmount}
         isLoading={isLoading}
-        isDisabled={isDisabled || inputAmount >= data?.max_allocation}
+        isDisabled={isDisabled || inputAmount > data?.max_allocation}
+        maxAlocation={data?.max_allocation}
       />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>

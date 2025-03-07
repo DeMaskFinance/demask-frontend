@@ -7,12 +7,14 @@ interface InputCountProps {
   isDisabled: boolean;
   isLoading: boolean;
   setInputAmount: React.Dispatch<React.SetStateAction<number>>;
+  maxAlocation?: number;
 }
 const InputCount: React.FC<InputCountProps> = ({
   inputAmount,
   isDisabled,
   isLoading,
   setInputAmount,
+  maxAlocation
 }) => {
   const handleChange = (values: NumberFormatValues) => {
     const { value } = values;
@@ -47,7 +49,7 @@ const InputCount: React.FC<InputCountProps> = ({
       />
       <button
         className="w-10 flex justify-center cursor-pointer"
-        disabled={isDisabled || isLoading}
+        disabled={isDisabled || isLoading || inputAmount >= Number(maxAlocation || 0)}
         onClick={() => {
           setInputAmount(inputAmount + 1);
         }}

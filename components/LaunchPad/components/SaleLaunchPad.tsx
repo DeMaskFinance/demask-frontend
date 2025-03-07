@@ -6,8 +6,7 @@ import ButtonCondition from "@/components/Modal/ModalLaunchPad/ButtonCondition";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
-import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
-import { formatPercent, formatTimeFns, formatTimestamp } from "@/libs/utils/formatComon";
+import { formatTimeFns } from "@/libs/utils/formatComon";
 import { useContext } from "react";
 interface StageProps {
   stage: LaunchpadItem;
@@ -57,10 +56,10 @@ const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
             {stage.label}
           </p>
 
-          <p className="text-shader_200">{((stage.status === "Coming Soon") ? formatTimeFns(String(stage.startTime)) : formatTimeFns(String(stage.endTime)))}</p>
+          <p className="text-shader_200">{((stage.status === "Coming Soon") ? formatTimeFns(String(stage.startTime)) : `End in: ${formatTimeFns(String(stage.endTime))}`)}</p>
           <div className="flex gap-x-2 items-center mt-2 text-base">
-            {/* <p className="text-primary_300">{stage.limit} per wallet</p>
-            <p className="h-3 w-[1px] bg-shader_400"></p> */}
+            <p className="text-primary_300">{stage.max_allocation} per wallet</p>
+            <p className="h-3 w-[1px] bg-shader_400"></p>
             <div className="flex gap-x-1 items-center">
               <FormatNumber number={stage.price} />
               <EtherIcon width={16} height={16} />
@@ -109,14 +108,14 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
             <div className="flex justify-between ">
               <p className="font-bold">Total Minted</p>
               <div className="flex gap-x-1 ">
-                <p>{(data.mintPercent)}%</p>
+                <p>{(data.mintPercent?.toFixed(2))}%</p>
               </div>
             </div>
             <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">
               <div
                 className="h-[10px] bg-primary_400 rounded-lg absolute top-0 left-0 w-2/3"
                 style={{
-                  width: `${(data.totalSoldOut / data.limit) * 100}%`,
+                  width: `${data?.mintPercent}%`,
                 }}
               ></div>
             </div>
