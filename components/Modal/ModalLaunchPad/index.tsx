@@ -56,6 +56,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
     }
 
 
+
     try {
       setIsOpenTransaction(true);
       const result = await buyLaunchpad(
@@ -80,6 +81,8 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       setIsOpenTransaction(false);
     }
   };
+
+
   return (
     <div className="h-fit w-full md:w-[300px] lg:w-[350px] rounded-lg relative">
       <h3 className="title_modal">Confirm Mint</h3>
@@ -105,6 +108,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
           setInputAmount={setInputAmount}
           isDisabled={isDisabled}
           isLoading={isLoading}
+          maxAlocation={data?.max_allocation}
         />
       </div>
       <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 mt-4">
