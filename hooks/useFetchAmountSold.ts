@@ -12,16 +12,22 @@ export const useFetchAmountSold = ({
   launchpadAddress,
   unit,
 }: FetchAmountSoldParams) => {
-  console.log({
-    address: launchpadAddress,
-    abi: abiLaunchPad,
-    functionName: "mintedCountPerWallet",
-    args: account ? [account, unit] : undefined,
-  });
   return useReadContract({
     address: launchpadAddress,
     abi: abiLaunchPad,
     functionName: "mintedCountPerWallet",
     args: account ? [account, unit] : undefined,
+  });
+};
+
+export const useFetchAmountMinted = ({
+  launchpadAddress,
+  unit,
+}: FetchAmountSoldParams) => {
+  return useReadContract({
+    address: launchpadAddress,
+    abi: abiLaunchPad,
+    functionName: "soldout",
+    args: [unit],
   });
 };

@@ -13,8 +13,9 @@ import useInformationToken from "@/hooks/useInformationToken";
 
 interface ButtonConditionProps {
   data: LaunchpadData;
+  refetchAll: any;
 }
-const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
+const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) => {
   const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -119,6 +120,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
         <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
           <ModalMintLaunchPad
             inputAmount={inputAmount}
+            refetchAll={refetchAll}
             data={data}
             isDisabled={isDisabled}
             isLoading={isLoading}

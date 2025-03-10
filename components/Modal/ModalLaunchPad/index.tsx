@@ -22,6 +22,7 @@ interface ModalMintLaunchPadProps {
   setHash: React.Dispatch<React.SetStateAction<string>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchAll: any;
 }
 
 const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
@@ -34,6 +35,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
   setHash,
   setOpen,
   setIsOpenSuccess,
+  refetchAll,
 }) => {
   const [isOpenTransation, setIsOpenTransaction] = useState(false);
   const router = useRouter();
@@ -72,8 +74,11 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
         setIsOpenSuccess(true);
       }
       setOpen(false);
-      queryClient.refetchQueries({ queryKey: ["launchPad"] });
-      queryClient.refetchQueries({ queryKey: ["amountSold"] });
+      setTimeout(() => {
+        refetchAll();
+        queryClient.refetchQueries({ queryKey: ["launchPad"] });
+        queryClient.refetchQueries({ queryKey: ["amountSold"] });
+      }, 1000)
     } catch (error) {
       console.error(error);
       toast.error("Transaction failed. Please try again.");

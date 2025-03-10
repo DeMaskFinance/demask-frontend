@@ -6,7 +6,9 @@ import ButtonCondition from "@/components/Modal/ModalLaunchPad/ButtonCondition";
 import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import { useFetchAmountMinted } from "@/hooks/useFetchAmountSold";
 import { formatTimeFns } from "@/libs/utils/formatComon";
+import { useQueries } from "@tanstack/react-query";
 import { useContext } from "react";
 interface StageProps {
   stage: LaunchpadItem;
@@ -39,6 +41,7 @@ const Status: React.FC<StatusProps> = ({ status }) => {
   return null;
 };
 const Stage: React.FC<StageProps> = ({ stage, countStage }) => {
+
 
   return (
     <div className="relative">
@@ -93,7 +96,32 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
     return liveItem ? liveItem.label : launchpadList.data[0].label;
   };
 
+
+
+  const amountSoldList = data?.launchpadList.data?.map((item) =>
+    useFetchAmountMinted({
+      account,
+      launchpadAddress: data?.launchpadAddress,
+      unit: item.unit,
+    })
+  );
+
+  const refetchAll = () => {
+    amountSoldList?.forEach((query) => query.refetch());
+  };
+
+
+  const totalMinted = amountSoldList
+    .filter((query) => query.isSuccess && query.data !== undefined)
+    .reduce((total, query) => total + Number(query.data), 0) || 0;
+
+
+  const totalLimit = data?.launchpadList.data
+    .reduce((total, query) => total + Number(query.limit), 0);
+
+
   const labelToShow = getLabel(data?.launchpadList);
+
 
   return (
     <div className="text-shader_200 basis-1/2 flex-grow-0 flex-shrink-0">
@@ -108,14 +136,14 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
             <div className="flex justify-between ">
               <p className="font-bold">Total Minted</p>
               <div className="flex gap-x-1 ">
-                <p>{(data.mintPercent?.toFixed(2))}%</p>
+                <p>{((totalMinted / totalLimit) * 100)?.toFixed(2)}%</p>
               </div>
             </div>
             <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">
               <div
                 className="h-[10px] bg-primary_400 rounded-lg absolute top-0 left-0 w-2/3"
                 style={{
-                  width: `${data?.mintPercent}%`,
+                  width: `${(totalMinted / totalLimit) * 100}%`,
                 }}
               ></div>
             </div>
@@ -144,7 +172,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
               </DialogContent>
             </Dialog>
           ) : (
-            <ButtonCondition data={data} />
+            <ButtonCondition data={data} refetchAll={refetchAll} />
           )}
         </div>
       </div>
