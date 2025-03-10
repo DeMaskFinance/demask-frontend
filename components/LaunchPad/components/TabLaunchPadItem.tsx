@@ -13,7 +13,7 @@ const TabLaunchPadItem: React.FC<TabLaunchPadProps> = ({ item }) => {
   return (
     <div className="h-full group">
       <Link
-        href={`launchpad/${item.launchpadAddress}/${item.unit}`}
+        href={`launchpad/${item.launchpadAddress}`}
         className="block h-full"
       >
         <div className="relative overflow-hidden rounded-lg border-shader_500 hover:border-shader_400">

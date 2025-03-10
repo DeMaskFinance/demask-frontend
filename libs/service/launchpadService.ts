@@ -2,13 +2,9 @@ import { LaunchpadStatus } from "@/enums/launchpad-status";
 import request from "../utils/httpRequest";
 
 export const LaunchpadService = {
-  LaunchPadInfor: async (
-    launchpadAddress: string,
-    chainId: string,
-    unit: number
-  ) => {
+  LaunchPadInfor: async (launchpadAddress: string, chainId: string) => {
     const res = await request.get(
-      `launchpad-info?chainId=${chainId}&launchpadAddress=${launchpadAddress}&unit=${unit}&page=1&limit=10`
+      `launchpad-info?chainId=${chainId}&launchpadAddress=${launchpadAddress}&page=1&limit=10`
     );
     return res.data;
   },
