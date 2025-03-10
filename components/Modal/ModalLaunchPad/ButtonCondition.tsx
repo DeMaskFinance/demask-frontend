@@ -25,16 +25,18 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data }) => {
   const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
   const { balanceToken } = useInformationToken(account, wallet, chainId);
-  const unit = router.query.detail ? +router.query.detail[1] : 0;
   const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
   const listProof = run();
   const addressOfWhitelist = listProof.find(
     (item) => item.address.toLowerCase() === account.toLowerCase()
   );
+
+
+
   const { data: amountSold, isLoading } = useFetchAmountSold({
     account,
     launchpadAddress,
-    unit,
+    unit: data?.unit,
   });
 
 
