@@ -19,14 +19,12 @@ export default function DetailLaunchPad() {
   const router = useRouter();
   const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
   const launchpadAddress = router.query.detail ? router.query.detail[0] : "";
-  const unit = router.query.detail ? +router.query.detail[1] : 0;
   const { isLoading, data, isSuccess } = useQuery<LaunchpadData>({
     queryKey: ["launchPad", launchpadAddress, chainId],
     queryFn: async () => {
       const res = await LaunchpadService.LaunchPadInfor(
         launchpadAddress.toLocaleLowerCase(),
         chainId,
-        unit
       );
       return res.data;
     },
