@@ -112,7 +112,6 @@ export const ItemList: React.FC<ItemListProps> = ({
     }
   }, [inView]);
 
-  console.log(data)
 
   return (
     <div className="font-semibold">

@@ -22,7 +22,6 @@ export default function History() {
       },
     });
 
-  console.log(data);
 
   return (
     <div>

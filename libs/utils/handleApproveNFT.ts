@@ -1,6 +1,8 @@
 import abiErc1155 from "@/abi/abiErc1155.json";
 import abiErc721 from "@/abi/erc721/abiErc721.json";
 import { useWriteContract } from "wagmi";
+import { waitForTransactionReceipt, estimateGas } from "@wagmi/core";
+import { wagmiAdapter } from "@/config";
 
 const useApproveNFT = () => {
   const { writeContractAsync } = useWriteContract();
@@ -16,7 +18,7 @@ const useApproveNFT = () => {
     if (account) {
       try {
         setIsOpenTransaction(true);
-        await writeContractAsync({
+        const tx = await writeContractAsync({
           account,
           abi: type === "erc721" ? abiErc721 : abiErc1155,
           address: nftAddress as `0x${string}`,
@@ -24,7 +26,13 @@ const useApproveNFT = () => {
           args: [routerAddress, true],
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const receipt = await waitForTransactionReceipt(
+          wagmiAdapter.wagmiConfig,
+          {
+            hash: tx as any,
+          }
+        );
+
         if (refetch) {
           await refetch();
         }

@@ -8,21 +8,24 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { EtherIcon } from "../Icons";
 import ChartLoading from "./ChartLoading";
 
-interface ChartTVLProps {}
+interface ChartTVLProps {
+  initialData?: any;
+}
 
-const ChartTVL: React.FC<ChartTVLProps> = () => {
+const ChartTVL: React.FC<ChartTVLProps> = ({ initialData }) => {
   const { chainId } = useContext(AccountContext);
   const {
     data: Chart,
     isLoading,
-    isFetching,
   } = useQuery({
     queryKey: ["chart", chainId],
     queryFn: async () => {
       const res = await categoryAPI(`tvlChart?chainId=${chainId}`);
       return res.chartData;
     },
+    initialData
   });
+
 
   const chartData = Chart?.map((dataPoint: any) => ({
     date: dataPoint.date,
@@ -85,8 +88,7 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
           </div>
           <div className="h-[212px]">
             <ResponsiveContainer width="100%" height="100%">
-              {/* 
-// @ts-ignore */}
+
               <AreaChart
                 data={chartData}
                 margin={{
@@ -121,14 +123,12 @@ const ChartTVL: React.FC<ChartTVLProps> = () => {
                   }}
                 />
 
-                {/* 
-// @ts-ignore */}
+
                 <Tooltip
                   content={<CustomTooltip />}
                   cursor={{ strokeDasharray: "4 4" }}
                 />
-                {/* 
-// @ts-ignore */}
+
                 <Area
                   type="monotone"
                   dataKey="value"

@@ -1,14 +1,13 @@
-import EditFormCollection from "@/components/Collection/EditFormCollection";
-import React, { useContext } from "react";
-import { SEO } from "../../next-seo.config";
-import { NextSeo } from "next-seo";
-import { collectionDetail } from "@/libs/service/collectionService";
-import { GetServerSideProps } from "next";
-import { BiLoaderAlt } from "react-icons/bi";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
-import AccountContext from "@/context/AccountContext";
 import { BackgroundDefault } from "@/components/Backgrounds";
+import EditFormCollection from "@/components/Collection/EditFormCollection";
+import AccountContext from "@/context/AccountContext";
+import { collectionDetail } from "@/libs/service/collectionService";
+import { useQuery } from "@tanstack/react-query";
+import { NextSeo } from "next-seo";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { SEO } from "../../next-seo.config";
 const updateMeta = {
   ...SEO,
   title: "Edit Collection",

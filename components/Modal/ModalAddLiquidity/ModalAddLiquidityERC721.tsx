@@ -1,27 +1,26 @@
 import { Button } from "@/components/Buttons";
-import FormatNumber from "@/components/Common/FormatNumber";
 import NFTGrid from "@/components/Collection/TransactionCollection/NFTsGrids";
+import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon } from "@/components/Icons";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
+import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
+import useInformationToken from "@/hooks/useInformationToken";
+import { queryClient } from "@/libs/constants";
 import { fetchDataSellNFTs } from "@/libs/service/collectionService";
 import { erc721TradingAdd } from "@/libs/service/tradeService";
 import { replaceDot } from "@/libs/utils/formatComon";
-import handleApproveNFT from "@/libs/utils/handleApproveNFT";
+import useApproveNFT from "@/libs/utils/handleApproveNFT";
 import handleBignumber from "@/libs/utils/handleBignumber";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
-import useCheckApproveNFT from "@/hooks/useCheckApproveNFT";
-import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import useInformationToken from "@/hooks/useInformationToken";
+import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
-import useApproveNFT from "@/libs/utils/handleApproveNFT";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -141,7 +140,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   return (
     <Fragment>
       <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative">
-        <div className="title_modal">Add Liquidity</div>
+        <div className="title_modal"
+        >Add Liquidity</div>
         {isLoading ? (
           <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
             <SkeletonItemTransaction />
