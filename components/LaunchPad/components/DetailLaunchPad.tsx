@@ -14,7 +14,8 @@ import SaleLaunchPad from "./SaleLaunchPad";
 import Team from "./Team";
 
 
-export default function DetailLaunchPad() {
+export default function DetailLaunchPad({ initialData }: any) {
+
   const { chainId } = useContext(AccountContext);
   const router = useRouter();
   const [tab] = useQueryParam("tab", withDefault(StringParam, "overview"));
@@ -28,6 +29,7 @@ export default function DetailLaunchPad() {
       );
       return res.data;
     },
+    initialData: initialData?.data
   });
 
   const TABS = [

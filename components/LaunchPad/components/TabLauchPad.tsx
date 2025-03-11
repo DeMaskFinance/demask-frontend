@@ -10,8 +10,10 @@ import { LaunchpadStatus } from "@/enums/launchpad-status";
 
 type TabLaunchPadProps = {
   query: LaunchpadStatus;
+  initialData: any;
 };
-const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
+const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query, initialData }) => {
+
   const { chainId } = useContext(AccountContext);
   const { ref, inView } = useInView();
 
@@ -25,7 +27,10 @@ const TabLaunchPad: React.FC<TabLaunchPadProps> = ({ query }) => {
         page?.currentPage === page?.totalPages
           ? undefined
           : page?.currentPage + 1,
+      initialData
     });
+
+
 
   useEffect(() => {
     if (inView) {

@@ -1,5 +1,6 @@
 import DetailERC721 from "@/components/ERC721/DetailERC721";
 import AccountContext from "@/context/AccountContext";
+import { queryClient } from "@/libs/constants";
 import { collectionDetail } from "@/libs/service/collectionService";
 import { SEO } from "@/next-seo.config";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
@@ -31,7 +32,6 @@ export default function TradeERC721({ initialData }: { initialData: any }) {
 
 export async function getServerSideProps(context: any) {
   const { erc } = context.params;
-  const queryClient = new QueryClient();
   const chainId = "10143";
 
   await queryClient.prefetchQuery({
