@@ -79,13 +79,10 @@ const ModalRemoveLiquidity: React.FunctionComponent<
         refetchInterval: 20000,
       });
 
-    const currentAllowance = useAllowanceDML(
+    const { currentAllowance, refetch } = useAllowanceDML(
       account,
       data.dmlAddress,
-      wallet,
-      isOpenTransaction,
-      inputLiquidity,
-      routerAddress
+      routerAddress,
     );
 
 
@@ -162,7 +159,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     return (
       <Fragment>
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
-          <p className="title_modal">Remove Liquidity</p>
+          <p className="title_modal" onClick={(() => refetch())}>Remove Liquidity</p>
           {type === "erc1155" && (
             <div className="flex mt-4 gap-x-3">
               <div className="relative w-10 h-10 ">
@@ -262,7 +259,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                         data.dmlAddress,
                         inputLiquidity,
                         setIsOpenTransaction,
-                        routerAddress
+                        routerAddress,
+                        refetch
                       );
                     }}
                   >

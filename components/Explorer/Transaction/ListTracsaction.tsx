@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Pagination } from "@/components/Common/Pagination";
 
-function ListTracsaction() {
+function ListTracsaction({ initialData }: any) {
   const [page, setPage] = useState(1);
   const { chainId } = useContext(AccountContext);
   const [sortField, setSortField] = useState("blockTime");
@@ -24,7 +24,7 @@ function ListTracsaction() {
         );
         return res;
       },
-
+      initialData
       // refetchInterval: 60000,
     });
 

@@ -8,7 +8,7 @@ import Link from "next/link";
 import CollectionItem from "./CollectionItem";
 import { useRouter } from "next/router";
 import { Pagination } from "@/components/Common/Pagination";
-function TopCollection() {
+function TopCollection({ initialData }: any) {
   const [activeChoice, setActiveChoice] = useState<string>("Trending");
   const [page, setPage] = useState(1);
   const [pageNewest, setPageNewest] = useState(1);
@@ -41,6 +41,7 @@ function TopCollection() {
       );
       return res;
     },
+    initialData
   });
 
   const handleChoiceChange = (choice: string) => {

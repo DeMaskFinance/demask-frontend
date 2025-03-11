@@ -26,7 +26,6 @@ const deployContractCollection = async (
       symbol: values.symbol,
       id: nonce,
     });
-    console.log(wallet);
 
     const deployResponse = await contractWallet.deployContract({
       classHash: ClassHash,

@@ -27,7 +27,6 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   isSearch,
   setIdNFT,
 }) => {
-  const { chainId } = useContext(AccountContext);
   const [val, setVal] = useState([0]);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
@@ -35,18 +34,21 @@ const NFTGrid: React.FC<NFTGridProps> = ({
 
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
+    let newList;
+
     if (isExist) {
-      const arr = idNFT.filter((itemArr) => {
-        return itemArr !== Number(item.nftID);
-      });
-      setIdNFT(arr);
+      newList = idNFT.filter((itemArr) => itemArr !== Number(item.nftID));
     } else {
-      setIdNFT([...idNFT, Number(item.nftID)]);
+      newList = [...idNFT, Number(item.nftID)];
     }
+
+    setIdNFT(newList);
+    setVal([newList.length]);
   };
   const hanldeListNFT = (val: number) => {
-    const newList = data.data.slice(0, val);
-    setIdNFT(newList.map((item: any) => +item.nftID));
+    const newList = data.data.slice(0, val).map((item: any) => +item.nftID);
+    setIdNFT(newList);
+    setVal([newList.length]);
   };
 
   return (
@@ -59,8 +61,8 @@ const NFTGrid: React.FC<NFTGridProps> = ({
           >
             <div
               className={`relative items-center text-sm  border-[2px]  rounded-lg cursor-pointer lg:text-base ${idNFT.includes(Number(item.nftID))
-                  ? "border-primary_400 border-opacity-100 border-[2px]"
-                  : "border-shader_400"
+                ? "border-primary_400 border-opacity-100 border-[2px]"
+                : "border-shader_400"
                 }`}
             >
               <div
@@ -104,13 +106,12 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             </div>
           </div>
         ))}
-        {/* {isFetching && <SkeletonItemTransaction />} */}
       </div>
       <div className="flex items-center h-10 my-4 border rounded-lg border-shader_400">
         <div className="flex-grow px-4">
           <Slider
-            defaultValue={val}
             max={data?.data?.length}
+            value={val}
             step={1}
             className=""
             onValueChange={(i) => {
@@ -119,9 +120,21 @@ const NFTGrid: React.FC<NFTGridProps> = ({
             }}
           />
         </div>
-        <div className="flex items-center justify-center w-16 h-full font-semibold text-white rounded-e-lg bg-shader_600">
-          {val}
-        </div>
+        <input
+          type="number"
+          className="w-16 h-full font-semibold text-white text-center rounded-e-lg bg-shader_600 outline-none"
+          //@ts-expect-error:error
+          value={val}
+          min={0}
+          max={data?.data?.length}
+          onChange={(e) => {
+            let value = Number(e.target.value);
+            if (isNaN(value)) value = 0;
+            value = Math.max(0, Math.min(value, data?.data?.length));
+            setVal([value]);
+            hanldeListNFT(value);
+          }}
+        />
       </div>
       <Dialog>
         <DialogTrigger asChild>

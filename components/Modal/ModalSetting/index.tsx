@@ -8,12 +8,12 @@ import { NumericFormat } from "react-number-format";
 const ModalSetting = () => {
   const { updateSlippage, updateTxDeadline, txDeadline, slippage } =
     useContext(AccountContext);
-  const [slippageTo, setSlippageTo] = useState<number>(5);
+  const [slippageTo, setSlippageTo] = useState<number>(20);
   const [time, setTime] = useState<number>(txDeadline);
   useEffect(() => {
     let storedSlippage = localStorage.getItem("SLIPPAGE_DEMASK");
     if (storedSlippage) {
-      setSlippageTo(Number(5));
+      setSlippageTo(Number(storedSlippage));
     }
   }, [slippage]);
   useEffect(() => {
@@ -23,7 +23,7 @@ const ModalSetting = () => {
     }
   }, [txDeadline]);
 
-  const Slippage = ["0.1%", "0.5%", "1%"];
+  const Slippage = ["5%", "10%", "20%"];
 
   const handleChangeSlippage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSlippageTo(Number(e.target.value));
@@ -61,12 +61,12 @@ const ModalSetting = () => {
             <input
               type="number"
               value={slippageTo}
-              className="w-[60%] h-full py-[10px] mr-2 font-semibold bg-shader_600 outline-none pl-2"
+              className="w-[60%] h-full py-[6px] mr-2 font-semibold bg-shader_600 outline-none pl-2"
               onChange={(e) => handleChangeSlippage(e)}
               onBlur={() => {
                 if (slippageTo > 100) {
-                  setSlippageTo(0.5);
-                  updateSlippage(0.5);
+                  setSlippageTo(20);
+                  updateSlippage(20);
                 }
               }}
             />
@@ -78,7 +78,7 @@ const ModalSetting = () => {
             onChoiceChange={handleChoiceChange}
           />
         </div>
-        {(slippageTo > 5 || slippageTo === 0) && (
+        {(slippageTo > 20 || slippageTo === 0) && (
           <p className="mt-2 mb-2 text-xs text-yellow" key="NFTbalance">
             Your transaction may be frontrun
           </p>

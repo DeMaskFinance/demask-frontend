@@ -191,7 +191,6 @@ const DetailLiquidity = () => {
     setIsOpenRemoveLiquididy(false);
   };
 
-  console.log(contracts)
   return (
     <div className="px-3">
       {isLoading ? (

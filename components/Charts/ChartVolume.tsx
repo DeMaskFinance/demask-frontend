@@ -8,15 +8,18 @@ import { Bar, BarChart, Cell, ResponsiveContainer, XAxis } from "recharts";
 import { TabGroups } from "../NavChoice";
 import ChartLoading from "./ChartLoading";
 import { EtherIcon } from "../Icons";
-interface ChartVolumnProps {}
+interface ChartVolumnProps {
+  initialData: any
+}
 
-const ChartVolumn: React.FC<ChartVolumnProps> = () => {
+const ChartVolumn: React.FC<ChartVolumnProps> = ({ initialData }) => {
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [activeChoice, setActiveChoice] = useState<string>("1D");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeData, setActiveData] = useState<number | null>(null);
   const [hasInitialSetting, setHasInitialSetting] = useState(false);
   const { chainId } = useContext(AccountContext);
+
   const { data, isLoading: LoadingVolume } = useQuery({
     queryKey: ["ChartVolume", chainId, activeChoice],
     queryFn: async () => {
@@ -25,7 +28,9 @@ const ChartVolumn: React.FC<ChartVolumnProps> = () => {
       );
       return res.chartData;
     },
+    initialData
   });
+
 
   const chartVolume = data?.map((dataPoint: any) => ({
     date: dataPoint.date,

@@ -14,7 +14,8 @@ const handleApproveDML = () => {
     dmlAddress: Address,
     inputLiquidity: string,
     setIsOpenTransaction: (state: boolean) => void,
-    routerAddress: Address
+    routerAddress: Address,
+    refetch: any
   ) => {
     if (account) {
       const inputLiquidityBN = new BigNumber(inputLiquidity || 0)
@@ -34,6 +35,8 @@ const handleApproveDML = () => {
         await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
           hash: result,
         });
+
+        refetch();
         setIsOpenTransaction(false);
       } catch (error) {
         setIsOpenTransaction(false);

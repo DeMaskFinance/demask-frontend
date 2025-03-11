@@ -59,12 +59,9 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
     const { account, wallet, slippage } = useContext(AccountContext);
     const router = useRouter();
     const collectionAddress = (router.query.erc as string) || "";
-    const currentAllowance = useAllowanceDML(
+    const { currentAllowance, refetch } = useAllowanceDML(
       account,
       data.dmlAddress,
-      wallet,
-      isOpenTransaction,
-      inputLiquidity,
       routerAddress
     );
 
@@ -215,7 +212,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
                       data.dmlAddress,
                       inputLiquidity,
                       setIsOpenTransaction,
-                      routerAddress
+                      routerAddress,
+                      refetch
                     );
                   }}
                 >

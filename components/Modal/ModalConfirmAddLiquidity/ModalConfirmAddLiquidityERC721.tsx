@@ -76,12 +76,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     const { addLiquidity } = erc721Contract();
 
     const [allowance, setAllowance] = useState<number>(0);
-    const balanceApprove = useAllowanceDML(
+    const { currentAllowance: balanceApprove, refetch } = useAllowanceDML(
       account,
       data.dmlAddress,
-      wallet,
-      isOpenTransaction,
-      "",
       contracts?.ERC721_ROUTER_ADDRESS || ""
     );
 
