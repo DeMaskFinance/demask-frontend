@@ -26,6 +26,7 @@ function TopCollection({ initialData }: any) {
         );
         return res;
       },
+      initialData
     });
   const {
     isLoading: isLoadingNewest,
@@ -41,7 +42,6 @@ function TopCollection({ initialData }: any) {
       );
       return res;
     },
-    initialData
   });
 
   const handleChoiceChange = (choice: string) => {

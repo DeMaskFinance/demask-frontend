@@ -11,19 +11,19 @@ const updateMeta = {
   title: "Launchpad",
 };
 
-export default function Launchpad() {
+export default function Launchpad({ initialData }: any) {
   const [tab] = useQueryParam("tab", withDefault(StringParam, "live"));
   const listTab = [
     {
       key: "live",
       title: "Live & Coming Soon",
-      component: <TabLaunchPad query={LaunchpadStatus.Live} />,
+      component: <TabLaunchPad query={LaunchpadStatus.Live} initialData={initialData?.Live} />,
       index: 0,
     },
     {
       key: "ended",
       title: "Finished",
-      component: <TabLaunchPad query={LaunchpadStatus.Ended} />,
+      component: <TabLaunchPad query={LaunchpadStatus.Ended} initialData={initialData?.Ended} />,
       index: 1,
     },
   ];

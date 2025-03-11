@@ -5,6 +5,7 @@ import TopCollection from "@/components/Explorer/TopNft/TopCollection";
 import ListTracsaction from "@/components/Explorer/Transaction/ListTracsaction";
 import SEOHead from "@/components/SEOHead";
 import { categoryAPI } from "@/libs/service/categoriesChartService";
+import { queryClient } from "@/libs/constants";
 
 export default function ExplorerPage({ initialData }: { initialData: any }) {
 
@@ -27,7 +28,6 @@ export default function ExplorerPage({ initialData }: { initialData: any }) {
 }
 
 export async function getServerSideProps() {
-  const queryClient = new QueryClient();
   const chainId = 10143;
 
   await Promise.all([
