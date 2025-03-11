@@ -20,8 +20,9 @@ export default function TradeERC721({ initialData }: { initialData: any }) {
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => collectionDetail(collectionAddress, chainId),
-    initialData,
+    initialData: initialData || undefined,
     staleTime: 60000,
+
   });
 
 

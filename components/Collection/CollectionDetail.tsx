@@ -36,9 +36,11 @@ import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
 interface CollectionDetailProps {
   collectionAddress: string;
+  initialData: any
 }
 const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
   collectionAddress,
+  initialData,
 }) => {
   const { account, chainId, demask } = useContext(AccountContext);
   const [isFilter, setIsFilter] = useState<boolean>(false);
@@ -57,6 +59,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
         return res.data;
       }
     },
+    initialData: initialData || undefined
   });
 
   const handleUploadAvatar = async (file: any) => {

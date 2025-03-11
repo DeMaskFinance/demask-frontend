@@ -2,9 +2,9 @@ import abiLaunchPad from "@/abi/abiLaunchPad.json";
 import { useReadContract } from "wagmi";
 
 interface FetchAmountSoldParams {
-  account: string;
-  launchpadAddress: `0x${string}` | any;
-  unit: number;
+  account?: string;
+  launchpadAddress?: `0x${string}` | any;
+  unit?: number;
 }
 
 export const useFetchAmountSold = ({

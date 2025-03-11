@@ -53,7 +53,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const collectionAddress = (router.query.erc as string) || "";
     const handleChoiceChange = (choice: string) => {
       setActiveChoice(choice);
-      setIdNFT([]);
+      // setIdNFT([]);
     };
     const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
@@ -237,7 +237,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 </div>
               </div>
               <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
-                Total Liquidity
+                Total MON
                 <div className="flex items-center justify-between gap-x-1">
                   <FormatNumber number={dataTradingRemove?.amountETH || 0} />
                   <EtherIcon width={16} height={16} />

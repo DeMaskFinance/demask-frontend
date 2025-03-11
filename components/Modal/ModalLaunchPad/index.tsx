@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
 import { ModalTransation } from "../ModalTransation";
+import FormatNumber from "@/components/Common/FormatNumber";
 
 interface ModalMintLaunchPadProps {
   inputAmount: number;
@@ -119,7 +120,7 @@ const ModalMintLaunchPad: React.FunctionComponent<ModalMintLaunchPadProps> = ({
       <div className="relative flex items-center justify-between w-full h-11 pl-2 mb-4 text-base font-semibold rounded-lg bg-primary_500 bg-opacity-10 mt-4">
         <div className="text-primary_100">Total Pay</div>
         <div className="flex items-center px-2 py-1 text-white gap-x-1">
-          {data.price * inputAmount}
+          {<FormatNumber number={data.price * inputAmount} />}
           <EtherIcon width={16} height={16} />
         </div>
       </div>

@@ -8,7 +8,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import Classify from "../Profile/Inventory/Classify";
 import CollectionDetail from "./CollectionDetail";
 import Filter from "./Filter";
-export default function DetailCollection() {
+export default function DetailCollection({ initialData }: any) {
   const { chainId } = useContext(AccountContext);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [searchCollection, setSearchCollection] = useState<string>("");
@@ -49,11 +49,14 @@ export default function DetailCollection() {
       lastPage.currentPage < lastPage.totalPages
         ? lastPage.currentPage + 1
         : undefined,
+
+    initialData: initialData?.nfts || undefined
   });
+
 
   return (
     <div className="pb-6 min-h-[94vh] mx-auto lg:mb-0 ">
-      <CollectionDetail collectionAddress={collectionAddress} />
+      <CollectionDetail collectionAddress={collectionAddress} initialData={initialData?.collection} />
       <div className="flex">
         {isFilter && <Filter setIsFilter={setIsFilter} />}
         <div className="md:px-4 pt-4 px-3 w-full">
