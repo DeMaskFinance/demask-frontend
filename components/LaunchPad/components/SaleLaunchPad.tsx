@@ -106,6 +106,11 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
     })
   );
 
+  const isLoading = amountSoldList?.some((query) => query.isLoading);
+
+
+
+
   const refetchAll = () => {
     amountSoldList?.forEach((query) => query.refetch());
   };
@@ -136,14 +141,14 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
             <div className="flex justify-between ">
               <p className="font-bold">Total Minted</p>
               <div className="flex gap-x-1 ">
-                <p>{((totalMinted / totalLimit) * 100)?.toFixed(2)}%</p>
+                <p>{!isLoading ? ((totalMinted / totalLimit) * 100).toFixed(2) : data?.mintPercent.toFixed(2)}%</p>
               </div>
             </div>
             <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">
               <div
                 className="h-[10px] bg-primary_400 rounded-lg absolute top-0 left-0 w-2/3"
                 style={{
-                  width: `${(totalMinted / totalLimit) * 100}%`,
+                  width: `${!isLoading ? ((totalMinted / totalLimit) * 100) : data?.mintPercent}%`,
                 }}
               ></div>
             </div>

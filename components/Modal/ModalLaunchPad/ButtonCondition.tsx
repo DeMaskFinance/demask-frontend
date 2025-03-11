@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
-import { useFetchAmountSold } from "@/hooks/useFetchAmountSold";
+import { useFetchAmountMinted, useFetchAmountSold } from "@/hooks/useFetchAmountSold";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
 import { run } from "@/libs/validation/veryfy";
 import { useRouter } from "next/router";
@@ -40,6 +40,14 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
     unit: data?.unit,
   });
 
+  const { data: soldout } = useFetchAmountMinted({
+    launchpadAddress: launchpadAddress.toString(),
+    unit: Number(data?.unit)
+  });
+
+
+
+  console.log(soldout)
 
   const currentTime = (Date.now() / 1000) | 0;
   useEffect(() => {
@@ -61,9 +69,15 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
         setError("Sold out");
         return;
       }
+
+      if (data.limit === data.totalSoldOut) {
+        setError("Sold out");
+        return;
+      }
+
       if (isPublic) {
-        if (data.max_allocation < inputAmount + Number(amountSold)) {
-          setError("Minted");
+        if (data.max_allocation < inputAmount + Number(soldout)) {
+          setError("Max allocation");
           return;
         }
       } else {

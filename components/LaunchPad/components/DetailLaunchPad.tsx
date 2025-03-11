@@ -32,6 +32,7 @@ export default function DetailLaunchPad({ initialData }: any) {
     initialData: initialData?.data
   });
 
+
   const TABS = [
     {
       title: "Overview",
