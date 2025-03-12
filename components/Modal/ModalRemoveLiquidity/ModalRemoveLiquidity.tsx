@@ -18,6 +18,7 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -146,7 +147,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       }
     };
 
-    const { data: data721, isSuccess } = useQuery({
+    const { data: data721, isSuccess, isLoading } = useQuery({
       queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
       queryFn: async () => {
         const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
@@ -180,6 +181,9 @@ const ModalRemoveLiquidity: React.FunctionComponent<
               </div>
             </div>
           )}
+          {isLoading && <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
+            <SkeletonItemTransaction />
+          </div>}
           {type === "erc721" && isSuccess && (
             <NFTGrid
               data={data721?.data}
