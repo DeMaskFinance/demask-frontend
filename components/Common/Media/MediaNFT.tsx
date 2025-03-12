@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import Image from "next/image";
 import { BiPause, BiPlay } from "react-icons/bi";
@@ -20,6 +20,20 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
 }) => {
   const [isVideoPlaying, setVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.src = "";
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+      }
+    };
+  }, []);
 
   const isVideo =
     data?.metadata?.animation_url?.includes("mp4") ||
@@ -33,13 +47,18 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
 
   const handlePlayPause = () => {
     if (videoRef.current) {
+      document.querySelectorAll("video").forEach((vid) => {
+        if (vid !== videoRef.current) {
+          vid.pause();
+        }
+      });
+
       if (isVideoPlaying) {
         videoRef.current.pause();
-        setVideoPlaying(false);
       } else {
         videoRef.current.play();
-        setVideoPlaying(true);
       }
+      setVideoPlaying(!isVideoPlaying);
     }
   };
 
@@ -131,7 +150,6 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
               playsInline
               loop
               muted
-
             />
           )}
 

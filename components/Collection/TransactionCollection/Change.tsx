@@ -66,7 +66,9 @@ const Change = () => {
         collectionAddress,
         chainId,
         account,
-        version
+        version,
+        1,
+        500
       );
       return res;
     },
@@ -76,7 +78,7 @@ const Change = () => {
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
+      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
       return res;
     },
   });
@@ -153,6 +155,8 @@ const Change = () => {
       console.error(error);
     }
   };
+
+  console.log(data)
   const { handleApproveNFT } = useApproveNFT()
   return (
     <div>
@@ -170,7 +174,7 @@ const Change = () => {
             ) : isInputDataSuccess && inputData?.data?.length > 0 ? (
               <div className="flex flex-col ">
                 <NFTGrid
-                  data={inputData}
+                  data={inputData?.data}
                   setIdNFT={setIdNFTInput}
                   idNFT={idNFTInput}
                   isSearch={false}
@@ -211,7 +215,7 @@ const Change = () => {
         ) : isSuccess && data?.data?.length > 0 ? (
           <div className="flex flex-col ">
             <NFTGrid
-              data={data}
+              data={data?.data}
               // handleChoiceNFT={handleChoiceNFTOutput}
               setIdNFT={setIdNFTOutput}
               idNFT={idNFTOutput}

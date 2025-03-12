@@ -15,6 +15,7 @@ export default function DetailCollection({ initialData }: any) {
   const [typeERC] = useQueryParam("typeERC", withDefault(StringParam, ""));
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const collectionAddress = useRouter().query.collection as string;
+
   //Data ERC1155
   const fetchDataNFTs = async (
     typeERC: string,
@@ -50,8 +51,10 @@ export default function DetailCollection({ initialData }: any) {
         ? lastPage.currentPage + 1
         : undefined,
 
-    initialData: initialData?.nfts || undefined
+    initialData: initialData?.nfts || undefined,
+    enabled: !!collectionAddress,
   });
+
 
 
   return (

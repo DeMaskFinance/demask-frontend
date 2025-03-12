@@ -50,4 +50,5 @@ interface DataRemove extends DataAdd {
   totalSupplyDml: number;
   totalSupplyDmlDecimals: number;
   amountNFT: number;
+  maxNft: number;
 }

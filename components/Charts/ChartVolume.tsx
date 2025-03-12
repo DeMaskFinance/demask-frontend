@@ -20,16 +20,20 @@ const ChartVolumn: React.FC<ChartVolumnProps> = ({ initialData }) => {
   const [hasInitialSetting, setHasInitialSetting] = useState(false);
   const { chainId } = useContext(AccountContext);
 
-  const { data, isLoading: LoadingVolume } = useQuery({
+
+  const { data, isLoading: LoadingVolume, isFetching } = useQuery({
     queryKey: ["ChartVolume", chainId, activeChoice],
     queryFn: async () => {
+      if (activeChoice === "1D") return initialData;
       const res = await categoryAPI(
         `volumeChart?chainId=${chainId}&interval=${activeChoice}`
       );
       return res.chartData;
     },
-    initialData
+    placeholderData: initialData,
   });
+
+
 
 
   const chartVolume = data?.map((dataPoint: any) => ({
@@ -52,7 +56,7 @@ const ChartVolumn: React.FC<ChartVolumnProps> = ({ initialData }) => {
 
   return (
     <div className="p-6 bg_main h-[354px]">
-      {LoadingVolume ? (
+      {LoadingVolume || isFetching ? (
         <ChartLoading />
       ) : (
         <div>

@@ -65,9 +65,8 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
               key={index}
               ref={(el) => (buttonRefs.current[index] = el)}
               type="button"
-              className={`cursor-pointer py-2 px-8 z-10 text-sm font-bold hover:text-white ${
-                item === activeChoice ? "text-white" : "text-shader_100"
-              }`}
+              className={`cursor-pointer py-2 px-8 z-10 text-sm font-bold hover:text-white ${item === activeChoice ? "text-white" : "text-shader_100"
+                }`}
               onClick={() => handleButtonClick(item, index)}
             >
               <h2 className="font-semibold whitespace-nowrap">{item}</h2>
@@ -77,13 +76,12 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
       ) : (
         <div className="flex relative items-center p-1 text-sm text-center text-white h-10 rounded-lg bg-shader_600 border_500 w-full">
           <div
-            className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-8 ${
-              activeChoice === "Buy"
+            className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-8 ${activeChoice === "Buy"
                 ? "bg-green"
                 : activeChoice === "Sell"
-                ? "bg-red"
-                : "bg-primary_500"
-            }`}
+                  ? "bg-red"
+                  : "bg-primary_500"
+              }`}
             style={{
               transform: `translateX(${translateX}px)`,
               width: `${activeChoice && isInclude ? widthBtn : 0}px`,
@@ -94,9 +92,8 @@ const TabGroups: React.FunctionComponent<TabGroupProps> = ({
               key={choice}
               ref={(el) => (buttonRefs.current[index] = el)}
               type="button"
-              className={`py-2 w-1/2 rounded-lg z-10 font-bold ${
-                activeChoice === choice ? "text-white" : "text-shader_300"
-              }`}
+              className={`py-2 w-1/2 rounded-lg z-10 font-bold ${activeChoice === choice ? "text-white" : "text-shader_300"
+                }`}
               onClick={() => handleButtonClick(choice, index)}
             >
               {choice}

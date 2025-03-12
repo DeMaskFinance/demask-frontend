@@ -67,7 +67,9 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
         collectionAddress,
         chainId,
         account,
-        version
+        version,
+        1,
+        500
       );
       return res;
     },
@@ -148,7 +150,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
           </div>
         ) : (
           <NFTGrid
-            data={data}
+            data={data?.data}
             setIdNFT={setIdNFT}
             idNFT={idNFT}
             isSearch={false}

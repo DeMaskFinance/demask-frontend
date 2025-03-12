@@ -47,11 +47,14 @@ const Sell = () => {
         collectionAddress,
         chainId,
         account,
-        version
+        version,
+        1,
+        500
       );
       return res;
     },
   });
+
   const debouncedIdNFT = useDebounce(idNFT, 1000);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -110,7 +113,7 @@ const Sell = () => {
             </div>
           ) : isSuccess && data?.data?.length > 0 ? (
             <div className="flex flex-col ">
-              <NFTGrid data={data} setIdNFT={setIdNFT} idNFT={idNFT} isSearch />
+              <NFTGrid data={data?.data} setIdNFT={setIdNFT} idNFT={idNFT} isSearch />
               <div className="w-full mt-4">
                 {idNFT.length > 0 && (
                   <StaticDetailSell

@@ -13,13 +13,15 @@ import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import { erc721TradingBuy } from "@/libs/service/tradeService";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import NFTGrid from "./NFTsGrids";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
+import { useInView } from "react-intersection-observer";
+
 const Buy = () => {
   const { account, chainId, slippage, wallet } = useContext(AccountContext);
   const [isOpenBuyNFT, setIsOpenBuyNFT] = useState<boolean>(false);
@@ -35,14 +37,32 @@ const Buy = () => {
   const debouncedIdNFT = useDebounce(idNFT, 1500);
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
-  const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isSuccess,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
-    queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
+    queryFn: async ({ pageParam = 1 }) => {
+      const res = await fetchDataBuyNFTs(
+        collectionAddress,
+        chainId,
+        version,
+        pageParam,
+        500
+      );
       return res;
     },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage?.hasNextPage && lastPage.currentPage < lastPage.totalPages
+        ? lastPage.currentPage + 1
+        : undefined,
   });
-
 
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -50,53 +70,53 @@ const Buy = () => {
     version,
   ]);
 
-  const { data: data721Trading, isFetching: isFetching721Trading } =
-    useQuery<DataBuy>({
-      queryKey: [
-        "721TradingBuy",
-        chainId,
+
+  const { data: data721Trading, isFetching: isFetching721Trading } = useQuery({
+    queryKey: [
+      "721TradingBuy",
+      chainId,
+      collectionAddress,
+      slippage,
+      debouncedIdNFT,
+      version,
+    ],
+    queryFn: async () => {
+      const res = await erc721TradingBuy(
         collectionAddress,
+        chainId,
+        debouncedIdNFT.length,
         slippage,
-        debouncedIdNFT,
-        version,
-      ],
-      queryFn: async () => {
-        const res = await erc721TradingBuy(
-          collectionAddress,
-          chainId,
-          debouncedIdNFT.length,
-          slippage,
-          version
-        );
-        return res.data;
-      },
-    });
+        version
+      );
+      return res.data;
+    },
+    enabled: debouncedIdNFT.length > 0,
+  });
 
   useEffect(() => {
-    if (Number(data721Trading?.maxAmountDecimals) > Number(bigNumberBalance)) {
-      setIsSufficientTokenBuy(false);
-    } else {
-      setIsSufficientTokenBuy(true);
-    }
+    setIsSufficientTokenBuy(
+      Number(data721Trading?.maxAmountDecimals) <= Number(bigNumberBalance)
+    );
   }, [account, data721Trading, bigNumberBalance]);
 
+
   const dataFake = {
-    dmlAddress: data?.dmlAddress,
+    dmlAddress: data?.pages[0].data?.dmlAddress,
     tokenDecimals: "18",
     metadata: {
-      image: data?.avatar,
+      image: data?.pages[0].data?.avatar,
     },
   };
-
   return (
     <div>
       {isLoading || isFetching ? (
         <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
           <SkeletonItemTransaction />
         </div>
-      ) : isSuccess && data?.data?.length > 0 ? (
+      ) : isSuccess && data?.pages?.length > 0 ? (
         <div className="flex flex-col ">
-          <NFTGrid data={data} idNFT={idNFT} isSearch setIdNFT={setIdNFT} />
+          <NFTGrid data={data.pages.flatMap(page => page.data)} idNFT={idNFT} isSearch setIdNFT={setIdNFT} />
+
           <div className="w-full mt-4">
             {idNFT.length > 0 && (
               <StaticDetailBuy
@@ -106,81 +126,57 @@ const Buy = () => {
               />
             )}
 
-            {!account ? (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full py-4" primary>
-                    Connect Wallet
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-[350px] p-0 border-none">
-                  <ModalWallet />
-                </DialogContent>
-              </Dialog>
-            ) : (
-              <Dialog open={isOpenBuyNFT} onOpenChange={setIsOpenBuyNFT}>
-                <DialogTrigger asChild>
-                  <Button
-                    disabled={
-                      data?.reserveNFT === idNFT.length ||
-                      idNFT.length === 0 ||
-                      isFetching ||
-                      !isSufficientTokenBuy ||
-                      data721Trading?.maxAmountDecimals === 0
-                    }
-                    primary={
-                      data?.reserveNFT !== idNFT.length &&
-                      isSufficientTokenBuy &&
-                      data721Trading?.maxAmountDecimals !== 0 &&
-                      !isFetching
-                    }
-                    className="w-full py-4"
-                    active={
-                      data?.reserveNFT === idNFT.length ||
-                      idNFT.length === 0 ||
-                      isFetching ||
-                      !isSufficientTokenBuy ||
-                      data721Trading?.maxAmountDecimals === 0
-                    }
-                  >
-                    BUY {idNFT.length} NFTs
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="p-0 border-none">
-                  {data721Trading && contracts && (
-                    <ModalBuyNFT
-                      isOpenBuyNFT={isOpenBuyNFT}
-                      isOpenTransaction={isOpenTransaction}
-                      setIsOpenTransaction={setIsOpenTransaction}
-                      tokenAddress={contracts.WETH_ADDRESS}
-                      nftAddress={collectionAddress}
-                      idNFT={debouncedIdNFT}
-                      routerAddress={contracts.ERC721_ROUTER_ADDRESS}
-                      /* 
-          // @ts-ignore */
-                      data={dataFake}
-                      dataBuy={data721Trading}
-                      setIsOpenBuyNFT={setIsOpenBuyNFT}
-                      inputNFT={""}
-                      setInputNFT={setIdNFT}
-                      setHash={setHash}
-                      setIsOpenSuccess={setIsOpenSuccessBuy}
-                      setIsOpenError={setIsOpenErrorBuy}
-                    />
-                  )}
-                </DialogContent>
-              </Dialog>
-            )}
-            {!isSufficientTokenBuy && account && idNFT.length !== 0 && (
-              <p className="text-xs text-red" key="Tokenbalance">
-                Insufficient Token balance
-              </p>
-            )}
+            <Dialog open={isOpenBuyNFT} onOpenChange={setIsOpenBuyNFT}>
+              <DialogTrigger asChild>
+                <Button
+                  disabled={
+                    !isSufficientTokenBuy ||
+                    idNFT.length === 0 ||
+                    isFetching ||
+                    data721Trading?.maxAmountDecimals === 0
+                  }
+                  primary={
+                    isSufficientTokenBuy &&
+                    data721Trading?.maxAmountDecimals !== 0 &&
+                    !isFetching
+                  }
+                  className={`w-full py-4 ${!isSufficientTokenBuy ||
+                    idNFT.length === 0 ||
+                    isFetching ||
+                    data721Trading?.maxAmountDecimals === 0 ? "bg-slate-400/20" : ""}`}
+                >
+                  BUY {idNFT.length} NFTs
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="p-0 border-none">
+                {data721Trading && contracts && (
+                  <ModalBuyNFT
+                    isFetching={isFetching}
+                    isOpenTransaction={isOpenTransaction}
+                    setIsOpenTransaction={setIsOpenTransaction}
+                    tokenAddress={contracts.WETH_ADDRESS}
+                    nftAddress={collectionAddress}
+                    idNFT={debouncedIdNFT}
+                    routerAddress={contracts.ERC721_ROUTER_ADDRESS}
+                    //@ts-expect-error:errror
+                    data={dataFake}
+                    dataBuy={data721Trading}
+                    setIsOpenBuyNFT={setIsOpenBuyNFT}
+                    inputNFT={""}
+                    setInputNFT={setIdNFT}
+                    setHash={setHash}
+                    setIsOpenSuccess={setIsOpenSuccessBuy}
+                    setIsOpenError={setIsOpenErrorBuy}
+                  />
+                )}
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       ) : (
         <p className="mt-4">No data available.</p>
       )}
+
       <ModalSuccess
         isOpenSuccess={isOpenSuccessBuy}
         transactionHash={hash}

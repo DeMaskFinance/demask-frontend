@@ -14,11 +14,13 @@ import TableRank from "@/components/LeaderBoard/TableRank";
 import Cards from "@/components/LeaderBoard/Cards";
 import { BackgroundDefault } from "@/components/Backgrounds";
 import BackgroundParticles from "@/components/Backgrounds/BackGroundParticles";
+import { leaderBoardAPI } from "@/libs/service/leaderBoard";
+import { GetServerSideProps } from "next";
 const updateMeta = {
   ...SEO,
   title: "Leaderboard",
 };
-const LeaderBoard = () => {
+const LeaderBoard = ({ leaderboardData }: { leaderboardData: any }) => {
   const [activeChoice, setActiveChoice] = useState<string>("Current Season");
   const handleChoiceChange = (choice: string) => {
     setActiveChoice("Current Season");
@@ -39,7 +41,7 @@ const LeaderBoard = () => {
               />
             </div>
           </div>
-          <Cards />
+          <Cards leaderboardData={leaderboardData} />
           <TableRank />
         </div>
         <BackgroundParticles value={800} id="particle-container1" />
@@ -49,3 +51,20 @@ const LeaderBoard = () => {
 };
 
 export default LeaderBoard;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+
+    const chainId = "10143";
+    const leaderboardData = await leaderBoardAPI(chainId, 1, "");
+
+    return {
+      props: { leaderboardData },
+    };
+  } catch (error) {
+    console.error("Failed to fetch leaderboard data:", error);
+    return {
+      props: { leaderboardData: null },
+    };
+  }
+};

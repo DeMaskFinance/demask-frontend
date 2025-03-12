@@ -19,13 +19,16 @@ function ListTracsaction({ initialData }: any) {
     useQuery({
       queryKey: ["transaction", chainId, sortField, sortOrder, page],
       queryFn: async () => {
+
+        if (page === 1) return initialData;
+
         const res = await categoryAPI(
           `transaction-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
         );
         return res;
       },
-      initialData
-      // refetchInterval: 60000,
+      placeholderData: initialData,
+
     });
 
   const handleSort = (field: string) => {

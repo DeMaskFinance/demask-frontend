@@ -20,9 +20,8 @@ const ItemTableRank = ({ item, currentRank }: any) => {
   const { demask, account } = useContext(AccountContext);
   return (
     <tr
-      className={`flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500 ${
-        currentRank ? "bg-primary_500 bg-opacity-25" : "text-white"
-      }`}
+      className={`flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500 ${currentRank ? "bg-primary_500 bg-opacity-25" : "text-white"
+        }`}
     >
       <td className="py-4 flex items-center justify-start md:w-[70%] w-[100px]">
         <div className="flex items-center justify-end gap-x-3">

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RightIcon, SortIcon } from "@/components/Icons";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
@@ -15,19 +15,33 @@ function TopCollection({ initialData }: any) {
   const { chainId } = useContext(AccountContext);
   const [sortField, setSortField] = useState("volume24h");
   const [sortOrder, setSortOrder] = useState("desc");
+
+  const [firstTime, setFirstTime] = useState(true)
+
   const router = useRouter();
 
   const { isLoading, data, isFetching, refetch, isPlaceholderData, isSuccess } =
     useQuery({
       queryKey: ["topCollection", chainId, sortField, sortOrder, page],
       queryFn: async () => {
+        if (page === 1) return initialData;
         const res = await categoryAPI(
           `top-collection-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
         );
         return res;
       },
-      initialData
+      placeholderData: initialData,
     });
+
+
+
+
+  useEffect(() => {
+    if (firstTime && page > 1) {
+      setFirstTime(false)
+    }
+  }, [firstTime, page])
+
   const {
     isLoading: isLoadingNewest,
     data: dataNewest,
