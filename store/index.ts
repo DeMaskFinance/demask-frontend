@@ -1,46 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit';
-import profileReducer from './profileSlice';
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist'
-// import storage from 'redux-persist/lib/storage'
-import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
-const createNoopStorage = () => {
-  return {
-     getItem(_key: any) {
-        return Promise.resolve(null);
-     },
-     setItem(_key: any, value: any) {
-        return Promise.resolve(value);
-     },
-     removeItem(_key: any) {
-        return Promise.resolve();
-     },
-  };
+import { configureStore } from "@reduxjs/toolkit";
+import profileReducer from "./profileSlice";
+
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem("PROFILE");
+    return serializedState ? JSON.parse(serializedState) : undefined;
+  } catch (err) {
+    console.error("Failed to load state", err);
+    return undefined;
+  }
 };
-const storage = typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
-const persistConfig = {
-  key: 'root',
-  storage,
-}
-const persistedReducerProfile = persistReducer(persistConfig, profileReducer);
+
+const saveState = (state: any) => {
+  try {
+    if (state.accessToken) {
+      const serializedState = JSON.stringify(state);
+      localStorage.setItem("PROFILE", serializedState);
+    }
+  } catch (err) {
+    console.error("Failed to save state", err);
+  }
+};
+
+const preloadedState = { profile: loadState() || {} };
+
 const store = configureStore({
   reducer: {
-    profile: persistedReducerProfile
+    profile: profileReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-})
+  preloadedState,
+});
+
+store.subscribe(() => {
+  saveState(store.getState().profile);
+});
+
 export default store;
-export const persistor = persistStore(store)

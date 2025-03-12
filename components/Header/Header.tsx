@@ -104,16 +104,16 @@ export default function Header() {
     }
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (address && isConnected && !isSigning && account) {
-      return;
-    }
+  //   if (address && isConnected && !isSigning && account) {
+  //     return;
+  //   }
 
-    if (address && isConnected && !isSigning) {
-      signAndAuthenticate();
-    }
-  }, [address, isConnected]);
+  //   if (address && isConnected && !isSigning) {
+  //     signAndAuthenticate();
+  //   }
+  // }, [address, isConnected]);
 
 
 

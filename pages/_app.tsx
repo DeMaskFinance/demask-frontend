@@ -1,9 +1,11 @@
 import { Layout } from "@/components/Layouts";
 import ProgressBar from "@/components/Layouts/ProviderRouter";
+import SEOHead from "@/components/SEOHead";
 import { StarknetProvider } from "@/components/StarknetProvider";
 import { networks, wagmiAdapter } from "@/config";
 import { AccountProvider } from "@/context/AccountContext";
 import { metadata, queryClient, titillium } from "@/libs/constants";
+import WalletIds from "@/libs/constants/walletIds";
 import "@/styles/globals.css";
 import { createAppKit } from '@reown/appkit/react';
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -11,15 +13,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { NextPage } from "next";
 import NextAdapterPages from "next-query-params";
 import type { AppProps } from "next/app";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 import { QueryParamProvider } from "use-query-params";
 import { WagmiProvider } from "wagmi";
-import store, { persistor } from "../store";
+import store from "../store";
 import MaintenanceError from "./maintenanceError";
-import SEOHead from "@/components/SEOHead";
-import WalletIds from "@/libs/constants/walletIds";
-import { useEffect } from "react";
+import ProfileProvider from "@/components/Providers/ProfileProvider";
+import ProfileReconnectProvider from "@/components/Providers/ProfileProvider";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -90,21 +91,33 @@ export default function App({
     removeRecentWallet(WalletIds.OKXId);
   }, []);
 
+  // const [isClient, setIsClient] = useState(false);
+
+  // useEffect(() => {
+  //   setIsClient(true);
+  // }, []);
+
+  // if (!isClient) {
+  //   return null;
+  // }
+
+
   return (
     <Provider store={store}>
       <ProgressBar />
-      <PersistGate loading={null} persistor={persistor}>
-        <AccountProvider>
-          <StarknetProvider>
-            <QueryClientProvider client={queryClient}>
-              <SEOHead />
-              <QueryParamProvider adapter={NextAdapterPages}>
-                <style jsx global>{`
+      <SEOHead />
+      <AccountProvider>
+        <StarknetProvider>
+          <QueryClientProvider client={queryClient}>
+            <QueryParamProvider adapter={NextAdapterPages}>
+              <style jsx global>{`
                   html {
                     font-family: ${titillium.style.fontFamily};
                   }
                 `}</style>
-                <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+              <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+                <ProfileReconnectProvider>
+
                   <Layout>
                     {isMaintenanceMode ? (
                       <MaintenanceError />
@@ -112,13 +125,13 @@ export default function App({
                       <Component {...pageProps} />
                     )}
                   </Layout>
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </WagmiProvider>
-              </QueryParamProvider>
-            </QueryClientProvider>
-          </StarknetProvider>
-        </AccountProvider>
-      </PersistGate>
+                </ProfileReconnectProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </WagmiProvider>
+            </QueryParamProvider>
+          </QueryClientProvider>
+        </StarknetProvider>
+      </AccountProvider>
     </Provider>
   );
 }

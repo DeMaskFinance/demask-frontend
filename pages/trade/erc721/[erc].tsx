@@ -1,16 +1,14 @@
 import DetailERC721 from "@/components/ERC721/DetailERC721";
+import SEOHead from "@/components/SEOHead";
 import AccountContext from "@/context/AccountContext";
 import { queryClient } from "@/libs/constants";
 import { collectionDetail } from "@/libs/service/collectionService";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { SEO } from "@/next-seo.config";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
-const updateMeta = {
-  ...SEO,
-  title: "Trade",
-};
 
 export default function TradeERC721({ initialData }: { initialData: any }) {
   const router = useRouter();
@@ -25,11 +23,15 @@ export default function TradeERC721({ initialData }: { initialData: any }) {
 
   });
 
-  console.log(data, initialData)
-
-
   return (
-    <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data} />
+    <>
+      <SEOHead
+        image={formatLinkIPFS(data?.data?.avatar)}
+        description={data?.data?.description}
+        title={data?.data?.name}
+      />
+      <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data} />
+    </>
   );
 }
 

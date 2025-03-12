@@ -287,7 +287,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <div className="md:flex items-center p-4 border-r border-t border-shader_500 ">
               <p className="mr-1 text-shader_200">Volume 1D</p>
               <div className="flex items-center gap-x-1">
-                <FormatNumber number={data[data.length - 1]?.volume} />
+                <FormatNumber number={dataSwap?.volume1d || 0} />
                 <EtherIcon width={16} height={16} />
               </div>
             </div>

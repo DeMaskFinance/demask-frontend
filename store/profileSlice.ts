@@ -1,38 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 interface ProfileState {
   accessToken: string;
   isLoggedIn: boolean;
   user: string;
-  profile: UserInterface;
+  profile: Record<string, any>;
 }
+
+const initialState: ProfileState = {
+  accessToken: "",
+  isLoggedIn: false,
+  user: "",
+  profile: {},
+};
+
 const profileSlice = createSlice({
   name: "profile",
-  initialState: {
-    accessToken: "",
-    isLoggedIn: false,
-    user: "",
-    profile: {},
-  },
+  initialState,
   reducers: {
     login: (state, { payload }) => {
       const { accessToken, user } = payload;
       state.accessToken = accessToken;
       state.user = user?.toLowerCase();
       state.isLoggedIn = true;
-      localStorage.setItem("PROFILE", JSON.stringify(payload));
     },
     logout: (state) => {
-      localStorage.removeItem("PROFILE");
       state.accessToken = "";
       state.user = "";
       state.isLoggedIn = false;
+      localStorage.removeItem("PROFILE");
     },
     userData: (state, { payload }) => {
-      const { profile } = payload;
-      state.profile = profile;
+      state.profile = payload.profile;
     },
   },
 });
+
 export const { login, logout, userData } = profileSlice.actions;
 export const selectProfile = (state: any): ProfileState => state.profile;
 export default profileSlice.reducer;

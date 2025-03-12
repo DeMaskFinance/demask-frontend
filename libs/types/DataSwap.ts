@@ -14,6 +14,7 @@ interface DataBase {
   dmlDecimals: string;
   isDeleted: boolean;
   name?: string;
+  volume1d?: number;
   avatar?: string;
   collectionName: string;
   symbol?: string;

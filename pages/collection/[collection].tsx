@@ -1,20 +1,20 @@
 import DetailCollection from "@/components/Collection";
-import { SEO } from "../../next-seo.config";
-import { NextSeo } from "next-seo";
+import SEOHead from "@/components/SEOHead";
 import { queryClient } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
+import { formatLinkIPFS } from "@/libs/utils/formatComon";
 import { dehydrate } from "@tanstack/react-query";
 
-const updateMeta = {
-  ...SEO,
-  title: "Detail Collection",
-};
+
 const Collections = ({ initialData }: any) => {
 
-  console.log(initialData)
   return (
     <div>
-      <NextSeo {...updateMeta} />
+      <SEOHead title={initialData?.collection?.name}
+        description={initialData?.collection?.description}
+        image={formatLinkIPFS(initialData?.collection?.avatar)}
+      />
+
       <DetailCollection initialData={initialData} />
     </div>
   );
