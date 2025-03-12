@@ -29,11 +29,11 @@ const ReferralUser = () => {
           <div className="flex mt-1 mb-4 gap-x-2">
             <div className="flex items-center w-full px-3 py-2 font-semibold rounded-lg whitespace-nowrap bg-shader_600 flex-nowrap gap-x-2 border-shader_500  ">
               <span className="">
-                https://test.demask.finance/invite?code={data?.referralCode}
+                https://app.demask.finance/invite?code={data?.referralCode}
               </span>
 
               <Copy
-                content={`https://test.demask.finance/invite?code=${data?.referralCode}`}
+                content={`https://app.demask.finance/invite?code=${data?.referralCode}`}
               />
             </div>
           </div>

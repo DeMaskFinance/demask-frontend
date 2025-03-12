@@ -25,6 +25,8 @@ export default function TradeERC721({ initialData }: { initialData: any }) {
 
   });
 
+  console.log(data, initialData)
+
 
   return (
     <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data} />
@@ -42,7 +44,7 @@ export async function getServerSideProps(context: any) {
 
   return {
     props: {
-      initialData: queryClient.getQueryData(["detailCollection", chainId, erc]),
+      initialData: queryClient.getQueryData(["detailCollection", chainId, erc]) || null,
       dehydratedState: dehydrate(queryClient),
     },
   };

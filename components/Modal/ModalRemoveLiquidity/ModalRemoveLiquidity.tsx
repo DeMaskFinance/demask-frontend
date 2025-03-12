@@ -149,17 +149,19 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const { data: data721, isSuccess } = useQuery({
       queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
       queryFn: async () => {
-        const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
+        const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
         return res;
       },
     });
 
     const { approveDML } = handleApproveDML()
 
+    console.log(dataTradingRemove)
+
     return (
       <Fragment>
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
-          <p className="title_modal" onClick={(() => refetch())}>Remove Liquidity</p>
+          <p className="title_modal">Remove Liquidity</p>
           {type === "erc1155" && (
             <div className="flex mt-4 gap-x-3">
               <div className="relative w-10 h-10 ">
@@ -180,7 +182,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           )}
           {type === "erc721" && isSuccess && (
             <NFTGrid
-              data={data721}
+              data={data721?.data}
+              maxNft={dataTradingRemove?.maxNft}
               setIdNFT={setIdNFT}
               idNFT={idNFT}
               isSearch={false}
@@ -321,5 +324,4 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       </Fragment>
     );
   };
-
 export default ModalRemoveLiquidity;

@@ -19,6 +19,7 @@ interface NFTGridProps {
   isSearch: boolean;
   setIdNFT: React.Dispatch<React.SetStateAction<number[]>>;
   isRemove?: boolean;
+  maxNft?: number;
 }
 
 const NFTGrid: React.FC<NFTGridProps> = ({
@@ -26,11 +27,13 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   idNFT,
   isSearch,
   setIdNFT,
+  maxNft
 }) => {
   const [val, setVal] = useState([0]);
   const [selectedItem, setSelectedItem] = useState<ModalDetailProps | null>(
     null
   );
+
 
   const handleChoiceNFT = (item: any) => {
     const isExist = idNFT.includes(Number(item.nftID));
@@ -39,6 +42,9 @@ const NFTGrid: React.FC<NFTGridProps> = ({
     if (isExist) {
       newList = idNFT.filter((itemArr) => itemArr !== Number(item.nftID));
     } else {
+      if (maxNft && idNFT.length >= maxNft) {
+        return;
+      }
       newList = [...idNFT, Number(item.nftID)];
     }
 
@@ -46,7 +52,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
     setVal([newList.length]);
   };
   const hanldeListNFT = (val: number) => {
-    const newList = data.data.slice(0, val).map((item: any) => +item.nftID);
+    const newList = data.slice(0, val).map((item: any) => +item.nftID);
     setIdNFT(newList);
     setVal([newList.length]);
   };
@@ -54,7 +60,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
   return (
     <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
       <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[260px] ">
-        {data?.data?.map((item: any, index: number) => (
+        {data?.map((item: any, index: number) => (
           <div
             key={index}
             className="relative overflow-hidden rounded-lg bg-primary_500 bg-opacity-10"
@@ -110,7 +116,7 @@ const NFTGrid: React.FC<NFTGridProps> = ({
       <div className="flex items-center h-10 my-4 border rounded-lg border-shader_400">
         <div className="flex-grow px-4">
           <Slider
-            max={data?.data?.length}
+            max={maxNft ? maxNft : data?.length}
             value={val}
             step={1}
             className=""

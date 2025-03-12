@@ -97,7 +97,6 @@ export default function App({
         <AccountProvider>
           <StarknetProvider>
             <QueryClientProvider client={queryClient}>
-
               <SEOHead />
               <QueryParamProvider adapter={NextAdapterPages}>
                 <style jsx global>{`
