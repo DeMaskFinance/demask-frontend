@@ -97,7 +97,7 @@ const Sell = () => {
     },
   });
   const dataFake = {
-    dmlAddress: data?.data?.[0].dmlAddress,
+    dmlAddress: data?.data?.[0]?.dmlAddress,
     tokenDecimals: "18",
     metadata: {
       image: data?.data?.[0]?.avatar,
