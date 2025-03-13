@@ -105,15 +105,13 @@ export default function Header() {
   };
 
   useEffect(() => {
-
-    if (address && isConnected && !isSigning && account) {
+    if (!address || !isConnected || isSigning || account) {
       return;
     }
 
-    if (address && isConnected && !isSigning) {
-      signAndAuthenticate();
-    }
-  }, [address, isConnected]);
+    signAndAuthenticate();
+  }, [address, isConnected, account]);
+
 
 
 
