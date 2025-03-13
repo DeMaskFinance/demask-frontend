@@ -40,11 +40,6 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
     data?.metadata?.avatar?.includes("mp4") ||
     data?.avatar?.includes("mp4");
 
-  const videoUri =
-    data?.metadata?.animation_url ||
-    data?.metadata?.avatar ||
-    data?.metadata?.image;
-
   const handlePlayPause = () => {
     if (videoRef.current) {
       document.querySelectorAll("video").forEach((vid) => {
