@@ -1,9 +1,10 @@
 import { Button } from "@/components/Buttons";
-import NFTGrid from "@/components/Collection/TransactionCollection/NFTsGrids";
+import NFTRemoveLiquidityGrids from "@/components/Collection/TransactionCollection/NFTRemoveLiquidityGrids";
 import FormatNumber from "@/components/Common/FormatNumber";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
-import { TabGroups } from "@/components/NavChoice";
+import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
+import { Slider } from "@/components/ui/slider";
 import AccountContext from "@/context/AccountContext";
 import useAllowanceDML from "@/hooks/useAllowanceDML";
 import useCheckApproveToken from "@/hooks/useCheckApproveToken";
@@ -15,10 +16,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -52,10 +52,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const { account, wallet, chainId } = useContext(AccountContext);
     const router = useRouter();
     const collectionAddress = (router.query.erc as string) || "";
-    const handleChoiceChange = (choice: string) => {
-      setActiveChoice(choice);
-      // setIdNFT([]);
-    };
+    const [liquidityPercentage, setLiquidityPercentage] = useState(0);
+
     const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
     const { data: dataTradingRemove, isFetching: isFetchingRemove } =
@@ -92,11 +90,32 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       const inputValue = replaceDot(value);
       setInputLiquidity(inputValue);
       setShowRequiredMessage(false);
-      // setActiveChoice("");
       if (Number(inputValue) > Number(dataTradingRemove?.balanceDml)) {
         setIsSufficientLiquidity(true);
       } else {
         setIsSufficientLiquidity(false);
+      }
+
+      if (dataTradingRemove?.balanceDml) {
+        const percentage = (Number(inputValue) / Number(dataTradingRemove.balanceDml)) * 100;
+        setLiquidityPercentage(Math.min(percentage, 100));
+      }
+    };
+
+    const handleSliderChange = (value: any) => {
+      setLiquidityPercentage(value[0]);
+    };
+
+    const handleSliderCommit = (value: any) => {
+      if (dataTradingRemove?.balanceDml) {
+        const calculatedLiquidity = (
+          Number(dataTradingRemove.balanceDml) * (value[0] / 100)
+        ).toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 18,
+        });
+
+        setInputLiquidity(calculatedLiquidity);
       }
     };
 
@@ -105,36 +124,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       inputLiquidity,
       isOpenTransaction
     );
-
-
-    useEffect(() => {
-      if (
-        dataTradingRemove?.balanceDml &&
-        activeChoice !== "" &&
-        activeChoice !== "0%"
-      ) {
-        let liquidityPercentage = 0;
-        if (activeChoice === "25%") {
-          liquidityPercentage = 0.25;
-        } else if (activeChoice === "50%") {
-          liquidityPercentage = 0.5;
-        } else if (activeChoice === "75%") {
-          liquidityPercentage = 0.75;
-        } else if (activeChoice === "100%") {
-          liquidityPercentage = 1;
-        }
-        const calculatedLiquidity = (
-          Number(dataTradingRemove.balanceDml) * liquidityPercentage
-        ).toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 18,
-        });
-
-        setInputLiquidity(calculatedLiquidity);
-        setShowRequiredMessage(false);
-        setIsSufficientLiquidity(false);
-      }
-    }, [dataTradingRemove, activeChoice]);
 
     const handleRemoveLiquidity = () => {
       if (inputLiquidity === "") {
@@ -155,9 +144,19 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       },
     });
 
+
+    const dataRemoveBuy = data721?.data || data721?.pages?.[0]?.data
+
     const { approveDML } = handleApproveDML()
 
-    console.log(dataTradingRemove)
+    useEffect(() => {
+      if (dataTradingRemove?.amountNFT && dataRemoveBuy.length > 0) {
+        const selectedNFTs = dataRemoveBuy.slice(0, dataTradingRemove.amountNFT).map((nft: any) => Number(nft.nftID));
+        setIdNFT(selectedNFTs);
+      } else {
+        setIdNFT([]);
+      }
+    }, [dataTradingRemove, dataRemoveBuy]);
 
     return (
       <Fragment>
@@ -177,7 +176,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 <div className="font-bold text-white truncate">
                   {data?.metadata?.name}
                 </div>
-                {/* <p className="text-sm font-semibold text-primary_300">ABU/MON</p> */}
               </div>
             </div>
           )}
@@ -185,8 +183,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             <SkeletonItemTransaction />
           </div>}
           {type === "erc721" && isSuccess && (
-            <NFTGrid
-              data={data721?.data}
+            <NFTRemoveLiquidityGrids
+              data={dataRemoveBuy}
               maxNft={dataTradingRemove?.maxNft}
               setIdNFT={setIdNFT}
               idNFT={idNFT}
@@ -218,11 +216,33 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   minLength={1}
                   maxLength={30}
                 />
-                <TabGroups
-                  choices={["25%", "50%", "75%", "100%"]}
-                  activeChoice={activeChoice}
-                  onChoiceChange={handleChoiceChange}
-                />
+
+                <div className="flex items-center h-10 border w-full rounded-lg border-shader_400">
+                  <div className="flex-grow px-4">
+                    <Slider
+                      max={100}
+                      step={1}
+                      value={[liquidityPercentage]}
+                      onValueChange={handleSliderChange}
+                      onValueCommit={handleSliderCommit}
+                    />
+                  </div>
+                  <div className="relative h-full bg-shader_600 overflow-hidden rounded-e-lg">
+                    <input
+                      type="number"
+                      value={liquidityPercentage}
+                      onChange={(e) => {
+                        let value = Number(e.target.value);
+                        if (value > 100) value = 100;
+                        if (value < 0 || isNaN(value)) value = 0;
+                        setLiquidityPercentage(value);
+                      }}
+                      className="w-14 h-full mr-1 font-semibold text-white text-center rounded-e-lg bg-shader_600 outline-none"
+                    />
+                    <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white font-semibold">%</span>
+                  </div>
+
+                </div>
               </div>
               {isSufficientLiquidity && (
                 <p className="mt-1 mb-2 ml-1 text-xs text-red" key="liquidity">
@@ -277,7 +297,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <>
                     {type === "erc721" ? (
                       <Button
-                        className="p-2 mx-auto"
+                        className={`p-2 mx-auto ${dataTradingRemove?.amountNFT !== idNFT.length || dataTradingRemove?.amountETHDecimals === 0 ? "bg-gray-400/10" : ""}`}
                         primary={dataTradingRemove?.amountNFT === idNFT.length}
                         active={dataTradingRemove?.amountNFT !== idNFT.length}
                         disabled={dataTradingRemove?.amountNFT !== idNFT.length}

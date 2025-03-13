@@ -71,33 +71,14 @@ export default function App({
 }: AppProps & { Component: NextPageWithLayout }) {
   const isMaintenanceMode = false;
 
-  const removeRecentWallet = (walletId: string): void => {
-    const storedData = localStorage.getItem(STORAGE_KEY);
-    if (!storedData) return;
-
-    try {
-      const recentWallets: Wallet[] = JSON.parse(storedData);
-      const updatedWallets = recentWallets.filter(wallet => wallet.id !== walletId);
-
-      if (updatedWallets.length !== recentWallets.length) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedWallets));
-      }
-    } catch (error) {
-      console.error("Error parsing recent wallets from localStorage:", error);
-    }
-  };
-  useEffect(() => {
-    removeRecentWallet(WalletIds.OKXId);
-  }, []);
-
   return (
     <Provider store={store}>
+      <SEOHead />
       <ProgressBar />
       <PersistGate loading={null} persistor={persistor}>
         <AccountProvider>
           <StarknetProvider>
             <QueryClientProvider client={queryClient}>
-              <SEOHead />
               <QueryParamProvider adapter={NextAdapterPages}>
                 <style jsx global>{`
                   html {

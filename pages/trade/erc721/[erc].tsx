@@ -25,11 +25,8 @@ export default function TradeERC721({ initialData }: { initialData: any }) {
 
   });
 
-  console.log(data, initialData)
-
-
   return (
-    <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data} />
+    <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data || data} />
   );
 }
 

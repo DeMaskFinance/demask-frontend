@@ -35,7 +35,7 @@ export default function SEOHead({
                     description,
                     images: [
                         {
-                            url: image || "/thumb.png",
+                            url: image || "/thumb.jpg",
                             width: 1200,
                             height: 630,
                             alt: "Demask Finance",
