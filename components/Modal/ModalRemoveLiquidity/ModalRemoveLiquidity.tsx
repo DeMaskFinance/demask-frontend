@@ -19,6 +19,7 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
+import { BsExclamationOctagon } from "react-icons/bs";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -119,6 +120,26 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      let value = Number(e.target.value);
+      if (value > 100) value = 100;
+      if (value < 0 || isNaN(value)) value = 0;
+
+      setLiquidityPercentage(value);
+
+      if (dataTradingRemove?.balanceDml) {
+        const calculatedLiquidity = (
+          Number(dataTradingRemove.balanceDml) * (value / 100)
+        ).toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 18,
+        });
+
+        setInputLiquidity(calculatedLiquidity);
+      }
+    };
+
+
     const isApprovedLiquidity = useCheckApproveToken(
       currentAllowance,
       inputLiquidity,
@@ -137,12 +158,13 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     };
 
     const { data: data721, isSuccess, isLoading } = useQuery({
-      queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
+      queryKey: ["collectionNFTs", chainId, collectionAddress, version],
       queryFn: async () => {
         const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
         return res;
       },
     });
+
 
 
     const dataRemoveBuy = data721?.data || data721?.pages?.[0]?.data
@@ -162,6 +184,15 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       <Fragment>
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
           <p className="title_modal">Remove Liquidity</p>
+          {data721 &&
+            <div className="flex items-center justify-between w-full py-2">
+              <p className="text-xs text-[#F9BE76] flex gap-1 items-center">
+                <BsExclamationOctagon className="inline-block" />
+                The maximum transaction limit's 500 NFTs.</p>
+              <p className="text-white text-sm font-semibold">{dataRemoveBuy?.length}/{data721?.totalRecords}</p>
+            </div>
+          }
+
           {type === "erc1155" && (
             <div className="flex mt-4 gap-x-3">
               <div className="relative w-10 h-10 ">
@@ -185,6 +216,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
           {type === "erc721" && isSuccess && (
             <NFTRemoveLiquidityGrids
               data={dataRemoveBuy}
+              totalRecord={data721?.totalRecords}
               maxNft={dataTradingRemove?.maxNft}
               setIdNFT={setIdNFT}
               idNFT={idNFT}
@@ -231,12 +263,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                     <input
                       type="number"
                       value={liquidityPercentage}
-                      onChange={(e) => {
-                        let value = Number(e.target.value);
-                        if (value > 100) value = 100;
-                        if (value < 0 || isNaN(value)) value = 0;
-                        setLiquidityPercentage(value);
-                      }}
+                      onChange={handleInputChange}
                       className="w-14 h-full mr-1 font-semibold text-white text-center rounded-e-lg bg-shader_600 outline-none"
                     />
                     <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white font-semibold">%</span>
@@ -263,6 +290,11 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <NFTIcon width={16} height={16} />
                 </div>
               </div>
+              {Number(dataTradingRemove?.amountNFT) >= 500 &&
+                <p className="mb-1 text-right text-xs text-red" key="inputNFT">
+                  Maximum 500 NFTs per transaction
+                </p>
+              }
               <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
                 Total MON
                 <div className="flex items-center justify-between gap-x-1">
@@ -297,10 +329,10 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <>
                     {type === "erc721" ? (
                       <Button
-                        className={`p-2 mx-auto ${dataTradingRemove?.amountNFT !== idNFT.length || dataTradingRemove?.amountETHDecimals === 0 ? "bg-gray-400/10" : ""}`}
+                        className={`p-2 mx-auto ${dataTradingRemove?.amountNFT !== idNFT.length || dataTradingRemove?.amountETHDecimals === 0 || Number(dataTradingRemove?.amountNFT) >= 500 ? "bg-gray-400/10" : ""}`}
                         primary={dataTradingRemove?.amountNFT === idNFT.length}
                         active={dataTradingRemove?.amountNFT !== idNFT.length}
-                        disabled={dataTradingRemove?.amountNFT !== idNFT.length}
+                        disabled={dataTradingRemove?.amountNFT !== idNFT.length || Number(dataTradingRemove?.amountNFT) >= 500 || dataTradingRemove?.amountETHDecimals === 0}
                         onClick={handleRemoveLiquidity}
                       >
                         Remove Liquidity

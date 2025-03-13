@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { Fragment, useContext, useState } from "react";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import NFTGrid from "./NFTsGrids";
+import { BsExclamationOctagon } from "react-icons/bs";
 
 const Sell = () => {
   const { account, chainId, demask, wallet, slippage } =
@@ -54,6 +55,8 @@ const Sell = () => {
       return res;
     },
   });
+
+  console.log(data)
 
   const debouncedIdNFT = useDebounce(idNFT, 1000);
   const contracts = queryClient.getQueryData<ContractAddresses>([
@@ -94,10 +97,10 @@ const Sell = () => {
     },
   });
   const dataFake = {
-    dmlAddress: data?.dmlAddress,
+    dmlAddress: data?.data?.[0].dmlAddress,
     tokenDecimals: "18",
     metadata: {
-      image: data?.avatar,
+      image: data?.data?.[0]?.avatar,
     },
   };
 
@@ -107,6 +110,16 @@ const Sell = () => {
     <Fragment>
       {account ? (
         <Fragment>
+
+          {data &&
+            <div className="flex items-center justify-between w-full pb-2 pt-4">
+              <p className="text-xs text-[#F9BE76] flex gap-1 items-center">
+                <BsExclamationOctagon className="inline-block" />
+                The maximum transaction limit's 500 NFTs.</p>
+              <p className="text-white text-sm font-semibold">{data?.data?.length}/{data?.totalRecords}</p>
+            </div>
+          }
+
           {isLoading || isFetching ? (
             <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
               <SkeletonItemTransaction />

@@ -1,4 +1,5 @@
 import { Button } from "@/components/Buttons";
+import MediaImageNFT from "@/components/Common/Media/MediaImageNFT";
 import MediaNFT from "@/components/Common/Media/MediaNFT";
 import { EyeIcon, ImgIcon } from "@/components/Icons";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -20,12 +21,14 @@ interface NFTGridProps {
     setIdNFT: React.Dispatch<React.SetStateAction<number[]>>;
     isRemove?: boolean;
     maxNft?: number;
+    totalRecord?: number;
 }
 
 const NFTRemoveLiquidityGrids: React.FC<NFTGridProps> = ({
     data,
     idNFT,
     isSearch,
+    totalRecord,
     setIdNFT,
     maxNft
 }) => {
@@ -33,12 +36,8 @@ const NFTRemoveLiquidityGrids: React.FC<NFTGridProps> = ({
         null
     );
 
-    console.log(idNFT)
-
-
-
     return (
-        <div className="p-4 mt-4 border rounded-lg border-shader_600 bg-shader_700">
+        <div className="p-4 border rounded-lg border-shader_600 bg-shader_700">
             <div className="grid grid-cols-3 gap-2  overflow-y-scroll overflow-x-hidden lg:grid-cols-4 md:grid-cols-3  max-h-[260px] ">
                 {data?.map((item: any, index: number) => {
 
@@ -55,7 +54,7 @@ const NFTRemoveLiquidityGrids: React.FC<NFTGridProps> = ({
                             <div
                                 className="relative h-[98px] group rounded-t-lg overflow-hidden"
                             >
-                                <MediaNFT data={item} isControls={false} hover zoom />
+                                <MediaImageNFT data={item} isControls={false} hover zoom />
                             </div>
                             <div className="flex justify-between w-full px-2 py-1 text-xs font-semibold text-white">
                                 <p>#{item.nftID}</p>

@@ -21,6 +21,7 @@ import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
 import { useInView } from "react-intersection-observer";
+import { BsExclamationOctagon } from "react-icons/bs";
 
 const Buy = () => {
   const { account, chainId, slippage, wallet } = useContext(AccountContext);
@@ -109,6 +110,16 @@ const Buy = () => {
   };
   return (
     <div>
+
+      {data &&
+        <div className="flex items-center justify-between w-full pb-2 pt-4">
+          <p className="text-xs text-[#F9BE76] flex gap-1 items-center">
+            <BsExclamationOctagon className="inline-block" />
+            The maximum transaction limit's 500 NFTs.</p>
+          <p className="text-white text-sm font-semibold">{data?.pages[0].data?.length}/{data?.pages[0]?.totalRecords}</p>
+        </div>
+      }
+
       {isLoading || isFetching ? (
         <div className="grid grid-cols-3 gap-6 mt-4 lg:grid-cols-4">
           <SkeletonItemTransaction />

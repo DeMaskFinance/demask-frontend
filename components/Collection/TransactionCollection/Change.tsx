@@ -76,7 +76,7 @@ const Change = () => {
 
   //Data output
   const { data, isSuccess, isLoading, isFetching } = useQuery({
-    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
+    queryKey: ["collectionNFTBUYs", chainId, collectionAddress, version],
     queryFn: async () => {
       const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
       return res;
