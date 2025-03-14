@@ -108,7 +108,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   {isFetching ? (
                     skeleton
                   ) : (
-                    <p>{Number(item.totalSupply).toLocaleString()}</p>
+                    <FormatNumber number={item.totalSupply} />
                   )}
                 </td>
               </tr>
