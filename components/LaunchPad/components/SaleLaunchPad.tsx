@@ -102,7 +102,7 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
     useFetchAmountMinted({
       account,
       launchpadAddress: data?.launchpadAddress,
-      unit: item.unit,
+      unit: Number(item.unit),
     })
   );
 
@@ -124,8 +124,9 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
   const totalLimit = data?.launchpadList.data
     .reduce((total, query) => total + Number(query.limit), 0);
 
-
   const labelToShow = getLabel(data?.launchpadList);
+
+  console.log(data)
 
 
   return (
@@ -140,8 +141,15 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
           <div className="relative">
             <div className="flex justify-between ">
               <p className="font-bold">Total Minted</p>
-              <div className="flex gap-x-1 ">
-                <p>{!isLoading ? ((totalMinted / totalLimit) * 100).toFixed(2) : data?.mintPercent.toFixed(2)}%</p>
+              <div className="flex items-center gap-1">
+                <div className="flex items-center gap-x-1">
+                  <p><span>
+                    {isLoading ? data?.totalSoldOut : totalMinted}
+                  </span>/{totalLimit}</p>
+                </div>
+                <div className="flex text-gray-400">
+                  <p>({!isLoading ? ((totalMinted / totalLimit) * 100).toFixed(2) : data?.mintPercent.toFixed(2)}%)</p>
+                </div>
               </div>
             </div>
             <div className="h-[10px] bg-primary_500 rounded-lg bg-opacity-25 w-full mt-2 mb-4 relative">
