@@ -47,12 +47,12 @@ export const modal = createAppKit({
     WalletIds.BackpackId,
     WalletIds.HaHaId,
     WalletIds.LeapId,
-    WalletIds.PhantomId,
   ],
   excludeWalletIds: [
     WalletIds.OKXId,
     WalletIds.KoalaId,
     WalletIds.BraveId,
+    WalletIds.PhantomId,
   ],
 
   adapters: [wagmiAdapter],
