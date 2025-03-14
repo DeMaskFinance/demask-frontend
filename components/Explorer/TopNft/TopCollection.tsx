@@ -24,7 +24,7 @@ function TopCollection({ initialData }: any) {
     useQuery({
       queryKey: ["topCollection", chainId, sortField, sortOrder, page],
       queryFn: async () => {
-        if (page === 1) return initialData;
+        if (page === 1 && sortField === "volume24h" && sortOrder === "desc") return initialData;
         const res = await categoryAPI(
           `top-collection-list?chainId=${chainId}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
         );
