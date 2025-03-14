@@ -36,6 +36,7 @@ const MONAD_DEMASK = {
   chainName: "Monad Testnet",
   NAME: "Monad Testnet",
   CURRENCY: "MON",
+  CHAIN_ID: 10143,
   RPC: "https://testnet-rpc.monad.xyz",
 };
 

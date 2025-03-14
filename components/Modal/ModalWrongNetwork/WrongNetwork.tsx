@@ -26,44 +26,43 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   const dispatch = useDispatch();
   const [isNetworkMissing, setIsNetworkMissing] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (
-      account &&
-      wallet &&
-      router.isReady &&
-      isLoggedIn &&
-      chainId &&
-      wallet !== "WalletConnect" &&
-      wallet !== "argentX" &&
-      wallet !== "braavos"
-    ) {
-      const checkNetwork = async () => {
-        try {
-          const provider = await getProvider(wallet);
-          const networkId = await provider.request({ method: "net_version" });
+  // useEffect(() => {
+  //   if (
+  //     account &&
+  //     router.isReady &&
+  //     isLoggedIn &&
+  //     chainId &&
+  //     wallet !== "WalletConnect" &&
+  //     wallet !== "argentX" &&
+  //     wallet !== "braavos"
+  //   ) {
+  //     const checkNetwork = async () => {
+  //       try {
+  //         const provider = await getProvider(wallet);
+  //         const networkId = await provider.request({ method: "net_version" });
 
-          if (!networkId) {
-            setIsNetworkMissing(true);
-          } else if (networkId !== chainId) {
-            setIsWrongNetwork(true);
-            setIsNetworkMissing(false);
-          } else {
-            setIsWrongNetwork(false);
-            setIsNetworkMissing(false);
-            document.body.style.overflowY = "auto";
-          }
-        } catch (error) {
-          console.error("Error detecting network:", error);
-          setIsNetworkMissing(true);
-        }
-      };
+  //         if (!networkId) {
+  //           setIsNetworkMissing(true);
+  //         } else if (networkId !== chainId) {
+  //           setIsWrongNetwork(true);
+  //           setIsNetworkMissing(false);
+  //         } else {
+  //           setIsWrongNetwork(false);
+  //           setIsNetworkMissing(false);
+  //           document.body.style.overflowY = "auto";
+  //         }
+  //       } catch (error) {
+  //         console.error("Error detecting network:", error);
+  //         setIsNetworkMissing(true);
+  //       }
+  //     };
 
-      checkNetwork();
-    } else {
-      setIsWrongNetwork(false);
-      setIsNetworkMissing(false);
-    }
-  }, [chainId, account, wallet, router.isReady]);
+  //     checkNetwork();
+  //   } else {
+  //     setIsWrongNetwork(false);
+  //     setIsNetworkMissing(false);
+  //   }
+  // }, [chainId, account, wallet, router.isReady]);
 
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
@@ -75,6 +74,8 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
   };
 
   const [loading, setLoading] = useState(false)
+
+  console.log(isWrongNetwork)
 
   return (
     <Wrapper isOpen={isWrongNetwork}>

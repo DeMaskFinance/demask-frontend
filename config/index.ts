@@ -1,6 +1,6 @@
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { AppKitNetwork } from "@reown/appkit/networks";
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet, polygon } from "@reown/appkit/networks";
 
 export const projectId = "c00998d2cdc140a2fb0fc47599957079";
 

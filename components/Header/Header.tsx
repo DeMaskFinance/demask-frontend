@@ -1,10 +1,13 @@
 import AccountContext from "@/context/AccountContext";
 import useInformationToken from "@/hooks/useInformationToken";
+import { MONAD_DEMASK } from "@/libs/constants";
 import { getNonce, loginAuthen } from "@/libs/service/userService";
 import formatNumber from "@/libs/utils/formatNumer";
+import { modal } from "@/pages/_app";
 import { login, logout, selectProfile } from "@/store/profileSlice";
 import { CubeIcon } from "@radix-ui/react-icons";
-import { useAppKit, useAppKitAccount, useDisconnect } from '@reown/appkit/react';
+import { monadTestnet } from "@reown/appkit/networks";
+import { useAppKit, useAppKitAccount, useAppKitNetwork, useDisconnect } from '@reown/appkit/react';
 import Tippy from "@tippyjs/react/headless";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -26,10 +29,9 @@ import {
 import { DemaskIcon, LogoDeMask } from "../Logo/Logo";
 import { MenuHeader } from "../Menu";
 import { MenuNetwork } from "../Menu/MenuNetwork";
+import ModalWaitingSign from "../Modal/ModalWaitingSign";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
-import ModalWaitingSign from "../Modal/ModalWaitingSign";
-import { modal } from "@/pages/_app";
 
 export default function Header() {
 
@@ -61,7 +63,7 @@ export default function Header() {
   const walletInfo = modal.getWalletInfo();
 
   const [isSigning, setIsSigning] = useState(false);
-
+  const { chainId: chain, switchNetwork } = useAppKitNetwork();
 
   const handleLogin = async () => {
     if (!isConnected) {
@@ -105,16 +107,16 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if (!address || !isConnected || isSigning || account) {
+    switchNetwork(monadTestnet)
+  }, [address])
+
+  useEffect(() => {
+    if (!address || !isConnected || isSigning || account || chain !== MONAD_DEMASK.chainName) {
       return;
     }
 
     signAndAuthenticate();
   }, [address, isConnected, account]);
-
-
-
-
 
   const disconnectWallet = () => {
     localStorage.removeItem("ACCOUNT_DEMASK");
@@ -143,6 +145,8 @@ export default function Header() {
             <MenuHeader />
           </div>
         </div>
+
+
         {/* Search mobile */}
         <div className="flex items-center justify-end flex-shrink-0 gap-x-6 ">
           <div
@@ -251,6 +255,8 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+
       {/* <Maintenance /> */}
 
       {account && <WrongNetwork />}
