@@ -88,6 +88,7 @@ export default function App({
   };
   useEffect(() => {
     removeRecentWallet(WalletIds.OKXId);
+    removeRecentWallet(WalletIds.PhantomId);
   }, []);
 
   return (
