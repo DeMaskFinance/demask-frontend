@@ -117,7 +117,7 @@ export const ItemList: React.FC<ItemListProps> = ({
     <div className="font-semibold">
       {isLoading ? (
         <div className="grid grid-cols-2 gap-4 mt-4 md:grid-cols-autoFill text-shader_600">
-          <SkeletonSubCategory length={24} />
+          <SkeletonSubCategory length={14} />
         </div>
       ) : isSuccess && data?.pages[0]?.data?.length > 0 ? (
         <Fragment>
@@ -227,7 +227,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                 ))}
               </Fragment>
             ))}
-            {isFetching && hasNextPage && <SkeletonSubCategory length={6} />}
+            {isFetching && hasNextPage && <SkeletonSubCategory length={14} />}
             <div ref={ref} style={{ height: "1px" }}></div>
           </div>
         </Fragment>

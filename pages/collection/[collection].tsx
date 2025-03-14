@@ -36,7 +36,7 @@ export async function getServerSideProps(context: any) {
     collectionAddress,
     chainId,
     1,
-    20,
+    14,
     sortOrder
   );
 

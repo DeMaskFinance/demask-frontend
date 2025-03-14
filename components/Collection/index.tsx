@@ -28,7 +28,7 @@ export default function DetailCollection({ initialData }: any) {
       collectionAddress,
       chain,
       pageParam,
-      20,
+      14,
       sortOrder
     );
     return data.data;

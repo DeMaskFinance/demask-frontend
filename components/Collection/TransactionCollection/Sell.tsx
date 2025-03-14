@@ -56,8 +56,6 @@ const Sell = () => {
     },
   });
 
-  console.log(data)
-
   const debouncedIdNFT = useDebounce(idNFT, 1000);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -72,6 +70,8 @@ const Sell = () => {
     contracts?.ERC721_ROUTER_ADDRESS || "",
     "erc721"
   );
+
+  console.log(isApprovedNFT)
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,
