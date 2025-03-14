@@ -20,11 +20,24 @@ const useCheckApproveNFT = (
   });
 
   useEffect(() => {
-    setLoading(isLoading);
-    if (data !== undefined) {
-      setIsApprovedNFT(Boolean(data));
+    const fetchApproval = async () => {
+      setLoading(true);
+      try {
+        const approvalData = await refetch();
+        if (approvalData) {
+          setIsApprovedNFT(Boolean(approvalData.data));
+        }
+      } catch (error) {
+        console.error("Error fetching approval status", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isLoading) {
+      fetchApproval();
     }
-  }, [data, isLoading]);
+  }, [account, nftAddress, routerAddress, type, isLoading, refetch]);
 
   return { isApprovedNFT, loading, refetch };
 };
