@@ -37,7 +37,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
   const { data: amountSold, isLoading } = useFetchAmountSold({
     account,
     launchpadAddress,
-    unit: data?.unit,
+    unit: Number(data?.unit)
   });
 
   const { data: soldout } = useFetchAmountMinted({
@@ -45,11 +45,9 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
     unit: Number(data?.unit)
   });
 
-
-
-  console.log(soldout)
-
   const currentTime = (Date.now() / 1000) | 0;
+
+
   useEffect(() => {
     const checkConditions = async () => {
       setError("");
@@ -87,7 +85,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
         }
 
         const whitelistAmount = parseInt(addressOfWhitelist.amount, 16);
-        const remainingAllocation = data.max_allocation - whitelistAmount;
+        const remainingAllocation = whitelistAmount
         const allowedAmount = Math.min(
           whitelistAmount - Number(amountSold),
           remainingAllocation
