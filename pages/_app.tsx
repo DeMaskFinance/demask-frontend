@@ -41,6 +41,8 @@ const generalConfig = {
   themeMode: 'dark' as const,
 }
 
+
+
 export const modal = createAppKit({
   featuredWalletIds: [
     WalletIds.MetamaskId,
@@ -53,6 +55,8 @@ export const modal = createAppKit({
     WalletIds.KoalaId,
     WalletIds.BraveId,
     WalletIds.PhantomId,
+    WalletIds.MagicEdenId,
+    WalletIds.KeplrId
   ],
 
   adapters: [wagmiAdapter],

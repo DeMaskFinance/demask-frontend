@@ -15,6 +15,11 @@ const PhantomId =
 const BraveId =
   "163d2cf19babf05eb8962e9748f9ebe613ed52ebf9c8107c9a0f104bfcf161b3";
 
+const KeplrId =
+  "6adb6082c909901b9e7189af3a4a0223102cd6f8d5c39e39f3d49acb92b578bb";
+const MagicEdenId =
+  "8b830a2b724a9c3fbab63af6f55ed29c9dfa8a55e732dc88c80a196a2ba136c6";
+
 const WalletIds = {
   MetamaskId,
   BackpackId,
@@ -24,6 +29,8 @@ const WalletIds = {
   KoalaId,
   PhantomId,
   BraveId,
+  MagicEdenId,
+  KeplrId,
 };
 
 export default WalletIds;
