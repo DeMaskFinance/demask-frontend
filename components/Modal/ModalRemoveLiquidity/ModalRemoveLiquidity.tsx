@@ -172,8 +172,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const { approveDML } = handleApproveDML()
 
     useEffect(() => {
-      if (dataTradingRemove?.amountNFT && dataRemoveBuy.length > 0) {
-        const selectedNFTs = dataRemoveBuy.slice(0, dataTradingRemove.amountNFT).map((nft: any) => Number(nft.nftID));
+      if (dataTradingRemove?.amountNFT && dataRemoveBuy?.length > 0) {
+        const selectedNFTs = dataRemoveBuy.slice(0, dataTradingRemove?.amountNFT).map((nft: any) => Number(nft.nftID));
         setIdNFT(selectedNFTs);
       } else {
         setIdNFT([]);
