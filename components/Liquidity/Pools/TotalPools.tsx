@@ -72,15 +72,17 @@ const TotalPools = () => {
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
                 {page?.data?.poolList?.length > 0 ? (
-                  page.data.poolList.map((item: any, index: number) => (
-                    <Fragment>
+                  page.data.poolList.map((item: any, index: number) => {
+
+                    console.log(item)
+                    return <Fragment>
                       <tr
                         className="flex px-4 py-3 text-white border-b border-shader_500 hover:bg-shader_700 cursor-pointer font-bold"
                         key={index}
                         onClick={() => {
                           router.push(
                             item.type === "erc1155"
-                              ? `/details/${item.dmlAddress}`
+                              ? `/trade/erc1155/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`
                               : `/trade/erc721/${item.nftAddress}?tab=pool`
                           );
                         }}
@@ -127,7 +129,8 @@ const TotalPools = () => {
                       </tr>
                       <div ref={ref} style={{ height: "1px" }}></div>
                     </Fragment>
-                  ))
+                  }
+                  )
                 ) : (
                   <div className="flex flex-col items-center justify-center flex-grow h-full text-sm font-semibold text-shader_200 mt-10">
                     <div className="flex items-center justify-center w-10 h-10 mb-1 border rounded-lg border-primary_500 bg-primary_500 bg-opacity-20">
