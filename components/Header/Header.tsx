@@ -106,9 +106,21 @@ export default function Header() {
     }
   };
 
+
   useEffect(() => {
-    switchNetwork(monadTestnet)
+    if (!address) return
+
+    const switchChain = () => {
+      try {
+        switchNetwork(monadTestnet)
+      } catch (error) {
+        console.error('Network switch failed:', error)
+      }
+    }
+
+    switchChain()
   }, [address])
+
 
   useEffect(() => {
     if (!address || !isConnected || isSigning || account || chain !== MONAD_DEMASK.chainName) {
