@@ -13,15 +13,15 @@ const nextConfig = {
       "1b21fea1b71e52bc8b81e22b5a53a188.ipfscdn.io",
       "",
       "ipfs",
-      "ipfs.io"
+      "ipfs.io",
     ],
     unoptimized: true,
-  }, 
+  },
   async redirects() {
     return [
       {
         source: "/",
-        destination: `/explorer`,
+        destination: `/category`,
         permanent: true,
       },
     ];

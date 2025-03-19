@@ -7,27 +7,28 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const subMenuRewards = [
-  { id: 1, name: "Leaderboard", url: "/leaderboard" },
   // { id: 2, name: "Referral", url: "/referral" },
+  { id: 1, name: "Leaderboard", url: "/leaderboard" },
 ];
 const subMenuOthers = [
-  { id: 1, name: "Create", url: "/create" },
-  { id: 2, name: "Launchpad", url: "/launchpad" },
-  { id: 3, name: "Category", url: "/category" },
+
+  { id: 1, name: "Explorer", url: "/explorer" },
+  { id: 2, name: "Trade", url: `/trade` },
+  { id: 3, name: "Pools", url: "/pools" },
+  {
+    id: 4, name: "Rewards",
+    url: "/leaderboard",
+    subMenu: subMenuRewards,
+    icon: <DiamondIcon width={32} height={32} />,
+  },
 ];
 const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
-    { name: "Explorer", url: "/explorer" },
-    { name: "Trade", url: `/trade` },
-    { name: "Pools", url: "/pools" },
-    {
-      name: "Rewards",
-      url: "/leaderboard",
-      subMenu: subMenuRewards,
-      icon: <DiamondIcon width={32} height={32} />,
-    },
+    { id: 1, name: "Create", url: "/create" },
+    { id: 2, name: "Launchpad", url: "/launchpad" },
+    { id: 3, name: "Category", url: "/category" },
     { name: "Others", url: "/category", subMenu: subMenuOthers },
   ];
 
@@ -53,11 +54,10 @@ const MenuHeader = () => {
                         {item.subMenu.map((item) => (
                           <ActiveLink href={item.url} key={item.id}>
                             <li
-                              className={`item_menu ${
-                                router.asPath.startsWith(item.url)
-                                  ? "bg-shader_500"
-                                  : ""
-                              }`}
+                              className={`item_menu ${router.asPath.startsWith(item.url)
+                                ? "bg-shader_500"
+                                : ""
+                                }`}
                             >
                               {item.name}
                             </li>
@@ -69,13 +69,12 @@ const MenuHeader = () => {
                 >
                   <Link
                     href={`${item.url}`}
-                    className={`flex items-center gap-x-1  ${
-                      isMatchingUrl &&
+                    className={`flex items-center gap-x-1  ${isMatchingUrl &&
                       item.subMenu === subMenuRewards &&
                       "text-primary_400 hover:text-primary_400  active:text-primary_400"
-                    }`}
+                      }`}
                   >
-                    {item.icon}
+                    {/* {item?.icon} */}
                     {item.name}
                   </Link>
                 </Tippy>

@@ -20,6 +20,7 @@ import store, { persistor } from "../store";
 import MaintenanceError from "./maintenanceError";
 import { StarknetProvider } from "@/components/StarknetProvider";
 import ProgressBar from "@/components/Layouts/ProviderRouter";
+import SEOHead from "@/components/SEOHead";
 type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
@@ -39,6 +40,7 @@ export default function App({
 
   return (
     <Provider store={store}>
+      <SEOHead />
       <ProgressBar />
       <PersistGate loading={null} persistor={persistor}>
         <AccountProvider>
