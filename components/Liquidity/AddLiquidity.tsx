@@ -404,7 +404,7 @@ export default function AddLiquidity() {
               <Button
                 className="w-full py-3"
                 primary
-                onClick={handleAddLiquidity}
+              // onClick={handleAddLiquidity}
               >
                 Add Liquidity
               </Button>

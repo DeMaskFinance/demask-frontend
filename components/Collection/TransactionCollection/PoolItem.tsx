@@ -102,7 +102,7 @@ const PoolItem = ({ liquidity, isFetching }: any) => {
     <div className="mb-4 text-white font-semibold text-sm">
       <p className="text-primary_400">Liquidity Pool:</p>
       <div className="flex gap-x-2 whitespace-nowrap mt-4">
-        <Dialog open={isOpenAddLiquidity} onOpenChange={setIsOpenAddLiquidity}>
+        {/* <Dialog open={isOpenAddLiquidity} onOpenChange={setIsOpenAddLiquidity}>
           <DialogTrigger asChild>
             <Button green_2 className="w-full py-3 px-3 flex gap-x-2">
               <PlusIcon className="text-green" width={20} height={20} />
@@ -111,8 +111,6 @@ const PoolItem = ({ liquidity, isFetching }: any) => {
           </DialogTrigger>
           <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
             <ModalAddLiquidityERC721
-              /* 
-          // @ts-ignore */
               data={data}
               setHash={setHash}
               setIsOpenAddLiquidity={setIsOpenAddLiquidity}
@@ -120,7 +118,7 @@ const PoolItem = ({ liquidity, isFetching }: any) => {
               setIsOpenError={setIsOpenError}
             />
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
 
         {liquidity?.reserveNFT > 0 && (
           <Dialog
