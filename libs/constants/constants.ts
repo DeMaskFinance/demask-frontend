@@ -47,8 +47,8 @@ const SEPOLIA_DEMASK = {
 const STARKNET_DEMASK = {
   IDNFT: process.env.NEXT_PUBLIC_IDNFT_SEPOLIA,
   urltxHash: "https://sepolia.voyager.online/",
-  chainName: "Starknet Devnet",
-  NAME: "Starknet Devnet",
+  chainName: "Starknet Mainnet",
+  NAME: "Starknet Mainnet",
   CURRENCY: "ETH",
 };
 export const starknet = {
@@ -67,7 +67,7 @@ export const starknet = {
 
 let network: NetworkItem[] = [
   {
-    name: "Starknet Devnet",
+    name: "Starknet Mainnet",
     logo: StarknetIcon,
     chain: starknet.StarknetChainId.SN_MAIN,
     type: "Starknet",
