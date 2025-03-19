@@ -28,6 +28,8 @@ const useInformationToken = (
     try {
       const providerChoice = await getProviders(wallet, providers);
       const provider = new ethers.providers.Web3Provider(providerChoice);
+
+      console.log(provider);
       const balance = await provider.getBalance(account);
       const balanceInEth = ethers.utils.formatEther(balance);
       return {

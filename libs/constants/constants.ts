@@ -60,7 +60,7 @@ export const starknet = {
   addrTESTCONTRACT:
     "0x6a109c64aefc6f0e337f8996baec2db09e209d12fd329843327a0f442e04d84", // sepolia testnet
   StarknetChainId: {
-    SN_SEPOLIA: "0x534e5f5345504f4c4941",
+    SN_SEPOLIA: "0x534e5f4d41494e",
     SN_MAIN: "0x534e5f4d41494e",
   },
 };
@@ -69,7 +69,7 @@ let network: NetworkItem[] = [
   {
     name: "Starknet Devnet",
     logo: StarknetIcon,
-    chain: starknet.StarknetChainId.SN_SEPOLIA,
+    chain: starknet.StarknetChainId.SN_MAIN,
     type: "Starknet",
   },
   // {

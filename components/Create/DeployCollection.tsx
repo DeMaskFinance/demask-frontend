@@ -85,7 +85,8 @@ const DeployCollection = () => {
       account,
       wallet,
       values,
-      fileIPFS.nonce
+      fileIPFS.nonce,
+      String(contracts?.CREATED_COLLECTION_CLASSHASH)
     );
     if (res) {
       // @ts-ignore
@@ -128,6 +129,7 @@ const DeployCollection = () => {
     //   res1,
     // });
   };
+
   const onSubmit = async (
     values: InitialValues,
     { resetForm }: FormikHelpers<any>
@@ -255,11 +257,10 @@ const DeployCollection = () => {
                           type="button"
                           name="category"
                           id="category"
-                          className={`px-2 py-1 mb-4 mr-4 text-sm h-[34px] font-semibold text-white border-shader_500  border rounded-lg cursor-pointer ${
-                            values.category.includes(item.value)
-                              ? "bg-primary_500 "
-                              : "bg-shader_700"
-                          }`}
+                          className={`px-2 py-1 mb-4 mr-4 text-sm h-[34px] font-semibold text-white border-shader_500  border rounded-lg cursor-pointer ${values.category.includes(item.value)
+                            ? "bg-primary_500 "
+                            : "bg-shader_700"
+                            }`}
                           key={item.id}
                           value={item.value}
                           onClick={() =>

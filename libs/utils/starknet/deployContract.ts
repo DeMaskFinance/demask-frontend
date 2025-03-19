@@ -6,17 +6,9 @@ const deployContractCollection = async (
   account: string,
   wallet: string,
   values: InitialValues,
-  nonce: number
+  nonce: number,
+  classHash: string
 ) => {
-  const ClassHash =
-    "0x0534bea08bd2d24851914eab6e6a0beb579d5f19c44844c75775a312511cfbb9";
-  console.log({
-    account,
-    wallet,
-    values,
-    nonce,
-  });
-
   try {
     const contractWallet = await starknetContract.getWalletAccount(wallet);
     const contractCallData = new CallData(compiledTestSierra.abi);
@@ -26,10 +18,9 @@ const deployContractCollection = async (
       symbol: values.symbol,
       id: nonce,
     });
-    console.log(wallet);
 
     const deployResponse = await contractWallet.deployContract({
-      classHash: ClassHash,
+      classHash: classHash,
       constructorCalldata: contractConstructor,
     });
     const data = await contractWallet.waitForTransaction(

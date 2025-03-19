@@ -23,15 +23,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
   };
   const WalletOption = () => {
     switch (activeChoice) {
-      // case "All":
-      //   return (
-      //     <div>
-      //       <EVMWallet />
-      //       <StarknetWallet />
-      //     </div>
-      //   );
-      // case "EVM":
-      //   return <EVMWallet />;
       case "Starknet":
         return <StarknetWallet />;
       default:
@@ -47,13 +38,6 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ isAuthen }) => {
       <p className="mt-1 text-sm">
         If you don't have a wallet, you can create one now.
       </p>
-      {/* <div className="my-4">
-        <TabGroups
-          choices={["Starknet"]}
-          activeChoice={activeChoice}
-          onChoiceChange={handleChoiceChange}
-        />
-      </div> */}
       {WalletOption()}
 
       {isAuthen && (

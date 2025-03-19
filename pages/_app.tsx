@@ -24,13 +24,13 @@ type NextPageWithLayout<P = any> = NextPage<P> & {
   PageLayout?: any;
 };
 
-const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
-const wagmiConfig = defaultWagmiConfig({
-  chains: [mainnet, sepolia],
-  projectId,
-  metadata,
-});
-createWeb3Modal({ wagmiConfig, projectId, defaultChain: sepolia });
+// const projectId = "1af0159e7a959f2fff3f96c541aef2cb";
+// const wagmiConfig = defaultWagmiConfig({
+//   chains: [mainnet, sepolia],
+//   projectId,
+//   metadata,
+// });
+// createWeb3Modal({ wagmiConfig, projectId, defaultChain: sepolia });
 export default function App({
   Component,
   pageProps,
@@ -78,16 +78,16 @@ export default function App({
                     font-family: ${titillium.style.fontFamily};
                   }
                 `}</style>
-                <WagmiProvider config={wagmiConfig}>
-                  <Layout>
-                    {isMaintenanceMode ? (
-                      <MaintenanceError />
-                    ) : (
-                      <Component {...pageProps} />
-                    )}
-                  </Layout>
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </WagmiProvider>
+                {/* <WagmiProvider config={wagmiConfig}> */}
+                <Layout>
+                  {isMaintenanceMode ? (
+                    <MaintenanceError />
+                  ) : (
+                    <Component {...pageProps} />
+                  )}
+                </Layout>
+                <ReactQueryDevtools initialIsOpen={false} />
+                {/* </WagmiProvider> */}
               </QueryParamProvider>
             </QueryClientProvider>
           </StarknetProvider>

@@ -7,4 +7,5 @@ interface ContractAddresses {
   FEE_MANAGER_ADDRESS: string;
   WETH_ADDRESS: string;
   CREATED_NFT_ADDRESS: string;
+  CREATED_COLLECTION_CLASSHASH: string;
 }

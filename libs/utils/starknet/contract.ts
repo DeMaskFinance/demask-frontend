@@ -2,7 +2,7 @@ import { getProvider } from "@/libs/connection/getProvider";
 import { constants, Contract, RpcProvider, WalletAccount } from "starknet";
 const getRPCProvider = () => {
   const RPC_Provider = new RpcProvider({
-    nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_6",
+    nodeUrl: constants.NetworkName.SN_MAIN,
     chainId: constants.StarknetChainId.SN_SEPOLIA,
   });
 

@@ -43,6 +43,8 @@ export default function Header() {
     wallet,
     chainId
   );
+
+  console.log(balanceToken)
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);
 
@@ -130,9 +132,8 @@ export default function Header() {
               setShowSearch(false);
               document.body.style.overflowY = "auto";
             }}
-            className={`${
-              showSearch ? "block" : "hidden"
-            } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
+            className={`${showSearch ? "block" : "hidden"
+              } fixed bg-black z-50 top-0 opacity-40 right-0 w-full h-full`}
           ></div>
           <div className="flex items-center gap-x-2">
             <Button
@@ -146,9 +147,8 @@ export default function Header() {
             </Button>
 
             <div
-              className={`${
-                showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
-              } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
+              className={`${showSearch ? "translate-y-[10%]" : "translate-y-[150%]"
+                } fixed w-[100%] rounded-3xl px-3 pt-12 lg:hidden h-[100vh] bg_main z-[60] shadow-home duration-300 transition-all top-0 right-0 bottom-0`}
             >
               <div className="ml-2 ">
                 <Search handleFocus={handleFocus} />
