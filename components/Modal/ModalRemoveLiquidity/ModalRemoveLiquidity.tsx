@@ -290,11 +290,13 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <NFTIcon width={16} height={16} />
                 </div>
               </div>
-              {Number(dataTradingRemove?.amountNFT) >= 500 &&
+              {type === "erc721" &&
+                Number(dataTradingRemove?.amountNFT) >= 500 &&
                 <p className="mb-1 text-right text-xs text-red" key="inputNFT">
                   Maximum 500 NFTs per transaction
                 </p>
               }
+
               <div className="flex justify-between my-4 font-semibold input_item bg-primary_500 bg-opacity-10">
                 Total MON
                 <div className="flex items-center justify-between gap-x-1">
