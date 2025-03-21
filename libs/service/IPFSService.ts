@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import request from "../utils/httpRequest";
 import { formatLinkIPFS } from "../utils/formatComon";
+import axios from "axios";
 const uploadFileIPFSMint = async (file: any) => {
   try {
     const uriImg = await uploadToIpfs(file);
@@ -32,20 +33,32 @@ const uploadMetadataIPFS = async (body: any) => {
 };
 
 export const uploadToIpfs = async (file: File): Promise<string> => {
-  const ipfsApiUrl = "https://ipfs-rpc.demask.finance/api/v0/add";
-  const formData = new FormData();
+  try {
+    const ipfsApiUrl = "https://ipfs-rpc.demask.finance/api/v0/add";
+    const formData = new FormData();
+    formData.append("file", file);
 
-  formData.append("file", file);
-  const response = await fetch(`${ipfsApiUrl}`, {
-    method: "POST",
-    body: formData,
-  });
+    return await new Promise(async (resolveOuter) => {
+      await axios.post(ipfsApiUrl, formData, {
+        onDownloadProgress({ event }) {
+          if (event.target.status !== 200) {
+            throw new Error(
+              `Failed to upload to IPFS: ${event.target.statusText}`
+            );
+          }
+          const { Hash } = JSON.parse(event.target.response);
 
-  if (!response.ok) {
-    throw new Error(`Failed to upload to IPFS: ${response.statusText}`);
+          resolveOuter(`ipfs://${Hash}`);
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    });
+  } catch (error: any) {
+    console.error("Error uploading to IPFS:", error.message || error);
+    throw error;
   }
-  const data = await response.json();
-  return `ipfs://${data.Hash}`;
 };
 
 export { uploadFileIPFSCollection, uploadFileIPFSMint, uploadMetadataIPFS };
