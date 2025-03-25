@@ -8,7 +8,7 @@ import { CgClose } from "react-icons/cg";
 import Link from "next/link";
 import { useLenis } from "@studio-freight/react-lenis";
 const Header = () => {
-  const [isEvent, setIsEvent] = useState(true);
+  const [isEvent, setIsEvent] = useState(false);
 
   const navList = [
     {

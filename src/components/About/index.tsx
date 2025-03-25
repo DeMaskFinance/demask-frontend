@@ -22,7 +22,7 @@ const About = () => {
       <div className=" text-center h-full w-full relative flex flex-col">
         <div className="w-[655px] h-[150px] bg-linear-g2 absolute top-0 right-1/4 blur-[100px] opacity-35 rounded-full rotate-25 z-10"></div>
         <div className="flex flex-col items-center text-lg h-[40%] justify-end z-20">
-          <a
+          {/* <a
             href="https://app.galxe.com/quest/MeeT2AiDRo73NiBYKoZdwa"
             rel="noopener noreferrer"
             target="_blank"
@@ -32,7 +32,7 @@ const About = () => {
               <LDownIcon width={16} height={16} />
               <BackgroundParticles value={6000} id="ts_particle8" />
             </div>
-          </a>
+          </a> */}
           <h1 className="font-bold text-white text-3xl md:text-medium leading-snug my-2 md:my-0">
             DEMASK FINANCE
           </h1>
