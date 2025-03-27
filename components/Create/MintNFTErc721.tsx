@@ -48,7 +48,8 @@ const MintErc721: React.FC<MintErc721Props> = ({
   setSelectedFile,
   fileType,
 }) => {
-  const { account, chainId, wallet } = useContext(AccountContext);
+
+  const { account } = useContext(AccountContext);
   const [hash, setHash] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
