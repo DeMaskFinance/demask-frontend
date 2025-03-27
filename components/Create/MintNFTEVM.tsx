@@ -29,7 +29,7 @@ import { useWriteContract } from "wagmi";
 import Button from "../Buttons/Button";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
-import { MintErc721Props } from "./MintNFTStarknet";
+import { MintErc721Props } from "./MintNFTErc721";
 import { wagmiAdapter } from "@/config";
 import { encodeFunctionData } from "viem";
 

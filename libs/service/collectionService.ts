@@ -198,11 +198,13 @@ const uploadFileCollection = async (params: any) => {
 const collectionListUser = async (
   account: string,
   chainId: string | string[],
-  type: string
+  type: string,
+  page: number,
+  limit: number
 ) => {
   try {
     const res = await request.get(
-      `get-owner-collection?chainId=${chainId}&userAddress=${account}&type=${type}&page=1&limit=10`
+      `get-owner-collection?chainId=${chainId}&userAddress=${account}&type=${type}&page=${page}&limit=${limit}`
     );
     return res.data;
   } catch (error) {

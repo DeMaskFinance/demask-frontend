@@ -2,7 +2,7 @@ import Back from "@/components/Common/Back";
 import TypeErc from "@/components/Common/TypeErc";
 import WithAuth from "@/components/Common/WithAuth";
 import { MintNFTEVM } from "@/components/Create";
-import MintErc721 from "@/components/Create/MintNFTStarknet";
+import MintErc721 from "@/components/Create/MintNFTErc721";
 import { UploadFileNFT } from "@/components/Create/UploadFile";
 import AccountContext from "@/context/AccountContext";
 import { collectionListUser } from "@/libs/service/collectionService";
@@ -23,15 +23,16 @@ export default function Creator() {
 
   const [type] = useQueryParam("typeErc", withDefault(StringParam, "erc721"));
 
+  const [page, setPage] = useState(1);
 
   const [fileType, setFileType] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<string>("");
   const { chainId, account } = useContext(AccountContext);
   const { data, isLoading } = useQuery({
-    queryKey: ["listCollectionUser", chainId, account, type],
+    queryKey: ["listCollectionUser", chainId, account, type, page],
     queryFn: async () => {
-      const res = await collectionListUser(account, chainId, type);
+      const res = await collectionListUser(account, chainId, type, page, 100);
       return res.data;
     },
     enabled: !!account,
