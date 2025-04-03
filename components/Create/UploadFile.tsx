@@ -244,6 +244,7 @@ const UploadFileCollection: React.FC<UploadCollectionProps> = ({
           <div className="text-sm text-shader_200">
             <p>Recommended size: 300 x 300px.</p>
             <p>File types: JPG, PNG, SVG, or GIF</p>
+            <p >Max size: 5MB.</p>
           </div>
         </div>
       </div>
