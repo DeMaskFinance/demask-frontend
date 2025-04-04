@@ -2,6 +2,7 @@ import AccountContext from "@/context/AccountContext";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { useContext } from "react";
+import abiErc20 from "@/abi/abiErc20.json";
 
 interface EVMResult {
   balanceToken: number;

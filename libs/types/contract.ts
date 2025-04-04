@@ -9,4 +9,15 @@ interface ContractAddresses {
   COLLECTION_DEFAULT_ERC721_CONTRACT_ADDRESS: string;
   COLLECTION_DEFAULT_ERC1155_CONTRACT_ADDRESS: string;
   MARKET_CONTRACT_ADDRESS: string;
+  APR_MON_ADDRESS: string;
 }
+
+type Token = {
+  tokenAddressLowerCase: string;
+  tokenAddress: string;
+  decimals: number;
+  name: string;
+  symbol: string;
+  isActive?: boolean;
+  isNative?: boolean;
+};

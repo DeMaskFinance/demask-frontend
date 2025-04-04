@@ -16,12 +16,12 @@ export default function ExplorerPage({ initialData }: { initialData: any }) {
         <h1 className="title_page">DEMASK INFO & ANALYTICS</h1>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
-          <ChartTVL initialData={initialData.chartTvl?.chartData} />
-          <ChartVolumn initialData={initialData.chartVolume?.chartData} />
+          <ChartTVL initialData={initialData?.chartTvl?.chartData} />
+          <ChartVolumn initialData={initialData?.chartVolume?.chartData} />
         </div>
 
-        <TopCollection initialData={initialData.topCollection} />
-        <ListTracsaction initialData={initialData.transactionList} />
+        <TopCollection initialData={initialData?.topCollection} />
+        <ListTracsaction initialData={initialData?.transactionList} />
       </section>
     </BackgroundDefault>
   );

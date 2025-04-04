@@ -54,6 +54,10 @@ const ercContract721 = () => {
     txDeadline: number,
     valueToSend: BigNumberish
   ) => {
+    console.log({
+      account,
+      tokenAddress,
+    });
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
       data: encodeFunctionData({
