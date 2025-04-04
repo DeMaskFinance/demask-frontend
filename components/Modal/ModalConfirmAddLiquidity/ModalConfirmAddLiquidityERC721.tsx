@@ -4,23 +4,25 @@ import FormatNumber from "@/components/Common/FormatNumber";
 import { MediaCollection } from "@/components/Common/Media";
 import { EtherIcon, NoteIcon } from "@/components/Icons";
 import AccountContext from "@/context/AccountContext";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
+import useInformationToken from "@/hooks/useInformationToken";
+import { queryClient } from "@/libs/constants";
 import { exponentialToDecimal } from "@/libs/utils/convertExponential";
 import erc721Contract from "@/libs/utils/erc/erc721.contract";
 import { formatLinkIPFS } from "@/libs/utils/formatComon";
-import { useQueryClient } from "@tanstack/react-query";
 import Tippy from "@tippyjs/react";
 import { useRouter } from "next/router";
 import { memo, useContext, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { ModalTransation } from "../ModalTransation";
-import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import useInformationToken from "@/hooks/useInformationToken";
-import useAllowanceDML from "@/hooks/useAllowanceDML";
+import { ModalTransation } from "../ModalTransation";
+import TokenIcon from "@/components/Logo/TokenIcon";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
 interface ModalConfirmAddLiquidityERC721Props {
   data: any;
   dataTradingAdd: DataAdd;
   isOpenTransaction: boolean;
+  tokenAddress?: Token;
   inputNFT: number[];
   isFetching: boolean;
   setIsOpenTransaction: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,6 +43,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   dataTradingAdd,
   inputToken,
   isOpenTransaction,
+  tokenAddress,
   inputNFT,
   isFetching,
   setIsOpenTransaction,
@@ -75,27 +78,33 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
     const { addLiquidity } = erc721Contract();
 
-    const [allowance, setAllowance] = useState<number>(0);
-    const { currentAllowance: balanceApprove, refetch } = useAllowanceDML(
+    const { currentAllowance, refetch } = useAllowanceDML(
       account,
-      data.dmlAddress,
+      tokenAddress?.tokenAddress,
       contracts?.ERC721_ROUTER_ADDRESS || ""
     );
 
-    useEffect(() => {
-      if (balanceApprove) {
-        setAllowance(Number(balanceApprove));
-      }
-    }, [balanceApprove]);
-
+    const { approveDML } = handleApproveDML()
 
     const handleAddLiquidity = async () => {
-      if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
-        try {
-          setIsOpenTransaction(true);
+      try {
+        setIsOpenTransaction(true);
+
+        if (!tokenAddress?.isNative && currentAllowance <= inputToken) {
+          await approveDML(
+            account,
+            tokenAddress?.tokenAddress,
+            inputToken,
+            setIsOpenTransaction,
+            contracts?.ERC721_ROUTER_ADDRESS,
+            refetch
+          );
+        }
+
+        if (Math.floor(dataTradingAdd.amountETHDecimals) !== 0 && contracts) {
           const result = await addLiquidity(
             collectionAddress,
-            contracts.WETH_ADDRESS,
+            tokenAddress?.tokenAddress,
             inputNFT,
             contracts.ERC721_ROUTER_ADDRESS,
             dataTradingAdd.amountETHDecimals
@@ -106,27 +115,30 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || (Number(inputToken) * 1e18)))
           );
 
-          setIsOpenTransaction(false);
           setInputToken("");
           setIdNFT([]);
           setIsOpenConfirmAddLiquidity(false);
           setIsOpenAddLiquidity(false);
+          setIsOpenTransaction(false);
+
           if (result.status === "success") {
             setIsOpenSuccess(true);
           } else {
             setIsOpenError(true);
           }
+
           queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
           queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
           queryClient.refetchQueries({ queryKey: ["detailCollection"] });
           queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
           queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
-        } catch (error) {
-          setIsOpenTransaction(false);
-          console.error(error);
         }
+      } catch (error) {
+        console.error(error);
+        setIsOpenError(true);
       }
     };
+
 
 
     return (
@@ -166,7 +178,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               <div className="flex gap-x-1">
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber number={dataTradingAdd.amountETH || 0} />
-                  <EtherIcon width={14} height={14} />
+                  <TokenIcon token={String(tokenAddress?.symbol)} w={14} h={14} />
                 </div>
               </div>
             </div>
@@ -196,10 +208,11 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               NFT or the transaction will revert
             </p>
             <div className="flex justify-between p-3 mt-2 font-semibold rounded-lg bg-primary_500 bg-opacity-10">
-              <p className="text-primary_200">Total MON</p>
+              <p className="text-primary_200">Total {tokenAddress?.symbol}</p>
               <div className="flex items-center font-bold text-white gap-x-1">
                 <FormatNumber number={dataTradingAdd.amountETH || inputToken || 0} />
-                <EtherIcon width={14} height={14} />
+                <TokenIcon token={String(tokenAddress?.symbol)} w={14} h={14} />
+
               </div>
             </div>
           </div>

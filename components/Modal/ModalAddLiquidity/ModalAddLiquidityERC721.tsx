@@ -21,6 +21,9 @@ import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { ModalConfirmAddLiquidityERC721 } from "../ModalConfirmAddLiquidity";
 import { ModalTransation } from "../ModalTransation";
+import { contractService, getPaymentTokens } from "@/libs/service/contractsService";
+import InputSymbol from "@/components/InputSymbol";
+import TokenDropdown from "@/components/InputSymbol";
 interface ModalAddLiquidityERC721Props {
   setIsOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,6 +56,22 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     version,
   ]);
 
+  const { data: paymentTokens = [] } = useQuery<Token[]>({
+    queryKey: ["paymentTokens", chainId, version],
+    queryFn: async () => {
+      const res = await getPaymentTokens(chainId);
+      return res.data;
+    },
+  });
+
+
+  const [selectedToken, setSelectedToken] = useState<Token>();
+
+  useEffect(() => {
+    if (paymentTokens?.length > 0 && !selectedToken) {
+      setSelectedToken(paymentTokens[0]);
+    }
+  }, [paymentTokens, selectedToken]);
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: [
@@ -176,9 +195,15 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     maxLength={30}
                   />
 
-                  <div className="absolute top-3 right-3">
-                    <EtherIcon width={16} height={16} />
+                  <div className="absolute top-1 right-1">
+                    <TokenDropdown
+                      selectedToken={selectedToken}
+                      setSelectedToken={setSelectedToken}
+                      dataToken={paymentTokens}
+                    />
+
                   </div>
+
 
                 </div>
               ) : (
@@ -210,6 +235,8 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
               </p>
             )}
           </div>
+
+
           <div className="flex justify-center">
             {idNFT.length > 0 && (
               <>
@@ -273,6 +300,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                           setIsOpenConfirmAddLiquidity={
                             setIsOpenConfirmAddLiquidity
                           }
+                          tokenAddress={selectedToken}
                           inputToken={inputToken}
                           inputNFT={idNFT}
                           dataTradingAdd={dataTradingAdd}

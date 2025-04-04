@@ -19,6 +19,7 @@ import { AvatarCustom } from "../Avatars";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import {
+  DownIcon,
   EditIcon,
   EtherIcon,
   LogoutIcon,
@@ -32,6 +33,11 @@ import { MenuNetwork } from "../Menu/MenuNetwork";
 import ModalWaitingSign from "../Modal/ModalWaitingSign";
 import { WrongNetwork } from "../Modal/ModalWrongNetwork";
 import Search from "../Search/SearchHeader";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
+import { useQuery } from "@tanstack/react-query";
+import { getPaymentTokens } from "@/libs/service/contractsService";
+import TokenIcon from "../Logo/TokenIcon";
+import { BiDownArrow } from "react-icons/bi";
 
 export default function Header() {
 
@@ -75,6 +81,22 @@ export default function Header() {
       await signAndAuthenticate();
     }
   };
+
+
+  const { data: paymentTokens = [] } = useQuery<Token[]>({
+    queryKey: ["paymentTokens", chainId],
+    queryFn: async () => {
+      const res = await getPaymentTokens(chainId);
+      return res.data;
+    },
+  });
+
+  const { balanceDML } = useBananceOfDML(
+    account,
+    "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A",
+    wallet
+  );
+
 
   const signAndAuthenticate = async () => {
     try {
@@ -136,6 +158,11 @@ export default function Header() {
     disconnect();
     dispatch(logout());
   };
+
+  const activeTokens = paymentTokens?.filter((token: Token) => token?.isActive !== false);
+
+  const balances = [balanceToken, Number(balanceDML) / 1e18];
+
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
@@ -202,14 +229,37 @@ export default function Header() {
 
             {isConnected && account ? (
               <div className="flex items-center gap-x-2">
-                <div className="flex items-center px-3 py-2 font-bold text-white rounded-lg gap-x-2 bg-shader_700">
-                  {isLoadingBalance ? (
-                    <div className="w-12 h-6 border rounded-lg bg-slate-700 animate-pulse"></div>
-                  ) : (
-                    <span className="">{formatNumber(balanceToken)}</span>
+                <Tippy
+                  interactive
+                  trigger="mouseenter focus"
+                  hideOnClick={true}
+                  appendTo={document.body}
+                  render={(attrs) => (
+                    <div className="rounded-md shadow-lg -mt-1" tabIndex={-1} {...attrs}>
+                      <ul className="pb-2 menu font-semibold">
+                        {activeTokens?.map((item: Token, idx: number) => (
+                          <li className="text-sm px-2 py-1 rounded-lg items-center justify-center text-center gap-x-1 bg-primary_500 bg-opacity-[0.15] flex text-white">
+                            {formatNumber(balances[idx])}
+                            <TokenIcon token={String(item.symbol.toLowerCase())} w={16} h={16} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
-                  <EtherIcon width={16} height={16} />
-                </div>
+                >
+                  <button
+
+                    className="flex items-center px-3 py-2 font-bold text-white rounded-lg gap-x-1 bg-primary_500  bg-opacity-[15%] hover:bg-opacity-[25%] cursor-pointer">
+                    {isLoadingBalance ? (
+                      <div className="w-12 h-6 border rounded-lg bg-slate-700 animate-pulse"></div>
+                    ) : (
+                      <span>{formatNumber(balanceToken)}</span>
+                    )}
+                    <EtherIcon width={16} height={16} />
+                  </button>
+                </Tippy>
+
+
                 <Tippy
                   interactive
                   trigger="click"

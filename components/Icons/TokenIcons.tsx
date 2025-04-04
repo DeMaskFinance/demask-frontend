@@ -4,20 +4,6 @@ export const EtherIcon: React.FunctionComponent<IconProps> = ({
   height,
 }) => {
   return (
-    // <svg
-    //   xmlns="http://www.w3.org/2000/svg"
-    //   className={className}
-    //   width={width}
-    //   height={height}
-    //   viewBox="0 0 24 24"
-    //   fill="none"
-    // >
-    //   <circle cx="12" cy="12" r="12" fill="#7583FE" />
-    //   <path
-    //     d="M11.9547 16.4775L6 13.215L11.9539 21L17.9135 13.215L11.9523 16.4775H11.9547ZM12.0453 3L6.08895 12.1672L12.0445 15.4327L18 12.1702L12.0453 3Z"
-    //     fill="white"
-    //   />
-    // </svg>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
@@ -33,6 +19,26 @@ export const EtherIcon: React.FunctionComponent<IconProps> = ({
     </svg>
   );
 };
+
+export const AprMonIcon: React.FunctionComponent<IconProps> = ({
+  className,
+  width,
+  height,
+}) => {
+  return <svg xmlns="http://www.w3.org/2000/svg" className={className}
+    width={width}
+    height={height} viewBox="0 0 24 24" fill="none">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.75889 9.60471H9.62057V6.74309C9.62057 5.16206 8.33992 3.88142 6.75889 3.88142C5.17786 3.88142 3.89724 5.16206 3.89724 6.74309C3.89724 8.32411 5.19368 9.60471 6.75889 9.60471ZM11.5336 17.2411V14.3794H17.2569C18.8379 14.3794 20.1186 15.6601 20.1186 17.2411C20.1186 18.8221 18.8379 20.1028 17.2569 20.1028C15.6759 20.1028 14.3953 18.8221 14.3953 17.2411V15.3281H12.4822V17.2411C12.4822 19.8656 14.6166 22 17.2411 22C19.8656 22 22 19.8656 22 17.2411C22 14.6166 19.8656 12.4822 17.2411 12.4822H11.5178V11.5336H17.2411C19.8656 11.5336 22 9.39921 22 6.7747C22 4.1502 19.8656 2 17.2411 2C14.6166 2 12.4822 4.13439 12.4822 6.75889V8.67194H14.3953V6.75889C14.3953 5.17786 15.6759 3.89724 17.2569 3.89724C18.8379 3.89724 20.1186 5.17786 20.1186 6.75889C20.1186 8.33992 18.8379 9.62057 17.2569 9.62057H11.5336V6.75889C11.5336 4.13439 9.39921 2 6.75889 2C4.11858 2 2 4.13439 2 6.75889C2 9.38343 4.13439 11.5178 6.75889 11.5178H9.62057V12.4664H6.75889C4.11858 12.4664 2 14.6008 2 17.2253C2 19.8498 4.13439 22 6.75889 22C9.39921 22 11.5336 19.8656 11.5336 17.2411ZM3.91304 17.2411C3.91304 18.8221 5.19368 20.1028 6.77471 20.1028C8.35574 20.1028 9.63636 18.8221 9.63636 17.2411V14.3794H6.77471C5.19368 14.3794 3.91304 15.6601 3.91304 17.2411Z" fill="url(#paint0_linear_5006_29869)" />
+    <defs>
+      <linearGradient id="paint0_linear_5006_29869" x1="20.6176" y1="3.38216" x2="3.39432" y2="20.6054" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#B94DFF" />
+        <stop offset="0.700148" stop-color="#7C4DFF" />
+      </linearGradient>
+    </defs>
+  </svg>
+}
+
+
 export const SepoliaIcon: React.FunctionComponent<IconProps> = ({
   className,
   width,

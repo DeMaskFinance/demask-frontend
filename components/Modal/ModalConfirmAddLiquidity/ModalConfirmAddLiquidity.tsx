@@ -66,6 +66,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       version,
     ]);
 
+
     const { addERC20ERC1155 } = erc1155Contract();
 
     const addLiquidity = async () => {

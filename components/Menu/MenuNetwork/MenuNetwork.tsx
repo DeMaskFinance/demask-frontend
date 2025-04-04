@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "tippy.js/dist/tippy.css"; // optional
-interface MenuNetworkProps {}
+interface MenuNetworkProps { }
 interface networkProps {
   name: string;
   logo: React.FC;
@@ -81,15 +81,13 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
             {network.map((item, index) => (
               <li
                 key={index}
-                className={`item_menu gap-x-2 group justify-between  items-center  ${
-                  item.disable ? "hover:cursor-no-drop" : ""
-                } `}
+                className={`item_menu gap-x-2 group justify-between  items-center  ${item.disable ? "hover:cursor-no-drop" : ""
+                  } `}
                 onClick={() => !item.disable && handleChangeNetwork(item.chain)}
               >
                 <div
-                  className={`flex items-center gap-x-2 font-semibold ${
-                    item.disable && "opacity-30"
-                  }`}
+                  className={`flex items-center gap-x-2 font-semibold ${item.disable && "opacity-30"
+                    }`}
                 >
                   <item.logo width={24} height={24} />
                   <p>{item.name}</p>
@@ -104,7 +102,7 @@ const MenuNetwork: React.FunctionComponent<MenuNetworkProps> = () => {
       )}
     >
       <button
-        className={`flex items-center px-[10px] md:px-3 h-10 py-2  justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
+        className={`flex items-center px-[10px] md:px-3 h-9  justify-center text-sm font-semibold text-white transition duration-200 ease-out rounded-lg group  bg-primary_500  gap-x-2 bg-opacity-[15%] hover:bg-opacity-[25%]`}
       >
         <LogoComponent width={20} height={20} className="" />
         <p className="hidden 2xl:block whitespace-nowrap">
