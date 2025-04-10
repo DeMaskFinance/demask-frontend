@@ -6,6 +6,7 @@ import {
   EyeIcon,
   NFTIcon,
   PlusIcon,
+  RightIcon,
   SwapIcon,
 } from "@/components/Icons";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -22,15 +23,21 @@ import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
 import { nftsUserService } from "@/libs/service/profileService";
 import { formatTypeChain } from "@/libs/utils/formatComon";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Classify from "../Classify";
 import FilterItems from "./FilterItems";
 import SearchNotFound from "@/components/Search/SearchNotFound";
 import { useRouter } from "next/router";
 import { queryClient } from "@/libs/constants";
+import TokenIcon from "@/components/Logo/TokenIcon";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { getInfoPool } from "@/libs/service/nftService";
+import formatNumber from "@/libs/utils/formatNumer";
+
+
 interface ModalDetailProps {
   type: string;
   nftAddress: string;
@@ -50,46 +57,154 @@ interface NFTItem {
   nftID: string | number;
   nftAddress: string;
   type: string;
+  paymentToken: any;
 }
 interface TradeProps {
   item: NFTItem;
 }
 const Trade: React.FC<TradeProps> = ({ item }) => {
   const { chainId } = useContext(AccountContext);
-  const contracts = queryClient.getQueryData<ContractAddresses>([
-    "contracts",
-    chainId,
-    "v1",
-  ]);
+  const paymentTokens = queryClient.getQueryData<any>(["paymentTokens", chainId]);
 
-  const nativeAddress = contracts?.WETH_ADDRESS;
-  return (
-    <div className="absolute left-0 z-10 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
-      <Link
-        href={`${item.type === "erc1155"
-          ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-          : `/trade/erc721/${item.nftAddress}?tab=pool`
-          }`}
-        className="basis-1/2"
-      >
-        <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
-          <PlusIcon width={20} height={20} />
-          <p>Add</p>
-        </Button>
-      </Link>
-      <Link
-        href={`${item.type === "erc1155"
-          ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-          : `/trade/erc721/${item.nftAddress}`
-          }`}
-        className="basis-1/2"
-      >
-        <Button className="flex items-center w-full py-3 gap-x-2" primary>
-          <SwapIcon width={20} height={20} className="fill-shader_700" />
-          <p>Swap</p>
-        </Button>
-      </Link>
+  const [dropdownType, setDropdownType] = useState<"add" | "swap" | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
+
+  const dropdownRef = useRef(null);
+  useOutsideClick(dropdownRef, () => setDropdownType(null));
+
+  const { data: infoPool, isLoading } = useQuery<any>({
+    queryKey: ["poolInfo", item.nftAddress, item.type],
+    queryFn: async () => {
+      const res = await getInfoPool({
+        chainId: chainId,
+        nftAddress: item.nftAddress,
+        type: item.type,
+        nftID: String(item?.nftID)
+      });
+      return res.data;
+    },
+
+    enabled: dropdownType !== null
+  });
+
+  const activeOption = infoPool?.dmlList?.filter((opt: any) => opt?.isActive)?.[activeTab];
+
+  const renderDropdown = (type: "add" | "swap") => (
+    <div
+      ref={dropdownRef}
+      className="absolute bottom-full left-0 mb-2 overflow-hidden border border-shader_400 rounded-xl bg-shader_500 z-10 w-full shadow-lg"
+    >
+      {isLoading ? (
+        <div className="p-4 space-y-2">
+          <div className="flex items-center gap-2">
+            <div className="h-6 bg-gray-600 rounded w-2/4" />
+            <div className="h-6 bg-gray-600 rounded w-2/4" />
+          </div>
+          {[...Array(2)].map((_, i) => (
+            <div
+              key={i}
+              className="animate-pulse flex justify-between items-center"
+            >
+              <div className="flex items-center gap-2">
+                <div className="space-y-1">
+                  <div className="h-3 bg-gray-600 rounded w-24" />
+                  <div className="h-3 bg-gray-600 rounded w-16" />
+                </div>
+              </div>
+
+              <div className="w-16 h-4 bg-gray-600 rounded" />
+            </div>
+          ))}
+          <div className="w-full h-8 bg-gray-600 rounded" />
+
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1 px-3 pb-3 mt-1">
+          <div className="flex border-b border-white/10">
+            {infoPool?.dmlList?.filter((opt: any) => opt?.isActive)?.map((option: any, idx: number) => (
+              <button
+                key={option?.tokenAddress}
+                onClick={() => setActiveTab(idx)}
+                style={{
+                  background: activeTab === idx
+                    ? "linear-gradient(180deg, rgba(144, 117, 254, 0) 0%, rgba(144, 117, 254, 0.15) 100%)"
+                    : "",
+                }}
+                className={`w-1/2 py-2 flex items-center justify-center gap-2 text-sm  ${activeTab === idx
+                  ? 'text-white border-b border-primary_300'
+                  : 'text-white/60'
+                  }`}
+              >
+                {option?.symbol}
+                <TokenIcon token={option?.symbol} w={16} h={16} />
+              </button>
+            ))}
+          </div>
+
+          <div className="pt-2"
+          >
+            <p className="flex justify-between text-sm text-white/70 mb-1">
+              <span className="text-primary_300">TVL:</span>
+              <span className="text-white font-bold"><FormatNumber number={activeOption?.tvl || 0} /></span>
+            </p>
+            <p className="flex justify-between text-sm text-white/70">
+              <span className="text-primary_300">Last Sale:</span>
+              <span className="text-white font-bold"><FormatNumber number={activeOption?.lastSale || 0} /></span>
+            </p>
+          </div>
+
+          <Button third className="mt-4 w-full h-10">
+            <Link
+              href={
+                type === "add"
+                  ? item.type === "erc1155"
+                    ? `/add/${item.nftAddress}/${activeOption?.tokenAddress}/${item.nftID}`
+                    : `/trade/erc721/${item.nftAddress}/${activeOption?.tokenAddress}?tab=pool`
+                  : item.type === "erc1155"
+                    ? `/trade/erc1155/${item.nftAddress}/${activeOption?.tokenAddress}/${item.nftID}`
+                    : `/trade/erc721/${item.nftAddress}/${activeOption?.tokenAddress}`
+              }
+              className="w-full flex justify-center whitespace-pre items-center text-primary_300 gap-x-2"
+            >
+              Pool Details
+              <RightIcon width={20} height={20} />
+            </Link>
+          </Button>
+        </div>
+      )}
     </div>
+  );
+
+  return (
+    <div className="absolute left-0 z-10 w-full px-2 bottom-3 transition-all duration-150 opacity-0 group-hover:opacity-100">
+      <div className="relative w-full">
+
+        {dropdownType && renderDropdown(dropdownType)}
+
+        <div className="flex flex-col gap-2 md:flex-row w-full">
+          <div className="relative w-full md:w-1/2">
+            <Button
+              className="flex items-center w-full lg:py-3 py-2 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400"
+              onClick={() => setDropdownType(dropdownType === "add" ? null : "add")}
+            >
+              <PlusIcon width={20} height={20} />
+              <p>Add</p>
+            </Button>
+          </div>
+
+          <div className="relative w-full md:w-1/2">
+            <Button
+              className="flex items-center w-full lg:py-3 py-2 gap-x-2 hover:bg-primary_600 bg-primary_500 border border-shader_400"
+              onClick={() => setDropdownType(dropdownType === "swap" ? null : "swap")}
+            >
+              <SwapIcon width={20} height={20} className="fill-shader_700" />
+              <p>Swap</p>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   );
 };
 export const ItemList: React.FC<ItemListProps> = ({
@@ -111,6 +226,7 @@ export const ItemList: React.FC<ItemListProps> = ({
       fetchNextPage();
     }
   }, [inView]);
+
 
 
   return (
@@ -173,8 +289,8 @@ export const ItemList: React.FC<ItemListProps> = ({
                         </div>
                         <div className="flex justify-between font-bold text-white">
                           <div className="flex items-center gap-x-1">
-                            <FormatNumber number={item.floorPrice} />
-                            <EtherIcon width={16} height={16} />
+                            <FormatNumber number={item?.lastSale?.lastSale || 0} />
+                            <TokenIcon token={item?.lastSale?.paymentToken?.symbol} w={16} h={16} />
                           </div>
                           {item.type == "erc1155" && (
                             <div className="flex items-center gap-x-1">
@@ -193,7 +309,7 @@ export const ItemList: React.FC<ItemListProps> = ({
                       </div>
                       <div className="absolute flex items-center justify-between w-full px-2 transition-all duration-150 top-1 opacity-60 group-hover:opacity-100">
                         <div className="flex items-center gap-x-1">
-                          <EtherIcon width={20} height={20} />
+                          <TokenIcon token={item?.paymentToken?.symbol} w={20} h={20} />
                           <p className="text-[10px] bg-black bg-opacity-40 rounded-xl px-2 h-5 leading-5 backdrop-opacity-50 font-semibold">
                             {formatTypeChain(item.type)}
                           </p>
@@ -269,11 +385,7 @@ const Items = () => {
   const {
     data,
     fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,

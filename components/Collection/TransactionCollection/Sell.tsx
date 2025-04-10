@@ -32,9 +32,15 @@ const Sell = () => {
   const [isOpenSuccessSell, setIsOpenSuccessSell] = useState<boolean>(false);
   const [isOpenErrorSell, setIsOpenErrorSell] = useState<boolean>(false);
   const [hash, setHash] = useState<string>("");
+
   const router = useRouter();
-  const collectionAddress = (router.query.erc as string) || "";
+  const slug = router.query.slug as string[] || [];
+
+  const collectionAddress = slug[0] || "";
+  const tokenAddress = slug[1] || "";
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
+
+
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: [
       "collectionNFTSell",
@@ -42,10 +48,12 @@ const Sell = () => {
       collectionAddress,
       account,
       version,
+      tokenAddress
     ],
     queryFn: async () => {
       const res = await fetchDataSellNFTs(
         collectionAddress,
+        tokenAddress,
         chainId,
         account,
         version,
@@ -71,7 +79,6 @@ const Sell = () => {
     "erc721"
   );
 
-  console.log(isApprovedNFT)
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,
@@ -84,10 +91,12 @@ const Sell = () => {
       slippage,
       debouncedIdNFT,
       version,
+      tokenAddress,
     ],
     queryFn: async () => {
       const res = await erc721TradingSell(
         collectionAddress,
+        tokenAddress,
         chainId,
         debouncedIdNFT.length,
         slippage,
@@ -183,7 +192,7 @@ const Sell = () => {
                           isOpenSellNFT={isOpenSellNFT}
                           isOpenTransaction={isOpenTransaction}
                           setIsOpenTransaction={setIsOpenTransaction}
-                          tokenAddress={contracts.WETH_ADDRESS}
+                          tokenAddress={tokenAddress}
                           nftAddress={collectionAddress}
                           idNFT={debouncedIdNFT}
                           routerAddress={contracts.ERC721_ROUTER_ADDRESS}

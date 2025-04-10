@@ -4,6 +4,7 @@ import FormatNumber from "../Common/FormatNumber";
 import { MediaCollection } from "../Common/Media";
 import { EtherIcon, VerifyIcon } from "../Icons";
 import ModalDocument from "../Modal/ModalLength/ModalDocument";
+import TokenIcon from "../Logo/TokenIcon";
 
 interface NFTCategoryProps {
   item: any;
@@ -46,8 +47,8 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
                 Floor Price
               </div>
               <div className="flex items-center text-white gap-x-1 group-hover:hidden">
-                <FormatNumber number={item.lastSale} />
-                <EtherIcon width={16} height={16} />
+                <FormatNumber number={item?.floorPrice?.floorPrice || 0} />
+                <TokenIcon token={item?.floorPrice?.paymentToken?.symbol} w={16} h={16} />
               </div>
               <p className="hidden w-full text-sm text-center text-white transition-all duration-200 ease-in group-hover:block">
                 View detail
@@ -60,13 +61,14 @@ const NFTCategory: React.FunctionComponent<NFTCategoryProps> = ({ item }) => {
             </div>
             <div className="flex justify-between font-bold text-white">
               <div className="flex items-center gap-x-1">
-                <FormatNumber number={item.lastSale} />
-                <EtherIcon width={16} height={16} />
+                <FormatNumber number={item?.lastSale?.lastSale || 0} />
+                <TokenIcon token={item?.lastSale?.paymentToken?.symbol} w={16} h={16} />
               </div>
+
               <div>
                 <div className="flex items-center gap-x-1">
                   <FormatNumber number={item.totalVolume} />
-                  <EtherIcon width={16} height={16} />
+                  <TokenIcon token={""} w={16} h={16} />
                 </div>
               </div>
             </div>

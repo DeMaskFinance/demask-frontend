@@ -1,7 +1,9 @@
 import ChartTradingViewSwap from "@/components/Charts/ChartTradingViewSwap";
+import ChartTradingViewSwap1155 from "@/components/Charts/ChartTradingViewSwap1155";
 import Maintenance from "@/components/Common/Maintenance";
 import { SkeletonSwap } from "@/components/Skeleton";
 import HistorySwap from "@/components/Trade/History";
+import HistorySwap1155 from "@/components/Trade/History/HistorySwap1155";
 import SwapTransaction from "@/components/Trade/TradeTransaction";
 import AccountContext from "@/context/AccountContext";
 import { queryClient } from "@/libs/constants";
@@ -24,7 +26,10 @@ const Swap: React.FC<{ initialData: any }> = ({ initialData }) => {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [idNFT, setIdNFT] = useState<string>("");
   const { chainId } = useContext(AccountContext);
-  const { slug } = router.query;
+  const slug = router.query.slug as string[] || [];
+
+  const collectionAddress = slug[0] || "";
+  const paymentToken = slug[1] || "";
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
@@ -33,7 +38,7 @@ const Swap: React.FC<{ initialData: any }> = ({ initialData }) => {
       if (slug) {
         return await getMetadata(
           chainId,
-          slug[0]?.toLowerCase(),
+          collectionAddress?.toLowerCase(),
           idNFT,
           tokenAddress,
           version
@@ -45,9 +50,9 @@ const Swap: React.FC<{ initialData: any }> = ({ initialData }) => {
 
   useEffect(() => {
     if (slug) {
-      setNftAddress(slug[0]);
-      setTokenAddress(slug[1]);
-      setIdNFT(slug[2]);
+      setNftAddress(collectionAddress);
+      setTokenAddress(paymentToken);
+      setIdNFT(slug[2] || "");
     }
   }, [slug]);
 
@@ -61,13 +66,14 @@ const Swap: React.FC<{ initialData: any }> = ({ initialData }) => {
         <div className="flex min-h-[94vh] flex-col-reverse border-y md:flex-row border-shader_600">
           <div className="flex flex-col items-center flex-auto border-r border-shader_600 min-w-[160px] z-0">
             {data && (
-              <ChartTradingViewSwap
+              <ChartTradingViewSwap1155
                 dataSwap={data}
                 typeERC="erc1155"
                 height={518}
+                paymentToken={paymentToken}
               />
             )}
-            <HistorySwap data={data} typeERC="erc1155" />
+            <HistorySwap1155 data={data} typeERC="erc1155" paymentToken={paymentToken} />
           </div>
           <SwapTransaction
             data={data}
@@ -87,7 +93,12 @@ const Swap: React.FC<{ initialData: any }> = ({ initialData }) => {
 export default Swap;
 
 export async function getServerSideProps(context: any) {
-  const { slug, version = "v1" } = context.query;
+  const version = "v1"
+
+  const slug = context.query.slug as string[] || [];
+
+  const collectionAddress = slug[0] || "";
+  const paymentToken = slug[1] || "";
   const chainId = "10143";
 
   if (!slug || slug.length < 3) {
@@ -96,8 +107,8 @@ export async function getServerSideProps(context: any) {
     };
   }
 
-  const nftAddress = slug[0];
-  const tokenAddress = slug[1];
+  const nftAddress = collectionAddress;
+  const tokenAddress = paymentToken;
   const idNFT = slug[2];
 
   await queryClient.prefetchQuery({

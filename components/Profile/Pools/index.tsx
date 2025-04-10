@@ -77,7 +77,7 @@ export default function Pools() {
             data.pages.map((page: any, index: number) => (
               <div
                 key={index}
-                className="grid grid-cols-1 gap-3 overflow-y-scroll lg:grid-cols-6 md:grid-cols-2"
+                className="grid grid-cols-1 gap-3 overflow-y-scroll lg:grid-cols-5 md:grid-cols-2"
               >
                 {page?.combinedRecords.map((liquidity: any, index: number) => (
                   <div key={index} className="w-full mx-auto">

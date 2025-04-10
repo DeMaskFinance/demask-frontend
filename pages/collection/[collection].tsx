@@ -10,8 +10,6 @@ const updateMeta = {
   title: "Detail Collection",
 };
 const Collections = ({ initialData }: any) => {
-
-  console.log(initialData)
   return (
     <div>
       <NextSeo {...updateMeta} />

@@ -12,6 +12,7 @@ import Tippy from "@tippyjs/react";
 import { memo, useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
+import TokenIcon from "@/components/Logo/TokenIcon";
 interface ModalSellNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -168,7 +169,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
               <FormatNumber number={dataSell.price} />
 
               <p>
-                <EtherIcon width={14} height={14} />
+                <TokenIcon token={dataSell?.paymentToken?.symbol} w={14} h={14} />
               </p>
             </div>
           </div>
@@ -177,7 +178,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             <div className="flex gap-x-1">
               <div className="flex items-center font-bold text-white gap-x-1">
                 <FormatNumber number={dataSell.minAmount} />
-                <EtherIcon width={14} height={14} />
+                <TokenIcon token={dataSell?.paymentToken?.symbol} w={14} h={14} />
               </div>
             </div>
           </div>
@@ -217,7 +218,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             </div>
             <div className="flex items-center font-bold text-white gap-x-1">
               <FormatNumber number={dataSell.totalFee} />
-              <EtherIcon width={14} height={14} />
+              <TokenIcon token={dataSell?.paymentToken?.symbol} w={14} h={14} />
             </div>
           </div>
           <div
@@ -237,7 +238,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
                   key={index}
                 >
                   <FormatNumber number={fee} />
-                  <EtherIcon width={14} height={14} />
+                  <TokenIcon token={dataSell?.paymentToken?.symbol} w={14} h={14} />
                 </div>
               ))}
             </div>
@@ -251,7 +252,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             <p className="text-primary_200">Total Receipts</p>
             <div className="flex items-center font-bold text-white gap-x-1">
               <FormatNumber number={dataSell.minAmount} />
-              <EtherIcon width={14} height={14} />
+              <TokenIcon token={dataSell?.paymentToken?.symbol} w={14} h={14} />
             </div>
           </div>
         </div>

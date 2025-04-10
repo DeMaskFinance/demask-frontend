@@ -3,10 +3,7 @@ import VersionTrade from "@/components/Common/VersionTrade";
 import { PoolIcon, UserIcon } from "@/components/Icons";
 import PoolUser from "@/components/Liquidity/StaticUser";
 import AccountContext from "@/context/AccountContext";
-import { queryClient } from "@/libs/constants";
-import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import TotalPools from "./TotalPools";
 import UserPools from "./UserPools";
 

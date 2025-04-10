@@ -45,11 +45,14 @@ import Actions from "../Trade/Action";
 import useInformationToken from "@/hooks/useInformationToken";
 import { RpcProvider, WalletAccount } from "starknet";
 import useApproveNFT from "@/libs/utils/handleApproveNFT";
+import TokenDropdown from "../InputSymbol";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
+import TokenIcon from "../Logo/TokenIcon";
+import { getPaymentTokens } from "@/libs/service/contractsService";
 
 export default function AddLiquidity() {
   const router = useRouter();
   const [nftAddress, setNftAddress] = useState<string>("");
-  const [tokenAddress, setTokenAddress] = useState<string>("");
   const [inputNFT, setInputNFT] = useState<string>("");
   const [inputToken, setInputToken] = useState<string>("");
   const [idNFT, setIdNFT] = useState("");
@@ -78,12 +81,43 @@ export default function AddLiquidity() {
     wallet,
     chainId
   );
+  const [selectedToken, setSelectedToken] = useState<Token>();
+
+  const { balanceDML } = useBananceOfDML(
+    account,
+    selectedToken?.tokenAddress,
+    wallet
+  );
 
   let inputNFTValue = useDebounce(inputNFT, 1000);
+
+  const { data: paymentTokens = [] } = useQuery<Token[]>({
+    queryKey: ["paymentTokens", chainId],
+    queryFn: async () => {
+      const res = await getPaymentTokens(chainId);
+      return res.data;
+    },
+  });
+  const currentTokenBalance = selectedToken?.isNative ? bigNumberBalance : balanceDML;
+
+  const tokenAddressSlug = currency ? currency?.[1] : ""
+  useEffect(() => {
+    if (!selectedToken && paymentTokens?.length > 0) {
+      const matchedToken = paymentTokens.find(
+        (token) => token.tokenAddress.toLowerCase() === tokenAddressSlug?.toLowerCase()
+      );
+
+      if (matchedToken) {
+        setSelectedToken(matchedToken);
+      } else {
+        setSelectedToken(paymentTokens[0]);
+      }
+    }
+  }, [paymentTokens, selectedToken, tokenAddressSlug]);
+
   useEffect(() => {
     if (currency) {
       setNftAddress(currency[0]);
-      setTokenAddress(currency[1]);
       setIdNFT(currency[2]);
       setInputNFT("");
       setIsSufficientNFT(false);
@@ -91,25 +125,28 @@ export default function AddLiquidity() {
     }
   }, [currency]);
 
+
+
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress, version],
+    queryKey: ["metadata", idNFT, nftAddress, chainId, selectedToken?.tokenAddress, version],
     queryFn: async () => {
       const res = await getMetadata(
         chainId,
         nftAddress.toLowerCase(),
         idNFT,
-        tokenAddress,
+        selectedToken?.tokenAddress || "",
         version
       );
       return res;
     },
+    enabled: !!paymentTokens
   });
 
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
     {
       queryKey: [
         "1155TradingAdd",
-        tokenAddress,
+        selectedToken?.tokenAddress,
         chainId,
         nftAddress,
         idNFT,
@@ -119,7 +156,7 @@ export default function AddLiquidity() {
       ],
       queryFn: async () => {
         const res = await erc1155TradingAdd(
-          tokenAddress,
+          selectedToken?.tokenAddress || "",
           chainId,
           nftAddress,
           idNFT,
@@ -130,6 +167,7 @@ export default function AddLiquidity() {
         return res.data;
       },
       refetchInterval: 20000,
+      enabled: !!paymentTokens
     }
   );
   const { isApprovedNFT, refetch: refetchNFT } = useCheckApproveNFT(
@@ -138,6 +176,9 @@ export default function AddLiquidity() {
     contracts?.ERC1155_ROUTER_ADDRESS || "",
     "erc1155"
   );
+
+
+
   const { balanceNFT } = useNFTBalance(
     account,
     nftAddress,
@@ -157,11 +198,12 @@ export default function AddLiquidity() {
     }
     setAmountErcDesired(amountErcDesired);
     if (amountErcDesired) {
-      if (Number(amountErcDesired) > Number(bigNumberBalance)) {
+      if (Number(amountErcDesired) > Number(currentTokenBalance)) {
         setIsSufficientToken(true);
       } else {
         setIsSufficientToken(false);
       }
+
     }
   }, [inputNFT, inputToken, dataTradingAdd, bigNumberBalance]);
 
@@ -179,7 +221,7 @@ export default function AddLiquidity() {
     const { value } = values;
     const inputValue = replaceDot(value);
     setInputToken(inputValue);
-    if (Number(inputValue) > Number(balanceToken)) {
+    if (Number(inputValue) > Number(currentTokenBalance)) {
       setIsSufficientToken(true);
     } else {
       setIsSufficientToken(false);
@@ -204,6 +246,9 @@ export default function AddLiquidity() {
   };
 
   const { handleApproveNFT } = useApproveNFT();
+
+
+
   return (
     <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 px-4">
       <div className="flex items-center justify-between ">
@@ -225,7 +270,8 @@ export default function AddLiquidity() {
             />
           }
           contentTrade="Swap"
-          link={`/trade/erc1155/${nftAddress}/${tokenAddress}/${idNFT}`}
+          link={`/trade/erc1155/${nftAddress}/${selectedToken?.tokenAddress || ""}/${idNFT}`}
+          customLink={true}
           refetch={refetch}
         />
       </div>
@@ -262,29 +308,7 @@ export default function AddLiquidity() {
                 </DialogContent>
               </Dialog>
             </div>
-            <div>
-              <p className="title_label">
-                <span className="">Choose Token</span>
-                <span className="text-red">*</span>
-              </p>
 
-              <Dialog>
-                <DialogTrigger asChild>
-                  <div className="input_item">
-                    <div className="flex items-center justify-between cursor-pointer text-shader_500">
-                      <div className="flex items-center gap-x-2 title">
-                        <EtherIcon width={18} height={18} />
-                        MON
-                      </div>
-                      <FaAngleDown className="text-white transition-all duration-150 group-hover:rotate-180" />
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="p-0 border bg-shader_800 border-shader_500">
-                  <ModalSearchToken />
-                </DialogContent>
-              </Dialog>
-            </div>
             <div className="mt-5 border-t border-shader_600">
               <p className="title_label">
                 <span className="">Deposit</span>
@@ -341,32 +365,50 @@ export default function AddLiquidity() {
                 <div className="flex justify-between mt-4 mb-1 font-semibold text-primary_300">
                   <p>Token</p>
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    {account ? formatNumber(balanceToken) : 0}
-                    <EtherIcon width={12} height={12} />
+                    {account && selectedToken?.isNative ? formatNumber(balanceToken) : formatNumber(Number(balanceDML) / 1e18)}
+                    <TokenIcon token={selectedToken?.symbol || ""} w={16} h={16} />
                   </div>
                 </div>
+
                 {data?.dmlAddress === null ? (
-                  <NumericFormat
-                    name="amountToken"
-                    id="amountToken"
-                    autoComplete="off"
-                    placeholder="Input amount Token"
-                    className="input_item"
-                    value={inputToken}
-                    inputMode="decimal"
-                    onValueChange={handleGetToken}
-                    decimalSeparator=","
-                    thousandSeparator="."
-                    minLength={1}
-                    maxLength={30}
-                  />
+                  <div className="relative">
+                    <NumericFormat
+                      name="amountToken"
+                      id="amountToken"
+                      autoComplete="off"
+                      placeholder="Input amount Token"
+                      className="input_item"
+                      value={inputToken}
+                      inputMode="decimal"
+                      onValueChange={handleGetToken}
+                      decimalSeparator=","
+                      thousandSeparator="."
+                      minLength={1}
+                      maxLength={30}
+                    />
+                    <div className="absolute top-1 right-1">
+                      <TokenDropdown
+                        selectedToken={selectedToken}
+                        setSelectedToken={setSelectedToken}
+                        dataToken={paymentTokens}
+                      />
+                    </div>
+                  </div>
                 ) : (
-                  <div className="input_item">
+                  <div className="input_item relative">
                     {dataTradingAdd ? (
                       <FormatNumber number={dataTradingAdd.amountETH} />
                     ) : (
                       <BiLoaderAlt className="text-xl animate-spin text-primary_400" />
                     )}
+
+                    <div className="absolute top-1 right-1">
+                      <TokenDropdown
+                        selectedToken={selectedToken}
+                        setSelectedToken={setSelectedToken}
+                        dataToken={paymentTokens}
+                      />
+                    </div>
                   </div>
                 )}
                 {isSufficientToken && (
@@ -466,7 +508,7 @@ export default function AddLiquidity() {
           isFetching={isFetchingAdd}
           amountErcDesired={amountErcDesired}
           setIsOpenTransaction={setIsOpenTransaction}
-          tokenAddress={tokenAddress}
+          tokenAddress={selectedToken as any}
           nftAddress={nftAddress}
           idNFT={idNFT}
           data={data}

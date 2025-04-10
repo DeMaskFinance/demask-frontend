@@ -7,11 +7,13 @@ interface DetailERC721Props {
   data: any;
   isSuccess: boolean;
   isLoading: boolean;
+  paymentToken: string;
 }
 const DetailERC721: React.FC<DetailERC721Props> = ({
   data,
   isSuccess,
   isLoading,
+  paymentToken,
 }) => {
   return (
     <div className="min-h-[94vh] text-white">
@@ -29,9 +31,10 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
                       dataSwap={data}
                       typeERC="erc721"
                       height={518}
+                      paymentToken={paymentToken}
                     />
 
-                    <HistorySwap data={data} typeERC="erc1155" />
+                    <HistorySwap data={data} typeERC="erc1155" paymentToken={paymentToken} />
                   </Fragment>
                 )}
               </div>

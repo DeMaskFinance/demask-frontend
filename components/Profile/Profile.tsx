@@ -92,6 +92,8 @@ const Profile = () => {
     { url: profile?.socials?.discord, Icon: DiscordIcon },
     { url: profile?.socials?.github, Icon: GithubIcon },
   ];
+
+
   return (
     <div className="">
       <section>

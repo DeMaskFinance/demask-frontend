@@ -2,6 +2,7 @@ import abiDML from "@/abi/abiDML.json";
 import { Button } from "@/components/Buttons";
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon, PlusIcon } from "@/components/Icons";
+import TokenIcon from "@/components/Logo/TokenIcon";
 import { ModalAddLiquidityERC721 } from "@/components/Modal/ModalAddLiquidity";
 import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 import {
@@ -43,6 +44,7 @@ const PoolItem = ({ liquidity }: any) => {
     chainId,
     version,
   ]);
+
   const data = {
     reserveNFT: liquidity?.reserveNFT,
     tokenDecimals: "18",
@@ -52,6 +54,8 @@ const PoolItem = ({ liquidity }: any) => {
     tokenAddress: contracts?.WETH_ADDRESS,
     reserveTokenDecimals: liquidity?.reserveTokenDecimals,
   };
+
+
 
   const dmlTokenLiquidity = data.dmlAddress;
 
@@ -159,7 +163,7 @@ const PoolItem = ({ liquidity }: any) => {
           <p className="font-normal text-primary_200">Reserve Token</p>
           <div className="flex items-center gap-x-1">
             <FormatNumber number={liquidity?.reserveToken} />
-            <EtherIcon width={16} height={16} />
+            <TokenIcon token={liquidity?.paymentToken?.symbol || ""} w={16} h={16} />
           </div>
         </div>
       </div>
@@ -167,7 +171,7 @@ const PoolItem = ({ liquidity }: any) => {
         <p className="text-shader_100 text-base">Your Reward</p>
         <div className="flex gap-x-2 text-xl items-center font-bold">
           <FormatNumber number={reward} />
-          <EtherIcon width={18} height={18} />
+          <TokenIcon token={liquidity?.paymentToken?.symbol || ""} w={18} h={18} />
         </div>
         <Button
           gradient

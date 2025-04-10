@@ -52,10 +52,16 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       useState<boolean>(false);
     const { account, wallet, chainId } = useContext(AccountContext);
     const router = useRouter();
-    const collectionAddress = (router.query.erc as string) || "";
+    const slug = router.query.slug as string[] || [];
+    const collectionAddress = slug[0] || "";
+    const tokenAddress = slug[1] || "";
+
+
     const [liquidityPercentage, setLiquidityPercentage] = useState(0);
 
     const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
+
+
 
     const { data: dataTradingRemove, isFetching: isFetchingRemove } =
       useQuery<DataRemove>({
@@ -160,7 +166,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const { data: data721, isSuccess, isLoading } = useQuery({
       queryKey: ["collectionNFTs", chainId, collectionAddress, version],
       queryFn: async () => {
-        const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
+        const res = await fetchDataBuyNFTs(collectionAddress, tokenAddress, chainId, version, 1, 500);
         return res;
       },
     });

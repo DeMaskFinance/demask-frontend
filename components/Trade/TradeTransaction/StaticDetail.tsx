@@ -1,5 +1,6 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "@/components/Icons";
+import TokenIcon from "@/components/Logo/TokenIcon";
 interface BaseProps {
   inputNFTValue: number;
   isFetching: boolean;
@@ -16,6 +17,7 @@ const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
   inputNFTValue,
   isFetching,
 }) => {
+
   return (
     <div className="w-full">
       {inputNFTValue > 0 && (
@@ -30,7 +32,7 @@ const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
                   <FormatNumber number={data?.maxAmount || 0} />
                 )}
 
-                <EtherIcon width={16} height={16} />
+                <TokenIcon token={data?.paymentToken?.symbol || ""} w={16} h={16} />
               </div>
             </div>
           </li>
@@ -50,7 +52,7 @@ const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
                 <FormatNumber number={data?.price || 0} />
               )}
 
-              <EtherIcon width={16} height={16} />
+              <TokenIcon token={data?.paymentToken?.symbol || ""} w={16} h={16} />
             </div>
           </li>
           <li>
@@ -62,7 +64,7 @@ const StaticDetailBuy: React.FC<StaticDetailBuyProps> = ({
                 ) : (
                   <FormatNumber number={data?.totalPay || 0} />
                 )}
-                <EtherIcon width={16} height={16} />
+                <TokenIcon token={data?.paymentToken?.symbol || ""} w={16} h={16} />
               </div>
             </div>
           </li>
@@ -76,6 +78,7 @@ const StaticDetailSell: React.FC<StaticDetailSellProps> = ({
   inputNFTValue,
   isFetching,
 }) => {
+
   return (
     <div className="w-full">
       {inputNFTValue > 0 && (
@@ -96,7 +99,7 @@ const StaticDetailSell: React.FC<StaticDetailSellProps> = ({
                 <FormatNumber number={data?.price || 0} />
               )}
 
-              <EtherIcon width={16} height={16} />
+              <TokenIcon token={data?.paymentToken?.symbol || ""} w={16} h={16} />
             </div>
           </li>
           <li>
@@ -108,7 +111,7 @@ const StaticDetailSell: React.FC<StaticDetailSellProps> = ({
                 ) : (
                   <FormatNumber number={data?.totalReceipts || 0} />
                 )}
-                <EtherIcon width={16} height={16} />
+                <TokenIcon token={data?.paymentToken?.symbol || ""} w={16} h={16} />
               </div>
             </div>
           </li>

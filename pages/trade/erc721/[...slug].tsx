@@ -14,34 +14,39 @@ const updateMeta = {
 
 export default function TradeERC721({ initialData }: { initialData: any }) {
   const router = useRouter();
-  const collectionAddress = (router.query.erc as string) || "";
+
+  const slug = router.query.slug as string[] || [];
+
+  const collectionAddress = slug[0] || "";
+  const paymentToken = slug[1] || "";
 
   const { chainId } = useContext(AccountContext);
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["detailCollection", chainId, collectionAddress],
     queryFn: async () => collectionDetail(collectionAddress, chainId),
-    initialData: initialData || undefined,
+    initialData: initialData?.data || initialData || undefined,
     staleTime: 60000,
-
   });
 
   return (
-    <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data || data} />
+    <DetailERC721 isLoading={isLoading} isSuccess={isSuccess} data={data?.data || data} paymentToken={paymentToken} />
   );
 }
 
 export async function getServerSideProps(context: any) {
-  const { erc } = context.params;
+  const { slug } = context.params;
   const chainId = "10143";
 
+  const collectionAddress = slug?.[0] || '';
+
   await queryClient.prefetchQuery({
-    queryKey: ["detailCollection", chainId, erc],
-    queryFn: async () => collectionDetail(erc, chainId),
+    queryKey: ["detailCollection", chainId, collectionAddress],
+    queryFn: async () => collectionDetail(collectionAddress, chainId),
   });
 
   return {
     props: {
-      initialData: queryClient.getQueryData(["detailCollection", chainId, erc]) || null,
+      initialData: queryClient.getQueryData(["detailCollection", chainId, collectionAddress]) || null,
       dehydratedState: dehydrate(queryClient),
     },
   };

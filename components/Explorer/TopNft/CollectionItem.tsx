@@ -38,9 +38,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                 key={idx}
                 className="flex px-4 text-sm font-semibold text-white hover:cursor-pointer group hover:bg-shader_500 border-y border-shader_500"
                 onClick={() => {
-                  item.type === "erc1155"
-                    ? router.push(`/collection/${item.contractAddress}`)
-                    : router.push(`/trade/erc721/${item.contractAddress}`);
+                  router.push(`/collection/${item.contractAddress}`)
                 }}
               >
                 <td className="py-2 lg:w-full md:w-full w-[200px]">

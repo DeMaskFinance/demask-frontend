@@ -49,7 +49,11 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     chainId
   );
   const router = useRouter();
-  const collectionAddress = (router.query.erc as string) || "";
+  const slug = router.query.slug as string[] || [];
+
+  const collectionAddress = slug[0] || "";
+  const tokenAddress = slug[1] || "";
+
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -57,7 +61,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   ]);
 
   const { data: paymentTokens = [] } = useQuery<Token[]>({
-    queryKey: ["paymentTokens", chainId, version],
+    queryKey: ["paymentTokens", chainId],
     queryFn: async () => {
       const res = await getPaymentTokens(chainId);
       return res.data;
@@ -67,11 +71,21 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
 
   const [selectedToken, setSelectedToken] = useState<Token>();
 
+
   useEffect(() => {
-    if (paymentTokens?.length > 0 && !selectedToken) {
-      setSelectedToken(paymentTokens[0]);
+    if (!selectedToken && paymentTokens?.length > 0) {
+      const matchedToken = paymentTokens.find(
+        (token) => token.tokenAddress.toLowerCase() === tokenAddress?.toLowerCase()
+      );
+
+      if (matchedToken) {
+        setSelectedToken(matchedToken);
+      } else {
+        setSelectedToken(paymentTokens[0]);
+      }
     }
-  }, [paymentTokens, selectedToken]);
+  }, [paymentTokens, selectedToken, tokenAddress]);
+
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: [
@@ -84,6 +98,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     queryFn: async () => {
       const res = await fetchDataSellNFTs(
         collectionAddress,
+        tokenAddress,
         chainId,
         account,
         version,
@@ -98,6 +113,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       queryKey: [
         "721TradingAdd",
         slippage,
+        tokenAddress,
         collectionAddress,
         chainId,
         idNFT,
@@ -106,6 +122,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       queryFn: async () => {
         const res = await erc721TradingAdd(
           collectionAddress,
+          tokenAddress,
           chainId,
           idNFT.length,
           slippage,
@@ -203,17 +220,23 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
                     />
 
                   </div>
-
-
                 </div>
               ) : (
                 <div>
                   {data ? (
                     <div className="relative flex items-center justify-between w-full pl-2 mb-4 text-base font-semibold rounded-lg h-11 bg-primary_500 bg-opacity-10 text-primary_100">
                       <div className="">Total Liquidity</div>
-                      <div className="flex items-center px-2 py-1 text-white gap-x-1">
-                        <FormatNumber number={dataTradingAdd?.amountETH || 0} />{" "}
-                        <EtherIcon width={16} height={16} />
+
+                      <div className="absolute top-0 right-0">
+                        <div className="flex items-center px-2 py-1 text-white gap-x-1">
+                          <FormatNumber number={dataTradingAdd?.amountETH || 0} />{" "}
+                          <TokenDropdown
+                            selectedToken={selectedToken}
+                            setSelectedToken={setSelectedToken}
+                            dataToken={paymentTokens}
+                          />
+                        </div>
+
                       </div>
                     </div>
                   ) : (

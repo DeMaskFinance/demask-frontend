@@ -8,14 +8,22 @@ import { TabGroups } from "@/components/NavChoice";
 interface HistorySwapProps {
   data: DataBase;
   typeERC: string;
+  paymentToken: string;
 }
 const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
   data,
   typeERC,
+  paymentToken,
 }) => {
   const [page, setPage] = useState(1);
   const [activeChoice, setActiveChoice] = useState<string>("All");
-  const { account, wallet, chainId, demask } = useContext(AccountContext);
+  const { chainId, demask } = useContext(AccountContext);
+
+
+  const dataSwapDml = data?.dmlList?.filter((item: any) =>
+    item?.tokenAddress?.toLowerCase() === paymentToken?.toLowerCase()
+  )
+
   const {
     isLoading,
     data: dataHistory,
@@ -24,14 +32,16 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     isSuccess,
     isPlaceholderData,
   } = useQuery({
-    queryKey: ["historySwap", chainId, activeChoice, data, page],
+    queryKey: ["historySwap", chainId, activeChoice, data, page, paymentToken],
     queryFn: async () => {
       const res = await categoryAPI(
-        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${activeChoice}&type=${typeERC}`
+        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${dataSwapDml?.[0]?.dmlAddress}&action=${activeChoice}&type=${typeERC}`
       );
       return res;
     },
+    enabled: !!dataSwapDml?.[0]?.dmlAddress
   });
+
 
   const options = ["All", "Buy", "Sell", "Add", "Remove"];
   const handleChoiceChange = (choice: string) => {

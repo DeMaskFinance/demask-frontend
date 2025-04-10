@@ -77,11 +77,12 @@ const poolUserInfor = async (
 };
 const liquidityUserERC721 = async (
   collectionAddress: string,
+  tokenAddress: string,
   chainId: string | string[]
 ) => {
   try {
     const res = await request.get(
-      `pool-info?chainId=${chainId}&type=erc721&collectionAddress=${collectionAddress}`
+      `pool-info?chainId=${chainId}&tokenAddress=${tokenAddress}&type=erc721&collectionAddress=${collectionAddress}`
     );
     return res.data;
   } catch (error) {

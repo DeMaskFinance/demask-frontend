@@ -41,10 +41,10 @@ const TabQuery: React.FC<TabQueryProps> = ({
         <div className="relative flex items-center w-full p-1 text-base text-center text-white rounded-lg bg-shader_500 border_500">
           <div
             className={`absolute transition-transform duration-100 ease-linear rounded-[4px] h-9 ${tab === "buy"
-                ? "bg-green"
-                : tab === "sell"
-                  ? "bg-red"
-                  : "bg-primary_500"
+              ? "bg-green"
+              : tab === "sell"
+                ? "bg-red"
+                : "bg-primary_500"
               }`}
             style={{
               transform: `translateX(${translateX}px)`,

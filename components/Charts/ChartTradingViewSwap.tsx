@@ -9,6 +9,8 @@ import FormatNumber from "../Common/FormatNumber";
 import { EtherIcon, NFTIcon } from "../Icons";
 import ChartLoading from "./ChartLoading";
 import ChartNoTransfers from "./ChartNoTransfers";
+import { useRouter } from "next/router";
+import TokenIcon from "../Logo/TokenIcon";
 interface BarData {
   time: string;
   value: number;
@@ -32,6 +34,7 @@ interface ChartSwapProps {
   dataSwap: DataBase;
   typeERC: string;
   height: number;
+  paymentToken: string;
 }
 interface DataItemProps {
   label: string;
@@ -50,6 +53,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   dataSwap,
   typeERC,
   height,
+  paymentToken,
 }) => {
   const chartContainerRef = useRef(null);
   const [currentHour, setCurrentHour] = useState(0);
@@ -65,18 +69,25 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   const [legendData, setLegendData] = useState<any>(
     newData[newData.length - 1]
   );
+
+  const dataSwapDml = dataSwap?.dmlList?.filter((item: any) =>
+    item?.tokenAddress?.toLowerCase() === paymentToken?.toLowerCase()
+  )
+
   const { data, isLoading } = useQuery({
-    queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC, intervalTime],
+    queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC, intervalTime, paymentToken],
     queryFn: async () => {
       const res = await tradeChartAPI(
-        dataSwap.dmlAddress,
+        dataSwapDml[0]?.dmlAddress,
         chainId,
         typeERC,
         intervalTime
       );
       return res.data;
     },
+    enabled: !!dataSwapDml?.[0]?.dmlAddress
   });
+
   useEffect(() => {
     setLegendData(volume[volume.length - 1]);
   }, [volume]);
@@ -262,6 +273,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
   const mobileHeight = 300;
   const currentHeight = window.innerWidth <= 768 ? mobileHeight : height;
   const isRed = legendData?.change;
+
   return (
     <div className="w-full h-full">
       {isLoading ? (
@@ -288,7 +300,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               <p className="mr-1 text-shader_200">Volume 1D</p>
               <div className="flex items-center gap-x-1">
                 <FormatNumber number={data[data.length - 1]?.volume} />
-                <EtherIcon width={16} height={16} />
+                <TokenIcon token={dataSwapDml?.[0]?.paymentToken?.symbol} w={16} h={16} />
               </div>
             </div>
             <div className="md:flex items-center p-4 border-r border-t border-shader_500 ">
@@ -304,7 +316,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
                 <div className="flex items-center gap-x-1">
                   <FormatNumber number={dataSwap.reserveToken} />
                   <span>
-                    <EtherIcon width={16} height={16} />
+                    <TokenIcon token={dataSwapDml?.[0]?.paymentToken?.symbol} w={16} h={16} />
                   </span>
                 </div>
               </div>

@@ -71,7 +71,8 @@ const erc1155Contract = () => {
     routerAddress: Address,
     amountInMax: number,
     inputNFT: string,
-    txDeadline: number
+    txDeadline: number,
+    isNative?: boolean
   ) => {
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
@@ -107,7 +108,9 @@ const erc1155Contract = () => {
         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
       ],
       gas: gasLimit,
-      value: BigInt(exponentialToDecimal(Math.floor(amountInMax))),
+      value: isNative
+        ? BigInt(exponentialToDecimal(Math.floor(amountInMax)))
+        : BigInt(0),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -180,7 +183,8 @@ const erc1155Contract = () => {
     amountErcDesired: number,
     inputNFT: string,
     txDeadline: number,
-    valueToSend: string | 0
+    valueToSend: string | 0,
+    isNative?: boolean
   ) => {
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
@@ -200,7 +204,7 @@ const erc1155Contract = () => {
           Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
         ],
       }),
-      value: BigInt(BigNumber(valueToSend || 0).toFixed()),
+      value: BigInt(isNative ? BigNumber(valueToSend || 0).toFixed() : 0),
     });
 
     const rs = await writeContractAsync({
@@ -219,7 +223,7 @@ const erc1155Contract = () => {
         Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
       ],
       gas: gasLimit,
-      value: BigInt(BigNumber(valueToSend || 0).toFixed()),
+      value: BigInt(isNative ? BigNumber(valueToSend || 0).toFixed() : 0),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {

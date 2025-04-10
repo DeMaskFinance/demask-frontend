@@ -47,11 +47,6 @@ const Created = () => {
   const {
     data,
     fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
     isSuccess,
     isLoading,
     isFetching,
@@ -86,6 +81,7 @@ const Created = () => {
     }
   }, [inView]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
 
   return (
     <Fragment>

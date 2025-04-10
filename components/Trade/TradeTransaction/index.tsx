@@ -42,6 +42,8 @@ import Actions from "../Action";
 import { StaticDetailBuy, StaticDetailSell } from "./StaticDetail";
 import useInformationToken from "@/hooks/useInformationToken";
 import useApproveNFT from "@/libs/utils/handleApproveNFT";
+import TokenIcon from "@/components/Logo/TokenIcon";
+import useBananceOfDML from "@/hooks/useBalanceOfDML";
 interface SwapTransactionProps {
   data: DataBase;
   tokenAddress: string;
@@ -124,6 +126,13 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   });
 
 
+  const { balanceDML } = useBananceOfDML(
+    account,
+    dataBuy?.paymentToken?.tokenAddress,
+    wallet
+  );
+  const currentTokenBalance = dataBuy?.paymentToken?.isNative ? balanceToken : (Number(balanceDML) / 1e18);
+
   const { data: dataSell, isFetching: isFetchingSell } = useQuery<DataSell>({
     queryKey: [
       "1155TradingSell",
@@ -172,7 +181,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
       }
     };
     checkReservesNFT();
-    if (Number(dataBuy?.maxAmountDecimals) > Number(bigNumberBalance)) {
+    if (Number(dataBuy?.maxAmountDecimals) > Number(currentTokenBalance * 1e18)) {
       setIsSufficientTokenBuy(false);
     } else {
       setIsSufficientTokenBuy(true);
@@ -183,9 +192,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     account,
     data,
     dataBuy,
-    bigNumberBalance,
+    currentTokenBalance,
     balanceNFT,
   ]);
+
 
   useEffect(() => {
     setInputNFT("");
@@ -218,7 +228,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     setActiveChoiceNFT(item);
   };
 
+
   const { handleApproveNFT } = useApproveNFT()
+
+
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
@@ -273,7 +286,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                   <p className="font-normal text-primary_200 ">Reserve Token</p>
                   <div className="flex items-center gap-x-1">
                     <FormatNumber number={dataBuy?.reserveToken || 0} />
-                    <EtherIcon width={16} height={16} />
+                    <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={16} h={16} />
                   </div>
                 </div>
               </div>
@@ -316,10 +329,10 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 <div className="w-full font-semibold text-primary_300">
                   {activeChoice === "Buy" ? (
                     <div className="flex items-center justify-between">
-                      <p>Your balance (MON)</p>
+                      <p>Your balance ({dataBuy?.paymentToken?.symbol})</p>
                       <div className="flex items-center font-bold text-white gap-x-1">
-                        {formatNumber(balanceToken)}
-                        <EtherIcon width={16} height={16} />
+                        {formatNumber(currentTokenBalance)}
+                        <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={16} h={16} />
                       </div>
                     </div>
                   ) : (
