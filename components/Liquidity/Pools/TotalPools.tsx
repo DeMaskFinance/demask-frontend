@@ -74,7 +74,6 @@ const TotalPools = () => {
                 {page?.data?.poolList?.length > 0 ? (
                   page.data.poolList.map((item: any, index: number) => {
 
-                    console.log(item)
                     return <Fragment>
                       <tr
                         className="flex px-4 py-3 text-white border-b border-shader_500 hover:bg-shader_700 cursor-pointer font-bold"
@@ -83,7 +82,7 @@ const TotalPools = () => {
                           router.push(
                             item.type === "erc1155"
                               ? `/trade/erc1155/${item.nftAddress}/${item.tokenAddress}/${item.nftID}`
-                              : `/trade/erc721/${item.nftAddress}?tab=pool`
+                              : `/trade/erc721/${item.nftAddress}/${item.tokenAddress}?tab=pool`
                           );
                         }}
                       >

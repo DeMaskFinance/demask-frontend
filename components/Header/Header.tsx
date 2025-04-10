@@ -129,19 +129,19 @@ export default function Header() {
   };
 
 
-  useEffect(() => {
-    if (!address) return
+  // useEffect(() => {
+  //   if (!address) return
 
-    const switchChain = () => {
-      try {
-        switchNetwork(monadTestnet)
-      } catch (error) {
-        console.error('Network switch failed:', error)
-      }
-    }
+  //   const switchChain = () => {
+  //     try {
+  //       switchNetwork(monadTestnet)
+  //     } catch (error) {
+  //       console.error('Network switch failed:', error)
+  //     }
+  //   }
 
-    switchChain()
-  }, [address])
+  //   switchChain()
+  // }, [address])
 
 
   useEffect(() => {

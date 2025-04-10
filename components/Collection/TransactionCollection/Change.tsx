@@ -64,6 +64,7 @@ const Change = () => {
     queryFn: async () => {
       const res = await fetchDataSellNFTs(
         collectionAddress,
+        "",
         chainId,
         account,
         version,
@@ -78,7 +79,7 @@ const Change = () => {
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTBUYs", chainId, collectionAddress, version],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version, 1, 500);
+      const res = await fetchDataBuyNFTs(collectionAddress, "", chainId, version, 1, 500);
       return res;
     },
   });
@@ -98,6 +99,7 @@ const Change = () => {
     queryFn: async () => {
       const res = await erc721TradingBuy(
         collectionAddress,
+        "",
         chainId,
         idNFTInput.length,
         slippage,
@@ -156,7 +158,6 @@ const Change = () => {
     }
   };
 
-  console.log(data)
   const { handleApproveNFT } = useApproveNFT()
   return (
     <div>

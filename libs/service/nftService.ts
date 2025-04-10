@@ -39,4 +39,26 @@ const getMetadata = async (
     console.error(error);
   }
 };
-export { NFTTopService, refreshNFTService, getMetadata };
+
+const getInfoPool = async ({
+  chainId,
+  nftAddress,
+  type,
+  nftID,
+}: {
+  chainId: string | string[];
+  nftAddress: string;
+  type: string;
+  nftID: string;
+}) => {
+  try {
+    const res = await request.get(
+      `pool-list-from-address?chainId=${chainId}&type=${type}&contractAddress=${nftAddress}&nftID=${nftID}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { NFTTopService, refreshNFTService, getMetadata, getInfoPool };

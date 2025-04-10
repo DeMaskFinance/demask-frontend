@@ -1,7 +1,6 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import {
   EditIcon,
-  EtherIcon,
   FacebookIcon,
   PlusIcon,
   SeeMoreIcon,
@@ -11,7 +10,6 @@ import {
   TwitterIcon,
   WebsiteIcon,
 } from "@/components/Icons";
-import { LogoIconCard } from "@/components/Logo/Logo";
 import {
   Dialog,
   DialogContent,
@@ -27,13 +25,16 @@ import {
 } from "@/libs/utils/formatComon";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { Fragment, useContext, useRef, useState } from "react";
+import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { toast } from "sonner";
 import { Button } from "../Buttons";
 import Copy from "../Common/Copy";
 import { MediaCollection } from "../Common/Media";
 import ModalRoyalty from "../Modal/ModalRoyalty";
+import TokenIcon from "../Logo/TokenIcon";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { queryClient } from "@/libs/constants";
 interface CollectionDetailProps {
   collectionAddress: string;
   initialData: any
@@ -62,6 +63,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
     initialData: initialData || undefined
   });
 
+
   const handleUploadAvatar = async (file: any) => {
     try {
       setAvatarLoading(true);
@@ -81,12 +83,61 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
 
   const collectionData = data?.data || data;
 
+
   const socialIcons = [
     { url: collectionData?.socials?.website, Icon: WebsiteIcon },
     { url: collectionData?.socials?.twitter, Icon: TwitterIcon },
     { url: collectionData?.socials?.facebook, Icon: FacebookIcon },
     { url: collectionData?.socials?.telegram, Icon: TeleIcon },
   ];
+
+
+
+
+  const [openDropdown, setOpenDropdown] = useState<"add" | "swap" | null>(null);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const poolOptions = [
+    { label: "Floor Pool", tab: "floor" },
+    { label: "Trait Pool", tab: "trait" },
+  ];
+
+  const paymentTokens = queryClient.getQueryData<any>(
+    ["paymentTokens", chainId],
+  )
+  const renderDropdown = (type: "add" | "swap") => (
+    <div className="absolute top-full mt-2 border-[1px] rounded-xl border-shader_400 bg-shader_500 overflow-hidden z-10 w-40">
+      {paymentTokens?.filter((item: any) => (item?.isActive)).map((option: any) => (
+        <Link
+          key={option?.tokenAddress}
+          href={`/trade/erc721/${collectionAddress}/${option.tokenAddress}`}
+          className="block px-4 py-2 hover:bg-gray-700 text-white text-sm"
+        >
+          <div className="flex gap-1 items-center">
+            {option?.symbol}
+            <TokenIcon token={option?.symbol} w={16} h={16} />
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+
+
   return (
     <section className="bg-shader_700 p-4 w-full">
       {collectionData &&
@@ -225,32 +276,33 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                   </Link>
                 )}
                 {collectionData?.type === "erc721" && (
-                  <div className="flex gap-x-2 text-white text-sm">
-                    <Link
-                      href={`/trade/erc721/${collectionAddress}?tab=pool`}
-                      className="basis-1/2"
-                    >
-                      <Button className="flex items-center w-full h-10 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400 px-4 ">
+                  <div className="flex gap-x-2 text-white text-sm relative" ref={dropdownRef}>
+                    <div className="basis-1/2 relative">
+                      <Button
+                        onClick={() =>
+                          setOpenDropdown((prev) => (prev === "add" ? null : "add"))
+                        }
+                        className="flex items-center w-full h-10 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400 px-4"
+                      >
                         <PlusIcon width={20} height={20} />
                         <p>Add</p>
                       </Button>
-                    </Link>
-                    <Link
-                      href={`/trade/erc721/${collectionAddress}`}
-                      className="basis-1/2"
-                    >
+                      {openDropdown === "add" && renderDropdown("add")}
+                    </div>
+
+                    <div className="basis-1/2 relative">
                       <Button
+                        onClick={() =>
+                          setOpenDropdown((prev) => (prev === "swap" ? null : "swap"))
+                        }
                         className="flex items-center w-full h-10 gap-x-2 px-4"
                         primary
                       >
-                        <SwapIcon
-                          width={20}
-                          height={20}
-                          className="fill-shader_700"
-                        />
+                        <SwapIcon width={20} height={20} className="fill-shader_700" />
                         <p>Swap</p>
                       </Button>
-                    </Link>
+                      {openDropdown === "swap" && renderDropdown("swap")}
+                    </div>
                   </div>
                 )}
                 <p className="w-[1px] h-4 bg-shader_400"></p>
@@ -260,7 +312,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                       href={`${demask.urltxHash}address/${collectionData?.dmlAddress}`}
                       target="_blank"
                     >
-                      <EtherIcon width={18} height={18} />
+                      <TokenIcon token={""} w={18} h={18} />
                     </Link>
                   )}
                   {socialIcons.map(
@@ -283,8 +335,8 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                   Floor price
                 </p>
                 <div className="flex items-center text-lg font-bold gap-x-1">
-                  <FormatNumber number={collectionData?.floorPrice || 0} />
-                  <EtherIcon width={16} height={16} />
+                  <FormatNumber number={collectionData?.floorPrice?.floorPrice || 0} />
+                  <TokenIcon token={""} w={16} h={16} />
                 </div>
               </div>
             )}
@@ -294,7 +346,7 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               </p>
               <div className="flex items-center text-lg font-bold gap-x-1">
                 <FormatNumber number={collectionData?.volume || 0} />
-                <EtherIcon width={16} height={16} />
+                <TokenIcon token={""} w={16} h={16} />
               </div>
             </div>
             <div className="">
@@ -303,9 +355,9 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               </p>
               <div className="flex items-center text-lg font-bold gap-x-1">
                 <FormatNumber
-                  number={(+collectionData?.reserveToken || 0 * 2).toString() || "0"}
+                  number={(+collectionData?.totalReserveToken || 0 * 2).toString() || "0"}
                 />
-                <EtherIcon width={16} height={16} />
+                <TokenIcon token={""} w={16} h={16} />
               </div>
             </div>
             <div className="">
@@ -321,10 +373,10 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                 Pool
               </p>
               <div className="flex items-center text-lg font-bold ">
-                <FormatNumber number={collectionData?.countNFTsInPool || "0"} />/
+                <FormatNumber number={collectionData?.totalReserveNFT || "0"} />/
                 <div className="flex items-center text-lg font-bold gap-x-1">
-                  <FormatNumber number={collectionData?.reserveToken || 0} />
-                  <EtherIcon width={16} height={16} />
+                  <FormatNumber number={collectionData?.totalReserveToken || 0} />
+                  <TokenIcon token={""} w={16} h={16} />
                 </div>
               </div>
             </div>

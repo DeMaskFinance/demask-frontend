@@ -55,6 +55,7 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
   setIsOpenAddLiquidity,
   setIsOpenConfirmAddLiquidity,
 }) => {
+
     const { demask, account, wallet, slippage, txDeadline, chainId } =
       useContext(AccountContext);
     const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
@@ -66,7 +67,10 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
     ]);
     const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
     const router = useRouter();
-    const collectionAddress = (router.query.erc as any) || "";
+    const slug = router.query.slug as string[] || [];
+
+    const collectionAddress = slug[0] || "";
+
     useEffect(() => {
       if (Number(dataTradingAdd.amountETHDecimals) > Number(bigNumberBalance)) {
         setIsSufficientToken(true);

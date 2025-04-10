@@ -19,7 +19,8 @@ import VersionTrade from "@/components/Common/VersionTrade";
 const TransactionCollection = () => {
   const [tab] = useQueryParam("tab", withDefault(StringParam, "buy"));
   const { isEvent } = useContext(AccountContext);
-  const collectionAddress = (useRouter().query.erc as string) || "";
+  const collectionAddress = (useRouter().query.slug as string)?.[0] || "";
+
   const TABS = [
     {
       title: "Buy",
@@ -31,11 +32,11 @@ const TransactionCollection = () => {
       panel: () => <Sell />,
       key: "sell",
     },
-    {
-      title: "Change",
-      panel: () => <Change />,
-      key: "change",
-    },
+    // {
+    //   title: "Change",
+    //   panel: () => <Change />,
+    //   key: "change",
+    // },
     {
       title: "Pools",
       panel: () => <Pool />,
@@ -90,9 +91,8 @@ const TransactionCollection = () => {
 
   return (
     <div
-      className={`flex flex-col  h-full p-4 w-full md:w-[480px] relative md:sticky ${
-        isEvent ? "md:top-[50px]" : "md:top-14"
-      }`}
+      className={`flex flex-col  h-full p-4 w-full md:w-[480px] relative md:sticky ${isEvent ? "md:top-[50px]" : "md:top-14"
+        }`}
     >
       <div className="flex justify-between gap-4 mb-2">
         <VersionTrade />

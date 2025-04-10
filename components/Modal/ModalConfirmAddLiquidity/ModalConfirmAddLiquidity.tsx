@@ -14,11 +14,14 @@ import Wrapper from "../Wrapper";
 import divideByDecimal from "@/libs/utils/divideByDecimal";
 import { queryClient } from "@/libs/constants";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
+import TokenIcon from "@/components/Logo/TokenIcon";
 interface ModalConfirmAddLiquidityProps {
   isOpenConfirmAddLiquidity: boolean;
   isFetching: boolean;
   amountErcDesired: number;
-  tokenAddress: string;
+  tokenAddress: Token;
   data: DataBase;
   inputNFT: string;
   nftAddress: string;
@@ -66,14 +69,31 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       version,
     ]);
 
-
     const { addERC20ERC1155 } = erc1155Contract();
+
+
+    const { currentAllowance, refetch } = useAllowanceDML(
+      account,
+      tokenAddress?.tokenAddress,
+      contracts?.ERC1155_ROUTER_ADDRESS || ""
+    );
+    const { approveDML } = handleApproveDML()
 
     const addLiquidity = async () => {
       if (!account) {
         return;
       }
 
+      if (!tokenAddress?.isNative && currentAllowance <= Math.floor(amountErcDesired)) {
+        await approveDML(
+          account,
+          tokenAddress?.tokenAddress,
+          String(amountErcDesired / 1e18),
+          setIsOpenTransaction,
+          contracts?.ERC1155_ROUTER_ADDRESS,
+          refetch
+        );
+      }
 
       if (Math.floor(amountErcDesired) !== 0 && contracts) {
         try {
@@ -82,13 +102,14 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           const result = await addERC20ERC1155(
             account,
             nftAddress,
-            tokenAddress,
+            tokenAddress?.tokenAddress,
             idNFT,
             contracts?.ERC1155_ROUTER_ADDRESS,
             amountErcDesired,
             inputNFT,
             txDeadline,
-            exponentialToDecimal(Math.floor(amountErcDesired))
+            exponentialToDecimal(Math.floor(amountErcDesired)),
+            tokenAddress?.isNative
           );
           setHash(result.transactionHash);
           setIsOpenTransaction(false);
@@ -155,7 +176,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                   <div className="flex items-center font-bold text-white gap-x-1">
                     {inputNFT}
                     <p>
-                      <EtherIcon width={14} height={14} />
+
+                      <TokenIcon token={tokenAddress?.symbol} w={14} h={14} />
                     </p>
                   </div>
                 </div>
@@ -166,7 +188,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                       <FormatNumber
                         number={divideByDecimal(amountErcDesired, "18")}
                       />
-                      <EtherIcon width={14} height={14} />
+
+                      <TokenIcon token={tokenAddress?.symbol} w={14} h={14} />
                     </div>
                   </div>
                 </div>
@@ -202,10 +225,12 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                     <FormatNumber
                       number={divideByDecimal(amountErcDesired, "18")}
                     />
-                    <EtherIcon width={14} height={14} />
+
+                    <TokenIcon token={tokenAddress?.symbol} w={14} h={14} />
                   </div>
                 </div>
               </div>
+
               <div className="flex flex-col items-center">
                 <Button
                   disabled={isFetching}
@@ -215,7 +240,9 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
                   isLoadingBtn={isFetching}
                   onClick={addLiquidity}
                 >
-                  Create Pool
+                  {!tokenAddress?.isNative && currentAllowance < Number(amountErcDesired) ?
+                    "Approve Token" : "Create Pool"
+                  }
                 </Button>
               </div>
             </div>

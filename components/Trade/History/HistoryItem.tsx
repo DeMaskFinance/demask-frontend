@@ -5,6 +5,7 @@ import React from "react";
 import { SkeletonTable } from "@/components/Skeleton";
 import SearchNotFound from "@/components/Search/SearchNotFound";
 import { getColorType } from "@/libs/utils/getColorType";
+import TokenIcon from "@/components/Logo/TokenIcon";
 interface HistorySwapProps {
   data: any;
   isLoading: boolean;
@@ -20,6 +21,7 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
   isSuccess,
   demask,
 }) => {
+
   return (
     <>
       {isLoading || isFetching ? (
@@ -49,15 +51,15 @@ const HistoryItem: React.FunctionComponent<HistorySwapProps> = ({
                   <FormatNumber number={item.amountNFT} />
                 </td>
                 <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  <div className="flex items-center justify-between md:gap-2">
+                  <div className="flex items-center justify-between md:gap-1">
                     <FormatNumber number={item.txPrice} />
-                    <EtherIcon width={18} height={18} />
+                    <TokenIcon token={item?.paymentToken?.symbol} w={18} h={18} />
                   </div>
                 </td>
                 <td className="py-4 flex items-center justify-end lg:w-full md:w-full w-[140px]">
-                  <div className="flex items-center justify-end md:gap-2">
+                  <div className="flex items-center justify-end md:gap-1">
                     <FormatNumber number={item.amountToken} />
-                    <EtherIcon width={18} height={18} />
+                    <TokenIcon token={item?.paymentToken?.symbol} w={18} h={18} />
                   </div>
                 </td>
                 <td className="py-4 flex items-center justify-center lg:w-full md:w-full w-[140px]">

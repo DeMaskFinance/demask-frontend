@@ -90,7 +90,6 @@ const MintErc721: React.FC<MintErc721Props> = ({
         }),
       });
 
-      console.log(gasLimit)
 
       const result = await writeContractAsync({
         account,

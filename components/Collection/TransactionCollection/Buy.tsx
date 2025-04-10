@@ -5,23 +5,21 @@ import {
   ModalTransation,
 } from "@/components/Modal/ModalTransation";
 import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
-import { ModalWallet } from "@/components/Modal/ModalWallet";
 import { SkeletonItemTransaction } from "@/components/Skeleton/SkeletonCategory";
 import { StaticDetailBuy } from "@/components/Trade/TradeTransaction/StaticDetail";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import AccountContext from "@/context/AccountContext";
 import useDebounce from "@/hooks/useDebounce";
+import useInformationToken from "@/hooks/useInformationToken";
+import { queryClient } from "@/libs/constants";
 import { fetchDataBuyNFTs } from "@/libs/service/collectionService";
 import { erc721TradingBuy } from "@/libs/service/tradeService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useRef, useState } from "react";
-import NFTGrid from "./NFTsGrids";
-import { queryClient } from "@/libs/constants";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
-import useInformationToken from "@/hooks/useInformationToken";
-import { useInView } from "react-intersection-observer";
+import { useContext, useEffect, useState } from "react";
 import { BsExclamationOctagon } from "react-icons/bs";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import NFTGrid from "./NFTsGrids";
 
 const Buy = () => {
   const { account, chainId, slippage, wallet } = useContext(AccountContext);
@@ -34,7 +32,12 @@ const Buy = () => {
   const [isSufficientTokenBuy, setIsSufficientTokenBuy] =
     useState<boolean>(false);
   const router = useRouter();
-  const collectionAddress = (router.query.erc as string) || "";
+
+
+  const slug = router.query.slug as string[] || [];
+  const collectionAddress = slug[0] || "";
+  const tokenAddress = slug[1] || "";
+
   const debouncedIdNFT = useDebounce(idNFT, 1500);
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
@@ -43,14 +46,12 @@ const Buy = () => {
     isLoading,
     isFetching,
     isSuccess,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version, tokenAddress],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await fetchDataBuyNFTs(
         collectionAddress,
+        tokenAddress,
         chainId,
         version,
         pageParam,
@@ -65,6 +66,8 @@ const Buy = () => {
         : undefined,
   });
 
+
+
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -75,6 +78,7 @@ const Buy = () => {
   const { data: data721Trading, isFetching: isFetching721Trading } = useQuery({
     queryKey: [
       "721TradingBuy",
+      tokenAddress,
       chainId,
       collectionAddress,
       slippage,
@@ -84,6 +88,7 @@ const Buy = () => {
     queryFn: async () => {
       const res = await erc721TradingBuy(
         collectionAddress,
+        tokenAddress,
         chainId,
         debouncedIdNFT.length,
         slippage,
@@ -108,6 +113,7 @@ const Buy = () => {
       image: data?.pages[0].data?.avatar,
     },
   };
+
   return (
     <div>
 
@@ -165,7 +171,7 @@ const Buy = () => {
                     isFetching={isFetching}
                     isOpenTransaction={isOpenTransaction}
                     setIsOpenTransaction={setIsOpenTransaction}
-                    tokenAddress={contracts.WETH_ADDRESS}
+                    tokenAddress={tokenAddress}
                     nftAddress={collectionAddress}
                     idNFT={debouncedIdNFT}
                     routerAddress={contracts.ERC721_ROUTER_ADDRESS}

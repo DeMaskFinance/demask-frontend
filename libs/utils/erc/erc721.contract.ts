@@ -52,12 +52,9 @@ const ercContract721 = () => {
     amountErcDesired: BigNumberish,
     account: Address,
     txDeadline: number,
-    valueToSend: BigNumberish
+    valueToSend: BigNumberish,
+    isNative?: boolean
   ) => {
-    console.log({
-      account,
-      tokenAddress,
-    });
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
       data: encodeFunctionData({
@@ -73,7 +70,7 @@ const ercContract721 = () => {
           Math.floor((Date.now() + txDeadline * 60000) / 1000),
         ],
       }),
-      value: BigInt(exponentialToDecimal(Number(valueToSend))),
+      value: BigInt(isNative ? exponentialToDecimal(Number(valueToSend)) : 0),
     });
 
     const rs = await writeContractAsync({
@@ -91,7 +88,7 @@ const ercContract721 = () => {
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
       gas: gasLimit,
-      value: BigInt(exponentialToDecimal(Number(valueToSend))),
+      value: BigInt(isNative ? exponentialToDecimal(Number(valueToSend)) : 0),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {
@@ -108,7 +105,8 @@ const ercContract721 = () => {
     routerAddress: Address,
     amountInMax: BigNumberish,
     account: Address,
-    txDeadline: number
+    txDeadline: number,
+    isNative?: boolean
   ) => {
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
@@ -124,7 +122,9 @@ const ercContract721 = () => {
           Math.floor((Date.now() + txDeadline * 60000) / 1000),
         ],
       }),
-      value: BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
+      value: isNative
+        ? BigInt(exponentialToDecimal(Math.floor(Number(amountInMax))))
+        : BigInt(0),
     });
 
     const rs = await writeContractAsync({
@@ -141,7 +141,9 @@ const ercContract721 = () => {
         Math.floor((Date.now() + txDeadline * 60000) / 1000),
       ],
       gas: gasLimit,
-      value: BigInt(exponentialToDecimal(Math.floor(Number(amountInMax)))),
+      value: isNative
+        ? BigInt(exponentialToDecimal(Math.floor(Number(amountInMax))))
+        : BigInt(0),
     });
 
     const receipt = await waitForTransactionReceipt(wagmiAdapter.wagmiConfig, {

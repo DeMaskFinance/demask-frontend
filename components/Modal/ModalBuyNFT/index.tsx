@@ -12,6 +12,9 @@ import { useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { ModalTransation } from "../ModalTransation";
 import useInformationToken from "@/hooks/useInformationToken";
+import useAllowanceDML from "@/hooks/useAllowanceDML";
+import handleApproveDML from "@/libs/utils/handleApproveDML";
+import TokenIcon from "@/components/Logo/TokenIcon";
 interface ModalBuyNFTProps {
   tokenAddress: string;
   data: DataBase;
@@ -73,6 +76,14 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const { buyERC20ERC721 } = ercContract721();
 
 
+
+  const { currentAllowance, refetch } = useAllowanceDML(
+    account,
+    tokenAddress,
+    routerAddress || ""
+  );
+  const { approveDML } = handleApproveDML()
+
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!account) {
@@ -88,6 +99,18 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       try {
         let result;
         setIsOpenTransaction(true);
+
+        if (!dataBuy?.paymentToken?.isNative && ((currentAllowance / 1e18) <= Number(dataBuy.maxAmount))) {
+          await approveDML(
+            account,
+            tokenAddress,
+            String(dataBuy.maxAmount),
+            setIsOpenTransaction,
+            routerAddress,
+            refetch
+          );
+        }
+
         if (inputNFT) {
           result = await buyERC20ERC1155(
             account,
@@ -98,6 +121,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             dataBuy.maxAmountDecimals,
             inputNFT,
             txDeadline,
+            dataBuy?.paymentToken?.isNative
           );
         } else {
           result = await buyERC20ERC721(
@@ -107,15 +131,19 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             routerAddress,
             dataBuy.maxAmountDecimals,
             account,
-            txDeadline
+            txDeadline,
+            dataBuy?.paymentToken?.isNative
           );
         }
         setHash(result.transactionHash);
-        setIsOpenTransaction(false);
-        setIsOpenBuyNFT(false);
+
         if (result.status === "success") {
+          setIsOpenTransaction(false);
+          setIsOpenBuyNFT(false);
           setIsOpenSuccess(true);
         } else {
+          setIsOpenTransaction(false);
+          setIsOpenBuyNFT(false);
           setIsOpenError(false);
         }
         setInputNFT("");
@@ -130,8 +158,6 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       }
     }
   };
-
-
 
 
 
@@ -168,7 +194,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
               <FormatNumber number={dataBuy.price} />
 
               <p>
-                <EtherIcon width={14} height={14} />
+                <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={14} h={14} />
               </p>
             </div>
           </div>
@@ -177,7 +203,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             <div className="flex gap-x-1">
               <div className="flex items-center font-bold text-white gap-x-1">
                 <FormatNumber number={dataBuy.maxAmount} />
-                <EtherIcon width={14} height={14} />
+                <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={14} h={14} />
               </div>
             </div>
           </div>
@@ -218,7 +244,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             <div className="flex items-center font-bold text-white gap-x-1">
               <FormatNumber number={dataBuy.totalFee} />
               <p>
-                <EtherIcon width={14} height={14} />
+                <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={14} h={14} />
               </p>
             </div>
           </div>
@@ -239,7 +265,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
                   key={index}
                 >
                   <FormatNumber number={fee} />
-                  <EtherIcon width={14} height={14} />
+                  <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={14} h={14} />
                 </div>
               ))}
             </div>
@@ -258,7 +284,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             <p className="text-primary_200">Total Pay</p>
             <div className="flex items-center font-bold text-white gap-x-1">
               <FormatNumber number={dataBuy.totalPay} />
-              <EtherIcon width={14} height={14} />
+              <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={14} h={14} />
             </div>
           </div>
         </div>
@@ -270,7 +296,9 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             isLoadingBtn={isFetching}
             onClick={handleBuyNFT}
           >
-            Confirm
+            {!dataBuy?.paymentToken?.isNative && (currentAllowance / 1e18) < Number(dataBuy?.maxAmount) ?
+              "Approve Token" : " Confirm"
+            }
           </Button>
         </div>
       </div>

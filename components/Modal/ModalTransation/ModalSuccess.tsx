@@ -79,16 +79,20 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   const metadataIPFS = formatLinkIPFS(metadataLink!);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoadingMeta(true);
-      const res = await fetch(metadataIPFS);
-      const metadata = await res.json();
-      setMetadataRes({
-        metadata,
-      });
-      setIsLoadingMeta(false);
-    };
-    fetchData();
+    try {
+      const fetchData = async () => {
+        setIsLoadingMeta(true);
+        const res = await fetch(metadataIPFS);
+        const metadata = await res.json();
+        setMetadataRes({
+          metadata,
+        });
+        setIsLoadingMeta(false);
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error)
+    }
   }, [metadataLink]);
 
   const handleClose = (
@@ -173,9 +177,11 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                     View collection
                   </Button>
                 </Link>
-                <Button primary className="px-6 py-2 " onClick={handleClose}>
-                  Create an collection
-                </Button>
+                <Link href={`/create/mint`}>
+                  <Button className="px-6 py-2 font-semibold " active>
+                    Create an NFT
+                  </Button>
+                </Link>
               </div>
             </Fragment>
           )}

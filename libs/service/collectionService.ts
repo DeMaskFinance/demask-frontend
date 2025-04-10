@@ -23,7 +23,7 @@ const collectionDetail = async (
 ) => {
   try {
     const res = await request.get(
-      `NFT-collection/${contractAddress}?chainId=${chainId}`
+      `NFT-collection-2/${contractAddress}?chainId=${chainId}`
     );
     return res.data;
   } catch (error) {
@@ -76,21 +76,24 @@ const collectionTypeCategory = async (
 const collectionListBuy = async (
   contractAddress: string | string[],
   chainId: string | string[],
+  tokenAddress: string,
   version: string,
   page: number,
   limit: number
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection-2?contractAddress=${contractAddress}&chainId=${chainId}&version=${version}&page=${page}&limit=${limit}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&chainId=${chainId}&version=${version}&page=${page}&limit=${limit}&tokenAddress=${tokenAddress}`
     );
     return res.data;
   } catch (error) {
     console.error(error);
   }
 };
+
 const fetchDataBuyNFTs = async (
   collectionAddress: string,
+  tokenAddress: string,
   chain: string | string[],
   version: string,
   page: number,
@@ -99,6 +102,7 @@ const fetchDataBuyNFTs = async (
   const data = await collectionListBuy(
     collectionAddress,
     chain,
+    tokenAddress,
     version,
     page,
     limit
@@ -108,6 +112,7 @@ const fetchDataBuyNFTs = async (
 const collectionListSell = async (
   userAddress: string,
   contractAddress: string | string[],
+  tokenAddress: string,
   chainId: string | string[],
   version: string,
   page: number,
@@ -115,7 +120,7 @@ const collectionListSell = async (
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection-2?contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}&version=${version}&page=${page}&limit=${limit}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&tokenAddress=${tokenAddress}&userAddress=${userAddress}&chainId=${chainId}&version=${version}&page=${page}&limit=${limit}`
     );
     return res.data;
   } catch (error) {
@@ -124,6 +129,7 @@ const collectionListSell = async (
 };
 const fetchDataSellNFTs = async (
   collectionAddress: string,
+  tokenAddress: string,
   chain: string | string[],
   account: string,
   version: string,
@@ -133,6 +139,7 @@ const fetchDataSellNFTs = async (
   const data = await collectionListSell(
     account,
     collectionAddress,
+    tokenAddress,
     chain,
     version,
     page,

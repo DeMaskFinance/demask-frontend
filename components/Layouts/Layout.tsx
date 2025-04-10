@@ -10,6 +10,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { Footer } from "../Footer";
 import NavFooter from "../Footer/NavFooter";
 import Header from "../Header";
+import { getInfoPool } from "@/libs/service/nftService";
 export default function Layout({ children }: PropsWithChildren) {
   const { chainId, updateChainId, updateAccount, wallet, isEvent, account } =
     useContext(AccountContext);
@@ -36,6 +37,8 @@ export default function Layout({ children }: PropsWithChildren) {
       return res.data;
     },
   });
+
+
 
   return (
     <div className="box-border w-full overflow-visible">
