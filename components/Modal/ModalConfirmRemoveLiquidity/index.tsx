@@ -13,6 +13,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { CgClose } from "react-icons/cg";
 import { ModalTransation } from "../ModalTransation";
 import Wrapper from "../Wrapper";
+import { ModalSuccess } from "../ModalTransation/ModalSuccess";
 interface ModalConfirmRemoveLiquidityProps {
   data: DataBase;
   dataTradingRemove: DataRemove;
@@ -58,12 +59,13 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       useState<boolean>(false);
     const { account, wallet, slippage } = useContext(AccountContext);
     const router = useRouter();
-    const collectionAddress = (router.query.erc as string) || "";
+
     const { currentAllowance, refetch } = useAllowanceDML(
       account,
       data.dmlAddress,
       routerAddress
     );
+    const [isOpenSuccessBuy, setIsOpenSuccessBuy] = useState<boolean>(false);
 
     useEffect(() => {
       const checkApproveToken = async () => {
@@ -91,7 +93,12 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
 
     const { approveDML } = handleApproveDML()
 
+    const paymentToken = data.nftID ? {
+      symbol: data?.tokenSymbol,
+      tokenAddress: data?.tokenAddress
+    } : data?.paymentToken
 
+    console.log(data)
     const removeLiquidity = async () => {
       if (
         inputLiquidity &&
@@ -103,13 +110,17 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           Number(data.dmlDecimals)
         );
         try {
+
+
           setIsOpenTransaction(true);
           let result;
           if (data.nftID) {
+
+            console.log("OK")
             result = await removeERC20ERC1155(
               account,
               data.nftAddress,
-              data.tokenAddress,
+              paymentToken?.tokenAddress,
               data.nftID,
               routerAddress,
               liquidity,
@@ -118,16 +129,31 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
               slippage
             );
           } else {
+            // result = await removeERC20ERC721(
+            //   {
+            //     collectionAddress,
+            //     paymentToken?.tokenAddress,
+            //     idNFT,
+            //     routerAddress,
+            //     liquidity,
+            //     dataTradingRemove.amountETHDecimals,
+            //     dataTradingRemove.amountNFT,
+            //     account,
+            //     slippage
+            //   }
+            // );
             result = await removeERC20ERC721(
-              collectionAddress,
-              data.tokenAddress,
-              idNFT,
-              routerAddress,
-              liquidity,
-              dataTradingRemove.amountETHDecimals,
-              dataTradingRemove.amountNFT,
-              account,
-              slippage
+              {
+                account: account,
+                amountNFTMin: dataTradingRemove.amountNFT,
+                amountTokenMin: dataTradingRemove.amountETHDecimals,
+                idNFT,
+                routerAddress,
+                liquidity,
+                txDeadline: slippage,
+                nftAddress: data?.nftAddress,
+                tokenAddress: paymentToken?.tokenAddress
+              }
             );
           }
           setHash(result.transactionHash);
@@ -157,6 +183,11 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       document.body.style.overflowY = "auto";
       setIsOpenConfirmRemoveLiquidity(false);
     };
+
+
+
+
+
     return (
       <Wrapper isOpen={isOpenConfirmRemoveLiquidity} onClick={handleClose}>
         <div className="container_modal">
@@ -177,7 +208,8 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
             </div>
             <div className="content_modal">
               <FormatNumber number={dataTradingRemove.amountETH} />
-              <p>MON</p>
+              <p>{paymentToken?.symbol}</p>
+
             </div>
 
             <div className="flex justify-between mt-8 text-lg font-semibold text-primary_500">
@@ -228,6 +260,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           isOpenTransation={isOpenTransaction}
           setIsOpenTransaction={setIsOpenTransaction}
         />
+
       </Wrapper>
     );
   };

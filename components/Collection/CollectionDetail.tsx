@@ -3,6 +3,7 @@ import {
   EditIcon,
   FacebookIcon,
   PlusIcon,
+  RightIcon,
   SeeMoreIcon,
   SwapIcon,
   TeleIcon,
@@ -35,6 +36,8 @@ import ModalRoyalty from "../Modal/ModalRoyalty";
 import TokenIcon from "../Logo/TokenIcon";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { queryClient } from "@/libs/constants";
+import { getInfoPool } from "@/libs/service/nftService";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 interface CollectionDetailProps {
   collectionAddress: string;
   initialData: any
@@ -94,46 +97,115 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
 
 
 
-  const [openDropdown, setOpenDropdown] = useState<"add" | "swap" | null>(null);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpenDropdown(null);
-      }
-    };
+  const dropdownRef = useRef(null);
+  useOutsideClick(dropdownRef, () => setDropdownType(null));
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const [dropdownType, setDropdownType] = useState<"add" | "swap" | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
-  const poolOptions = [
-    { label: "Floor Pool", tab: "floor" },
-    { label: "Trait Pool", tab: "trait" },
-  ];
 
-  const paymentTokens = queryClient.getQueryData<any>(
-    ["paymentTokens", chainId],
-  )
+  const { data: infoPool, isLoading: isLoadingPool } = useQuery<any>({
+    queryKey: ["poolInfo", collectionAddress, collectionData?.type, collectionData?.nftID],
+    queryFn: async () => {
+      const res = await getInfoPool({
+        chainId: chainId,
+        nftAddress: collectionAddress,
+        type: collectionData?.type,
+        nftID: String(collectionData?.nftID)
+      });
+      return res.data;
+    },
+
+    enabled: dropdownType !== null
+  });
+
+  const activeOption = infoPool?.dmlList?.filter((opt: any) => opt?.isActive)?.[activeTab];
+
   const renderDropdown = (type: "add" | "swap") => (
-    <div className="absolute top-full mt-2 border-[1px] rounded-xl border-shader_400 bg-shader_500 overflow-hidden z-10 w-40">
-      {paymentTokens?.filter((item: any) => (item?.isActive)).map((option: any) => (
-        <Link
-          key={option?.tokenAddress}
-          href={`/trade/erc721/${collectionAddress}/${option.tokenAddress}`}
-          className="block px-4 py-2 hover:bg-gray-700 text-white text-sm"
-        >
-          <div className="flex gap-1 items-center">
-            {option?.symbol}
-            <TokenIcon token={option?.symbol} w={16} h={16} />
+    <div
+      ref={dropdownRef}
+      className="absolute top-full mt-2 left-0 overflow-hidden border border-shader_400 rounded-xl bg-shader_500 z-10 w-full shadow-lg"
+    >
+      {isLoadingPool ? (
+        <div className="p-4 space-y-2">
+          <div className="flex items-center gap-2">
+            <div className="h-6 bg-gray-600 rounded w-2/4" />
+            <div className="h-6 bg-gray-600 rounded w-2/4" />
           </div>
-        </Link>
-      ))}
+          {[...Array(2)].map((_, i) => (
+            <div
+              key={i}
+              className="animate-pulse flex justify-between items-center"
+            >
+              <div className="flex items-center gap-2">
+                <div className="space-y-1">
+                  <div className="h-3 bg-gray-600 rounded w-24" />
+                  <div className="h-3 bg-gray-600 rounded w-16" />
+                </div>
+              </div>
+
+              <div className="w-16 h-4 bg-gray-600 rounded" />
+            </div>
+          ))}
+          <div className="w-full h-8 bg-gray-600 rounded" />
+
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1 px-3 pb-3 mt-1">
+          <div className="flex border-b border-white/10">
+            {infoPool?.dmlList?.filter((opt: any) => opt?.isActive)?.map((option: any, idx: number) => (
+              <button
+                key={option?.tokenAddress}
+                onClick={() => setActiveTab(idx)}
+                style={{
+                  background: activeTab === idx
+                    ? "linear-gradient(180deg, rgba(144, 117, 254, 0) 0%, rgba(144, 117, 254, 0.15) 100%)"
+                    : "",
+                }}
+                className={`w-1/2 py-2 flex items-center justify-center gap-2 text-sm  ${activeTab === idx
+                  ? 'text-white border-b border-primary_300'
+                  : 'text-white/60'
+                  }`}
+              >
+                {option?.symbol}
+                <TokenIcon token={option?.symbol} w={16} h={16} />
+              </button>
+            ))}
+          </div>
+
+          <div className="pt-2"
+          >
+            <p className="flex justify-between text-sm text-white/70 mb-1">
+              <span className="text-primary_300">TVL:</span>
+              <span className="text-white font-bold"><FormatNumber number={activeOption?.tvl || 0} /></span>
+            </p>
+            <p className="flex justify-between text-sm text-white/70">
+              <span className="text-primary_300">Last Sale:</span>
+              <span className="text-white font-bold"><FormatNumber number={activeOption?.lastSale || 0} /></span>
+            </p>
+          </div>
+
+          <Button third className="mt-4 w-full h-10">
+            <Link
+              href={
+                type === "add"
+                  ? collectionData.type === "erc1155"
+                    ? `/add/${collectionData.nftAddress}/${activeOption?.tokenAddress}/${collectionData.nftID}`
+                    : `/trade/erc721/${collectionData.nftAddress}/${activeOption?.tokenAddress}?tab=pool`
+                  : collectionData.type === "erc1155"
+                    ? `/trade/erc1155/${collectionData.nftAddress}/${activeOption?.tokenAddress}/${collectionData.nftID}`
+                    : `/trade/erc721/${collectionData.nftAddress}/${activeOption?.tokenAddress}`
+              }
+              className="w-full flex justify-center whitespace-pre items-center text-primary_300 gap-x-2"
+            >
+              Pool Details
+              <RightIcon width={20} height={20} />
+            </Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 
@@ -277,31 +349,33 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
                 )}
                 {collectionData?.type === "erc721" && (
                   <div className="flex gap-x-2 text-white text-sm relative" ref={dropdownRef}>
-                    <div className="basis-1/2 relative">
-                      <Button
-                        onClick={() =>
-                          setOpenDropdown((prev) => (prev === "add" ? null : "add"))
-                        }
-                        className="flex items-center w-full h-10 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400 px-4"
-                      >
-                        <PlusIcon width={20} height={20} />
-                        <p>Add</p>
-                      </Button>
-                      {openDropdown === "add" && renderDropdown("add")}
-                    </div>
+                    <div className="relative w-full">
 
-                    <div className="basis-1/2 relative">
-                      <Button
-                        onClick={() =>
-                          setOpenDropdown((prev) => (prev === "swap" ? null : "swap"))
-                        }
-                        className="flex items-center w-full h-10 gap-x-2 px-4"
-                        primary
-                      >
-                        <SwapIcon width={20} height={20} className="fill-shader_700" />
-                        <p>Swap</p>
-                      </Button>
-                      {openDropdown === "swap" && renderDropdown("swap")}
+
+                      <div className="flex flex-col gap-2 md:flex-row w-full">
+                        <div className="relative w-full md:w-1/2">
+                          <Button
+                            className="flex items-center w-full lg:py-3 py-2 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400"
+                            onClick={() => setDropdownType(dropdownType === "add" ? null : "add")}
+                          >
+                            <PlusIcon width={20} height={20} />
+                            <p>Add</p>
+                          </Button>
+                        </div>
+
+                        <div className="relative w-full md:w-1/2">
+                          <Button
+                            className="flex items-center w-full lg:py-3 py-2 gap-x-2 hover:bg-primary_600 bg-primary_500 border border-shader_400"
+                            onClick={() => setDropdownType(dropdownType === "swap" ? null : "swap")}
+                          >
+                            <SwapIcon width={20} height={20} className="fill-shader_700" />
+                            <p>Swap</p>
+                          </Button>
+                        </div>
+                      </div>
+
+                      {dropdownType && renderDropdown(dropdownType)}
+
                     </div>
                   </div>
                 )}

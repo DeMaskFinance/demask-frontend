@@ -153,17 +153,41 @@ const ercContract721 = () => {
     return receipt;
   };
 
-  const removeERC20ERC721 = async (
-    nftAddress: Address,
-    tokenAddress: Address,
-    idNFT: number[],
-    routerAddress: Address,
-    liquidity: BigNumberish,
-    amountTokenMin: BigNumberish,
-    amountNFTMin: BigNumberish,
-    account: Address,
-    txDeadline: number
-  ) => {
+  const removeERC20ERC721 = async ({
+    nftAddress,
+    tokenAddress,
+    idNFT,
+    routerAddress,
+    liquidity,
+    amountTokenMin,
+    amountNFTMin,
+    account,
+    txDeadline,
+  }: {
+    nftAddress: Address;
+    tokenAddress: Address;
+    idNFT: number[];
+    routerAddress: Address;
+    liquidity: BigNumberish;
+    amountTokenMin: BigNumberish;
+    amountNFTMin: BigNumberish;
+    account: Address;
+    txDeadline: number;
+  }) => {
+    console.log(nftAddress);
+    console.log({
+      args: [
+        tokenAddress,
+        nftAddress,
+        idNFT,
+        BigInt(Math.floor(Number(liquidity))).toString(),
+        BigInt(exponentialToDecimal(Number(amountTokenMin))),
+        BigInt(exponentialToDecimal(Number(amountNFTMin))),
+        account,
+        Math.floor((Date.now() + txDeadline * 60000) / 1000),
+      ],
+    });
+
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
       data: encodeFunctionData({

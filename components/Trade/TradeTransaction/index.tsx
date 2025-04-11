@@ -8,6 +8,7 @@ import {
   ImgIcon,
   NFTIcon,
   PoolIcon,
+  RightIcon,
 } from "@/components/Icons";
 import ModalBuyNFT from "@/components/Modal/ModalBuyNFT";
 import { ModalDetail } from "@/components/Modal/ModalDedail";
@@ -44,6 +45,8 @@ import useInformationToken from "@/hooks/useInformationToken";
 import useApproveNFT from "@/libs/utils/handleApproveNFT";
 import TokenIcon from "@/components/Logo/TokenIcon";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
+import { liquidityHistory } from "@/libs/service/liquidityService";
+import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
 interface SwapTransactionProps {
   data: DataBase;
   tokenAddress: string;
@@ -75,6 +78,12 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
 
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
+
+  const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
+    useState<boolean>(false);
+  const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
+  const [isOpenRemoveLiquididy, setIsOpenRemoveLiquididy] = useState(false);
+
   const { balanceToken, bigNumberBalance } = useInformationToken(
     account,
     wallet,
@@ -158,6 +167,34 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     },
     enabled: data.dmlAddress !== null && activeChoice === "Sell",
   });
+
+
+  const { isLoading: isLoadingLiquidity, data: dataLiquidtity, isPlaceholderData } =
+    useQuery({
+      queryKey: [
+        "liquidityHistory",
+        account,
+        data.dmlAddress,
+        chainId,
+        activeChoice,
+      ],
+      queryFn: async () => {
+        if (account && data?.dmlAddress) {
+          const res = await liquidityHistory(
+            account,
+            data.dmlAddress,
+            1,
+            chainId,
+            activeChoice
+          );
+          return res;
+        }
+      },
+
+      enabled: data.dmlAddress !== null && activeChoice === "Remove",
+    });
+
+
   const { isApprovedNFT, refetch: refetchNFT } = useCheckApproveNFT(
     account,
     nftAddress,
@@ -253,7 +290,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         </div>
         <div className="flex flex-col items-center my-4">
           <TabGroups
-            choices={["Buy", "Sell"]}
+            choices={["Buy", "Sell", "Remove"]}
             activeChoice={activeChoice}
             onChoiceChange={handleChoiceChange}
           />
@@ -322,92 +359,94 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </Dialog>
           </div>
         </div>
-        <form className="mt-5 mb-4">
-          <div>
-            <div className="flex flex-wrap items-center justify-between mb-2">
-              {account && (
-                <div className="w-full font-semibold text-primary_300">
-                  {activeChoice === "Buy" ? (
-                    <div className="flex items-center justify-between">
-                      <p>Your balance ({dataBuy?.paymentToken?.symbol})</p>
-                      <div className="flex items-center font-bold text-white gap-x-1">
-                        {formatNumber(currentTokenBalance)}
-                        <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={16} h={16} />
+        {activeChoice !== "Remove" &&
+          <form className="mt-5 mb-4">
+            <div>
+              <div className="flex flex-wrap items-center justify-between mb-2">
+                {account && (
+                  <div className="w-full font-semibold text-primary_300">
+                    {activeChoice === "Buy" ? (
+                      <div className="flex items-center justify-between">
+                        <p>Your balance ({dataBuy?.paymentToken?.symbol})</p>
+                        <div className="flex items-center font-bold text-white gap-x-1">
+                          {formatNumber(currentTokenBalance)}
+                          <TokenIcon token={dataBuy?.paymentToken?.symbol || ""} w={16} h={16} />
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between ">
-                      <p>Your NFT balance:</p>
-                      <div className="flex items-center font-bold text-white gap-x-1">
-                        <p>{formatNumber(Number(balanceNFT))}</p>
-                        <NFTIcon width={12} height={14} />
+                    ) : (
+                      <div className="flex items-center justify-between ">
+                        <p>Your NFT balance:</p>
+                        <div className="flex items-center font-bold text-white gap-x-1">
+                          <p>{formatNumber(Number(balanceNFT))}</p>
+                          <NFTIcon width={12} height={14} />
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="relative flex gap-x-2">
+                <div className="relative w-[60%]">
+                  <NumericFormat
+                    name="amountNFT"
+                    id="amountNFT"
+                    autoComplete="off"
+                    placeholder="NFT quantity"
+                    pattern="^[1-9][0-9]*$"
+                    min="1"
+                    decimalScale={0}
+                    thousandSeparator=","
+                    className="w-full h-full px-3 py-2 font-semibold text-white rounded-lg outline-none bg-shader_600 placeholder:text-shader_300 placeholder:font-medium border_500"
+                    value={inputNFT}
+                    onChange={(e) => {
+                      let newValue = e.target.value.replace(/,/g, "");
+                      setInputNFT(newValue);
+                      setActiveChoiceNFT("");
+                    }}
+                  />
                 </div>
-              )}
-            </div>
-            <div className="relative flex gap-x-2">
-              <div className="relative w-[60%]">
-                <NumericFormat
-                  name="amountNFT"
-                  id="amountNFT"
-                  autoComplete="off"
-                  placeholder="NFT quantity"
-                  pattern="^[1-9][0-9]*$"
-                  min="1"
-                  decimalScale={0}
-                  thousandSeparator=","
-                  className="w-full h-full px-3 py-2 font-semibold text-white rounded-lg outline-none bg-shader_600 placeholder:text-shader_300 placeholder:font-medium border_500"
-                  value={inputNFT}
-                  onChange={(e) => {
-                    let newValue = e.target.value.replace(/,/g, "");
-                    setInputNFT(newValue);
-                    setActiveChoiceNFT("");
-                  }}
-                />
+                <div className="w-[40%]">
+                  <TabGroups
+                    choices={["25%", "50%", "75%", "100%"]}
+                    activeChoice={activeChoiceNFT}
+                    onChoiceChange={handleChoicePercent}
+                  />
+                </div>
               </div>
-              <div className="w-[40%]">
-                <TabGroups
-                  choices={["25%", "50%", "75%", "100%"]}
-                  activeChoice={activeChoiceNFT}
-                  onChoiceChange={handleChoicePercent}
-                />
-              </div>
-            </div>
-            {data.dmlAddress !== null &&
-              isSufficientNFT === false &&
-              !isFetching &&
-              inputNFT &&
-              account && (
-                <p className="mt-1 mb-2 ml-3 text-xs text-red" key="NFTbalance">
-                  Insufficient NFT balance
+              {data.dmlAddress !== null &&
+                isSufficientNFT === false &&
+                !isFetching &&
+                inputNFT &&
+                account && (
+                  <p className="mt-1 mb-2 ml-3 text-xs text-red" key="NFTbalance">
+                    Insufficient NFT balance
+                  </p>
+                )}
+              {data.dmlAddress !== null &&
+                !isSufficientTokenBuy &&
+                !isFetching &&
+                activeChoice === "Buy" &&
+                account && (
+                  <p
+                    className="mt-1 mb-2 ml-3 text-xs text-red"
+                    key="Tokenbalance"
+                  >
+                    Insufficient Token balance
+                  </p>
+                )}
+              {data.dmlAddress === null && (
+                <p className="mt-1 mb-2 ml-3 text-xs text-red">
+                  DML Token doesn't exist yet
                 </p>
               )}
-            {data.dmlAddress !== null &&
-              !isSufficientTokenBuy &&
-              !isFetching &&
-              activeChoice === "Buy" &&
-              account && (
-                <p
-                  className="mt-1 mb-2 ml-3 text-xs text-red"
-                  key="Tokenbalance"
-                >
-                  Insufficient Token balance
+              {showRequiredMessage && (
+                <p className="mt-1 mb-2 ml-3 text-xs text-red" key="emptyNFT">
+                  Required
                 </p>
               )}
-            {data.dmlAddress === null && (
-              <p className="mt-1 mb-2 ml-3 text-xs text-red">
-                DML Token doesn't exist yet
-              </p>
-            )}
-            {showRequiredMessage && (
-              <p className="mt-1 mb-2 ml-3 text-xs text-red" key="emptyNFT">
-                Required
-              </p>
-            )}
-          </div>
-        </form>
+            </div>
+          </form>
+        }
         {activeChoice === "Buy" && (
           <StaticDetailBuy
             data={dataBuy}
@@ -499,75 +538,103 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 )}
               </DialogContent>
             </Dialog>
-          ) : isApprovedNFT ? (
-            <Dialog open={isOpenSellNFT} onOpenChange={setIsOpenSellNFT}>
+          ) : activeChoice === "Remove" ?
+            <Dialog open={isOpenRemoveLiquididy} onOpenChange={setIsOpenRemoveLiquididy}>
               <DialogTrigger asChild>
                 <Button
-                  disabled={
-                    inputNFTValue === "" ||
-                    data.dmlAddress === null ||
-                    !isSufficientNFT ||
-                    isFetching ||
-                    dataSell?.minAmountDecimals === 0
-                  }
-                  primary={
-                    +inputNFTValue > 0 &&
-                    data.dmlAddress !== null &&
-                    isSufficientTokenBuy &&
-                    dataSell?.minAmountDecimals !== 0
-                  }
-                  className="w-full py-4"
-                  active={
-                    inputNFTValue === "" ||
-                    data.dmlAddress === null ||
-                    !isSufficientNFT ||
-                    isFetching ||
-                    dataSell?.minAmountDecimals === 0
-                  }
+                  className="mt-3 py-3 w-full"
+                  primary
                 >
-                  Sell now
+                  Remove Liquidity
                 </Button>
               </DialogTrigger>
-              <DialogContent className="p-0 border-none">
-                {dataSell && (
-                  <ModalSellNFT
-                    isOpenTransaction={isOpenTransaction}
-                    setIsOpenTransaction={setIsOpenTransaction}
-                    tokenAddress={tokenAddress}
-                    nftAddress={nftAddress}
-                    idNFT={idNFT}
-                    data={data}
-                    isFetching={isFetchingSell}
-                    dataSell={dataSell}
-                    routerAddress={routerAddress}
-                    setIsOpenSellNFT={setIsOpenSellNFT}
-                    inputNFT={inputNFT}
-                    setInputNFT={setInputNFT}
+              <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                {contracts && (
+                  <ModalRemoveLiquidity
+                    data={dataLiquidtity}
+                    routerAddress={
+                      contracts.ERC1155_ROUTER_ADDRESS
+                    }
+                    type="erc1155"
                     setHash={setHash}
-                    setIsOpenSuccess={setIsOpenSuccessSell}
-                    setIsOpenError={setIsOpenErrorSell}
+                    setIsOpenSuccess={setIsOpenSuccessRemove}
+                    setIsOpenError={setIsOpenErrorRemove}
+                    closeModal={() => {
+                      setIsOpenRemoveLiquididy(false)
+                    }}
                   />
                 )}
               </DialogContent>
             </Dialog>
-          ) : (
-            <Button
-              className="w-full py-2"
-              primary
-              onClick={() =>
-                handleApproveNFT(
-                  account,
-                  nftAddress,
-                  setIsOpenTransaction,
-                  routerAddress,
-                  "erc1155",
-                  refetchNFT
-                )
-              }
-            >
-              Approve NFT
-            </Button>
-          )}
+            : isApprovedNFT ? (
+              <Dialog open={isOpenSellNFT} onOpenChange={setIsOpenSellNFT}>
+                <DialogTrigger asChild>
+                  <Button
+                    disabled={
+                      inputNFTValue === "" ||
+                      data.dmlAddress === null ||
+                      !isSufficientNFT ||
+                      isFetching ||
+                      dataSell?.minAmountDecimals === 0
+                    }
+                    primary={
+                      +inputNFTValue > 0 &&
+                      data.dmlAddress !== null &&
+                      isSufficientTokenBuy &&
+                      dataSell?.minAmountDecimals !== 0
+                    }
+                    className="w-full py-4"
+                    active={
+                      inputNFTValue === "" ||
+                      data.dmlAddress === null ||
+                      !isSufficientNFT ||
+                      isFetching ||
+                      dataSell?.minAmountDecimals === 0
+                    }
+                  >
+                    Sell now
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="p-0 border-none">
+                  {dataSell && (
+                    <ModalSellNFT
+                      isOpenTransaction={isOpenTransaction}
+                      setIsOpenTransaction={setIsOpenTransaction}
+                      tokenAddress={tokenAddress}
+                      nftAddress={nftAddress}
+                      idNFT={idNFT}
+                      data={data}
+                      isFetching={isFetchingSell}
+                      dataSell={dataSell}
+                      routerAddress={routerAddress}
+                      setIsOpenSellNFT={setIsOpenSellNFT}
+                      inputNFT={inputNFT}
+                      setInputNFT={setInputNFT}
+                      setHash={setHash}
+                      setIsOpenSuccess={setIsOpenSuccessSell}
+                      setIsOpenError={setIsOpenErrorSell}
+                    />
+                  )}
+                </DialogContent>
+              </Dialog>
+            ) : (
+              <Button
+                className="w-full py-2"
+                primary
+                onClick={() =>
+                  handleApproveNFT(
+                    account,
+                    nftAddress,
+                    setIsOpenTransaction,
+                    routerAddress,
+                    "erc1155",
+                    refetchNFT
+                  )
+                }
+              >
+                Approve NFT
+              </Button>
+            )}
         </div>
       </div>
       {data && <ModalWarningRemove isOpenWarning={data?.isDeleted} />}
@@ -587,6 +654,20 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         type="Buy NFT"
         setIsOpenError={setIsOpenErrorBuy}
       />
+
+      <ModalSuccess
+        isOpenSuccess={isOpenSuccessRemove}
+        transactionHash={hash}
+        type="Remove Liquidity"
+        setIsOpenSuccess={setIsOpenSuccessRemove}
+      />
+      <ModalError
+        isOpenError={isOpenErrorRemove}
+        transactionHash={hash}
+        type="Remove Liquidity"
+        setIsOpenError={setIsOpenErrorRemove}
+      />
+
       <ModalSuccess
         isOpenSuccess={isOpenSuccessSell}
         transactionHash={hash}
@@ -599,7 +680,9 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         type="Sell NFT"
         setIsOpenError={setIsOpenErrorSell}
       />
-    </div>
+
+
+    </div >
   );
 };
 export default SwapTransaction;

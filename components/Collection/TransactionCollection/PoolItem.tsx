@@ -38,12 +38,17 @@ const PoolItem = ({ liquidity }: any) => {
   const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
   const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const router = useRouter();
-  const collectionAddress = (router.query.erc as string) || "";
+  const slug = router.query.slug as string[] || [];
+  const collectionAddress = slug[0] || "";
+
+
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
     version,
   ]);
+
+
 
   const data = {
     reserveNFT: liquidity?.reserveNFT,
@@ -53,6 +58,7 @@ const PoolItem = ({ liquidity }: any) => {
     nftAddress: collectionAddress,
     tokenAddress: contracts?.WETH_ADDRESS,
     reserveTokenDecimals: liquidity?.reserveTokenDecimals,
+    paymentToken: liquidity?.paymentToken
   };
 
 

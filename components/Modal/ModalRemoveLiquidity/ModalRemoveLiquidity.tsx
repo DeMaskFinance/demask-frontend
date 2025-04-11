@@ -20,6 +20,7 @@ import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { BsExclamationOctagon } from "react-icons/bs";
+import TokenIcon from "@/components/Logo/TokenIcon";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -60,8 +61,6 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const [liquidityPercentage, setLiquidityPercentage] = useState(0);
 
     const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
-
-
 
     const { data: dataTradingRemove, isFetching: isFetchingRemove } =
       useQuery<DataRemove>({
@@ -186,11 +185,16 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       }
     }, [dataTradingRemove, dataRemoveBuy]);
 
+    const paymentToken = type === "erc721" ? data?.paymentToken : {
+      symbol: data?.tokenSymbol,
+      tokenAddress: data?.tokenAddress
+    }
+
     return (
       <Fragment>
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
           <p className="title_modal">Remove Liquidity</p>
-          {data721 &&
+          {(data721 && type === "erc721") &&
             <div className="flex items-center justify-between w-full py-2">
               <p className="text-xs text-[#F9BE76] flex gap-1 items-center">
                 <BsExclamationOctagon className="inline-block" />
@@ -205,8 +209,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 <div className="overflow-hidden rounded-lg">
                   <MediaNFT data={data} isControls={false} />
                 </div>
-                <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
-                  <EtherIcon width={16} height={16} />
+                <div className="absolute -right-[6px] -bottom-[6px] bg-black border-4 border-shader_800 rounded-full">
+                  <TokenIcon token={paymentToken?.symbol || ""} w={16} h={16} />
                 </div>
               </div>
               <div>
@@ -236,7 +240,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 <p className="font-semibold text-primary_400">Liquidity</p>
                 <div className="flex items-center font-bold text-white gap-x-1">
                   <FormatNumber number={dataTradingRemove?.balanceDml || 0} />
-                  <EtherIcon width={16} height={16} />
+                  <TokenIcon token={paymentToken?.symbol || ""} w={16} h={16} />
                 </div>
               </div>
               <div className="flex mt-4 gap-x-2">
@@ -307,7 +311,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                 Total MON
                 <div className="flex items-center justify-between gap-x-1">
                   <FormatNumber number={dataTradingRemove?.amountETH || 0} />
-                  <EtherIcon width={16} height={16} />
+                  <TokenIcon token={paymentToken?.symbol || ""} w={16} h={16} />
                 </div>
               </div>
               {dataTradingRemove?.amountETHDecimals === 0 && inputLiquidity && (

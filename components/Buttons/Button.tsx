@@ -51,30 +51,26 @@ const Button: FunctionComponent<ButtonProps> = ({
     transition-all duration-150 ease-linear
     font-semibold
     ${primary ? "bg-primary_500 text-white hover:bg-primary_600" : ""}
-    ${
-      third
-        ? "bg-primary_500 bg-opacity-[0.15] text-white px-3 py-2 hover:bg-opacity-[0.25]"
-        : ""
+    ${third
+      ? "bg-primary_500 bg-opacity-[0.15] text-white px-3 py-2 hover:bg-opacity-[0.25]"
+      : ""
     }
-    ${
-      active && !isLoadingBtn
-        ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600"
-        : ""
+    ${active && !isLoadingBtn
+      ? "bg-shader_500 px-3 py-2 text-white hover:bg-shader_600 border border-shader_500 hover:border-shader_600"
+      : ""
     }
     ${secondary ? "bg-blue bg-opacity-[0.15] text-white" : ""}
     ${outline ? "border border-shader_500" : ""}
     ${green ? "bg-green border-green hover:bg-opacity-80 text-white" : ""}
     ${red ? "bg-red border-red hover:bg-opacity-80 text-white" : ""}
     ${gradient ? "bg_gradient text-white hover:opacity-[0.85]" : ""}
-    ${
-      green_2
-        ? "bg-green text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-green border-opacity-15"
-        : ""
+    ${green_2
+      ? "bg-green text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-green border-opacity-15"
+      : ""
     }
-    ${
-      red_2
-        ? "bg-red text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-red border-opacity-15"
-        : ""
+    ${red_2
+      ? "bg-red text-white bg-opacity-15 py-2 px-3 hover:bg-opacity-[25%] border border-red border-opacity-15"
+      : ""
     }
     ${fullWidth ? "w-full" : ""}
     ${large ? "py-3 px-6 text-base" : "py-2 px-4 text-sm"}
@@ -93,7 +89,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       type={type}
-      className={buttonClassNames}
+      className={`${buttonClassNames}`}
     >
       {children}
     </button>
