@@ -11,7 +11,6 @@ const updateMeta = {
 };
 const Collections = ({ initialData }: any) => {
 
-  console.log(initialData)
   return (
     <div>
       <NextSeo {...updateMeta} />

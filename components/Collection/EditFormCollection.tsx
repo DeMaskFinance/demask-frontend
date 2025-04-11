@@ -168,7 +168,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   };
   const queryClient = useQueryClient();
 
-  console.log(formatLinkIPFS(fileIPFSFeature));
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {

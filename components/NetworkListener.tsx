@@ -6,7 +6,6 @@ const NetworkListener = () => {
     const chainId = useChainId();
     const [prevChainId, setPrevChainId] = useState<number | null>(null);
 
-    console.log(chainId)
 
     useEffect(() => {
         if (prevChainId !== null && chainId !== prevChainId) {

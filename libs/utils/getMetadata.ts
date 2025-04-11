@@ -1,4 +1,8 @@
-import { uploadFileIPFSMint, uploadMetadataIPFS } from "../service/IPFSService";
+import {
+  uploadFileIPFSMint,
+  uploadMetadata,
+  uploadMetadataIPFS,
+} from "../service/IPFSService";
 
 interface MetadataProps {
   attributeItems?: object[];
@@ -83,7 +87,7 @@ const getMetadataUrlEVM = async ({
     initialMetadata.image = await handleAudioFile();
   }
 
-  return await uploadMetadataIPFS(initialMetadata);
+  return await uploadMetadata(fileIPFS, initialMetadata, () => {});
 };
 
 const getMetadataUrlStarknet = async ({
@@ -105,7 +109,7 @@ const getMetadataUrlStarknet = async ({
     initialMetadata.image = await handleAudioFile();
   }
 
-  return await uploadMetadataIPFS(initialMetadata);
+  return await uploadMetadata(fileIPFS, initialMetadata, () => {});
 };
 
 const metadataURL = {

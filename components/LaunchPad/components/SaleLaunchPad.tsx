@@ -126,7 +126,6 @@ const SaleLaunchPad: React.FC<SaleLaunchPadProps> = ({ data }) => {
 
   const labelToShow = getLabel(data?.launchpadList);
 
-  console.log(data)
 
 
   return (

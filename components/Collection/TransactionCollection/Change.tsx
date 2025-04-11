@@ -156,7 +156,6 @@ const Change = () => {
     }
   };
 
-  console.log(data)
   const { handleApproveNFT } = useApproveNFT()
   return (
     <div>

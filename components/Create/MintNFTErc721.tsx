@@ -23,6 +23,7 @@ import { Button } from "../Buttons";
 import { PlusIcon } from "../Icons";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
+import LoadingStepsModal from "../Modal/ModalLoadingSteps";
 
 export interface MintErc721Props {
   fileIPFS: string;
@@ -55,6 +56,26 @@ const MintErc721: React.FC<MintErc721Props> = ({
   const [metadataIPFS, setMetadataIPFS] = useState<string>("");
   const [isProcess, setIsProcess] = useState<boolean>(false);
 
+  const [step, setStep] = useState(0);
+
+  const steps = [
+    {
+      title: "Uploading to decentralized server",
+      content: "This may take a few seconds",
+      border: true,
+    },
+
+    {
+      title: "Estimating gas",
+      content: "This may take a few seconds",
+      border: true,
+    },
+    {
+      title: "Sending transaction",
+      content: "This may take a few seconds",
+    },
+  ];
+
 
   const [collection, setCollection] = useState<CollectionProps>(data[0]);
   const handleSelectChange = (index: string) => {
@@ -67,11 +88,14 @@ const MintErc721: React.FC<MintErc721Props> = ({
   const onSubmit = async (values: any, { resetForm }: FormikHelpers<any>) => {
     try {
       if (!fileIPFS) {
-        toast.error("File not found.Try again!");
+        toast.error("File not found. Try again!");
         return;
       }
 
       setIsProcess(true);
+      setStep(0);
+
+      // STEP 1:
 
       const urlMetadata = await getMetadataUrl.getMetadataUrlStarknet({
         fileType,
@@ -81,6 +105,8 @@ const MintErc721: React.FC<MintErc721Props> = ({
         description: values.description,
       });
 
+      // STEP 2
+      setStep(1);
       const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
         to: collection.collectionAddress as `0x${string}`,
         data: encodeFunctionData({
@@ -90,6 +116,8 @@ const MintErc721: React.FC<MintErc721Props> = ({
         }),
       });
 
+      // STEP 3:
+      setStep(2);
       const result = await writeContractAsync({
         account,
         abi: abiMint721,
@@ -99,10 +127,10 @@ const MintErc721: React.FC<MintErc721Props> = ({
         gas: gasLimit,
       });
 
-      setMetadataIPFS(urlMetadata);
+      setStep(3);
+      setMetadataIPFS(urlMetadata || "");
       setHash(result);
       setIsOpenSuccess(true);
-
       toast.success("NFT minted successfully!");
 
       resetForm();
@@ -115,6 +143,8 @@ const MintErc721: React.FC<MintErc721Props> = ({
       setIsProcess(false);
     }
   };
+
+
 
   return (
     <div>
@@ -174,6 +204,7 @@ const MintErc721: React.FC<MintErc721Props> = ({
         enableReinitialize
       >
         {({ values, handleChange, isSubmitting, dirty, isValid }) => {
+
           return (
             <Form className="font-semibold">
               <div className="flex flex-col">
@@ -240,12 +271,12 @@ const MintErc721: React.FC<MintErc721Props> = ({
               </div>
               <Button
                 type="submit"
-                primary={dirty && !isSubmitting && fileIPFS?.length > 0}
+                primary={dirty && !isSubmitting && fileIPFS ? true : false}
                 active={
-                  !dirty || isSubmitting || !isValid || fileIPFS?.length <= 0
+                  !dirty || isSubmitting || !isValid || !fileIPFS
                 }
                 disabled={
-                  !dirty || isSubmitting || !isValid || fileIPFS?.length <= 0
+                  !dirty || isSubmitting || !isValid || fileIPFS ? false : true
                 }
                 className="px-6 py-2 cursor-pointer mt-4"
                 isLoadingBtn={isSubmitting}
@@ -256,9 +287,16 @@ const MintErc721: React.FC<MintErc721Props> = ({
           );
         }}
       </Formik>
-      <ModalTransation
+      {/* <ModalTransation
         isOpenTransation={isProcess}
         setIsOpenTransaction={setIsProcess}
+      /> */}
+      <LoadingStepsModal
+        isOpen={isProcess}
+        onClose={() => setIsProcess(false)}
+        step={step}
+        steps={steps}
+        heading="Create an NFT"
       />
       {isOpenSuccess && (
         <ModalSuccessCreate

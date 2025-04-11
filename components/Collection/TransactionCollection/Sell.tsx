@@ -71,7 +71,6 @@ const Sell = () => {
     "erc721"
   );
 
-  console.log(isApprovedNFT)
   const {
     isLoading: isLoading721Trading,
     data: data721Trading,

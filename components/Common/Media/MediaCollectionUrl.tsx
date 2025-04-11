@@ -42,7 +42,6 @@ const MediaNFT: React.FC<MediaNFTProps> = ({
     }
   };
 
-  console.log(isVideoPlaying)
 
   return (
     <>

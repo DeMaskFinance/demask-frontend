@@ -78,6 +78,8 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   const [isLoadingMeta, setIsLoadingMeta] = useState(false);
   const metadataIPFS = formatLinkIPFS(metadataLink!);
 
+  console.log(metadataLink)
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoadingMeta(true);
@@ -145,7 +147,7 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
             <Fragment>
               <div className="w-40 h-40 mx-auto mt-10 mb-6">
                 <Image
-                  src={metadataIPFS}
+                  src={(metadataIPFS)}
                   width={160}
                   height={160}
                   alt="Img-Collection"
@@ -168,14 +170,16 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
                 </a>
               </div>
               <div className="flex items-center justify-center mt-6 gap-x-4">
-                <Link href={`/profile?tab=created`}>
-                  <Button className="px-6 py-2 font-semibold " active>
-                    View collection
+                <Button className="px-6 py-2 font-semibold " active onClick={() => {
+                  setIsOpenSuccess(false)
+                }}>
+                  View collection
+                </Button>
+                <Link href={`/create/mint`}>
+                  <Button className="px-6 py-2 font-semibold " primary>
+                    Create an NFT
                   </Button>
                 </Link>
-                <Button primary className="px-6 py-2 " onClick={handleClose}>
-                  Create an collection
-                </Button>
               </div>
             </Fragment>
           )}
