@@ -131,6 +131,18 @@ const erc1155Contract = () => {
     amountNFTMin: number,
     txDeadline: number
   ) => {
+    console.log({
+      args: [
+        tokenAddress,
+        nftAddress,
+        idNFT,
+        Math.floor(Number(liquidity)).toString(),
+        exponentialToDecimal(Number(amountTokenMin)),
+        exponentialToDecimal(Number(amountNFTMin)),
+        account,
+        Math.floor((new Date().getTime() + txDeadline * 60000) / 1000),
+      ],
+    });
     const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
       to: routerAddress,
       data: encodeFunctionData({

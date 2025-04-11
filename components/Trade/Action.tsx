@@ -43,7 +43,7 @@ const Actions: React.FC<ActionsProps> = ({
   const { currency } = router.query;
 
   const renderDropdown = (type: "add" | "swap") => (
-    <div className="absolute top-full mt-2 border-[1px] rounded-xl border-shader_400 bg-shader_500 overflow-hidden z-10 w-40">
+    <div className="absolute top-full left-[-84px] mt-2 border-[1px] rounded-xl border-shader_400 bg-shader_500 overflow-hidden z-20 w-40">
       {paymentTokens?.filter((item: any) => (item?.isActive)).map((option: any) => (
         <Link
           key={option?.tokenAddress}

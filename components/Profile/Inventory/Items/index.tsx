@@ -64,7 +64,6 @@ interface TradeProps {
 }
 const Trade: React.FC<TradeProps> = ({ item }) => {
   const { chainId } = useContext(AccountContext);
-  const paymentTokens = queryClient.getQueryData<any>(["paymentTokens", chainId]);
 
   const [dropdownType, setDropdownType] = useState<"add" | "swap" | null>(null);
   const [activeTab, setActiveTab] = useState(0);
@@ -73,7 +72,7 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
   useOutsideClick(dropdownRef, () => setDropdownType(null));
 
   const { data: infoPool, isLoading } = useQuery<any>({
-    queryKey: ["poolInfo", item.nftAddress, item.type],
+    queryKey: ["poolInfo", item.nftAddress, item.type, item?.nftID],
     queryFn: async () => {
       const res = await getInfoPool({
         chainId: chainId,

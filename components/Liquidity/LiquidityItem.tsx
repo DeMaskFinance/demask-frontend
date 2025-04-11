@@ -16,6 +16,7 @@ import { EtherIcon, NFTIcon, RightIcon } from "../Icons";
 import { ModalError, ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccess } from "../Modal/ModalTransation/ModalSuccess";
 import { shorten } from "@/lib/utils";
+import TokenIcon from "../Logo/TokenIcon";
 
 interface LiquidytiesItemProps {
   liquidity: DataBase;
@@ -88,6 +89,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     }
   };
 
+  console.log(liquidity)
 
   return (
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
@@ -106,8 +108,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
               />
             )}
           </div>
-          <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
-            <EtherIcon width={16} height={16} />
+          <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 bg-black rounded-full">
+            <TokenIcon token={liquidity?.tokenSymbol} w={16} h={16} />
           </div>
         </div>
         <div>
@@ -136,7 +138,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           <p className="text-sm">Liquidity</p>
           <div className="flex items-center font-bold text-white gap-x-1">
             <FormatNumber number={liquidity.balanceDml || 0} />
-            <EtherIcon width={16} height={16} />(
+            <TokenIcon token={liquidity?.tokenSymbol} w={16} h={16} />(
             {(
               ((liquidity?.balanceDml ?? 0) /
                 (liquidity?.totalSupplyDml ?? 1)) *
@@ -155,7 +157,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             ) : (
               <p className="w-10 h-4 rounded-full animate-pulse bg-slate-700 "></p>
             )}
-            <EtherIcon width={16} height={16} />
+            <TokenIcon token={liquidity?.tokenSymbol} w={16} h={16} />
           </div>
         </div>
         <Button
@@ -172,7 +174,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           href={
             type === "erc1155"
               ? `/details/${liquidity.dmlAddress}`
-              : `/trade/erc721/${liquidity.nftAddress}?tab=pool`
+              : `/trade/erc721/${liquidity.nftAddress}/${liquidity?.tokenAddress}?tab=pool`
           }
         >
           <div className="flex justify-center mx-auto mt-3 text-sm gap-x-1 text-primary_300">

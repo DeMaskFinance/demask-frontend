@@ -170,7 +170,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
               <div className="overflow-hidden rounded-lg">
                 <MediaNFT data={data} isControls={false} />
               </div>
-              <div className="absolute -right-[6px] -bottom-[6px] border-4 border-shader_800 rounded-full">
+              <div className="absolute -right-[6px] bg-black -bottom-[6px] border-4 border-shader_800 rounded-full">
                 <EtherIcon width={16} height={16} />
               </div>
             </div>
