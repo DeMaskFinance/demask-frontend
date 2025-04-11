@@ -32,6 +32,7 @@ import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { MintErc721Props } from "./MintNFTErc721";
 import { wagmiAdapter } from "@/config";
 import { encodeFunctionData } from "viem";
+import LoadingStepsModal from "../Modal/ModalLoadingSteps";
 
 interface mintProps {
   amount: number;
@@ -124,12 +125,32 @@ export default function MintNFTEVM({
 
   const { writeContractAsync } = useWriteContract();
 
+  const [step, setStep] = useState(0);
+
+  const steps = [
+    {
+      title: "Uploading to decentralized server",
+      content: "This may take a few seconds",
+      border: true,
+    },
+
+    {
+      title: "Estimating gas",
+      content: "This may take a few seconds",
+      border: true,
+    },
+    {
+      title: "Sending transaction",
+      content: "This may take a few seconds",
+    },
+  ];
+
   async function mintNFT({ amount, url }: mintProps) {
     let transactionHash = "";
+    setStep(1)
 
     try {
       setMetadataIPFS(url);
-
       const gasLimit = await estimateGas(wagmiAdapter.wagmiConfig, {
         to: collection.collectionAddress as `0x${string}`,
         data: encodeFunctionData({
@@ -141,6 +162,8 @@ export default function MintNFTEVM({
             url],
         }),
       });
+
+      setStep(2)
 
       const result = await writeContractAsync({
         account,
@@ -155,6 +178,7 @@ export default function MintNFTEVM({
       });
 
 
+      setStep(3)
       transactionHash = result;
       setHash(transactionHash);
 
@@ -168,8 +192,10 @@ export default function MintNFTEVM({
       setAttributeItems([{ id: 0, trait_type: "", value: "" }]);
       setSelectedFile(null);
       setFileIPFS(null);
+      toast.success("NFT minted successfully!");
     } catch (error) {
       console.error("Failed to mint NFT:", error);
+      toast.error("Minting failed. Please try again!");
     }
     setIsProcess(false);
   }
@@ -195,6 +221,8 @@ export default function MintNFTEVM({
       toast.error("File not found.Try again!");
     }
 
+    setStep(0)
+
     setEmptyInputs(emptyInputFields);
     if (emptyInputFields?.length === 0) {
       const urlMetadata = metadataURL.getMetadataUrlEVM({
@@ -205,9 +233,11 @@ export default function MintNFTEVM({
         symbol,
         description,
       });
+
+
       mintNFT({
         amount: Number(totalSupply),
-        url: await urlMetadata,
+        url: await urlMetadata || "",
       });
     } else {
       setIsProcess(false);
@@ -444,9 +474,12 @@ export default function MintNFTEVM({
           Create NFT
         </Button>
       </div>
-      <ModalTransation
-        isOpenTransation={isProcess}
-        setIsOpenTransaction={setIsProcess}
+      <LoadingStepsModal
+        isOpen={isProcess}
+        onClose={() => setIsProcess(false)}
+        step={step}
+        steps={steps}
+        heading="Create an NFT"
       />
       {isOpenSuccess && (
         <ModalSuccessCreate
