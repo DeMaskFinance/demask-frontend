@@ -23,6 +23,35 @@ const uploadFileIPFSCollection = async (file: any) => {
   }
 };
 
+const uploadMetadata = async (
+  file: File,
+  metadata: any,
+  callback: () => void
+): Promise<string | null> => {
+  try {
+    const uriImg = await uploadToIpfs(file);
+
+    const metadataToUpload = {
+      ...metadata,
+      image: uriImg,
+    };
+
+    const metadataFile = new File(
+      [JSON.stringify(metadataToUpload)],
+      "metadata.json",
+      { type: "application/json" }
+    );
+
+    const metadataUri = await uploadToIpfs(metadataFile);
+    callback();
+    return metadataUri;
+  } catch (err) {
+    console.error("Error uploading metadata:", err);
+    toast.error("Failed to upload metadata. Please try again.");
+    return null;
+  }
+};
+
 const uploadMetadataIPFS = async (body: any) => {
   try {
     const res = await request.post("upload-uri-thirdweb", body);
@@ -61,4 +90,9 @@ export const uploadToIpfs = async (file: File): Promise<string> => {
   }
 };
 
-export { uploadFileIPFSCollection, uploadFileIPFSMint, uploadMetadataIPFS };
+export {
+  uploadFileIPFSCollection,
+  uploadFileIPFSMint,
+  uploadMetadataIPFS,
+  uploadMetadata,
+};

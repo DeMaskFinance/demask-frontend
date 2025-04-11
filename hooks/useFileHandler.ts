@@ -4,6 +4,7 @@ import { toast } from "sonner";
 interface UseFileHandlerProps extends UploadFileProps {
   validInput: string[];
   setFieldValue: any;
+  setFileIPFS: any;
 }
 
 const useFileHandler = ({
@@ -62,11 +63,10 @@ const useFileHandler = ({
         const fileURL = URL.createObjectURL(file);
         setFileType(fileType);
         setSelectedFile(fileURL);
-        const ipfsHash = await uploadFile(file);
-        setFileIPFS(ipfsHash);
+        setFileIPFS(file);
         setFieldValue("avatar", file);
       } catch (error) {
-        toast.error("Upload file error!");
+        // toast.error("Upload file error!");
       }
     },
     [validInput, uploadFile]

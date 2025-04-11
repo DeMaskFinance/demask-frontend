@@ -1,7 +1,7 @@
 import AccountContext from "@/context/AccountContext";
 import { Category, queryClient } from "@/libs/constants";
 import * as collectionService from "@/libs/service/collectionService";
-import { uploadFileIPFSCollection } from "@/libs/service/IPFSService";
+import { uploadFileIPFSCollection, uploadToIpfs } from "@/libs/service/IPFSService";
 import ercContract from "@/libs/utils/erc/erc.contract";
 import { SEO } from "@/next-seo.config";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
@@ -16,6 +16,8 @@ import WithAuth from "../Common/WithAuth";
 import { ModalTransation } from "../Modal/ModalTransation";
 import { ModalSuccessCreate } from "../Modal/ModalTransation/ModalSuccess";
 import { UploadFileCollection } from "./UploadFile";
+import { uploadFile } from "@/libs/service/userService";
+import LoadingStepsModal from "../Modal/ModalLoadingSteps";
 const updateMeta = {
   ...SEO,
   title: "Deploy Contract",
@@ -27,6 +29,8 @@ const validationSchema = yup.object().shape({
 });
 const DeployCollection = () => {
   const [fileIPFS, setFileIPFS] = useState<any>();
+  const [metadataLink, setMetadataLink] = useState<any>("");
+
   const [fileType, setFileType] = useState<string>("");
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isProcess, setIsProcess] = useState<boolean>(false);
@@ -64,8 +68,14 @@ const DeployCollection = () => {
   };
 
   const { fillCreate } = ercContract()
+  // const [isProcess, setIsProcess] = useState(false);
+  const [step, setStep] = useState(0);
 
-  const handleEVMTransaction = async (values: any) => {
+  const steps = [
+    { title: "Uploading to decentralized server.", content: `This may take a few seconds`, border: true },
+    { title: "Deploying to contract...", content: "This may take a few seconds" },
+  ];
+  const handleEVMTransaction = async (values: any, nonce: number) => {
 
     if (!contracts) return null;
 
@@ -76,7 +86,7 @@ const DeployCollection = () => {
     const res = await fillCreate(
       values.contractName,
       values.symbol,
-      fileIPFS.nonce,
+      nonce,
       contractAddress,
       type as "erc721" | "erc1155"
     );
@@ -94,33 +104,33 @@ const DeployCollection = () => {
     setIsOpenSuccess(status === "success");
   };
 
-  const onSubmit = async (
-    values: InitialValues,
-    { resetForm }: FormikHelpers<any>
-  ) => {
+
+
+  const onSubmit = async (values: InitialValues, { resetForm }: FormikHelpers<any>) => {
     try {
       setIsProcess(true);
-      await collectionService.createCollection(fileIPFS.nonce, {
-        category: values.category,
-        description: values.description,
-      });
+      setStep(0);
 
-      let res;
+      const rs = await uploadFileIPFSCollection(fileIPFS);
+      if (rs) {
+        setMetadataLink(rs?.url);
+        setStep(1);
 
-      res = await handleEVMTransaction(values);
+        const res = await handleEVMTransaction(values, rs?.nonce);
+        await checkTransactionStatus(res);
 
-      await checkTransactionStatus(res);
+        setStep(2);
+        setIsProcess(false);
+        resetForm();
+        setFileIPFS("");
+        setSelectedFile(null);
+      }
+    } catch (err) {
+      setStep(0);
       setIsProcess(false);
-      resetForm();
-      setSelectedFile(null);
-    } catch (error) {
-      console.error(error);
-      setIsProcess(false);
-      resetForm();
+      console.error(err);
     }
   };
-
-
 
   return (
     <>
@@ -319,10 +329,7 @@ const DeployCollection = () => {
           </Formik>
         </div>
       </WithAuth>
-      <ModalTransation
-        isOpenTransation={isProcess}
-        setIsOpenTransaction={setIsProcess}
-      />
+
       {isOpenSuccess && (
         <ModalSuccessCreate
           isOpenSuccess={isOpenSuccess}
@@ -330,9 +337,18 @@ const DeployCollection = () => {
           setIsOpenSuccess={setIsOpenSuccess}
           transactionHash={hash}
           isMint={false}
-          metadataLink={fileIPFS.url}
+          metadataLink={metadataLink}
         />
       )}
+
+      <LoadingStepsModal
+        isOpen={isProcess}
+        onClose={() => setIsProcess(false)}
+        step={step}
+        steps={steps}
+        heading="Create an Collection"
+      />
+
     </>
   );
 };

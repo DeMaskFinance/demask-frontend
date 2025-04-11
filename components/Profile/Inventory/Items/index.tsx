@@ -208,7 +208,7 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
 };
 export const ItemList: React.FC<ItemListProps> = ({
   data,
-  isSuccess,
+  isSuccess, 
   isLoading,
   isFetching,
   fetchNextPage,
@@ -246,8 +246,9 @@ export const ItemList: React.FC<ItemListProps> = ({
           <div className="grid grid-cols-2 gap-4 mt-4 text-white md:grid-cols-autoFill">
             {data?.pages.map((page: any, pageIndex: number) => (
               <Fragment key={pageIndex}>
-                {page?.data?.map((item: any, index: number) => (
-                  <div
+                {page?.data?.map((item: any, index: number) => {
+
+                  return <div
                     key={index}
                     className="relative overflow-hidden rounded-lg border-shader_500 hover:border-shader_400"
                   >
@@ -339,7 +340,8 @@ export const ItemList: React.FC<ItemListProps> = ({
                       </div>
                     </div>
                   </div>
-                ))}
+                }
+                )}
               </Fragment>
             ))}
             {isFetching && hasNextPage && <SkeletonSubCategory length={14} />}
