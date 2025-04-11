@@ -62,7 +62,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                   {isFetching ? (
                     skeleton
                   ) : (
-                    <ModalNumber data={item.floorPrice} />
+                    <ModalNumber data={item.lastSale} />
                   )}
                   <p>
                     <EtherIcon width={18} height={18} className="fill-dark2" />
