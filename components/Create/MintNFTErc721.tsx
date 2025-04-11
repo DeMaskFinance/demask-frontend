@@ -116,9 +116,6 @@ const MintErc721: React.FC<MintErc721Props> = ({
         }),
       });
 
-
-      // STEP 3:
-      setStep(2);
       const result = await writeContractAsync({
         account,
         abi: abiMint721,
