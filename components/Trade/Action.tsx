@@ -87,11 +87,11 @@ const Actions: React.FC<ActionsProps> = ({
       content: "Refresh",
       onClick: () => refetch(),
     },
-    {
-      icon: IconSwap,
-      content: contentTrade,
-      link: link,
-    },
+    // {
+    //   icon: IconSwap,
+    //   content: contentTrade,
+    //   link: link,
+    // },
     {
       icon: (
         <SettingIcon

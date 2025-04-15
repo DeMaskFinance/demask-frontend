@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import HistoryItem from "./HistoryItem";
 import { TabGroups } from "@/components/NavChoice";
+import { liquidityHistory } from "@/libs/service/liquidityService";
 interface HistorySwapProps {
     data: DataBase;
     typeERC: string;
@@ -35,10 +36,36 @@ const HistorySwap1155: React.FunctionComponent<HistorySwapProps> = ({
         },
     });
 
+
+    const {
+        isLoading: isLoadingLiquidity,
+        data: dataLiquidity,
+        isFetching: isFetchingLiquidity,
+        refetch: refetchLiquidity,
+        isSuccess: isSuccessLiquidity,
+        isPlaceholderData: isPlaceholderDataLiquidity,
+    } = useQuery({
+        queryKey: ["liquidityHistory", account, data.dmlAddress, chainId, activeChoice],
+        queryFn: async () => {
+            if (account && data.dmlAddress) {
+                const res = await liquidityHistory(
+                    account,
+                    data.dmlAddress,
+                    page,
+                    chainId,
+                    activeChoice
+                );
+                return res;
+            }
+        },
+    });
+
     const options = ["All", "Buy", "Sell", "Add", "Remove"];
     const handleChoiceChange = (choice: string) => {
         setActiveChoice(choice);
     };
+
+
     return (
         <div className="w-full font-semibold lg:mb-0">
             <div className="w-full overflow-x-scroll border border-shader_500 lg:overflow-visible bg-shader_800">

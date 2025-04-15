@@ -1,6 +1,7 @@
 import FormatNumber from "@/components/Common/FormatNumber";
 import { MediaCollection, MediaNFT } from "@/components/Common/Media";
 import { EtherIcon, LoadingIcon, SearchIcon } from "@/components/Icons";
+import TokenIcon from "@/components/Logo/TokenIcon";
 import ModalDocument from "@/components/Modal/ModalLength/ModalDocument";
 import { TabGroups } from "@/components/NavChoice";
 import AccountContext from "@/context/AccountContext";
@@ -88,7 +89,7 @@ const TotalPools = () => {
                       >
                         <td className="flex justify-start lg:w-full md:w-full w-[200px] gap-x-3 items-center">
                           <div className="relative w-[52px] ">
-                            <EtherIcon width={32} height={32} />
+                            <TokenIcon token={item?.paymentToken?.symbol || ""} w={32} h={32} />
 
                             <div className="w-8 h-8 object-cover rounded-full absolute top-0 right-0 overflow-hidden">
                               {item.type === "erc721" ? (
@@ -101,8 +102,8 @@ const TotalPools = () => {
                               )}
                             </div>
                           </div>
-                          <div className="font-semibold flex">
-                            MON/
+                          <div className="font-semibold uppercase flex">
+                            {item?.paymentToken?.symbol}/
                             {item.type === "erc721" ? (
                               item.symbol
                             ) : (
@@ -114,16 +115,16 @@ const TotalPools = () => {
                         </td>
                         <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
                           <FormatNumber number={item.tvl} />
-                          <EtherIcon width={16} height={16} />
+                          <TokenIcon token={item?.paymentToken?.symbol || ""} w={16} h={16} />
                         </td>
                         <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
                           <FormatNumber number={item.totalVolume24h} />
-                          <EtherIcon width={16} height={16} />
+                          <TokenIcon token={item?.paymentToken?.symbol || ""} w={16} h={16} />
                         </td>
                         <td className="flex justify-end lg:w-full md:w-full w-[140px] items-center gap-x-1">
                           {/* <FormatNumber number={item.price} /> */}
                           --
-                          <EtherIcon width={16} height={16} />
+                          <TokenIcon token={item?.paymentToken?.symbol || ""} w={16} h={16} />
                         </td>
                       </tr>
                       <div ref={ref} style={{ height: "1px" }}></div>

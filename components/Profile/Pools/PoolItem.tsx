@@ -15,9 +15,11 @@ const PoolItem = ({ item }: any) => {
   );
   const notionSize =
     ((Number(balanceDML) / Number(totalSupply)) * item.reserveToken * 2) / 1700;
+
+  console.log(item)
   return (
     <div>
-      <Link href={`/details/${item.dmlAddress}`}>
+      <Link href={`/trade/erc1155/${item.nftAddress}/${item?.tokenAddress}/${item?.nftID}`}>
         <tr className="flex text-sm lg:text-base md:text-base text-shader_600 hover:bg-slate-100 lg:px-2">
           <td className="relative flex items-center justify-start py-2  md:basis-1/6 w-[140px]">
             <FormatNumber number={balanceOfDML} />

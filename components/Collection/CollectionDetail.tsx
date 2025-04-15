@@ -192,11 +192,11 @@ const CollectionDetail: React.FunctionComponent<CollectionDetailProps> = ({
               href={
                 type === "add"
                   ? collectionData.type === "erc1155"
-                    ? `/add/${collectionData.nftAddress}/${activeOption?.tokenAddress}/${collectionData.nftID}`
-                    : `/trade/erc721/${collectionData.nftAddress}/${activeOption?.tokenAddress}?tab=pool`
+                    ? `/trade/erc1155/${collectionAddress}/${activeOption?.tokenAddress}/${collectionData.nftID}?tab=pool`
+                    : `/trade/erc721/${collectionAddress}/${activeOption?.tokenAddress}?tab=pool`
                   : collectionData.type === "erc1155"
-                    ? `/trade/erc1155/${collectionData.nftAddress}/${activeOption?.tokenAddress}/${collectionData.nftID}`
-                    : `/trade/erc721/${collectionData.nftAddress}/${activeOption?.tokenAddress}`
+                    ? `/trade/erc1155/${collectionAddress}/${activeOption?.tokenAddress}/${collectionData.nftID}`
+                    : `/trade/erc721/${collectionAddress}/${activeOption?.tokenAddress}`
               }
               className="w-full flex justify-center whitespace-pre items-center text-primary_300 gap-x-2"
             >
