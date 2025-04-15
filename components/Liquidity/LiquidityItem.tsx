@@ -121,8 +121,8 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
             )}
           </div>
 
-          <p className="text-sm font-semibold text-primary_300">
-            {shorten((liquidity?.metadata?.symbol)) || shorten(String(liquidity?.symbol))}/MON
+          <p className="text-sm font-semibold text-primary_300 uppercase">
+            {shorten((liquidity?.metadata?.symbol)) || shorten(String(liquidity?.symbol))}/{liquidity?.tokenSymbol}
           </p>
         </div>
       </div>
@@ -168,12 +168,12 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         >
           Claim
           <FormatNumber number={reward} />
-          MON
+          {liquidity?.tokenSymbol}
         </Button>
         <Link
           href={
             type === "erc1155"
-              ? `/details/${liquidity.dmlAddress}`
+              ? `/trade/erc1155/${liquidity.nftAddress}/${liquidity?.tokenAddress}/${liquidity?.nftID}?tab=pool`
               : `/trade/erc721/${liquidity.nftAddress}/${liquidity?.tokenAddress}?tab=pool`
           }
         >

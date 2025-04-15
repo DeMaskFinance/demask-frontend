@@ -1,0 +1,224 @@
+import abiDML from "@/abi/abiDML.json";
+import { Button } from "@/components/Buttons";
+import FormatNumber from "@/components/Common/FormatNumber";
+import { PlusIcon } from "@/components/Icons";
+import TokenIcon from "@/components/Logo/TokenIcon";
+import ModalAddLiquidityERC1155 from "@/components/Modal/ModalAddLiquidity/ModalAddLiquidityERC1155";
+import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import {
+    ModalError,
+    ModalTransation,
+} from "@/components/Modal/ModalTransation";
+import { ModalSuccess } from "@/components/Modal/ModalTransation/ModalSuccess";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import AccountContext from "@/context/AccountContext";
+import { queryClient } from "@/libs/constants";
+import divideByDecimal from "@/libs/utils/divideByDecimal";
+import { useGetRewardDML } from "@/libs/utils/getReward";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { useReadContract } from "wagmi";
+
+const PoolItemErc1155 = ({ liquidity }: any) => {
+    const { account, wallet, chainId } = useContext(AccountContext);
+    const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
+    const [hash, setHash] = useState<string>("");
+    const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+    const [isOpenError, setIsOpenError] = useState<boolean>(false);
+    const [isOpenRemoveLiquididy, setIsOpenRemoveLiquididy] = useState(false);
+    const [isOpenSuccessRemove, setIsOpenSuccessRemove] =
+        useState<boolean>(false);
+    const [isOpenErrorRemove, setIsOpenErrorRemove] = useState<boolean>(false);
+    const [reward, setReward] = useState("");
+    const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
+        useState<boolean>(false);
+    const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
+    const [isOpenAddLiquidity, setIsOpenAddLiquidity] = useState<boolean>(false);
+    const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
+    const router = useRouter();
+    const slug = router.query.slug as string[] || [];
+    const collectionAddress = slug[0] || "";
+
+    const contracts = queryClient.getQueryData<ContractAddresses>([
+        "contracts",
+        chainId,
+        version,
+    ]);
+
+
+    const data = {
+        reserveNFT: liquidity?.reserveNFT,
+        tokenDecimals: "18",
+        dmlAddress: liquidity?.dmlAddress,
+        dmlDecimals: "18",
+        nftAddress: collectionAddress,
+        tokenAddress: contracts?.WETH_ADDRESS,
+        reserveTokenDecimals: liquidity?.reserveTokenDecimals,
+        paymentToken: liquidity?.paymentToken
+    };
+
+
+
+    const dmlTokenLiquidity = data.dmlAddress;
+
+
+    const { data: rewardData } = useReadContract({
+        address: dmlTokenLiquidity,
+        abi: abiDML,
+        functionName: "viewReward",
+        args: [account],
+    });
+
+    useEffect(() => {
+        if (rewardData && data) {
+            const rewardDec = divideByDecimal(rewardData.toString(), data.dmlDecimals);
+            setReward(rewardDec);
+        } else {
+            setReward("0");
+        }
+    }, [rewardData, data]);
+
+    const { getRewardDML } = useGetRewardDML();
+
+
+    const handleGetReward = async (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        if (account && dmlTokenLiquidity && contracts) {
+            getRewardDML(
+                dmlTokenLiquidity,
+                account,
+                liquidity?.tokenAddress,
+                data.dmlDecimals,
+                setIsOpenTransaction,
+                setReward,
+                setIsOpenSuccessCollect,
+                setIsOpenErrorCollect,
+                setHash,
+
+            );
+            queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
+        }
+    };
+
+    return (
+        <div className="mb-4 text-white font-semibold text-sm">
+            <div className="flex gap-x-2 whitespace-nowrap mt-4">
+                <Dialog open={isOpenAddLiquidity} onOpenChange={setIsOpenAddLiquidity}>
+                    <DialogTrigger asChild>
+                        <Button green_2 className="w-full py-3 px-3 flex gap-x-2">
+                            <PlusIcon className="text-green" width={20} height={20} />
+                            Add Liquidity
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                        <ModalAddLiquidityERC1155
+                            setHash={setHash}
+                            setIsOpenAddLiquidity={setIsOpenAddLiquidity}
+                            setIsOpenSuccess={setIsOpenSuccess}
+                            setIsOpenError={setIsOpenError}
+                        />
+                    </DialogContent>
+                </Dialog>
+                <Dialog
+                    open={isOpenRemoveLiquididy}
+                    onOpenChange={setIsOpenRemoveLiquididy}
+                >
+                    <DialogTrigger asChild>
+                        <Button red_2 className="w-full py-3 px-3 flex gap-x-2">
+                            <TrashIcon className="text-red" width={20} height={20} />
+                            Remove Liquidity
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+                        {contracts && (
+                            <ModalRemoveLiquidity
+                                data={liquidity}
+                                routerAddress={
+                                    contracts.ERC1155_ROUTER_ADDRESS
+                                }
+                                type="erc1155"
+                                setHash={setHash}
+                                setIsOpenSuccess={setIsOpenSuccessRemove}
+                                setIsOpenError={setIsOpenErrorRemove}
+                                closeModal={() => {
+                                    setIsOpenRemoveLiquididy(false)
+                                }}
+                            />
+                        )}
+                    </DialogContent>
+                </Dialog>
+            </div>
+
+            <div className="bg_main p-4 mt-4">
+                <p className="text-shader_100 text-base">Your Reward</p>
+                <div className="flex gap-x-2 text-xl items-center font-bold">
+                    <FormatNumber number={reward} />
+                    <TokenIcon token={liquidity?.tokenSymbol || ""} w={18} h={18} />
+                </div>
+                <Button
+                    gradient
+                    className={`w-full py-2 mt-4 ${Number(reward) === 0 ? "opacity-70 hover:cursor-not-allowed" : ""}`}
+                    onClick={handleGetReward}
+                    disabled={Number(reward) === 0}
+                >
+                    Claim Reward
+                </Button>
+            </div>
+            <ModalTransation
+                isOpenTransation={isOpenTransaction}
+                setIsOpenTransaction={setIsOpenTransaction}
+            />
+
+            <ModalSuccess
+                isOpenSuccess={isOpenSuccessCollect}
+                transactionHash={hash}
+                type="Collect Reward Success"
+                setIsOpenSuccess={setIsOpenSuccessCollect}
+            />
+            <ModalError
+                isOpenError={isOpenErrorCollect}
+                transactionHash={hash}
+                type="Collect Reward Failed"
+                setIsOpenError={setIsOpenErrorCollect}
+            />
+            {data && account && (
+                <>
+                    <ModalSuccess
+                        isOpenSuccess={isOpenSuccessRemove}
+                        transactionHash={hash}
+                        type="Remove Liquidity Successed"
+                        setIsOpenSuccess={setIsOpenSuccessRemove}
+                    />
+                    <ModalError
+                        isOpenError={isOpenErrorRemove}
+                        transactionHash={hash}
+                        type="Remove Liquidity Failed"
+                        setIsOpenError={setIsOpenErrorRemove}
+                    />
+                </>
+            )}
+            {data && account && (
+                <>
+                    <ModalSuccess
+                        isOpenSuccess={isOpenSuccess}
+                        transactionHash={hash}
+                        type="Add Liquidity Success"
+                        setIsOpenSuccess={setIsOpenSuccess}
+                    />
+                    <ModalError
+                        isOpenError={isOpenError}
+                        transactionHash={hash}
+                        type="Add Liquidity Failed"
+                        setIsOpenError={setIsOpenError}
+                    />
+                </>
+            )}
+        </div>
+    );
+};
+
+export default PoolItemErc1155;

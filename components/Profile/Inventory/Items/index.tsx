@@ -208,7 +208,7 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
 };
 export const ItemList: React.FC<ItemListProps> = ({
   data,
-  isSuccess, 
+  isSuccess,
   isLoading,
   isFetching,
   fetchNextPage,

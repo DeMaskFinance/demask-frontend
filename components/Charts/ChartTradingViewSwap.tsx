@@ -306,7 +306,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <div className="md:flex items-center p-4 border-r border-t border-shader_500 ">
               <p className="mr-1 text-shader_200">Reserve NFT</p>
               <div className="flex items-center gap-x-1">
-                <FormatNumber number={dataSwap?.reserveNFT} />
+                <FormatNumber number={dataSwapDml?.[0]?.reserveNFT} />
                 <NFTIcon width={16} height={16} />
               </div>
             </div>
@@ -314,7 +314,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
               <div className="md:flex items-center text-sm gap-x-1">
                 <p className="text-shader_200">Reserve Token</p>
                 <div className="flex items-center gap-x-1">
-                  <FormatNumber number={dataSwap.reserveToken} />
+                  <FormatNumber number={dataSwapDml?.[0]?.reserveToken} />
                   <span>
                     <TokenIcon token={dataSwapDml?.[0]?.paymentToken?.symbol} w={16} h={16} />
                   </span>

@@ -47,6 +47,9 @@ import TokenIcon from "@/components/Logo/TokenIcon";
 import useBananceOfDML from "@/hooks/useBalanceOfDML";
 import { liquidityHistory } from "@/libs/service/liquidityService";
 import ModalRemoveLiquidity from "@/components/Modal/ModalRemoveLiquidity/ModalRemoveLiquidity";
+import Pool from "@/components/Collection/TransactionCollection/Pool";
+import PoolErc1155 from "@/components/Collection/TransactionCollection/PoolErc1155";
+import { useRouter } from "next/router";
 interface SwapTransactionProps {
   data: DataBase;
   tokenAddress: string;
@@ -169,7 +172,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
   });
 
 
-  const { isLoading: isLoadingLiquidity, data: dataLiquidtity, isPlaceholderData } =
+  const { isLoading: isLoadingLiquidity, data: dataLiquidtity, isSuccess: isSuccessLiquidity } =
     useQuery({
       queryKey: [
         "liquidityHistory",
@@ -191,7 +194,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
         }
       },
 
-      enabled: data.dmlAddress !== null && activeChoice === "Remove",
+      enabled: data.dmlAddress !== null && activeChoice === "Pool",
     });
 
 
@@ -268,29 +271,39 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
 
   const { handleApproveNFT } = useApproveNFT()
 
+  const paymentToken = queryClient.getQueryData<Token[]>(["paymentTokens", chainId])
 
+  const tokens = paymentToken?.filter((item: Token) =>
+    item?.isActive && item?.tokenAddress?.toLowerCase() !== tokenAddress?.toLowerCase()
+  )
 
   return (
     <div className="flex w-full md:w-[30rem] h-fit gap-y-1 lg:gap-y-12 flex-shrink-0 md:sticky top-14">
       <div className="w-full p-4">
         <div className="flex justify-between gap-4 mb-2">
           <VersionTrade />
-          <Actions
-            IconSwap={
-              <PoolIcon
-                width={18}
-                height={18}
-                className="cursor-pointer text-primary_200"
-              />
-            }
-            contentTrade="Trade"
-            link={`/add/${nftAddress}/${tokenAddress}/${idNFT}`}
-            refetch={refetch}
-          />
+          <div className="flex gap-2 items-center">
+            <Actions
+              IconSwap={
+                <PoolIcon
+                  width={18}
+                  height={18}
+                  className="cursor-pointer text-primary_200"
+                />
+              }
+              contentTrade="Trade"
+              link={`/add/${nftAddress}/${tokenAddress}/${idNFT}`}
+              refetch={refetch}
+            />
+
+            <Link className="text-sm flex justify-end items-center font-semibold gap-1 hover:gap-1.5 hover:bg-primary_500/30 transition-all bg-primary_500/20 text-white/90 py-1.5 px-4 pr-3 rounded-md" href={`/trade/erc1155/${nftAddress}/${tokens?.[0]?.tokenAddress}/${idNFT}`}>
+              Pool {tokens?.[0]?.symbol} <TokenIcon token={tokens?.[0]?.symbol || ""} w={16} h={16} />  <RightIcon className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
         <div className="flex flex-col items-center my-4">
           <TabGroups
-            choices={["Buy", "Sell", "Remove"]}
+            choices={["Buy", "Sell", "Pool"]}
             activeChoice={activeChoice}
             onChoiceChange={handleChoiceChange}
           />
@@ -359,7 +372,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
             </Dialog>
           </div>
         </div>
-        {activeChoice !== "Remove" &&
+        {activeChoice !== "Pool" &&
           <form className="mt-5 mb-4">
             <div>
               <div className="flex flex-wrap items-center justify-between mb-2">
@@ -538,34 +551,38 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
                 )}
               </DialogContent>
             </Dialog>
-          ) : activeChoice === "Remove" ?
-            <Dialog open={isOpenRemoveLiquididy} onOpenChange={setIsOpenRemoveLiquididy}>
-              <DialogTrigger asChild>
-                <Button
-                  className="mt-3 py-3 w-full"
-                  primary
-                >
-                  Remove Liquidity
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
-                {contracts && (
-                  <ModalRemoveLiquidity
-                    data={dataLiquidtity}
-                    routerAddress={
-                      contracts.ERC1155_ROUTER_ADDRESS
-                    }
-                    type="erc1155"
-                    setHash={setHash}
-                    setIsOpenSuccess={setIsOpenSuccessRemove}
-                    setIsOpenError={setIsOpenErrorRemove}
-                    closeModal={() => {
-                      setIsOpenRemoveLiquididy(false)
-                    }}
-                  />
-                )}
-              </DialogContent>
-            </Dialog>
+          ) : activeChoice === "Pool" ?
+            // <Dialog open={isOpenRemoveLiquididy} onOpenChange={setIsOpenRemoveLiquididy}>
+            //   <DialogTrigger asChild>
+            //     <Button
+            //       className="mt-3 py-3 w-full"
+            //       primary
+            //     >
+            //       Remove Liquidity
+            //     </Button>
+            //   </DialogTrigger>
+            //   <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
+            //     {contracts && (
+            //       <ModalRemoveLiquidity
+            //         data={dataLiquidtity}
+            //         routerAddress={
+            //           contracts.ERC1155_ROUTER_ADDRESS
+            //         }
+            //         type="erc1155"
+            //         setHash={setHash}
+            //         setIsOpenSuccess={setIsOpenSuccessRemove}
+            //         setIsOpenError={setIsOpenErrorRemove}
+            //         closeModal={() => {
+            //           setIsOpenRemoveLiquididy(false)
+            //         }}
+            //       />
+            //     )}
+            //   </DialogContent>
+            // </Dialog>
+
+            <div className="w-full">
+              <PoolErc1155 data={dataLiquidtity} isLoading={isLoadingLiquidity} isSuccess={isSuccessLiquidity} />
+            </div>
             : isApprovedNFT ? (
               <Dialog open={isOpenSellNFT} onOpenChange={setIsOpenSellNFT}>
                 <DialogTrigger asChild>

@@ -190,6 +190,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       tokenAddress: data?.tokenAddress
     }
 
+
     return (
       <Fragment>
         <div className="h-fit w-[360px] md:w-[400px] lg:w-[500px] rounded-lg relative">
@@ -324,6 +325,8 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                   <Button
                     className="w-[126px] py-2 mx-auto"
                     primary
+                    active={!inputLiquidity || (dataTradingRemove && dataTradingRemove?.balanceDml <= 0)}
+                    disabled={!inputLiquidity || (dataTradingRemove && dataTradingRemove?.balanceDml <= 0)}
                     onClick={() => {
                       approveDML(
                         account,
@@ -354,7 +357,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
                         className="p-2 mx-auto"
                         primary={inputLiquidity}
                         active={!inputLiquidity}
-                        disabled={!inputLiquidity}
+                        disabled={!inputLiquidity || (dataTradingRemove && dataTradingRemove?.balanceDml <= 0)}
                         onClick={handleRemoveLiquidity}
                       >
                         Remove Liquidity
@@ -366,30 +369,32 @@ const ModalRemoveLiquidity: React.FunctionComponent<
             </div>
           </div>
         </div>
-        {dataTradingRemove && (
-          <ModalConfirmRemoveLiquidity
-            routerAddress={routerAddress}
-            isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity}
-            setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity}
-            isOpenTransaction={isOpenTransaction}
-            setIsOpenTransaction={setIsOpenTransaction}
-            data={data}
-            isFetching={isFetchingRemove}
-            dataTradingRemove={dataTradingRemove}
-            idNFT={idNFT}
-            inputLiquidity={inputLiquidity}
-            setInputLiquidity={setInputLiquidity}
-            setHash={setHash}
-            setIsOpenSuccess={setIsOpenSuccess}
-            setIsOpenError={setIsOpenError}
-            closeModal={closeModal}
-          />
-        )}
+        {
+          dataTradingRemove && (
+            <ModalConfirmRemoveLiquidity
+              routerAddress={routerAddress}
+              isOpenConfirmRemoveLiquidity={isOpenConfirmRemoveLiquidity}
+              setIsOpenConfirmRemoveLiquidity={setIsOpenConfirmRemoveLiquidity}
+              isOpenTransaction={isOpenTransaction}
+              setIsOpenTransaction={setIsOpenTransaction}
+              data={data}
+              isFetching={isFetchingRemove}
+              dataTradingRemove={dataTradingRemove}
+              idNFT={idNFT}
+              inputLiquidity={inputLiquidity}
+              setInputLiquidity={setInputLiquidity}
+              setHash={setHash}
+              setIsOpenSuccess={setIsOpenSuccess}
+              setIsOpenError={setIsOpenError}
+              closeModal={closeModal}
+            />
+          )
+        }
         <ModalTransation
           isOpenTransation={isOpenTransaction}
           setIsOpenTransaction={setIsOpenTransaction}
         />
-      </Fragment>
+      </Fragment >
     );
   };
 export default ModalRemoveLiquidity;

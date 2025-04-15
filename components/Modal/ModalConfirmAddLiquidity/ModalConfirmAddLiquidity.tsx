@@ -62,6 +62,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
       useContext(AccountContext);
     const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
     const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
+    const [loading, setLoading] = useState(false)
 
     const contracts = queryClient.getQueryData<ContractAddresses>([
       "contracts",
@@ -80,6 +81,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     const { approveDML } = handleApproveDML()
 
     const addLiquidity = async () => {
+      setLoading(true);
       if (!account) {
         return;
       }
@@ -125,8 +127,11 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
           } else {
             setIsOpenError(true);
           }
+
+          setLoading(false)
         } catch (error) {
           setIsOpenTransaction(false);
+          setLoading(false)
           console.error(error);
         }
       }
@@ -233,7 +238,7 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
 
               <div className="flex flex-col items-center">
                 <Button
-                  disabled={isFetching}
+                  disabled={isFetching || loading}
                   primary={!isFetching}
                   className="px-8 py-3"
                   active={isFetching}

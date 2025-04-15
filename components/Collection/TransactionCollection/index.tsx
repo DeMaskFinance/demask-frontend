@@ -15,11 +15,16 @@ import { Button } from "@/components/Buttons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import VersionTrade from "@/components/Common/VersionTrade";
+import TokenIcon from "@/components/Logo/TokenIcon";
 
 const TransactionCollection = () => {
   const [tab] = useQueryParam("tab", withDefault(StringParam, "buy"));
-  const { isEvent } = useContext(AccountContext);
-  const collectionAddress = (useRouter().query.slug as string)?.[0] || "";
+  const { isEvent, chainId } = useContext(AccountContext);
+  const router = useRouter();
+  const slug = router.query.slug;
+  const collectionAddress = slug?.[0] || "";
+  const tokenAddress = slug?.[1] || "";
+
 
   const TABS = [
     {
@@ -88,6 +93,11 @@ const TransactionCollection = () => {
     },
   ];
   const indexChoice = TABS.findIndex((item) => item.key === tab);
+  const paymentToken = queryClient.getQueryData<Token[]>(["paymentTokens", chainId])
+
+  const tokens = paymentToken?.filter((item: Token) =>
+    item?.isActive && item?.tokenAddress?.toLowerCase() !== tokenAddress?.toLowerCase()
+  )
 
   return (
     <div
@@ -96,7 +106,9 @@ const TransactionCollection = () => {
     >
       <div className="flex justify-between gap-4 mb-2">
         <VersionTrade />
+
         <div className="flex items-center gap-x-2">
+
           {actions.map((action, index) => (
             <Tippy
               key={index}
@@ -115,6 +127,10 @@ const TransactionCollection = () => {
               </div>
             </Tippy>
           ))}
+
+          <Link className="text-sm flex justify-end items-center font-semibold gap-1 hover:gap-1.5 hover:bg-primary_500/30 transition-all bg-primary_500/20 text-white/90 py-1.5 px-4 pr-3 rounded-md" href={`/trade/erc721/${collectionAddress}/${tokens?.[0]?.tokenAddress}`}>
+            Pool {tokens?.[0]?.symbol} <TokenIcon token={tokens?.[0]?.symbol || ""} w={16} h={16} />  <RightIcon className="w-4 h-4" />
+          </Link>
         </div>
       </div>
       <div className="flex-col justify-between w-full gap-4 overflow-hidden rounded-lg flex lg:flex-row">
