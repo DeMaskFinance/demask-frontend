@@ -240,8 +240,6 @@ const ModalAddLiquidityERC1155: React.FunctionComponent<
 
     const { handleApproveNFT } = useApproveNFT();
 
-    console.log(inputToken)
-
     return (
         <>
             <Fragment>

@@ -97,8 +97,7 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
       symbol: data?.tokenSymbol,
       tokenAddress: data?.tokenAddress
     } : data?.paymentToken
-
-    console.log(data)
+  
     const removeLiquidity = async () => {
       if (
         inputLiquidity &&
@@ -116,7 +115,6 @@ const ModalConfirmRemoveLiquidity: React.FunctionComponent<
           let result;
           if (data.nftID) {
 
-            console.log("OK")
             result = await removeERC20ERC1155(
               account,
               data.nftAddress,

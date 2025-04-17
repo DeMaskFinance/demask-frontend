@@ -16,7 +16,6 @@ const PoolItem = ({ item }: any) => {
   const notionSize =
     ((Number(balanceDML) / Number(totalSupply)) * item.reserveToken * 2) / 1700;
 
-  console.log(item)
   return (
     <div>
       <Link href={`/trade/erc1155/${item.nftAddress}/${item?.tokenAddress}/${item?.nftID}`}>

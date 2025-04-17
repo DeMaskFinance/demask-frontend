@@ -78,8 +78,6 @@ const ModalSuccessCreate: React.FunctionComponent<ModalSuccessProps> = ({
   const [isLoadingMeta, setIsLoadingMeta] = useState(false);
   const metadataIPFS = formatLinkIPFS(metadataLink!);
 
-  console.log(metadataLink)
-
   useEffect(() => {
     try {
       const fetchData = async () => {

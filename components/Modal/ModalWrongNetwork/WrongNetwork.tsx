@@ -75,8 +75,6 @@ const WrongNetwork: React.FC<WrongNetworkProps> = () => {
 
   const [loading, setLoading] = useState(false)
 
-  console.log(isWrongNetwork)
-
   return (
     <Wrapper isOpen={isWrongNetwork}>
       <div className="container_modal">
