@@ -267,8 +267,6 @@ const ChartTradingViewSwap1155: React.FunctionComponent<ChartSwapProps> = ({
     const currentHeight = window.innerWidth <= 768 ? mobileHeight : height;
     const isRed = legendData?.change;
 
-    console.log(dataSwap)
-
     return (
         <div className="w-full h-full">
             {isLoading ? (

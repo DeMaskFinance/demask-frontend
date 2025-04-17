@@ -89,7 +89,6 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     }
   };
 
-  console.log(liquidity)
 
   return (
     <div className="relative w-full overflow-hidden border rounded-lg group border-shader_500">
