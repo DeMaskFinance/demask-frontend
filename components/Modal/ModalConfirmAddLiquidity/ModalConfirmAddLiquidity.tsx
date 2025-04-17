@@ -80,6 +80,8 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
     );
     const { approveDML } = handleApproveDML()
 
+    console.log(currentAllowance)
+
     const addLiquidity = async () => {
       setLoading(true);
       if (!account) {
@@ -113,22 +115,29 @@ const ModalConfirmAddLiquidity: React.FunctionComponent<
             exponentialToDecimal(Math.floor(amountErcDesired)),
             tokenAddress?.isNative
           );
-          setHash(result.transactionHash);
-          setIsOpenTransaction(false);
-          setInputNFT("");
-          setInputToken("");
-          setIsOpenConfirmAddLiquidity(false);
-          queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
-          if (setIsOpenLiquidity) {
-            setIsOpenLiquidity(false);
-          }
-          if (result.status === "success") {
-            setIsOpenSuccess(true);
-          } else {
-            setIsOpenError(true);
-          }
+          setTimeout(() => {
+            setHash(result.transactionHash);
+            setIsOpenTransaction(false);
+            setInputNFT("");
+            setInputToken("");
+            setIsOpenConfirmAddLiquidity(false);
+            queryClient.refetchQueries({ queryKey: ["useBalanceToken"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["collectionNFTSell"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["detailCollection"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["1155TradingBuy"], exact: false });
 
-          setLoading(false)
+            if (setIsOpenLiquidity) {
+              setIsOpenLiquidity(false);
+            }
+            if (result.status === "success") {
+              setIsOpenSuccess(true);
+            } else {
+              setIsOpenError(true);
+            }
+
+            setLoading(false)
+          }, 1500)
         } catch (error) {
           setIsOpenTransaction(false);
           setLoading(false)

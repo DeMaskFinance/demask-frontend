@@ -117,20 +117,22 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
             txDeadline
           );
         }
-        setHash(result.transactionHash);
-        setIsOpenTransaction(false);
-        setIsOpenSellNFT(false);
-        if (result.status === "success") {
-          setIsOpenSuccess(true);
-        } else {
-          setIsOpenError(true);
-        }
-        setInputNFT("");
-        queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
-        queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
-        queryClient.refetchQueries({ queryKey: ["detailCollection"] });
-        queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
-        queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
+        setTimeout(() => {
+          setHash(result.transactionHash);
+          setIsOpenTransaction(false);
+          setIsOpenSellNFT(false);
+          if (result.status === "success") {
+            setIsOpenSuccess(true);
+          } else {
+            setIsOpenError(true);
+          }
+          setInputNFT("");
+          queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"], exact: false });
+          queryClient.refetchQueries({ queryKey: ["collectionNFTSell"], exact: false });
+          queryClient.refetchQueries({ queryKey: ["detailCollection"], exact: false });
+          queryClient.refetchQueries({ queryKey: ["1155TradingBuy"], exact: false });
+          queryClient.refetchQueries({ queryKey: ["useBalanceToken"], exact: false });
+        }, 1000)
       } catch (error) {
         setIsOpenTransaction(false);
         console.error(error);

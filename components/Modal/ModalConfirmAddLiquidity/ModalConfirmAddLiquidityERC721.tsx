@@ -66,6 +66,9 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
       version,
     ]);
     const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
+    const [loading, setLoading] = useState(false)
+
+
     const router = useRouter();
     const slug = router.query.slug as string[] || [];
 
@@ -92,13 +95,16 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
     const handleAddLiquidity = async () => {
       try {
+        setLoading(true);
         setIsOpenTransaction(true);
 
         if (!tokenAddress?.isNative && currentAllowance <= inputToken) {
           await approveDML(
             account,
             tokenAddress?.tokenAddress,
-            inputToken,
+            String(dataTradingAdd.amountETHDecimals
+              ? dataTradingAdd.amountETHDecimals
+              : Number(inputToken) * 1e18,),
             setIsOpenTransaction,
             contracts?.ERC721_ROUTER_ADDRESS,
             refetch
@@ -119,23 +125,30 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
             exponentialToDecimal(Math.floor(dataTradingAdd.amountETHDecimals || (Number(inputToken) * 1e18)))
           );
 
-          setInputToken("");
-          setIdNFT([]);
-          setIsOpenConfirmAddLiquidity(false);
-          setIsOpenAddLiquidity(false);
-          setIsOpenTransaction(false);
+          setTimeout(() => {
+            setHash(result.transactionHash);
+            setInputToken("");
+            setIdNFT([]);
+            setIsOpenConfirmAddLiquidity(false);
+            setIsOpenAddLiquidity(false);
+            setIsOpenTransaction(false);
 
-          if (result.status === "success") {
-            setIsOpenSuccess(true);
-          } else {
-            setIsOpenError(true);
-          }
 
-          queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"] });
-          queryClient.refetchQueries({ queryKey: ["collectionNFTSell"] });
-          queryClient.refetchQueries({ queryKey: ["detailCollection"] });
-          queryClient.refetchQueries({ queryKey: ["1155TradingBuy"] });
-          queryClient.refetchQueries({ queryKey: ["useBalanceToken"] });
+            queryClient.refetchQueries({ queryKey: ["collectionNFTBUY"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["collectionNFTSell"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["detailCollection"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["1155TradingBuy"], exact: false });
+            queryClient.refetchQueries({ queryKey: ["useBalanceToken"], exact: false });
+
+
+            if (result.status === "success") {
+              setIsOpenSuccess(true);
+            } else {
+              setIsOpenError(true);
+            }
+
+            setLoading(false)
+          }, 1500)
         }
       } catch (error) {
         console.error(error);
@@ -226,18 +239,22 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
               disabled={
                 isFetching ||
                 Math.floor(dataTradingAdd.amountETHDecimals) === 0 ||
-                isSufficientToken
+                isSufficientToken || loading
               }
               primary={!isFetching && !isSufficientToken}
               className="w-[144px] py-2"
               active={
                 isFetching ||
                 Math.floor(dataTradingAdd.amountETHDecimals) === 0 ||
-                isSufficientToken
+                isSufficientToken || loading
               }
               onClick={handleAddLiquidity}
             >
-              Add Liquidity
+
+              {!tokenAddress?.isNative && currentAllowance <= inputToken ?
+                "Approve Token" : "Add Liquidity"
+              }
+
               {isFetching && (
                 <BiLoaderAlt className="ml-1 text-white animate-spin" />
               )}
