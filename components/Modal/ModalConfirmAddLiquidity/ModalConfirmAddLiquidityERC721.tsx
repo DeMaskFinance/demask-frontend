@@ -93,18 +93,24 @@ const ModalConfirmAddLiquidityERC721: React.FunctionComponent<
 
     const { approveDML } = handleApproveDML()
 
+    console.log(currentAllowance, dataTradingAdd.amountETHDecimals
+      ? Number(dataTradingAdd.amountETHDecimals)
+      : Number(inputToken) * 1e18)
+
     const handleAddLiquidity = async () => {
       try {
         setLoading(true);
         setIsOpenTransaction(true);
 
-        if (!tokenAddress?.isNative && currentAllowance <= inputToken) {
+        if (!tokenAddress?.isNative && currentAllowance <= (dataTradingAdd.amountETHDecimals
+          ? Number(dataTradingAdd.amountETHDecimals)
+          : Number(inputToken) * 1e18)) {
           await approveDML(
             account,
             tokenAddress?.tokenAddress,
             String(dataTradingAdd.amountETHDecimals
               ? dataTradingAdd.amountETHDecimals
-              : Number(inputToken) * 1e18,),
+              : Number(inputToken)),
             setIsOpenTransaction,
             contracts?.ERC721_ROUTER_ADDRESS,
             refetch
