@@ -92,7 +92,7 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
       Math.floor(dataSell.minAmountDecimals) > 0
     ) {
       try {
-        let result;
+        let result: any;
         setIsOpenTransaction(true);
         if (inputNFT) {
           result = await sellERC20ERC1155(

@@ -97,7 +97,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
       isSufficientTokenBuy
     ) {
       try {
-        let result;
+        let result: any;
         setIsOpenTransaction(true);
 
         if (!dataBuy?.paymentToken?.isNative && ((currentAllowance / 1e18) <= Number(dataBuy.maxAmount))) {
