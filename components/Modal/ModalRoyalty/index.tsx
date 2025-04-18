@@ -59,7 +59,7 @@ const ModalRoyalty: React.FunctionComponent<ModalRoyaltyProps> = ({
       let trans;
       if (contracts) {
         trans = await ercContract.setRoyalty(
-          contracts.FEE_MANAGER_ADDRESS,
+          "contracts.FEE_MANAGER_ADDRESS",
           data.dmlAddress,
           values.creatorEarning,
           values.royalty * 10000,

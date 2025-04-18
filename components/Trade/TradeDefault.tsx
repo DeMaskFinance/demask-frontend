@@ -53,7 +53,7 @@ export default function TradeDefault() {
                 />
               }
               contentTrade="Swap"
-              link={`/trade/erc721/${contracts?.CREATED_NFT_ADDRESS}`}
+              link={`/trade/erc721/`}
               refetch={router.refresh}
             />
           </div>

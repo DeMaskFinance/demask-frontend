@@ -26,7 +26,8 @@ export default function DetailCollection() {
       collectionAddress,
       chain,
       pageParam,
-      20
+      20,
+      "desc"
     );
     return data.data;
   };

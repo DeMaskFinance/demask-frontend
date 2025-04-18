@@ -133,7 +133,12 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
           <p className="text-sm">Liquidity</p>
           <div className="flex items-center font-bold text-white gap-x-1">
             <FormatNumber number={liquidity.balanceDml || 0} />
-            <EtherIcon width={16} height={16} />({liquidity?.dmlPercent}%)
+            <EtherIcon width={16} height={16} />{(
+              ((liquidity?.balanceDml ?? 0) /
+                (liquidity?.totalSupplyDml ?? 1)) *
+              100
+            ).toFixed(2)}
+            %
           </div>
         </div>
         {/* <div className="flex justify-between mb-3 text-shader_200">

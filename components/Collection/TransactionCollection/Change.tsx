@@ -63,9 +63,12 @@ const Change = () => {
     queryFn: async () => {
       const res = await fetchDataSellNFTs(
         collectionAddress,
+        nativeAddress,
         chainId,
         account,
-        version
+        version,
+        1,
+        500
       );
       return res;
     },
@@ -75,7 +78,8 @@ const Change = () => {
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
     queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
+      const res = await fetchDataBuyNFTs(collectionAddress, nativeAddress, chainId, version, 1,
+        500);
       return res;
     },
   });
@@ -95,10 +99,11 @@ const Change = () => {
     queryFn: async () => {
       const res = await erc721TradingBuy(
         collectionAddress,
+        nativeAddress,
         chainId,
         idNFTInput.length,
         slippage,
-        version
+        version,
       );
       return res.data;
     },

@@ -19,6 +19,7 @@ import ModalConfirmRemoveLiquidity from "../ModalConfirmRemoveLiquidity";
 import { ModalTransation } from "../ModalTransation";
 import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import useInformationToken from "@/hooks/useInformationToken";
+import { queryClient } from "@/libs/constants";
 interface ModalRemoveLiquidityProps {
   data: DataBase;
   routerAddress: string;
@@ -59,7 +60,9 @@ const ModalRemoveLiquidity: React.FunctionComponent<
       setIdNFT([]);
     };
     const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
-
+    const paymentTokens = queryClient.getQueryData<Token[]>(
+      ["paymentTokens"]
+    )
     const { data: dataTradingRemove, isFetching: isFetchingRemove } =
       useQuery<DataRemove>({
         queryKey: [
@@ -152,7 +155,7 @@ const ModalRemoveLiquidity: React.FunctionComponent<
     const { data: data721, isSuccess } = useQuery({
       queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
       queryFn: async () => {
-        const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
+        const res = await fetchDataBuyNFTs(collectionAddress, paymentTokens?.[0]?.tokenAddress || "", chainId, version, 1, 500);
         return res;
       },
     });
