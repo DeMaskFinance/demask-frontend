@@ -26,9 +26,13 @@ const formatPercent = (number: string | number) => {
 };
 // const ipfsGateway = "https://cf-ipfs.com/ipfs/";
 const ipfsGateway = "https://ipfs-gw.demask.finance/ipfs/";
-const formatLinkIPFS = (link: string) => {
-  return link?.replace("ipfs://", ipfsGateway);
+const formatLinkIPFS = (link: any) => {
+  if (typeof link === "string") {
+    return link.replace("ipfs://", ipfsGateway);
+  }
+  return link;
 };
+
 const formatDate = (timestamp: number): string => {
   const secondsInDay = 86400; // 24 * 60 * 60
   const secondsInHour = 3600; // 60 * 60

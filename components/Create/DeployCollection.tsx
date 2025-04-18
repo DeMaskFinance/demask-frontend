@@ -80,13 +80,15 @@ const DeployCollection = () => {
 
     return res;
   };
+
+  console.log(contracts)
   const handleStarknetTransaction = async (values: InitialValues) => {
     const res = await deployContract.deployContractCollection(
       account,
       wallet,
       values,
       fileIPFS.nonce,
-      String(contracts?.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS)
+      String(contracts?.CREATED_COLLECTION_CLASSHASH)
     );
     if (res) {
       // @ts-ignore
@@ -105,30 +107,7 @@ const DeployCollection = () => {
 
     setIsOpenSuccess(status === "SUCCEEDED" || status === 1);
   };
-  const testBravos = async () => {
-    console.log(wallet, 123);
 
-    // const swo = window.starknet_braavos;
-    // console.log("swo", swo);
-    // const myProvider = new RpcProvider({
-    //   nodeUrl: "https://free-rpc.nethermind.io/sepolia-juno/v0_7",
-    // });
-    // const wa = new WalletAccount(myProvider, swo);
-    // console.log("wa", wa);
-    // console.log(await wa.getChainId());
-
-    // const res = await starknetContract.getWalletAccount(wallet);
-    // const res1 = await deployContract.deployContractCollection(
-    //   account,
-    //   wallet,
-    //   [{}],
-    //   123
-    // );
-    // console.log({
-    //   res,
-    //   res1,
-    // });
-  };
 
   const onSubmit = async (
     values: InitialValues,
@@ -141,19 +120,17 @@ const DeployCollection = () => {
         description: values.description,
       });
       let res;
-      if (chainId !== starknet.StarknetChainId.SN_SEPOLIA) {
-        res = await handleEVMTransaction(values);
-      } else {
-        res = await handleStarknetTransaction(values);
-      }
+
+      res = await handleStarknetTransaction(values);
       await checkTransactionStatus(res);
+
+      console.log(res)
       setIsProcess(false);
       resetForm();
       setSelectedFile(null);
     } catch (error) {
       console.error(error);
       setIsProcess(false);
-      resetForm();
     }
   };
 

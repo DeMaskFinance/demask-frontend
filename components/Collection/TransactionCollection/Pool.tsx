@@ -9,15 +9,21 @@ import { useContext, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import PoolItem from "./PoolItem";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { queryClient } from "@/libs/constants";
 const Pool = () => {
   const { account, chainId } = useContext(AccountContext);
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
 
+
+  const paymentTokens = queryClient.getQueryData<Token[]>(
+    ["paymentTokens"]
+  )
+
   const { isLoading, isFetching, data, isSuccess } = useQuery({
     queryKey: ["poolERC721", collectionAddress, chainId],
     queryFn: async () => {
-      const res = await liquidityUserERC721(collectionAddress, chainId);
+      const res = await liquidityUserERC721(collectionAddress, paymentTokens?.[0]?.tokenAddress || "", chainId);
       return res.data;
     },
   });
@@ -49,7 +55,7 @@ const Pool = () => {
             isSuccess && (
               <>
                 {data?.dmlAddress ===
-                "0x0000000000000000000000000000000000000000" ? (
+                  "0x0000000000000000000000000000000000000000" ? (
                   <div className="pool_empty">
                     <PoolListIcon width={72} height={72} />
                     Your active liquidity positions will appear here.

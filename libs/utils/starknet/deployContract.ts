@@ -10,8 +10,16 @@ const deployContractCollection = async (
   classHash: string
 ) => {
   try {
+    console.log("Constructor values:", {
+      owner: account,
+      name: values.contractName,
+      symbol: values.symbol,
+      id: nonce,
+    });
+
     const contractWallet = await starknetContract.getWalletAccount(wallet);
     const contractCallData = new CallData(compiledTestSierra.abi);
+
     const contractConstructor = contractCallData.compile("constructor", {
       owner: account,
       name: values.contractName,
@@ -19,13 +27,24 @@ const deployContractCollection = async (
       id: nonce,
     });
 
+    console.log({
+      classHash: classHash,
+      constructorCalldata: contractConstructor,
+    });
+
     const deployResponse = await contractWallet.deployContract({
       classHash: classHash,
       constructorCalldata: contractConstructor,
     });
+
+    console.log(deployResponse.transaction_hash);
+
     const data = await contractWallet.waitForTransaction(
       deployResponse.transaction_hash
     );
+
+    console.log(data);
+
     return data;
   } catch (error) {
     console.log(error);

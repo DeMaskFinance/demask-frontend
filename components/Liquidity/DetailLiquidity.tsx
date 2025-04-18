@@ -90,7 +90,6 @@ const DetailLiquidity = () => {
           const res = await liquidityHistory(
             account,
             dmlTokenLiquidity,
-            type,
             page,
             chainId,
             activeChoice

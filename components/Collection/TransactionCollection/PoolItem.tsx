@@ -98,6 +98,8 @@ const PoolItem = ({ liquidity, isFetching }: any) => {
     }
   };
 
+  console.log(liquidity)
+
   return (
     <div className="mb-4 text-white font-semibold text-sm">
       <p className="text-primary_400">Liquidity Pool:</p>
