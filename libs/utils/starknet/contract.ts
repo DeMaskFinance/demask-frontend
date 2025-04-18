@@ -1,8 +1,9 @@
 import { getProvider } from "@/libs/connection/getProvider";
 import { constants, Contract, RpcProvider, WalletAccount } from "starknet";
-const getRPCProvider = () => {
+
+export const getRPCProvider = () => {
   const RPC_Provider = new RpcProvider({
-    nodeUrl: constants.NetworkName.SN_MAIN,
+    nodeUrl: "https://rpc.starknet.lava.build:443",
     chainId: constants.StarknetChainId.SN_SEPOLIA,
   });
 
@@ -10,6 +11,7 @@ const getRPCProvider = () => {
     RpcProvider: RPC_Provider,
   };
 };
+
 const getContract = async (classHash: string) => {
   const { RpcProvider } = getRPCProvider();
   const { abi } = await RpcProvider.getClassAt(classHash);

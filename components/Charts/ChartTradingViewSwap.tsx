@@ -66,10 +66,10 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
     newData[newData.length - 1]
   );
   const { data, isLoading } = useQuery({
-    queryKey: ["chart", chainId, dataSwap.dmlAddress, typeERC, intervalTime],
+    queryKey: ["chart", chainId, dataSwap.dmlList?.[0]?.dmlAddress, typeERC, intervalTime],
     queryFn: async () => {
       const res = await tradeChartAPI(
-        dataSwap.dmlAddress,
+        dataSwap.dmlList?.[0]?.dmlAddress,
         chainId,
         typeERC,
         intervalTime
@@ -77,6 +77,7 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
       return res.data;
     },
   });
+
   useEffect(() => {
     setLegendData(volume[volume.length - 1]);
   }, [volume]);
@@ -352,10 +353,9 @@ const ChartTradingViewSwap: React.FunctionComponent<ChartSwapProps> = ({
             <ul className="flex items-center h-full gap-x-3">
               {optionTime.map((item, index) => (
                 <li
-                  className={`cursor-pointer w-11 text-center leading-10 h-full ${
-                    item.key === intervalTime &&
+                  className={`cursor-pointer w-11 text-center leading-10 h-full ${item.key === intervalTime &&
                     " text-primary_400 bg-primary_500 bg-opacity-10  "
-                  }`}
+                    }`}
                   key={index}
                   onClick={() => setIntervalTime(item.key)}
                 >

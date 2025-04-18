@@ -13,7 +13,6 @@ const useCheckApproveNFT = (
 
   useEffect(() => {
     const checkApproveNFT = async () => {
-      console.log(nftAddress, account, routerAddress);
       try {
         const isApprove = await utilsStarknet.isApproveForAll({
           target: nftAddress,

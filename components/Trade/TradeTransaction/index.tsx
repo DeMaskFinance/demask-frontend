@@ -77,7 +77,7 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     wallet,
     chainId
   );
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -201,15 +201,15 @@ const SwapTransaction: React.FunctionComponent<SwapTransactionProps> = ({
     if (activeChoice === "Buy" && dataBuy) {
       item === "100%"
         ? setInputNFT(
-            Math.floor(
-              (parseFloat(item) / 100) * (+dataBuy.reserveNFT - 1)
-            ).toString()
-          )
+          Math.floor(
+            (parseFloat(item) / 100) * (+dataBuy.reserveNFT - 1)
+          ).toString()
+        )
         : setInputNFT(
-            Math.floor(
-              (parseFloat(item) / 100) * +dataBuy.reserveNFT
-            ).toString()
-          );
+          Math.floor(
+            (parseFloat(item) / 100) * +dataBuy.reserveNFT
+          ).toString()
+        );
     } else {
       setInputNFT(
         Math.floor((parseFloat(item) / 100) * Number(balanceNFT)).toString()

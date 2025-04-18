@@ -133,7 +133,6 @@ const ModalSellNFT: React.FunctionComponent<ModalSellNFTProps> = ({
     isOpenTransaction
   );
 
-  console.log(isApprovedNFT);
 
   return (
     <div className="h-fit w-[360px] md:w-[400px] lg:w-[480px] rounded-lg relative bg_main">

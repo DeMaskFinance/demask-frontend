@@ -11,8 +11,6 @@ export const changeNetwork = async (
   try {
     const networkId = await provider.request({ method: "net_version" });
 
-    console.log(networkId);
-
     if (networkId !== chainId) {
       try {
         await provider.request({

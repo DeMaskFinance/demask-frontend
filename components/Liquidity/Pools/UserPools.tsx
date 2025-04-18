@@ -20,7 +20,7 @@ const UserPools = () => {
 
   const choices =
     chainId === "11155111" ? ["ERC-1155", "ERC-721"] : ["ERC-721"];
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const fetchDataListLiquidity = async (
     accountUser: string,
@@ -64,7 +64,6 @@ const UserPools = () => {
     }
   }, [inView]);
 
-  console.log(data);
   return (
     <div className="rounded-lg bg-shader_800 flex flex-col overflow-y-auto min-h-[550px] max-h-[650px]">
       <TabGroups

@@ -33,22 +33,22 @@ const Buy = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const debouncedIdNFT = useDebounce(idNFT, 1500);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { bigNumberBalance } = useInformationToken(account, wallet, chainId);
-  const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
-    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
-    queryFn: async () => {
-      const res = await fetchDataBuyNFTs(collectionAddress, chainId, version);
-      return res;
-    },
-  });
 
-  console.log(data);
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
     version,
   ]);
+
+  const { isLoading, data, isSuccess, refetch, isFetching } = useQuery({
+    queryKey: ["collectionNFTBUY", chainId, collectionAddress, version],
+    queryFn: async () => {
+      const res = await fetchDataBuyNFTs(collectionAddress, contracts?.WETH_ADDRESS || "", chainId, version, 1, 500);
+      return res;
+    },
+  });
 
   const { data: data721Trading, isFetching: isFetching721Trading } =
     useQuery<DataBuy>({
@@ -63,6 +63,7 @@ const Buy = () => {
       queryFn: async () => {
         const res = await erc721TradingBuy(
           collectionAddress,
+          contracts?.WETH_ADDRESS || "",
           chainId,
           debouncedIdNFT.length,
           slippage,

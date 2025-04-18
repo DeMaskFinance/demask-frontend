@@ -8,6 +8,7 @@ interface DataBase {
   reserveToken: string;
   reserveNFT: string;
   royaltyFee: number;
+  dmlList?: any;
   nftAddress: string;
   nftID: string;
   tokenAddress: string;
@@ -19,7 +20,7 @@ interface DataBase {
   symbol?: string;
   balanceDml?: number;
   totalSupplyDml?: number;
-  dmlPercent?: any;
+  paymentToken?: Token;
 }
 interface BaseDataTrade {
   reserveToken: number;
@@ -34,12 +35,14 @@ interface DataBuy extends BaseDataTrade {
   maxAmount: number;
   maxAmountDecimals: number;
   totalPay: number;
+  paymentToken: Token;
 }
 
 interface DataSell extends BaseDataTrade {
   minAmount: number;
   minAmountDecimals: number;
   totalReceipts: number;
+  paymentToken: Token;
 }
 interface DataAdd extends BaseDataTrade {
   amountETH: number;
@@ -51,4 +54,5 @@ interface DataRemove extends DataAdd {
   totalSupplyDml: number;
   totalSupplyDmlDecimals: number;
   amountNFT: number;
+  maxNft: number;
 }

@@ -85,7 +85,6 @@ const EVMWallet = () => {
           "hex"
         )}`;
 
-        console.log(provider);
 
         const signedData = await provider?.request({
           method: "personal_sign",

@@ -32,7 +32,13 @@ const Sell = () => {
   const [hash, setHash] = useState<string>("");
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
+
+  const paymentTokens = queryClient.getQueryData<Token[]>(
+    ["paymentTokens"]
+  )
+
+
   const { data, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: [
       "collectionNFTSell",
@@ -41,12 +47,17 @@ const Sell = () => {
       account,
       version,
     ],
+
+
     queryFn: async () => {
       const res = await fetchDataSellNFTs(
         collectionAddress,
+        paymentTokens?.[0]?.tokenAddress || "",
         chainId,
         account,
-        version
+        version,
+        1,
+        500
       );
       return res;
     },
@@ -81,6 +92,7 @@ const Sell = () => {
     queryFn: async () => {
       const res = await erc721TradingSell(
         collectionAddress,
+        contracts?.WETH_ADDRESS || "",
         chainId,
         debouncedIdNFT.length,
         slippage,
@@ -97,7 +109,6 @@ const Sell = () => {
     },
   };
 
-  console.log(data721Trading);
   return (
     <Fragment>
       {account ? (

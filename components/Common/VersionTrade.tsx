@@ -15,7 +15,7 @@ interface VersionTradeProps {
 const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
   const [version, setVersion] = useQueryParam(
     "version",
-    withDefault(StringParam, "v2")
+    withDefault(StringParam, "v1")
   );
   const { chainId } = useContext(AccountContext);
 
@@ -25,7 +25,7 @@ const VersionTrade: React.FC<VersionTradeProps> = ({ width = "w-45" }) => {
       title: "Version 1",
     },
     {
-      slug: "v2",
+      slug: "v1",
       title: "Version 2",
     },
   ];

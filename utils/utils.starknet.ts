@@ -14,6 +14,7 @@ import {
 import utilsConstants from "./utilts.contants";
 import { WalletType } from "@/libs/types";
 import { getCookie } from "./utilts.cookie";
+import { getRPCProvider } from "@/libs/utils/starknet/contract";
 
 export const getProviders = async (walletName: string, providers: any) => {
   const getInject = providers?.find(
@@ -55,17 +56,6 @@ const getContract = (abi: Abi, address: string) => {
 
   return {
     contract: getContract,
-  };
-};
-
-const getRPCProvider = () => {
-  const RPC_Provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io/rpc/v0_7",
-    chainId: constants.StarknetChainId.SN_SEPOLIA,
-  });
-
-  return {
-    RpcProvider: RPC_Provider,
   };
 };
 
@@ -348,21 +338,6 @@ const addLiquidity = async (params: {
     console.log(error);
   }
 };
-
-// {
-//     "contractAddress": "0x60a30620c53d4f6dbf22a92bd033d24eff06fbf3e1023aa5d1570be0bde720e",
-//     "token": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-//     "nft": "0x4187b44a9a9d3016907cee7e599d96f0df5547fbe79ae3a1d4c84e245ed07af",
-//     "tokenId": [
-//         14,
-//         20
-//     ],
-//     "liquidity": 150000000,
-//     "amountTokenMin": 11348020552005796,
-//     "amountNftMint": 2,
-//     "to": "0x6c7788abc7b06f1e2d707afd32d656ca251eb961645c308e642c184c15b5808",
-//     "deadline": 1734079502
-// }
 
 const removeLiquidity = async (params: {
   contractAddress: string;

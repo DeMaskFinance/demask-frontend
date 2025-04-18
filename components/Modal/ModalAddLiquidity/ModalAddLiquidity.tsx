@@ -51,7 +51,7 @@ const ModalAddLiquidity: React.FunctionComponent<ModalAddLiquidityProps> = ({
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,

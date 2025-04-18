@@ -13,7 +13,7 @@ import UserPools from "./UserPools";
 const Pools = () => {
   const [index, setIndex] = useState<number>(0);
   const { chainId, demask, account } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -21,20 +21,9 @@ const Pools = () => {
     version,
   ]);
 
-  console.log(contracts);
 
   const router = useRouter();
 
-  const handleAddLiquidity = () => {
-    const nftAddress = contracts?.CREATED_NFT_ADDRESS;
-    const tokenAddress = contracts?.WETH_ADDRESS;
-    const idNFT = demask.IDNFT;
-    router.push(`/add/${nftAddress}/${tokenAddress}/${idNFT}`);
-  };
-
-  const handleChangeIndex = (index: number) => {
-    setIndex(index);
-  };
 
   return (
     <div>

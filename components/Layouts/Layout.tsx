@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import AccountContext from "@/context/AccountContext";
-import { contractService } from "@/libs/service/contractsService";
+import { contractService, getPaymentTokens } from "@/libs/service/contractsService";
 import * as userService from "@/libs/service/userService";
 import { logout, selectProfile, userData } from "@/store/profileSlice";
 import { useQuery } from "@tanstack/react-query";
@@ -20,7 +20,7 @@ export default function Layout({ children }: PropsWithChildren) {
     getProviders,
   } = useContext(AccountContext);
   const { user, accessToken, isLoggedIn } = useSelector(selectProfile);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const dispatch = useDispatch();
   useEffect(() => {
     if (user && accessToken && isLoggedIn) {
@@ -42,7 +42,6 @@ export default function Layout({ children }: PropsWithChildren) {
           const provider = await getProviders(wallet);
 
           const handleAccountsChanged = (account: []) => {
-            console.log(account);
 
             localStorage.removeItem("WALLET_DEMASK");
             updateAccount("");
@@ -77,6 +76,15 @@ export default function Layout({ children }: PropsWithChildren) {
       return res.data;
     },
   });
+
+  const { data: paymentTokens = [] } = useQuery<Token[]>({
+    queryKey: ["paymentTokens"],
+    queryFn: async () => {
+      const res = await getPaymentTokens(chainId);
+      return res.data;
+    },
+  });
+
 
   return (
     <div className="box-border w-full overflow-visible">

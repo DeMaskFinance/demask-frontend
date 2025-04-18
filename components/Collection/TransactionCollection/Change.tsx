@@ -37,7 +37,7 @@ const Change = () => {
   const router = useRouter();
   const collectionAddress = (router.query.erc as string) || "";
   const [isSufficientToken, setIsSufficientToken] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -180,11 +180,11 @@ const Change = () => {
                       {" "}
                       {idNFTInput.length}{" "}
                     </span>
-                    input NFTs and 
+                    input NFTs and
                     <span className="text-primary_400">
                       {idNFTOutput.length} out of {data?.totalRecords}
                     </span>
-                      output NFTs
+                    output NFTs
                   </p>
                 </div>
               </div>

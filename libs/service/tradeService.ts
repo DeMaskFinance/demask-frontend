@@ -88,6 +88,7 @@ const ercTradingRemove = async (
 //ERC721
 const erc721TradingBuy = async (
   contractAddress: string,
+  tokenAddress: string,
   chainId: string | string[],
   amountNFT: number,
   slippage: number,
@@ -95,7 +96,7 @@ const erc721TradingBuy = async (
 ) => {
   try {
     const res = await request.get(
-      `erc721-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
+      `erc721-trading-buy?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&tokenAddress=${tokenAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -104,6 +105,7 @@ const erc721TradingBuy = async (
 };
 const erc721TradingSell = async (
   contractAddress: string,
+  tokenAddress: string,
   chainId: string | string[],
   amountNFT: number,
   slippage: number,
@@ -111,7 +113,7 @@ const erc721TradingSell = async (
 ) => {
   try {
     const res = await request.get(
-      `erc721-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
+      `erc721-trading-sell?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&tokenAddress=${tokenAddress}&version=${version}`
     );
     return res.data;
   } catch (error) {
@@ -120,6 +122,7 @@ const erc721TradingSell = async (
 };
 const erc721TradingAdd = async (
   contractAddress: string,
+  tokenAddress: string,
   chainId: string | string[],
   amountNFT: number,
   slippage: number,
@@ -127,10 +130,8 @@ const erc721TradingAdd = async (
 ) => {
   try {
     const res = await request.get(
-      `erc721-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&version=${version}`
+      `erc721-trading-add?chainId=${chainId}&amountNFT=${amountNFT}&slippage=${slippage}&contractAddress=${contractAddress}&tokenAddress=${tokenAddress}&version=${version}`
     );
-
-    console.log(res);
     return res.data;
   } catch (error) {
     console.error(error);

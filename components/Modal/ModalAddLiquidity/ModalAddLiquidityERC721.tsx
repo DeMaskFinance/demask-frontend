@@ -38,7 +38,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
   const [isOpenConfirmAddLiquidity, setIsOpenConfirmAddLiquidity] =
     useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const { account, wallet, slippage, chainId } = useContext(AccountContext);
   const { balanceToken, bigNumberBalance } = useInformationToken(
     account,
@@ -53,6 +53,10 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     version,
   ]);
 
+  const paymentTokens = queryClient.getQueryData<Token[]>(
+    ["paymentTokens"]
+  )
+
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: [
       "collectionNFTSell",
@@ -64,9 +68,12 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
     queryFn: async () => {
       const res = await fetchDataSellNFTs(
         collectionAddress,
+        paymentTokens?.[0]?.tokenAddress || "",
         chainId,
         account,
-        version
+        version,
+        1,
+        500
       );
       return res;
     },
@@ -84,6 +91,7 @@ const ModalAddLiquidityERC721: React.FunctionComponent<
       queryFn: async () => {
         const res = await erc721TradingAdd(
           collectionAddress,
+          contracts?.WETH_ADDRESS || "",
           chainId,
           idNFT.length,
           slippage,

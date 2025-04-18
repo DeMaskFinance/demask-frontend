@@ -74,7 +74,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
-    "v2",
+    "v1",
   ]);
 
   const currentAllowance = useAllowanceDML(
@@ -84,6 +84,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
     isOpenTransaction,
     routerAddress
   );
+
 
   const handleBuyNFT = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -217,9 +218,8 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             <div className="flex items-center gap-x-1">
               <p>Total fee</p>
               <div
-                className={`p-1  rounded-lg transition-all duration-100 ease-linear ${
-                  seeDetail ? "rotate-90" : ""
-                }`}
+                className={`p-1  rounded-lg transition-all duration-100 ease-linear ${seeDetail ? "rotate-90" : ""
+                  }`}
               >
                 <FaChevronRight />
               </div>
@@ -232,9 +232,8 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
             </div>
           </div>
           <div
-            className={`overflow-hidden will-change-[height] flex justify-between ${
-              seeDetail ? "h-[100px] opacity-100" : "h-0 opacity-0"
-            } transition-all duration-100 ease-linear`}
+            className={`overflow-hidden will-change-[height] flex justify-between ${seeDetail ? "h-[100px] opacity-100" : "h-0 opacity-0"
+              } transition-all duration-100 ease-linear`}
           >
             <div className="flex flex-col gap-y-1">
               <p>Protocol Fee</p>
@@ -272,7 +271,7 @@ const ModalBuyNFT: React.FunctionComponent<ModalBuyNFTProps> = ({
           </div>
         </div>
         <div className="flex flex-col items-center">
-          {currentAllowance && Number(currentAllowance) > 0 ? (
+          {Number(currentAllowance) >= Number(dataBuy.maxAmount * 1e18) ? (
             <Button
               disabled={isFetching}
               primary={!isFetching}

@@ -25,7 +25,7 @@ export default function TradeDefault() {
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
-    "v2",
+    "v1",
   ]);
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);
@@ -34,7 +34,6 @@ export default function TradeDefault() {
     setActiveChoiceNFT(choice);
   };
 
-  console.log(contracts);
 
   return (
     <div className="relative px-4 h-[95vh] sm:h-[88vh] flex flex-col mx-auto items-center justify-center overflow-hidden">

@@ -24,10 +24,10 @@ const HistorySwap: React.FunctionComponent<HistorySwapProps> = ({
     isSuccess,
     isPlaceholderData,
   } = useQuery({
-    queryKey: ["historySwap", chainId, activeChoice, data, page],
+    queryKey: ["historySwap", chainId, activeChoice, data, page, data?.dmlList?.[0]?.dmlAddress],
     queryFn: async () => {
       const res = await categoryAPI(
-        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data.dmlAddress}&action=${activeChoice}&type=${typeERC}`
+        `transaction-list?chainId=${chainId}&sortField=blockTime&sortOrder=desc&page=${page}&limit=10&dmlAddress=${data?.dmlList?.[0]?.dmlAddress}&action=${activeChoice}&type=${typeERC}`
       );
       return res;
     },

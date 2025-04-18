@@ -32,7 +32,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
   const [isOpenTransaction, setIsOpenTransaction] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const [reward, setReward] = useState("");
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
@@ -152,7 +152,7 @@ const LiquidytiesItem: React.FunctionComponent<LiquidytiesItemProps> = ({
         <Button
           gradient
           className="flex w-full p-3 mt-5 gap-x-1"
-          // onClick={handleGetReward}
+        // onClick={handleGetReward}
         >
           {/* Claim
           <FormatNumber number={reward} />

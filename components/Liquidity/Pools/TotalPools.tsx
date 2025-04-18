@@ -17,7 +17,7 @@ const TotalPools = () => {
   const [activeChoice, setActiveChoice] = useState<string>("ERC-721");
   const [type, setType] = useState<string>("erc721");
   const { ref, inView } = useInView();
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const router = useRouter();
   const handleChoiceChange = (choice: string) => {
     setActiveChoice(choice);

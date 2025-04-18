@@ -144,7 +144,6 @@ export default function EditProfileForm({ image }: any) {
     }
   };
 
-  console.log(image.length > 0);
 
   return (
     <div>

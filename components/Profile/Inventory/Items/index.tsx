@@ -59,18 +59,18 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
-    "v2",
+    "v1",
   ]);
+
 
   const nativeAddress = contracts?.WETH_ADDRESS;
   return (
     <div className="absolute left-0 z-10 bg-shader_600 flex justify-between w-full px-2 transition-all duration-150 opacity-0 group-hover:opacity-100 bottom-3 gap-x-2">
       <Link
-        href={`${
-          item.type === "erc1155"
-            ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-            : `/trade/erc721/${item.nftAddress}?tab=pool`
-        }`}
+        href={`${item.type === "erc1155"
+          ? `/add/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+          : `/trade/erc721/${item.nftAddress}?tab=pool`
+          }`}
         className="basis-1/2"
       >
         <Button className="flex items-center w-full py-3 border gap-x-2 border-shader_400 bg-shader_500 hover:bg-shader_400">
@@ -79,11 +79,10 @@ const Trade: React.FC<TradeProps> = ({ item }) => {
         </Button>
       </Link>
       <Link
-        href={`${
-          item.type === "erc1155"
-            ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
-            : `/trade/erc721/${item.nftAddress}`
-        }`}
+        href={`${item.type === "erc1155"
+          ? `/trade/erc1155/${item.nftAddress}/${nativeAddress}/${item.nftID}`
+          : `/trade/erc721/${item.nftAddress}`
+          }`}
         className="basis-1/2"
       >
         <Button className="flex items-center w-full py-3 gap-x-2" primary>
@@ -114,7 +113,6 @@ export const ItemList: React.FC<ItemListProps> = ({
     }
   }, [inView]);
 
-  console.log(data);
 
   return (
     <div className="font-semibold">

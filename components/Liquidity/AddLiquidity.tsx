@@ -65,7 +65,7 @@ export default function AddLiquidity() {
   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [isOpenError, setIsOpenError] = useState<boolean>(false);
   const [activeChoiceNFT, setActiveChoiceNFT] = useState<string>("");
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,

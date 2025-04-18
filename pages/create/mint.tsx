@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NextSeo } from "next-seo";
 import { useContext, useState } from "react";
 import { SEO } from "../../next-seo.config";
+import { StringParam, useQueryParam, withDefault } from "use-query-params";
 
 const updateMeta = {
   ...SEO,
@@ -16,14 +17,19 @@ const updateMeta = {
 };
 
 export default function Creator() {
+
+  const [type] = useQueryParam("typeErc", withDefault(StringParam, "erc721"));
+
+  const [page, setPage] = useState(1);
+
   const [fileType, setFileType] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [fileIPFS, setFileIPFS] = useState<string>("");
   const { chainId, account } = useContext(AccountContext);
   const { data, isLoading } = useQuery({
-    queryKey: ["listCollectionUser", chainId, account],
+    queryKey: ["listCollectionUser", chainId, account, type, page],
     queryFn: async () => {
-      const res = await collectionListUser(account, chainId);
+      const res = await collectionListUser(account, chainId, type, page, 100);
       return res.data;
     },
     enabled: !!account,

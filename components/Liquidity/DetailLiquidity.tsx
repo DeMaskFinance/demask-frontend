@@ -61,7 +61,7 @@ const DetailLiquidity = () => {
   const [isOpenSuccessCollect, setIsOpenSuccessCollect] =
     useState<boolean>(false);
   const [isOpenErrorCollect, setIsOpenErrorCollect] = useState<boolean>(false);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const [page, setPage] = useState(1);
   useEffect(() => {
@@ -166,7 +166,6 @@ const DetailLiquidity = () => {
     setIsOpenRemoveLiquididy(false);
   };
 
-  console.log(data);
   return (
     <div className="px-3">
       {isLoading ? (

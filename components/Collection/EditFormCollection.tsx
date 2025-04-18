@@ -168,7 +168,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
   };
   const queryClient = useQueryClient();
 
-  console.log(formatLinkIPFS(fileIPFSFeature));
   const onSubmit = async (values: any) => {
     // Handle form submission
     try {
@@ -376,7 +375,6 @@ const EditFormCollection: React.FC<EditCollectionProps> = ({
                       const file = event.target.files[0];
                       const uriImage = await uploadFileIPFSMint(file);
 
-                      console.log(uriImage);
                       setFileIPFSFeature(uriImage);
                       setSelectedImage(file);
                       setFieldValue("featureImage", file);

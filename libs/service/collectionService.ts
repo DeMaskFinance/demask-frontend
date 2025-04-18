@@ -5,11 +5,12 @@ const collectionListAllERC = async (
   contractAddress: string | string[],
   chainId: string | string[],
   page: number,
-  limit: number
+  limit: number,
+  sort: "asc" | "desc"
 ) => {
   try {
     const res = await request.get(
-      `all-nft-list-from-collection?chainId=${chainId}&contractAddress=${contractAddress}&page=${page}&limit=${limit}`
+      `all-nft-list-from-collection?chainId=${chainId}&contractAddress=${contractAddress}&page=${page}&limit=${limit}&sortPrice=${sort}`
     );
     return res.data;
   } catch (error) {
@@ -22,7 +23,7 @@ const collectionDetail = async (
 ) => {
   try {
     const res = await request.get(
-      `NFT-collection/${contractAddress}?chainId=${chainId}`
+      `NFT-collection-2/${contractAddress}?chainId=${chainId}`
     );
     return res.data;
   } catch (error) {
@@ -75,34 +76,51 @@ const collectionTypeCategory = async (
 const collectionListBuy = async (
   contractAddress: string | string[],
   chainId: string | string[],
-  version: string
+  tokenAddress: string,
+  version: string,
+  page: number,
+  limit: number
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?contractAddress=${contractAddress}&chainId=${chainId}&version=${version}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&chainId=${chainId}&version=${version}&page=${page}&limit=${limit}&tokenAddress=${tokenAddress}`
     );
     return res.data;
   } catch (error) {
     console.error(error);
   }
 };
+
 const fetchDataBuyNFTs = async (
   collectionAddress: string,
+  tokenAddress: string,
   chain: string | string[],
-  version: string
+  version: string,
+  page: number,
+  limit: number
 ) => {
-  const data = await collectionListBuy(collectionAddress, chain, version);
+  const data = await collectionListBuy(
+    collectionAddress,
+    chain,
+    tokenAddress,
+    version,
+    page,
+    limit
+  );
   return data.data;
 };
 const collectionListSell = async (
   userAddress: string,
   contractAddress: string | string[],
+  tokenAddress: string,
   chainId: string | string[],
-  version: string
+  version: string,
+  page: number,
+  limit: number
 ) => {
   try {
     const res = await request.get(
-      `NFT-list-from-collection?contractAddress=${contractAddress}&userAddress=${userAddress}&chainId=${chainId}&version=${version}`
+      `NFT-list-from-collection?contractAddress=${contractAddress}&tokenAddress=${tokenAddress}&userAddress=${userAddress}&chainId=${chainId}&version=${version}&page=${page}&limit=${limit}`
     );
     return res.data;
   } catch (error) {
@@ -111,15 +129,21 @@ const collectionListSell = async (
 };
 const fetchDataSellNFTs = async (
   collectionAddress: string,
+  tokenAddress: string,
   chain: string | string[],
   account: string,
-  version: string
+  version: string,
+  page: number,
+  limit: number
 ) => {
   const data = await collectionListSell(
     account,
     collectionAddress,
+    tokenAddress,
     chain,
-    version
+    version,
+    page,
+    limit
   );
   return data.data;
 };
@@ -180,11 +204,14 @@ const uploadFileCollection = async (params: any) => {
 };
 const collectionListUser = async (
   account: string,
-  chainId: string | string[]
+  chainId: string | string[],
+  type: string,
+  page: number,
+  limit: number
 ) => {
   try {
     const res = await request.get(
-      `get-owner-collection?chainId=${chainId}&userAddress=${account}`
+      `get-owner-collection?chainId=${chainId}&userAddress=${account}&type=${type}&page=${page}&limit=${limit}`
     );
     return res.data;
   } catch (error) {

@@ -52,12 +52,10 @@ const StarknetWallet = () => {
       setLoading(true);
       const provider = await getProvider(connector.id);
 
-      console.log(connector, provider)
 
       const getWallet = getWalletAccount(provider);
 
       const accounts = await getWallet.requestAccounts();
-      console.log(accounts)
       const userAddress = accounts[0];
 
       const { data } = await getStarknetMessage(userAddress, starknet.StarknetChainId.SN_SEPOLIA);
@@ -73,10 +71,6 @@ const StarknetWallet = () => {
         BigInt(signature[r]),
         BigInt(signature[s])
       );
-
-      console.log({
-        r, s, signature: signatureCurve.toCompactHex()
-      })
 
       const loginData = await authenStarknet(starknet.StarknetChainId.SN_SEPOLIA, {
         message: typedMessage.message.message,

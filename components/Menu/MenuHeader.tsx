@@ -11,24 +11,23 @@ const subMenuRewards = [
   { id: 1, name: "Leaderboard", url: "/leaderboard" },
 ];
 const subMenuOthers = [
+  { id: 1, name: "Trade", url: `/trade` },
+  { id: 2, name: "Category", url: "/category" },
 
-  { id: 1, name: "Explorer", url: "/explorer" },
-  { id: 2, name: "Trade", url: `/trade` },
-  { id: 3, name: "Pools", url: "/pools" },
-  {
-    id: 4, name: "Rewards",
-    url: "/leaderboard",
-    subMenu: subMenuRewards,
-    icon: <DiamondIcon width={32} height={32} />,
-  },
 ];
 const MenuHeader = () => {
   const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
   const data = [
-    { id: 1, name: "Create", url: "/create" },
-    { id: 2, name: "Launchpad", url: "/launchpad" },
-    { id: 3, name: "Category", url: "/category" },
+    { name: "Explorer", url: "/explorer" },
+    { name: "Pools", url: "/pools" },
+    { name: "Create", url: "/create" },
+    { name: "Launchpad", url: "/launchpad" },
+    {
+      name: "Leaderboard",
+      url: "/leaderboard",
+      icon: <DiamondIcon width={32} height={32} />,
+    },
     { name: "Others", url: "/category", subMenu: subMenuOthers },
   ];
 

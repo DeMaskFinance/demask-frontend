@@ -9,7 +9,6 @@ import { exponentialToDecimal } from "../convertExponential";
 const erc = async (wallet: string, address: string, abi: any) => {
   const providerChoice = await getProvider(wallet);
 
-  console.log(providerChoice);
   const provider = new ethers.providers.Web3Provider(providerChoice);
 
   const signer = provider.getSigner();

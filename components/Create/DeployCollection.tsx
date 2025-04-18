@@ -35,7 +35,7 @@ const DeployCollection = () => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [hash, setHash] = useState<string>("");
   const { account, wallet, chainId } = useContext(AccountContext);
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const contracts = queryClient.getQueryData<ContractAddresses>([
     "contracts",
     chainId,
@@ -70,7 +70,7 @@ const DeployCollection = () => {
       values.contractName,
       values.symbol,
       fileIPFS.nonce,
-      contracts.CREATED_COLLECTION_ADDRESS,
+      contracts.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS,
       account,
       wallet
     );
@@ -86,7 +86,7 @@ const DeployCollection = () => {
       wallet,
       values,
       fileIPFS.nonce,
-      String(contracts?.CREATED_COLLECTION_CLASSHASH)
+      String(contracts?.CREATED_COLLECTION_ERC721_CONTRACT_ADDRESS)
     );
     if (res) {
       // @ts-ignore

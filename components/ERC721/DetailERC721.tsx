@@ -14,6 +14,7 @@ const DetailERC721: React.FC<DetailERC721Props> = ({
   isSuccess,
   isLoading,
 }) => {
+
   return (
     <div className="min-h-[94vh] text-white">
       <Maintenance />

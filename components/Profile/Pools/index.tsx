@@ -10,7 +10,7 @@ export default function Pools() {
   const { account, chainId } = useContext(AccountContext);
   const type = "erc721";
   const { ref, inView } = useInView();
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
   const fetchDataListLiquidity = async (
     accountUser: string,
     pageParam = 1,

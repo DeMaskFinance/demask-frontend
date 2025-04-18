@@ -22,7 +22,7 @@ const Swap: React.FC = () => {
   const [idNFT, setIdNFT] = useState<string>("");
   const { chainId } = useContext(AccountContext);
   const { slug } = router.query;
-  const [version] = useQueryParam("version", withDefault(StringParam, "v2"));
+  const [version] = useQueryParam("version", withDefault(StringParam, "v1"));
 
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
     queryKey: ["metadata", idNFT, nftAddress, chainId, tokenAddress, version],

@@ -9,4 +9,13 @@ const contractService = async (chainId: string | string[], version: string) => {
     console.error(error);
   }
 };
-export { contractService };
+
+const getPaymentTokens = async (chainId: string | string[]) => {
+  try {
+    const res = await request.get(`payment-token?chainId=${chainId}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export { contractService, getPaymentTokens };
