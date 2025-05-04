@@ -1,6 +1,9 @@
 import { Button } from "@/components/Buttons";
 import AccountContext from "@/context/AccountContext";
-import { useFetchAmountMinted, useFetchAmountSold } from "@/hooks/useFetchAmountSold";
+import {
+  useFetchAmountMinted,
+  useFetchAmountSold,
+} from "@/hooks/useFetchAmountSold";
 import { checkLaunchpad } from "@/libs/utils/checkLaunchpad";
 import { run } from "@/libs/validation/veryfy";
 import { useRouter } from "next/router";
@@ -15,7 +18,10 @@ interface ButtonConditionProps {
   data: LaunchpadData;
   refetchAll: any;
 }
-const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) => {
+const ButtonCondition: React.FC<ButtonConditionProps> = ({
+  data,
+  refetchAll,
+}) => {
   const { account, wallet, chainId } = useContext(AccountContext);
   const router = useRouter();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -32,22 +38,20 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
     (item) => item.address.toLowerCase() === account.toLowerCase()
   );
 
-
-
   const { data: amountSold, isLoading } = useFetchAmountSold({
     account,
     launchpadAddress,
-    unit: Number(data?.unit)
+    unit: Number(data?.unit),
   });
 
   const { data: soldout } = useFetchAmountMinted({
     launchpadAddress: launchpadAddress.toString(),
-    unit: Number(data?.unit)
+    unit: Number(data?.unit),
   });
 
   const currentTime = (Date.now() / 1000) | 0;
 
-
+  console.log(data.max_allocation, inputAmount, Number(soldout));
   useEffect(() => {
     const checkConditions = async () => {
       setError("");
@@ -74,7 +78,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
       }
 
       if (isPublic) {
-        if (data.max_allocation < inputAmount + Number(soldout)) {
+        if (data.max_allocation < inputAmount + Number(amountSold)) {
           setError("Max allocation");
           return;
         }
@@ -85,7 +89,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
         }
 
         const whitelistAmount = parseInt(addressOfWhitelist.amount, 16);
-        const remainingAllocation = whitelistAmount
+        const remainingAllocation = whitelistAmount;
         const allowedAmount = Math.min(
           whitelistAmount - Number(amountSold),
           remainingAllocation
@@ -121,12 +125,13 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({ data, refetchAll }) =
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
-            className={`w-full h-10 ${isDisabled || isLoading ? "opacity-50" : ""
-              }`}
+            className={`w-full h-10 ${
+              isDisabled || isLoading ? "opacity-50" : ""
+            }`}
             primary
             disabled={isDisabled || isLoading}
           >
-            {error || "Confirm"}
+            {error || "Mint"}
           </Button>
         </DialogTrigger>
         <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
