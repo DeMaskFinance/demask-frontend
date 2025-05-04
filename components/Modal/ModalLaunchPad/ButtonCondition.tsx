@@ -130,7 +130,7 @@ const ButtonCondition: React.FC<ButtonConditionProps> = ({
             primary
             disabled={isDisabled || isLoading}
           >
-            {error || "Confirm"}
+            {error || "Mint"}
           </Button>
         </DialogTrigger>
         <DialogContent className="w-full p-4 border bg-shader_800 border-shader_500">
