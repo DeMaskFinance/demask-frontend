@@ -1,5 +1,3 @@
-const { Domain } = require("domain");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,18 +9,36 @@ const nextConfig = {
       "metadata.degods.com",
       "cf-ipfs.com",
       "1b21fea1b71e52bc8b81e22b5a53a188.ipfscdn.io",
-      "",
       "ipfs",
-      "ipfs.io"
+      "ipfs.io",
     ],
     unoptimized: true,
-  }, 
+  },
   async redirects() {
     return [
       {
         source: "/",
         destination: `/explorer`,
         permanent: true,
+      },
+    ];
+  },
+
+  // 🛡️ PREVENT CLICKJACKING
+  async headers() {
+    return [
+      {
+        source: "/(.*)", //
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'none';",
+          },
+        ],
       },
     ];
   },
