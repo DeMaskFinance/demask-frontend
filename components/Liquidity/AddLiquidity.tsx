@@ -98,13 +98,16 @@ export default function AddLiquidity() {
       return res.data;
     },
   });
-  const currentTokenBalance = selectedToken?.isNative ? bigNumberBalance : balanceDML;
+  const currentTokenBalance = selectedToken?.isNative
+    ? bigNumberBalance
+    : balanceDML;
 
-  const tokenAddressSlug = currency ? currency?.[1] : ""
+  const tokenAddressSlug = currency ? currency?.[1] : "";
   useEffect(() => {
     if (!selectedToken && paymentTokens?.length > 0) {
       const matchedToken = paymentTokens.find(
-        (token) => token.tokenAddress.toLowerCase() === tokenAddressSlug?.toLowerCase()
+        (token) =>
+          token.tokenAddress.toLowerCase() === tokenAddressSlug?.toLowerCase()
       );
 
       if (matchedToken) {
@@ -125,10 +128,15 @@ export default function AddLiquidity() {
     }
   }, [currency]);
 
-
-
   const { isLoading, data, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: ["metadata", idNFT, nftAddress, chainId, selectedToken?.tokenAddress, version],
+    queryKey: [
+      "metadata",
+      idNFT,
+      nftAddress,
+      chainId,
+      selectedToken?.tokenAddress,
+      version,
+    ],
     queryFn: async () => {
       const res = await getMetadata(
         chainId,
@@ -139,7 +147,7 @@ export default function AddLiquidity() {
       );
       return res;
     },
-    enabled: !!paymentTokens
+    enabled: !!paymentTokens,
   });
 
   const { data: dataTradingAdd, isFetching: isFetchingAdd } = useQuery<DataAdd>(
@@ -167,7 +175,7 @@ export default function AddLiquidity() {
         return res.data;
       },
       refetchInterval: 20000,
-      enabled: !!paymentTokens
+      enabled: !!paymentTokens,
     }
   );
   const { isApprovedNFT, refetch: refetchNFT } = useCheckApproveNFT(
@@ -177,14 +185,7 @@ export default function AddLiquidity() {
     "erc1155"
   );
 
-
-
-  const { balanceNFT } = useNFTBalance(
-    account,
-    nftAddress,
-    idNFT,
-  );
-
+  const { balanceNFT } = useNFTBalance(account, nftAddress, idNFT);
 
   useEffect(() => {
     let amountErcDesired;
@@ -203,7 +204,6 @@ export default function AddLiquidity() {
       } else {
         setIsSufficientToken(false);
       }
-
     }
   }, [inputNFT, inputToken, dataTradingAdd, bigNumberBalance]);
 
@@ -247,8 +247,6 @@ export default function AddLiquidity() {
 
   const { handleApproveNFT } = useApproveNFT();
 
-
-
   return (
     <div className="max-w-4xl mx-auto min-h-[94vh] pb-24 lg:pb-8 px-4">
       <div className="flex items-center justify-between ">
@@ -270,7 +268,9 @@ export default function AddLiquidity() {
             />
           }
           contentTrade="Swap"
-          link={`/trade/erc1155/${nftAddress}/${selectedToken?.tokenAddress || ""}/${idNFT}`}
+          link={`/trade/erc1155/${nftAddress}/${
+            selectedToken?.tokenAddress || ""
+          }/${idNFT}`}
           customLink={true}
           refetch={refetch}
         />
@@ -365,8 +365,14 @@ export default function AddLiquidity() {
                 <div className="flex justify-between mt-4 mb-1 font-semibold text-primary_300">
                   <p>Token</p>
                   <div className="flex items-center font-bold text-white gap-x-1">
-                    {account && selectedToken?.isNative ? formatNumber(balanceToken) : formatNumber(Number(balanceDML) / 1e18)}
-                    <TokenIcon token={selectedToken?.symbol || ""} w={16} h={16} />
+                    {account && selectedToken?.isNative
+                      ? formatNumber(balanceToken)
+                      : formatNumber(Number(balanceDML) / 1e18)}
+                    <TokenIcon
+                      token={selectedToken?.symbol || ""}
+                      w={16}
+                      h={16}
+                    />
                   </div>
                 </div>
 
@@ -497,10 +503,6 @@ export default function AddLiquidity() {
         <SkeletonAddLiquidity />
       )}
 
-      <ModalTransation
-        isOpenTransation={isOpenTransaction}
-        setIsOpenTransaction={setIsOpenTransaction}
-      />
       {data && account && (
         <ModalConfirmAddLiquidity
           isOpenConfirmAddLiquidity={isOpenConfirmAddLiquidity}
@@ -521,6 +523,11 @@ export default function AddLiquidity() {
           setIsOpenError={setIsOpenError}
         />
       )}
+
+      <ModalTransation
+        isOpenTransation={isOpenTransaction}
+        setIsOpenTransaction={setIsOpenTransaction}
+      />
       <ModalSuccess
         isOpenSuccess={isOpenSuccess}
         transactionHash={hash}
